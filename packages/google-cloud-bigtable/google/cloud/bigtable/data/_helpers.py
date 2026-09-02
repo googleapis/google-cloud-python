@@ -171,6 +171,7 @@ def _rst_stream_aware_predicate(
         return (
             core_exceptions.ServiceUnavailable in exception_types
             and isinstance(e, core_exceptions.InternalServerError)
+            and isinstance(e.message, str)
             and any(m in e.message.lower() for m in _RETRYABLE_INTERNAL_ERROR_MESSAGES)
         )
 

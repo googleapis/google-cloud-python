@@ -257,6 +257,68 @@ def test_row_range_get_range_kwargs_open_closed():
     assert expected_result == actual_result
 
 
+def test_row_range_get_range_kwargs_unbounded_start():
+    from google.cloud.bigtable.row_set import RowRange
+
+    end_key = b"row_key9"
+    expected_result = {"end_key_open": end_key}
+    row_range = RowRange(None, end_key)
+    actual_result = row_range.get_range_kwargs()
+    assert expected_result == actual_result
+
+
+def test_row_range_get_range_kwargs_unbounded_end():
+    from google.cloud.bigtable.row_set import RowRange
+
+    start_key = b"row_key1"
+    expected_result = {"start_key_closed": start_key}
+    row_range = RowRange(start_key, None)
+    actual_result = row_range.get_range_kwargs()
+    assert expected_result == actual_result
+
+
+def test_mappable_attributes_mixin_guard_recursion():
+    import pytest
+
+    from google.cloud.bigtable.helpers import _MappableAttributesMixin
+
+    class Uninitialized(_MappableAttributesMixin):
+        pass
+
+    obj = Uninitialized()
+    with pytest.raises(AttributeError):
+        _ = obj._attribute_map
+    with pytest.raises(AttributeError):
+        _ = obj.non_existent_attribute
+
+    # Verify setattr on _attribute_map doesn't cause recursion
+    obj._attribute_map = {"old_attr": "new_attr"}
+    assert obj._attribute_map == {"old_attr": "new_attr"}
+
+
+def test_mappable_attributes_mixin_remap():
+    import pytest
+
+    from google.cloud.bigtable.helpers import _MappableAttributesMixin
+
+    class DummyBase:
+        def __init__(self, target_attr=None):
+            self.target_attr = target_attr
+
+    class MappedClass(_MappableAttributesMixin, DummyBase):
+        _attribute_map = {"source_attr": "target_attr"}
+
+    instance = MappedClass(source_attr="hello")
+    assert instance.target_attr == "hello"
+    assert instance.source_attr == "hello"
+
+    instance.source_attr = "world"
+    assert instance.target_attr == "world"
+
+    with pytest.raises(AttributeError):
+        _ = instance.unknown_attr
+
+
 def _ReadRowsRequestPB(*args, **kw):
     from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 

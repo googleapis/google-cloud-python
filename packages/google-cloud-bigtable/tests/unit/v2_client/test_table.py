@@ -21,6 +21,7 @@ from google.api_core.exceptions import DeadlineExceeded
 from grpc import StatusCode
 
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.row import DirectRow
 
 from ._testing import _make_credentials
 
@@ -587,10 +588,13 @@ def _make_gapic_api(client):
     return gapic_client_mock
 
 
+_DEFAULT_SENTINEL = object()
+
+
 def _table_mutate_rows_helper(
     mutation_timeout=None,
     app_profile_id=None,
-    retry=None,
+    retry=_DEFAULT_SENTINEL,
     timeout=None,
     expected_operation_timeout=None,
     expected_attempt_timeout=None,
@@ -635,7 +639,7 @@ def _table_mutate_rows_helper(
 
     call_kwargs = {}
 
-    if retry is not None:
+    if retry is not _DEFAULT_SENTINEL:
         call_kwargs["retry"] = retry
 
     if timeout is not None:
@@ -764,6 +768,55 @@ def test_table_mutate_rows_w_none_deadline_retry():
     _table_mutate_rows_helper(
         retry=retry, expected_operation_timeout=TABLE_DEFAULT.MUTATE_ROWS
     )
+
+
+def test_table_mutate_rows_w_retry_none():
+    from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+
+    _table_mutate_rows_helper(
+        retry=None,
+        expected_operation_timeout=TABLE_DEFAULT.MUTATE_ROWS,
+        expected_retryable_errors=[],
+    )
+
+
+def test_table_mutate_rows_wrong_row_type():
+    import pytest
+
+    from google.cloud.bigtable.row import ConditionalRow
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+
+    row = ConditionalRow(row_key=b"row_key", table=table, filter_=None)
+    with pytest.raises(
+        TypeError,
+        match="Bulk processing can not be applied for conditional or append mutations.",
+    ):
+        table.mutate_rows([row])
+
+
+def test_table_mutate_rows_table_mismatch():
+    import pytest
+
+    from google.cloud.bigtable.row import DirectRow
+    from google.cloud.bigtable.table import TableMismatchError
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+    other_table = _make_table("other-table", instance)
+
+    row = DirectRow(row_key=b"row_key", table=other_table)
+    with pytest.raises(
+        TableMismatchError,
+        match=r"Row b'row_key' is a part of %s table\. Current table: %s"
+        % (other_table.name, table.name),
+    ):
+        table.mutate_rows([row])
 
 
 def test_table_mutate_rows_w_timeout_arg():
@@ -1418,9 +1471,9 @@ def _ReadRowsResponsePB(*args, **kw):
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
-class _MockRow(object):
-    def __init__(self, row_key):
-        self.row_key = row_key
+class _MockRow(DirectRow):
+    def __init__(self, row_key, table=None):
+        super().__init__(row_key=row_key, table=table)
 
     def _get_mutations(self):
         return [mock.MagicMock()]
