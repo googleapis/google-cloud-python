@@ -1,0 +1,72 @@
+name: Regenerate all packages after merging to main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    env:
+      PANDOC_VERSION: 3.8.2
+      SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - uses: googleapis/librarian@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+        with:
+          protoc-version: "33.5"
+          protoc-checksum: "eb842a2259a90a402207cae3a9261dc9501f43a535b3b3d786ecc496e117f499cf373fe41181fd9047035f7ed6c2dee9a55f7f0a7afa1c5d7cb5be3e672bf527"
+
+      - name: Install pandoc
+        run: |
+          mkdir /tmp/pandoc
+          curl -fsSL --retry 5 --retry-delay 15 -o /tmp/pandoc.tar.gz \
+            https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
+          tar -xvf /tmp/pandoc.tar.gz -C /tmp/pandoc --strip-components=1
+
+      - name: Install Python packages for Librarian
+        run: librarian install
+
+      - name: Clone Synthtool Templates
+        run: |
+          git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
+
+      - name: Regenerate
+        run: |
+          PATH=$PATH:/tmp/pandoc/bin
+          librarian generate -all -v
+
+      - name: Check for generated code changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git status
+            echo "==================== GIT DIFF ===================="
+            git diff
+            echo "=================================================="
+            echo "Regeneration produced code changes! Please run 'librarian generate -all -v' to update the generated files."
+            exit 1
+          fi
+
+      - name: Create issue if previous step fails
+        if: ${{ failure() }}
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+        with:
+          title: "Regeneration failed"
+          body: |
+            The post-submit [regeneration check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed.
+
+            Please investigate the failure. To keep the `main` branch healthy, please consider **reverting the triggering change** first. 
+            
+            You can identify the cause from the workflow logs:
+            - If the step 'Check for generated code changes' failed, there are pending code changes that need to be committed.
+            - If the step 'Regenerate' failed, the generation script itself encountered an error.
