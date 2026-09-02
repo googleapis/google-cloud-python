@@ -444,6 +444,8 @@ class AsyncAuthorizedSession:
                         return response
                     try:
                         await self._credentials.refresh(self._auth_request)
+                    except NotImplementedError:
+                        _LOGGER.debug("Credentials do not implement refresh().")
                     except (
                         exceptions.RefreshError,
                         getattr(exceptions, "InvalidOperation", Exception),
@@ -454,7 +456,7 @@ class AsyncAuthorizedSession:
                         )
                         return response
 
-                    # Return None to explicitly signal successful recovery
+                    # Return None to explicitly signal successful recovery & trigger retry if needed
                     return None
 
                 async with timeout_guard(remaining_time) as auth_with_timeout:
