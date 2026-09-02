@@ -14,11 +14,13 @@
 
 """User-friendly container for Google Cloud Bigtable Row."""
 
+from google.api_core.exceptions import GoogleAPICallError
 from google.cloud._helpers import (
     _datetime_from_microseconds,  # type: ignore
     _microseconds_from_datetime,  # type: ignore
     _to_bytes,  # type: ignore
 )
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data import mutations
 from google.cloud.bigtable.data import read_modify_write_rules as rmw_rules
@@ -441,7 +443,8 @@ class DirectRow(_SetDeleteRow):
     def commit(self):
         """Makes a ``MutateRow`` API request.
 
-        If no mutations have been created in the row, no request is made.
+        If no mutations have been created in the row, no request is made and a
+        ValueError is raised instead.
 
         Mutations are applied atomically and in order, meaning that earlier
         mutations can be masked / negated by later ones. Cells already present
@@ -460,14 +463,30 @@ class DirectRow(_SetDeleteRow):
         :rtype: :class:`~google.rpc.status_pb2.Status`
         :returns: A response status (`google.rpc.status_pb2.Status`)
                   representing success or failure of the row committed.
-        :raises: :exc:`~.table.TooManyMutationsError` if the number of
-                 mutations is greater than 100,000.
+        :raises: ValueError: if no mutations have been created in the row
+                 or if the number of mutations is greater than 100,000.
         """
-        response = self._table.mutate_rows([self])
+        num_mutations = len(self._get_mutations())
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError(
+                "Number of mutations exceeds the maximum "
+                "allowable %d." % (MAX_MUTATIONS,)
+            )
 
-        self.clear()
-
-        return response[0]
+        try:
+            self._table._table_impl.mutate_row(self.row_key, self._get_mutations())
+            return status_pb2.Status(code=code_pb2.OK)
+        except GoogleAPICallError as e:
+            # If the RPC call returns an error, extract the error into a status object, if possible.
+            return status_pb2.Status(
+                code=e.grpc_status_code.value[0]
+                if e.grpc_status_code is not None
+                else code_pb2.UNKNOWN,
+                message=e.message,
+                details=getattr(e, "details", []),
+            )
+        finally:
+            self.clear()
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row.
