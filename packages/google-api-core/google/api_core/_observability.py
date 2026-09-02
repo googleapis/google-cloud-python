@@ -18,7 +18,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
@@ -115,7 +115,7 @@ def get_otel_interceptor(
 
 def get_otel_async_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
-) -> Any | None:
+) -> Sequence[grpc.aio.ClientInterceptor] | None:
     """Returns async gRPC client interceptors for OpenTelemetry tracing.
 
     Args:
@@ -123,8 +123,8 @@ def get_otel_async_interceptor(
             and extracting the tracer provider.
 
     Returns:
-        Optional[Any]: Instantiated OpenTelemetry async client interceptors
-            if tracing is enabled and installed, None otherwise.
+        Optional[Sequence[grpc.aio.ClientInterceptor]]: Instantiated OpenTelemetry async
+            client interceptors if tracing is enabled and installed, None otherwise.
     """
     if not is_otel_capabilities_enabled(client_options):
         return None
