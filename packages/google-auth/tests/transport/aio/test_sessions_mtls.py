@@ -366,7 +366,8 @@ class TestSessionsMtls:
         new_key = b"new_key"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -398,7 +399,8 @@ class TestSessionsMtls:
         session._cached_cert = b"old_cert"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -436,7 +438,8 @@ class TestSessionsMtls:
         new_key = b"new_key"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -478,7 +481,8 @@ class TestSessionsMtls:
         new_key = b"new_key"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -535,7 +539,8 @@ class TestSessionsMtls:
             return (new_cert, new_key, b"new_fp", b"new_fp")
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -588,7 +593,8 @@ class TestSessionsMtls:
             return (b"old_cert", b"old_key", b"old_fp", b"old_fp")
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -632,7 +638,8 @@ class TestSessionsMtls:
         session._cached_cert = b"old_cert"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -671,7 +678,8 @@ class TestSessionsMtls:
                 pass
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
@@ -709,7 +717,8 @@ class TestSessionsMtls:
         session._cached_cert = b"old_cert"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ):
@@ -747,7 +756,8 @@ class TestSessionsMtls:
         session._cached_cert = b"old_cert"
 
         with mock.patch(
-            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ):
