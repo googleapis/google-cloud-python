@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.39.0
+version: v0.40.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -24,7 +24,8 @@ tools:
       version: 23.7.0
       package: black[jupyter]==23.7.0
     - name: gapic-generator
-      version: 1.39.0
+      version: a7e09c9a711e37110a3803a0b0be67e8ab458de6
+      package: gapic-generator@git+https://github.com/googleapis/google-cloud-python.git@a7e09c9a711e37110a3803a0b0be67e8ab458de6#subdirectory=packages/gapic-generator
     - name: isort
       version: 5.11.0
     - name: nox
@@ -420,6 +421,13 @@ libraries:
       - path: google/cloud/appoptimize/v1beta
     python:
       default_version: v1beta
+  - name: google-cloud-apptopology
+    version: 0.1.0
+    apis:
+      - path: google/cloud/apptopology/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-artifact-registry
     version: 1.22.0
     apis:
@@ -2001,7 +2009,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-sql
-    version: 0.0.0
+    version: 0.1.0
     apis:
       - path: google/cloud/sql/v1
       - path: google/cloud/sql/v1beta4
@@ -2368,7 +2376,7 @@ libraries:
     python:
       default_version: v1
   - name: google-maps-mapmanagement
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/maps/mapmanagement/v2
       - path: google/maps/mapmanagement/v2beta
