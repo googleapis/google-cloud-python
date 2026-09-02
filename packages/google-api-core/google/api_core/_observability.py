@@ -25,7 +25,7 @@ from google.api_core.client_options import ClientOptions
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
-    # The `# noqa: F401` comment avoid flake8 "imported but not used" errors.
+    # The `# noqa: F401` comment avoids flake8 "imported but not used" errors.
     import grpc  # noqa: F401
     import opentelemetry.trace  # noqa: F401
 
