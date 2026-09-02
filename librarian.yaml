@@ -2017,8 +2017,10 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/sql/v1:
+          - python-gapic-name=sqladmin
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
         google/cloud/sql/v1beta4:
+          - python-gapic-name=sqladmin
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage

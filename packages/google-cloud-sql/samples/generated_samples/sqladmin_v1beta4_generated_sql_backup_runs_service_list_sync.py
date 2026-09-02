@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 def sample_list():
     # Create a client
-    client = sql_v1beta4.SqlBackupRunsServiceClient()
+    client = sqladmin_v1beta4.SqlBackupRunsServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlBackupRunsListRequest()
+    request = sqladmin_v1beta4.SqlBackupRunsListRequest()
 
     # Make the request
     page_result = client.list(request=request)
