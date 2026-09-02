@@ -1089,18 +1089,19 @@ def test_table_direct_row_input_errors(data_table, rows_to_delete):
     with pytest.raises(TypeError):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, FLOAT_CELL_VAL)
 
-    # Can't have more than MAX_MUTATIONS mutations, enforced on server side now.
+    # Can't have more than MAX_MUTATIONS mutations, but only enforced after
+    # a row.commit
     row.clear()
     for _ in range(0, MAX_MUTATIONS + 1):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
 
-    resp = row.commit()
-    assert resp.code == StatusCode.INVALID_ARGUMENT.value[0]
+    with pytest.raises(ValueError):
+        row.commit()
 
     # Not having any mutations raises a ValueError
     row.clear()
     with pytest.raises(ValueError):
-        resp = row.commit()
+        row.commit()
 
 
 def test_table_conditional_row_input_errors(data_table, rows_to_delete):
