@@ -21,6 +21,7 @@ import warnings
 import mock
 import pytest
 from google.auth.credentials import AnonymousCredentials
+
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
@@ -38,7 +39,6 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
 )
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
-
 from tests._builders import build_connection, build_session
 
 PROJECT = "test-project"

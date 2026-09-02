@@ -128,6 +128,9 @@ class GenerationOptions(proto.Message):
         generate_disambiguation_question (bool):
             Optional. If true (default to false), the service may return
             a clarifying_question if the input query is ambiguous.
+        generate_debug_info (bool):
+            Optional. If true (default to false), returns
+            internal debugging information.
     """
 
     generate_query_result: bool = proto.Field(
@@ -145,6 +148,10 @@ class GenerationOptions(proto.Message):
     generate_disambiguation_question: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    generate_debug_info: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -239,6 +246,14 @@ class QueryDataResponse(proto.Message):
             field contains a question to the user for clarification. The
             returned represents the service's best effort based on the
             ambiguous input.
+        pipeline_debug_info (google.protobuf.struct_pb2.Struct):
+            Detailed step-by-step pipeline execution information.
+            Populated only if generation_options.generate_debug_info was
+            true. Provided for debugging and transparency purposes only.
+            The structure and content of this object is not guaranteed
+            and may change at any time without notice. Do not write
+            production code or business logic depending on the fields in
+            this object.
     """
 
     generated_query: str = proto.Field(
@@ -262,6 +277,11 @@ class QueryDataResponse(proto.Message):
         proto.STRING,
         number=5,
     )
+    pipeline_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=struct_pb2.Struct,
+    )
 
 
 class ExecutedQueryResult(proto.Message):
@@ -277,6 +297,12 @@ class ExecutedQueryResult(proto.Message):
             The total number of rows in the full result
             set, if known. This may be an estimate or an
             exact count.
+
+            Note: if an internal limit (such as LIMIT 1000)
+            was applied during query execution to guard
+            against excessive data transfer, this count
+            reflects the truncated result size rather than
+            the unrestricted table result size.
         partial_result (bool):
             Set to true if the returned rows in ``query_result`` are a
             subset of the full result. This can happen, for example, if

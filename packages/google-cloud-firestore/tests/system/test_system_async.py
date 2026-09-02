@@ -3708,3 +3708,41 @@ async def test_query_in_transaction_with_read_time(client, cleanup, database):
         await in_transaction(transaction)
         # make sure we didn't skip assertions in inner function
         assert inner_fn_ran is True
+
+
+@pytest.mark.skip(reason="Temporarily skipped. Not yet in production.")
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_large_document_standard_writes_async(client, cleanup, database):
+    """Test standard write and read operations for 5MB document on Enterprise DB (async)."""
+    collection_id = "large_docs_async_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "c" * (5 * 1024 * 1024)
+    await doc_ref.set({"payload": large_payload})
+
+    snapshot = await doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {"payload": large_payload}
+
+
+@pytest.mark.skip(reason="Temporarily skipped. Not yet in production.")
+@pytest.mark.parametrize("method", ["execute", "stream"])
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_large_document_pipeline_async(client, cleanup, database, method):
+    """Test async pipeline execution over 5MB document on Enterprise DB."""
+    collection_id = "large_pipeline_async_" + UNIQUE_RESOURCE_ID
+    col_ref = client.collection(collection_id)
+    doc_ref = col_ref.document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "d" * (5 * 1024 * 1024)
+    await doc_ref.set({"payload": large_payload})
+
+    pipeline = client.pipeline().collection(collection_id)
+    if method == "execute":
+        results = await pipeline.execute()
+    else:
+        results = [doc async for doc in pipeline.stream()]
+
+    assert [doc.data() for doc in results] == [{"payload": large_payload}]

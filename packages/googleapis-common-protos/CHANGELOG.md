@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.75.2](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.1...googleapis-common-protos-v1.75.2) (2026-08-21)
+
+
+### Documentation
+
+* **django-spanner, common-protos:** centralize CONTRIBUTING.rst pointers ([#18041](https://github.com/googleapis/google-cloud-python/issues/18041)) ([2b056ab](https://github.com/googleapis/google-cloud-python/commit/2b056ab2788411bb555c6697a94d76c83ca2a863))
+
 ## [1.75.1](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.0...googleapis-common-protos-v1.75.1) (2026-08-06)
 
 

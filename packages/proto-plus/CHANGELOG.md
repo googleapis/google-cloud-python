@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.4](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.3...proto-plus-v1.28.4) (2026-08-21)
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [1.28.3](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.2...proto-plus-v1.28.3) (2026-08-06)
 
 
