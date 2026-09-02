@@ -23,7 +23,6 @@ import ssl
 from typing import Optional
 
 from google.auth import _agent_identity_utils, exceptions
-from google.auth.transport import _mtls_helper
 from google.auth.transport._mtls_helper import secure_cert_key_paths
 import google.auth.transport.mtls
 
