@@ -155,6 +155,23 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
             ]
             return http_options
 
+    class _BaseCreateContentPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/contentPolicies",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseCreateDeidentifyTemplate:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -358,6 +375,22 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "delete",
                     "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteContentPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/contentPolicies/*}",
                 },
             ]
             return http_options
@@ -603,6 +636,22 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseGetContentPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/contentPolicies/*}",
                 },
             ]
             return http_options
@@ -905,6 +954,22 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{parent=organizations/*/locations/*}/connections",
+                },
+            ]
+            return http_options
+
+    class _BaseListContentPolicies:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/contentPolicies",
                 },
             ]
             return http_options
@@ -1226,6 +1291,23 @@ class _BaseDlpServiceRestTransport(DlpServiceTransport):
                 {
                     "method": "patch",
                     "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateContentPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{name=projects/*/locations/*/contentPolicies/*}",
                     "body": "*",
                 },
             ]

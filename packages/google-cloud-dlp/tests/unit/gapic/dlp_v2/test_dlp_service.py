@@ -2341,6 +2341,7 @@ def test_create_inspect_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
         response = client.create_inspect_template(request)
 
@@ -2355,6 +2356,7 @@ def test_create_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_create_inspect_template_non_empty_request_with_auto_populated_field():
@@ -2504,6 +2506,7 @@ async def test_create_inspect_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         response = await client.create_inspect_template(request)
@@ -2519,6 +2522,7 @@ async def test_create_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_create_inspect_template_field_headers():
@@ -2704,6 +2708,7 @@ def test_update_inspect_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
         response = client.update_inspect_template(request)
 
@@ -2718,6 +2723,7 @@ def test_update_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_update_inspect_template_non_empty_request_with_auto_populated_field():
@@ -2863,6 +2869,7 @@ async def test_update_inspect_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         response = await client.update_inspect_template(request)
@@ -2878,6 +2885,7 @@ async def test_update_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_update_inspect_template_field_headers():
@@ -3073,6 +3081,7 @@ def test_get_inspect_template(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
         response = client.get_inspect_template(request)
 
@@ -3087,6 +3096,7 @@ def test_get_inspect_template(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_get_inspect_template_non_empty_request_with_auto_populated_field():
@@ -3231,6 +3241,7 @@ async def test_get_inspect_template_async(
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         response = await client.get_inspect_template(request)
@@ -3246,6 +3257,7 @@ async def test_get_inspect_template_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 def test_get_inspect_template_field_headers():
@@ -21990,6 +22002,1953 @@ async def test_update_connection_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateContentPolicyRequest(),
+        {},
+    ],
+)
+def test_create_content_policy(request_type, transport: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+        response = client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = dlp.CreateContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_create_content_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.CreateContentPolicyRequest(
+        parent="parent_value",
+        content_policy_id="content_policy_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_content_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateContentPolicyRequest(
+            parent="parent_value",
+            content_policy_id="content_policy_id_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_create_content_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_content_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_content_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DlpServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_content_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_content_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateContentPolicyRequest(),
+        {},
+    ],
+)
+async def test_create_content_policy_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = dlp.CreateContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_create_content_policy_field_headers():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.CreateContentPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_content_policy_field_headers_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.CreateContentPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        await client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_content_policy_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_content_policy(
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].content_policy
+        mock_val = dlp.ContentPolicy(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_content_policy_flattened_error():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_content_policy(
+            dlp.CreateContentPolicyRequest(),
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_content_policy_flattened_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_content_policy(
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].content_policy
+        mock_val = dlp.ContentPolicy(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_content_policy_flattened_error_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_content_policy(
+            dlp.CreateContentPolicyRequest(),
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateContentPolicyRequest(),
+        {},
+    ],
+)
+def test_update_content_policy(request_type, transport: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+        response = client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = dlp.UpdateContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_content_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.UpdateContentPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_content_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateContentPolicyRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_update_content_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_content_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_content_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DlpServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_content_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_content_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateContentPolicyRequest(),
+        {},
+    ],
+)
+async def test_update_content_policy_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = dlp.UpdateContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_update_content_policy_field_headers():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.UpdateContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_content_policy_field_headers_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.UpdateContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        await client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_content_policy_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_content_policy(
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].content_policy
+        mock_val = dlp.ContentPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_content_policy_flattened_error():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_content_policy(
+            dlp.UpdateContentPolicyRequest(),
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_content_policy_flattened_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_content_policy(
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].content_policy
+        mock_val = dlp.ContentPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_content_policy_flattened_error_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_content_policy(
+            dlp.UpdateContentPolicyRequest(),
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetContentPolicyRequest(),
+        {},
+    ],
+)
+def test_get_content_policy(request_type, transport: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+        response = client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = dlp.GetContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_content_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.GetContentPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_content_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetContentPolicyRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_content_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_content_policy in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_content_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_content_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DlpServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_content_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_content_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetContentPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_content_policy_async(request_type, transport: str = "grpc_asyncio"):
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = dlp.GetContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_get_content_policy_field_headers():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.GetContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_content_policy_field_headers_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.GetContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        await client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_content_policy_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_content_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_content_policy_flattened_error():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_content_policy(
+            dlp.GetContentPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_content_policy_flattened_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ContentPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dlp.ContentPolicy())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_content_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_content_policy_flattened_error_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_content_policy(
+            dlp.GetContentPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListContentPoliciesRequest(),
+        {},
+    ],
+)
+def test_list_content_policies(request_type, transport: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ListContentPoliciesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = dlp.ListContentPoliciesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListContentPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_content_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.ListContentPoliciesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_content_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListContentPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_content_policies_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_content_policies
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_content_policies] = (
+            mock_rpc
+        )
+        request = {}
+        client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_content_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DlpServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_content_policies
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_content_policies
+        ] = mock_rpc
+
+        request = {}
+        await client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_content_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListContentPoliciesRequest(),
+        {},
+    ],
+)
+async def test_list_content_policies_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListContentPoliciesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = dlp.ListContentPoliciesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListContentPoliciesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_content_policies_field_headers():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.ListContentPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        call.return_value = dlp.ListContentPoliciesResponse()
+        client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_field_headers_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.ListContentPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListContentPoliciesResponse()
+        )
+        await client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_content_policies_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ListContentPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_content_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_content_policies_flattened_error():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_content_policies(
+            dlp.ListContentPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_flattened_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dlp.ListContentPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListContentPoliciesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_content_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_flattened_error_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_content_policies(
+            dlp.ListContentPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_content_policies_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[],
+                next_page_token="def",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_content_policies(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dlp.ContentPolicy) for i in results)
+
+
+def test_list_content_policies_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[],
+                next_page_token="def",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_content_policies(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_async_pager():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[],
+                next_page_token="def",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_content_policies(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, dlp.ContentPolicy) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_content_policies_async_pages():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[],
+                next_page_token="def",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_content_policies(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteContentPolicyRequest(),
+        {},
+    ],
+)
+def test_delete_content_policy(request_type, transport: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = dlp.DeleteContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_content_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = dlp.DeleteContentPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_content_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteContentPolicyRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_delete_content_policy_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_content_policy] = (
+            mock_rpc
+        )
+        request = {}
+        client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_content_policy_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DlpServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_content_policy
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_content_policy
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteContentPolicyRequest(),
+        {},
+    ],
+)
+async def test_delete_content_policy_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = dlp.DeleteContentPolicyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_content_policy_field_headers():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.DeleteContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_content_policy_field_headers_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = dlp.DeleteContentPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_content_policy_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_content_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_content_policy_flattened_error():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_content_policy(
+            dlp.DeleteContentPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_content_policy_flattened_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_content_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_content_policy_flattened_error_async():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_content_policy(
+            dlp.DeleteContentPolicyRequest(),
+            name="name_value",
+        )
+
+
 def test_inspect_content_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -31674,6 +33633,956 @@ def test_update_connection_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_content_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_content_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.create_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_content_policy_rest_required_fields(
+    request_type=dlp.CreateContentPolicyRequest,
+):
+    transport_class = transports.DlpServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseCreateContentPolicy,
+        "_BaseCreateContentPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dlp.ContentPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dlp.ContentPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_content_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_content_policy_rest_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_content_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/contentPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_content_policy_rest_flattened_error(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_content_policy(
+            dlp.CreateContentPolicyRequest(),
+            parent="parent_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+        )
+
+
+def test_update_content_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_content_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.update_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_content_policy_rest_required_fields(
+    request_type=dlp.UpdateContentPolicyRequest,
+):
+    transport_class = transports.DlpServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseUpdateContentPolicy,
+        "_BaseUpdateContentPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dlp.ContentPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dlp.ContentPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_content_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_update_content_policy_rest_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_content_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/contentPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_content_policy_rest_flattened_error(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_content_policy(
+            dlp.UpdateContentPolicyRequest(),
+            name="name_value",
+            content_policy=dlp.ContentPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_get_content_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_content_policy in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_content_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.get_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_content_policy_rest_required_fields(
+    request_type=dlp.GetContentPolicyRequest,
+):
+    transport_class = transports.DlpServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseGetContentPolicy,
+        "_BaseGetContentPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dlp.ContentPolicy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dlp.ContentPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_content_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_content_policy_rest_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_content_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/contentPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_content_policy_rest_flattened_error(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_content_policy(
+            dlp.GetContentPolicyRequest(),
+            name="name_value",
+        )
+
+
+def test_list_content_policies_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_content_policies
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_content_policies] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.list_content_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_content_policies(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_content_policies_rest_required_fields(
+    request_type=dlp.ListContentPoliciesRequest,
+):
+    transport_class = transports.DlpServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseListContentPolicies,
+        "_BaseListContentPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "pageSize",
+            "pageToken",
+        )
+    )
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = dlp.ListContentPoliciesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = dlp.ListContentPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_content_policies(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_content_policies_rest_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListContentPoliciesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dlp.ListContentPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_content_policies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/contentPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_content_policies_rest_flattened_error(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_content_policies(
+            dlp.ListContentPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_content_policies_rest_pager(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[],
+                next_page_token="def",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            dlp.ListContentPoliciesResponse(
+                content_policies=[
+                    dlp.ContentPolicy(),
+                    dlp.ContentPolicy(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(dlp.ListContentPoliciesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_content_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, dlp.ContentPolicy) for i in results)
+
+        pages = list(client.list_content_policies(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_delete_content_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DlpServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_content_policy
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_content_policy] = (
+            mock_rpc
+        )
+
+        request = {}
+        client.delete_content_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_content_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_content_policy_rest_required_fields(
+    request_type=dlp.DeleteContentPolicyRequest,
+):
+    transport_class = transports.DlpServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseDeleteContentPolicy,
+        "_BaseDeleteContentPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_content_policy(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_content_policy_rest_flattened():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_content_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/contentPolicies/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_content_policy_rest_flattened_error(transport: str = "rest"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_content_policy(
+            dlp.DeleteContentPolicyRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DlpServiceGrpcTransport(
@@ -32966,6 +35875,116 @@ def test_update_connection_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_content_policy_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.create_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_content_policy_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.update_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_content_policy_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        call.return_value = dlp.ContentPolicy()
+        client.get_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_content_policies_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        call.return_value = dlp.ListContentPoliciesResponse()
+        client.list_content_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListContentPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_content_policy_empty_call_grpc():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteContentPolicyRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = DlpServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -33126,6 +36145,7 @@ async def test_create_inspect_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         await client.create_inspect_template(request=None)
@@ -33156,6 +36176,7 @@ async def test_update_inspect_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         await client.update_inspect_template(request=None)
@@ -33186,6 +36207,7 @@ async def test_get_inspect_template_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 description="description_value",
+                allow_limited_availability_info_types=True,
             )
         )
         await client.get_inspect_template(request=None)
@@ -34522,6 +37544,145 @@ async def test_update_connection_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_content_policy_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.create_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_content_policy_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.update_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_content_policy_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ContentPolicy(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.get_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_content_policies_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dlp.ListContentPoliciesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_content_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListContentPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_content_policy_empty_call_grpc_asyncio():
+    client = DlpServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteContentPolicyRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_rest():
     transport = DlpServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
@@ -35204,6 +38365,7 @@ def test_create_inspect_template_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -35223,6 +38385,7 @@ def test_create_inspect_template_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35343,6 +38506,7 @@ def test_update_inspect_template_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -35362,6 +38526,7 @@ def test_update_inspect_template_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35482,6 +38647,7 @@ def test_get_inspect_template_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             description="description_value",
+            allow_limited_availability_info_types=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -35501,6 +38667,7 @@ def test_get_inspect_template_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.allow_limited_availability_info_types is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -41633,6 +44800,648 @@ def test_update_connection_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_create_content_policy_rest_bad_request(
+    request_type=dlp.CreateContentPolicyRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_content_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.CreateContentPolicyRequest,
+        dict,
+    ],
+)
+def test_create_content_policy_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_content_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_content_policy_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "post_create_content_policy"
+        ) as post,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor,
+            "post_create_content_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "pre_create_content_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = dlp.CreateContentPolicyRequest.pb(dlp.CreateContentPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = dlp.ContentPolicy.to_json(dlp.ContentPolicy())
+        req.return_value.content = return_value
+
+        request = dlp.CreateContentPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ContentPolicy()
+        post_with_metadata.return_value = dlp.ContentPolicy(), metadata
+
+        client.create_content_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_content_policy_rest_bad_request(
+    request_type=dlp.UpdateContentPolicyRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_content_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.UpdateContentPolicyRequest,
+        dict,
+    ],
+)
+def test_update_content_policy_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_content_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_content_policy_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "post_update_content_policy"
+        ) as post,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor,
+            "post_update_content_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "pre_update_content_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = dlp.UpdateContentPolicyRequest.pb(dlp.UpdateContentPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = dlp.ContentPolicy.to_json(dlp.ContentPolicy())
+        req.return_value.content = return_value
+
+        request = dlp.UpdateContentPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ContentPolicy()
+        post_with_metadata.return_value = dlp.ContentPolicy(), metadata
+
+        client.update_content_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_content_policy_rest_bad_request(request_type=dlp.GetContentPolicyRequest):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_content_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.GetContentPolicyRequest,
+        dict,
+    ],
+)
+def test_get_content_policy_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ContentPolicy(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ContentPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_content_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dlp.ContentPolicy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_content_policy_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "post_get_content_policy"
+        ) as post,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor,
+            "post_get_content_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "pre_get_content_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = dlp.GetContentPolicyRequest.pb(dlp.GetContentPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = dlp.ContentPolicy.to_json(dlp.ContentPolicy())
+        req.return_value.content = return_value
+
+        request = dlp.GetContentPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ContentPolicy()
+        post_with_metadata.return_value = dlp.ContentPolicy(), metadata
+
+        client.get_content_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_content_policies_rest_bad_request(
+    request_type=dlp.ListContentPoliciesRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_content_policies(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.ListContentPoliciesRequest,
+        dict,
+    ],
+)
+def test_list_content_policies_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dlp.ListContentPoliciesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dlp.ListContentPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_content_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListContentPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_content_policies_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "post_list_content_policies"
+        ) as post,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor,
+            "post_list_content_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "pre_list_content_policies"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = dlp.ListContentPoliciesRequest.pb(dlp.ListContentPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = dlp.ListContentPoliciesResponse.to_json(
+            dlp.ListContentPoliciesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = dlp.ListContentPoliciesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dlp.ListContentPoliciesResponse()
+        post_with_metadata.return_value = dlp.ListContentPoliciesResponse(), metadata
+
+        client.list_content_policies(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_content_policy_rest_bad_request(
+    request_type=dlp.DeleteContentPolicyRequest,
+):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_content_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        dlp.DeleteContentPolicyRequest,
+        dict,
+    ],
+)
+def test_delete_content_policy_rest_call_success(request_type):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/contentPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_content_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_content_policy_rest_interceptors(null_interceptor):
+    transport = transports.DlpServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DlpServiceRestInterceptor(),
+    )
+    client = DlpServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DlpServiceRestInterceptor, "pre_delete_content_policy"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        pb_message = dlp.DeleteContentPolicyRequest.pb(dlp.DeleteContentPolicyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = dlp.DeleteContentPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_content_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -42771,6 +46580,111 @@ def test_update_connection_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_content_policy_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_content_policy), "__call__"
+    ) as call:
+        client.create_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.CreateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_content_policy_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_content_policy), "__call__"
+    ) as call:
+        client.update_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.UpdateContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_content_policy_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_content_policy), "__call__"
+    ) as call:
+        client.get_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.GetContentPolicyRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_content_policies_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_content_policies), "__call__"
+    ) as call:
+        client.list_content_policies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.ListContentPoliciesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_content_policy_empty_call_rest():
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_content_policy), "__call__"
+    ) as call:
+        client.delete_content_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = dlp.DeleteContentPolicyRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DlpServiceClient(
@@ -42859,6 +46773,11 @@ def test_dlp_service_base_transport():
         "search_connections",
         "delete_connection",
         "update_connection",
+        "create_content_policy",
+        "update_content_policy",
+        "get_content_policy",
+        "list_content_policies",
+        "delete_content_policy",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -43284,6 +47203,21 @@ def test_dlp_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.update_connection._session
     session2 = client2.transport.update_connection._session
     assert session1 != session2
+    session1 = client1.transport.create_content_policy._session
+    session2 = client2.transport.create_content_policy._session
+    assert session1 != session2
+    session1 = client1.transport.update_content_policy._session
+    session2 = client2.transport.update_content_policy._session
+    assert session1 != session2
+    session1 = client1.transport.get_content_policy._session
+    session2 = client2.transport.get_content_policy._session
+    assert session1 != session2
+    session1 = client1.transport.list_content_policies._session
+    session2 = client2.transport.list_content_policies._session
+    assert session1 != session2
+    session1 = client1.transport.delete_content_policy._session
+    session2 = client2.transport.delete_content_policy._session
+    assert session1 != session2
 
 
 def test_dlp_service_grpc_transport_channel():
@@ -43461,9 +47395,35 @@ def test_parse_connection_path():
     assert expected == actual
 
 
+def test_content_policy_path():
+    project = "squid"
+    location = "clam"
+    content_policy = "whelk"
+    expected = "projects/{project}/locations/{location}/contentPolicies/{content_policy}".format(
+        project=project,
+        location=location,
+        content_policy=content_policy,
+    )
+    actual = DlpServiceClient.content_policy_path(project, location, content_policy)
+    assert expected == actual
+
+
+def test_parse_content_policy_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "content_policy": "nudibranch",
+    }
+    path = DlpServiceClient.content_policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DlpServiceClient.parse_content_policy_path(path)
+    assert expected == actual
+
+
 def test_deidentify_template_path():
-    organization = "squid"
-    deidentify_template = "clam"
+    organization = "cuttlefish"
+    deidentify_template = "mussel"
     expected = (
         "organizations/{organization}/deidentifyTemplates/{deidentify_template}".format(
             organization=organization,
@@ -43478,8 +47438,8 @@ def test_deidentify_template_path():
 
 def test_parse_deidentify_template_path():
     expected = {
-        "organization": "whelk",
-        "deidentify_template": "octopus",
+        "organization": "winkle",
+        "deidentify_template": "nautilus",
     }
     path = DlpServiceClient.deidentify_template_path(**expected)
 
@@ -43489,9 +47449,9 @@ def test_parse_deidentify_template_path():
 
 
 def test_discovery_config_path():
-    project = "oyster"
-    location = "nudibranch"
-    discovery_config = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    discovery_config = "squid"
     expected = "projects/{project}/locations/{location}/discoveryConfigs/{discovery_config}".format(
         project=project,
         location=location,
@@ -43503,9 +47463,9 @@ def test_discovery_config_path():
 
 def test_parse_discovery_config_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "discovery_config": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "discovery_config": "octopus",
     }
     path = DlpServiceClient.discovery_config_path(**expected)
 
@@ -43515,7 +47475,7 @@ def test_parse_discovery_config_path():
 
 
 def test_dlp_content_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}/dlpContent".format(
         project=project,
     )
@@ -43525,7 +47485,7 @@ def test_dlp_content_path():
 
 def test_parse_dlp_content_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = DlpServiceClient.dlp_content_path(**expected)
 
@@ -43535,8 +47495,8 @@ def test_parse_dlp_content_path():
 
 
 def test_dlp_job_path():
-    project = "squid"
-    dlp_job = "clam"
+    project = "cuttlefish"
+    dlp_job = "mussel"
     expected = "projects/{project}/dlpJobs/{dlp_job}".format(
         project=project,
         dlp_job=dlp_job,
@@ -43547,8 +47507,8 @@ def test_dlp_job_path():
 
 def test_parse_dlp_job_path():
     expected = {
-        "project": "whelk",
-        "dlp_job": "octopus",
+        "project": "winkle",
+        "dlp_job": "nautilus",
     }
     path = DlpServiceClient.dlp_job_path(**expected)
 
@@ -43558,9 +47518,9 @@ def test_parse_dlp_job_path():
 
 
 def test_file_store_data_profile_path():
-    organization = "oyster"
-    location = "nudibranch"
-    file_store_data_profile = "cuttlefish"
+    organization = "scallop"
+    location = "abalone"
+    file_store_data_profile = "squid"
     expected = "organizations/{organization}/locations/{location}/fileStoreDataProfiles/{file_store_data_profile}".format(
         organization=organization,
         location=location,
@@ -43574,9 +47534,9 @@ def test_file_store_data_profile_path():
 
 def test_parse_file_store_data_profile_path():
     expected = {
-        "organization": "mussel",
-        "location": "winkle",
-        "file_store_data_profile": "nautilus",
+        "organization": "clam",
+        "location": "whelk",
+        "file_store_data_profile": "octopus",
     }
     path = DlpServiceClient.file_store_data_profile_path(**expected)
 
@@ -43586,9 +47546,9 @@ def test_parse_file_store_data_profile_path():
 
 
 def test_finding_path():
-    project = "scallop"
-    location = "abalone"
-    finding = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    finding = "cuttlefish"
     expected = "projects/{project}/locations/{location}/findings/{finding}".format(
         project=project,
         location=location,
@@ -43600,9 +47560,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "finding": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "finding": "nautilus",
     }
     path = DlpServiceClient.finding_path(**expected)
 
@@ -43612,8 +47572,8 @@ def test_parse_finding_path():
 
 
 def test_inspect_template_path():
-    organization = "oyster"
-    inspect_template = "nudibranch"
+    organization = "scallop"
+    inspect_template = "abalone"
     expected = (
         "organizations/{organization}/inspectTemplates/{inspect_template}".format(
             organization=organization,
@@ -43626,8 +47586,8 @@ def test_inspect_template_path():
 
 def test_parse_inspect_template_path():
     expected = {
-        "organization": "cuttlefish",
-        "inspect_template": "mussel",
+        "organization": "squid",
+        "inspect_template": "clam",
     }
     path = DlpServiceClient.inspect_template_path(**expected)
 
@@ -43637,8 +47597,8 @@ def test_parse_inspect_template_path():
 
 
 def test_job_trigger_path():
-    project = "winkle"
-    job_trigger = "nautilus"
+    project = "whelk"
+    job_trigger = "octopus"
     expected = "projects/{project}/jobTriggers/{job_trigger}".format(
         project=project,
         job_trigger=job_trigger,
@@ -43649,8 +47609,8 @@ def test_job_trigger_path():
 
 def test_parse_job_trigger_path():
     expected = {
-        "project": "scallop",
-        "job_trigger": "abalone",
+        "project": "oyster",
+        "job_trigger": "nudibranch",
     }
     path = DlpServiceClient.job_trigger_path(**expected)
 
@@ -43660,9 +47620,9 @@ def test_parse_job_trigger_path():
 
 
 def test_project_data_profile_path():
-    organization = "squid"
-    location = "clam"
-    project_data_profile = "whelk"
+    organization = "cuttlefish"
+    location = "mussel"
+    project_data_profile = "winkle"
     expected = "organizations/{organization}/locations/{location}/projectDataProfiles/{project_data_profile}".format(
         organization=organization,
         location=location,
@@ -43676,9 +47636,9 @@ def test_project_data_profile_path():
 
 def test_parse_project_data_profile_path():
     expected = {
-        "organization": "octopus",
-        "location": "oyster",
-        "project_data_profile": "nudibranch",
+        "organization": "nautilus",
+        "location": "scallop",
+        "project_data_profile": "abalone",
     }
     path = DlpServiceClient.project_data_profile_path(**expected)
 
@@ -43688,8 +47648,8 @@ def test_parse_project_data_profile_path():
 
 
 def test_stored_info_type_path():
-    organization = "cuttlefish"
-    stored_info_type = "mussel"
+    organization = "squid"
+    stored_info_type = "clam"
     expected = "organizations/{organization}/storedInfoTypes/{stored_info_type}".format(
         organization=organization,
         stored_info_type=stored_info_type,
@@ -43700,8 +47660,8 @@ def test_stored_info_type_path():
 
 def test_parse_stored_info_type_path():
     expected = {
-        "organization": "winkle",
-        "stored_info_type": "nautilus",
+        "organization": "whelk",
+        "stored_info_type": "octopus",
     }
     path = DlpServiceClient.stored_info_type_path(**expected)
 
@@ -43711,9 +47671,9 @@ def test_parse_stored_info_type_path():
 
 
 def test_table_data_profile_path():
-    organization = "scallop"
-    location = "abalone"
-    table_data_profile = "squid"
+    organization = "oyster"
+    location = "nudibranch"
+    table_data_profile = "cuttlefish"
     expected = "organizations/{organization}/locations/{location}/tableDataProfiles/{table_data_profile}".format(
         organization=organization,
         location=location,
@@ -43727,9 +47687,9 @@ def test_table_data_profile_path():
 
 def test_parse_table_data_profile_path():
     expected = {
-        "organization": "clam",
-        "location": "whelk",
-        "table_data_profile": "octopus",
+        "organization": "mussel",
+        "location": "winkle",
+        "table_data_profile": "nautilus",
     }
     path = DlpServiceClient.table_data_profile_path(**expected)
 
@@ -43739,7 +47699,7 @@ def test_parse_table_data_profile_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -43749,7 +47709,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = DlpServiceClient.common_billing_account_path(**expected)
 
@@ -43759,7 +47719,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -43769,7 +47729,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = DlpServiceClient.common_folder_path(**expected)
 
@@ -43779,7 +47739,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -43789,7 +47749,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = DlpServiceClient.common_organization_path(**expected)
 
@@ -43799,7 +47759,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -43809,7 +47769,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = DlpServiceClient.common_project_path(**expected)
 
@@ -43819,8 +47779,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -43831,8 +47791,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = DlpServiceClient.common_location_path(**expected)
 
