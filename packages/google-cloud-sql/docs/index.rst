@@ -22,6 +22,14 @@ API Reference
     sql_v1beta4/services_
     sql_v1beta4/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    sqladmin_v1beta4/services_
+    sqladmin_v1beta4/types_
+
 
 Changelog
 ---------

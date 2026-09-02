@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 async def sample_generate_ephemeral_cert():
     # Create a client
-    client = sql_v1beta4.SqlConnectServiceAsyncClient()
+    client = sqladmin_v1beta4.SqlConnectServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.GenerateEphemeralCertRequest()
+    request = sqladmin_v1beta4.GenerateEphemeralCertRequest()
 
     # Make the request
     response = await client.generate_ephemeral_cert(request=request)

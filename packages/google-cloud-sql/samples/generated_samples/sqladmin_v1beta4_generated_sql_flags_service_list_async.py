@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 async def sample_list():
     # Create a client
-    client = sql_v1beta4.SqlFlagsServiceAsyncClient()
+    client = sqladmin_v1beta4.SqlFlagsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlFlagsListRequest()
+    request = sqladmin_v1beta4.SqlFlagsListRequest()
 
     # Make the request
     response = await client.list(request=request)

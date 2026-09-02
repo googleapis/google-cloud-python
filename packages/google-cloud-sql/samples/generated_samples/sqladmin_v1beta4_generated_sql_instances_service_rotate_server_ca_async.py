@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 async def sample_rotate_server_ca():
     # Create a client
-    client = sql_v1beta4.SqlInstancesServiceAsyncClient()
+    client = sqladmin_v1beta4.SqlInstancesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlInstancesRotateServerCaRequest()
+    request = sqladmin_v1beta4.SqlInstancesRotateServerCaRequest()
 
     # Make the request
     response = await client.rotate_server_ca(request=request)

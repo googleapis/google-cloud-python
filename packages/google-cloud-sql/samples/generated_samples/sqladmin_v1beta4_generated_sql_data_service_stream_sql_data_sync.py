@@ -31,24 +31,24 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 def sample_stream_sql_data():
     # Create a client
-    client = sql_v1beta4.SqlDataServiceClient()
+    client = sqladmin_v1beta4.SqlDataServiceClient()
 
     # Initialize request argument(s)
-    start_session = sql_v1beta4.StartSession()
+    start_session = sqladmin_v1beta4.StartSession()
     start_session.location_id = "location_id_value"
     start_session.instance_id = "instance_id_value"
 
-    request = sql_v1beta4.StreamSqlDataRequest(
+    request = sqladmin_v1beta4.StreamSqlDataRequest(
         start_session=start_session,
     )
 
     # This method expects an iterator which contains
-    # 'sql_v1beta4.StreamSqlDataRequest' objects
+    # 'sqladmin_v1beta4.StreamSqlDataRequest' objects
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
