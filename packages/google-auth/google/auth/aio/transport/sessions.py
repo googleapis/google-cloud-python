@@ -374,10 +374,9 @@ class AsyncAuthorizedSession:
                                             call_key_bytes,
                                             cached_fingerprint,
                                             current_cert_fingerprint,
-                                        ) = await mtls._run_in_executor(
-                                            google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
-                                            self._cached_cert,
-                                            self._client_cert_callback,
+                                        ) = await mtls.check_parameters_for_unauthorized_response(
+                                             self._client_cert_callback,
+                                             self._cached_cert,
                                         )
                                     except (
                                         exceptions.ClientCertError,
@@ -393,8 +392,8 @@ class AsyncAuthorizedSession:
                                         return response
                                     else:
                                         if (
-                                            cached_fingerprint
-                                            != current_cert_fingerprint
+                                            current_cert_fingerprint is not None
+                                            and cached_fingerprint != current_cert_fingerprint
                                         ):
                                             saved_callback = self._client_cert_callback
                                             try:
