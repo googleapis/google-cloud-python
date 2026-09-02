@@ -123,3 +123,40 @@ python3 spanner_cpu_profile_suite.py
 # 2. Export interactive HTML flame graphs (zero pip dependencies needed)
 python3 export_flamegraph_html.py
 ```
+
+## 3. Remote Benchmarks with UPB & Arenas Optimization (c2-standard-30 VM)
+
+The following benchmark demonstrates the extreme parsing improvements achieved by enabling the `upb` (Micro Protobuf) Python extension backend. When run on a high-core-count compute-optimized VM (`c2-standard-30`) in the identical region (`us-central1`), we can see up to a **~60% reduction in pure CPU parsing time** per query, largely due to `upb` allocating incoming rows contiguously via Memory Arenas.
+
+| Scenario | Original Avg Pure Client CPU | UPB Avg Pure Client CPU | Improvement 🚀 | Throughput (10s) |
+| :--- | :--- | :--- | :--- | :--- |
+| **1. Real Point Select ($C=1$, Sync)** | ~6.87 ms | **~2.59 ms** | **~62% Less CPU** | ~148 QPS |
+| **2. Real Point Select ($C=32$, High-Level Async)** | ~6.65 ms | **~2.43 ms** | **~63% Less CPU** | ~323 QPS |
+| **3. Real LIMIT 1000 Read (11 cols, Sync)** | ~64.27 ms | **~47.07 ms** | **~27% Less CPU** | ~14 QPS |
+| **4. Real Point Select ($C=32$ Threads)** | ~7.31 ms | **~2.57 ms** | **~65% Less CPU** | ~310 QPS |
+
+### How to Replicate
+
+To force the Protobuf library to use the `upb` backend (with arena allocations enabled under the hood) rather than the default or `python` backends, set the `PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION` environment variable before executing your process.
+
+```bash
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=upb
+python3 profiler_results/spanner_cpu_profile_suite.py
+python3 profiler_results/export_flamegraph_html.py
+```
+
+*Note: For the best representation of GIL contention under high-concurrency (Scenarios 2 and 4), it is highly recommended to run this suite on a virtual machine containing at least 16-30 vCPUs (e.g., `c2-standard-30`) to avoid OS scheduler starvation.*
+
+### What Exploded with UPB? (The Bottleneck Shift)
+
+When the `upb` backend is enabled, the underlying gRPC and Protobuf payload parsing becomes exceptionally fast (thanks to C-extension arena allocations). This causes a fascinating shift in the CPU profile: the bottleneck moves *up the stack* into the Python Spanner SDK's cell-by-cell type-casting logic.
+
+In Scenario 3 (`LIMIT 1000`), the original `StreamedResultSet._merge_values` bottleneck dropped from ~40 ms down to ~14 ms per query. The new "exploded" section is now the pure Python iteration calling `_parse_nullable` over a million times to map Spanner cells to Python primitive types (`str`, `int`, etc.):
+
+```text
+   ncalls  tottime  cumtime  filename:lineno(function)
+  1529000    2.535    4.125  _helpers.py:640(_parse_nullable)
+      139    1.968    6.860  streamed.py:112(StreamedResultSet._merge_values)
+  1529000    0.828    0.828  _helpers.py:556(_parse_string)
+```
+*(For 139 requests * 1000 rows * 11 columns, exactly 1,529,000 cells were mapped. This pure Python function invocation overhead is now the absolute floor for performance unless these loops are rewritten in Cython/C).*
