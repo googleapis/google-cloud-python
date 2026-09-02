@@ -764,16 +764,13 @@ class TestAuthorizedHttpMTLSReauth:
         http_obj = google.auth.transport.urllib3.AuthorizedHttp(credentials)
         http_obj._is_mtls = True
         http_obj._cached_cert = b"cert"
-        
         mock_response_unauth = mock.Mock()
         mock_response_unauth.status = http_client.UNAUTHORIZED
         mock_response_ok = mock.Mock()
-        mock_response_ok.status = http_client.OK
-        
+        mock_response_ok.status = http_client.OK     
         http_obj.http.urlopen = mock.Mock(
             side_effect=[mock_response_unauth, mock_response_ok]
         )
-        
         mock_check_params.return_value = (
             b"same_cert_bytes",
             b"same_key_bytes",
@@ -781,8 +778,5 @@ class TestAuthorizedHttpMTLSReauth:
             "same_fingerprint",
         )
         http_obj.configure_mtls_channel = mock.Mock()
-
         http_obj.request("GET", "https://example.mtls.googleapis.com/")
-
         http_obj.configure_mtls_channel.assert_not_called()
-
