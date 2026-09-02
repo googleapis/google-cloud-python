@@ -755,3 +755,34 @@ class TestAuthorizedHttpMTLSReauth:
         http_obj.request("GET", "https://example.mtls.googleapis.com/")
         http_obj.configure_mtls_channel.assert_called()
         assert lock_held_during_call["held"] is True
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+    )
+    def test_reauth_skipped_when_cert_fingerprint_matches(self, mock_check_params):
+        credentials = mock.Mock()
+        http_obj = google.auth.transport.urllib3.AuthorizedHttp(credentials)
+        http_obj._is_mtls = True
+        http_obj._cached_cert = b"cert"
+        
+        mock_response_unauth = mock.Mock()
+        mock_response_unauth.status = http_client.UNAUTHORIZED
+        mock_response_ok = mock.Mock()
+        mock_response_ok.status = http_client.OK
+        
+        http_obj.http.urlopen = mock.Mock(
+            side_effect=[mock_response_unauth, mock_response_ok]
+        )
+        
+        mock_check_params.return_value = (
+            b"same_cert_bytes",
+            b"same_key_bytes",
+            "same_fingerprint",
+            "same_fingerprint",
+        )
+        http_obj.configure_mtls_channel = mock.Mock()
+
+        http_obj.request("GET", "https://example.mtls.googleapis.com/")
+
+        http_obj.configure_mtls_channel.assert_not_called()
+
