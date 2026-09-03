@@ -452,6 +452,7 @@ class Database(object):
                     client._ca_certificate,
                     client._client_certificate,
                     client._client_key,
+                    credentials=client.credentials,
                 )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
@@ -1060,13 +1061,15 @@ class Database(object):
             if getattr(self._local, "transaction_running", False):
                 raise RuntimeError("Spanner does not support nested transactions.")
             self._local.transaction_running = True
-            transaction_type = TransactionType.READ_WRITE
-            session = self._sessions_manager.get_session(transaction_type)
             try:
-                return session.run_in_transaction(func, *args, **kw)
+                transaction_type = TransactionType.READ_WRITE
+                session = self._sessions_manager.get_session(transaction_type)
+                try:
+                    return session.run_in_transaction(func, *args, **kw)
+                finally:
+                    self._sessions_manager.put_session(session)
             finally:
                 self._local.transaction_running = False
-                self._sessions_manager.put_session(session)
 
     def restore(self, source):
         """Restore from a backup to this database.

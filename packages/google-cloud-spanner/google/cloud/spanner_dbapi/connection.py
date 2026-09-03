@@ -820,6 +820,8 @@ def connect(
     instance_type=None,
     data_boost_enabled=False,
     auto_partition_mode=False,
+    username=None,
+    password=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -909,6 +911,10 @@ def connect(
     :param client_key: (Optional) The path to the client key file used for mTLS connection.
         This is intended only for Spanner Omni endpoints.
         This is mandatory if Spanner Omni requires an mTLS connection.
+    :type username: str
+    :param username: (Optional) Username for Spanner Omni authentication.
+    :type password: str
+    :param password: (Optional) Password for Spanner Omni authentication.
     """
     if client is None:
         client_info = ClientInfo(
@@ -956,7 +962,29 @@ def connect(
                     )
 
                 project = "default"
-                credentials = AnonymousCredentials()
+                has_username = username is not None
+                has_password = password is not None
+                if has_username != has_password:
+                    raise ValueError(
+                        "Both username and password must be specified for Omni authentication"
+                    )
+                from google.cloud.spanner_v1.omni.credentials import (
+                    SpannerOmniCredentials,
+                )
+
+                if has_username and has_password:
+                    credentials = SpannerOmniCredentials(
+                        username=username,
+                        password=password,
+                        target=host_endpoint,
+                        use_plain_text=use_plain_text,
+                        ca_certificate=ca_certificate,
+                        client_certificate=client_certificate,
+                        client_key=client_key,
+                    )
+                else:
+                    credentials = AnonymousCredentials()
+
                 client_options = kwargs.get("client_options")
                 if client_options is None:
                     client_options = ClientOptions(api_endpoint=host_endpoint)
@@ -969,6 +997,12 @@ def connect(
                     client_options = copy.copy(client_options)
                     client_options.api_endpoint = host_endpoint
 
+            client_kwargs = {}
+            if username is not None:
+                client_kwargs["username"] = username
+            if password is not None:
+                client_kwargs["password"] = password
+
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
@@ -980,6 +1014,7 @@ def connect(
                 client_certificate=client_certificate,
                 client_key=client_key,
                 instance_type=instance_type,
+                **client_kwargs,
             )
     else:
         if project is not None and client.project != project:

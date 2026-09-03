@@ -513,6 +513,7 @@ class Database(object):
                         client._ca_certificate,
                         client._client_certificate,
                         client._client_key,
+                        credentials=client.credentials,
                     )
                 else:
                     transport = _create_spanner_omni_transport_sync(
@@ -522,6 +523,7 @@ class Database(object):
                         client._ca_certificate,
                         client._client_certificate,
                         client._client_key,
+                        credentials=client.credentials,
                     )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
@@ -1190,18 +1192,18 @@ class Database(object):
                 raise RuntimeError("Spanner does not support nested transactions.")
 
             self._local.transaction_running = True
-
-            # Check out a session and run the function in a transaction; once
-            # done, flip the sanity check bit back and return the session.
-            transaction_type = TransactionType.READ_WRITE
-            session = await self._sessions_manager.get_session(transaction_type)
-
             try:
-                return await session.run_in_transaction(func, *args, **kw)
+                # Check out a session and run the function in a transaction; once
+                # done, flip the sanity check bit back and return the session.
+                transaction_type = TransactionType.READ_WRITE
+                session = await self._sessions_manager.get_session(transaction_type)
 
+                try:
+                    return await session.run_in_transaction(func, *args, **kw)
+                finally:
+                    await self._sessions_manager.put_session(session)
             finally:
                 self._local.transaction_running = False
-                await self._sessions_manager.put_session(session)
 
     @CrossSync.convert
     async def restore(self, source):

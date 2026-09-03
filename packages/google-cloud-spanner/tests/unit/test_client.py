@@ -988,3 +988,64 @@ class TestClient(unittest.TestCase):
         self.assertIn(
             "instance_type must be one of 'cloud' or 'omni'", str(ctx.exception)
         )
+
+    def test_constructor_w_omni_username_password(self):
+        from google.cloud.spanner_v1.client import InstanceType
+        from google.cloud.spanner_v1.omni.credentials import (
+            SpannerOmniCredentials,
+        )
+
+        client = self._make_one(
+            project=self.PROJECT,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+            username="test_user",
+            password="test_password",
+        )
+        self.assertEqual(client.project, "default")
+        self.assertEqual(client.instance_type, InstanceType.OMNI)
+        self.assertEqual(client._host, "omni-host:15000")
+        self.assertIsInstance(client._credentials, SpannerOmniCredentials)
+        self.assertEqual(client._credentials.username, "test_user")
+        self.assertEqual(client._credentials.target, "omni-host:15000")
+
+    def test_constructor_w_omni_partial_credentials_raises_value_error(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                client_options={"api_endpoint": "omni-host:15000"},
+                instance_type=InstanceType.OMNI,
+                username="test_user",
+            )
+        self.assertIn(
+            "Both username and password must be specified for Omni authentication",
+            str(ctx.exception),
+        )
+
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                client_options={"api_endpoint": "omni-host:15000"},
+                instance_type=InstanceType.OMNI,
+                password="test_password",
+            )
+        self.assertIn(
+            "Both username and password must be specified for Omni authentication",
+            str(ctx.exception),
+        )
+
+    def test_constructor_w_username_password_on_cloud_raises_value_error(self):
+        creds = build_scoped_credentials()
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                username="test_user",
+                password="test_password",
+            )
+        self.assertIn(
+            "username and password can only be used when instance_type='omni'.",
+            str(ctx.exception),
+        )

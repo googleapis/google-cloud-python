@@ -124,6 +124,8 @@ def spanner_client():
             client_key=_helpers.CLIENT_KEY,
             client_options={"api_endpoint": _helpers.SPANNER_OMNI},
             instance_type="omni",
+            username=_helpers.SPANNER_OMNI_USER,
+            password=_helpers.SPANNER_OMNI_PASSWORD,
         )
     else:
         client_options = {"api_endpoint": _helpers.API_ENDPOINT}
