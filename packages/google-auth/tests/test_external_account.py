@@ -819,7 +819,8 @@ class TestCredentials(object):
 
         credentials.refresh(request)
 
-        # Expected cert path is None because ECP uses transport adapter for mTLS
+        # Expected cert path is None because ECP private keys reside in hardware,
+        # so no file-based client cert tuple is injected into the request.
         self.assert_token_request_kwargs(
             request.call_args[1], headers, request_data, None
         )
