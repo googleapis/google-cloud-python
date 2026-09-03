@@ -162,7 +162,8 @@ def test_get_otel_interceptor_enabled(monkeypatch):
     assert callable(interceptor)
 
     mock_otel_grpc.client_interceptor.assert_called_once_with(
-        tracer_provider=mock_tracer_provider
+        tracer_provider=mock_tracer_provider,
+        request_hook=_observability._client_request_hook,
     )
 
     result = interceptor(mock_raw_channel)
@@ -251,5 +252,47 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     result = _observability.get_otel_async_interceptor(client_options=options)
     assert result is mock_async_interceptors
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
-        tracer_provider=mock_tracer_provider
+        tracer_provider=mock_tracer_provider,
+        request_hook=_observability._client_request_hook,
     )
+
+
+def test_extract_t4_attributes():
+    """Proves that _extract_t4_attributes correctly extracts GCP resource name,
+    parent, and project ID from gRPC request objects.
+    """
+    assert _observability._extract_t4_attributes(None) == {}
+
+    # With name
+    req_name = mock.Mock(spec=["name"], name="req_name")
+    req_name.name = "projects/my-project/secrets/my-secret"
+    attrs = _observability._extract_t4_attributes(req_name)
+    assert attrs["gcp.resource.name"] == "projects/my-project/secrets/my-secret"
+    assert attrs["gcp.project_id"] == "my-project"
+
+    # With parent
+    req_parent = mock.Mock(spec=["parent"], name="req_parent")
+    req_parent.parent = "projects/parent-project"
+    attrs = _observability._extract_t4_attributes(req_parent)
+    assert attrs["gcp.resource.parent"] == "projects/parent-project"
+    assert attrs["gcp.project_id"] == "parent-project"
+
+
+def test_client_request_hook():
+    """Proves that _client_request_hook attaches extracted T4 attributes to recording spans."""
+    # Non-recording span should not set attributes
+    mock_span_non_rec = mock.Mock()
+    mock_span_non_rec.is_recording.return_value = False
+    _observability._client_request_hook(mock_span_non_rec, mock.Mock())
+    mock_span_non_rec.set_attribute.assert_not_called()
+
+    # Recording span should set attributes
+    mock_span_rec = mock.Mock()
+    mock_span_rec.is_recording.return_value = True
+    req = mock.Mock(name="req")
+    req.name = "projects/my-proj/secrets/s1"
+    _observability._client_request_hook(mock_span_rec, req)
+    mock_span_rec.set_attribute.assert_any_call(
+        "gcp.resource.name", "projects/my-proj/secrets/s1"
+    )
+    mock_span_rec.set_attribute.assert_any_call("gcp.project_id", "my-proj")
