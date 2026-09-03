@@ -319,6 +319,7 @@ class AsyncAuthorizedSession:
         )
         request_headers = dict(headers) if headers is not None else {}
         start_time = time.monotonic()
+        refresh_counter_at_error = self._refresh_counter
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -365,7 +366,6 @@ class AsyncAuthorizedSession:
 
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
-                        refresh_counter_at_error = self._refresh_counter
                         if getattr(self, "is_mtls", False):
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
