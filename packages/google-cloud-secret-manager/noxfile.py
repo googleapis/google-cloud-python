@@ -71,9 +71,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-asyncio",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = [
-    "../google-api-core[tracing,testing]",
-]
+UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}

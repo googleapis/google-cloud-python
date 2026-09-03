@@ -507,7 +507,7 @@ def test_secret_manager_service_client_otel_channel_injection_disabled():
     """Proves that when OpenTelemetry tracing is disabled:
 
     1. SecretManagerServiceClient checks for an OTel interceptor and receives None.
-    2. No 'interceptors' argument is passed to the transport constructor.
+    2. No OTel interceptor is added to the transport constructor kwargs.
     """
     with (
         mock.patch(
@@ -522,7 +522,26 @@ def test_secret_manager_service_client_otel_channel_injection_disabled():
 
         mock_get_interceptor.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert "interceptors" not in called_kwargs
+        interceptors = called_kwargs.get("interceptors", [])
+        assert not interceptors
+
+
+def test_secret_manager_service_client_observability_import_error():
+    """Proves that when _observability cannot be imported (older google-api-core),
+    SecretManagerServiceClient instantiates gracefully without error.
+    """
+    with (
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability",
+            None,
+        ),
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        SecretManagerServiceClient(transport="grpc")
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert not called_kwargs.get("interceptors", [])
 
 
 def test_secret_manager_service_grpc_transport_interceptors():

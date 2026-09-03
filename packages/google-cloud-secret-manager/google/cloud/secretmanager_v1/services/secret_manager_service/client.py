@@ -35,14 +35,20 @@ from typing import (
 )
 
 import google.protobuf
-from google.api_core import _observability, gapic_v1
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    # mypy: _observability was added in google-api-core 2.35.0; guard for older versions
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:
+    _observability = None  # type: ignore[assignment]
 
 from google.cloud.secretmanager_v1 import gapic_version as package_version
 from google.cloud.secretmanager_v1._compat import (
@@ -622,12 +628,18 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
             # When OpenTelemetry tracing is enabled, obtain the channel interceptor
             # and pass it to the transport.
-            if transport_init is SecretManagerServiceGrpcTransport:
+            if (
+                transport_init is SecretManagerServiceGrpcTransport
+                and _observability is not None
+            ):
                 otel_interceptor = _observability.get_otel_interceptor(
                     self._client_options
                 )
                 if otel_interceptor is not None:
-                    transport_kwargs["interceptors"] = [otel_interceptor]
+                    interceptors = transport_kwargs.get("interceptors", [])
+                    transport_kwargs["interceptors"] = [otel_interceptor] + list(
+                        interceptors
+                    )
 
             self._transport = transport_init(**transport_kwargs)
 
