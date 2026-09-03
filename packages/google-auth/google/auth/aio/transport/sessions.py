@@ -17,6 +17,7 @@ import collections.abc
 from contextlib import asynccontextmanager
 import functools
 import http.client as http_client
+import inspect
 import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
@@ -220,17 +221,14 @@ class AsyncAuthorizedSession:
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
                             while len(self._old_auth_requests) >= 2:
-                                oldest_auth_request = self._old_auth_requests.pop(0)
-                                try:
-                                    if hasattr(oldest_auth_request, "close"):
-                                        if asyncio.iscoroutinefunction(
-                                            oldest_auth_request.close
-                                        ):
-                                            await oldest_auth_request.close()
-                                        else:
-                                            oldest_auth_request.close()
-                                except Exception:
-                                    pass
+                                     oldest_auth_request = self._old_auth_requests.pop(0)
+                                     try:
+                                         if hasattr(oldest_auth_request, "close"):
+                                             res = oldest_auth_request.close()
+                                             if inspect.isawaitable(res):
+                                                 await res
+                                     except Exception:
+                                         pass
 
                             self._old_auth_requests.append(old_auth_request)
 
@@ -494,10 +492,9 @@ class AsyncAuthorizedSession:
                 except (Exception, asyncio.CancelledError):
                     if hasattr(response, "close"):
                         try:
-                            if asyncio.iscoroutinefunction(response.close):
-                                await response.close()
-                            else:
-                                response.close()
+                            res = response.close()
+                            if inspect.isawaitable(res):
+                                await res
                         except Exception:
                             pass
                     raise
@@ -505,10 +502,12 @@ class AsyncAuthorizedSession:
                 if early_return_response is not None:
                     return early_return_response
                 if hasattr(response, "close"):
-                    if asyncio.iscoroutinefunction(response.close):
-                        await response.close()
-                    else:
-                        response.close()
+                    try:
+                        res = response.close()
+                        if inspect.isawaitable(res):
+                            await res
+                    except Exception:
+                        pass
                 if max_allowed_time is not None:
                     remaining_time = max(
                         0.0, max_allowed_time - (time.monotonic() - start_time)
@@ -811,11 +810,17 @@ class AsyncAuthorizedSession:
             except asyncio.CancelledError:
                 pass
         try:
-            await self._auth_request.close()
+            if hasattr(self._auth_request, "close"):
+                res = self._auth_request.close()
+                if inspect.isawaitable(res):
+                    await res
         finally:
             for old_request in self._old_auth_requests:
                 try:
-                    await old_request.close()
+                    if hasattr(old_request, "close"):
+                        res = old_request.close()
+                        if inspect.isawaitable(res):
+                            await res
                 except Exception:
                     pass
             self._old_auth_requests.clear()
