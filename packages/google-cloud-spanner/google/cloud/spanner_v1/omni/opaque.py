@@ -437,7 +437,7 @@ class UserAuthenticator:
             raise ValueError("Authenticator already used or password not available")
 
         try:
-            blinded_message, blind_scalar = blind(bytes(self._password))
+            blinded_message, blind_scalar = blind(self._password)
             self._blind = bytearray(blind_scalar)
 
             self._client_nonce = nonce()
@@ -497,7 +497,7 @@ class UserAuthenticator:
             )
 
         try:
-            oprf = finalize(bytes(self._blind), evaluated_message)
+            oprf = finalize(self._blind, evaluated_message)
             stretched_oprf = stretch(oprf, self.hash_parameters)
             randomized_password = extract(concat(oprf, stretched_oprf))
 
@@ -529,12 +529,8 @@ class UserAuthenticator:
                 server_public_key,
             )
 
-            dh1 = diffie_hellman(
-                bytes(self._client_private_keyshare), server_public_keyshare
-            )
-            dh2 = diffie_hellman(
-                bytes(self._client_private_keyshare), server_public_key
-            )
+            dh1 = diffie_hellman(self._client_private_keyshare, server_public_keyshare)
+            dh2 = diffie_hellman(self._client_private_keyshare, server_public_key)
             dh3 = diffie_hellman(client_private_key, server_public_keyshare)
 
             input_key_material = concat(dh1, dh2, dh3)

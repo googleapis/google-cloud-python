@@ -277,6 +277,23 @@ class TestLoginClient(unittest.TestCase):
 
             mock_call.cancel.assert_called_once()
 
+    def test_login_premature_stream_closure(self):
+        mock_call = mock.MagicMock()
+        mock_call.__next__.side_effect = StopIteration
+
+        with mock.patch(
+            "google.cloud.spanner_v1.omni.proto.login_pb2_grpc.LoginServiceStub"
+        ) as mock_stub_cls:
+            mock_stub = mock_stub_cls.return_value
+            mock_stub.Login.return_value = mock_call
+
+            client = LoginClient(self.mock_channel)
+            with self.assertRaises(ValueError) as cm:
+                client.login("user", "pass")
+            self.assertIn(
+                "Server closed stream prematurely during handshake", str(cm.exception)
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -93,13 +93,19 @@ class LoginClient:
         try:
             call = self._stub.Login(req_iterator, timeout=timeout)
 
+            def _safe_next(stage: str) -> login_pb2.LoginResponse:
+                try:
+                    return next(call)
+                except StopIteration:
+                    raise ValueError(f"Server closed stream prematurely during {stage}")
+
             # Step 1: Handshake Request
             handshake_req = login_pb2.LoginRequest(
                 username=username,
                 handshake_request=authentication_pb2.PasswordAuthenticationHandshakeRequest(),
             )
             req_iterator.send(handshake_req)
-            handshake_resp = next(call)
+            handshake_resp = _safe_next("handshake")
 
             if not handshake_resp.HasField("handshake_response"):
                 raise ValueError("Failed to receive handshake response from server")
@@ -119,7 +125,7 @@ class LoginClient:
             # Step 2: Initial OPAQUE Request
             initial_req = authenticator.initial_request()
             req_iterator.send(initial_req)
-            initial_resp = next(call)
+            initial_resp = _safe_next("initial OPAQUE exchange")
 
             # Step 3: Final OPAQUE Request
             final_req = authenticator.final_request(initial_resp)
@@ -127,7 +133,7 @@ class LoginClient:
             req_iterator.close()
 
             # Final Response with AccessToken
-            final_resp = next(call)
+            final_resp = _safe_next("final OPAQUE exchange")
             if not final_resp.HasField("access_token"):
                 raise ValueError(
                     "Server failed to return an access token in final response"
