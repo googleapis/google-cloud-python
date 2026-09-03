@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.20.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.20.0...sqlalchemy-spanner-v1.20.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **sqlalchemy-spanner:** robust session-isolated test databases and clean lifecycle management ([#18179](https://github.com/googleapis/google-cloud-python/issues/18179)) ([3e0bda4](https://github.com/googleapis/google-cloud-python/commit/3e0bda467955f634013e1b3849b298d436fce952))
+
+
+### Documentation
+
+* **sqlalchemy-spanner:** centralize CONTRIBUTING.rst pointers ([#18142](https://github.com/googleapis/google-cloud-python/issues/18142)) ([f55ae02](https://github.com/googleapis/google-cloud-python/commit/f55ae02b9f04aaa247702215962e71ea6b04e998))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.19.0...sqlalchemy-spanner-v1.20.0) (2026-08-21)
 
 
