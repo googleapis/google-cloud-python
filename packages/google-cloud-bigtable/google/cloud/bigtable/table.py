@@ -755,24 +755,28 @@ class Table(object):
         retryable_errors = RETRYABLE_MUTATION_ERRORS
         shim_predicate = None
 
+        if retry is None:
+            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
+            retryable_errors = []
         # The data client cannot take in zero or null values for deadline, so we set it to
         # the default if that is the case.
+        elif getattr(retry, "deadline", None) is None:
+            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
         # To adhere to the retry strategy of do-nothing being achievable with a deadline
         # of 0.0, we modify the retryable errors to be empty if such a deadline is passed.
-        if retry is None or getattr(retry, "deadline", None) == 0:
+        elif getattr(retry, "deadline", None) == 0:
             operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
             retryable_errors = []
         else:
-            operation_timeout = (
-                retry.deadline
-                if retry.deadline is not None
-                else TABLE_DEFAULT.MUTATE_ROWS
-            )
-            if (
-                getattr(retry, "_predicate", None) is not None
-                and retry._predicate is not DEFAULT_RETRY._predicate
-            ):
-                shim_predicate = retry._predicate
+            operation_timeout = retry.deadline
+
+        if (
+            retry is not None
+            and retryable_errors
+            and getattr(retry, "_predicate", None) is not None
+            and retry._predicate is not DEFAULT_RETRY._predicate
+        ):
+            shim_predicate = retry._predicate
 
         shim_on_error = getattr(retry, "_on_error", None) if retry is not None else None
 
