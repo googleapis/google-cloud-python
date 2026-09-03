@@ -387,6 +387,9 @@ class TestAuthorizedHttp(object):
             assert not authed_http._is_mtls
 
     @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", return_value=None
+    )
+    @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )
     @mock.patch.dict(
@@ -399,7 +402,7 @@ class TestAuthorizedHttp(object):
         },
     )
     def test_configure_mtls_channel_without_client_cert_env(
-        self, get_client_cert_and_key
+        self, get_client_cert_and_key, mock_get_cert_config_path
     ):
         callback = mock.Mock()
 
@@ -655,6 +658,67 @@ class TestAuthorizedHttp(object):
 
             # Assert mTLS check logic was SKIPPED (Inner Check was False)
             assert not mock_helper.check_parameters_for_unauthorized_response.called
+
+    def test_cert_rotation_skipped_on_non_mtls_url(self):
+        """
+        Tests that mTLS cert rotation is skipped on non-mTLS URLs even if
+        mTLS is enabled and an UNAUTHORIZED (401) response is received.
+        """
+        credentials = mock.Mock(wraps=CredentialsStub())
+        http = HttpStub(
+            [
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.OK),
+            ]
+        )
+        non_mtls_url = "https://storage.googleapis.com/bucket/mtls.googleapis.com"
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        authed_http._is_mtls = True
+        authed_http._cached_cert = b"cached_cert"
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+        ) as mock_check_params:
+            authed_http.urlopen("GET", non_mtls_url)
+
+            # Assert refresh happened
+            assert credentials.refresh.called
+
+            # Assert mTLS check logic was SKIPPED
+            assert not mock_check_params.called
+
+    def test_cert_rotation_triggered_on_psc_url(self):
+        """
+        Tests that mTLS cert rotation IS triggered on a Private Service Connect
+        (PSC) mTLS endpoint when an UNAUTHORIZED (401) response is received.
+        """
+        credentials = mock.Mock(wraps=CredentialsStub())
+        http = HttpStub(
+            [
+                ResponseStub(status=http_client.UNAUTHORIZED),
+                ResponseStub(status=http_client.OK),
+            ]
+        )
+        psc_url = "https://storage.p.googleapis.com/b/my-bucket"
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, http=http
+        )
+        authed_http._is_mtls = True
+        authed_http._cached_cert = b"cached_cert"
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            return_value=(b"new_cert", b"new_key", "old_fp", "old_fp"),
+        ) as mock_check_params:
+            authed_http.urlopen("GET", psc_url)
+
+            # Assert mTLS check logic was called on PSC endpoint
+            mock_check_params.assert_called_once()
+            assert credentials.refresh.called
 
     @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
     def test_configure_mtls_channel_subsequent_failure(self, mock_make_mutual_tls_http):

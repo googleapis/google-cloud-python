@@ -2,14 +2,14 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
-    "packages/google-cloud-workloadidentity": {
-      "component": "google-cloud-workloadidentity",
+    "packages/google-cloud-apptopology": {
+      "component": "google-cloud-apptopology",
       "extra-files": [
-        "google/cloud/workloadidentity/gapic_version.py",
-        "google/cloud/workloadidentity_v1/gapic_version.py",
+        "google/cloud/apptopology/gapic_version.py",
+        "google/cloud/apptopology_v1/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.apptopology.v1.json",
           "type": "json"
         }
       ]
@@ -26,8 +26,56 @@
         }
       ]
     },
+    "packages/google-cloud-sql": {
+      "component": "google-cloud-sql",
+      "extra-files": [
+        "google/cloud/sqladmin/gapic_version.py",
+        "google/cloud/sqladmin_v1/gapic_version.py",
+        "google/cloud/sqladmin_v1beta4/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1beta4.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-workloadidentity": {
+      "component": "google-cloud-workloadidentity",
+      "extra-files": [
+        "google/cloud/workloadidentity/gapic_version.py",
+        "google/cloud/workloadidentity_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
+    },
+    "packages/google-maps-mapmanagement": {
+      "component": "google-maps-mapmanagement",
+      "extra-files": [
+        "google/maps/mapmanagement/gapic_version.py",
+        "google/maps/mapmanagement_v2/gapic_version.py",
+        "google/maps/mapmanagement_v2beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2beta.json",
+          "type": "json"
+        }
+      ]
     },
     "preview-packages/google-cloud-compute": {
       "draft-pull-request": true,

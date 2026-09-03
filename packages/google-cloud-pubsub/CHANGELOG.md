@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.2...google-cloud-pubsub-v2.40.0) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
+## [2.39.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.1...google-cloud-pubsub-v2.39.2) (2026-08-21)
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.39.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.0...google-cloud-pubsub-v2.39.1) (2026-08-06)
 
 

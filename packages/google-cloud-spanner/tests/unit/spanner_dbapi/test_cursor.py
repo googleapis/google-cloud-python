@@ -1008,6 +1008,50 @@ class TestCursor(unittest.TestCase):
             sql, None, None, request_options=RequestOptions(priority=1)
         )
 
+    def test_execute_query_with_auto_partition_mode(self):
+        from google.cloud import spanner
+
+        connection = self._make_connection(
+            self.INSTANCE,
+            mock.MagicMock(),
+            read_only=True,
+            data_boost_enabled=True,
+            auto_partition_mode=True,
+        )
+        batch_snapshot = connection.database.batch_snapshot.return_value = (
+            mock.MagicMock()
+        )
+        mock_result_set = mock.MagicMock()
+        batch_snapshot.run_partitioned_query.return_value = mock_result_set
+
+        cursor = self._make_one(connection)
+        cursor.execute("SELECT * FROM table WHERE col = %s", (10,))
+
+        self.assertEqual(cursor._result_set, mock_result_set)
+        self.assertEqual(cursor._itr, mock_result_set)
+        batch_snapshot.run_partitioned_query.assert_called_once_with(
+            "SELECT * FROM table WHERE col = @a0",
+            params={"a0": 10},
+            param_types={"a0": spanner.param_types.INT64},
+            data_boost_enabled=True,
+        )
+
+    def test_execute_query_with_auto_partition_mode_rw_transaction_error(self):
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        connection = self._make_connection(
+            self.INSTANCE,
+            mock.MagicMock(),
+            read_only=False,
+            auto_partition_mode=True,
+        )
+        connection._autocommit = False
+        connection._transaction_begin_marked = True
+
+        cursor = self._make_one(connection)
+        with self.assertRaises(ProgrammingError):
+            cursor.execute("SELECT * FROM table")
+
     def test_handle_dql_database_error(self):
         connection = self._make_connection(self.INSTANCE)
         cursor = self._make_one(connection)

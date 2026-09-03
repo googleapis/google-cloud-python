@@ -36,6 +36,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.securesourcemanager_v1._compat import transcode_request
 from google.cloud.securesourcemanager_v1.types import secure_source_manager
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -3513,23 +3514,20 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_batch_create_pull_request_comments(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments,
+                    "_BaseBatchCreatePullRequestComments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3669,19 +3667,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_http_options()
-
             request, metadata = self._interceptor.pre_close_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCloseIssue,
+                    "_BaseCloseIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3820,21 +3815,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_close_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseClosePullRequest,
+                    "_BaseClosePullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3973,21 +3965,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_http_options()
-
             request, metadata = self._interceptor.pre_create_branch_rule(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule,
+                    "_BaseCreateBranchRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4126,19 +4115,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_http_options()
-
             request, metadata = self._interceptor.pre_create_hook(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateHook,
+                    "_BaseCreateHook__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4277,19 +4263,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4427,19 +4410,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_http_options()
-
             request, metadata = self._interceptor.pre_create_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateIssue,
+                    "_BaseCreateIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4578,21 +4558,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_issue_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment,
+                    "_BaseCreateIssueComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4733,21 +4710,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_create_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest,
+                    "_BaseCreatePullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4889,21 +4863,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_pull_request_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment,
+                    "_BaseCreatePullRequestComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5042,21 +5013,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_http_options()
-
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCreateRepository,
+                    "_BaseCreateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5194,17 +5162,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_branch_rule(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule,
+                    "_BaseDeleteBranchRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5341,15 +5310,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_hook(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteHook,
+                    "_BaseDeleteHook__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5486,15 +5456,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5630,15 +5601,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteIssue,
+                    "_BaseDeleteIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5775,17 +5747,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_issue_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment,
+                    "_BaseDeleteIssueComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5926,17 +5899,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_pull_request_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment,
+                    "_BaseDeletePullRequestComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6073,17 +6047,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteRepository,
+                    "_BaseDeleteRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6221,15 +6196,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_blob(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseFetchBlob,
+                    "_BaseFetchBlob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6371,15 +6347,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_tree(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseFetchTree,
+                    "_BaseFetchTree__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6521,15 +6498,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_http_options()
-
             request, metadata = self._interceptor.pre_get_branch_rule(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetBranchRule,
+                    "_BaseGetBranchRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6670,15 +6648,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetHook._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_hook(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetHook._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetHook._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetHook,
+                    "_BaseGetHook__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6888,17 +6867,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iam_policy_repo(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo,
+                    "_BaseGetIamPolicyRepo__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7036,15 +7016,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7180,15 +7161,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetIssue,
+                    "_BaseGetIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7325,17 +7307,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_issue_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetIssueComment,
+                    "_BaseGetIssueComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7477,17 +7460,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_get_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetPullRequest,
+                    "_BaseGetPullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7627,17 +7611,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_pull_request_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment,
+                    "_BaseGetPullRequestComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7779,15 +7764,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_http_options()
-
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetRepository,
+                    "_BaseGetRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7927,17 +7913,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_http_options()
-
             request, metadata = self._interceptor.pre_list_branch_rules(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListBranchRules,
+                    "_BaseListBranchRules__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8079,15 +8066,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListHooks._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_hooks(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListHooks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListHooks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListHooks,
+                    "_BaseListHooks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8225,15 +8213,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_http_options()
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8370,17 +8359,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_issue_comments(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListIssueComments,
+                    "_BaseListIssueComments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8521,15 +8511,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_http_options()
-
             request, metadata = self._interceptor.pre_list_issues(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListIssues,
+                    "_BaseListIssues__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8670,17 +8661,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_pull_request_comments(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments,
+                    "_BaseListPullRequestComments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8827,17 +8819,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_http_options()
-
             request, metadata = self._interceptor.pre_list_pull_request_file_diffs(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs,
+                    "_BaseListPullRequestFileDiffs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8979,17 +8972,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_http_options()
-
             request, metadata = self._interceptor.pre_list_pull_requests(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListPullRequests,
+                    "_BaseListPullRequests__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9127,17 +9121,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_http_options()
-
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListRepositories,
+                    "_BaseListRepositories__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9279,21 +9274,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_merge_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseMergePullRequest,
+                    "_BaseMergePullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9433,19 +9425,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_open_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseOpenIssue,
+                    "_BaseOpenIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9584,21 +9573,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_open_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest,
+                    "_BaseOpenPullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9738,21 +9724,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_http_options()
-
             request, metadata = self._interceptor.pre_resolve_pull_request_comments(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments,
+                    "_BaseResolvePullRequestComments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9964,21 +9947,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_http_options()
-
             request, metadata = self._interceptor.pre_set_iam_policy_repo(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo,
+                    "_BaseSetIamPolicyRepo__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10115,21 +10095,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions_repo(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo,
+                    "_BaseTestIamPermissionsRepo__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10273,21 +10250,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_http_options()
-
             request, metadata = self._interceptor.pre_unresolve_pull_request_comments(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments,
+                    "_BaseUnresolvePullRequestComments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10428,21 +10402,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_http_options()
-
             request, metadata = self._interceptor.pre_update_branch_rule(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule,
+                    "_BaseUpdateBranchRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10581,19 +10552,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_http_options()
-
             request, metadata = self._interceptor.pre_update_hook(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdateHook,
+                    "_BaseUpdateHook__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10731,19 +10699,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_http_options()
-
             request, metadata = self._interceptor.pre_update_issue(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdateIssue,
+                    "_BaseUpdateIssue__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10882,21 +10847,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_http_options()
-
             request, metadata = self._interceptor.pre_update_issue_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment,
+                    "_BaseUpdateIssueComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11037,21 +10999,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_http_options()
-
             request, metadata = self._interceptor.pre_update_pull_request(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest,
+                    "_BaseUpdatePullRequest__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11193,21 +11152,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_http_options()
-
             request, metadata = self._interceptor.pre_update_pull_request_comment(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment,
+                    "_BaseUpdatePullRequestComment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11346,21 +11302,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_http_options()
-
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseUpdateRepository,
+                    "_BaseUpdateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12031,15 +11984,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12170,15 +12124,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12309,15 +12264,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12449,19 +12405,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12594,21 +12547,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12740,21 +12690,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12858,17 +12805,18 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12974,15 +12922,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13113,15 +13062,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             """
 
             http_options = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

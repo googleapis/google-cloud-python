@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.44.0...google-cloud-bigquery-v3.45.0) (2026-09-03)
+
+
+### Features
+
+* add user-agent delegation telemetry for pandas-gbq ([#18184](https://github.com/googleapis/google-cloud-python/issues/18184)) ([85ddfe5](https://github.com/googleapis/google-cloud-python/commit/85ddfe5f065ebc7138fae79cdf2bd1d968a37ff3))
+
+## [3.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.43.0...google-cloud-bigquery-v3.44.0) (2026-08-21)
+
+
+### Features
+
+* add PendingDeprecationWarning for to_dataframe and to_arrow conversion methods ([#18021](https://github.com/googleapis/google-cloud-python/issues/18021)) ([6bebf30](https://github.com/googleapis/google-cloud-python/commit/6bebf30fe1b9a5d7b468e390280ab3b55149e82a))
+* **bigquery:** add PendingDeprecationWarning for from_dataframe methods ([#18048](https://github.com/googleapis/google-cloud-python/issues/18048)) ([b84b754](https://github.com/googleapis/google-cloud-python/commit/b84b75440e752ef68e467dbc79a48b54622bbb4f))
+* **bigquery:** support queryResultsFormat and compressionCodec in query_and_wait ([#18027](https://github.com/googleapis/google-cloud-python/issues/18027)) ([d172408](https://github.com/googleapis/google-cloud-python/commit/d1724084886cdb649efcefba95f576c5a4c77278))
+* check python and dependency versions in bigquery and ndb ([#18075](https://github.com/googleapis/google-cloud-python/issues/18075)) ([62ff6f3](https://github.com/googleapis/google-cloud-python/commit/62ff6f37f04de1b8a88876bfc1ac379573e42b36))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [3.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.3...google-cloud-bigquery-v3.43.0) (2026-08-06)
 
 

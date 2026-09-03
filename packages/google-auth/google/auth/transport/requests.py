@@ -649,13 +649,7 @@ class AuthorizedSession(requests.Session):
         ):
             # Handle unauthorized permission error(401 status code)
             if response.status_code == http_client.UNAUTHORIZED:
-                MTLS_URL_PREFIXES = [
-                    "mtls.googleapis.com",
-                    "mtls.sandbox.googleapis.com",
-                ]
-                use_mtls = self.is_mtls and any(
-                    prefix in url for prefix in MTLS_URL_PREFIXES
-                )
+                use_mtls = self.is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
                     with self._reauth_lock:
                         (

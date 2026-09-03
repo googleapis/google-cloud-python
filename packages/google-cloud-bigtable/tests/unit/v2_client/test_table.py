@@ -1743,10 +1743,9 @@ def _do_mutate_retryable_rows_helper(
     expected_entries = []
     for row, prior_status in zip(rows, worker.responses_statuses):
         if prior_status is None or prior_status.code in RETRYABLES:
-            mutations = row._get_mutations().copy()  # row clears on success
             entry = data_messages_v2_pb2.MutateRowsRequest.Entry(
                 row_key=row.row_key,
-                mutations=mutations,
+                mutations=row._get_mutation_pbs().copy(),  # row clears on success
             )
             expected_entries.append(entry)
 
@@ -2141,7 +2140,7 @@ def test__create_row_request_with_filter():
     row_filter = RowSampleFilter(0.33)
     result = _create_row_request(table_name, filter_=row_filter)
     expected_result = _ReadRowsRequestPB(
-        table_name=table_name, filter=row_filter.to_pb()
+        table_name=table_name, filter=row_filter._to_pb()
     )
     assert result == expected_result
 
