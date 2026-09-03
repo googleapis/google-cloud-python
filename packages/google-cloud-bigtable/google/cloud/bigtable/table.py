@@ -91,11 +91,6 @@ class _BigtableRetryableError(Exception):
     """Retry-able error expected by the default retry strategy."""
 
 
-def _never_retry(exc: Exception) -> bool:
-    """Predicate that never retries any error."""
-    return False
-
-
 DEFAULT_RETRY = Retry(
     predicate=if_exception_type(_BigtableRetryableError),
     initial=1.0,
@@ -758,11 +753,15 @@ class Table(object):
             timeout = self.mutation_timeout
 
         retryable_errors = RETRYABLE_MUTATION_ERRORS
+        shim_predicate = None
 
+        # The data client cannot take in zero or null values for deadline, so we set it to
+        # the default if that is the case.
+        # To adhere to the retry strategy of do-nothing being achievable with a deadline
+        # of 0.0, we modify the retryable errors to be empty if such a deadline is passed.
         if retry is None or getattr(retry, "deadline", None) == 0:
             operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
             retryable_errors = []
-            shim_predicate = _never_retry
         else:
             operation_timeout = (
                 retry.deadline
@@ -774,8 +773,6 @@ class Table(object):
                 and retry._predicate is not DEFAULT_RETRY._predicate
             ):
                 shim_predicate = retry._predicate
-            else:
-                shim_predicate = None
 
         shim_on_error = getattr(retry, "_on_error", None) if retry is not None else None
 
