@@ -22,6 +22,7 @@ from unittest import mock
 import pytest
 
 from google.auth import exceptions
+from google.auth.exceptions import TimeoutError
 from google.auth.aio import credentials
 from google.auth.aio import transport
 from google.auth.aio.transport import sessions
@@ -423,10 +424,17 @@ class TestSessionsMtls:
     async def test_no_cert_rotation_when_cert_matches_and_mtls_enabled(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
 
-        mock_resp = mock.Mock()
-        mock_resp.status_code = http_client.UNAUTHORIZED
-        mock_auth_req = mock.AsyncMock(return_value=mock_resp)
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+
+        # 401 on initial request, 200 on retry after refresh
+        mock_auth_req = mock.AsyncMock(side_effect=[mock_resp_401, mock_resp_200])
 
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_auth_req
@@ -443,16 +451,19 @@ class TestSessionsMtls:
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
-            # Matching fingerprints mean no layout rotation is needed
+            # Matching fingerprints mean no mTLS rotation is needed
             mock_check.return_value = (new_cert, new_key, b"old_fp", b"old_fp")
 
             resp = await session.request(
                 "GET", "https://pubsub.mtls.googleapis.com/test"
             )
 
-            assert resp == mock_resp
-            assert mock_check.call_count >= 1
+            assert resp == mock_resp_200
+            mock_check.assert_called_once()
             mock_conf.assert_not_called()
+            mock_creds.refresh.assert_called_once()
+            assert mock_auth_req.call_count == 2
+            mock_resp_401.close.assert_awaited_once()
 
         await session.close()
 
@@ -793,3 +804,115 @@ class TestSessionsMtls:
         mock_old_req_3_fails.close.assert_called_once()
         # Ensure the list was cleared
         assert len(session._old_auth_requests) == 0
+
+    @pytest.mark.asyncio
+    async def test_request_401_closes_response_on_timeout_before_recovery(session):
+        """Verifies that response is closed and TimeoutError raised when max_allowed_time elapses before refresh."""
+        mock_resp_401 = mock.AsyncMock()
+        mock_resp_401.status_code = 401
+
+        session._auth_request = mock.AsyncMock(return_value=mock_resp_401)
+
+        # Set max_allowed_time to 0 so remaining_time == 0.0 immediately
+        with pytest.raises(
+            TimeoutError, match="Timeout exceeded before credential refresh"
+        ):
+            await session.request("GET", "https://example.com", max_allowed_time=0.0)
+
+        mock_resp_401.close.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_request_401_closes_response_on_timeout_during_recovery(session):
+        """Verifies that response is closed when auth_with_timeout times out during _recover_auth_state."""
+        mock_resp_401 = mock.AsyncMock()
+        mock_resp_401.status_code = 401
+        session._auth_request = mock.AsyncMock(return_value=mock_resp_401)
+
+        async def slow_refresh(*args, **kwargs):
+            await asyncio.sleep(10)
+
+        session._credentials.refresh = mock.AsyncMock(side_effect=slow_refresh)
+
+        # Set short max_allowed_time so timeout_guard triggers during credentials.refresh
+        with pytest.raises(TimeoutError):
+            await session.request("GET", "https://example.com", max_allowed_time=0.01)
+
+        mock_resp_401.close.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_request_401_closes_response_on_cancellation(session):
+        """Verifies that response is closed and CancelledError propagated if task is cancelled during recovery."""
+        mock_resp_401 = mock.AsyncMock()
+        mock_resp_401.status_code = 401
+        session._auth_request = mock.AsyncMock(return_value=mock_resp_401)
+
+        refresh_started = asyncio.Event()
+
+        async def cancel_on_refresh(*args, **kwargs):
+            refresh_started.set()
+            await asyncio.sleep(10)
+
+        session._credentials.refresh = mock.AsyncMock(side_effect=cancel_on_refresh)
+
+        task = asyncio.create_task(session.request("GET", "https://example.com"))
+        await refresh_started.wait()
+        task.cancel()
+
+        with pytest.raises(asyncio.CancelledError):
+            await task
+
+        mock_resp_401.close.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    async def test_request_401_streaming_refreshes_creds_and_returns_open_response(
+        session,
+    ):
+        """Verifies that streaming requests refresh credentials but return the unclosed response to the caller."""
+        mock_resp_401 = mock.AsyncMock()
+        mock_resp_401.status_code = 401
+        session._auth_request = mock.AsyncMock(return_value=mock_resp_401)
+        session._credentials.refresh = mock.AsyncMock()
+
+        # Generator simulating streaming body
+        streaming_data = (chunk for chunk in [b"chunk1", b"chunk2"])
+
+        response = await session.request(
+            "POST", "https://example.com", data=streaming_data
+        )
+
+        assert response is mock_resp_401
+        session._credentials.refresh.assert_awaited_once()
+        # Response must NOT be closed so caller can consume the body
+        mock_resp_401.close.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_request_401_concurrent_refreshes_are_deduplicated(session):
+        """Verifies that concurrent 401s execute only one credentials.refresh call."""
+        mock_resp_401 = mock.AsyncMock()
+        mock_resp_401.status_code = 401
+        mock_resp_200 = mock.AsyncMock()
+        mock_resp_200.status_code = 200
+
+        # Return 401 on initial calls, then 200 on retries
+        session._auth_request = mock.AsyncMock(
+            side_effect=[mock_resp_401, mock_resp_401, mock_resp_200, mock_resp_200]
+        )
+
+        refresh_count = 0
+
+        async def slow_refresh(*args, **kwargs):
+            nonlocal refresh_count
+            refresh_count += 1
+            await asyncio.sleep(0.05)
+
+        session._credentials.refresh = mock.AsyncMock(side_effect=slow_refresh)
+
+        # Launch two concurrent requests encountering 401
+        results = await asyncio.gather(
+            session.request("GET", "https://example.com/1"),
+            session.request("GET", "https://example.com/2"),
+        )
+
+        assert all(r.status_code == 200 for r in results)
+        # Refresh should only have been called ONCE across both requests
+        assert refresh_count == 1
