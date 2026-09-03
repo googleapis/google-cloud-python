@@ -64,6 +64,55 @@ def is_otel_capabilities_enabled(
     return False
 
 
+def _extract_t4_attributes(request: Any) -> dict[str, Any]:
+    """Extracts Google Cloud semantic and resource attributes from a gRPC request object.
+
+    Args:
+        request: The gRPC request object.
+
+    Returns:
+        dict[str, Any]: A dictionary of semantic attributes.
+    """
+    attrs: dict[str, Any] = {}
+    if request is None:
+        return attrs
+
+    name = getattr(request, "name", None)
+    if name and isinstance(name, str):
+        attrs["gcp.resource.name"] = name
+        if "projects/" in name:
+            parts = name.split("/")
+            try:
+                idx = parts.index("projects")
+                if idx + 1 < len(parts):
+                    attrs["gcp.project_id"] = parts[idx + 1]
+            except ValueError:
+                pass
+
+    parent = getattr(request, "parent", None)
+    if parent and isinstance(parent, str):
+        attrs["gcp.resource.parent"] = parent
+        if "gcp.project_id" not in attrs and "projects/" in parent:
+            parts = parent.split("/")
+            try:
+                idx = parts.index("projects")
+                if idx + 1 < len(parts):
+                    attrs["gcp.project_id"] = parts[idx + 1]
+            except ValueError:
+                pass
+
+    return attrs
+
+
+def _client_request_hook(span: Any, request: Any) -> None:
+    """OpenTelemetry client request hook to inject GCP resource attributes into the span."""
+    if span is None or not getattr(span, "is_recording", lambda: True)():
+        return
+    attrs = _extract_t4_attributes(request)
+    for key, value in attrs.items():
+        span.set_attribute(key, value)
+
+
 def _get_tracer_provider(
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> opentelemetry.trace.TracerProvider | None:
@@ -102,7 +151,8 @@ def get_otel_interceptor(
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
-        tracer_provider=_get_tracer_provider(client_options)
+        tracer_provider=_get_tracer_provider(client_options),
+        request_hook=_client_request_hook,
     )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
@@ -131,5 +181,6 @@ def get_otel_async_interceptor(
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     return otel_grpc.aio_client_interceptors(
-        tracer_provider=_get_tracer_provider(client_options)
+        tracer_provider=_get_tracer_provider(client_options),
+        request_hook=_client_request_hook,
     )
