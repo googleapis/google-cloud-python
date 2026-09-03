@@ -14,15 +14,20 @@
 
 from unittest import mock
 
-from google.auth import exceptions
-from google.auth.aio.transport import mtls
 import pytest
 
-CERT_BYTES = b"-----BEGIN CERTIFICATE-----\nMIID...CERT1...=\n-----END CERTIFICATE-----\n"
+from google.auth import exceptions
+from google.auth.aio.transport import mtls
+
+CERT_BYTES = (
+    b"-----BEGIN CERTIFICATE-----\nMIID...CERT1...=\n-----END CERTIFICATE-----\n"
+)
 KEY_BYTES = (
     b"-----BEGIN PRIVATE KEY-----\nMIIE...KEY1...==\n-----END PRIVATE KEY-----\n"
 )
-NEW_CERT_BYTES = b"-----BEGIN CERTIFICATE-----\nMIID...CERT2...=\n-----END CERTIFICATE-----\n"
+NEW_CERT_BYTES = (
+    b"-----BEGIN CERTIFICATE-----\nMIID...CERT2...=\n-----END CERTIFICATE-----\n"
+)
 NEW_KEY_BYTES = (
     b"-----BEGIN PRIVATE KEY-----\nMIIE...KEY2...==\n-----END PRIVATE KEY-----\n"
 )
@@ -30,172 +35,183 @@ NEW_KEY_BYTES = (
 
 @pytest.mark.asyncio
 async def test_check_parameters_no_client_cert():
-  """Test when no certificate is discovered (has_cert is False)."""
-  with mock.patch.object(
-      mtls, "get_client_cert_and_key", return_value=(False, None, None)
-  ):
-    cert, key, cached_fp, current_fp = (
-        await mtls.check_parameters_for_unauthorized_response(
+    """Test when no certificate is discovered (has_cert is False)."""
+    with mock.patch.object(
+        mtls, "get_client_cert_and_key", return_value=(False, None, None)
+    ):
+        (
+            cert,
+            key,
+            cached_fp,
+            current_fp,
+        ) = await mtls.check_parameters_for_unauthorized_response(
             cached_cert=b"stale_cert", client_cert_callback=None
         )
-    )
 
-    assert cert is None
-    assert key is None
-    assert cached_fp is None
-    assert current_fp is None
+        assert cert is None
+        assert key is None
+        assert cached_fp is None
+        assert current_fp is None
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_cert_matched():
-  """Test when newly retrieved certificate matches the cached certificate."""
+    """Test when newly retrieved certificate matches the cached certificate."""
 
-  def callback():
-    return CERT_BYTES, KEY_BYTES
+    def callback():
+        return CERT_BYTES, KEY_BYTES
 
-  with (
-      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
-      mock.patch(
-          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
-          return_value="FINGERPRINT_A",
-      ),
-      mock.patch(
-          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
-          return_value="FINGERPRINT_A",
-      ),
-  ):
-    cert, key, cached_fp, current_fp = (
-        await mtls.check_parameters_for_unauthorized_response(
+    with (
+        mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+        mock.patch(
+            "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+            return_value="FINGERPRINT_A",
+        ),
+        mock.patch(
+            "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+            return_value="FINGERPRINT_A",
+        ),
+    ):
+        (
+            cert,
+            key,
+            cached_fp,
+            current_fp,
+        ) = await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
         )
-    )
 
-    assert cert == CERT_BYTES
-    assert key == KEY_BYTES
-    assert cached_fp == "FINGERPRINT_A"
-    assert current_fp == "FINGERPRINT_A"
-    assert cached_fp == current_fp
+        assert cert == CERT_BYTES
+        assert key == KEY_BYTES
+        assert cached_fp == "FINGERPRINT_A"
+        assert current_fp == "FINGERPRINT_A"
+        assert cached_fp == current_fp
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_cert_mismatch_rotation():
-  """Test when newly retrieved certificate differs from the cached certificate (rotation occurred)."""
+    """Test when newly retrieved certificate differs from the cached certificate (rotation occurred)."""
 
-  def callback():
-    return NEW_CERT_BYTES, NEW_KEY_BYTES
+    def callback():
+        return NEW_CERT_BYTES, NEW_KEY_BYTES
 
-  with (
-      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
-      mock.patch(
-          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
-          return_value="FINGERPRINT_NEW",
-      ),
-      mock.patch(
-          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
-          return_value="FINGERPRINT_OLD",
-      ),
-  ):
-    cert, key, cached_fp, current_fp = (
-        await mtls.check_parameters_for_unauthorized_response(
+    with (
+        mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+        mock.patch(
+            "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+            return_value="FINGERPRINT_NEW",
+        ),
+        mock.patch(
+            "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+            return_value="FINGERPRINT_OLD",
+        ),
+    ):
+        (
+            cert,
+            key,
+            cached_fp,
+            current_fp,
+        ) = await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
         )
-    )
 
-    assert cert == NEW_CERT_BYTES
-    assert key == NEW_KEY_BYTES
-    assert cached_fp == "FINGERPRINT_OLD"
-    assert current_fp == "FINGERPRINT_NEW"
-    assert cached_fp != current_fp
+        assert cert == NEW_CERT_BYTES
+        assert key == NEW_KEY_BYTES
+        assert cached_fp == "FINGERPRINT_OLD"
+        assert current_fp == "FINGERPRINT_NEW"
+        assert cached_fp != current_fp
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_without_cached_cert():
-  """Test when cached_cert is None."""
+    """Test when cached_cert is None."""
 
-  def callback():
-    return CERT_BYTES, KEY_BYTES
+    def callback():
+        return CERT_BYTES, KEY_BYTES
 
-  with (
-      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
-      mock.patch(
-          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
-          return_value="FINGERPRINT_CURRENT",
-      ),
-      mock.patch(
-          "google.auth._agent_identity_utils.get_cached_cert_fingerprint"
-      ) as mock_get_cached,
-  ):
-    cert, key, cached_fp, current_fp = (
-        await mtls.check_parameters_for_unauthorized_response(
+    with (
+        mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+        mock.patch(
+            "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+            return_value="FINGERPRINT_CURRENT",
+        ),
+        mock.patch(
+            "google.auth._agent_identity_utils.get_cached_cert_fingerprint"
+        ) as mock_get_cached,
+    ):
+        (
+            cert,
+            key,
+            cached_fp,
+            current_fp,
+        ) = await mtls.check_parameters_for_unauthorized_response(
             cached_cert=None, client_cert_callback=callback
         )
-    )
 
-    assert cert == CERT_BYTES
-    assert key == KEY_BYTES
-    assert cached_fp == "FINGERPRINT_CURRENT"
-    assert current_fp == "FINGERPRINT_CURRENT"
-    mock_get_cached.assert_not_called()
+        assert cert == CERT_BYTES
+        assert key == KEY_BYTES
+        assert cached_fp == "FINGERPRINT_CURRENT"
+        assert current_fp == "FINGERPRINT_CURRENT"
+        mock_get_cached.assert_not_called()
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_executor_fingerprint_computation():
-  """Test that fingerprint computation is properly offloaded to the executor."""
+    """Test that fingerprint computation is properly offloaded to the executor."""
 
-  def callback():
-    return CERT_BYTES, KEY_BYTES
+    def callback():
+        return CERT_BYTES, KEY_BYTES
 
-  with (
-      mock.patch.object(
-          mtls, "_run_in_executor", wraps=mtls._run_in_executor
-      ) as mock_run_in_executor,
-      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
-      mock.patch(
-          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
-          return_value="FP_CURRENT",
-      ),
-      mock.patch(
-          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
-          return_value="FP_CACHED",
-      ),
-  ):
-    cert, key, cached_fp, current_fp = (
-        await mtls.check_parameters_for_unauthorized_response(
+    with (
+        mock.patch.object(
+            mtls, "_run_in_executor", wraps=mtls._run_in_executor
+        ) as mock_run_in_executor,
+        mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+        mock.patch(
+            "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+            return_value="FP_CURRENT",
+        ),
+        mock.patch(
+            "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+            return_value="FP_CACHED",
+        ),
+    ):
+        (
+            cert,
+            key,
+            cached_fp,
+            current_fp,
+        ) = await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
         )
-    )
 
-    assert mock_run_in_executor.called
-    assert cert == CERT_BYTES
-    assert cached_fp == "FP_CACHED"
-    assert current_fp == "FP_CURRENT"
+        assert mock_run_in_executor.called
+        assert cert == CERT_BYTES
+        assert cached_fp == "FP_CACHED"
+        assert current_fp == "FP_CURRENT"
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_callback_exception_propagation():
-  """Test that exceptions raised by client_cert_callback propagate cleanly."""
+    """Test that exceptions raised by client_cert_callback propagate cleanly."""
 
-  def failing_callback():
-    raise exceptions.ClientCertError("Client cert provider failed")
+    def failing_callback():
+        raise exceptions.ClientCertError("Client cert provider failed")
 
-  with pytest.raises(
-      exceptions.ClientCertError, match="Client cert provider failed"
-  ):
-    await mtls.check_parameters_for_unauthorized_response(
-        cached_cert=CERT_BYTES, client_cert_callback=failing_callback
-    )
+    with pytest.raises(exceptions.ClientCertError, match="Client cert provider failed"):
+        await mtls.check_parameters_for_unauthorized_response(
+            cached_cert=CERT_BYTES, client_cert_callback=failing_callback
+        )
 
 
 @pytest.mark.asyncio
 async def test_check_parameters_async_callback_exception_propagation():
-  """Test that exceptions raised in an async client_cert_callback propagate cleanly."""
+    """Test that exceptions raised in an async client_cert_callback propagate cleanly."""
 
-  async def failing_async_callback():
-    raise OSError("Disk read error while loading certificates")
+    async def failing_async_callback():
+        raise OSError("Disk read error while loading certificates")
 
-  with pytest.raises(
-      OSError, match="Disk read error while loading certificates"
-  ):
-    await mtls.check_parameters_for_unauthorized_response(
-        cached_cert=CERT_BYTES, client_cert_callback=failing_async_callback
-    )
+    with pytest.raises(OSError, match="Disk read error while loading certificates"):
+        await mtls.check_parameters_for_unauthorized_response(
+            cached_cert=CERT_BYTES, client_cert_callback=failing_async_callback
+        )

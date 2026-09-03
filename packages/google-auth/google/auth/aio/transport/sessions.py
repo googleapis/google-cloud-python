@@ -46,7 +46,7 @@ _LOGGER = logging.getLogger(__name__)
 _MTLS_URL_PREFIXES = [
     "mtls.googleapis.com",
     "mtls.sandbox.googleapis.com",
-    ".p.googleapis.com",
+    "p.googleapis.com",
 ]
 
 # Tracks the internal aiohttp installation and usage
