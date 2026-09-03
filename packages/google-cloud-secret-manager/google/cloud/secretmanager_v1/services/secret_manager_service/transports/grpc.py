@@ -17,7 +17,7 @@ import json
 import logging as std_logging
 import pickle
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.auth  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
@@ -27,20 +27,21 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
-
-try:
-    # mypy: ClientInterceptor was added in google-api-core 2.35.0; guard for older versions
-    from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
-except ImportError:
-    ClientInterceptor = grpc.ClientInterceptor  # type: ignore[misc,assignment]
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.cloud.secretmanager_v1.types import resources, service
 from google.protobuf.json_format import MessageToJson
 
-from google.cloud.secretmanager_v1.types import resources, service
-
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
+
+# ClientInterceptor type alias for channel interceptors
+ClientInterceptor = Union[
+    grpc.UnaryUnaryClientInterceptor,
+    grpc.UnaryStreamClientInterceptor,
+    grpc.StreamUnaryClientInterceptor,
+    grpc.StreamStreamClientInterceptor,
+]
 
 try:
     from google.api_core import client_logging  # type: ignore
