@@ -531,7 +531,13 @@ class TestSessionsMtls:
 
         mock_resp_401 = mock.Mock()
         mock_resp_401.status_code = http_client.UNAUTHORIZED
-        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+        
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+        
+        mock_auth_req = mock.AsyncMock(
+            side_effect=[mock_resp_401] * 3 + [mock_resp_200] * 3
+        )
 
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_auth_req
@@ -569,10 +575,12 @@ class TestSessionsMtls:
             ]
             responses = await asyncio.gather(*tasks)
 
-            for resp in responses:
-                assert resp == mock_resp_401
+        for resp in responses:
+            assert resp == mock_resp_200
 
-            mock_conf.assert_called_once()
+        mock_check.assert_called_once()
+        mock_conf.assert_called_once()
+        assert mock_creds.refresh.call_count == 1
 
         await session.close()
 
