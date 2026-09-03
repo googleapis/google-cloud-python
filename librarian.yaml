@@ -2513,7 +2513,7 @@ libraries:
           - proto-plus-deps=google.shopping.type
       default_version: v1
   - name: google-shopping-merchant-loyaltycustomers
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/shopping/merchant/loyaltycustomers/v1
     copyright_year: "2026"

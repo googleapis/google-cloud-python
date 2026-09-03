@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-loyaltycustomers-v0.1.0...google-shopping-merchant-loyaltycustomers-v0.1.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* correct client version strings ([#18282](https://github.com/googleapis/google-cloud-python/issues/18282)) ([ffa6e54](https://github.com/googleapis/google-cloud-python/commit/ffa6e542ae1a09a43761a63aa5f8e872c90e708e))
+
 ## 0.1.0 (2026-09-03)
 
 
@@ -12,4 +19,3 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-shopping-merchant-loyaltycustomers/#history
-
