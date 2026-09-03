@@ -38,7 +38,13 @@ from google.cloud.bigtable.batcher import (
     MutationsBatcher,
 )
 from google.cloud.bigtable.column_family import ColumnFamily, _gc_rule_from_pb
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+from google.cloud.bigtable.data._helpers import (
+    TABLE_DEFAULT,
+    _get_retryable_errors,
+    _get_timeouts,
+)
+from google.cloud.bigtable.data._metrics import OperationType
+from google.cloud.bigtable.data._sync_autogen._mutate_rows import _MutateRowsOperation
 from google.cloud.bigtable.data.exceptions import (
     MutationsExceptionGroup,
     RetryExceptionGroup,
@@ -83,6 +89,11 @@ for retryable in RETRYABLE_MUTATION_ERRORS:
 
 class _BigtableRetryableError(Exception):
     """Retry-able error expected by the default retry strategy."""
+
+
+def _never_retry(exc: Exception) -> bool:
+    """Predicate that never retries any error."""
+    return False
 
 
 DEFAULT_RETRY = Retry(
@@ -748,21 +759,25 @@ class Table(object):
 
         retryable_errors = RETRYABLE_MUTATION_ERRORS
 
-        # The data client cannot take in zero or null values for deadline, so we set it to
-        # the default if that is the case.
-        if retry is None:
+        if retry is None or getattr(retry, "deadline", None) == 0:
             operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
             retryable_errors = []
-        elif retry.deadline is None:
-            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
-
-        # To adhere to the retry strategy of do-nothing being achievable with a deadline
-        # of 0.0, we modify the retryable errors to be empty if such a deadline is passed.
-        elif retry.deadline == 0:
-            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
-            retryable_errors = []
+            shim_predicate = _never_retry
         else:
-            operation_timeout = retry.deadline
+            operation_timeout = (
+                retry.deadline
+                if retry.deadline is not None
+                else TABLE_DEFAULT.MUTATE_ROWS
+            )
+            if (
+                getattr(retry, "_predicate", None) is not None
+                and retry._predicate is not DEFAULT_RETRY._predicate
+            ):
+                shim_predicate = retry._predicate
+            else:
+                shim_predicate = None
+
+        shim_on_error = getattr(retry, "_on_error", None) if retry is not None else None
 
         attempt_timeout = timeout
         mutation_entries = []
@@ -777,17 +792,34 @@ class Table(object):
                     % (row.row_key, row.table.name, self.name)
                 )
             mutation_entries.append(RowMutationEntry(row.row_key, row._get_mutations()))
+
         return_statuses = [
             status_pb2.Status(code=code_pb2.OK) for _ in range(len(mutation_entries))
         ]  # By default, return status OKs for everything
 
+        operation_timeout, attempt_timeout = _get_timeouts(
+            operation_timeout,
+            attempt_timeout
+            if attempt_timeout is not None
+            else TABLE_DEFAULT.MUTATE_ROWS,
+            self._table_impl,
+        )
+        retryable_excs = _get_retryable_errors(retryable_errors, self._table_impl)
+
+        operation = _MutateRowsOperation(
+            self._table_impl.client._gapic_client,
+            self._table_impl,
+            mutation_entries,
+            operation_timeout=operation_timeout,
+            attempt_timeout=attempt_timeout,
+            metric=self._table_impl._create_operation(OperationType.BULK_MUTATE_ROWS),
+            retryable_exceptions=retryable_excs,
+            shim_predicate=shim_predicate,
+            shim_on_error=shim_on_error,
+        )
+
         try:
-            self._table_impl.bulk_mutate_rows(
-                mutation_entries,
-                operation_timeout=operation_timeout,
-                attempt_timeout=attempt_timeout,
-                retryable_errors=retryable_errors,
-            )
+            operation.start()
         except MutationsExceptionGroup as mut_exc_group:
             # We exception handle as follows:
             #

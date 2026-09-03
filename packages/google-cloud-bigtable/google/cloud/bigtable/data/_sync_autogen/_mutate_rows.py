@@ -17,7 +17,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Callable, Sequence
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -62,6 +62,8 @@ class _MutateRowsOperation:
             If not specified, the request will run until operation_timeout is reached.
         metric: the metric object representing the active operation
         retryable_exceptions: a list of exceptions that should be retried
+        shim_predicate: optional predicate callback, used only to support the legacy client shim.
+        shim_on_error: optional error callback, used only to support the legacy client shim.
     """
 
     def __init__(
@@ -73,6 +75,8 @@ class _MutateRowsOperation:
         attempt_timeout: float | None,
         metric: ActiveOperationMetric,
         retryable_exceptions: Sequence[type[Exception]] = (),
+        shim_predicate: Callable[[Exception], bool] | None = None,
+        shim_on_error: Callable[[Exception], None] | None = None,
     ):
         total_mutations = sum((len(entry.mutations) for entry in mutation_entries))
         if total_mutations > _MUTATE_ROWS_REQUEST_MUTATION_LIMIT:
@@ -81,15 +85,20 @@ class _MutateRowsOperation:
             )
         self._target = target
         self._gapic_fn = gapic_client.mutate_rows
-        self.is_retryable = retries.if_exception_type(
+        base_predicate = retries.if_exception_type(
             *retryable_exceptions, bt_exceptions._MutateRowsIncomplete
         )
+        if shim_predicate is not None:
+            self.is_retryable = lambda exc: shim_predicate(exc) and base_predicate(exc)
+        else:
+            self.is_retryable = base_predicate
         self._operation = lambda: tracked_retry(
             retry_fn=CrossSync._Sync_Impl.retry_target,
             operation=metric,
             target=self._run_attempt,
             predicate=self.is_retryable,
             timeout=operation_timeout,
+            on_error=shim_on_error,
         )
         self.timeout_generator = _attempt_timeout_generator(
             attempt_timeout, operation_timeout

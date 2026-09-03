@@ -731,6 +731,11 @@ def _table_mutate_rows_helper(
     from google.api_core import exceptions as api_exceptions
     from google.rpc import status_pb2
 
+    from google.cloud.bigtable.data._helpers import (
+        TABLE_DEFAULT,
+        _get_retryable_errors,
+        _get_timeouts,
+    )
     from google.cloud.bigtable.data.exceptions import (
         FailedMutationEntryError,
         MutationsExceptionGroup,
@@ -765,6 +770,19 @@ def _table_mutate_rows_helper(
 
     table = _make_table(TABLE_ID, instance, **ctor_kwargs)
 
+    expected_operation_timeout, expected_attempt_timeout = _get_timeouts(
+        expected_operation_timeout,
+        (
+            expected_attempt_timeout
+            if expected_attempt_timeout is not None
+            else TABLE_DEFAULT.MUTATE_ROWS
+        ),
+        table._table_impl,
+    )
+    expected_retryable_errors = _get_retryable_errors(
+        expected_retryable_errors, table._table_impl
+    )
+
     call_kwargs = {}
 
     if retry is not _DEFAULT_SENTINEL:
@@ -773,12 +791,16 @@ def _table_mutate_rows_helper(
     if timeout is not None:
         call_kwargs["timeout"] = timeout
 
-    with mock.patch.object(table._table_impl, "bulk_mutate_rows") as mutate_rows_mock:
+    with mock.patch(
+        "google.cloud.bigtable.table._MutateRowsOperation"
+    ) as mutate_rows_mock:
+        op_instance = mock.Mock()
+        mutate_rows_mock.return_value = op_instance
         # First entry = success
         # Second entry = api error
         # Third entry = non-api error
         # Fourth entry = retryexceptiongroup
-        mutate_rows_mock.side_effect = MutationsExceptionGroup(
+        op_instance.start.side_effect = MutationsExceptionGroup(
             excs=[
                 FailedMutationEntryError(
                     failed_idx=1,
@@ -834,14 +856,19 @@ def _table_mutate_rows_helper(
 
     # Check all call args other than mutation_entries
     mutate_rows_mock.assert_called_once_with(
+        table._table_impl.client._gapic_client,
+        table._table_impl,
         mock.ANY,
         operation_timeout=expected_operation_timeout,
         attempt_timeout=expected_attempt_timeout,
-        retryable_errors=expected_retryable_errors,
+        metric=mock.ANY,
+        retryable_exceptions=expected_retryable_errors,
+        shim_predicate=mock.ANY,
+        shim_on_error=mock.ANY,
     )
 
     # Check that mutation entries are in order
-    mutation_entries = mutate_rows_mock.call_args.args[0]
+    mutation_entries = mutate_rows_mock.call_args.args[2]
     mutation_entry_keys = [row.row_key for row in mutation_entries]
     assert mutation_entry_keys == [
         ROW_KEY,
@@ -960,6 +987,66 @@ def test_table_mutate_rows_w_mutation_timeout_and_timeout_arg():
         timeout=timeout,
         expected_attempt_timeout=timeout,
     )
+
+
+def test_table_mutate_rows_w_retry_on_error():
+    from google.cloud.bigtable.row import DirectRow
+
+    on_error_calls = []
+
+    def on_error(exc):
+        on_error_calls.append(exc)
+
+    retry = mock.Mock(
+        deadline=120.0,
+        _on_error=on_error,
+    )
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+    row = mock.Mock(spec=DirectRow)
+    row.table = table
+    row.row_key = b"row-key"
+    row._get_mutations.return_value = [mock.MagicMock()]
+
+    with mock.patch("google.cloud.bigtable.table._MutateRowsOperation") as mock_op_cls:
+        op_instance = mock.Mock()
+        mock_op_cls.return_value = op_instance
+        table.mutate_rows([row], retry=retry)
+        mock_op_cls.assert_called_once()
+        passed_on_error = mock_op_cls.call_args.kwargs["shim_on_error"]
+        assert passed_on_error is on_error
+
+
+def test_table_mutate_rows_w_custom_predicate():
+    from google.cloud.bigtable.row import DirectRow
+
+    def custom_predicate(exc):
+        return True
+
+    retry = mock.Mock(
+        deadline=120.0,
+        _predicate=custom_predicate,
+    )
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+    row = mock.Mock(spec=DirectRow)
+    row.table = table
+    row.row_key = b"row-key"
+    row._get_mutations.return_value = [mock.MagicMock()]
+
+    with mock.patch("google.cloud.bigtable.table._MutateRowsOperation") as mock_op_cls:
+        op_instance = mock.Mock()
+        mock_op_cls.return_value = op_instance
+        table.mutate_rows([row], retry=retry)
+        mock_op_cls.assert_called_once()
+        passed_predicate = mock_op_cls.call_args.kwargs["shim_predicate"]
+        assert passed_predicate is custom_predicate
 
 
 def test_table_read_rows():

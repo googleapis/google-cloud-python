@@ -86,6 +86,22 @@ class TestTrackRetryableError:
 
         operation.end_attempt_with_status.assert_called_once_with(exc)
 
+    def test_user_on_error_called(self):
+        """should call user_on_error with exception if provided."""
+        from google.cloud.bigtable.data._metrics.tracked_retry import (
+            _track_retryable_error,
+        )
+
+        operation = mock.Mock()
+        user_on_error = mock.Mock()
+        wrapper = _track_retryable_error(operation, user_on_error=user_on_error)
+
+        exc = RuntimeError("test")
+        wrapper(exc)
+
+        operation.end_attempt_with_status.assert_called_once_with(exc)
+        user_on_error.assert_called_once_with(exc)
+
 
 class TestTrackTerminalError:
     def _call_fut(self, operation, factory):
@@ -133,6 +149,30 @@ class TestTrackTerminalError:
 
         # expect call to end_attempt_with_status via the _track_retryable_error logic
         operation.end_attempt_with_status.assert_called_once_with(last_exc)
+        operation.end_with_status.assert_called_once()
+
+    def test_timeout_with_user_on_error(self):
+        """should call user_on_error if timeout occurs during active attempt."""
+        from google.cloud.bigtable.data._metrics import OperationState
+        from google.cloud.bigtable.data._metrics.tracked_retry import (
+            _track_terminal_error,
+        )
+
+        operation = mock.Mock()
+        operation.state = OperationState.ACTIVE_ATTEMPT
+        factory = mock.Mock()
+        factory.return_value = (RuntimeError("timeout"), None)
+        user_on_error = mock.Mock()
+
+        wrapper = _track_terminal_error(operation, factory, user_on_error=user_on_error)
+
+        last_exc = RuntimeError("last attempt error")
+        exc_list = [last_exc]
+
+        wrapper(exc_list, RetryFailureReason.TIMEOUT, 1.0)
+
+        operation.end_attempt_with_status.assert_called_once_with(last_exc)
+        user_on_error.assert_called_once_with(last_exc)
         operation.end_with_status.assert_called_once()
 
     def test_rpc_error_metadata(self):
@@ -206,6 +246,33 @@ class TestTrackedRetry:
                     on_error=mock_track_retry.return_value,
                     exception_factory=mock_track_terminal.return_value,
                     arg=1,
+                )
+
+    def test_tracked_retry_with_user_on_error(self):
+        """should pass user_on_error to _track_retryable_error and _track_terminal_error."""
+        from google.cloud.bigtable.data._metrics import tracked_retry
+
+        module = sys.modules[tracked_retry.__module__]
+
+        with mock.patch.object(module, "_track_retryable_error") as mock_track_retry:
+            with mock.patch.object(
+                module, "_track_terminal_error"
+            ) as mock_track_terminal:
+                operation = mock.Mock()
+                retry_fn = mock.Mock()
+                custom_factory = mock.Mock()
+                user_on_error = mock.Mock()
+
+                self._call_fut(
+                    retry_fn=retry_fn,
+                    operation=operation,
+                    exception_factory=custom_factory,
+                    on_error=user_on_error,
+                )
+
+                mock_track_retry.assert_called_once_with(operation, user_on_error)
+                mock_track_terminal.assert_called_once_with(
+                    operation, custom_factory, user_on_error
                 )
 
     @pytest.mark.parametrize(

@@ -46,6 +46,7 @@ ExceptionFactoryType = Callable[
 
 def _track_retryable_error(
     operation: ActiveOperationMetric,
+    user_on_error: Optional[Callable[[Exception], None]] = None,
 ) -> Callable[[Exception], None]:
     """
     Used as input to api_core.Retry classes, to track when retryable errors are encountered
@@ -72,11 +73,16 @@ def _track_retryable_error(
         else:
             operation.end_attempt_with_status(exc)
 
+        if user_on_error is not None:
+            user_on_error(exc)
+
     return wrapper
 
 
 def _track_terminal_error(
-    operation: ActiveOperationMetric, exception_factory: ExceptionFactoryType
+    operation: ActiveOperationMetric,
+    exception_factory: ExceptionFactoryType,
+    user_on_error: Optional[Callable[[Exception], None]] = None,
 ) -> ExceptionFactoryType:
     """
     Used as input to api_core.Retry classes, to track when terminal errors are encountered
@@ -108,7 +114,10 @@ def _track_terminal_error(
         ):
             # record ending attempt for timeout failures
             attempt_exc = exc_list[-1]
-            _track_retryable_error(operation)(attempt_exc)
+            if user_on_error is not None:
+                _track_retryable_error(operation, user_on_error)(attempt_exc)
+            else:
+                _track_retryable_error(operation)(attempt_exc)
         operation.end_with_status(source_exc)
         return source_exc, cause_exc
 
@@ -122,15 +131,23 @@ def tracked_retry(
     **kwargs,
 ) -> T:
     """
-    Wrapper for retry_rarget or retry_target_stream, which injects methods to
+    Wrapper for retry_target or retry_target_stream, which injects methods to
     track the lifecycle of the retry using the provided ActiveOperationMetric
     """
     in_exception_factory = kwargs.pop("exception_factory", _retry_exception_factory)
-    kwargs.pop("on_error", None)
+    user_on_error = kwargs.pop("on_error", None)
     kwargs.pop("sleep_generator", None)
+    if user_on_error is not None:
+        on_error_fn = _track_retryable_error(operation, user_on_error)
+        terminal_fn = _track_terminal_error(
+            operation, in_exception_factory, user_on_error
+        )
+    else:
+        on_error_fn = _track_retryable_error(operation)
+        terminal_fn = _track_terminal_error(operation, in_exception_factory)
     return retry_fn(
         sleep_generator=operation.backoff_generator,
-        on_error=_track_retryable_error(operation),
-        exception_factory=_track_terminal_error(operation, in_exception_factory),
+        on_error=on_error_fn,
+        exception_factory=terminal_fn,
         **kwargs,
     )
