@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import sys
 from unittest import mock
 
 import pytest
@@ -346,3 +347,102 @@ def test_wrap_method_with_call_not_supported():
 def test__deduplicate_metadata_tokens(headers, expected):
     dedup = google.api_core.gapic_v1.method._deduplicate_metadata_tokens
     assert dedup(*headers) == expected
+
+
+def test_wrap_method_otel_tracing_disabled(monkeypatch):
+    """Proves that when OpenTelemetry tracing is disabled, no span is created."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
+    mock_target = mock.Mock(return_value="success")
+    wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
+
+    with mock.patch(
+        "google.api_core._observability.is_otel_capabilities_enabled",
+        return_value=False,
+    ):
+        assert wrapped() == "success"
+    mock_target.assert_called_once()
+
+
+def test_wrap_method_otel_tracing_enabled_success(monkeypatch):
+    """Proves that when OpenTelemetry tracing is enabled, a T3 client span is started."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+    mock_target._method = (
+        "/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        result = wrapped()
+
+    assert result == "success"
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+            "rpc.method": "ListSecrets",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_enabled_error(monkeypatch):
+    """Proves that when an RPC fails, the T3 client span records the exception and error status."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    err = RuntimeError("gRPC connection reset")
+    mock_target = mock.Mock(side_effect=err)
+    mock_target._method = (
+        "/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+    mock_trace.StatusCode.ERROR = "ERROR"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        with pytest.raises(RuntimeError):
+            wrapped()
+
+    mock_span.record_exception.assert_called_once_with(err)
+    mock_span.set_status.assert_called_once_with("ERROR", str(err))

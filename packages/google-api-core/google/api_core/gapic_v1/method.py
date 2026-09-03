@@ -22,7 +22,7 @@ import enum
 import functools
 from typing import List, Tuple
 
-from google.api_core import grpc_helpers
+from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
 from google.api_core.timeout import TimeToDeadlineTimeout
 
@@ -125,6 +125,8 @@ class _GapicCallable(object):
             additional metadata will be passed to the RPC method.
     """
 
+    _is_tracing_supported = True
+
     def __init__(
         self,
         target,
@@ -185,6 +187,41 @@ class _GapicCallable(object):
 
         if self._compression is not None:
             kwargs["compression"] = compression
+
+        if _observability.is_otel_capabilities_enabled():
+            try:
+                from opentelemetry import trace
+
+                tracer = trace.get_tracer("google.api_core")
+                raw_method = getattr(self._target, "_method", None)
+                if raw_method and isinstance(raw_method, (str, bytes)):
+                    if isinstance(raw_method, bytes):
+                        raw_method = raw_method.decode("utf-8")
+                    method_str = raw_method.lstrip("/")
+                    service, _, method = method_str.rpartition("/")
+                    span_name = method_str
+                else:
+                    service = "google.api_core"
+                    method = getattr(self._target, "__name__", "call")
+                    span_name = f"{service}/{method}"
+
+                with tracer.start_as_current_span(
+                    span_name,
+                    kind=trace.SpanKind.CLIENT,
+                    attributes={
+                        "rpc.system": "grpc",
+                        "rpc.service": service,
+                        "rpc.method": method,
+                    },
+                ) as span:
+                    try:
+                        return wrapped_func(*args, **kwargs)
+                    except Exception as exc:
+                        span.record_exception(exc)
+                        span.set_status(trace.StatusCode.ERROR, str(exc))
+                        raise
+            except ImportError:
+                pass
 
         return wrapped_func(*args, **kwargs)
 
