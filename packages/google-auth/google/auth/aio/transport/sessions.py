@@ -42,8 +42,7 @@ else:
         ClientTimeout = None
 
 _LOGGER = logging.getLogger(__name__)
-_MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
-
+_MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com", ".p.googleapis.com"]
 
 # Tracks the internal aiohttp installation and usage
 try:
@@ -364,6 +363,7 @@ class AsyncAuthorizedSession:
 
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
+                        refresh_counter_at_error = self._refresh_counter
                         if getattr(self, "is_mtls", False):
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
@@ -456,7 +456,6 @@ class AsyncAuthorizedSession:
                                             self._mtls_check_counter += 1
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
-                        refresh_counter_at_error = self._refresh_counter
 
                         async with self._refresh_lock:
                             # Check if another task already refreshed credentials while we were waiting
