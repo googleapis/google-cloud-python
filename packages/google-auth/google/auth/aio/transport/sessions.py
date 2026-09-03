@@ -161,6 +161,9 @@ class AsyncAuthorizedSession:
         self._auth_request = _auth_request
         self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
+        self._refresh_lock: Optional[asyncio.Lock] = None
+        self._refresh_counter = 0
+
 
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
@@ -429,22 +432,34 @@ class AsyncAuthorizedSession:
                                                     "Skipping reconfiguration of mTLS channel because the client"
                                                     " certificate has not changed."
                                                 )
-                                        finally:
                                             # Always increment so waiting tasks skip the check block
                                             self._mtls_check_counter += 1
-                        try:
-                            await self._credentials.refresh(self._auth_request)
-                        except NotImplementedError:
-                            _LOGGER.debug("Credentials do not implement refresh().")
-                        except (
-                            exceptions.RefreshError,
-                            getattr(exceptions, "InvalidOperation", Exception),
-                        ) as e:
-                            _LOGGER.debug(
-                                "Credential refresh failed, returning 401 response. Error: %s",
-                                e,
-                            )
-                            return response
+                        if self._refresh_lock is None:
+                            self._refresh_lock = asyncio.Lock()
+                        refresh_counter_at_error = self._refresh_counter
+
+                        async with self._refresh_lock:
+                            # Check if another task already refreshed credentials while we were waiting
+                            if self._refresh_counter > refresh_counter_at_error:
+                                _LOGGER.debug(
+                                    "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
+                                )
+                            else:
+                                try:
+                                    await self._credentials.refresh(self._auth_request)
+                                except NotImplementedError:
+                                    _LOGGER.debug("Credentials do not implement refresh().")
+                                except (
+                                    exceptions.RefreshError,
+                                    getattr(exceptions, "InvalidOperation", Exception),
+                                ) as e:
+                                    _LOGGER.debug(
+                                        "Credential refresh failed, returning 401 response. Error: %s",
+                                        e,
+                                    )
+                                    return response
+                                else:
+                                    self._refresh_counter += 1
 
                         if is_streaming:
                             return response
