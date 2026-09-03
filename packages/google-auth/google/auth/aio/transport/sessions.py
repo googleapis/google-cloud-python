@@ -221,6 +221,17 @@ class AsyncAuthorizedSession:
 
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
+                             while len(self._old_auth_requests) >= 2:
+                                 oldest_auth_request = self._old_auth_requests.pop(0)
+                                 try:
+                                     if hasattr(oldest_auth_request, "close"):
+                                         if asyncio.iscoroutinefunction(oldest_auth_request.close):
+                                             await oldest_auth_request.close()
+                                         else:
+                                             oldest_auth_request.close()
+                                 except Exception:
+                                     pass
+
                             self._old_auth_requests.append(old_auth_request)
 
                         else:
