@@ -35,6 +35,7 @@ CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 # Default gcloud config path, to be used with path.expanduser for cross-platform compatibility.
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
+_ECP_SECTIONS = ("pkcs11", "windows_store", "macos_keychain")
 _CERT_REGEX = re.compile(
     b"-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----\r?\n?", re.DOTALL
 )
@@ -132,9 +133,11 @@ def secure_cert_key_paths(
                     key_path is None or os.path.exists(key_path)
                 ):
                     if _can_read(cert_path) and _can_read(key_path):
-                        yield cast(str, cert_path or cert), cast(
-                            str, key_path or key
-                        ), passphrase
+                        yield (
+                            cast(str, cert_path or cert),
+                            cast(str, key_path or key),
+                            passphrase,
+                        )
                         return
         except _MemfdCreationError:
             pass  # Fallback to Tier 3 on failure.
@@ -519,6 +522,43 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     key_path = workload["key_path"]
 
     return cert_path, key_path
+
+
+def is_ecp_config(certificate_config_path=None, include_context_aware=True):
+    """Checks if the given configuration is an ECP (Enterprise Certificate Proxy) certificate configuration.
+
+    Args:
+        certificate_config_path (Optional[str]): The certificate config path. If no path is provided,
+            the environment variable will be checked first, then the well known gcloud location.
+        include_context_aware (bool): If context aware metadata path should be checked for the
+            SecureConnect mTLS configuration.
+
+    Returns:
+        bool: True if configuration specifies ECP, False otherwise.
+    """
+    config_path = _get_cert_config_path(certificate_config_path, include_context_aware)
+    if config_path is None:
+        return False
+
+    try:
+        data = _load_json_file(config_path)
+    except (exceptions.ClientCertError, OSError):
+        return False
+
+    if not isinstance(data, dict):
+        return False
+
+    cert_configs = data.get("cert_configs")
+    if not isinstance(cert_configs, dict):
+        return False
+
+    if "workload" in cert_configs:
+        return False
+
+    has_ecp_section = any(section in cert_configs for section in _ECP_SECTIONS)
+    has_libs = isinstance(data.get("libs"), dict)
+
+    return has_ecp_section and has_libs
 
 
 def _read_cert_and_key_files(cert_path, key_path):

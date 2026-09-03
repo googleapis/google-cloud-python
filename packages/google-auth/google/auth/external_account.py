@@ -479,9 +479,13 @@ class Credentials(
 
         # Inject client certificate into request.
         if self._mtls_required():
-            request = functools.partial(
-                request, cert=self._get_mtls_cert_and_key_paths()
-            )
+            cert_path, key_path = self._get_mtls_cert_and_key_paths()
+            # Only inject file-based cert/key when a key path is available.
+            # When using hardware-backed keys (ECP), the key is in the
+            # hardware keystore (key_path is None) and mTLS is handled by
+            # the session's ECP adapter instead.
+            if key_path is not None:
+                request = functools.partial(request, cert=(cert_path, key_path))
 
         if self._should_initialize_impersonated_credentials():
             with self._impersonation_lock:
@@ -536,7 +540,8 @@ class Credentials(
             self.expiry = now + lifetime
 
     def _build_regional_access_boundary_lookup_url(
-        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+        self,
+        request: "Optional[google.auth.transport.Request]" = None,  # noqa: F821
     ):
         """Builds and returns the URL for the Regional Access Boundary lookup API."""
         if getattr(self, "_impersonated_credentials", None):
@@ -746,7 +751,7 @@ class Credentials(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
             trust_boundary=info.get("trust_boundary"),
-            **kwargs
+            **kwargs,
         )
 
     @classmethod

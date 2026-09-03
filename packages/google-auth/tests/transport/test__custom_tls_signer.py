@@ -299,8 +299,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
 
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sys.getobjects", create=True
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sys.getobjects", create=True),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -320,8 +321,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_debug_flag():
     context = ssl.SSLContext()
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sysconfig.get_config_var", return_value=1
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sysconfig.get_config_var", return_value=1),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -340,8 +342,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_free_threaded():
 
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sysconfig.get_config_var", side_effect=mock_get_config_var
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sysconfig.get_config_var", side_effect=mock_get_config_var),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -366,3 +369,66 @@ def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
         TypeError, match="context must be an instance of ssl.SSLContext, not a mock"
     ):
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_get_cert_from_custom_tls_signer_success():
+    signer_lib = mock.MagicMock()
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        return_value=signer_lib,
+    ) as mock_load_lib:
+        with mock.patch(
+            "google.auth.transport._custom_tls_signer.get_cert",
+            return_value=b"mock_cert_bytes",
+        ) as mock_get_cert:
+            cert = _custom_tls_signer.get_cert_from_custom_tls_signer(
+                ENTERPRISE_CERT_FILE
+            )
+            assert cert == b"mock_cert_bytes"
+            mock_load_lib.assert_called_once_with("/path/to/signer/lib")
+            mock_get_cert.assert_called_once_with(signer_lib, ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_missing_libs(tmp_path):
+    config_file = tmp_path / "cert_config.json"
+    config_file.write_text('{"cert_configs": {}}')
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="missing 'libs' section"
+    ):
+        _custom_tls_signer.get_cert_from_custom_tls_signer(str(config_file))
+
+
+def test_get_cert_from_custom_tls_signer_missing_signer_lib():
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="missing signer library"
+    ):
+        _custom_tls_signer.get_cert_from_custom_tls_signer(INVALID_ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_load_lib_oserror():
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        side_effect=OSError("cannot open shared object file"),
+    ):
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Failed to load or execute signer library",
+        ):
+            _custom_tls_signer.get_cert_from_custom_tls_signer(ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_get_cert_attribute_error():
+    signer_lib = mock.MagicMock()
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        return_value=signer_lib,
+    ):
+        with mock.patch(
+            "google.auth.transport._custom_tls_signer.get_cert",
+            side_effect=AttributeError("function not found in library"),
+        ):
+            with pytest.raises(
+                exceptions.MutualTLSChannelError,
+                match="Failed to load or execute signer library",
+            ):
+                _custom_tls_signer.get_cert_from_custom_tls_signer(ENTERPRISE_CERT_FILE)

@@ -1302,8 +1302,9 @@ class TestSecureCertKeyPaths(object):
         )
         mock_memfd_cm.return_value = mock_memfd_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()),
         ):
             with _mtls_helper.secure_cert_key_paths(
                 pytest.public_cert_bytes,
@@ -1368,9 +1369,10 @@ class TestSecureCertKeyPaths(object):
         )
         mock_tempfile_cm.return_value = mock_tempfile_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
-        ) as mock_open:
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()) as mock_open,
+        ):
             mock_open.side_effect = PermissionError("Permission denied")
 
             with _mtls_helper.secure_cert_key_paths(
@@ -1888,3 +1890,85 @@ class TestSecureWipeAndRemove(object):
         mock_fh.flush.assert_called_once()
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
+
+
+class TestIsECPConfig:
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_pkcs11(self, mock_get_path, mock_load_json):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {"pkcs11": {"module": "/path/to/mod.so"}},
+            "libs": {"ecp_client": "/path/to/lib.so"},
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is True
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_macos_keychain(self, mock_get_path, mock_load_json):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {"macos_keychain": {"issuer": "Corp CA"}},
+            "libs": {"ecp_client": "/path/to/lib.dylib"},
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is True
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_windows_store(self, mock_get_path, mock_load_json):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {"windows_store": {"store": "MY"}},
+            "libs": {"ecp_client": "C:\\path\\lib.dll"},
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is True
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_workload_returns_false(self, mock_get_path, mock_load_json):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {
+                "workload": {"cert_path": "cert.pem", "key_path": "key.pem"},
+                "pkcs11": {"module": "/path/to/mod.so"},
+            },
+            "libs": {"ecp_client": "/path/to/lib.so"},
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is False
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_missing_libs_returns_false(
+        self, mock_get_path, mock_load_json
+    ):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {"pkcs11": {"module": "/path/to/mod.so"}}
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is False
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_no_ecp_section_returns_false(
+        self, mock_get_path, mock_load_json
+    ):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.return_value = {
+            "cert_configs": {"other_section": {}},
+            "libs": {"ecp_client": "/path/to/lib.so"},
+        }
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is False
+
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_none_path(self, mock_get_path):
+        mock_get_path.return_value = None
+        assert _mtls_helper.is_ecp_config(None) is False
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file")
+    @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")
+    def test_is_ecp_config_load_error_returns_false(
+        self, mock_get_path, mock_load_json
+    ):
+        mock_get_path.return_value = "/path/to/config.json"
+        mock_load_json.side_effect = exceptions.ClientCertError("error")
+        assert _mtls_helper.is_ecp_config("/path/to/config.json") is False
