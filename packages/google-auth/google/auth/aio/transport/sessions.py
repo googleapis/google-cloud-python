@@ -43,7 +43,11 @@ else:
         ClientTimeout = None
 
 _LOGGER = logging.getLogger(__name__)
-_MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com", ".p.googleapis.com"]
+_MTLS_URL_PREFIXES = [
+    "mtls.googleapis.com",
+    "mtls.sandbox.googleapis.com",
+    ".p.googleapis.com",
+]
 
 # Tracks the internal aiohttp installation and usage
 try:
@@ -221,14 +225,14 @@ class AsyncAuthorizedSession:
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
                             while len(self._old_auth_requests) >= 2:
-                                     oldest_auth_request = self._old_auth_requests.pop(0)
-                                     try:
-                                         if hasattr(oldest_auth_request, "close"):
-                                             res = oldest_auth_request.close()
-                                             if inspect.isawaitable(res):
-                                                 await res
-                                     except Exception:
-                                         pass
+                                oldest_auth_request = self._old_auth_requests.pop(0)
+                                try:
+                                    if hasattr(oldest_auth_request, "close"):
+                                        res = oldest_auth_request.close()
+                                        if inspect.isawaitable(res):
+                                            await res
+                                except Exception:
+                                    pass
 
                             self._old_auth_requests.append(old_auth_request)
 
