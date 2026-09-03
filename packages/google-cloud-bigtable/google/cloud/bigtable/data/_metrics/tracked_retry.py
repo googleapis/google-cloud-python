@@ -52,6 +52,10 @@ def _track_retryable_error(
     Used as input to api_core.Retry classes, to track when retryable errors are encountered
 
     Should be passed as on_error callback
+
+    Args:
+        operation: Active operation metric tracking the retry loop.
+        user_on_error: Optional callback to invoke when an error is encountered.
     """
 
     def wrapper(exc: Exception) -> None:
@@ -88,6 +92,11 @@ def _track_terminal_error(
     Used as input to api_core.Retry classes, to track when terminal errors are encountered
 
     Should be used as a wrapper over an exception_factory callback
+
+    Args:
+        operation: Active operation metric tracking the retry loop.
+        exception_factory: Callback used to build the terminal exception.
+        user_on_error: Optional callback to invoke if operation fails due to timeout.
     """
 
     def wrapper(
@@ -133,6 +142,11 @@ def tracked_retry(
     """
     Wrapper for retry_target or retry_target_stream, which injects methods to
     track the lifecycle of the retry using the provided ActiveOperationMetric
+
+    Args:
+        retry_fn: The retry function to invoke (retry_target or retry_target_stream).
+        operation: Active operation metric tracking the retry loop.
+        **kwargs: Keyword arguments passed to retry_fn (predicate, timeout, on_error, etc).
     """
     in_exception_factory = kwargs.pop("exception_factory", _retry_exception_factory)
     user_on_error = kwargs.pop("on_error", None)
