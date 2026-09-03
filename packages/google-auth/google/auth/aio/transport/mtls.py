@@ -179,7 +179,9 @@ async def get_client_cert_and_key(client_cert_callback=None):
     return has_cert, cert, key
 
 
-async def check_parameters_for_unauthorized_response(cached_cert, client_cert_callback=None):
+async def check_parameters_for_unauthorized_response(
+    cached_cert, client_cert_callback=None
+):
     """Async helper to retrieve certs and compute fingerprints for mTLS rotation.
 
     Args:
@@ -187,13 +189,13 @@ async def check_parameters_for_unauthorized_response(cached_cert, client_cert_ca
         client_cert_callback (Optional[Callable[[], (bytes, bytes)]]): An
             optional callback which returns client certificate bytes and private
             key bytes both in PEM format.
- 
+
     Returns:
         bytes: The client callback cert bytes.
         bytes: The client callback key bytes.
         str: The base64-encoded SHA256 cached fingerprint.
         str: The base64-encoded SHA256 current cert fingerprint.
-  
+
     """
     is_mtls, call_cert_bytes, call_key_bytes = await get_client_cert_and_key(
         client_cert_callback

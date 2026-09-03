@@ -86,27 +86,25 @@ async def test_check_parameters_cert_matched():
     assert cached_fp == "FINGERPRINT_A"
     assert current_fp == "FINGERPRINT_A"
     assert cached_fp == current_fp
-    
+
     # These assertions will now work correctly using the bound mocks
     mock_parse.assert_called_once_with(CERT_BYTES)
     mock_get_cached.assert_called_once_with(CERT_BYTES)
 
 
-
 @pytest.mark.asyncio
 async def test_check_parameters_cert_mismatch_rotation():
     """Test when newly retrieved certificate differs from the cached certificate (rotation occurred)."""
+
     def callback():
         return NEW_CERT_BYTES, NEW_KEY_BYTES
 
     with (
-        # Add `as mock_parse` here
-        mock.patch("google.auth._agent_identity_utils.parse_certificate") as mock_parse, 
+        mock.patch("google.auth._agent_identity_utils.parse_certificate") as mock_parse,
         mock.patch(
             "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
             return_value="FINGERPRINT_NEW",
         ),
-        # Add `as mock_get_cached` here
         mock.patch(
             "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
             return_value="FINGERPRINT_OLD",
@@ -127,8 +125,9 @@ async def test_check_parameters_cert_mismatch_rotation():
     assert current_fp == "FINGERPRINT_NEW"
     assert cached_fp != current_fp
 
-    # Now you can add the assertions requested by the reviewer at the end of the test:
-    mock_parse.assert_called_once_with(CERT_BYTES)
+    # The fix: mock_parse is called with the NEW cert from the callback
+    mock_parse.assert_called_once_with(NEW_CERT_BYTES)
+    # mock_get_cached is called with the old cached cert
     mock_get_cached.assert_called_once_with(CERT_BYTES)
 
 

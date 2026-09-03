@@ -531,10 +531,10 @@ class TestSessionsMtls:
 
         mock_resp_401 = mock.Mock()
         mock_resp_401.status_code = http_client.UNAUTHORIZED
-        
+
         mock_resp_200 = mock.Mock()
         mock_resp_200.status_code = http_client.OK
-        
+
         mock_auth_req = mock.AsyncMock(
             side_effect=[mock_resp_401] * 3 + [mock_resp_200] * 3
         )
