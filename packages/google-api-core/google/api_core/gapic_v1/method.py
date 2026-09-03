@@ -125,8 +125,6 @@ class _GapicCallable(object):
             additional metadata will be passed to the RPC method.
     """
 
-    _is_tracing_supported = True
-
     def __init__(
         self,
         target,
