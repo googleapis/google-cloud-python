@@ -243,7 +243,7 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.57.0
+    version: 2.57.1
     python:
       library_type: AUTH
   - name: google-auth-httplib2
@@ -560,7 +560,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-biglake-hive
-    version: 0.3.3
+    version: 0.3.4
     apis:
       - path: google/cloud/biglake/hive/v1
       - path: google/cloud/biglake/hive/v1beta
@@ -806,7 +806,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.3
+    version: 0.12.4
     apis:
       - path: google/cloud/compute/v1beta
     python:
