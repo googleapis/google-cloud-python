@@ -51,7 +51,9 @@ class TestSpannerOmniCredentials(unittest.TestCase):
         self.assertTrue(creds_raw.use_plain_text)
 
     def test_refresh_success(self):
-        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", ca_certificate="/dummy/ca.pem"
+        )
 
         mock_token_proto = login_pb2.AccessToken(
             username="user",
@@ -61,6 +63,7 @@ class TestSpannerOmniCredentials(unittest.TestCase):
         )
 
         with (
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_ca")),
             mock.patch("grpc.secure_channel") as mock_sec_channel,
             mock.patch(
                 "google.cloud.spanner_v1.omni.credentials.LoginClient"
@@ -105,11 +108,18 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             mock_insec_channel.return_value.close.assert_called_once()
             self.assertIsNotNone(creds.token)
 
-    def test_refresh_mtls_without_ca_cert(self):
+    def test_refresh_missing_ca_certificate_raises(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        with self.assertRaises(google.auth.exceptions.RefreshError) as cm:
+            creds.refresh()
+        self.assertIn("requires ca_certificate to be set", str(cm.exception))
+
+    def test_refresh_mtls_success(self):
         creds = SpannerOmniCredentials(
             "user",
             "pass",
             "localhost:9010",
+            ca_certificate="/dummy/ca.pem",
             client_certificate="/dummy/cert.pem",
             client_key="/dummy/key.pem",
         )
@@ -129,7 +139,7 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             creds.refresh()
 
             mock_ssl_creds.assert_called_once_with(
-                root_certificates=None,
+                root_certificates=b"dummy_data",
                 private_key=b"dummy_data",
                 certificate_chain=b"dummy_data",
             )
@@ -138,37 +148,31 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             )
             self.assertIsNotNone(creds.token)
 
-    def test_refresh_graceful_fallback_single_client_cert(self):
+    def test_refresh_mtls_missing_key_raises(self):
         creds = SpannerOmniCredentials(
             "user",
             "pass",
             "localhost:9010",
+            ca_certificate="/dummy/ca.pem",
             client_certificate="/dummy/cert.pem",
         )
-        mock_token_proto = login_pb2.AccessToken(username="user")
-
         with (
-            mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds,
-            mock.patch("grpc.secure_channel") as mock_sec_channel,
-            mock.patch(
-                "google.cloud.spanner_v1.omni.credentials.LoginClient"
-            ) as mock_login_client_cls,
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_data")),
+            self.assertRaises(google.auth.exceptions.RefreshError) as cm,
         ):
-            mock_client = mock_login_client_cls.return_value
-            mock_client.login.return_value = mock_token_proto
-
             creds.refresh()
-
-            mock_ssl_creds.assert_called_once_with()
-            mock_sec_channel.assert_called_once_with(
-                "localhost:9010", mock_ssl_creds.return_value
-            )
-            self.assertIsNotNone(creds.token)
+        self.assertIn(
+            "Both client_certificate and client_key must be provided",
+            str(cm.exception),
+        )
 
     def test_refresh_failure_wraps_in_refresh_error(self):
-        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", ca_certificate="/dummy/ca.pem"
+        )
 
         with (
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_data")),
             mock.patch("grpc.secure_channel"),
             mock.patch(
                 "google.cloud.spanner_v1.omni.credentials.LoginClient"
@@ -194,11 +198,14 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             mock_login_client_cls.assert_not_called()
 
     def test_apply_and_before_request(self):
-        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", ca_certificate="/dummy/ca.pem"
+        )
         headers = {}
 
         mock_token_proto = login_pb2.AccessToken(username="user")
         with (
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_data")),
             mock.patch("grpc.secure_channel"),
             mock.patch(
                 "google.cloud.spanner_v1.omni.credentials.LoginClient"
