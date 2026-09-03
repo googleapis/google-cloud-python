@@ -18,6 +18,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import datetime
 import logging
@@ -120,11 +121,12 @@ class _AsyncBaseAuthInterceptor:
     def __init__(self, credentials: SpannerOmniCredentials) -> None:
         self._credentials = credentials
 
-    def _add_metadata(
+    async def _add_metadata(
         self, client_call_details: grpc.aio.ClientCallDetails
     ) -> grpc.aio.ClientCallDetails:
         if not self._credentials.valid:
-            self._credentials.refresh()
+            loop = asyncio.get_running_loop()
+            await loop.run_in_executor(None, self._credentials.refresh)
         token = self._credentials.token
         metadata = list(client_call_details.metadata or [])
         metadata.append(("authorization", f"Bearer {token}"))
@@ -149,7 +151,9 @@ class _AsyncUnaryUnaryAuthInterceptor(
         client_call_details: grpc.aio.ClientCallDetails,
         request: Any,
     ) -> Any:
-        return await continuation(self._add_metadata(client_call_details), request)
+        return await continuation(
+            await self._add_metadata(client_call_details), request
+        )
 
 
 class _AsyncUnaryStreamAuthInterceptor(
@@ -163,7 +167,9 @@ class _AsyncUnaryStreamAuthInterceptor(
         client_call_details: grpc.aio.ClientCallDetails,
         request: Any,
     ) -> Any:
-        return await continuation(self._add_metadata(client_call_details), request)
+        return await continuation(
+            await self._add_metadata(client_call_details), request
+        )
 
 
 class _AsyncStreamUnaryAuthInterceptor(
@@ -178,7 +184,7 @@ class _AsyncStreamUnaryAuthInterceptor(
         request_iterator: Any,
     ) -> Any:
         return await continuation(
-            self._add_metadata(client_call_details), request_iterator
+            await self._add_metadata(client_call_details), request_iterator
         )
 
 
@@ -194,7 +200,7 @@ class _AsyncStreamStreamAuthInterceptor(
         request_iterator: Any,
     ) -> Any:
         return await continuation(
-            self._add_metadata(client_call_details), request_iterator
+            await self._add_metadata(client_call_details), request_iterator
         )
 
 

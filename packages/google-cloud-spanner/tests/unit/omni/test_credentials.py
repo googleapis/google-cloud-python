@@ -241,6 +241,48 @@ class TestSpannerOmniCredentials(unittest.TestCase):
 
         asyncio.run(run_async_tests())
 
+    def test_async_interceptor_triggers_refresh_when_invalid(self):
+        import asyncio
+
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        interceptors = creds.create_async_auth_interceptors()
+
+        DummyCallDetails = namedtuple(
+            "DummyCallDetails",
+            ["method", "timeout", "metadata", "credentials", "wait_for_ready"],
+        )
+        call_details = DummyCallDetails(
+            method="/google.spanner.v1.Spanner/ExecuteSql",
+            timeout=30.0,
+            metadata=[],
+            credentials=None,
+            wait_for_ready=None,
+        )
+
+        async def dummy_async_continuation(details, req):
+            return details
+
+        async def run_test():
+            with mock.patch.object(creds, "refresh") as mock_refresh:
+
+                def do_refresh():
+                    creds.token = "refreshed_async_token"
+                    creds.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
+                        tzinfo=None
+                    ) + datetime.timedelta(hours=1)
+
+                mock_refresh.side_effect = do_refresh
+
+                res = await interceptors[0].intercept_unary_unary(
+                    dummy_async_continuation, call_details, "req"
+                )
+                mock_refresh.assert_called_once()
+                self.assertIn(
+                    ("authorization", "Bearer refreshed_async_token"), res.metadata
+                )
+
+        asyncio.run(run_test())
+
 
 if __name__ == "__main__":
     unittest.main()
