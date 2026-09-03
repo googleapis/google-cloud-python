@@ -393,8 +393,8 @@ class AsyncAuthorizedSession:
                                                 cached_fingerprint,
                                                 current_cert_fingerprint,
                                             ) = await mtls.check_parameters_for_unauthorized_response(
-                                                self._client_cert_callback,
                                                 self._cached_cert,
+                                                self._client_cert_callback,
                                             )
                                         except (
                                             exceptions.ClientCertError,
