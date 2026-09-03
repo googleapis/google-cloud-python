@@ -86,7 +86,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
-    version: 5.0.1
+    version: 5.1.0
     python:
       library_type: INTEGRATION
   - name: gapic-generator
@@ -98,7 +98,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-ads-admanager
-    version: 0.10.2
+    version: 0.10.3
     apis:
       - path: google/ads/admanager/v1
     python:
@@ -150,7 +150,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.35.0
+    version: 2.36.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -511,7 +511,7 @@ libraries:
       metadata_name_override: baremetalsolution
       default_version: v2
   - name: google-cloud-batch
-    version: 0.22.2
+    version: 0.22.3
     apis:
       - path: google/cloud/batch/v1
       - path: google/cloud/batch/v1alpha
@@ -560,14 +560,14 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-biglake-hive
-    version: 0.3.2
+    version: 0.3.3
     apis:
       - path: google/cloud/biglake/hive/v1
       - path: google/cloud/biglake/hive/v1beta
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.44.0
+    version: 3.45.0
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -632,7 +632,7 @@ libraries:
       metadata_name_override: bigquerylogging
       default_version: v1
   - name: google-cloud-bigquery-migration
-    version: 0.15.0
+    version: 0.15.1
     apis:
       - path: google/cloud/bigquery/migration/v2
       - path: google/cloud/bigquery/migration/v2alpha
@@ -640,7 +640,7 @@ libraries:
       metadata_name_override: bigquerymigration
       default_version: v2
   - name: google-cloud-bigquery-reservation
-    version: 1.26.0
+    version: 1.27.0
     apis:
       - path: google/cloud/bigquery/reservation/v1
     python:
@@ -661,7 +661,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.43.0
+    version: 2.44.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -795,7 +795,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.51.0
+    version: 1.52.0
     preview:
       version: 1.51.0-preview.1
       apis:
@@ -806,20 +806,20 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.2
+    version: 0.12.3
     apis:
       - path: google/cloud/compute/v1beta
     python:
       default_version: v1beta
   - name: google-cloud-confidentialcomputing
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/cloud/confidentialcomputing/v1
     python:
       metadata_name_override: confidentialcomputing
       default_version: v1
   - name: google-cloud-config
-    version: 0.7.0
+    version: 0.7.1
     apis:
       - path: google/cloud/config/v1
     python:
@@ -844,7 +844,7 @@ libraries:
       metadata_name_override: contactcenterinsights
       default_version: v1
   - name: google-cloud-container
-    version: 2.65.0
+    version: 2.66.0
     apis:
       - path: google/container/v1
       - path: google/container/v1beta1
@@ -1045,7 +1045,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.20.2
+    version: 0.20.3
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1054,7 +1054,7 @@ libraries:
       metadata_name_override: discoveryengine
       default_version: v1beta
   - name: google-cloud-dlp
-    version: 3.38.0
+    version: 3.39.0
     apis:
       - path: google/privacy/dlp/v2
     python:
@@ -1171,7 +1171,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.29.0
+    version: 2.30.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1225,7 +1225,7 @@ libraries:
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
-    version: 0.13.1
+    version: 0.13.2
     apis:
       - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
@@ -1735,7 +1735,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.39.2
+    version: 2.40.0
     apis:
       - path: google/pubsub/v1
     python:
@@ -1967,7 +1967,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.70.0
+    version: 3.71.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -2036,7 +2036,7 @@ libraries:
       metadata_name_override: storage
       default_version: v2
   - name: google-cloud-storage-control
-    version: 1.14.0
+    version: 1.15.0
     apis:
       - path: google/storage/control/v2
     python:
@@ -2298,7 +2298,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-developer-knowledge
-    version: 0.1.1
+    version: 0.1.2
     apis:
       - path: google/developers/knowledge/v1
     copyright_year: "2026"
@@ -2336,7 +2336,7 @@ libraries:
       metadata_name_override: addressvalidation
       default_version: v1
   - name: google-maps-areainsights
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/maps/areainsights/v1
     python:
@@ -2416,7 +2416,7 @@ libraries:
     python:
       default_version: v1
   - name: google-maps-routing
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/maps/routing/v2
     python:
@@ -2604,7 +2604,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.75.2
+    version: 1.75.3
     apis:
       - path: google/api
       - path: google/cloud
@@ -2658,6 +2658,6 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
-    version: 1.20.0
+    version: 1.20.1
     python:
       library_type: INTEGRATION

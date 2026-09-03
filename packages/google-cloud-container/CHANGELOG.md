@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.66.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.65.0...google-cloud-container-v2.66.0) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
 ## [2.65.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.64.0...google-cloud-container-v2.65.0) (2026-06-02)
 
 
