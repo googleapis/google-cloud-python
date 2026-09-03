@@ -27,7 +27,12 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
-from google.api_core.grpc_helpers import ClientInterceptor
+
+try:
+    # mypy: ClientInterceptor was added in google-api-core 2.35.0; guard for older versions
+    from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
+except ImportError:
+    ClientInterceptor = grpc.ClientInterceptor  # type: ignore[misc,assignment]
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -286,9 +291,9 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                 ],
             )
 
-        self._grpc_channel = grpc_helpers.apply_channel_interceptors(
-            self._grpc_channel, interceptors
-        )
+        apply_interceptors = getattr(grpc_helpers, "apply_channel_interceptors", None)
+        if apply_interceptors is not None:
+            self._grpc_channel = apply_interceptors(self._grpc_channel, interceptors)
 
         self._interceptor = _LoggingClientInterceptor()
         self._logged_channel = grpc.intercept_channel(
