@@ -645,7 +645,13 @@
       "component": "google-cloud-biglake-hive",
       "extra-files": [
         "google/cloud/biglake_hive/gapic_version.py",
+        "google/cloud/biglake_hive_v1/gapic_version.py",
         "google/cloud/biglake_hive_v1beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1.json",
+          "type": "json"
+        },
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1beta.json",
@@ -1046,6 +1052,7 @@
     "packages/google-cloud-compute-v1beta": {
       "component": "google-cloud-compute-v1beta",
       "extra-files": [
+        "google/cloud/compute/gapic_version.py",
         "google/cloud/compute_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",

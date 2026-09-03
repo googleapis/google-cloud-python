@@ -80,8 +80,8 @@
     "packages/google-shopping-merchant-loyaltycustomers": {
       "component": "google-shopping-merchant-loyaltycustomers",
       "extra-files": [
-        "google/shopping/merchant/loyaltycustomers/gapic_version.py",
-        "google/shopping/merchant/loyaltycustomers_v1/gapic_version.py",
+        "google/shopping/merchant_loyaltycustomers/gapic_version.py",
+        "google/shopping/merchant_loyaltycustomers_v1/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.loyaltycustomers.v1.json",
