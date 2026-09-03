@@ -214,9 +214,7 @@ def test_create_and_update_instance_default_backup_schedule_type(
     retry_429(instance.delete)()
 
 
-def test_create_instance_partition(
-    capsys, instance_partition_instance_id, multi_region_instance_config
-):
+def test_create_instance_partition(capsys, instance_partition_instance_id):
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_partition_instance_id)
     try:
@@ -224,7 +222,7 @@ def test_create_instance_partition(
             parent=spanner_client.project_name,
             instance_id=instance_partition_instance_id,
             instance=spanner_instance_admin.Instance(
-                config=multi_region_instance_config,
+                config=f"{spanner_client.project_name}/instanceConfigs/nam6",
                 display_name="Partition test instance",
                 node_count=1,
                 edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,
