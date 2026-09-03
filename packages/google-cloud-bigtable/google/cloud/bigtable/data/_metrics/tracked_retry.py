@@ -86,7 +86,6 @@ def _track_retryable_error(
 def _track_terminal_error(
     operation: ActiveOperationMetric,
     exception_factory: ExceptionFactoryType,
-    user_on_error: Optional[Callable[[Exception], None]] = None,
 ) -> ExceptionFactoryType:
     """
     Used as input to api_core.Retry classes, to track when terminal errors are encountered
@@ -96,7 +95,6 @@ def _track_terminal_error(
     Args:
         operation: Active operation metric tracking the retry loop.
         exception_factory: Callback used to build the terminal exception.
-        user_on_error: Optional callback to invoke if operation fails due to timeout.
     """
 
     def wrapper(
@@ -123,10 +121,7 @@ def _track_terminal_error(
         ):
             # record ending attempt for timeout failures
             attempt_exc = exc_list[-1]
-            if user_on_error is not None:
-                _track_retryable_error(operation, user_on_error)(attempt_exc)
-            else:
-                _track_retryable_error(operation)(attempt_exc)
+            _track_retryable_error(operation)(attempt_exc)
         operation.end_with_status(source_exc)
         return source_exc, cause_exc
 
@@ -151,17 +146,9 @@ def tracked_retry(
     in_exception_factory = kwargs.pop("exception_factory", _retry_exception_factory)
     user_on_error = kwargs.pop("on_error", None)
     kwargs.pop("sleep_generator", None)
-    if user_on_error is not None:
-        on_error_fn = _track_retryable_error(operation, user_on_error)
-        terminal_fn = _track_terminal_error(
-            operation, in_exception_factory, user_on_error
-        )
-    else:
-        on_error_fn = _track_retryable_error(operation)
-        terminal_fn = _track_terminal_error(operation, in_exception_factory)
     return retry_fn(
         sleep_generator=operation.backoff_generator,
-        on_error=on_error_fn,
-        exception_factory=terminal_fn,
+        on_error=_track_retryable_error(operation, user_on_error),
+        exception_factory=_track_terminal_error(operation, in_exception_factory),
         **kwargs,
     )
