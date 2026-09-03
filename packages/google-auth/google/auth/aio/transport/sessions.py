@@ -164,7 +164,6 @@ class AsyncAuthorizedSession:
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
 
-
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -221,16 +220,18 @@ class AsyncAuthorizedSession:
 
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
-                             while len(self._old_auth_requests) >= 2:
-                                 oldest_auth_request = self._old_auth_requests.pop(0)
-                                 try:
-                                     if hasattr(oldest_auth_request, "close"):
-                                         if asyncio.iscoroutinefunction(oldest_auth_request.close):
-                                             await oldest_auth_request.close()
-                                         else:
-                                             oldest_auth_request.close()
-                                 except Exception:
-                                     pass
+                            while len(self._old_auth_requests) >= 2:
+                                oldest_auth_request = self._old_auth_requests.pop(0)
+                                try:
+                                    if hasattr(oldest_auth_request, "close"):
+                                        if asyncio.iscoroutinefunction(
+                                            oldest_auth_request.close
+                                        ):
+                                            await oldest_auth_request.close()
+                                        else:
+                                            oldest_auth_request.close()
+                                except Exception:
+                                    pass
 
                             self._old_auth_requests.append(old_auth_request)
 
@@ -355,17 +356,20 @@ class AsyncAuthorizedSession:
                         remaining_time = None
                     is_streaming = data is not None and (
                         isinstance(
-                            data, (collections.abc.Iterator, collections.abc.AsyncIterable)
+                            data,
+                            (collections.abc.Iterator, collections.abc.AsyncIterable),
                         )
                         or hasattr(data, "read")
                     )
+
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
                         if getattr(self, "is_mtls", False):
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
                                 is_mtls_endpoint = any(
-                                    hostname == prefix or hostname.endswith("." + prefix)
+                                    hostname == prefix
+                                    or hostname.endswith("." + prefix)
                                     for prefix in _MTLS_URL_PREFIXES
                                 )
                             # Snapshot the stale certificate state BEFORE acquiring the lock.
@@ -378,7 +382,10 @@ class AsyncAuthorizedSession:
                                 async with self._mtls_rotation_lock:
                                     # Check if another coroutine already reconfigured mTLS or
                                     # ran the validation check.
-                                    if self._mtls_check_counter > check_counter_at_error:
+                                    if (
+                                        self._mtls_check_counter
+                                        > check_counter_at_error
+                                    ):
                                         pass
                                     else:
                                         try:
@@ -409,7 +416,9 @@ class AsyncAuthorizedSession:
                                                 and cached_fingerprint
                                                 != current_cert_fingerprint
                                             ):
-                                                saved_callback = self._client_cert_callback
+                                                saved_callback = (
+                                                    self._client_cert_callback
+                                                )
                                                 try:
                                                     _LOGGER.info(
                                                         "Client certificate has changed, reconfiguring mTLS "
@@ -459,7 +468,9 @@ class AsyncAuthorizedSession:
                                 try:
                                     await self._credentials.refresh(self._auth_request)
                                 except NotImplementedError:
-                                    _LOGGER.debug("Credentials do not implement refresh().")
+                                    _LOGGER.debug(
+                                        "Credentials do not implement refresh()."
+                                    )
                                 except (
                                     exceptions.RefreshError,
                                     getattr(exceptions, "InvalidOperation", Exception),
@@ -476,6 +487,7 @@ class AsyncAuthorizedSession:
                             return response
                         # Return None to explicitly signal successful recovery & trigger retry if needed
                         return None
+
                     async with timeout_guard(remaining_time) as auth_with_timeout:
                         early_return_response = await auth_with_timeout(
                             _recover_auth_state()
