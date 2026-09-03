@@ -60,7 +60,7 @@ class TestOpaqueCrypto(unittest.TestCase):
             ),
             (b"abc", b"defghi", True),
             (b"abcdefghi", b"jklmnop", True),
-            (b"", b"", True),
+            (b"", b"", False),
         ]
         for a, b, want_err in tests:
             if want_err:

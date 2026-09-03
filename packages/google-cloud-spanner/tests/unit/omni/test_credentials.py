@@ -120,6 +120,19 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             with self.assertRaises(google.auth.exceptions.RefreshError):
                 creds.refresh()
 
+    def test_refresh_skips_when_valid_inside_lock(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        creds.token = "existing_valid_token"
+        creds.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
+            tzinfo=None
+        ) + datetime.timedelta(hours=1)
+
+        with mock.patch(
+            "google.cloud.spanner_v1.omni.credentials.LoginClient"
+        ) as mock_login_client_cls:
+            creds.refresh()
+            mock_login_client_cls.assert_not_called()
+
     def test_apply_and_before_request(self):
         creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
         headers = {}

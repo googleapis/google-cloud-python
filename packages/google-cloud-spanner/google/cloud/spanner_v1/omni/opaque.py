@@ -215,9 +215,7 @@ def xor_bytes(a: bytes, b: bytes) -> bytes:
     """Computes bitwise XOR of two equal-length byte sequences."""
     if len(a) != len(b):
         raise ValueError(f"Byte sequences must have equal length: {len(a)} != {len(b)}")
-    if len(a) == 0:
-        raise ValueError("Byte sequences must not be empty")
-    return bytes(x ^ y for x, y in zip(a, b))
+    return (int.from_bytes(a, "big") ^ int.from_bytes(b, "big")).to_bytes(len(a), "big")
 
 
 def concat(*arrays: bytes) -> bytes:

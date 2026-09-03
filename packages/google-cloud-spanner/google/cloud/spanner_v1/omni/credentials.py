@@ -22,6 +22,7 @@ import asyncio
 import base64
 import datetime
 import logging
+import threading
 from collections import namedtuple
 from typing import Any, Callable, MutableMapping, Optional, Sequence
 
@@ -261,6 +262,7 @@ class SpannerOmniCredentials(google.auth.credentials.Credentials):
 
         self.token: Optional[str] = None
         self.expiry: Optional[datetime.datetime] = None
+        self._lock = threading.Lock()
 
     def init_channel(
         self,
@@ -302,66 +304,81 @@ class SpannerOmniCredentials(google.auth.credentials.Credentials):
         """Creates async gRPC interceptors that attach the Bearer token."""
         return self.create_async_auth_interceptors()
 
-    def refresh(self, request: Any = None) -> None:
+    def _perform_refresh_token(self, request: Any = None) -> None:
         """Refreshes the access token by performing the OPAQUE login flow with Spanner Omni.
 
         Args:
             request (Any, optional): Unused; part of google.auth.credentials.Credentials interface.
         """
-        login_channel = None
-        try:
-            if self.use_plain_text:
-                login_channel = grpc.insecure_channel(self.target)
-            elif self.ssl_credentials is not None:
-                login_channel = grpc.secure_channel(self.target, self.ssl_credentials)
-            elif self.ca_certificate:
-                with open(self.ca_certificate, "rb") as f:
-                    ca_cert = f.read()
-                if self.client_certificate and self.client_key:
-                    with open(self.client_certificate, "rb") as f:
-                        client_cert = f.read()
-                    with open(self.client_key, "rb") as f:
-                        private_key = f.read()
-                    ssl_creds = grpc.ssl_channel_credentials(
-                        root_certificates=ca_cert,
-                        private_key=private_key,
-                        certificate_chain=client_cert,
+        with self._lock:
+            if self.valid:
+                return
+            login_channel = None
+            try:
+                if self.use_plain_text:
+                    login_channel = grpc.insecure_channel(self.target)
+                elif self.ssl_credentials is not None:
+                    login_channel = grpc.secure_channel(
+                        self.target, self.ssl_credentials
                     )
-                elif self.client_certificate or self.client_key:
-                    raise ValueError(
-                        "Both client_certificate and client_key must be provided for mTLS"
-                    )
+                elif self.ca_certificate:
+                    with open(self.ca_certificate, "rb") as f:
+                        ca_cert = f.read()
+                    if self.client_certificate and self.client_key:
+                        with open(self.client_certificate, "rb") as f:
+                            client_cert = f.read()
+                        with open(self.client_key, "rb") as f:
+                            private_key = f.read()
+                        ssl_creds = grpc.ssl_channel_credentials(
+                            root_certificates=ca_cert,
+                            private_key=private_key,
+                            certificate_chain=client_cert,
+                        )
+                    elif self.client_certificate or self.client_key:
+                        raise ValueError(
+                            "Both client_certificate and client_key must be provided for mTLS"
+                        )
+                    else:
+                        ssl_creds = grpc.ssl_channel_credentials(
+                            root_certificates=ca_cert
+                        )
+                    login_channel = grpc.secure_channel(self.target, ssl_creds)
                 else:
-                    ssl_creds = grpc.ssl_channel_credentials(root_certificates=ca_cert)
-                login_channel = grpc.secure_channel(self.target, ssl_creds)
-            else:
-                login_channel = grpc.secure_channel(
-                    self.target, grpc.ssl_channel_credentials()
-                )
+                    login_channel = grpc.secure_channel(
+                        self.target, grpc.ssl_channel_credentials()
+                    )
 
-            client = LoginClient(login_channel)
-            proto_token = client.login(self.username, self._password)
+                client = LoginClient(login_channel)
+                proto_token = client.login(self.username, self._password)
 
-            token_bytes = proto_token.SerializeToString()
-            self.token = base64.b64encode(token_bytes).decode("ascii")
+                token_bytes = proto_token.SerializeToString()
+                self.token = base64.b64encode(token_bytes).decode("ascii")
 
-            if proto_token.HasField("expiration_time"):
-                seconds = proto_token.expiration_time.seconds
-                nanos = proto_token.expiration_time.nanos
-                self.expiry = datetime.datetime.fromtimestamp(
-                    seconds + nanos / 1e9, tz=datetime.timezone.utc
-                ).replace(tzinfo=None)
-            else:
-                self.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
-                    tzinfo=None
-                ) + datetime.timedelta(hours=1)
-        except Exception as e:
-            raise google.auth.exceptions.RefreshError(
-                f"Failed to login to Spanner Omni: {e}"
-            ) from e
-        finally:
-            if login_channel is not None:
-                login_channel.close()
+                if proto_token.HasField("expiration_time"):
+                    seconds = proto_token.expiration_time.seconds
+                    nanos = proto_token.expiration_time.nanos
+                    self.expiry = datetime.datetime.fromtimestamp(
+                        seconds + nanos / 1e9, tz=datetime.timezone.utc
+                    ).replace(tzinfo=None)
+                else:
+                    self.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
+                        tzinfo=None
+                    ) + datetime.timedelta(hours=1)
+            except Exception as e:
+                raise google.auth.exceptions.RefreshError(
+                    f"Failed to login to Spanner Omni: {e}"
+                ) from e
+            finally:
+                if login_channel is not None:
+                    login_channel.close()
+
+    def refresh(self, request: Any = None) -> None:
+        """Refreshes the access token.
+
+        Args:
+            request (Any, optional): Unused; part of google.auth.credentials.Credentials interface.
+        """
+        self._perform_refresh_token(request)
 
     def apply(
         self, headers: MutableMapping[str, str], token: Optional[str] = None
