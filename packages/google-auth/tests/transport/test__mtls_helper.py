@@ -18,11 +18,10 @@ import sys
 import tempfile
 from unittest import mock
 
-import pytest  # type: ignore
+import pytest  # type: ignore  # type: ignore
+import urllib3.util
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
-import pytest  # type: ignore
-import urllib3.util
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
