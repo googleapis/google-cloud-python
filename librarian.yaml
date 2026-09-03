@@ -2512,6 +2512,13 @@ libraries:
         google/shopping/merchant/lfp/v1beta:
           - proto-plus-deps=google.shopping.type
       default_version: v1
+  - name: google-shopping-merchant-loyaltycustomers
+    version: 0.0.0
+    apis:
+      - path: google/shopping/merchant/loyaltycustomers/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-shopping-merchant-notifications
     version: 1.4.0
     apis:
