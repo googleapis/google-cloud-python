@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from unittest import mock
+
 from google.auth import exceptions
 from google.auth.aio.transport import mtls
 import pytest
@@ -52,16 +53,17 @@ async def test_check_parameters_cert_matched():
   def callback():
     return CERT_BYTES, KEY_BYTES
 
-  with mock.patch(
-      "google.auth.transport._agent_identity_utils.parse_certificate"
-  ) as mock_parse, mock.patch(
-      "google.auth.transport._agent_identity_utils.calculate_certificate_fingerprint",
-      return_value="FINGERPRINT_A",
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.get_cached_cert_fingerprint",
-      return_value="FINGERPRINT_A",
+  with (
+      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+      mock.patch(
+          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+          return_value="FINGERPRINT_A",
+      ),
+      mock.patch(
+          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+          return_value="FINGERPRINT_A",
+      ),
   ):
-
     cert, key, cached_fp, current_fp = (
         await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
@@ -72,7 +74,7 @@ async def test_check_parameters_cert_matched():
     assert key == KEY_BYTES
     assert cached_fp == "FINGERPRINT_A"
     assert current_fp == "FINGERPRINT_A"
-    assert cached_fp == current_fp  # Indicates no cert rotation needed
+    assert cached_fp == current_fp
 
 
 @pytest.mark.asyncio
@@ -82,16 +84,17 @@ async def test_check_parameters_cert_mismatch_rotation():
   def callback():
     return NEW_CERT_BYTES, NEW_KEY_BYTES
 
-  with mock.patch(
-      "google.auth.transport._agent_identity_utils.parse_certificate"
-  ) as mock_parse, mock.patch(
-      "google.auth.transport._agent_identity_utils.calculate_certificate_fingerprint",
-      return_value="FINGERPRINT_NEW",
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.get_cached_cert_fingerprint",
-      return_value="FINGERPRINT_OLD",
+  with (
+      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+      mock.patch(
+          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+          return_value="FINGERPRINT_NEW",
+      ),
+      mock.patch(
+          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+          return_value="FINGERPRINT_OLD",
+      ),
   ):
-
     cert, key, cached_fp, current_fp = (
         await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
@@ -102,7 +105,7 @@ async def test_check_parameters_cert_mismatch_rotation():
     assert key == NEW_KEY_BYTES
     assert cached_fp == "FINGERPRINT_OLD"
     assert current_fp == "FINGERPRINT_NEW"
-    assert cached_fp != current_fp  # Indicates cert rotation required
+    assert cached_fp != current_fp
 
 
 @pytest.mark.asyncio
@@ -112,15 +115,16 @@ async def test_check_parameters_without_cached_cert():
   def callback():
     return CERT_BYTES, KEY_BYTES
 
-  with mock.patch(
-      "google.auth.transport._agent_identity_utils.parse_certificate"
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.calculate_certificate_fingerprint",
-      return_value="FINGERPRINT_CURRENT",
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.get_cached_cert_fingerprint"
-  ) as mock_get_cached:
-
+  with (
+      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+      mock.patch(
+          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+          return_value="FINGERPRINT_CURRENT",
+      ),
+      mock.patch(
+          "google.auth._agent_identity_utils.get_cached_cert_fingerprint"
+      ) as mock_get_cached,
+  ):
     cert, key, cached_fp, current_fp = (
         await mtls.check_parameters_for_unauthorized_response(
             cached_cert=None, client_cert_callback=callback
@@ -131,7 +135,6 @@ async def test_check_parameters_without_cached_cert():
     assert key == KEY_BYTES
     assert cached_fp == "FINGERPRINT_CURRENT"
     assert current_fp == "FINGERPRINT_CURRENT"
-    # Should not attempt to parse a None cached cert
     mock_get_cached.assert_not_called()
 
 
@@ -142,18 +145,20 @@ async def test_check_parameters_executor_fingerprint_computation():
   def callback():
     return CERT_BYTES, KEY_BYTES
 
-  with mock.patch.object(
-      mtls, "_run_in_executor", wraps=mtls._run_in_executor
-  ) as mock_run_in_executor, mock.patch(
-      "google.auth.transport._agent_identity_utils.parse_certificate"
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.calculate_certificate_fingerprint",
-      return_value="FP_CURRENT",
-  ), mock.patch(
-      "google.auth.transport._agent_identity_utils.get_cached_cert_fingerprint",
-      return_value="FP_CACHED",
+  with (
+      mock.patch.object(
+          mtls, "_run_in_executor", wraps=mtls._run_in_executor
+      ) as mock_run_in_executor,
+      mock.patch("google.auth._agent_identity_utils.parse_certificate"),
+      mock.patch(
+          "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+          return_value="FP_CURRENT",
+      ),
+      mock.patch(
+          "google.auth._agent_identity_utils.get_cached_cert_fingerprint",
+          return_value="FP_CACHED",
+      ),
   ):
-
     cert, key, cached_fp, current_fp = (
         await mtls.check_parameters_for_unauthorized_response(
             cached_cert=CERT_BYTES, client_cert_callback=callback
