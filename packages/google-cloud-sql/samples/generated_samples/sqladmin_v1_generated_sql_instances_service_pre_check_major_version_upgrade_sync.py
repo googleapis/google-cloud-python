@@ -31,20 +31,20 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 def sample_pre_check_major_version_upgrade():
     # Create a client
-    client = sql_v1.SqlInstancesServiceClient()
+    client = sqladmin_v1.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    body = sql_v1.InstancesPreCheckMajorVersionUpgradeRequest()
+    body = sqladmin_v1.InstancesPreCheckMajorVersionUpgradeRequest()
     body.pre_check_major_version_upgrade_context.target_database_version = (
         "SQLSERVER_2025_EXPRESS"
     )
 
-    request = sql_v1.SqlInstancesPreCheckMajorVersionUpgradeRequest(
+    request = sqladmin_v1.SqlInstancesPreCheckMajorVersionUpgradeRequest(
         instance="instance_value",
         project="project_value",
         body=body,

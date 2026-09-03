@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.71.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.70.0...google-cloud-spanner-v3.71.0) (2026-09-03)
+
+
+### Features
+
+* add send and ack mutations Cloud Spanner Queues  ([#17728](https://github.com/googleapis/google-cloud-python/issues/17728)) ([182ff9f](https://github.com/googleapis/google-cloud-python/commit/182ff9f3ad1a1ce34ea0c57ca572c0d397f16ae9)), refs [#17727](https://github.com/googleapis/google-cloud-python/issues/17727)
+
 ## [3.70.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.69.1...google-cloud-spanner-v3.70.0) (2026-08-21)
 
 

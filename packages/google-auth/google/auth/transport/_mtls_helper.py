@@ -24,6 +24,7 @@ import sys
 import tempfile
 from os import environ, getenv, path
 from typing import Generator, List, Optional, Tuple, Union, cast
+from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils, _cloud_sdk, environment_vars, exceptions
 
@@ -840,3 +841,50 @@ def call_client_cert_callback():
         generate_encrypted_key=True
     )
     return cert_bytes, key_bytes
+
+
+_MTLS_HOST_SUFFIXES = (
+    ".mtls.googleapis.com",
+    ".mtls.sandbox.googleapis.com",
+    ".p.googleapis.com",
+)
+_MTLS_EXACT_HOSTS = (
+    "mtls.googleapis.com",
+    "mtls.sandbox.googleapis.com",
+    "p.googleapis.com",
+)
+
+
+def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
+    """Checks if the given URL corresponds to an mTLS or Private Service Connect (PSC) endpoint.
+
+    Args:
+        url (Optional[Union[str, bytes, object]]): The request URL.
+
+    Returns:
+        bool: True if the URL targets an mTLS or PSC endpoint, False otherwise.
+    """
+    if not url:
+        return False
+    if hasattr(url, "url") and isinstance(url.url, (str, bytes)):
+        url = url.url
+    if isinstance(url, bytes):
+        try:
+            url = url.decode("utf-8")
+        except (UnicodeDecodeError, AttributeError):
+            return False
+    elif not isinstance(url, str):
+        url = str(url)
+    try:
+        hostname = urlsplit(url).hostname
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+    if not hostname:
+        return False
+
+    hostname = hostname.rstrip(".").lower()
+    if not hostname:
+        return False
+
+    return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)

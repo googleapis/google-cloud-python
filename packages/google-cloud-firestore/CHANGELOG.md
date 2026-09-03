@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.29.0...google-cloud-firestore-v2.30.0) (2026-09-03)
+
+
+### Features
+
+* **firestore:** configure gRPC message length limits for large documents ([#18220](https://github.com/googleapis/google-cloud-python/issues/18220)) ([6e0f1d9](https://github.com/googleapis/google-cloud-python/commit/6e0f1d96804a44d7f40fac7e82fb52402368a165))
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.28.1...google-cloud-firestore-v2.29.0) (2026-08-21)
 
 

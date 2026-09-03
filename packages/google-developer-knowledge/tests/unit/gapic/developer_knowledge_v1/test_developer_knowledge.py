@@ -2067,6 +2067,7 @@ def test_answer_query_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = developerknowledge.AnswerQueryRequest(
         query="query_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2079,6 +2080,7 @@ def test_answer_query_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         request_msg = developerknowledge.AnswerQueryRequest(
             query="query_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 

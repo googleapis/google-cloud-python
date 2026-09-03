@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 def sample_delete():
     # Create a client
-    client = sql_v1beta4.SqlUsersServiceClient()
+    client = sqladmin_v1beta4.SqlUsersServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlUsersDeleteRequest()
+    request = sqladmin_v1beta4.SqlUsersDeleteRequest()
 
     # Make the request
     response = client.delete(request=request)

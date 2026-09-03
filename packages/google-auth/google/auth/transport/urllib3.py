@@ -408,11 +408,6 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         if headers is None:
             headers = self.headers
 
-        use_mtls = False
-        if self._is_mtls:
-            MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
-            use_mtls = any([prefix in url for prefix in MTLS_URL_PREFIXES])
-
         # Make a copy of the headers. They will be modified by the credentials
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy()
@@ -435,6 +430,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
+                use_mtls = self._is_mtls and _mtls_helper.is_mtls_endpoint(url)
                 if use_mtls:
                     (
                         call_cert_bytes,

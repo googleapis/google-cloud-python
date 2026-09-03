@@ -26,6 +26,24 @@
         }
       ]
     },
+    "packages/google-cloud-sql": {
+      "component": "google-cloud-sql",
+      "extra-files": [
+        "google/cloud/sqladmin/gapic_version.py",
+        "google/cloud/sqladmin_v1/gapic_version.py",
+        "google/cloud/sqladmin_v1beta4/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1beta4.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-workloadidentity": {
       "component": "google-cloud-workloadidentity",
       "extra-files": [
@@ -55,6 +73,18 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2beta.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-shopping-merchant-loyaltycustomers": {
+      "component": "google-shopping-merchant-loyaltycustomers",
+      "extra-files": [
+        "google/shopping/merchant_loyaltycustomers/gapic_version.py",
+        "google/shopping/merchant_loyaltycustomers_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.loyaltycustomers.v1.json",
           "type": "json"
         }
       ]

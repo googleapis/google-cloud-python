@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 def sample_point_in_time_restore():
     # Create a client
-    client = sql_v1.SqlInstancesServiceClient()
+    client = sqladmin_v1.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1.SqlInstancesPointInTimeRestoreRequest(
+    request = sqladmin_v1.SqlInstancesPointInTimeRestoreRequest(
         parent="parent_value",
     )
 
