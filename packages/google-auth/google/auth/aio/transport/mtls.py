@@ -179,7 +179,7 @@ async def get_client_cert_and_key(client_cert_callback=None):
     return has_cert, cert, key
 
 
-async def check_parameters_for_unauthorized_response(client_cert_callback, cached_cert):
+async def check_parameters_for_unauthorized_response(cached_cert, client_cert_callback):
     """Async helper to retrieve certs and compute fingerprints for mTLS rotation."""
     is_mtls, call_cert_bytes, call_key_bytes = await get_client_cert_and_key(
         client_cert_callback
