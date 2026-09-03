@@ -105,6 +105,66 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             mock_insec_channel.return_value.close.assert_called_once()
             self.assertIsNotNone(creds.token)
 
+    def test_refresh_mtls_without_ca_cert(self):
+        creds = SpannerOmniCredentials(
+            "user",
+            "pass",
+            "localhost:9010",
+            client_certificate="/dummy/cert.pem",
+            client_key="/dummy/key.pem",
+        )
+        mock_token_proto = login_pb2.AccessToken(username="user")
+
+        with (
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_data")),
+            mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds,
+            mock.patch("grpc.secure_channel") as mock_sec_channel,
+            mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls,
+        ):
+            mock_client = mock_login_client_cls.return_value
+            mock_client.login.return_value = mock_token_proto
+
+            creds.refresh()
+
+            mock_ssl_creds.assert_called_once_with(
+                root_certificates=None,
+                private_key=b"dummy_data",
+                certificate_chain=b"dummy_data",
+            )
+            mock_sec_channel.assert_called_once_with(
+                "localhost:9010", mock_ssl_creds.return_value
+            )
+            self.assertIsNotNone(creds.token)
+
+    def test_refresh_graceful_fallback_single_client_cert(self):
+        creds = SpannerOmniCredentials(
+            "user",
+            "pass",
+            "localhost:9010",
+            client_certificate="/dummy/cert.pem",
+        )
+        mock_token_proto = login_pb2.AccessToken(username="user")
+
+        with (
+            mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds,
+            mock.patch("grpc.secure_channel") as mock_sec_channel,
+            mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls,
+        ):
+            mock_client = mock_login_client_cls.return_value
+            mock_client.login.return_value = mock_token_proto
+
+            creds.refresh()
+
+            mock_ssl_creds.assert_called_once_with()
+            mock_sec_channel.assert_called_once_with(
+                "localhost:9010", mock_ssl_creds.return_value
+            )
+            self.assertIsNotNone(creds.token)
+
     def test_refresh_failure_wraps_in_refresh_error(self):
         creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
 

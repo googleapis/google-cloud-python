@@ -321,27 +321,27 @@ class SpannerOmniCredentials(google.auth.credentials.Credentials):
                     login_channel = grpc.secure_channel(
                         self.target, self.ssl_credentials
                     )
-                elif self.ca_certificate:
-                    with open(self.ca_certificate, "rb") as f:
-                        ca_cert = f.read()
+                elif self.ca_certificate or (
+                    self.client_certificate and self.client_key
+                ):
+                    ca_cert = None
+                    if self.ca_certificate:
+                        with open(self.ca_certificate, "rb") as f:
+                            ca_cert = f.read()
+
+                    client_cert = None
+                    private_key = None
                     if self.client_certificate and self.client_key:
                         with open(self.client_certificate, "rb") as f:
                             client_cert = f.read()
                         with open(self.client_key, "rb") as f:
                             private_key = f.read()
-                        ssl_creds = grpc.ssl_channel_credentials(
-                            root_certificates=ca_cert,
-                            private_key=private_key,
-                            certificate_chain=client_cert,
-                        )
-                    elif self.client_certificate or self.client_key:
-                        raise ValueError(
-                            "Both client_certificate and client_key must be provided for mTLS"
-                        )
-                    else:
-                        ssl_creds = grpc.ssl_channel_credentials(
-                            root_certificates=ca_cert
-                        )
+
+                    ssl_creds = grpc.ssl_channel_credentials(
+                        root_certificates=ca_cert,
+                        private_key=private_key,
+                        certificate_chain=client_cert,
+                    )
                     login_channel = grpc.secure_channel(self.target, ssl_creds)
                 else:
                     login_channel = grpc.secure_channel(
