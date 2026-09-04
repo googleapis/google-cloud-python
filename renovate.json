@@ -3,7 +3,8 @@
     "config:base",
     "group:all",
     ":disableDependencyDashboard",
-    "schedule:weekly"
+    "schedule:weekly",
+    ":rebaseStalePrs"
   ],
   "ignorePaths": [
     ".github/workflows/unittest.yml",
