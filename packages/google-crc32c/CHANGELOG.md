@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-crc32c-v1.8.0...google-crc32c-v1.8.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* bump pip from 26.1.1 to 26.2 in /packages/google-crc32c/scripts ([#18259](https://github.com/googleapis/google-cloud-python/issues/18259)) ([ef272c7](https://github.com/googleapis/google-cloud-python/commit/ef272c7ebeef65304c441a8d5136464cc0bd202c))
+* **crc32c:** escape the version dot and anchor the pyenv check regex ([#17555](https://github.com/googleapis/google-cloud-python/issues/17555)) ([b6a0275](https://github.com/googleapis/google-cloud-python/commit/b6a027513422507f99662c840068249b84522a5c))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [1.8.0](https://github.com/googleapis/python-crc32c/compare/v1.7.1...v1.8.0) (2025-12-15)
 
 
