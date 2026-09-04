@@ -315,6 +315,9 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
 
     final_success_response = [MutateRowsResponse(entries=[MutateRowsResponse.Entry()])]
 
+    # Explicit timestamp ensures mutations are idempotent and eligible for retry.
+    timestamp = datetime(2023, 1, 1, tzinfo=timezone.utc)
+
     with mock.patch.object(
         data_table._instance._client.table_data_client, "mutate_rows"
     ) as mutate_mock:
@@ -327,11 +330,11 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
 
         row = data_table.direct_row(ROW_KEY)
         rows_to_delete.append(row)
-        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         row_2 = data_table.direct_row(ROW_KEY_ALT)
         rows_to_delete.append(row_2)
-        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         statuses = data_table.mutate_rows([row, row_2])
         assert statuses[0].code == Code.OK
@@ -347,11 +350,11 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
 
         row = data_table.direct_row(ROW_KEY)
         rows_to_delete.append(row)
-        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         row_2 = data_table.direct_row(ROW_KEY_ALT)
         rows_to_delete.append(row_2)
-        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         statuses = data_table.mutate_rows([row, row_2])
         assert statuses[0].code == Code.OK
@@ -370,11 +373,11 @@ def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
 
         row = data_table.direct_row(ROW_KEY)
         rows_to_delete.append(row)
-        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         row_2 = data_table.direct_row(ROW_KEY_ALT)
         rows_to_delete.append(row_2)
-        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+        row_2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1, timestamp=timestamp)
 
         do_nothing_retry = DEFAULT_RETRY.with_deadline(0.0)
 
