@@ -2294,7 +2294,7 @@ libraries:
       metadata_name_override: workstations
       default_version: v1
   - name: google-crc32c
-    version: 1.8.0
+    version: 1.8.1
     python:
       library_type: OTHER
   - name: google-developer-knowledge
