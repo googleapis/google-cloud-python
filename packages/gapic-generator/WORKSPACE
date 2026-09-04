@@ -137,49 +137,7 @@ load(
 gapic_generator_python()
 gapic_generator_register_toolchains()
 
-<<<<<<< HEAD
-_grpc_version = "1.71.0"
-
-_grpc_sha256 = "9313c3f8f4dd3341597f152d506a50caf571fe40f886e24ea9078891990df285"
-
-http_archive(
-    name = "com_github_grpc_grpc",
-    sha256 = _grpc_sha256,
-    strip_prefix = "grpc-%s" % _grpc_version,
-    urls = ["https://github.com/grpc/grpc/archive/v%s.zip" % _grpc_version],
-)
-# instantiated in grpc_deps().
-
-_protobuf_version = "30.2"
-
-_protobuf_sha256 = "07a43d88fe5a38e434c7f94129cad56a4c43a51f99336074d0799c2f7d4e44c5"
-
-http_archive(
-    name = "com_google_protobuf",
-    sha256 = _protobuf_sha256,
-    strip_prefix = "protobuf-%s" % _protobuf_version,
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.tar.gz" % _protobuf_version],
-)
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-
-grpc_deps()
-
-http_archive(
-    name = "rules_cc",
-    urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.2.22/rules_cc-0.2.22.tar.gz"],
-    sha256 = "81c10a95a5c22d838276ee90d712635d6042419fdfca5ef88328226b6321e53b",
-    strip_prefix = "rules_cc-0.2.22",
-)
-
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps", "PROTOBUF_MAVEN_ARTIFACTS")
-# This is actually already done within grpc_deps but calling this for Bazel convention.
-protobuf_deps()
-
-# Add rules_java to resolve the following error
-# `The repository '@compatibility_proxy' could not be resolved: Repository '@compatibility_proxy' is not defined`
-=======
 # Add rules_java to resolve compatibility proxy errors
->>>>>>> origin/main
 load("@rules_java//java:rules_java_deps.bzl", "rules_java_dependencies")
 rules_java_dependencies()
 
