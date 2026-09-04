@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-confidentialcomputing/#history
 
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.11.0...google-cloud-confidentialcomputing-v0.11.1) (2026-09-03)
+
+
+### Features
+
+* update API sources and regenerate ([#18267](https://github.com/googleapis/google-cloud-python/issues/18267)) ([813a5c1](https://github.com/googleapis/google-cloud-python/commit/813a5c17cbe42b3a8386e7ad7475a3d7ada33842))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.10.0...google-cloud-confidentialcomputing-v0.11.0) (2026-06-11)
 
 

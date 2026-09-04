@@ -24,8 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 import pytest
 
-from google.api_core import exceptions
-from google.api_core import retry_async
+from google.api_core import exceptions, retry_async
 from google.api_core.retry import retry_streaming_async
 
 from ...unit.retry.test_retry_base import Test_BaseRetry
@@ -46,6 +45,7 @@ async def test_retry_streaming_target_dynamic_backoff(sleep):
     sleep_generator should be iterated after on_error, to support dynamic backoff
     """
     from functools import partial
+
     from google.api_core.retry.retry_streaming_async import retry_target_stream
 
     sleep.side_effect = RuntimeError("stop after sleep")
@@ -558,6 +558,7 @@ class TestAsyncStreamingRetry(Test_BaseRetry):
         test when timeout is exceeded
         """
         import time
+
         from google.api_core.retry import RetryFailureReason
         from google.api_core.retry.retry_streaming_async import retry_target_stream
 

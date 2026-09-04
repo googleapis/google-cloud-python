@@ -383,7 +383,7 @@ class BigtableAsyncClient:
             self._client._transport.read_rows
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -514,7 +514,7 @@ class BigtableAsyncClient:
             self._client._transport.sample_row_keys
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -664,7 +664,7 @@ class BigtableAsyncClient:
             self._client._transport.mutate_row
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -801,7 +801,7 @@ class BigtableAsyncClient:
             self._client._transport.mutate_rows
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -979,7 +979,7 @@ class BigtableAsyncClient:
             self._client._transport.check_and_mutate_row
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -1098,7 +1098,7 @@ class BigtableAsyncClient:
             self._client._transport.ping_and_warm
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<name>projects/[^/]+/instances/[^/]+)$")
         regex_match = routing_param_regex.match(request.name)
@@ -1240,7 +1240,7 @@ class BigtableAsyncClient:
             self._client._transport.read_modify_write_row
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<table_name>projects/[^/]+/instances/[^/]+/tables/[^/]+)$"
@@ -1591,7 +1591,7 @@ class BigtableAsyncClient:
             self._client._transport.prepare_query
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<name>projects/[^/]+/instances/[^/]+)$")
         regex_match = routing_param_regex.match(request.instance_name)
@@ -1711,7 +1711,7 @@ class BigtableAsyncClient:
             self._client._transport.execute_query
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<name>projects/[^/]+/instances/[^/]+)$")
         regex_match = routing_param_regex.match(request.instance_name)
@@ -1750,9 +1750,7 @@ class BigtableAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("BigtableAsyncClient",)

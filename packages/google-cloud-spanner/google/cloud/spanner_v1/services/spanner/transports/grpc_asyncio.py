@@ -32,7 +32,10 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+from google.cloud.spanner_v1.metrics.metrics_interceptor import (
+    AsyncMetricsInterceptor,
+    MetricsInterceptor,
+)
 from google.cloud.spanner_v1.types import (
     commit_response,
     location,
@@ -326,6 +329,26 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
                     ("grpc.keepalive_time_ms", 120000),
                 ],
             )
+
+        if metrics_interceptor is not None:
+            self._metrics_interceptor = AsyncMetricsInterceptor()
+            # Attach interceptor directly since grpc.aio does not provide intercept_channel.
+            if hasattr(self._grpc_channel, "_unary_unary_interceptors"):
+                self._grpc_channel._unary_unary_interceptors.append(
+                    self._metrics_interceptor
+                )
+            if hasattr(self._grpc_channel, "_unary_stream_interceptors"):
+                self._grpc_channel._unary_stream_interceptors.append(
+                    self._metrics_interceptor
+                )
+            if hasattr(self._grpc_channel, "_stream_unary_interceptors"):
+                self._grpc_channel._stream_unary_interceptors.append(
+                    self._metrics_interceptor
+                )
+            if hasattr(self._grpc_channel, "_stream_stream_interceptors"):
+                self._grpc_channel._stream_stream_interceptors.append(
+                    self._metrics_interceptor
+                )
 
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)

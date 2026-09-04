@@ -15,23 +15,25 @@
 #
 import abc
 import re
-from typing import Awaitable, Callable, Optional, Sequence, Union
 import warnings
+from typing import Awaitable, Callable, Optional, Sequence, Union
 
 import google.auth  # type: ignore
+import google.protobuf
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 from google.protobuf import empty_pb2, json_format  # type: ignore
 from grpc import Compression
 
 import google.api_core  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import general_helpers
+from google.api_core import (
+    gapic_v1,  # type: ignore
+    general_helpers,
+    version,
+)
 from google.api_core import retry as retries  # type: ignore
-from google.api_core import version
 
 PROTOBUF_VERSION = google.protobuf.__version__
 

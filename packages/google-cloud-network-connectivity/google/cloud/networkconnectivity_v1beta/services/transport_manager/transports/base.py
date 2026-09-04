@@ -37,9 +37,7 @@ from google.cloud.networkconnectivity_v1beta.types import transport_manager
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class TransportManagerTransport(abc.ABC):
@@ -158,6 +156,11 @@ class TransportManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.parse_from_activation_key: gapic_v1.method.wrap_method(
+                self.parse_from_activation_key,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_transports: gapic_v1.method.wrap_method(
                 self.list_transports,
                 default_timeout=None,
@@ -269,6 +272,18 @@ class TransportManagerTransport(abc.ABC):
         Union[
             transport_manager.RemoteTransportProfile,
             Awaitable[transport_manager.RemoteTransportProfile],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def parse_from_activation_key(
+        self,
+    ) -> Callable[
+        [transport_manager.ParseFromActivationKeyRequest],
+        Union[
+            transport_manager.ParseFromActivationKeyResponse,
+            Awaitable[transport_manager.ParseFromActivationKeyResponse],
         ],
     ]:
         raise NotImplementedError()

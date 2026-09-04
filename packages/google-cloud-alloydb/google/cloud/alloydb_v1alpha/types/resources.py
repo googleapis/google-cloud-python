@@ -1482,6 +1482,9 @@ class Instance(proto.Message):
         psc_instance_config (google.cloud.alloydb_v1alpha.types.Instance.PscInstanceConfig):
             Optional. The configuration for Private
             Service Connect (PSC) for the instance.
+        psc_instance_info (google.cloud.alloydb_v1alpha.types.Instance.PscInstanceInfo):
+            Output only. Information about the Private
+            Service Connect (PSC) for the instance.
         network_config (google.cloud.alloydb_v1alpha.types.Instance.InstanceNetworkConfig):
             Optional. Instance-level network
             configuration.
@@ -1599,6 +1602,26 @@ class Instance(proto.Message):
         AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
+
+    class PscAutoDnsState(proto.Enum):
+        r"""The state of the PSC auto DNS.
+
+        Values:
+            PSC_AUTO_DNS_STATE_UNSPECIFIED (0):
+                The state is unspecified. For old instances, this means the
+                PSC auto DNS is disabled. For new instances, this means the
+                PSC auto DNS is enabled by default. Use
+                ``effective_psc_auto_dns_enabled`` to check the effective
+                state of the PSC auto DNS.
+            PSC_AUTO_DNS_STATE_ENABLED (1):
+                Enables the PSC auto DNS for the instance.
+            PSC_AUTO_DNS_STATE_DISABLED (2):
+                Disables the PSC auto DNS for the instance.
+        """
+
+        PSC_AUTO_DNS_STATE_UNSPECIFIED = 0
+        PSC_AUTO_DNS_STATE_ENABLED = 1
+        PSC_AUTO_DNS_STATE_DISABLED = 2
 
     class ActivationPolicy(proto.Enum):
         r"""Specifies whether an instance needs to spin up.
@@ -2027,7 +2050,34 @@ class Instance(proto.Message):
             psc_auto_connections (MutableSequence[google.cloud.alloydb_v1alpha.types.Instance.PscAutoConnectionConfig]):
                 Optional. Configurations for setting up PSC
                 service automation.
+            psc_auto_dns_state (google.cloud.alloydb_v1alpha.types.Instance.PscAutoDnsState):
+                Optional. Configuration for setting up PSC
+                auto DNS for the instance.
+            psc_auto_connection_policy_state (google.cloud.alloydb_v1alpha.types.Instance.PscInstanceConfig.PscAutoConnectionPolicyState):
+                Optional. Configuration for setting up PSC
+                auto connection for the instance.
         """
+
+        class PscAutoConnectionPolicyState(proto.Enum):
+            r"""The state of the PSC auto connection policy.
+
+            Values:
+                PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED (0):
+                    The state is unspecified. For old instances,
+                    this means the PSC auto connection is disabled.
+                    For new instances, this means the PSC auto
+                    connection is enabled by default.
+                ENABLED (1):
+                    Enables the PSC auto connection for the
+                    instance.
+                DISABLED (2):
+                    Disables the PSC auto connection for the
+                    instance.
+            """
+
+            PSC_AUTO_CONNECTION_POLICY_STATE_UNSPECIFIED = 0
+            ENABLED = 1
+            DISABLED = 2
 
         service_attachment_link: str = proto.Field(
             proto.STRING,
@@ -2054,6 +2104,56 @@ class Instance(proto.Message):
                 number=9,
                 message="Instance.PscAutoConnectionConfig",
             )
+        )
+        psc_auto_dns_state: "Instance.PscAutoDnsState" = proto.Field(
+            proto.ENUM,
+            number=11,
+            enum="Instance.PscAutoDnsState",
+        )
+        psc_auto_connection_policy_state: "Instance.PscInstanceConfig.PscAutoConnectionPolicyState" = proto.Field(
+            proto.ENUM,
+            number=13,
+            enum="Instance.PscInstanceConfig.PscAutoConnectionPolicyState",
+        )
+
+    class PscInstanceInfo(proto.Message):
+        r"""Information about the Private Service Connect (PSC) for the
+        instance.
+
+        Attributes:
+            effective_psc_auto_dns_enabled (bool):
+                Output only. The effective state of the PSC
+                auto DNS for the instance.
+            psc_auto_dns_names (MutableSequence[str]):
+                Output only. Specifies the auto DNS names for
+                the instance.
+            effective_psc_auto_connection_policy (bool):
+                Output only. Indicates if the PSC auto
+                connection policy is enabled for the instance.
+                For older instances, this will be off by
+                default, but for newer instances, this will be
+                auto-enabled.
+            service_connection_policy (str):
+                Output only. The PSC service connection policy name. The
+                format is
+                "projects/<PROJECT_ID>/regions/<REGION_ID>/serviceConnectionPolicies/<alloydb-$NETWORK-$RANDOM-scp>".
+        """
+
+        effective_psc_auto_dns_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        psc_auto_dns_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        effective_psc_auto_connection_policy: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        service_connection_policy: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class InstanceNetworkConfig(proto.Message):
@@ -2287,6 +2387,11 @@ class Instance(proto.Message):
         number=28,
         message=PscInstanceConfig,
     )
+    psc_instance_info: PscInstanceInfo = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message=PscInstanceInfo,
+    )
     network_config: InstanceNetworkConfig = proto.Field(
         proto.MESSAGE,
         number=29,
@@ -2346,6 +2451,9 @@ class ConnectionInfo(proto.Message):
         psc_dns_name (str):
             Output only. The DNS name to use with PSC for
             the Instance.
+        psc_auto_dns_name (str):
+            Output only. Specifies the DNS name to use
+            with PSC service automation for the Instance.
     """
 
     name: str = proto.Field(
@@ -2371,6 +2479,10 @@ class ConnectionInfo(proto.Message):
     psc_dns_name: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    psc_auto_dns_name: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 

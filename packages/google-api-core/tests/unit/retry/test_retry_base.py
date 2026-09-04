@@ -18,10 +18,9 @@ from unittest import mock
 
 import pytest
 import requests.exceptions
-
-from google.api_core import exceptions
-from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
+
+from google.api_core import exceptions, retry
 
 
 def test_if_exception_type():
@@ -64,8 +63,7 @@ def test_build_retry_error_empty_list():
     attempt to build a retry error with no errors encountered
     should return a generic RetryError
     """
-    from google.api_core.retry import build_retry_error
-    from google.api_core.retry import RetryFailureReason
+    from google.api_core.retry import RetryFailureReason, build_retry_error
 
     reason = RetryFailureReason.NON_RETRYABLE_ERROR
     src, cause = build_retry_error([], reason, 10)
@@ -78,8 +76,7 @@ def test_build_retry_error_preserves_cause():
     """
     build_retry_error should preserve __cause__ from chained exceptions.
     """
-    from google.api_core.retry import build_retry_error
-    from google.api_core.retry import RetryFailureReason
+    from google.api_core.retry import RetryFailureReason, build_retry_error
 
     # Create an exception with explicit cause
     cause = ValueError("root cause")
@@ -98,8 +95,7 @@ def test_build_retry_error_timeout_message():
     """
     should provide helpful error message when timeout is reached
     """
-    from google.api_core.retry import build_retry_error
-    from google.api_core.retry import RetryFailureReason
+    from google.api_core.retry import RetryFailureReason, build_retry_error
 
     reason = RetryFailureReason.TIMEOUT
     cause = RuntimeError("timeout")
@@ -115,8 +111,7 @@ def test_build_retry_error_empty_timeout():
     attempt to build a retry error when timeout is None
     should return a generic timeout error message
     """
-    from google.api_core.retry import build_retry_error
-    from google.api_core.retry import RetryFailureReason
+    from google.api_core.retry import RetryFailureReason, build_retry_error
 
     reason = RetryFailureReason.TIMEOUT
     src, _ = build_retry_error([], reason, None)

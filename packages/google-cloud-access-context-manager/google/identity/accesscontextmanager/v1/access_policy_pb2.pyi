@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -56,7 +57,11 @@ class AccessPolicy(_message.Message):
         parent: _Optional[str] = ...,
         title: _Optional[str] = ...,
         scopes: _Optional[_Iterable[str]] = ...,
-        create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        create_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
         etag: _Optional[str] = ...,
     ) -> None: ...

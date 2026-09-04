@@ -6,7 +6,8 @@
 
 from decimal import Decimal
 
-from django.db.models import F
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 
 from django_spanner.compiler import SQLCompiler
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
@@ -271,3 +272,53 @@ class TestLookups(SpannerSimpleTestClass):
         )
         self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
+
+    def test_icontains_with_lhs_params(self):
+        qs = (
+            Author.objects.annotate(greeting=Concat(Value("User: "), "name"))
+            .filter(greeting__icontains="john")
+            .values("name")
+        )
+        compiler = SQLCompiler(qs.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertEqual(params, ("User: ", "", "", "(?i)john"))
+
+    def test_iexact_with_lhs_params(self):
+        qs = (
+            Author.objects.annotate(greeting=Concat(Value("User: "), "name"))
+            .filter(greeting__iexact="john")
+            .values("name")
+        )
+        compiler = SQLCompiler(qs.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertEqual(params, ("User: ", "", "", "^(?i)john$"))
+
+    def test_istartswith_with_lhs_params(self):
+        qs = (
+            Author.objects.annotate(greeting=Concat(Value("User: "), "name"))
+            .filter(greeting__istartswith="john")
+            .values("name")
+        )
+        compiler = SQLCompiler(qs.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertEqual(params, ("User: ", "", "", "(?i)^john"))
+
+    def test_iendswith_with_lhs_params(self):
+        qs = (
+            Author.objects.annotate(greeting=Concat(Value("User: "), "name"))
+            .filter(greeting__iendswith="john")
+            .values("name")
+        )
+        compiler = SQLCompiler(qs.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertEqual(params, ("User: ", "", "", "(?i)john$"))
+
+    def test_iregex_with_lhs_params(self):
+        qs = (
+            Author.objects.annotate(greeting=Concat(Value("User: "), "name"))
+            .filter(greeting__iregex="^john")
+            .values("name")
+        )
+        compiler = SQLCompiler(qs.query, self.connection, "default")
+        sql, params = compiler.as_sql()
+        self.assertEqual(params, ("User: ", "", "", "(?i)^john"))

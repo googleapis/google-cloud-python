@@ -296,7 +296,7 @@ replacements:
       |stable| |pypi| |versions|
 
       `Google Cloud Storage`_ is a managed service for storing unstructured data. Cloud Storage
-      allows world-wide storage and retrieval of any amount of data at any time. You can use
+      allows worldwide storage and retrieval of any amount of data at any time. You can use
       Cloud Storage for a range of scenarios including serving website content, storing data
       for archival and disaster recovery, or distributing large data objects to users via direct download.
 
@@ -335,13 +335,13 @@ replacements:
       Quick Start
       -----------
 
-      In order to use this library, you first need to go through the following steps.
+      To use this library, you first need to follow these steps.
       A step-by-step guide may also be found in `Get Started with Client Libraries`_.
 
       1. `Select or create a Cloud Platform project.`_
       2. `Enable billing for your project.`_
       3. `Enable the Google Cloud Storage API.`_
-      4. `Setup Authentication.`_
+      4. `Set up Authentication.`_
 
       .. _Get Started with Client Libraries: https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python
       .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
@@ -445,7 +445,7 @@ replacements:
 
           pip install google-cloud-storage[tracing]
 
-      Set the ``ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES`` environment variable to selectively opt-in tracing for the Cloud Storage client:
+      Set the ``ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES`` environment variable to opt in selectively to tracing for the Cloud Storage client:
 
       .. code-block:: console
 
@@ -491,8 +491,8 @@ replacements:
       Feedback Welcome
       ~~~~~~~~~~~~~~~~
 
-      If you experience that backwards compatibility for your application is broken
-      with this major version release, please let us know through the Github issues
+      If you experience any break in backwards compatibility for your application
+      with this major version release, please let us know through the GitHub issues
       system. While some breaks of backwards compatibility may be unavoidable due to
       new features in the major version release, we will do our best to minimize
       them. Thank you.
@@ -518,7 +518,7 @@ replacements:
       ``google-resumable-media`` library without explicitly installing that library. So
       as not to break user applications following this pattern,
       ``google-resumable-media`` is still in the list of dependencies in this package's
-      setup.py file. Applications which do not import directly from
+      setup.py file. Applications that do not import directly from
       ``google-resumable-media`` can safely disregard this dependency.
       This backwards compatibility feature **will be removed** in a future major
       version update. Please migrate to using the ``google.cloud.storage.exceptions``
@@ -536,7 +536,7 @@ replacements:
       ``transfer_manager.py`` still support crc32c only.
 
       Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
-      when checksum is set to None, as was the previous default, would not throw an
+      when checksum is set to None, as was the previous default, it would not throw an
       error if passed a file in string mode under some circumstances. With the new
       defaults, it will now raise a TypeError. Please use a file opened in bytes
       reading mode as required.
@@ -597,16 +597,15 @@ replacements:
           # experimental in this SDK. More info in b/465352227
           "grpc": [
               "google-api-core[grpc] >= 2.27.0, < 3.0.0",
-              "grpcio >= 1.59.0, < 2.0.0; python_version < '3.14'",
+              "grpcio >= 1.59.0, < 2.0.0",
               "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "grpcio-status >= 1.59.0, < 2.0.0; python_version < '3.14'",
+              "grpcio-status >= 1.59.0, < 2.0.0",
               "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-              "proto-plus >= 1.22.3, <2.0.0; python_version < '3.13'",
-              "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-              "protobuf >= 4.25.8, < 8.0.0",
-              "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
+              "proto-plus >= 1.26.1, <2.0.0",
+              "protobuf >= 6.33.5, < 8.0.0",
+              "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
           ],
-          "protobuf": ["protobuf >= 3.20.2, < 7.0.0"],
+          "protobuf": ["protobuf >= 6.33.5, < 8.0.0"],
           "tracing": [
               "opentelemetry-api >= 1.1.0, < 2.0.0",
           ],
@@ -640,7 +639,7 @@ replacements:
       packages/google-cloud-storage/testing/constraints-3.10.txt
     ]
     before: |
-      google-api-core==2.24.2
+      google-api-core==2.28.0
       google-auth==2.14.1
       grpcio==1.59.0
       proto-plus==1.26.1
@@ -650,14 +649,14 @@ replacements:
       google-auth==2.26.1
       # cryptography is a direct dependency of google-auth
       cryptography==38.0.0
-      google-api-core==2.27.0
+      google-api-core==2.28.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
       grpcio==1.59.0
       grpcio-status==1.59.0
-      proto-plus==1.22.3
-      protobuf==4.25.8
-      grpc-google-iam-v1==0.14.0
+      proto-plus==1.26.1
+      protobuf==6.33.5
+      grpc-google-iam-v1==0.14.2
       opentelemetry-api==1.1.0
       requests==2.22.0
       google-crc32c==1.6.0
@@ -804,4 +803,34 @@ replacements:
           # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
           # Enable mypy once this repo has been updated for mypy evaluation.
           session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
+
+          session.install("-e", ".")
+          session.install(
+              "mypy",
+              "types-setuptools",
+              "types-protobuf",
+              "types-requests",
+          )
+          session.run(
+              "mypy",
+              f"--config-file={MYPY_CONFIG_FILE}",
+              "-p",
+              "google",
+              *session.posargs,
+          )
+    count: 1
+  - paths: [
+      packages/google-cloud-storage/noxfile.py,
+    ]
+    before: |
+      # Install all test dependencies, then install this package in-place.\n
+          constraints_path = str\(
+    after: |
+      # Install all test dependencies, then install this package in-place.
+
+          if session.python == "3.15":
+              session.skip(
+                  "Skipping 3.15 until compatible wheels are available for google-crc32c"
+              )
+          constraints_path = str(
     count: 1

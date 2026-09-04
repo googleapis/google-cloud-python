@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_issueresolution_v1._compat import transcode_request
 from google.shopping.merchant_issueresolution_v1.types import issueresolution
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IssueResolutionServiceRestInterceptor:
@@ -413,21 +413,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
             """
 
             http_options = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_http_options()
-
             request, metadata = self._interceptor.pre_render_account_issues(
                 request, metadata
             )
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIssueResolutionServiceRestTransport._BaseRenderAccountIssues,
+                    "_BaseRenderAccountIssues__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -573,21 +570,18 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
             """
 
             http_options = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_http_options()
-
             request, metadata = self._interceptor.pre_render_product_issues(
                 request, metadata
             )
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIssueResolutionServiceRestTransport._BaseRenderProductIssues,
+                    "_BaseRenderProductIssues__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -730,19 +724,16 @@ class IssueResolutionServiceRestTransport(_BaseIssueResolutionServiceRestTranspo
             """
 
             http_options = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_http_options()
-
             request, metadata = self._interceptor.pre_trigger_action(request, metadata)
-            transcoded_request = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIssueResolutionServiceRestTransport._BaseTriggerAction._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIssueResolutionServiceRestTransport._BaseTriggerAction,
+                    "_BaseTriggerAction__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

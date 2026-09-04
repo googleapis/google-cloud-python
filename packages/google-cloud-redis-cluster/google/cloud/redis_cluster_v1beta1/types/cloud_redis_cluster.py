@@ -824,6 +824,15 @@ class Cluster(proto.Message):
         encryption_info (google.cloud.redis_cluster_v1beta1.types.EncryptionInfo):
             Output only. Encryption information of the
             data at rest of the cluster.
+        async_cluster_endpoints_deletion_enabled (bool):
+            Optional. If true, cluster endpoints that are
+            created and registered by customers can be
+            deleted asynchronously. That is, such a cluster
+            endpoint can be de-registered before the
+            forwarding rules in the cluster endpoint are
+            deleted.
+
+            This field is a member of `oneof`_ ``_async_cluster_endpoints_deletion_enabled``.
         server_ca_mode (google.cloud.redis_cluster_v1beta1.types.ServerCaMode):
             Optional. Server CA mode for the cluster.
 
@@ -1103,6 +1112,11 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=43,
         message="EncryptionInfo",
+    )
+    async_cluster_endpoints_deletion_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=44,
+        optional=True,
     )
     server_ca_mode: "ServerCaMode" = proto.Field(
         proto.ENUM,

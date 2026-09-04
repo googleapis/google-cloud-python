@@ -86,7 +86,8 @@ class EndpointPolicy(proto.Message):
             authentication is disabled(open) for this
             endpoint.
         client_tls_policy (str):
-            Optional. A URL referring to a ClientTlsPolicy resource.
+            Optional. Deprecated: This field is not used and is a no-op.
+            A URL referring to a ClientTlsPolicy resource.
             ClientTlsPolicy can be set to specify the authentication for
             traffic from the proxy to the actual endpoints. More
             specifically, it is applied to the outgoing traffic from the

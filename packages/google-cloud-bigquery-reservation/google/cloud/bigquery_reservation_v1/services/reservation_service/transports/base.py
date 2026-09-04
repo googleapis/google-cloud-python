@@ -35,9 +35,7 @@ from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reser
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ReservationServiceTransport(abc.ABC):
@@ -394,6 +392,11 @@ class ReservationServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_reservation_group: gapic_v1.method.wrap_method(
+                self.update_reservation_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -695,6 +698,15 @@ class ReservationServiceTransport(abc.ABC):
             reservation.ListReservationGroupsResponse,
             Awaitable[reservation.ListReservationGroupsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_reservation_group(
+        self,
+    ) -> Callable[
+        [reservation.UpdateReservationGroupRequest],
+        Union[reservation.ReservationGroup, Awaitable[reservation.ReservationGroup]],
     ]:
         raise NotImplementedError()
 

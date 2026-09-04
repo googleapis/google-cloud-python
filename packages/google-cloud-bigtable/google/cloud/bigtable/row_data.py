@@ -224,7 +224,7 @@ class PartialRowsData(object):
             retry_request = self._create_retry_request()
 
         self._row_merger = _RowMerger(self._row_merger.last_seen_row_key)
-        self.response_iterator = self.read_method(retry_request)
+        self.response_iterator = self.read_method(retry_request, retry=self.retry)
 
     def _read_next(self):
         """Helper for :meth:`__iter__`."""

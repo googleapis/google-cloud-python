@@ -17,7 +17,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
 name = "google-cloud-core"
@@ -28,14 +27,15 @@ description = "Google Cloud API client core library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core >= 2.11.0, <3.0.0",
+    "google-api-core >= 2.28.0, <3.0.0",
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
 ]
 extras = {
     "grpc": [
-        "grpcio >= 1.47.0, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "grpcio-status >= 1.47.0, < 2.0.0",
+        "grpcio-status >= 1.59.0, < 2.0.0",
+        "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     ],
 }
 

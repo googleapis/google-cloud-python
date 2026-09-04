@@ -514,8 +514,12 @@ class Credentials(
 
         Returns:
             Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
-                 if the service account email is missing.
+                 if the service account email is missing. Returns None if the subject is populated.
         """
+        if self._subject:
+            # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
+            return None
+
         if not self.service_account_email:
             _LOGGER.error(
                 "Service account email is required to build the Regional Access Boundary lookup URL for service account credentials."

@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-compute-v1beta/#history
 
+## [0.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.3...google-cloud-compute-v1beta-v0.12.4) (2026-09-03)
+
+
+### Bug Fixes
+
+* correct client version strings ([#18282](https://github.com/googleapis/google-cloud-python/issues/18282)) ([ffa6e54](https://github.com/googleapis/google-cloud-python/commit/ffa6e542ae1a09a43761a63aa5f8e872c90e708e))
+
+## [0.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.2...google-cloud-compute-v1beta-v0.12.3) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
+## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.1...google-cloud-compute-v1beta-v0.12.2) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
 ## [0.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.0...google-cloud-compute-v1beta-v0.12.1) (2026-07-16)
 
 

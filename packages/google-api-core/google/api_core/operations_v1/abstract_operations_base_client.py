@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import OrderedDict
 import os
 import re
+from collections import OrderedDict
 from typing import Dict, Optional, Type, Union
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,8 +358,7 @@ class AbstractOperationsBaseClient(metaclass=AbstractOperationsBaseClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = transport
         else:

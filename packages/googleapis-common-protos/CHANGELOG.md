@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.75.3](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.2...googleapis-common-protos-v1.75.3) (2026-09-03)
+
+
+### Bug Fixes
+
+* **googleapis-common-protos:** remove deprecated license classifier ([#18242](https://github.com/googleapis/google-cloud-python/issues/18242)) ([6f0216a](https://github.com/googleapis/google-cloud-python/commit/6f0216a2dc492236c80822de4439c8ab2c6bd9be)), refs [#18235](https://github.com/googleapis/google-cloud-python/issues/18235)
+
+## [1.75.2](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.1...googleapis-common-protos-v1.75.2) (2026-08-21)
+
+
+### Documentation
+
+* **django-spanner, common-protos:** centralize CONTRIBUTING.rst pointers ([#18041](https://github.com/googleapis/google-cloud-python/issues/18041)) ([2b056ab](https://github.com/googleapis/google-cloud-python/commit/2b056ab2788411bb555c6697a94d76c83ca2a863))
+
+## [1.75.1](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.0...googleapis-common-protos-v1.75.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [1.75.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.74.0...googleapis-common-protos-v1.75.0) (2026-05-06)
 
 ## [1.74.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.73.1...googleapis-common-protos-v1.74.0) (2026-04-02)

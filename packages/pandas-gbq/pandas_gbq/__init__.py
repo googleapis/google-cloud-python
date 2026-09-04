@@ -6,6 +6,7 @@ import logging
 import sys
 import warnings
 
+from pandas_gbq import arrow
 from pandas_gbq import version as pandas_gbq_version
 from pandas_gbq.contexts import Context, context
 from pandas_gbq.core.sample import sample
@@ -32,4 +33,5 @@ __all__ = [
     "Context",
     "context",
     "sample",
+    "arrow",
 ]

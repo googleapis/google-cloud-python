@@ -15,32 +15,32 @@
 """
 Generator wrapper for retryable async streaming RPCs.
 """
+
 from __future__ import annotations
 
+import asyncio
+import functools
+import sys
+import time
 from typing import (
-    cast,
+    TYPE_CHECKING,
     Any,
+    AsyncGenerator,
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Callable,
     Iterable,
-    AsyncIterator,
-    AsyncIterable,
-    Awaitable,
     TypeVar,
-    AsyncGenerator,
-    TYPE_CHECKING,
+    cast,
 )
 
-import asyncio
-import time
-import sys
-import functools
-
-from google.api_core.retry.retry_base import _BaseRetry
-from google.api_core.retry.retry_base import _retry_error_helper
-from google.api_core.retry import exponential_sleep_generator
-from google.api_core.retry import build_retry_error
-from google.api_core.retry import RetryFailureReason
-
+from google.api_core.retry import (
+    RetryFailureReason,
+    build_retry_error,
+    exponential_sleep_generator,
+)
+from google.api_core.retry.retry_base import _BaseRetry, _retry_error_helper
 
 if TYPE_CHECKING:
     if sys.version_info >= (3, 10):

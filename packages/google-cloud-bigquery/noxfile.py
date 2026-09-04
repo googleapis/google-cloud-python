@@ -38,7 +38,7 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -180,6 +180,10 @@ def default(session, install_extras=True):
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+        )
 
     install_extras = True
     if test_type == "unit_noextras":

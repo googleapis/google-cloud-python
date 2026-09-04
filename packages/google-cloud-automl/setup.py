@@ -42,7 +42,7 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.24.2, <3.0.0",
+    "google-api-core[grpc] >= 2.28.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -52,7 +52,6 @@ dependencies = [
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 extras = {
-    "libcst": "libcst >= 0.2.5",
     "pandas": ["pandas>=1.3.4"],
     "storage": [
         "google-cloud-storage >=2.14.0, <4.0.0",

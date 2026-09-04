@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -445,9 +446,9 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             fields: _Optional[_Iterable[str]] = ...,
-            fields_truncated: bool = ...,
+            fields_truncated: _Optional[bool] = ...,
             policy_tags: _Optional[_Iterable[str]] = ...,
-            policy_tags_truncated: bool = ...,
+            policy_tags_truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableDataRead.Reason, str]
             ] = ...,
@@ -479,7 +480,7 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             table: _Optional[_Union[BigQueryAuditMetadata.Table, _Mapping]] = ...,
-            truncated: bool = ...,
+            truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableChange.Reason, str]
             ] = ...,
@@ -584,7 +585,7 @@ class BigQueryAuditMetadata(_message.Message):
             self,
             deleted_rows_count: _Optional[int] = ...,
             inserted_rows_count: _Optional[int] = ...,
-            truncated: bool = ...,
+            truncated: _Optional[bool] = ...,
             reason: _Optional[
                 _Union[BigQueryAuditMetadata.TableDataChange.Reason, str]
             ] = ...,
@@ -760,7 +761,7 @@ class BigQueryAuditMetadata(_message.Message):
                 _Iterable[_Union[BigQueryAuditMetadata.RowAccessPolicy, _Mapping]]
             ] = ...,
             job_name: _Optional[str] = ...,
-            all_row_access_policies_dropped: bool = ...,
+            all_row_access_policies_dropped: _Optional[bool] = ...,
         ) -> None: ...
 
     class UnlinkDataset(_message.Message):
@@ -884,7 +885,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 query: _Optional[str] = ...,
-                query_truncated: bool = ...,
+                query_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -937,9 +938,9 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 source_uris: _Optional[_Iterable[str]] = ...,
-                source_uris_truncated: bool = ...,
+                source_uris_truncated: _Optional[bool] = ...,
                 schema_json: _Optional[str] = ...,
-                schema_json_truncated: bool = ...,
+                schema_json_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -970,7 +971,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 destination_uris: _Optional[_Iterable[str]] = ...,
-                destination_uris_truncated: bool = ...,
+                destination_uris_truncated: _Optional[bool] = ...,
                 source_table: _Optional[str] = ...,
                 source_model: _Optional[str] = ...,
             ) -> None: ...
@@ -1005,7 +1006,7 @@ class BigQueryAuditMetadata(_message.Message):
             def __init__(
                 self,
                 source_tables: _Optional[_Iterable[str]] = ...,
-                source_tables_truncated: bool = ...,
+                source_tables_truncated: _Optional[bool] = ...,
                 destination_table: _Optional[str] = ...,
                 create_disposition: _Optional[
                     _Union[BigQueryAuditMetadata.CreateDisposition, str]
@@ -1020,7 +1021,7 @@ class BigQueryAuditMetadata(_message.Message):
                     _Union[BigQueryAuditMetadata.OperationType, str]
                 ] = ...,
                 destination_expiration_time: _Optional[
-                    _Union[_timestamp_pb2.Timestamp, _Mapping]
+                    _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
                 ] = ...,
             ) -> None: ...
 
@@ -1140,7 +1141,7 @@ class BigQueryAuditMetadata(_message.Message):
                 referenced_views: _Optional[_Iterable[str]] = ...,
                 referenced_routines: _Optional[_Iterable[str]] = ...,
                 output_row_count: _Optional[int] = ...,
-                cache_hit: bool = ...,
+                cache_hit: _Optional[bool] = ...,
             ) -> None: ...
 
         class Load(_message.Message):
@@ -1189,9 +1190,15 @@ class BigQueryAuditMetadata(_message.Message):
         parent_job_name: str
         def __init__(
             self,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            start_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            end_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            start_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            end_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             query_stats: _Optional[
                 _Union[BigQueryAuditMetadata.JobStats.Query, _Mapping]
             ] = ...,
@@ -1254,14 +1261,22 @@ class BigQueryAuditMetadata(_message.Message):
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
             schema_json: _Optional[str] = ...,
-            schema_json_truncated: bool = ...,
+            schema_json_truncated: _Optional[bool] = ...,
             view: _Optional[
                 _Union[BigQueryAuditMetadata.TableViewDefinition, _Mapping]
             ] = ...,
-            expire_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            truncate_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            expire_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            truncate_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]
             ] = ...,
@@ -1294,9 +1309,15 @@ class BigQueryAuditMetadata(_message.Message):
             model_info: _Optional[
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
-            expire_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            expire_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]
             ] = ...,
@@ -1313,8 +1334,12 @@ class BigQueryAuditMetadata(_message.Message):
         def __init__(
             self,
             routine_name: _Optional[str] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
         ) -> None: ...
 
     class EntityInfo(_message.Message):
@@ -1349,7 +1374,7 @@ class BigQueryAuditMetadata(_message.Message):
         query: str
         query_truncated: bool
         def __init__(
-            self, query: _Optional[str] = ..., query_truncated: bool = ...
+            self, query: _Optional[str] = ..., query_truncated: _Optional[bool] = ...
         ) -> None: ...
 
     class Dataset(_message.Message):
@@ -1385,11 +1410,15 @@ class BigQueryAuditMetadata(_message.Message):
             dataset_info: _Optional[
                 _Union[BigQueryAuditMetadata.EntityInfo, _Mapping]
             ] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             acl: _Optional[_Union[BigQueryAuditMetadata.BigQueryAcl, _Mapping]] = ...,
             default_table_expire_duration: _Optional[
-                _Union[_duration_pb2.Duration, _Mapping]
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
             ] = ...,
             default_encryption: _Optional[
                 _Union[BigQueryAuditMetadata.EncryptionInfo, _Mapping]

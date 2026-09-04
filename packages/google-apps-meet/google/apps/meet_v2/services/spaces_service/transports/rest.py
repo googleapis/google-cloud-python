@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.apps.meet_v2._compat import transcode_request
 from google.apps.meet_v2.types import resource, service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class SpacesServiceRestInterceptor:
@@ -408,23 +408,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             http_options = (
                 _BaseSpacesServiceRestTransport._BaseCreateSpace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_space(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseCreateSpace._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseSpacesServiceRestTransport._BaseCreateSpace._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseCreateSpace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSpacesServiceRestTransport._BaseCreateSpace,
+                    "_BaseCreateSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -557,21 +550,18 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             """
 
             http_options = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_http_options()
-
             request, metadata = self._interceptor.pre_end_active_conference(
                 request, metadata
             )
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSpacesServiceRestTransport._BaseEndActiveConference,
+                    "_BaseEndActiveConference__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -677,19 +667,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             http_options = (
                 _BaseSpacesServiceRestTransport._BaseGetSpace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_space(request, metadata)
-            transcoded_request = (
-                _BaseSpacesServiceRestTransport._BaseGetSpace._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseGetSpace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSpacesServiceRestTransport._BaseGetSpace,
+                    "_BaseGetSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -829,23 +816,16 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
             http_options = (
                 _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_space(request, metadata)
-            transcoded_request = _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseSpacesServiceRestTransport._BaseUpdateSpace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSpacesServiceRestTransport._BaseUpdateSpace,
+                    "_BaseUpdateSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

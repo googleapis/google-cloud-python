@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from re import match
+
 import pytest
-from ..helpers import warn_deprecated_credentials_file
 
 from google.api_core import client_options
+
+from ..helpers import warn_deprecated_credentials_file
 
 
 def get_client_cert():
@@ -28,6 +30,7 @@ def get_client_encrypted_cert():
 
 
 def test_constructor():
+    mock_tracer_provider = object()
     with warn_deprecated_credentials_file():
         options = client_options.ClientOptions(
             api_endpoint="foo.googleapis.com",
@@ -40,6 +43,7 @@ def test_constructor():
             ],
             api_audience="foo2.googleapis.com",
             universe_domain="googleapis.com",
+            tracer_provider=mock_tracer_provider,
         )
 
     assert options.api_endpoint == "foo.googleapis.com"
@@ -52,6 +56,7 @@ def test_constructor():
     ]
     assert options.api_audience == "foo2.googleapis.com"
     assert options.universe_domain == "googleapis.com"
+    assert options.tracer_provider is mock_tracer_provider
 
 
 def test_constructor_with_encrypted_cert_source():
@@ -160,6 +165,7 @@ def test_repr():
             "scopes",
             "api_key",
             "api_audience",
+            "tracer_provider",
         ]
     )
     options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")

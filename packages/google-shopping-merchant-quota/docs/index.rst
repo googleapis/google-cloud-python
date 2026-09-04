@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Merchant.
+This package includes clients for multiple versions of Shopping Merchant Quota.
 By default, you will get version ``merchant_quota_v1``.
 
 

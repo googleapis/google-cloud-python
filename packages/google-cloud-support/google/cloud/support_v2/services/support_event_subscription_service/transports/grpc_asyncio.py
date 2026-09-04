@@ -20,6 +20,7 @@ import pickle
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -417,7 +418,8 @@ class SupportEventSubscriptionServiceGrpcAsyncIOTransport(
         r"""Return a callable for the list support event
         subscriptions method over gRPC.
 
-        Lists support event subscriptions.
+        Lists support event subscriptions for an
+        organization.
 
         Returns:
             Callable[[~.ListSupportEventSubscriptionsRequest],
@@ -535,6 +537,68 @@ class SupportEventSubscriptionServiceGrpcAsyncIOTransport(
             )
         return self._stubs["undelete_support_event_subscription"]
 
+    @property
+    def expunge_support_event_subscription(
+        self,
+    ) -> Callable[
+        [support_event_subscription_service.ExpungeSupportEventSubscriptionRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the expunge support event
+        subscription method over gRPC.
+
+        Expunges a support event subscription.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           support_event_subscription="organizations/123456789/supportEventSubscriptions/abcdef123456"
+           curl \
+             --request POST \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2/$support_event_subscription:expunge"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+
+           request = supportApiService.supportEventSubscriptions().expunge(
+               name="organizations/123456789/supportEventSubscriptions/abcdef123456"
+           )
+           print(request.execute())
+
+        Returns:
+            Callable[[~.ExpungeSupportEventSubscriptionRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "expunge_support_event_subscription" not in self._stubs:
+            self._stubs["expunge_support_event_subscription"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.support.v2.SupportEventSubscriptionService/ExpungeSupportEventSubscription",
+                    request_serializer=support_event_subscription_service.ExpungeSupportEventSubscriptionRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
+            )
+        return self._stubs["expunge_support_event_subscription"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -565,6 +629,11 @@ class SupportEventSubscriptionServiceGrpcAsyncIOTransport(
             ),
             self.undelete_support_event_subscription: self._wrap_method(
                 self.undelete_support_event_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.expunge_support_event_subscription: self._wrap_method(
+                self.expunge_support_event_subscription,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import report_messages, report_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ReportServiceRestInterceptor:
@@ -662,19 +662,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseCreateReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_report(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseCreateReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseReportServiceRestTransport._BaseCreateReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseCreateReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseCreateReport,
+                    "_BaseCreateReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -813,17 +810,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             """
 
             http_options = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_report_result_rows(
                 request, metadata
             )
-            transcoded_request = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseFetchReportResultRows._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseFetchReportResultRows,
+                    "_BaseFetchReportResultRows__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -961,19 +959,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseGetReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_report(request, metadata)
-            transcoded_request = (
-                _BaseReportServiceRestTransport._BaseGetReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseGetReport._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseGetReport,
+                    "_BaseGetReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1111,17 +1106,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseListReports._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_reports(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseListReports._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseListReports._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseListReports,
+                    "_BaseListReports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1264,25 +1258,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseRunReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_run_report(request, metadata)
-            transcoded_request = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseRunReport._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseRunReport,
+                    "_BaseRunReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1418,19 +1403,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseUpdateReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_report(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseUpdateReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseReportServiceRestTransport._BaseUpdateReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseUpdateReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseUpdateReport,
+                    "_BaseUpdateReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1620,17 +1602,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseReportServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1737,15 +1720,16 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             http_options = (
                 _BaseReportServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseReportServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseReportServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseReportServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

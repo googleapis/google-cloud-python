@@ -13,15 +13,147 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sys
-
 import google.api_core as api_core
 
 from google.cloud.compute_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-from importlib import metadata
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.compute_v1.services.accelerator_types",
+    "google.cloud.compute_v1.services.addresses",
+    "google.cloud.compute_v1.services.advice",
+    "google.cloud.compute_v1.services.autoscalers",
+    "google.cloud.compute_v1.services.backend_buckets",
+    "google.cloud.compute_v1.services.backend_services",
+    "google.cloud.compute_v1.services.cross_site_networks",
+    "google.cloud.compute_v1.services.disk_types",
+    "google.cloud.compute_v1.services.disks",
+    "google.cloud.compute_v1.services.external_vpn_gateways",
+    "google.cloud.compute_v1.services.firewall_policies",
+    "google.cloud.compute_v1.services.firewalls",
+    "google.cloud.compute_v1.services.forwarding_rules",
+    "google.cloud.compute_v1.services.future_reservations",
+    "google.cloud.compute_v1.services.global_addresses",
+    "google.cloud.compute_v1.services.global_forwarding_rules",
+    "google.cloud.compute_v1.services.global_network_endpoint_groups",
+    "google.cloud.compute_v1.services.global_operations",
+    "google.cloud.compute_v1.services.global_organization_operations",
+    "google.cloud.compute_v1.services.global_public_delegated_prefixes",
+    "google.cloud.compute_v1.services.global_vm_extension_policies",
+    "google.cloud.compute_v1.services.health_checks",
+    "google.cloud.compute_v1.services.hosts",
+    "google.cloud.compute_v1.services.image_family_views",
+    "google.cloud.compute_v1.services.images",
+    "google.cloud.compute_v1.services.instance_group_manager_resize_requests",
+    "google.cloud.compute_v1.services.instance_group_managers",
+    "google.cloud.compute_v1.services.instance_groups",
+    "google.cloud.compute_v1.services.instance_settings_service",
+    "google.cloud.compute_v1.services.instance_templates",
+    "google.cloud.compute_v1.services.instances",
+    "google.cloud.compute_v1.services.instant_snapshot_groups",
+    "google.cloud.compute_v1.services.instant_snapshots",
+    "google.cloud.compute_v1.services.interconnect_attachment_groups",
+    "google.cloud.compute_v1.services.interconnect_attachments",
+    "google.cloud.compute_v1.services.interconnect_groups",
+    "google.cloud.compute_v1.services.interconnect_locations",
+    "google.cloud.compute_v1.services.interconnect_remote_locations",
+    "google.cloud.compute_v1.services.interconnects",
+    "google.cloud.compute_v1.services.license_codes",
+    "google.cloud.compute_v1.services.licenses",
+    "google.cloud.compute_v1.services.machine_images",
+    "google.cloud.compute_v1.services.machine_types",
+    "google.cloud.compute_v1.services.network_attachments",
+    "google.cloud.compute_v1.services.network_edge_security_services",
+    "google.cloud.compute_v1.services.network_endpoint_groups",
+    "google.cloud.compute_v1.services.network_firewall_policies",
+    "google.cloud.compute_v1.services.network_profiles",
+    "google.cloud.compute_v1.services.networks",
+    "google.cloud.compute_v1.services.node_groups",
+    "google.cloud.compute_v1.services.node_templates",
+    "google.cloud.compute_v1.services.node_types",
+    "google.cloud.compute_v1.services.organization_security_policies",
+    "google.cloud.compute_v1.services.packet_mirrorings",
+    "google.cloud.compute_v1.services.preview_features",
+    "google.cloud.compute_v1.services.projects",
+    "google.cloud.compute_v1.services.public_advertised_prefixes",
+    "google.cloud.compute_v1.services.public_delegated_prefixes",
+    "google.cloud.compute_v1.services.region_autoscalers",
+    "google.cloud.compute_v1.services.region_backend_buckets",
+    "google.cloud.compute_v1.services.region_backend_services",
+    "google.cloud.compute_v1.services.region_commitments",
+    "google.cloud.compute_v1.services.region_composite_health_checks",
+    "google.cloud.compute_v1.services.region_disk_types",
+    "google.cloud.compute_v1.services.region_disks",
+    "google.cloud.compute_v1.services.region_health_aggregation_policies",
+    "google.cloud.compute_v1.services.region_health_check_services",
+    "google.cloud.compute_v1.services.region_health_checks",
+    "google.cloud.compute_v1.services.region_health_sources",
+    "google.cloud.compute_v1.services.region_instance_group_manager_resize_requests",
+    "google.cloud.compute_v1.services.region_instance_group_managers",
+    "google.cloud.compute_v1.services.region_instance_groups",
+    "google.cloud.compute_v1.services.region_instance_templates",
+    "google.cloud.compute_v1.services.region_instances",
+    "google.cloud.compute_v1.services.region_instant_snapshot_groups",
+    "google.cloud.compute_v1.services.region_instant_snapshots",
+    "google.cloud.compute_v1.services.region_network_endpoint_groups",
+    "google.cloud.compute_v1.services.region_network_firewall_policies",
+    "google.cloud.compute_v1.services.region_notification_endpoints",
+    "google.cloud.compute_v1.services.region_operations",
+    "google.cloud.compute_v1.services.region_security_policies",
+    "google.cloud.compute_v1.services.region_snapshot_settings",
+    "google.cloud.compute_v1.services.region_snapshots",
+    "google.cloud.compute_v1.services.region_ssl_certificates",
+    "google.cloud.compute_v1.services.region_ssl_policies",
+    "google.cloud.compute_v1.services.region_target_http_proxies",
+    "google.cloud.compute_v1.services.region_target_https_proxies",
+    "google.cloud.compute_v1.services.region_target_tcp_proxies",
+    "google.cloud.compute_v1.services.region_url_maps",
+    "google.cloud.compute_v1.services.region_zones",
+    "google.cloud.compute_v1.services.regions",
+    "google.cloud.compute_v1.services.reliability_risks",
+    "google.cloud.compute_v1.services.reservation_blocks",
+    "google.cloud.compute_v1.services.reservation_slots",
+    "google.cloud.compute_v1.services.reservation_sub_blocks",
+    "google.cloud.compute_v1.services.reservations",
+    "google.cloud.compute_v1.services.resource_policies",
+    "google.cloud.compute_v1.services.rollout_plans",
+    "google.cloud.compute_v1.services.rollouts",
+    "google.cloud.compute_v1.services.routers",
+    "google.cloud.compute_v1.services.routes",
+    "google.cloud.compute_v1.services.security_policies",
+    "google.cloud.compute_v1.services.service_attachments",
+    "google.cloud.compute_v1.services.snapshot_settings_service",
+    "google.cloud.compute_v1.services.snapshots",
+    "google.cloud.compute_v1.services.ssl_certificates",
+    "google.cloud.compute_v1.services.ssl_policies",
+    "google.cloud.compute_v1.services.storage_pool_types",
+    "google.cloud.compute_v1.services.storage_pools",
+    "google.cloud.compute_v1.services.subnetworks",
+    "google.cloud.compute_v1.services.target_grpc_proxies",
+    "google.cloud.compute_v1.services.target_http_proxies",
+    "google.cloud.compute_v1.services.target_https_proxies",
+    "google.cloud.compute_v1.services.target_instances",
+    "google.cloud.compute_v1.services.target_pools",
+    "google.cloud.compute_v1.services.target_ssl_proxies",
+    "google.cloud.compute_v1.services.target_tcp_proxies",
+    "google.cloud.compute_v1.services.target_vpn_gateways",
+    "google.cloud.compute_v1.services.url_maps",
+    "google.cloud.compute_v1.services.vpn_gateways",
+    "google.cloud.compute_v1.services.vpn_tunnels",
+    "google.cloud.compute_v1.services.wire_groups",
+    "google.cloud.compute_v1.services.zone_operations",
+    "google.cloud.compute_v1.services.zone_vm_extension_policies",
+    "google.cloud.compute_v1.services.zones",
+    "google.cloud.compute_v1.types.compute",
+}
+
 
 from .services.accelerator_types import AcceleratorTypesClient
 from .services.addresses import AddressesClient
@@ -47,6 +179,7 @@ from .services.global_public_delegated_prefixes import (
 )
 from .services.global_vm_extension_policies import GlobalVmExtensionPoliciesClient
 from .services.health_checks import HealthChecksClient
+from .services.hosts import HostsClient
 from .services.image_family_views import ImageFamilyViewsClient
 from .services.images import ImagesClient
 from .services.instance_group_manager_resize_requests import (
@@ -123,6 +256,7 @@ from .services.region_target_tcp_proxies import RegionTargetTcpProxiesClient
 from .services.region_url_maps import RegionUrlMapsClient
 from .services.region_zones import RegionZonesClient
 from .services.regions import RegionsClient
+from .services.reliability_risks import ReliabilityRisksClient
 from .services.reservation_blocks import ReservationBlocksClient
 from .services.reservation_slots import ReservationSlotsClient
 from .services.reservation_sub_blocks import ReservationSubBlocksClient
@@ -595,6 +729,8 @@ from .types.compute import (
     FutureReservationStatusLastKnownGoodState,
     FutureReservationStatusLastKnownGoodStateFutureReservationSpecs,
     FutureReservationStatusSpecificSKUProperties,
+    FutureReservationStoragePoolProperties,
+    FutureReservationStoragePoolProvisionedCapacity,
     FutureReservationTimeWindow,
     FutureResourcesRecommendation,
     FutureResourcesRecommendationOtherLocation,
@@ -643,6 +779,7 @@ from .types.compute import (
     GetHealthRegionCompositeHealthCheckRequest,
     GetHealthRegionHealthSourceRequest,
     GetHealthTargetPoolRequest,
+    GetHostRequest,
     GetIamPolicyBackendBucketRequest,
     GetIamPolicyBackendServiceRequest,
     GetIamPolicyDiskRequest,
@@ -749,6 +886,7 @@ from .types.compute import (
     GetRegionTargetHttpsProxyRequest,
     GetRegionTargetTcpProxyRequest,
     GetRegionUrlMapRequest,
+    GetReliabilityRiskRequest,
     GetReservationBlockRequest,
     GetReservationRequest,
     GetReservationSlotRequest,
@@ -788,6 +926,7 @@ from .types.compute import (
     GetTargetTcpProxyRequest,
     GetTargetVpnGatewayRequest,
     GetUrlMapRequest,
+    GetVersionHostRequest,
     GetVersionOperationMetadata,
     GetVersionOperationMetadataSbomInfo,
     GetVersionReservationSlotRequest,
@@ -849,7 +988,12 @@ from .types.compute import (
     HealthStatusForNetworkEndpoint,
     Help,
     HelpLink,
+    Host,
+    HostPhysicalTopology,
     HostRule,
+    HostsGetVersionRequest,
+    HostsListResponse,
+    HostStatus,
     HTTP2HealthCheck,
     HttpFaultAbort,
     HttpFaultDelay,
@@ -1182,6 +1326,7 @@ from .types.compute import (
     ListGlobalPublicDelegatedPrefixesRequest,
     ListGlobalVmExtensionPoliciesRequest,
     ListHealthChecksRequest,
+    ListHostsRequest,
     ListImagesRequest,
     ListInstanceGroupManagerResizeRequestsRequest,
     ListInstanceGroupManagersRequest,
@@ -1259,6 +1404,7 @@ from .types.compute import (
     ListRegionTargetTcpProxiesRequest,
     ListRegionUrlMapsRequest,
     ListRegionZonesRequest,
+    ListReliabilityRisksRequest,
     ListReservationBlocksRequest,
     ListReservationSlotsRequest,
     ListReservationsRequest,
@@ -1532,6 +1678,7 @@ from .types.compute import (
     RecreateInstancesInstanceGroupManagerRequest,
     RecreateInstancesRegionInstanceGroupManagerRequest,
     Reference,
+    RegexRewrite,
     Region,
     RegionAddressesMoveRequest,
     RegionAutoscalerList,
@@ -1574,6 +1721,8 @@ from .types.compute import (
     RegionSnapshotUpdateKmsKeyRequest,
     RegionTargetHttpsProxiesSetSslCertificatesRequest,
     RegionUrlMapsValidateRequest,
+    ReliabilityRisk,
+    ReliabilityRisksListResponse,
     RemoveAssociationFirewallPolicyRequest,
     RemoveAssociationNetworkFirewallPolicyRequest,
     RemoveAssociationOrganizationSecurityPolicyRequest,
@@ -1635,6 +1784,7 @@ from .types.compute import (
     ResizeReservationRequest,
     ResourceCommitment,
     ResourceGroupReference,
+    ResourceMetadata,
     ResourcePoliciesScopedList,
     ResourcePolicy,
     ResourcePolicyAggregatedList,
@@ -1660,10 +1810,14 @@ from .types.compute import (
     ResourceStatusPhysicalHostTopologyAdditionalAttributes,
     ResourceStatusReservationConsumptionInfo,
     ResourceStatusScheduling,
+    ResourceStatusShutdownDetails,
     ResumeInstanceRequest,
     ResumeInstancesInstanceGroupManagerRequest,
     ResumeInstancesRegionInstanceGroupManagerRequest,
     ResumeRolloutRequest,
+    RiskDetails,
+    RiskDetailsGlobalDnsInsight,
+    RiskRecommendation,
     Rollout,
     RolloutPlan,
     RolloutPlansListResponse,
@@ -1720,6 +1874,7 @@ from .types.compute import (
     SavedDisk,
     ScalingScheduleStatus,
     Scheduling,
+    SchedulingGracefulShutdown,
     SchedulingNodeAffinity,
     SchedulingOnInstanceStopAction,
     Screenshot,
@@ -1934,6 +2089,8 @@ from .types.compute import (
     StoragePoolListDisks,
     StoragePoolParams,
     StoragePoolResourceStatus,
+    StoragePoolShareSettings,
+    StoragePoolShareSettingsProjectConfig,
     StoragePoolsScopedList,
     StoragePoolType,
     StoragePoolTypeAggregatedList,
@@ -2178,89 +2335,6 @@ from .types.compute import (
     ZoneSetNestedPolicyRequest,
     ZoneSetPolicyRequest,
 )
-
-if hasattr(api_core, "check_python_version") and hasattr(
-    api_core, "check_dependency_versions"
-):  # pragma: NO COVER
-    api_core.check_python_version("google.cloud.compute_v1")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.compute_v1")  # type: ignore
-else:  # pragma: NO COVER
-    # An older version of api_core is installed which does not define the
-    # functions above. We do equivalent checks manually.
-    try:
-        import warnings
-
-        _py_version_str = sys.version.split()[0]
-        _package_label = "google.cloud.compute_v1"
-        if sys.version_info < (3, 10):
-            warnings.warn(
-                "You are using a non-supported Python version "
-                + f"({_py_version_str}).  Google will not post any further "
-                + f"updates to {_package_label} supporting this Python version. "
-                + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.10, and then update {_package_label}.",
-                FutureWarning,
-            )
-
-        def parse_version_to_tuple(version_string: str):
-            """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "6.33.5" -> (6, 33, 5)
-            Ignores non-numeric parts and handles common version formats.
-            Args:
-                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-            Returns:
-                Tuple of integers for the parsed version string.
-            """
-            parts = []
-            for part in version_string.split("."):
-                try:
-                    parts.append(int(part))
-                except ValueError:
-                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                    # This is a simplification compared to 'packaging.parse_version', but sufficient
-                    # for comparing strictly numeric semantic versions.
-                    break
-            return tuple(parts)
-
-        def _get_version(dependency_name):
-            try:
-                version_string: str = metadata.version(dependency_name)
-                parsed_version = parse_version_to_tuple(version_string)
-                return (parsed_version, version_string)
-            except Exception:
-                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
-                # or errors during parse_version_to_tuple
-                return (None, "--")
-
-        _dependency_package = "google.protobuf"
-        _next_supported_version = "6.33.5"
-        _next_supported_version_tuple = (6, 33, 5)
-        _recommendation = " (we recommend 7.x)"
-        (_version_used, _version_used_string) = _get_version(_dependency_package)
-        if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(
-                f"Package {_package_label} depends on "
-                + f"{_dependency_package}, currently installed at version "
-                + f"{_version_used_string}. Future updates to "
-                + f"{_package_label} will require {_dependency_package} at "
-                + f"version {_next_supported_version} or higher{_recommendation}."
-                + " Please ensure "
-                + "that either (a) your Python environment doesn't pin the "
-                + f"version of {_dependency_package}, so that updates to "
-                + f"{_package_label} can require the higher version, or "
-                + "(b) you manually update your Python environment to use at "
-                + f"least version {_next_supported_version} of "
-                + f"{_dependency_package}.",
-                FutureWarning,
-            )
-    except Exception:
-        warnings.warn(
-            "Could not determine the version of Python "
-            + "currently being used. To continue receiving "
-            + "updates for {_package_label}, ensure you are "
-            + "using a supported version of Python; see "
-            + "https://devguide.python.org/versions/"
-        )
 
 __all__ = (
     "AWSV4Signature",
@@ -2711,6 +2785,8 @@ __all__ = (
     "FutureReservationStatusLastKnownGoodState",
     "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs",
     "FutureReservationStatusSpecificSKUProperties",
+    "FutureReservationStoragePoolProperties",
+    "FutureReservationStoragePoolProvisionedCapacity",
     "FutureReservationTimeWindow",
     "FutureReservationsAggregatedListResponse",
     "FutureReservationsClient",
@@ -2765,6 +2841,7 @@ __all__ = (
     "GetHealthRegionCompositeHealthCheckRequest",
     "GetHealthRegionHealthSourceRequest",
     "GetHealthTargetPoolRequest",
+    "GetHostRequest",
     "GetIamPolicyBackendBucketRequest",
     "GetIamPolicyBackendServiceRequest",
     "GetIamPolicyDiskRequest",
@@ -2871,6 +2948,7 @@ __all__ = (
     "GetRegionTargetHttpsProxyRequest",
     "GetRegionTargetTcpProxyRequest",
     "GetRegionUrlMapRequest",
+    "GetReliabilityRiskRequest",
     "GetReservationBlockRequest",
     "GetReservationRequest",
     "GetReservationSlotRequest",
@@ -2910,6 +2988,7 @@ __all__ = (
     "GetTargetTcpProxyRequest",
     "GetTargetVpnGatewayRequest",
     "GetUrlMapRequest",
+    "GetVersionHostRequest",
     "GetVersionOperationMetadata",
     "GetVersionOperationMetadataSbomInfo",
     "GetVersionReservationSlotRequest",
@@ -2980,7 +3059,13 @@ __all__ = (
     "HealthStatusForNetworkEndpoint",
     "Help",
     "HelpLink",
+    "Host",
+    "HostPhysicalTopology",
     "HostRule",
+    "HostStatus",
+    "HostsClient",
+    "HostsGetVersionRequest",
+    "HostsListResponse",
     "HttpFaultAbort",
     "HttpFaultDelay",
     "HttpFaultInjection",
@@ -3328,6 +3413,7 @@ __all__ = (
     "ListGlobalPublicDelegatedPrefixesRequest",
     "ListGlobalVmExtensionPoliciesRequest",
     "ListHealthChecksRequest",
+    "ListHostsRequest",
     "ListImagesRequest",
     "ListInstanceGroupManagerResizeRequestsRequest",
     "ListInstanceGroupManagersRequest",
@@ -3405,6 +3491,7 @@ __all__ = (
     "ListRegionUrlMapsRequest",
     "ListRegionZonesRequest",
     "ListRegionsRequest",
+    "ListReliabilityRisksRequest",
     "ListReservationBlocksRequest",
     "ListReservationSlotsRequest",
     "ListReservationSubBlocksRequest",
@@ -3695,6 +3782,7 @@ __all__ = (
     "RecreateInstancesInstanceGroupManagerRequest",
     "RecreateInstancesRegionInstanceGroupManagerRequest",
     "Reference",
+    "RegexRewrite",
     "Region",
     "RegionAddressesMoveRequest",
     "RegionAutoscalerList",
@@ -3770,6 +3858,9 @@ __all__ = (
     "RegionUrlMapsValidateRequest",
     "RegionZonesClient",
     "RegionsClient",
+    "ReliabilityRisk",
+    "ReliabilityRisksClient",
+    "ReliabilityRisksListResponse",
     "RemoveAssociationFirewallPolicyRequest",
     "RemoveAssociationNetworkFirewallPolicyRequest",
     "RemoveAssociationOrganizationSecurityPolicyRequest",
@@ -3835,6 +3926,7 @@ __all__ = (
     "ResizeReservationRequest",
     "ResourceCommitment",
     "ResourceGroupReference",
+    "ResourceMetadata",
     "ResourcePoliciesClient",
     "ResourcePoliciesScopedList",
     "ResourcePolicy",
@@ -3861,10 +3953,14 @@ __all__ = (
     "ResourceStatusPhysicalHostTopologyAdditionalAttributes",
     "ResourceStatusReservationConsumptionInfo",
     "ResourceStatusScheduling",
+    "ResourceStatusShutdownDetails",
     "ResumeInstanceRequest",
     "ResumeInstancesInstanceGroupManagerRequest",
     "ResumeInstancesRegionInstanceGroupManagerRequest",
     "ResumeRolloutRequest",
+    "RiskDetails",
+    "RiskDetailsGlobalDnsInsight",
+    "RiskRecommendation",
     "Rollout",
     "RolloutPlan",
     "RolloutPlanWave",
@@ -3926,6 +4022,7 @@ __all__ = (
     "SavedDisk",
     "ScalingScheduleStatus",
     "Scheduling",
+    "SchedulingGracefulShutdown",
     "SchedulingNodeAffinity",
     "SchedulingOnInstanceStopAction",
     "Screenshot",
@@ -4145,6 +4242,8 @@ __all__ = (
     "StoragePoolListDisks",
     "StoragePoolParams",
     "StoragePoolResourceStatus",
+    "StoragePoolShareSettings",
+    "StoragePoolShareSettingsProjectConfig",
     "StoragePoolType",
     "StoragePoolTypeAggregatedList",
     "StoragePoolTypeList",
@@ -4407,3 +4506,6 @@ __all__ = (
     "ZoneVmExtensionPoliciesClient",
     "ZonesClient",
 )
+
+api_core.check_python_version("google.cloud.compute_v1")
+api_core.check_dependency_versions("google.cloud.compute_v1")

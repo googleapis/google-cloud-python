@@ -24,8 +24,10 @@ import subprocess
 import sys
 import tempfile
 from typing import cast, Generator, List, Optional, Tuple, Union
+from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils
+from google.auth import _cloud_sdk
 from google.auth import environment_vars
 from google.auth import exceptions
 
@@ -51,28 +53,8 @@ _KEY_REGEX = re.compile(
 _LOGGER = logging.getLogger(__name__)
 
 
-# A flag to track if we have already logged a warning about mTLS auto-enablement failures.
-# This prevents log spam when client libraries create transports or session instances
-# frequently within a single process.
-_has_logged_mtls_warning = False
-
-
 _PASSPHRASE_REGEX = re.compile(
     b"-----BEGIN PASSPHRASE-----(.+)-----END PASSPHRASE-----", re.DOTALL
-)
-
-# Temporary patch to accomodate incorrect cert config in Cloud Run prod environment.
-_WELL_KNOWN_CLOUD_RUN_CERT_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
-)
-_WELL_KNOWN_CLOUD_RUN_KEY_PATH = (
-    "/var/run/secrets/workload-spiffe-credentials/private_key.pem"
-)
-_INCORRECT_CLOUD_RUN_CERT_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/certificates.pem"
-)
-_INCORRECT_CLOUD_RUN_KEY_PATH = (
-    "/var/lib/volumes/certificate/workload-certificates/private_key.pem"
 )
 
 
@@ -436,10 +418,15 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
         The absolute path of the certificate config file, and None if the file does not exist.
     """
 
+    source = "function argument"
+    is_explicit = True
     if certificate_config_path is None:
         env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, None)
         if env_path is not None and env_path != "":
             certificate_config_path = env_path
+            source = (
+                f"environment variable {environment_vars.GOOGLE_API_CERTIFICATE_CONFIG}"
+            )
         else:
             env_path = environ.get(
                 environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
@@ -447,11 +434,21 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
             )
             if include_context_aware and env_path is not None and env_path != "":
                 certificate_config_path = env_path
+                source = f"environment variable {environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH}"
             else:
-                certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+                certificate_config_path = os.path.join(
+                    _cloud_sdk.get_config_path(), "certificate_config.json"
+                )
+                is_explicit = False
 
     certificate_config_path = path.expanduser(certificate_config_path)
     if not path.exists(certificate_config_path):
+        if is_explicit:
+            _LOGGER.debug(
+                "Certificate configuration file explicitly specified via %s at %s does not exist",
+                source,
+                certificate_config_path,
+            )
         return None
     return certificate_config_path
 
@@ -463,7 +460,11 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
 
     data = _load_json_file(absolute_path)
 
-    if "cert_configs" not in data:
+    if (
+        not isinstance(data, dict)
+        or "cert_configs" not in data
+        or not isinstance(data["cert_configs"], dict)
+    ):
         raise exceptions.ClientCertError(
             'Certificate config file {} is in an invalid format, a "cert configs" object is expected'.format(
                 absolute_path
@@ -476,11 +477,40 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     # and we want to gracefully fallback to testing other mTLS configurations
     # like SecureConnect instead of throwing an exception.
 
-    if "workload" not in cert_configs:
+    if (
+        not isinstance(cert_configs, dict) or "workload" not in cert_configs
+    ) and config_path is None:
+        default_home_path = path.expanduser(
+            os.path.join(
+                _cloud_sdk.get_config_path(),
+                "certificate_config.json",
+            )
+        )
+        if path.exists(default_home_path) and os.path.normpath(
+            default_home_path
+        ) != os.path.normpath(absolute_path):
+            try:
+                home_data = _load_json_file(default_home_path)
+                if isinstance(home_data, dict):
+                    home_cert_configs = home_data.get("cert_configs")
+                    if (
+                        isinstance(home_cert_configs, dict)
+                        and "workload" in home_cert_configs
+                    ):
+                        cert_configs = home_cert_configs
+                        absolute_path = default_home_path
+            except (exceptions.ClientCertError, OSError):
+                pass
+
+    if not isinstance(cert_configs, dict) or "workload" not in cert_configs:
         return None, None
     workload = cert_configs["workload"]
 
-    if "cert_path" not in workload or "key_path" not in workload:
+    if (
+        not isinstance(workload, dict)
+        or "cert_path" not in workload
+        or "key_path" not in workload
+    ):
         raise exceptions.ClientCertError(
             'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
                 absolute_path
@@ -488,25 +518,6 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
         )
     cert_path = workload["cert_path"]
     key_path = workload["key_path"]
-
-    # == BEGIN Temporary Cloud Run PATCH ==
-    # See https://github.com/googleapis/google-auth-library-python/issues/1881
-    if (cert_path == _INCORRECT_CLOUD_RUN_CERT_PATH) and (
-        key_path == _INCORRECT_CLOUD_RUN_KEY_PATH
-    ):
-        if not path.exists(cert_path) and not path.exists(key_path):
-            _LOGGER.debug(
-                "Applying Cloud Run certificate path patch. "
-                "Configured paths not found: %s, %s. "
-                "Using well-known paths: %s, %s",
-                cert_path,
-                key_path,
-                _WELL_KNOWN_CLOUD_RUN_CERT_PATH,
-                _WELL_KNOWN_CLOUD_RUN_KEY_PATH,
-            )
-            cert_path = _WELL_KNOWN_CLOUD_RUN_CERT_PATH
-            key_path = _WELL_KNOWN_CLOUD_RUN_KEY_PATH
-    # == END Temporary Cloud Run PATCH ==
 
     return cert_path, key_path
 
@@ -755,36 +766,33 @@ def check_use_client_cert():
     will default to False.
     If GOOGLE_API_USE_CLIENT_CERTIFICATE is unset, the value will be inferred
     as True (auto-enabled) if a workload config file exists (pointed at by
-    GOOGLE_API_CERTIFICATE_CONFIG) containing a "workload" section.
+    GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+    or the default path like ~/.config/gcloud/certificate_config.json)
+    containing a "workload" section.
     Otherwise, it returns False.
 
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    global _has_logged_mtls_warning
     env_override = _check_use_client_cert_env()
     if env_override is not None:
         return env_override
 
     # Auto-enablement checks (when GOOGLE_API_USE_CLIENT_CERTIFICATE is not set)
 
-    # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-    cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG) or getenv(
-        environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
-    )
+    # Check if a workload config file exists.
+    cert_path = _get_cert_config_path(include_context_aware=True)
 
     if cert_path:
         try:
             with open(cert_path, "r") as f:
                 content = json.load(f)
         except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
-            if not _has_logged_mtls_warning:
-                _LOGGER.warning(
-                    "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
-                    cert_path,
-                    e,
-                )
-                _has_logged_mtls_warning = True
+            _LOGGER.debug(
+                "mTLS auto-enablement failed: Could not read/parse certificate file at %s. Error: %s",
+                cert_path,
+                e,
+            )
             return False
 
         # Structural validation
@@ -794,12 +802,10 @@ def check_use_client_cert():
                 return True
 
         # If we got here, the file exists but the expected structure is missing
-        if not _has_logged_mtls_warning:
-            _LOGGER.warning(
-                "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
-                cert_path,
-            )
-            _has_logged_mtls_warning = True
+        _LOGGER.debug(
+            "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
+            cert_path,
+        )
     return False
 
 
@@ -835,3 +841,50 @@ def call_client_cert_callback():
         generate_encrypted_key=True
     )
     return cert_bytes, key_bytes
+
+
+_MTLS_HOST_SUFFIXES = (
+    ".mtls.googleapis.com",
+    ".mtls.sandbox.googleapis.com",
+    ".p.googleapis.com",
+)
+_MTLS_EXACT_HOSTS = (
+    "mtls.googleapis.com",
+    "mtls.sandbox.googleapis.com",
+    "p.googleapis.com",
+)
+
+
+def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
+    """Checks if the given URL corresponds to an mTLS or Private Service Connect (PSC) endpoint.
+
+    Args:
+        url (Optional[Union[str, bytes, object]]): The request URL.
+
+    Returns:
+        bool: True if the URL targets an mTLS or PSC endpoint, False otherwise.
+    """
+    if not url:
+        return False
+    if hasattr(url, "url") and isinstance(url.url, (str, bytes)):
+        url = url.url
+    if isinstance(url, bytes):
+        try:
+            url = url.decode("utf-8")
+        except (UnicodeDecodeError, AttributeError):
+            return False
+    elif not isinstance(url, str):
+        url = str(url)
+    try:
+        hostname = urlsplit(url).hostname
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+    if not hostname:
+        return False
+
+    hostname = hostname.rstrip(".").lower()
+    if not hostname:
+        return False
+
+    return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)

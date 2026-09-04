@@ -83,25 +83,24 @@ class ListAdUnitsRequest(proto.Message):
             ``ListAdUnits`` must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>adUnitCode</code></li>
-            <li><code>adUnitSizes.canonicalName</code></li>
-            <li><code>displayName</code></li>
-              <li><code>effectiveAdsenseEnabled</code></li>
-            <li><code>explicitlyTargeted</code></li>
-            <li><code>externalSetTopBoxChannelId</code></li>
-            <li><code>hasChildren</code></li>
-              <li><code>name</code></li>
-              <li><code>parentAdUnit</code></li>
-              <li><code>status</code></li>
-              <li><code>teams</code></li>
-              <li><code>updateTime</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``adUnitCode``
+            - ``adUnitSizes.canonicalName``
+            - ``displayName``
+            - ``effectiveAdsenseEnabled``
+            - ``explicitlyTargeted``
+            - ``externalSetTopBoxChannelId``
+            - ``hasChildren``
+            - ``name``
+            - ``parentAdUnit``
+            - ``status``
+            - ``teams``
+            - ``updateTime``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

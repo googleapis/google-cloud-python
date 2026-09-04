@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.trace_v1._compat import transcode_request
 from google.cloud.trace_v1.types import trace
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class TraceServiceRestInterceptor:
@@ -358,19 +358,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             http_options = (
                 _BaseTraceServiceRestTransport._BaseGetTrace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_trace(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BaseGetTrace._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BaseGetTrace._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTraceServiceRestTransport._BaseGetTrace,
+                    "_BaseGetTrace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -507,19 +504,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             http_options = (
                 _BaseTraceServiceRestTransport._BaseListTraces._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_traces(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BaseListTraces._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BaseListTraces._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTraceServiceRestTransport._BaseListTraces,
+                    "_BaseListTraces__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -652,25 +646,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             http_options = (
                 _BaseTraceServiceRestTransport._BasePatchTraces._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_patch_traces(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseTraceServiceRestTransport._BasePatchTraces,
+                    "_BasePatchTraces__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -35,6 +35,12 @@ from google.cloud.ces_v1.services.widget_service.async_client import (
 )
 from google.cloud.ces_v1.services.widget_service.client import WidgetServiceClient
 from google.cloud.ces_v1.types.agent import Agent
+from google.cloud.ces_v1.types.agent_card import (
+    AgentCard,
+    AgentInterface,
+    AgentSkill,
+    RemoteAgentTool,
+)
 from google.cloud.ces_v1.types.agent_service import (
     BatchDeleteConversationsRequest,
     BatchDeleteConversationsResponse,
@@ -124,6 +130,7 @@ from google.cloud.ces_v1.types.app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from google.cloud.ces_v1.types.app_version import AppSnapshot, AppVersion
 from google.cloud.ces_v1.types.auth import (
@@ -153,7 +160,12 @@ from google.cloud.ces_v1.types.connector_toolset import ConnectorToolset
 from google.cloud.ces_v1.types.conversation import Conversation
 from google.cloud.ces_v1.types.data_store import DataStore
 from google.cloud.ces_v1.types.data_store_tool import DataStoreTool
-from google.cloud.ces_v1.types.deployment import Deployment
+from google.cloud.ces_v1.types.deployment import (
+    Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
+)
 from google.cloud.ces_v1.types.example import (
     AgentTransfer,
     Blob,
@@ -169,7 +181,12 @@ from google.cloud.ces_v1.types.file_search_tool import FileSearchTool
 from google.cloud.ces_v1.types.google_search_tool import GoogleSearchTool
 from google.cloud.ces_v1.types.guardrail import Guardrail
 from google.cloud.ces_v1.types.mcp_tool import McpTool
-from google.cloud.ces_v1.types.mcp_toolset import McpToolset
+from google.cloud.ces_v1.types.mcp_toolset import (
+    McpToolDefinition,
+    McpToolOverride,
+    McpToolset,
+)
+from google.cloud.ces_v1.types.mocks import MockedToolCall
 from google.cloud.ces_v1.types.omnichannel import (
     Omnichannel,
     OmnichannelIntegrationConfig,
@@ -197,6 +214,7 @@ from google.cloud.ces_v1.types.session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -235,6 +253,10 @@ __all__ = (
     "WidgetServiceClient",
     "WidgetServiceAsyncClient",
     "Agent",
+    "AgentCard",
+    "AgentInterface",
+    "AgentSkill",
+    "RemoteAgentTool",
     "BatchDeleteConversationsRequest",
     "BatchDeleteConversationsResponse",
     "CreateAgentRequest",
@@ -319,6 +341,7 @@ __all__ = (
     "RedactionConfig",
     "SynthesizeSpeechConfig",
     "TimeZoneSettings",
+    "VpcScSettings",
     "AppSnapshot",
     "AppVersion",
     "ApiAuthentication",
@@ -346,6 +369,9 @@ __all__ = (
     "DataStore",
     "DataStoreTool",
     "Deployment",
+    "ExperimentConfig",
+    "InstagramCredentials",
+    "WhatsAppCredentials",
     "AgentTransfer",
     "Blob",
     "Chunk",
@@ -360,7 +386,10 @@ __all__ = (
     "GoogleSearchTool",
     "Guardrail",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
+    "MockedToolCall",
     "Omnichannel",
     "OmnichannelIntegrationConfig",
     "OmnichannelOperationMetadata",
@@ -380,6 +409,7 @@ __all__ = (
     "GoAway",
     "InputAudioConfig",
     "InterruptionSignal",
+    "MockConfig",
     "OutputAudioConfig",
     "RecognitionResult",
     "RunSessionRequest",

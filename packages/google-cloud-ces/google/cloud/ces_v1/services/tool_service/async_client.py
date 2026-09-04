@@ -48,7 +48,14 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.ces_v1.types import schema, tool, tool_service, toolset_tool
+from google.cloud.ces_v1.types import (
+    schema,
+    search_suggestions,
+    session_service,
+    tool,
+    tool_service,
+    toolset_tool,
+)
 
 from .client import ToolServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ToolServiceTransport
@@ -931,9 +938,7 @@ class ToolServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ToolServiceAsyncClient",)

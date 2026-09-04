@@ -77,9 +77,9 @@ class PullMessage(proto.Message):
     [PULL][google.cloud.tasks.v2beta3.Queue.type] type. It currently
     exists for backwards compatibility with the App Engine Task Queue
     SDK. This message type maybe returned with methods
-    [list][google.cloud.tasks.v2beta3.CloudTask.ListTasks] and
-    [get][google.cloud.tasks.v2beta3.CloudTask.ListTasks], when the
-    response view is [FULL][google.cloud.tasks.v2beta3.Task.View.Full].
+    [list][google.cloud.tasks.v2beta3.CloudTasks.ListTasks] and
+    [get][google.cloud.tasks.v2beta3.CloudTasks.ListTasks], when the
+    response view is [FULL][google.cloud.tasks.v2beta3.Task.View.FULL].
 
     Attributes:
         payload (bytes):
@@ -176,11 +176,12 @@ class UriOverride(proto.Message):
 
             When specified, replaces the port part of the
             task URI. For instance, for a URI
-            http://www.google.com/foo and port=123, the
-            overridden URI becomes
-            http://www.google.com:123/foo. Note that the
-            port value must be a positive integer. Setting
-            the port to 0 (Zero) clears the URI port.
+            "https://www.example.com/example" and port=123,
+            the overridden URI becomes
+            "https://www.example.com:123/example". Note that
+            the port value must be a positive integer.
+            Setting the port to 0 (Zero) clears the URI
+            port.
 
             This field is a member of `oneof`_ ``_port``.
         path_override (google.cloud.tasks_v2beta3.types.PathOverride):
@@ -211,12 +212,12 @@ class UriOverride(proto.Message):
                 Scheme unspecified. Defaults to HTTPS.
             HTTP (1):
                 Convert the scheme to HTTP, e.g.,
-                https://www.google.ca will change to
-                http://www.google.ca.
+                "https://www.example.com" will change to
+                "http://www.example.com".
             HTTPS (2):
                 Convert the scheme to HTTPS, e.g.,
-                http://www.google.ca will change to
-                https://www.google.ca.
+                "http://www.example.com" will change to
+                "https://www.example.com".
         """
 
         SCHEME_UNSPECIFIED = 0
@@ -278,8 +279,9 @@ class UriOverride(proto.Message):
 class HttpTarget(proto.Message):
     r"""HTTP target.
 
-    When specified as a [Queue][target_type], all the tasks with
-    [HttpRequest] will be overridden according to the target.
+    When specified as a [Queue][google.cloud.tasks.v2beta3.Queue], all
+    the tasks with [HttpRequest] will be overridden according to the
+    target.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -298,10 +300,12 @@ class HttpTarget(proto.Message):
             The HTTP method to use for the request.
 
             When specified, it overrides
-            [HttpRequest][google.cloud.tasks.v2beta3.HttpTarget.http_method]
+            [HttpRequest.http_method][google.cloud.tasks.v2beta3.HttpRequest.http_method]
             for the task. Note that if the value is set to
-            [HttpMethod][GET] the [HttpRequest][body] of the task will
-            be ignored at execution time.
+            [HttpMethod.GET][google.cloud.tasks.v2beta3.HttpMethod.GET]
+            the
+            [HttpRequest.body][google.cloud.tasks.v2beta3.HttpRequest.body]
+            of the task will be ignored at execution time.
         header_overrides (MutableSequence[google.cloud.tasks_v2beta3.types.HttpTarget.HeaderOverride]):
             HTTP target headers.
 
@@ -340,25 +344,35 @@ class HttpTarget(proto.Message):
 
             The size of the headers must be less than 80KB. Queue-level
             headers to override headers of all the tasks in the queue.
+
+            Do not put business sensitive or personally identifying data
+            in the HTTP Header Override Configuration or other similar
+            fields in accordance with Section 12 (Resource Fields) of
+            the `Service Specific
+            Terms <https://cloud.google.com/terms/service-terms>`__.
         oauth_token (google.cloud.tasks_v2beta3.types.OAuthToken):
             If specified, an `OAuth
             token <https://developers.google.com/identity/protocols/OAuth2>`__
-            will be generated and attached as the ``Authorization``
-            header in the HTTP request.
+            is generated and attached as the ``Authorization`` header in
+            the HTTP request.
 
-            This type of authorization should generally only be used
-            when calling Google APIs hosted on \*.googleapis.com.
+            This type of authorization should generally be used only
+            when calling Google APIs hosted on \*.googleapis.com. Note
+            that both the service account email and the scope MUST be
+            specified when using the queue-level authorization override.
 
             This field is a member of `oneof`_ ``authorization_header``.
         oidc_token (google.cloud.tasks_v2beta3.types.OidcToken):
             If specified, an
             `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
-            token will be generated and attached as an ``Authorization``
+            token is generated and attached as an ``Authorization``
             header in the HTTP request.
 
             This type of authorization can be used for many scenarios,
             including calling Cloud Run, or endpoints where you intend
-            to validate the token yourself.
+            to validate the token yourself. Note that both the service
+            account email and the audience MUST be specified when using
+            the queue-level authorization override.
 
             This field is a member of `oneof`_ ``authorization_header``.
     """
@@ -388,7 +402,13 @@ class HttpTarget(proto.Message):
 
         Attributes:
             header (google.cloud.tasks_v2beta3.types.HttpTarget.Header):
-                header embodying a key and a value.
+                Header embodying a key and a value.
+
+                Do not put business sensitive or personally identifying data
+                in the HTTP Header Override Configuration or other similar
+                fields in accordance with Section 12 (Resource Fields) of
+                the `Service Specific
+                Terms <https://cloud.google.com/terms/service-terms>`__.
         """
 
         header: "HttpTarget.Header" = proto.Field(
@@ -501,7 +521,7 @@ class HttpRequest(proto.Message):
 
             - Any header that is prefixed with "X-CloudTasks-" will be
               treated as service header. Service headers define
-              properties of the task and are predefined in CloudTask.
+              properties of the task and are predefined in Cloud Tasks.
             - Host: This will be computed by Cloud Tasks and derived
               from
               [HttpRequest.url][google.cloud.tasks.v2beta3.HttpRequest.url].

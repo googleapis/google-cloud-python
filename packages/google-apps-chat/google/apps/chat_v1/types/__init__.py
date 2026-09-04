@@ -81,6 +81,9 @@ from .group import (
 from .history_state import (
     HistoryState,
 )
+from .markup_syntax import (
+    MarkupSyntax,
+)
 from .matched_url import (
     MatchedUrl,
 )
@@ -110,6 +113,9 @@ from .message import (
     Message,
     QuotedMessageMetadata,
     QuotedMessageSnapshot,
+    SearchMessageResult,
+    SearchMessagesRequest,
+    SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
 )
@@ -242,6 +248,7 @@ __all__ = (
     "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
+    "MarkupSyntax",
     "MatchedUrl",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",
@@ -266,6 +273,9 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "QuotedMessageSnapshot",
+    "SearchMessageResult",
+    "SearchMessagesRequest",
+    "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
     "CreateCustomEmojiRequest",

@@ -13,15 +13,91 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sys
-
 import google.api_core as api_core
 
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-from importlib import metadata
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.discoveryengine_v1alpha.services.acl_config_service",
+    "google.cloud.discoveryengine_v1alpha.services.chunk_service",
+    "google.cloud.discoveryengine_v1alpha.services.completion_service",
+    "google.cloud.discoveryengine_v1alpha.services.control_service",
+    "google.cloud.discoveryengine_v1alpha.services.conversational_search_service",
+    "google.cloud.discoveryengine_v1alpha.services.data_store_service",
+    "google.cloud.discoveryengine_v1alpha.services.document_service",
+    "google.cloud.discoveryengine_v1alpha.services.engine_service",
+    "google.cloud.discoveryengine_v1alpha.services.estimate_billing_service",
+    "google.cloud.discoveryengine_v1alpha.services.evaluation_service",
+    "google.cloud.discoveryengine_v1alpha.services.grounded_generation_service",
+    "google.cloud.discoveryengine_v1alpha.services.project_service",
+    "google.cloud.discoveryengine_v1alpha.services.rank_service",
+    "google.cloud.discoveryengine_v1alpha.services.recommendation_service",
+    "google.cloud.discoveryengine_v1alpha.services.sample_query_service",
+    "google.cloud.discoveryengine_v1alpha.services.sample_query_set_service",
+    "google.cloud.discoveryengine_v1alpha.services.schema_service",
+    "google.cloud.discoveryengine_v1alpha.services.search_service",
+    "google.cloud.discoveryengine_v1alpha.services.search_tuning_service",
+    "google.cloud.discoveryengine_v1alpha.services.serving_config_service",
+    "google.cloud.discoveryengine_v1alpha.services.session_service",
+    "google.cloud.discoveryengine_v1alpha.services.site_search_engine_service",
+    "google.cloud.discoveryengine_v1alpha.services.user_event_service",
+    "google.cloud.discoveryengine_v1alpha.types.acl_config",
+    "google.cloud.discoveryengine_v1alpha.types.acl_config_service",
+    "google.cloud.discoveryengine_v1alpha.types.answer",
+    "google.cloud.discoveryengine_v1alpha.types.chunk",
+    "google.cloud.discoveryengine_v1alpha.types.chunk_service",
+    "google.cloud.discoveryengine_v1alpha.types.common",
+    "google.cloud.discoveryengine_v1alpha.types.completion",
+    "google.cloud.discoveryengine_v1alpha.types.completion_service",
+    "google.cloud.discoveryengine_v1alpha.types.control",
+    "google.cloud.discoveryengine_v1alpha.types.control_service",
+    "google.cloud.discoveryengine_v1alpha.types.conversation",
+    "google.cloud.discoveryengine_v1alpha.types.conversational_search_service",
+    "google.cloud.discoveryengine_v1alpha.types.custom_tuning_model",
+    "google.cloud.discoveryengine_v1alpha.types.data_store",
+    "google.cloud.discoveryengine_v1alpha.types.data_store_service",
+    "google.cloud.discoveryengine_v1alpha.types.document",
+    "google.cloud.discoveryengine_v1alpha.types.document_processing_config",
+    "google.cloud.discoveryengine_v1alpha.types.document_service",
+    "google.cloud.discoveryengine_v1alpha.types.engine",
+    "google.cloud.discoveryengine_v1alpha.types.engine_service",
+    "google.cloud.discoveryengine_v1alpha.types.estimate_billing_service",
+    "google.cloud.discoveryengine_v1alpha.types.evaluation",
+    "google.cloud.discoveryengine_v1alpha.types.evaluation_service",
+    "google.cloud.discoveryengine_v1alpha.types.grounded_generation_service",
+    "google.cloud.discoveryengine_v1alpha.types.grounding",
+    "google.cloud.discoveryengine_v1alpha.types.import_config",
+    "google.cloud.discoveryengine_v1alpha.types.project",
+    "google.cloud.discoveryengine_v1alpha.types.project_service",
+    "google.cloud.discoveryengine_v1alpha.types.purge_config",
+    "google.cloud.discoveryengine_v1alpha.types.rank_service",
+    "google.cloud.discoveryengine_v1alpha.types.recommendation_service",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_service",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_set",
+    "google.cloud.discoveryengine_v1alpha.types.sample_query_set_service",
+    "google.cloud.discoveryengine_v1alpha.types.schema",
+    "google.cloud.discoveryengine_v1alpha.types.schema_service",
+    "google.cloud.discoveryengine_v1alpha.types.search_service",
+    "google.cloud.discoveryengine_v1alpha.types.search_tuning_service",
+    "google.cloud.discoveryengine_v1alpha.types.serving_config",
+    "google.cloud.discoveryengine_v1alpha.types.serving_config_service",
+    "google.cloud.discoveryengine_v1alpha.types.session",
+    "google.cloud.discoveryengine_v1alpha.types.session_service",
+    "google.cloud.discoveryengine_v1alpha.types.site_search_engine",
+    "google.cloud.discoveryengine_v1alpha.types.site_search_engine_service",
+    "google.cloud.discoveryengine_v1alpha.types.user_event",
+    "google.cloud.discoveryengine_v1alpha.types.user_event_service",
+}
+
 
 from .services.acl_config_service import (
     AclConfigServiceAsyncClient,
@@ -365,89 +441,6 @@ from .types.user_event import (
 )
 from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
-if hasattr(api_core, "check_python_version") and hasattr(
-    api_core, "check_dependency_versions"
-):  # pragma: NO COVER
-    api_core.check_python_version("google.cloud.discoveryengine_v1alpha")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.discoveryengine_v1alpha")  # type: ignore
-else:  # pragma: NO COVER
-    # An older version of api_core is installed which does not define the
-    # functions above. We do equivalent checks manually.
-    try:
-        import warnings
-
-        _py_version_str = sys.version.split()[0]
-        _package_label = "google.cloud.discoveryengine_v1alpha"
-        if sys.version_info < (3, 10):
-            warnings.warn(
-                "You are using a non-supported Python version "
-                + f"({_py_version_str}).  Google will not post any further "
-                + f"updates to {_package_label} supporting this Python version. "
-                + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.10, and then update {_package_label}.",
-                FutureWarning,
-            )
-
-        def parse_version_to_tuple(version_string: str):
-            """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "6.33.5" -> (6, 33, 5)
-            Ignores non-numeric parts and handles common version formats.
-            Args:
-                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-            Returns:
-                Tuple of integers for the parsed version string.
-            """
-            parts = []
-            for part in version_string.split("."):
-                try:
-                    parts.append(int(part))
-                except ValueError:
-                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                    # This is a simplification compared to 'packaging.parse_version', but sufficient
-                    # for comparing strictly numeric semantic versions.
-                    break
-            return tuple(parts)
-
-        def _get_version(dependency_name):
-            try:
-                version_string: str = metadata.version(dependency_name)
-                parsed_version = parse_version_to_tuple(version_string)
-                return (parsed_version, version_string)
-            except Exception:
-                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
-                # or errors during parse_version_to_tuple
-                return (None, "--")
-
-        _dependency_package = "google.protobuf"
-        _next_supported_version = "6.33.5"
-        _next_supported_version_tuple = (6, 33, 5)
-        _recommendation = " (we recommend 7.x)"
-        (_version_used, _version_used_string) = _get_version(_dependency_package)
-        if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(
-                f"Package {_package_label} depends on "
-                + f"{_dependency_package}, currently installed at version "
-                + f"{_version_used_string}. Future updates to "
-                + f"{_package_label} will require {_dependency_package} at "
-                + f"version {_next_supported_version} or higher{_recommendation}."
-                + " Please ensure "
-                + "that either (a) your Python environment doesn't pin the "
-                + f"version of {_dependency_package}, so that updates to "
-                + f"{_package_label} can require the higher version, or "
-                + "(b) you manually update your Python environment to use at "
-                + f"least version {_next_supported_version} of "
-                + f"{_dependency_package}.",
-                FutureWarning,
-            )
-    except Exception:
-        warnings.warn(
-            "Could not determine the version of Python "
-            + "currently being used. To continue receiving "
-            + "updates for {_package_label}, ensure you are "
-            + "using a supported version of Python; see "
-            + "https://devguide.python.org/versions/"
-        )
-
 __all__ = (
     "AclConfigServiceAsyncClient",
     "ChunkServiceAsyncClient",
@@ -750,3 +743,6 @@ __all__ = (
     "WorkspaceConfig",
     "WriteUserEventRequest",
 )
+
+api_core.check_python_version("google.cloud.discoveryengine_v1alpha")
+api_core.check_dependency_versions("google.cloud.discoveryengine_v1alpha")

@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -31,6 +32,10 @@ class Interval(_message.Message):
     end_time: _timestamp_pb2.Timestamp
     def __init__(
         self,
-        start_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        end_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        start_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        end_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
     ) -> None: ...

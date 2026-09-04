@@ -238,9 +238,10 @@ class ReportDefinition(proto.Message):
             ADVERTISER_DOMAIN_NAME (242):
                 The domain name of the advertiser.
 
-                Corresponds to "Advertiser domain" in the Ad Manager UI.
+                Corresponds to "Landing page domain" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REACH``
 
                 Data format: ``STRING``
             ADVERTISER_EXTERNAL_ID (228):
@@ -1591,7 +1592,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "City ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``IDENTIFIER``
             CITY_NAME (452):
@@ -1611,7 +1612,7 @@ class ReportDefinition(proto.Message):
                 Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``REACH``
 
                 Data format: ``IDENTIFIER``
             CLASSIFIED_ADVERTISER_NAME (134):
@@ -1622,7 +1623,7 @@ class ReportDefinition(proto.Message):
                 UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``REACH``
 
                 Data format: ``STRING``
             CLASSIFIED_BRAND_ID (243):
@@ -1840,7 +1841,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative or creative set value" in the Ad
                 Manager UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``ENUM``
             CREATIVE_OR_CREATIVE_SET_NAME (683):
@@ -1850,7 +1852,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Creative or creative set" in the Ad Manager
                 UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``REAL_TIME_VIDEO``
 
                 Data format: ``STRING``
             CREATIVE_POLICIES_FILTERING (711):
@@ -2166,6 +2169,15 @@ class ReportDefinition(proto.Message):
                 ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
+            DECLARED_ADVERTISER_DOMAIN (796):
+                The declared domain of the advertiser.
+
+                Corresponds to "Declared advertiser domain" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             DELIVERED_SECURE_SIGNAL_ID (309):
                 The ID of the secure signals that were sent to the bidder
                 who won the impression.
@@ -2193,7 +2205,8 @@ class ReportDefinition(proto.Message):
                 (when showing API fields).
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEMAND_CHANNEL_NAME (10):
@@ -2202,7 +2215,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand channel" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``
+                ``REACH``, ``REVENUE_VERIFICATION``, ``AD_SPEED``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEMAND_SOURCE (592):
@@ -2239,7 +2253,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand subchannel value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEMAND_SUBCHANNEL_NAME (23):
@@ -2247,7 +2262,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Demand subchannel" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEVICE (226):
@@ -2547,6 +2563,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            HIGH_ENGAGEMENT_ADS_ALLOWED (838):
+                High engagement ads allowed.
+
+                Corresponds to "High engagement ads allowed" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``BOOLEAN``
             HOUR (100):
                 Breaks down reporting data by hour in one day.
 
@@ -2759,7 +2784,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Key-values ID" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``IDENTIFIER``
             KEY_VALUES_NAME (215):
@@ -2768,7 +2794,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Key-values" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING``
             KEY_VALUES_SET (713):
@@ -2777,9 +2804,11 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Key-values" in the Ad Manager UI.
 
                 Compatible with the following report types:
-                ``FUTURE_SELL_THROUGH``
 
                 Data format: ``STRING_LIST``
+            LANDING_PAGE_DOMAIN (242):
+                The landing page domain name of the advertiser. This will
+                eventually replace ADVERTISER_DOMAIN_NAME.
             LINE_ITEM_AGENCY (663):
                 The agency of the order associated with the line item.
 
@@ -3510,7 +3539,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Metro ID" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``AD_SPEED``
+                ``AD_SPEED``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``IDENTIFIER``
             METRO_NAME (454):
@@ -3790,6 +3819,14 @@ class ReportDefinition(proto.Message):
                 ``ADS_TRAFFIC_NAVIGATOR``
 
                 Data format: ``STRING``
+            NUM_ADS_IN_POD (804):
+                Number of ads served in a pod response.
+
+                Corresponds to "Number of ads in pod" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``INTEGER``
             OPERATING_SYSTEM_CATEGORY (117):
                 Operating system category.
 
@@ -4592,6 +4629,24 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            REQUESTED_CREATIVE_ORIENTATION (828):
+                The orientation of the creative requested.
+
+                Corresponds to "Requested creative orientation value" in the
+                Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM_LIST``
+            REQUESTED_CREATIVE_ORIENTATION_NAME (829):
+                Localized name of the requested creative orientation.
+
+                Corresponds to "Requested creative orientation" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING_LIST``
             REQUEST_TYPE (146):
                 Request type ENUM
 
@@ -4998,8 +5053,8 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``STRING``
             VIDEO_LIVE_STREAM_EVENT_AD_BREAK_DURATION (547):
-                The duration of the ad break in seconds for a live stream
-                event.
+                The expected duration of the ad break in seconds for a live
+                stream event.
 
                 Corresponds to "Ad break duration (seconds)" in the Ad
                 Manager UI.
@@ -5105,7 +5160,7 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Position of pod" in the Ad Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
-                ``REAL_TIME_VIDEO``
+                ``REAL_TIME_VIDEO``, ``OFF_PROPERTY_CAMPAIGNS``
 
                 Data format: ``STRING``
             VIDEO_SDK_VERSION (440):
@@ -5140,6 +5195,24 @@ class ReportDefinition(proto.Message):
                 Localized name of the video stitcher type.
 
                 Corresponds to "Video stitcher type" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            WEB_INTERSTITIAL_TRIGGER_TYPE (826):
+                Web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type value" in the
+                Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            WEB_INTERSTITIAL_TRIGGER_TYPE_NAME (827):
+                Localized name of the web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type" in the Ad
+                Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -6467,6 +6540,7 @@ class ReportDefinition(proto.Message):
                 ``ReportDefinition.ekv_dimension_key_ids``.
         """
 
+        _pb_options = {"allow_alias": True}
         DIMENSION_UNSPECIFIED = 0
         ACTIVE_VIEW_MEASUREMENT_SOURCE = 575
         ACTIVE_VIEW_MEASUREMENT_SOURCE_NAME = 576
@@ -6674,6 +6748,7 @@ class ReportDefinition(proto.Message):
         DEAL_ID = 436
         DEAL_ID_ALL = 781
         DEAL_NAME = 437
+        DECLARED_ADVERTISER_DOMAIN = 796
         DELIVERED_SECURE_SIGNAL_ID = 309
         DELIVERED_SECURE_SIGNAL_NAME = 310
         DEMAND_CHANNEL = 9
@@ -6715,6 +6790,7 @@ class ReportDefinition(proto.Message):
         HBT_YIELD_PARTNER_NAME = 660
         HEADER_BIDDER_INTEGRATION_TYPE = 718
         HEADER_BIDDER_INTEGRATION_TYPE_NAME = 719
+        HIGH_ENGAGEMENT_ADS_ALLOWED = 838
         HOUR = 100
         IMPRESSION_COUNTING_METHOD = 577
         IMPRESSION_COUNTING_METHOD_NAME = 578
@@ -6741,6 +6817,7 @@ class ReportDefinition(proto.Message):
         KEY_VALUES_ID = 214
         KEY_VALUES_NAME = 215
         KEY_VALUES_SET = 713
+        LANDING_PAGE_DOMAIN = 242
         LINE_ITEM_AGENCY = 663
         LINE_ITEM_ARCHIVED = 188
         LINE_ITEM_AVERAGE_NUMBER_OF_VIEWERS = 694
@@ -6838,6 +6915,7 @@ class ReportDefinition(proto.Message):
         NIELSEN_SEGMENT = 699
         NIELSEN_SITE_URL = 700
         NO_FILL_REASON_CATEGORY_NAME = 587
+        NUM_ADS_IN_POD = 804
         OPERATING_SYSTEM_CATEGORY = 117
         OPERATING_SYSTEM_CATEGORY_NAME = 118
         OPERATING_SYSTEM_VERSION_ID = 238
@@ -6922,6 +7000,8 @@ class ReportDefinition(proto.Message):
         REJECTION_CLASS_CATEGORY_NAME = 591
         RENDERED_CREATIVE_SIZE = 343
         REQUESTED_AD_SIZES = 352
+        REQUESTED_CREATIVE_ORIENTATION = 828
+        REQUESTED_CREATIVE_ORIENTATION_NAME = 829
         REQUEST_TYPE = 146
         REQUEST_TYPE_NAME = 147
         REVENUE_VERIFICATION_ID = 645
@@ -6982,6 +7062,8 @@ class ReportDefinition(proto.Message):
         VIDEO_SDK_VERSION_NAME = 441
         VIDEO_STITCHER_TYPE = 752
         VIDEO_STITCHER_TYPE_NAME = 753
+        WEB_INTERSTITIAL_TRIGGER_TYPE = 826
+        WEB_INTERSTITIAL_TRIGGER_TYPE_NAME = 827
         WEB_PROPERTY_CODE = 730
         WEEK = 5
         YIELD_GROUP_BUYER_NAME = 184
@@ -9387,6 +9469,20 @@ class ReportDefinition(proto.Message):
                 ``AD_SPEED``
 
                 Data format: ``PERCENT``
+            CTR_WITH_COMPANION (742):
+                For standard ads, your ad clickthrough rate (CTR) is the
+                number of ad clicks divided by the number of individual ad
+                impressions expressed as a fraction. Ad CTR = Clicks / Ad
+                impressions. Counts companion impressions in the number of
+                ad impressions.
+
+                Corresponds to "Total CTR with companion" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``AD_SPEED``
+
+                Data format: ``PERCENT``
             DEALS_BIDS (542):
                 Number of bids received for a deal.
 
@@ -9764,6 +9860,18 @@ class ReportDefinition(proto.Message):
                 AdSense, Ad Exchange, and yield group partners.
 
                 Corresponds to "Total impressions" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ADS_TRAFFIC_NAVIGATOR``, ``AD_SPEED``
+
+                Data format: ``INTEGER``
+            IMPRESSIONS_WITH_COMPANION (741):
+                Total impressions from the Google Ad Manager server,
+                AdSense, Ad Exchange, and yield group partners, including
+                companion ads.
+
+                Corresponds to "Total impressions with companion" in the Ad
+                Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``,
                 ``ADS_TRAFFIC_NAVIGATOR``, ``AD_SPEED``
@@ -10340,6 +10448,31 @@ class ReportDefinition(proto.Message):
 
                 Compatible with the following report types:
                 ``YOUTUBE_CONSOLIDATED``
+
+                Data format: ``INTEGER``
+            POD_ECPM (738):
+                Total pod eCPM.
+
+                Corresponds to "Total pod eCPM" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``MONEY``
+            POD_ECPM_WITHOUT_CPD (739):
+                Total pod eCPM without CPD.
+
+                Corresponds to "Total pod eCPM without CPD" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``MONEY``
+            POD_VIEWS (740):
+                Total pod views.
+
+                Corresponds to "Total pod views" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``INTEGER``
             PROGRAMMATIC_ELIGIBLE_AD_REQUESTS (177):
@@ -12606,6 +12739,7 @@ class ReportDefinition(proto.Message):
         CREATIVE_LOAD_TIME_500_1000_PERCENT = 325
         CREATIVE_LOAD_TIME_GT_8000_PERCENT = 329
         CTR = 3
+        CTR_WITH_COMPANION = 742
         DEALS_BIDS = 542
         DEALS_BID_RATE = 543
         DEALS_BID_REQUESTS = 544
@@ -12646,6 +12780,7 @@ class ReportDefinition(proto.Message):
         GOOGLE_SOLD_RESERVATION_COVIEWED_IMPRESSIONS = 127
         GOOGLE_SOLD_RESERVATION_IMPRESSIONS = 126
         IMPRESSIONS = 1
+        IMPRESSIONS_WITH_COMPANION = 741
         INACTIVE_BEGIN_TO_RENDER_IMPRESSIONS = 407
         INVENTORY_SHARES = 547
         INVENTORY_SHARE_PARTNER_UNFILLED_OPPORTUNITIES = 548
@@ -12705,6 +12840,9 @@ class ReportDefinition(proto.Message):
         PARTNER_SOLD_CODE_SERVED = 125
         PARTNER_SOLD_COVIEWED_IMPRESSIONS = 124
         PARTNER_SOLD_IMPRESSIONS = 123
+        POD_ECPM = 738
+        POD_ECPM_WITHOUT_CPD = 739
+        POD_VIEWS = 740
         PROGRAMMATIC_ELIGIBLE_AD_REQUESTS = 177
         PROGRAMMATIC_MATCH_RATE = 178
         PROGRAMMATIC_RESPONSES_SERVED = 176
@@ -13163,7 +13301,7 @@ class ReportDefinition(proto.Message):
                     The entire previous 6 calendar months
                     preceding the calendar month the report is run.
                 LAST_12_MONTHS (20):
-                    The entire previous 6 calendar months
+                    The entire previous 12 calendar months
                     preceding the calendar month the report is run.
                 ALL_AVAILABLE (21):
                     From 3 years before the report is run, to the

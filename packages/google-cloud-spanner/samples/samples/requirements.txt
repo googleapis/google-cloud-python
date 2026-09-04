@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 google-cloud-spanner==3.69.0
+=======
+google-cloud-spanner==3.71.0
+>>>>>>> origin/main
 futures==3.4.0; python_version < "3"

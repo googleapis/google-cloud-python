@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_notifications_v1beta._compat import transcode_request
 from google.shopping.merchant_notifications_v1beta.types import notificationsapi
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class NotificationsApiServiceRestInterceptor:
@@ -496,21 +496,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             """
 
             http_options = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_create_notification_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNotificationsApiServiceRestTransport._BaseCreateNotificationSubscription,
+                    "_BaseCreateNotificationSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -650,17 +647,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             """
 
             http_options = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_notification_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNotificationsApiServiceRestTransport._BaseDeleteNotificationSubscription,
+                    "_BaseDeleteNotificationSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -768,17 +766,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             """
 
             http_options = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_get_notification_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNotificationsApiServiceRestTransport._BaseGetNotificationSubscription,
+                    "_BaseGetNotificationSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -923,17 +922,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             """
 
             http_options = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_notification_subscriptions(
                 request, metadata
             )
-            transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNotificationsApiServiceRestTransport._BaseListNotificationSubscriptions,
+                    "_BaseListNotificationSubscriptions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1082,21 +1082,18 @@ class NotificationsApiServiceRestTransport(_BaseNotificationsApiServiceRestTrans
             """
 
             http_options = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_http_options()
-
             request, metadata = self._interceptor.pre_update_notification_subscription(
                 request, metadata
             )
-            transcoded_request = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNotificationsApiServiceRestTransport._BaseUpdateNotificationSubscription,
+                    "_BaseUpdateNotificationSubscription__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

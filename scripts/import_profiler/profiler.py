@@ -40,7 +40,7 @@ def get_rss_mb():
     except Exception:
         return 0.0
 
-def run_worker(target_module):
+def run_worker(target_module, skip_line_count=False):
     """Performs ONE import and returns metrics."""
     tracemalloc.start()
     importlib.invalidate_caches()
@@ -66,33 +66,36 @@ def run_worker(target_module):
     new_modules = modules_after - modules_before
     
     loaded_lines = 0
-    for m in new_modules:
-        try:
-            file_path = sys.modules[m].__file__
-            if not file_path:
-                continue
+    if not skip_line_count:
+        for m in new_modules:
+            try:
+                file_path = sys.modules[m].__file__
+                if not file_path:
+                    continue
 
-            if file_path.endswith('.pyc'):
-                try:
-                    file_path = importlib.util.source_from_cache(file_path)
-                except ValueError:
-                    # Raised if the .pyc path does not follow standard PEP 3147/488 conventions.
-                    # We pass silently because the unresolved file_path will still end in '.pyc', 
-                    # meaning the subsequent '.endswith('.py')' check will fail and safely skip 
-                    # trying to count lines in a binary file.
-                    pass
-            if file_path.endswith('.py'):
-                try:
-                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                        loaded_lines += sum(1 for _ in f)
-                except OSError as e:
-                    print(f"WARNING: Failed to read lines from {file_path}: {e}", file=sys.stderr)
-        except KeyError:
-            # Module disappeared from sys.modules during execution
-            pass
-        except AttributeError:
-            # Module has no __file__ attribute (likely a C-extension or built-in)
-            pass
+                if file_path.endswith('.pyc'):
+                    try:
+                        file_path = importlib.util.source_from_cache(file_path)
+                    except ValueError:
+                        # Raised if the .pyc path does not follow standard PEP 3147/488 conventions.
+                        # We pass silently because the unresolved file_path will still end in '.pyc', 
+                        # meaning the subsequent '.endswith('.py')' check will fail and safely skip 
+                        # trying to count lines in a binary file.
+                        pass
+                if file_path.endswith('.py'):
+                    try:
+                        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            loaded_lines += sum(1 for _ in f)
+                    except OSError as e:
+                        print(f"WARNING: Failed to read lines from {file_path}: {e}", file=sys.stderr)
+            except KeyError:
+                # Module disappeared from sys.modules during execution
+                pass
+            except AttributeError:
+                # Module has no __file__ attribute (likely a C-extension or built-in)
+                pass
+    else:
+        loaded_lines = -1
     
     # Output to stdout for the Master to capture
     metrics = {
@@ -106,6 +109,8 @@ def run_worker(target_module):
 
 def _run_worker_and_parse(cmd):
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    if result.stderr.strip():
+        print(result.stderr.strip(), file=sys.stderr)
     try:
         lines = result.stdout.strip().splitlines()
         data = None
@@ -125,33 +130,34 @@ def _run_worker_and_parse(cmd):
         print(f"Worker stderr:\n{result.stderr}", file=sys.stderr)
         raise parse_err
 
-def _calculate_percentiles(data_list):
-    """Helper method to calculate P50, P90, P99 from a list of numbers."""
-    if len(data_list) > 1:
-        q = statistics.quantiles(data_list, n=100)
-        return q[49], q[89], q[98]
-    val = data_list[0] if data_list else 0.0
-    return val, val, val
-
 def _print_outputs(target_module, iterations, loaded_modules_val, loaded_lines_val,
-                   times, p50_time, p90_time, p99_time,
-                   memories, p50_mem, p90_mem, p99_mem,
-                   rss_memories, p50_rss, p90_rss, p99_rss):
+                   times, memories, rss_memories):
     """Helper method to format and print the final benchmark results."""
-    def _format_stats(title, data, p50, p90, p99, fmt):
+    def _format_stats(title, data, fmt):
         if not data:
             return ""
-        std_str = f"  StdDev:       {statistics.stdev(data):{fmt}}\n" if len(data) > 1 else ""
-        return f"{title}:\n  P50 (Median): {p50:{fmt}}\n  P90:          {p90:{fmt}}\n  P99:          {p99:{fmt}}\n  Mean:         {statistics.mean(data):{fmt}}\n  Min:          {min(data):{fmt}}\n  Max:          {max(data):{fmt}}\n{std_str}"
+        n = len(data)
+        p50 = statistics.median(data)
+        min_val = min(data)
+        max_val = max(data)
+        std_dev = statistics.stdev(data) if n > 1 else 0.0
+
+        stats_lines = [
+            f"{title} [N={n}]:",
+            f"  Min:    {min_val:{fmt}}",
+            f"  P50:    {p50:{fmt}}",
+            f"  Max:    {max_val:{fmt}}"
+        ]
+        if n > 1:
+            stats_lines.append(f"  StdDev:    {std_dev:{fmt}}")
+        return "\n".join(stats_lines) + "\n"
 
     final_output = f"""
 --- Results for {target_module} ({iterations} iterations) ---
 Code Volume (Deterministic):
   Loaded Modules: {loaded_modules_val}
   Loaded Lines:   {loaded_lines_val}
-{_format_stats("Time (ms)", times, p50_time, p90_time, p99_time, ".2f")}
-{_format_stats("Tracemalloc RAM (MB)", memories, p50_mem, p90_mem, p99_mem, ".4f")}
-{_format_stats("Physical RSS RAM (MB)", rss_memories, p50_rss, p90_rss, p99_rss, ".4f")}"""
+{_format_stats("Time (ms)", times, ".2f")}{_format_stats("Tracemalloc RAM (MB)", memories, ".4f")}{_format_stats("Physical RSS RAM (MB)", rss_memories, ".4f")}"""
     print(final_output.strip())
 
 def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True, fail_threshold=None, diff_baseline=None, diff_threshold=None):
@@ -185,6 +191,8 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             cmd += ["taskset", "-c", str(cpu)]
         
         cmd += python_exe + [__file__, "--worker", f"--module={target_module}"]
+        if i > 0:
+            cmd += ["--skip-line-count"]
         
         try:
             data = _run_worker_and_parse(cmd)
@@ -194,11 +202,12 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
             print(f"Iteration {i+1}/{iterations} completed in {data['time_ms']:.2f} ms")
             if i > 0 and loaded_modules_val != data["loaded_modules"]:
                 print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_modules']} modules (expected {loaded_modules_val}).", file=sys.stderr)
-            if i > 0 and loaded_lines_val != data["loaded_lines"]:
-                print(f"WARNING: Non-deterministic import behavior! Iteration {i+1} loaded {data['loaded_lines']} lines (expected {loaded_lines_val}).", file=sys.stderr)
             
             loaded_modules_val = data["loaded_modules"]
-            loaded_lines_val = data["loaded_lines"]
+            if data["loaded_lines"] == -1:
+                data["loaded_lines"] = loaded_lines_val
+            else:
+                loaded_lines_val = data["loaded_lines"]
         except FileNotFoundError as e:
             if cpu != NO_CPU_PINNING and cmd and cmd[0] == "taskset":
                 print("ERROR: 'taskset' command not found. CPU pinning is enabled but taskset is not installed. "
@@ -224,17 +233,11 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 writer.writerow([idx + 1, f"{t:.2f}", f"{m:.4f}", f"{r:.4f}"])
         print(f"Raw metrics successfully exported to CSV: {csv_path}")
 
-    # Compute percentiles (P50, P90, P99)
-    # statistics.quantiles returns 99 cut points for n=100
-    p50_time, p90_time, p99_time = _calculate_percentiles(times)
-    p50_mem, p90_mem, p99_mem = _calculate_percentiles(memories)
-    p50_rss, p90_rss, p99_rss = _calculate_percentiles(rss_memories)
+    p50_time = statistics.median(times) if times else 0.0
 
     _print_outputs(
         target_module, iterations, loaded_modules_val, loaded_lines_val,
-        times, p50_time, p90_time, p99_time,
-        memories, p50_mem, p90_mem, p99_mem,
-        rss_memories, p50_rss, p90_rss, p99_rss
+        times, memories, rss_memories
     )
 
     exit_code = 0
@@ -250,7 +253,7 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
                 for row in reader:
                     baseline_times.append(float(row[1]))
             if baseline_times:
-                baseline_p50, _, _ = _calculate_percentiles(baseline_times)
+                baseline_p50 = statistics.median(baseline_times)
             
             if baseline_p50 is not None:
                 diff = p50_time - baseline_p50
@@ -293,10 +296,9 @@ def run_master(iterations, target_module, cpu=0, csv_path=None, clear_cache=True
         
     if exit_code == 0:
         print("\nSession import_profiler was successful.")
-        sys.exit(0)
     else:
         print("\nSession import_profiler failed.")
-        sys.exit(1)
+    return exit_code
 
 
 def run_trace(target_module):
@@ -368,63 +370,149 @@ def run_mprofile(target_module):
     if p.exitcode != 0:
         print(f"Error generating memory snapshot, process exited with code {p.exitcode}", file=sys.stderr)
 
-if __name__ == "__main__":
+def validate_module_name(module_name):
+    """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
     import argparse
+    if not all(part.isidentifier() for part in module_name.split('.')):
+        raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
+    return module_name
 
-    def validate_module_name(module_name):
-        """Validates that the input is a structurally valid Python module identifier to prevent arbitrary code execution."""
-        if not all(part.isidentifier() for part in module_name.split('.')):
-            raise argparse.ArgumentTypeError(f"'{module_name}' is not a valid Python module identifier.")
-        return module_name
+IGNORED_TOP_LEVEL_NAMES = {
+    "tests", "samples", "examples", "benchmark", "benchmarks", "third_party",
+    "testing", "test_utils", "docs", "build", "dist", "bin", "ci", "scripts",
+    "cloudbuild", "notebooks", "assets", "scratch", "specs"
+}
+IGNORED_NAME_PREFIXES = (
+    "test_", "tests_", "sample_", "samples_", "bench_", "benchmarks_",
+    "example_", "examples_", "doc_", "docs_", "notebook_", "notebooks_"
+)
 
-    def find_module_from_package(pkg):
-        import importlib.metadata
-        import importlib.util
 
-        # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
-        try:
-            files = importlib.metadata.files(pkg)
-            if files:
-                init_files = [str(f) for f in files if str(f).endswith('__init__.py') and '__pycache__' not in str(f) and not str(f).startswith('tests/')]
-                if init_files:
-                    from pathlib import Path
-                    shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
-                    parts = Path(shortest_init).parent.parts
-                    mod = '.'.join(parts)
+def _should_process_namespace_package(top_level: str, target_pkg: str) -> bool:
+    """Determines if a discovered top-level directory should be processed.
+
+    Args:
+        top_level: Top-level directory component of the package (e.g. 'tests' or 'google').
+        target_pkg: The distribution package being profiled (e.g. 'google-cloud-storage').
+
+    Returns:
+        True if the top-level directory should be processed, False otherwise.
+    """
+    is_excluded_candidate = (
+        top_level in IGNORED_TOP_LEVEL_NAMES
+        or top_level.startswith(IGNORED_NAME_PREFIXES)
+    )
+
+    if is_excluded_candidate:
+        normalized_target_pkg = target_pkg.replace("-", "").replace("_", "").lower()
+        normalized_top_level = top_level.replace("-", "").replace("_", "").lower()
+        # Note: If the top-level folder name is part of the target package name
+        # (e.g. top_level='test_utils' when target_pkg='google-cloud-testutils'), then it should be processed.
+        return normalized_top_level in normalized_target_pkg
+
+    return True  # Not a candidate for exclusion, process it.
+
+
+def _is_path_allowed(path_obj, pkg_norm: str) -> bool:
+    """Checks if a path object is allowed based on ignored directory rules."""
+    from pathlib import Path
+    parts = Path(path_obj).parts
+    return all(
+        part not in IGNORED_TOP_LEVEL_NAMES
+        or part.replace("-", "").replace("_", "").lower() in pkg_norm
+        for part in parts
+    )
+
+
+def find_module_from_package(pkg):
+    import importlib.metadata
+    import importlib.util
+    from pathlib import Path
+
+    # 1. Try to use importlib.metadata.files (works for standard installations from PyPI/wheels)
+    try:
+        files = importlib.metadata.files(pkg)
+        if files:
+            pkg_norm = pkg.replace("-", "").replace("_", "").lower()
+            init_files = [
+                str(f) for f in files
+                if Path(f).name == '__init__.py'
+                and '__pycache__' not in Path(f).parts
+                and _is_path_allowed(f, pkg_norm)
+            ]
+            if init_files:
+                from pathlib import Path
+                shortest_init = min(init_files, key=lambda p: len(Path(p).parts))
+                parts = Path(shortest_init).parent.parts
+                mod = '.'.join(parts)
+                try:
                     if importlib.util.find_spec(mod):
                         return mod
-        except Exception:
-            pass
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
-        # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
-        try:
-            import setuptools
-            import os
-            if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
-                pkgs = setuptools.find_namespace_packages(where='.')
-                for p in sorted(pkgs, key=len):
-                    if p in ("google", "google.cloud") or p.startswith("tests"):
-                        continue
-                    path = p.replace('.', os.sep)
+    # 2. Try setuptools.find_namespace_packages() in current directory (works for editable installs in source trees)
+    try:
+        import setuptools
+        import os
+        if os.path.exists('setup.py') or os.path.exists('pyproject.toml'):
+            where_dir = "src" if os.path.isdir("src") else "."
+            abs_where_dir = os.path.abspath(where_dir)
+            if abs_where_dir not in sys.path:
+                sys.path.insert(0, abs_where_dir)
+            pkgs = setuptools.find_namespace_packages(where=where_dir)
+            filtered = []
+            for p in pkgs:
+                top = p.split(".")[0]
+                if _should_process_namespace_package(top, pkg):
+                    filtered.append(p)
+
+            # First preference: packages containing __init__.py
+            for p in sorted(filtered, key=len):
+                path = os.path.join(where_dir, p.replace('.', os.sep))
+                try:
                     if os.path.isfile(os.path.join(path, '__init__.py')):
-                        if importlib.util.find_spec(p):
-                            return p
+                        try:
+                            if importlib.util.find_spec(p):
+                                return p
+                        except Exception:
+                            pass
+                except OSError:
+                    continue
+
+            # Second preference: namespace packages containing .py files (e.g. googleapis-common-protos -> google.api)
+            for p in sorted(filtered, key=len):
+                path = os.path.join(where_dir, p.replace('.', os.sep))
+                try:
+                    if os.path.isdir(path) and any(f.endswith('.py') for f in os.listdir(path)):
+                        try:
+                            if importlib.util.find_spec(p):
+                                return p
+                        except Exception:
+                            pass
+                except OSError:
+                    continue
+    except Exception as e:
+        print(f"WARNING: Package discovery failed: {e}", file=sys.stderr)
+
+    # 3. Fallback to basic string manipulation heuristics
+    candidates = [
+        pkg.replace('-', '.'),
+        '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
+        pkg.replace('-', '_')
+    ]
+    for mod in candidates:
+        try:
+            if importlib.util.find_spec(mod):
+                return mod
         except Exception:
             pass
+    return candidates[0]
 
-        # 3. Fallback to basic string manipulation heuristics
-        candidates = [
-            pkg.replace('-', '.'),
-            '.'.join(pkg.split('-')[:-1]) + '_' + pkg.split('-')[-1] if '-' in pkg else pkg,
-            pkg.replace('-', '_')
-        ]
-        for mod in candidates:
-            try:
-                if importlib.util.find_spec(mod):
-                    return mod
-            except Exception:
-                pass
-        return candidates[0]
+if __name__ == "__main__":
+    import argparse
 
     parser = argparse.ArgumentParser(description="Python SDK Import Profiler")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -442,6 +530,7 @@ if __name__ == "__main__":
     parser.add_argument("--diff-baseline", help="Path to a baseline CSV file to compare against.")
     parser.add_argument("--diff-threshold", type=float, default=100.0, help="Fail if Median time exceeds baseline Median by this many ms.")
     parser.add_argument("--worker", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--skip-line-count", action="store_true", help=argparse.SUPPRESS)
     
     args = parser.parse_args()
     
@@ -450,7 +539,7 @@ if __name__ == "__main__":
         target_module = find_module_from_package(args.package)
     
     if args.worker:
-        run_worker(target_module)
+        run_worker(target_module, skip_line_count=args.skip_line_count)
     elif args.trace:
         if not args.keep_pycache: clean_bytecode()
         run_trace(target_module)
@@ -461,4 +550,4 @@ if __name__ == "__main__":
         if not args.keep_pycache: clean_bytecode()
         run_mprofile(target_module)
     else:
-        run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold)
+        sys.exit(run_master(args.iterations, target_module, args.cpu, args.csv, not args.keep_pycache, args.fail_threshold, args.diff_baseline, args.diff_threshold))

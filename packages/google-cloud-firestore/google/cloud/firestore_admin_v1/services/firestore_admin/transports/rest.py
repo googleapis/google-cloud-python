@@ -31,6 +31,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.firestore_admin_v1._compat import transcode_request
 from google.cloud.firestore_admin_v1.types import (
     backup,
     database,
@@ -65,8 +66,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class FirestoreAdminRestInterceptor:
@@ -2079,21 +2079,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseBulkDeleteDocuments._get_http_options()
-
             request, metadata = self._interceptor.pre_bulk_delete_documents(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseBulkDeleteDocuments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseBulkDeleteDocuments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseBulkDeleteDocuments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseBulkDeleteDocuments,
+                    "_BaseBulkDeleteDocuments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2233,19 +2230,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_clone_database(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCloneDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCloneDatabase,
+                    "_BaseCloneDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2387,21 +2381,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseCreateBackupSchedule._get_http_options()
-
             request, metadata = self._interceptor.pre_create_backup_schedule(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCreateBackupSchedule._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCreateBackupSchedule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCreateBackupSchedule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCreateBackupSchedule,
+                    "_BaseCreateBackupSchedule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2543,19 +2534,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseCreateDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_database(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCreateDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCreateDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCreateDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCreateDatabase,
+                    "_BaseCreateDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2695,19 +2683,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseCreateIndex._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_index(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCreateIndex._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCreateIndex._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCreateIndex._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCreateIndex,
+                    "_BaseCreateIndex__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2842,21 +2827,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_http_options()
-
             request, metadata = self._interceptor.pre_create_user_creds(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCreateUserCreds,
+                    "_BaseCreateUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2990,15 +2972,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseDeleteBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteBackup._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteBackup,
+                    "_BaseDeleteBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3096,17 +3079,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseDeleteBackupSchedule._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_backup_schedule(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteBackupSchedule._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteBackupSchedule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteBackupSchedule,
+                    "_BaseDeleteBackupSchedule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3212,15 +3196,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseDeleteDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_database(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteDatabase,
+                    "_BaseDeleteDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3351,15 +3336,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseDeleteIndex._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_index(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteIndex._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteIndex._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteIndex,
+                    "_BaseDeleteIndex__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3456,17 +3442,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_user_creds(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds,
+                    "_BaseDeleteUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3568,21 +3555,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_http_options()
-
             request, metadata = self._interceptor.pre_disable_user_creds(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDisableUserCreds,
+                    "_BaseDisableUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3719,21 +3703,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_http_options()
-
             request, metadata = self._interceptor.pre_enable_user_creds(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseEnableUserCreds,
+                    "_BaseEnableUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3873,21 +3854,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseExportDocuments._get_http_options()
-
             request, metadata = self._interceptor.pre_export_documents(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseExportDocuments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseExportDocuments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseExportDocuments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseExportDocuments,
+                    "_BaseExportDocuments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4028,19 +4006,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetBackup._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseFirestoreAdminRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseFirestoreAdminRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetBackup,
+                    "_BaseGetBackup__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4181,17 +4156,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseGetBackupSchedule._get_http_options()
-
             request, metadata = self._interceptor.pre_get_backup_schedule(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseGetBackupSchedule._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseGetBackupSchedule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetBackupSchedule,
+                    "_BaseGetBackupSchedule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4328,15 +4304,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_database(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseGetDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseGetDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetDatabase,
+                    "_BaseGetDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4478,19 +4455,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetField._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_field(request, metadata)
-            transcoded_request = (
-                _BaseFirestoreAdminRestTransport._BaseGetField._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseFirestoreAdminRestTransport._BaseGetField._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetField,
+                    "_BaseGetField__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4630,19 +4604,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetIndex._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_index(request, metadata)
-            transcoded_request = (
-                _BaseFirestoreAdminRestTransport._BaseGetIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseFirestoreAdminRestTransport._BaseGetIndex._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetIndex,
+                    "_BaseGetIndex__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4779,15 +4750,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_user_creds(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetUserCreds,
+                    "_BaseGetUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4926,21 +4898,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseImportDocuments._get_http_options()
-
             request, metadata = self._interceptor.pre_import_documents(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseImportDocuments._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseImportDocuments._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseImportDocuments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseImportDocuments,
+                    "_BaseImportDocuments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5078,15 +5047,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListBackups._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListBackups._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListBackups._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListBackups,
+                    "_BaseListBackups__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5226,17 +5196,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseListBackupSchedules._get_http_options()
-
             request, metadata = self._interceptor.pre_list_backup_schedules(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListBackupSchedules._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListBackupSchedules._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListBackupSchedules,
+                    "_BaseListBackupSchedules__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5376,15 +5347,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListDatabases._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListDatabases,
+                    "_BaseListDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5525,17 +5497,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListFields._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_fields(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListFields._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseFirestoreAdminRestTransport._BaseListFields._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListFields,
+                    "_BaseListFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5676,15 +5647,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListIndexes._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_indexes(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListIndexes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListIndexes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListIndexes,
+                    "_BaseListIndexes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5825,15 +5797,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_user_creds(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListUserCreds,
+                    "_BaseListUserCreds__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5971,21 +5944,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_http_options()
-
             request, metadata = self._interceptor.pre_reset_user_password(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseResetUserPassword,
+                    "_BaseResetUserPassword__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6125,21 +6095,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseRestoreDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_restore_database(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseRestoreDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseRestoreDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseRestoreDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseRestoreDatabase,
+                    "_BaseRestoreDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6281,21 +6248,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseUpdateBackupSchedule._get_http_options()
-
             request, metadata = self._interceptor.pre_update_backup_schedule(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseUpdateBackupSchedule._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseUpdateBackupSchedule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseUpdateBackupSchedule._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseUpdateBackupSchedule,
+                    "_BaseUpdateBackupSchedule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6437,19 +6401,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseUpdateDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_database(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseUpdateDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseUpdateDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseUpdateDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseUpdateDatabase,
+                    "_BaseUpdateDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6589,19 +6550,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseUpdateField._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_field(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseUpdateField._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseUpdateField._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseUpdateField._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseUpdateField,
+                    "_BaseUpdateField__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7004,21 +6962,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseFirestoreAdminRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7121,17 +7076,18 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             """
 
             http_options = _BaseFirestoreAdminRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7238,15 +7194,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7378,15 +7335,16 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             http_options = (
                 _BaseFirestoreAdminRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseFirestoreAdminRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseFirestoreAdminRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

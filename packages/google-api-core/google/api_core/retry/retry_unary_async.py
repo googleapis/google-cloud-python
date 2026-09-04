@@ -54,26 +54,27 @@ a ``retry`` parameter that allows you to configure the behavior:
 from __future__ import annotations
 
 import asyncio
-import time
 import functools
+import time
 from typing import (
-    Awaitable,
+    TYPE_CHECKING,
     Any,
+    Awaitable,
     Callable,
     Iterable,
     TypeVar,
-    TYPE_CHECKING,
 )
 
-from google.api_core.retry.retry_base import _BaseRetry
-from google.api_core.retry.retry_base import _retry_error_helper
-from google.api_core.retry.retry_base import exponential_sleep_generator
-from google.api_core.retry.retry_base import build_retry_error
-from google.api_core.retry.retry_base import RetryFailureReason
-
 # for backwards compatibility, expose helpers in this module
-from google.api_core.retry.retry_base import if_exception_type  # noqa
-from google.api_core.retry.retry_base import if_transient_error  # noqa
+from google.api_core.retry.retry_base import (  # noqa: F401
+    RetryFailureReason,
+    _BaseRetry,
+    _retry_error_helper,
+    build_retry_error,
+    exponential_sleep_generator,
+    if_exception_type,
+    if_transient_error,
+)
 
 if TYPE_CHECKING:
     import sys

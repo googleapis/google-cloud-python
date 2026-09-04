@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.analytics.data_v1alpha._compat import transcode_request
 from google.analytics.data_v1alpha.types import analytics_data_api
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AlphaAnalyticsDataRestInterceptor:
@@ -1145,21 +1145,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_http_options()
-
             request, metadata = self._interceptor.pre_create_audience_list(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList,
+                    "_BaseCreateAudienceList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1305,21 +1302,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_http_options()
-
             request, metadata = self._interceptor.pre_create_recurring_audience_list(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList,
+                    "_BaseCreateRecurringAudienceList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1463,21 +1457,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_http_options()
-
             request, metadata = self._interceptor.pre_create_report_task(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask,
+                    "_BaseCreateReportTask__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1617,17 +1608,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_http_options()
-
             request, metadata = self._interceptor.pre_get_audience_list(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList,
+                    "_BaseGetAudienceList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1766,15 +1758,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
-
             request, metadata = self._interceptor.pre_get_metadata(request, metadata)
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseGetMetadata,
+                    "_BaseGetMetadata__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1914,17 +1907,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_http_options()
-
             request, metadata = self._interceptor.pre_get_property_quotas_snapshot(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot,
+                    "_BaseGetPropertyQuotasSnapshot__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2071,17 +2065,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_http_options()
-
             request, metadata = self._interceptor.pre_get_recurring_audience_list(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList,
+                    "_BaseGetRecurringAudienceList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2221,15 +2216,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_http_options()
-
             request, metadata = self._interceptor.pre_get_report_task(request, metadata)
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask,
+                    "_BaseGetReportTask__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2367,17 +2363,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_http_options()
-
             request, metadata = self._interceptor.pre_list_audience_lists(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists,
+                    "_BaseListAudienceLists__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2518,17 +2515,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_http_options()
-
             request, metadata = self._interceptor.pre_list_recurring_audience_lists(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists,
+                    "_BaseListRecurringAudienceLists__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2672,17 +2670,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_http_options()
-
             request, metadata = self._interceptor.pre_list_report_tasks(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks,
+                    "_BaseListReportTasks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2821,21 +2820,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_http_options()
-
             request, metadata = self._interceptor.pre_query_audience_list(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList,
+                    "_BaseQueryAudienceList__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2977,21 +2973,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_http_options()
-
             request, metadata = self._interceptor.pre_query_report_task(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask,
+                    "_BaseQueryReportTask__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3134,21 +3127,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             """
 
             http_options = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_http_options()
-
             request, metadata = self._interceptor.pre_run_funnel_report(
                 request, metadata
             )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport,
+                    "_BaseRunFunnelReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3290,19 +3280,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             http_options = (
                 _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_run_report(request, metadata)
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAlphaAnalyticsDataRestTransport._BaseRunReport,
+                    "_BaseRunReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

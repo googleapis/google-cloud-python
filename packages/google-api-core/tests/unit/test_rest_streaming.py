@@ -22,13 +22,11 @@ from unittest.mock import patch
 import proto
 import pytest
 import requests
+from google.api import http_pb2, httpbody_pb2
 
 from google.api_core import rest_streaming
-from google.api import http_pb2
-from google.api import httpbody_pb2
 
-from ..helpers import Composer, Song, EchoResponse, parse_responses
-
+from ..helpers import Composer, EchoResponse, Song, parse_responses
 
 __protobuf__ = proto.module(package=__name__)
 SEED = int(time.time())

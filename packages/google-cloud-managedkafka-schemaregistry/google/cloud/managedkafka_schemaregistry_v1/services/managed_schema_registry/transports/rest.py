@@ -32,6 +32,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.managedkafka_schemaregistry_v1._compat import transcode_request
 from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry,
     schema_registry_resources,
@@ -63,8 +64,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ManagedSchemaRegistryRestInterceptor:
@@ -1954,21 +1954,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_http_options()
-
             request, metadata = self._interceptor.pre_check_compatibility(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility,
+                    "_BaseCheckCompatibility__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2112,21 +2109,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_http_options()
-
             request, metadata = self._interceptor.pre_create_schema_registry(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry,
+                    "_BaseCreateSchemaRegistry__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2267,19 +2261,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_create_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion,
+                    "_BaseCreateVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2420,17 +2411,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_schema_config(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig,
+                    "_BaseDeleteSchemaConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2581,17 +2573,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_schema_mode(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode,
+                    "_BaseDeleteSchemaMode__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2726,17 +2719,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_schema_registry(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry,
+                    "_BaseDeleteSchemaRegistry__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2888,15 +2882,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_subject(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject,
+                    "_BaseDeleteSubject__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3080,15 +3075,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion,
+                    "_BaseDeleteVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3226,15 +3222,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_http_options()
-
             request, metadata = self._interceptor.pre_get_context(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetContext,
+                    "_BaseGetContext__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3420,15 +3417,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_get_raw_schema(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema,
+                    "_BaseGetRawSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3612,17 +3610,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_get_raw_schema_version(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion,
+                    "_BaseGetRawSchemaVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3759,15 +3758,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_get_schema(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetSchema,
+                    "_BaseGetSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3907,17 +3907,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_get_schema_config(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig,
+                    "_BaseGetSchemaConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4069,15 +4070,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_http_options()
-
             request, metadata = self._interceptor.pre_get_schema_mode(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode,
+                    "_BaseGetSchemaMode__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4216,17 +4218,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_http_options()
-
             request, metadata = self._interceptor.pre_get_schema_registry(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry,
+                    "_BaseGetSchemaRegistry__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4365,15 +4368,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetVersion,
+                    "_BaseGetVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4559,15 +4563,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_http_options()
-
             request, metadata = self._interceptor.pre_list_contexts(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListContexts,
+                    "_BaseListContexts__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4751,17 +4756,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_http_options()
-
             request, metadata = self._interceptor.pre_list_referenced_schemas(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas,
+                    "_BaseListReferencedSchemas__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4898,17 +4904,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_http_options()
-
             request, metadata = self._interceptor.pre_list_schema_registries(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries,
+                    "_BaseListSchemaRegistries__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5096,17 +5103,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_schema_types(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes,
+                    "_BaseListSchemaTypes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5292,17 +5300,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_schema_versions(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions,
+                    "_BaseListSchemaVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5488,15 +5497,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_http_options()
-
             request, metadata = self._interceptor.pre_list_subjects(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListSubjects,
+                    "_BaseListSubjects__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5681,17 +5691,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_http_options()
-
             request, metadata = self._interceptor.pre_list_subjects_by_schema_id(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId,
+                    "_BaseListSubjectsBySchemaId__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5875,15 +5886,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListVersions,
+                    "_BaseListVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6019,19 +6031,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_lookup_version(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion,
+                    "_BaseLookupVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6176,21 +6185,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_update_schema_config(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig,
+                    "_BaseUpdateSchemaConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6344,21 +6350,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_http_options()
-
             request, metadata = self._interceptor.pre_update_schema_mode(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode,
+                    "_BaseUpdateSchemaMode__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6757,15 +6760,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6896,15 +6900,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7033,21 +7038,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7153,17 +7155,18 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7271,15 +7274,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7410,15 +7414,16 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
             """
 
             http_options = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseManagedSchemaRegistryRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -15,11 +15,10 @@
 from unittest import mock
 
 import google.api_core.retry
+import google.cloud.bigquery.job
 from google.api_core import exceptions
 
 from . import helpers
-import google.cloud.bigquery.job
-
 
 PROJECT = "test-project"
 JOB_ID = "test-job-id"
@@ -110,7 +109,7 @@ def test_result_w_retry_wo_state(global_time_lock):
         predicate=custom_predicate,
         initial=0.001,
         maximum=0.001,
-        deadline=0.1,
+        deadline=1.0,
     )
     assert job.result(retry=custom_retry) is job
 

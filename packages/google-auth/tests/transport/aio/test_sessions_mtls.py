@@ -193,9 +193,7 @@ class TestSessionsMtls:
             # If the request handler is not an AiohttpRequest, the library cannot configure
             # the connection to use mTLS, so _is_mtls must be False to reflect this unconfigured state.
             assert session._is_mtls is False
-            mock_make_context.assert_called_once_with(
-                b"fake_cert_data", b"fake_key_data"
-            )
+            mock_make_context.assert_not_called()
             await session.close()
 
     @pytest.mark.asyncio

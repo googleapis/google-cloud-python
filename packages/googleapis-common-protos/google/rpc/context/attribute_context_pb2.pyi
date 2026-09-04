@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -170,7 +171,9 @@ class AttributeContext(_message.Message):
             host: _Optional[str] = ...,
             scheme: _Optional[str] = ...,
             query: _Optional[str] = ...,
-            time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             size: _Optional[int] = ...,
             protocol: _Optional[str] = ...,
             reason: _Optional[str] = ...,
@@ -205,8 +208,12 @@ class AttributeContext(_message.Message):
             code: _Optional[int] = ...,
             size: _Optional[int] = ...,
             headers: _Optional[_Mapping[str, str]] = ...,
-            time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            backend_latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            backend_latency: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
         ) -> None: ...
 
     class Resource(_message.Message):
@@ -277,9 +284,15 @@ class AttributeContext(_message.Message):
             uid: _Optional[str] = ...,
             annotations: _Optional[_Mapping[str, str]] = ...,
             display_name: _Optional[str] = ...,
-            create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-            delete_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            create_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            update_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
+            delete_time: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             etag: _Optional[str] = ...,
             location: _Optional[str] = ...,
         ) -> None: ...

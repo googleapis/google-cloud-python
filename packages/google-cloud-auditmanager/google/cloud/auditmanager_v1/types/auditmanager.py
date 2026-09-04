@@ -52,34 +52,29 @@ __protobuf__ = proto.module(
 
 
 class OperationState(proto.Enum):
-    r"""The different execution states of the Audit Manager service.
+    r"""Different execution states of the Audit Manager service.
 
     Values:
         OPERATION_STATE_UNSPECIFIED (0):
-            Unspecified. Invalid state.
+            Default value. This value is unused.
         OPERATION_STATE_NOT_STARTED (10):
-            Audit report generation process has not
-            started.
+            Audit generation process hasn't started.
         OPERATION_STATE_EVALUATION_IN_PROGRESS (20):
-            Audit Manager is currently evaluating the
-            workloads against specific standard.
+            Evaluation process is in progress.
         OPERATION_STATE_EVALUATION_DONE (21):
-            Audit Manager has completed Evaluation for
-            the workload.
+            Evaluation process is completed.
         OPERATION_STATE_EVIDENCE_REPORT_GENERATION_IN_PROGRESS (30):
-            Audit Manager is creating audit report from
-            the evaluated data.
+            Report generation process is in progress.
         OPERATION_STATE_EVIDENCE_REPORT_GENERATION_DONE (31):
-            Audit Manager has completed generation of the
-            audit report.
+            Report generation process is completed.
         OPERATION_STATE_EVIDENCE_UPLOAD_IN_PROGRESS (40):
-            Audit Manager is uploading the audit report
-            and evidences to the customer provided
-            destination.
+            The audit report and evidence are being
+            uploaded to your bucket.
         OPERATION_STATE_DONE (50):
-            Audit report generation process is completed.
+            The audit report and evidence are uploaded to
+            your bucket.
         OPERATION_STATE_FAILED (60):
-            Audit report generation process has failed.
+            Audit report generation process failed.
     """
 
     OPERATION_STATE_UNSPECIFIED = 0
@@ -94,21 +89,22 @@ class OperationState(proto.Enum):
 
 
 class ComplianceState(proto.Enum):
-    r"""The compliance state after evaluation.
+    r"""Compliance state after evaluation.
 
     Values:
         COMPLIANCE_STATE_UNSPECIFIED (0):
-            Unspecified. Invalid state.
+            Default value. This value is unused.
         COMPLIANT (1):
-            Compliant.
+            The resource is compliant.
         VIOLATION (2):
-            Violation.
+            The resource isn't compliant.
         MANUAL_REVIEW_NEEDED (3):
-            MANUAL_REVIEW_NEEDED, requires manual review
+            You must complete a manual review.
         ERROR (4):
-            Error while computing status.
+            An error was encountered during the
+            evaluation or evidence gathering process.
         AUDIT_NOT_SUPPORTED (5):
-            Cannot be audited
+            The resource can't be audited.
     """
 
     COMPLIANCE_STATE_UNSPECIFIED = 0
@@ -120,40 +116,43 @@ class ComplianceState(proto.Enum):
 
 
 class EnrollResourceRequest(proto.Message):
-    r"""Request message to subscribe the Audit Manager service for
-    given resource.
+    r"""Request message for
+    [EnrollResource][google.cloud.auditmanager.v1.AuditManager.EnrollResource].
 
     Attributes:
         scope (str):
-            Required. The resource to be enrolled to the audit manager.
-            Scope format should be resource_type/resource_identifier Eg:
-            projects/{project}/locations/{location},
-            folders/{folder}/locations/{location}
-            organizations/{organization}/locations/{location}
+            Required. Organization, folder, or project to enroll in
+            Audit Manager, in one of the following formats:
+
+            - ``projects/{project}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         destinations (MutableSequence[google.cloud.auditmanager_v1.types.EnrollResourceRequest.EligibleDestination]):
-            Required. List of destination among which
-            customer can choose to upload their reports
-            during the audit process. While enrolling at a
-            organization/folder level, customer can choose
-            Cloud storage bucket in any project. If the
-            audit is triggered at project level using the
-            service agent at organization/folder level, all
-            the destination options associated with
-            respective organization/folder level service
-            agent will be available to auditing projects.
+            Required. Cloud Storage buckets that you can
+            upload your audit reports to during the audit
+            process.
+
+            When you enroll an organization or folder, you
+            can choose a Cloud Storage bucket from any
+            project in the organization or folder. If you
+            run an audit at the project level using the
+            service agent at the organization or folder
+            level, all the buckets that are associated with
+            the service agent are available.
     """
 
     class EligibleDestination(proto.Message):
-        r"""The destination details where the audit report must be
-        uploaded.
+        r"""Details about the bucket where you want to upload the audit
+        report.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             eligible_gcs_bucket (str):
-                The Cloud Storage bucket location where the audit report and
-                evidences can be uploaded during the ``GenerateAuditReport``
+                The location of the Cloud Storage bucket where you want to
+                upload the audit report and evidence during the
+                [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport]
                 API call.
 
                 This field is a member of `oneof`_ ``eligible_destinations``.
@@ -177,34 +176,37 @@ class EnrollResourceRequest(proto.Message):
 
 
 class GenerateAuditScopeReportRequest(proto.Message):
-    r"""Message for requesting audit scope report.
+    r"""Request message for
+    [GenerateAuditScopeReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditScopeReport].
 
     Attributes:
         scope (str):
-            Required. Scope for which the AuditScopeReport is required.
-            Must be of format resource_type/resource_identifier Eg:
-            projects/{project}/locations/{location},
-            folders/{folder}/locations/{location}
+            Required. Project or folder that the audit scope report is
+            generated for, in one of the following formats:
+
+            - ``projects/{project}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         compliance_standard (str):
-            Required. Compliance Standard against which the Scope Report
-            must be generated. Eg: FEDRAMP_MODERATE
+            Optional. Deprecated. The standard (industry or regulatory
+            requirements) that the audit scope report is run against.
+
+            Use the ``compliance_framework`` field instead.
         report_format (google.cloud.auditmanager_v1.types.GenerateAuditScopeReportRequest.AuditScopeReportFormat):
-            Required. The format in which the Scope
-            report bytes should be returned.
+            Required. Format for the audit scope report.
         compliance_framework (str):
-            Required. Compliance framework against which
-            the Scope Report must be generated.
+            Required. Framework (set of controls) that the audit scope
+            report is generated against. For example, ``NIST_800_53``.
     """
 
     class AuditScopeReportFormat(proto.Enum):
-        r"""The options for the audit scope report format.
+        r"""Format for the audit scope report.
 
         Values:
             AUDIT_SCOPE_REPORT_FORMAT_UNSPECIFIED (0):
-                Unspecified. Invalid format.
+                Default value. This value is unused.
             AUDIT_SCOPE_REPORT_FORMAT_ODF (1):
-                Audit Scope Report creation format is Open
-                Document.
+                Open Document format.
         """
 
         AUDIT_SCOPE_REPORT_FORMAT_UNSPECIFIED = 0
@@ -230,43 +232,66 @@ class GenerateAuditScopeReportRequest(proto.Message):
 
 
 class GenerateAuditReportRequest(proto.Message):
-    r"""Message for requesting the Audit Report.
+    r"""Request message for
+    [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_uri (str):
-            Destination Cloud storage bucket where report
-            and evidence must be uploaded. The Cloud storage
-            bucket provided here must be selected among the
-            buckets entered during the enrollment process.
+            URL for the Cloud Storage bucket where the
+            report and evidence is uploaded. You must select
+            a bucket that was provided during the enrollment
+            process.
 
             This field is a member of `oneof`_ ``destination``.
         scope (str):
-            Required. Scope for which the AuditScopeReport is required.
-            Must be of format resource_type/resource_identifier Eg:
-            projects/{project}/locations/{location},
-            folders/{folder}/locations/{location}
+            Required. Organization, folder, or project that the audit
+            applies to, in one of the following formats:
+
+            - ``projects/{project}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         compliance_standard (str):
-            Required. Compliance Standard against which the Scope Report
-            must be generated. Eg: FEDRAMP_MODERATE
+            Optional. Deprecated. Compliance standard for the audit
+            report.
+
+            Use the ``compliance_framework`` field instead.
         report_format (google.cloud.auditmanager_v1.types.GenerateAuditReportRequest.AuditReportFormat):
-            Required. The format in which the audit
-            report should be created.
+            Required. Format for the audit report.
         compliance_framework (str):
-            Required. Compliance framework against which
-            the Report must be generated.
+            Required. The framework that's used for the audit report.
+            For example, ``NIST_800_53``.
+        validate_only (bool):
+            Optional. If ``true``, only validates the request and does
+            not generate the audit report. This executes standard
+            request validation (such as schema, framework existence,
+            scope, and IAM checks) and skips the apply phase.
+
+            Use this field for the following purposes:
+
+            - **Infrastructure as Code (IaC)**: Allow tools like
+              Terraform to run dry-run mutations (e.g.,
+              ``terraform plan``) without creating real resources or
+              incurring costs.
+            - **User Interface Validation**: Enable real-time form and
+              permission validation in custom UIs before submitting
+              requests.
+            - **CI/CD & Automation**: Test your scripts, permissions,
+              and parameters safely without triggering expensive
+              Long-Running Operations (LROs) or consuming resource
+              quotas.
     """
 
     class AuditReportFormat(proto.Enum):
-        r"""The options for the audit report format.
+        r"""Format for the audit report.
 
         Values:
             AUDIT_REPORT_FORMAT_UNSPECIFIED (0):
-                Unspecified. Invalid state.
+                Default value. This value is unused.
             AUDIT_REPORT_FORMAT_ODF (1):
-                Audit Report creation format is Open
-                Document.
+                Open Document format.
         """
 
         AUDIT_REPORT_FORMAT_UNSPECIFIED = 0
@@ -294,17 +319,24 @@ class GenerateAuditReportRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
 
 
 class GetResourceEnrollmentStatusRequest(proto.Message):
-    r"""Message for getting the enrollment status of a resource.
+    r"""Request message for
+    [GetResourceEnrollmentStatus][google.cloud.auditmanager.v1.AuditManager.GetResourceEnrollmentStatus].
 
     Attributes:
         name (str):
-            Required. Format
-            folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-            projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-            organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}
+            Required. Name of the resource enrollment status, in one of
+            the following formats:
+
+            - ``folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+            - ``projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+            - ``organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
     """
 
     name: str = proto.Field(
@@ -314,19 +346,27 @@ class GetResourceEnrollmentStatusRequest(proto.Message):
 
 
 class ListResourceEnrollmentStatusesRequest(proto.Message):
-    r"""Message for listing all the descendent resources under parent
-    with enrollment.
+    r"""Request message for
+    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
 
     Attributes:
         parent (str):
-            Required. The parent scope for which the list
-            of resources with enrollments are required.
+            Required. Parent organization or folder to list enrollment
+            statuses for, in one of the following formats:
+
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         page_size (int):
-            Optional. The maximum number of resources to
-            return.
+            Optional. Maximum number of items to return
+            in a single page. The service might return fewer
+            items than this value. If unspecified, the
+            service picks an appropriate default. The
+            maximum value is 100; values above 100 are
+            reduced to 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. A page token, received from a
+            previous call, to retrieve the next page of
+            results.
     """
 
     parent: str = proto.Field(
@@ -344,15 +384,17 @@ class ListResourceEnrollmentStatusesRequest(proto.Message):
 
 
 class ListResourceEnrollmentStatusesResponse(proto.Message):
-    r"""Response message with all the descendent resources with
-    enrollment.
+    r"""Response message for
+    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
 
     Attributes:
         resource_enrollment_statuses (MutableSequence[google.cloud.auditmanager_v1.types.ResourceEnrollmentStatus]):
-            The resources with their enrollment status.
+            Resources with their enrollment status.
         next_page_token (str):
-            Output only. The token to retrieve the next
-            page of results.
+            Output only. A token that you can send as the ``page_token``
+            in a subsequent request to retrieve the next page of
+            results. If this field is empty, there are no subsequent
+            pages.
     """
 
     @property
@@ -373,18 +415,28 @@ class ListResourceEnrollmentStatusesResponse(proto.Message):
 
 
 class ListAuditReportsRequest(proto.Message):
-    r"""Message for requesting to list the audit reports.
+    r"""Request message for
+    [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
 
     Attributes:
         parent (str):
-            Required. The parent scope for which to list
-            the reports.
+            Required. Parent organization, folder, or project to list
+            reports for, in one of the following formats:
+
+            - ``projects/{project}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         page_size (int):
-            Optional. The maximum number of resources to
-            return.
+            Optional. Maximum number of items to return
+            in a single page. The service might return fewer
+            items than this value. If unspecified, the
+            service picks an appropriate default. The
+            maximum value is 100; values above 100 are
+            reduced to 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. A page token, received from a
+            previous call, to retrieve the next page of
+            results.
     """
 
     parent: str = proto.Field(
@@ -402,14 +454,17 @@ class ListAuditReportsRequest(proto.Message):
 
 
 class ListAuditReportsResponse(proto.Message):
-    r"""Response message with all the audit reports.
+    r"""Response message for
+    [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
 
     Attributes:
         audit_reports (MutableSequence[google.cloud.auditmanager_v1.types.AuditReport]):
-            Output only. The audit reports.
+            Output only. Audit reports.
         next_page_token (str):
-            Output only. The token to retrieve the next
-            page of results.
+            Output only. A token that you can send as the ``page_token``
+            in a subsequent request to retrieve the next page of
+            results. If this field is empty, there are no subsequent
+            pages.
     """
 
     @property
@@ -428,14 +483,17 @@ class ListAuditReportsResponse(proto.Message):
 
 
 class GetAuditReportRequest(proto.Message):
-    r"""Message for requesting the overall audit report for an audit
-    report name.
+    r"""Request message for
+    [GetAuditReport][google.cloud.auditmanager.v1.AuditManager.GetAuditReport].
 
     Attributes:
         name (str):
-            Required. Format
-            projects/{project}/locations/{location}/auditReports/{audit_report},
-            folders/{folder}/locations/{location}/auditReports/{audit_report}
+            Required. Name of the audit report, in one of the following
+            formats:
+
+            - ``projects/{project}/locations/{location}/auditReports/{audit_report}``
+            - ``folders/{folder}/locations/{location}/auditReports/{audit_report}``
+            - ``organizations/{organization}/locations/{location}/auditReports/{audit_report}``
     """
 
     name: str = proto.Field(
@@ -445,20 +503,28 @@ class GetAuditReportRequest(proto.Message):
 
 
 class ListControlsRequest(proto.Message):
-    r"""Message for requesting all the controls for a compliance
-    standard.
+    r"""Request message for
+    [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
 
     Attributes:
         parent (str):
-            Required. Format
-            projects/{project}/locations/{location}/standards/{standard},
-            folders/{folder}/locations/{location}/standards/{standard}
+            Required. Standard to list controls for, in one of the
+            following formats:
+
+            - ``projects/{project}/locations/{location}/standards/{standard}``
+            - ``folders/{folder}/locations/{location}/standards/{standard}``
+            - ``organizations/{organization}/locations/{location}/standards/{standard}``
         page_size (int):
-            Optional. The maximum number of resources to
-            return.
+            Optional. Maximum number of items to return
+            in a single page. The service might return fewer
+            items than this value. If unspecified, the
+            service picks an appropriate default. The
+            maximum value is 100; values above 100 are
+            reduced to 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. A page token, received from a
+            previous call, to retrieve the next page of
+            results.
     """
 
     parent: str = proto.Field(
@@ -476,16 +542,18 @@ class ListControlsRequest(proto.Message):
 
 
 class ListControlsResponse(proto.Message):
-    r"""Response message with all the controls for a compliance
-    standard.
+    r"""Response message for
+    [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
 
     Attributes:
         controls (MutableSequence[google.cloud.auditmanager_v1.types.Control]):
-            Output only. The controls for the compliance
+            Output only. Controls for a given regulatory
             standard.
         next_page_token (str):
-            Output only. The token to retrieve the next
-            page of results.
+            Output only. A token that you can send as the ``page_token``
+            in a subsequent request to retrieve the next page of
+            results. If this field is empty, there are no subsequent
+            pages.
     """
 
     @property
@@ -504,42 +572,35 @@ class ListControlsResponse(proto.Message):
 
 
 class ReportGenerationProgress(proto.Message):
-    r"""The ``ReportGenerationProgress`` is part of
-    [google.longrunning.Operation][google.longrunning.Operation]
-    returned to the client for every ``GetOperation`` request.
+    r"""Details about the current status of the report-generation
+    process.
 
     Attributes:
         state (google.cloud.auditmanager_v1.types.OperationState):
-            Output only. The current state of execution
-            for report generation.
+            Output only. Current state of execution for
+            report generation.
         failure_reason (str):
-            Output only. States the reason of failure during the audit
-            report generation process. This field is set only if the
-            state attribute is OPERATION_STATE_FAILED.
+            Output only. Reason for failure during the audit report
+            generation process. This field is set only if the
+            ``OperationState`` attribute is ``OPERATION_STATE_FAILED``.
         evaluation_percent_complete (float):
-            Shows the progress of the CESS service
-            evaluation process. The progress is defined in
-            terms of percentage complete and is being
-            fetched from the CESS service.
+            Progress of the evaluation process. The
+            progress is defined in terms of percentage
+            complete.
         report_generation_percent_complete (float):
-            Shows the report generation progress of the CESS Result
-            Processor Service. The // progress is defined in terms of
-            percentage complete and is being fetched from the CESS
-            service. If report_generation_in_progress is non zero then
-            evaluation_percent_complete will be 100%.
+            Report generation progress, defined in terms of percentage
+            complete. Until evaluation is complete, this value is always
+            ``0``.
         report_uploading_percent_complete (float):
-            Shows the report uploading progress of the CESS Result
-            Processor Service. The progress is defined in terms of
-            percentage complete and is being fetched from the CESS
-            service. If report_uploading_in_progress is non zero then
-            evaluation_percent_complete and
-            report_generation_percent_complete will be 100%.
+            Report uploading progress, defined in terms of percentage
+            complete. Until evaluation and report generation are
+            complete, this value is always ``0``.
         destination_gcs_bucket (str):
-            Output only. The Cloud Storage bucket where
-            the audit report will be uploaded once the
-            evaluation process is completed.
+            Output only. Cloud Storage bucket where the
+            audit report is uploaded to after the evaluation
+            process is completed.
         audit_report (str):
-            Output only. The name of the audit report.
+            Output only. Name of the audit report.
     """
 
     state: "OperationState" = proto.Field(
@@ -574,15 +635,19 @@ class ReportGenerationProgress(proto.Message):
 
 
 class Enrollment(proto.Message):
-    r"""The enrollment resource.
+    r"""Organization, folder, or project to enroll for audit reports.
 
     Attributes:
         name (str):
-            Identifier. The name of this Enrollment, in
-            the format of scope given in request.
+            Identifier. Name of the enrollment, in one of the following
+            formats:
+
+            - ``projects/{project}/locations/{location}/enrollments/{enrollment}``
+            - ``folders/{folder}/locations/{location}/enrollments/{enrollment}``
+            - ``organizations/{organization}/locations/{location}/enrollments/{enrollment}``
         destination_details (MutableSequence[google.cloud.auditmanager_v1.types.DestinationDetails]):
-            Output only. The locations where the
-            generated reports can be uploaded.
+            Output only. Cloud Storage buckets where you
+            want to upload the audit reports.
     """
 
     name: str = proto.Field(
@@ -597,19 +662,22 @@ class Enrollment(proto.Message):
 
 
 class AuditScopeReport(proto.Message):
-    r"""The audit scope report.
+    r"""Audit scope report.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         scope_report_contents (bytes):
-            The audit scope report content in byte
-            format.
+            Audit scope report content in byte format.
 
             This field is a member of `oneof`_ ``audit_report``.
         name (str):
-            Identifier. The name of this Audit Report, in
-            the format of scope given in request.
+            Identifier. Name for the audit scope report, in one of the
+            following formats:
+
+            - ``projects/{project}/locations/{location}/auditScopeReports/{audit_scope_report}``
+            - ``folders/{folder}/locations/{location}/auditScopeReports/{audit_scope_report}``
+            - ``organizations/{organization}/locations/{location}/auditScopeReports/{audit_scope_report}``
     """
 
     scope_report_contents: bytes = proto.Field(
@@ -624,33 +692,33 @@ class AuditScopeReport(proto.Message):
 
 
 class OperationMetadata(proto.Message):
-    r"""The metadata of the long-running operation.
+    r"""Metadata for the long-running operation.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the operation was
+            Output only. Time that the operation was
             created.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the operation finished
+            Output only. Time that the operation finished
             running.
         target (str):
-            Output only. Server-defined resource path for
-            the target of the operation.
+            Output only. A server-defined resource path
+            for the target of the operation.
         verb (str):
-            Output only. Name of the verb executed by the
-            operation.
+            Output only. The name of the verb that was
+            executed by the operation.
         status_message (str):
-            Output only. Human-readable status of the
+            Output only. A human-readable status of the
             operation, if any.
         requested_cancellation (bool):
-            Output only. Identifies whether the user has requested
-            cancellation of the operation. Operations that have been
-            cancelled successfully have [Operation.error][] value with a
-            [google.rpc.Status.code][google.rpc.Status.code] of 1,
-            corresponding to ``Code.CANCELLED``.
+            Output only. Whether you requested that the operation be
+            cancelled. Operations that were cancelled successfully have
+            an [Operation.error][google.longrunning.Operation.error]
+            value with a status code
+            [Code.CANCELLED][google.rpc.Status.code.CANCELLED].
         api_version (str):
-            Output only. API version used to start the
-            operation.
+            Output only. The API version used to start the operation.
+            For example, ``v1``.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -686,37 +754,44 @@ class OperationMetadata(proto.Message):
 
 
 class ResourceEnrollmentStatus(proto.Message):
-    r"""A resource with its enrollment status.
+    r"""An organization, folder, or project with its enrollment
+    status.
 
     Attributes:
         name (str):
-            Identifier. The name of this resource.
+            Identifier. Name of the resource enrollment status, in one
+            of the following formats:
+
+            - ``folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+            - ``projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+            - ``organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
         enrollment (google.cloud.auditmanager_v1.types.Enrollment):
-            Output only. Enrollment which contains
-            enrolled destination details for a resource
+            Output only. Enrolled destination details for
+            the organization, folder, or project.
         enrolled (bool):
-            Output only. Is resource enrolled.
+            Output only. Deprecated. Whether the organization, folder,
+            or project is enrolled. Use ``enrollment_state`` instead.
         display_name (str):
-            Output only. Display name of the
-            project/folder/organization.
+            Output only. Display name for the
+            organization, folder, or project.
         enrollment_state (google.cloud.auditmanager_v1.types.ResourceEnrollmentStatus.ResourceEnrollmentState):
             Output only. Enrollment state of the
-            resource.
+            organization, folder, or project.
     """
 
     class ResourceEnrollmentState(proto.Enum):
-        r"""The different enrollment states of a resource.
+        r"""Different enrollment states of the resource and its parent.
 
         Values:
             RESOURCE_ENROLLMENT_STATE_UNSPECIFIED (0):
-                Unspecified. Invalid state.
+                Default value. This value is unused.
             NOT_ENROLLED (1):
-                Not enrolled.
+                The resource isn't enrolled.
             INHERITED (2):
-                Resource is not enrolled but the parent is
+                The resource isn't enrolled but the parent is
                 enrolled.
             ENROLLED (3):
-                Enrolled.
+                The resource is enrolled.
         """
 
         RESOURCE_ENROLLMENT_STATE_UNSPECIFIED = 0
@@ -753,57 +828,71 @@ class AuditReport(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of this Audit Report, in
-            the format of scope given in request.
+            Identifier. Name of the audit report, in one of the
+            following formats:
+
+            - ``projects/{project}/locations/{location}/auditReports/{audit_report}``
+            - ``folders/{folder}/locations/{location}/auditReports/{audit_report}``
+            - ``organizations/{organization}/locations/{location}/auditReports/{audit_report}``
         report_summary (google.cloud.auditmanager_v1.types.ReportSummary):
-            Output only. Report summary with compliance,
-            violation counts etc.
+            Output only. Report summary that includes
+            information about compliance and violation
+            counts.
         operation_id (str):
-            Output only. ClientOperationId
+            Output only. Client operation ID for the
+            audit report.
         destination_details (google.cloud.auditmanager_v1.types.DestinationDetails):
-            Output only. The location where the generated
-            report will be uploaded.
+            Output only. Cloud Storage bucket where the
+            audit report is uploaded to.
         compliance_standard (str):
-            Output only. Compliance Standard.
+            Output only. Deprecated. Compliance standard to be audited
+            against.
+
+            Use the ``compliance_framework`` field instead.
         scope (str):
-            Output only. The parent scope on which the
-            report was generated.
+            Output only. Organization, folder, or project that the
+            report is generated for, in one of the following formats:
+
+            - ``projects/{project}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``organizations/{organization}/locations/{location}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of the audit
             report.
         control_details (MutableSequence[google.cloud.auditmanager_v1.types.ControlDetails]):
-            Output only. The overall status of controls
+            Output only. Overall status of the controls.
         report_generation_state (google.cloud.auditmanager_v1.types.AuditReport.ReportGenerationState):
-            Output only. The state of Audit Report
-            Generation.
+            Output only. State of audit report
+            generation.
         compliance_framework (str):
-            Output only. Compliance Framework of Audit
-            Report
+            Output only. Compliance framework to use for the audit
+            report. For example, ``CIS_GCP_FOUNDATIONS_V1_2_0``.
         scope_id (str):
-            Output only. The ID/ Number for the scope on
-            which the audit report was generated.
+            Output only. Project number, folder ID, or
+            organization ID that the audit report was
+            generated for.
     """
 
     class ReportGenerationState(proto.Enum):
-        r"""The different states of the Audit Manager report generation.
+        r"""Different states of report generation.
 
         Values:
             REPORT_GENERATION_STATE_UNSPECIFIED (0):
-                Unspecified. Invalid state.
+                Default value. This value is unused.
             IN_PROGRESS (1):
-                Audit report generation process is in progress, ie.
-                operation state is neither OPERATION_STATE_DONE nor
-                OPERATION_STATE_FAILED.
+                The process is in progress. The operation can have any state
+                except for ``OPERATION_STATE_DONE`` or
+                ``OPERATION_STATE_FAILED``.
             COMPLETED (2):
-                Audit report generation process is completed. Operation
-                state is OPERATION_STATE_DONE.
+                The process is completed. The operation state is
+                ``OPERATION_STATE_DONE``.
             FAILED (3):
-                Audit report generation process has failed. Operation state
-                is OPERATION_STATE_FAILED.
+                The process has failed. The operation state is
+                ``OPERATION_STATE_FAILED``.
             SUMMARY_UNKNOWN (4):
-                Audit report generation process has
-                completed. But report summary is unknown. This
-                is valid for older reports.
+                The process completed, but the report
+                summary's status is unknown. This state isn't
+                used for new reports.
         """
 
         REPORT_GENERATION_STATE_UNSPECIFIED = 0
@@ -864,13 +953,17 @@ class AuditReport(proto.Message):
 
 
 class ControlFamily(proto.Message):
-    r"""The regulatory family of the control.
+    r"""Regulatory family of the control.
 
     Attributes:
         family_id (str):
-            The ID of the regulatory control family.
+            ID of the regulatory control family. To find the list of
+            supported control families, use the
+            [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls]
+            method and review the ``control_family`` field in the
+            response.
         display_name (str):
-            The display name of the regulatory control
+            Display name of the regulatory control
             family.
     """
 
@@ -889,81 +982,80 @@ class Control(proto.Message):
 
     Attributes:
         id (str):
-            Output only. The control identifier used to
-            fetch the findings. This is same as the control
-            report name.
+            Output only. Control identifier that's used
+            to fetch the findings. The identifier is the
+            same as the control report name.
         display_name (str):
             Output only. Display name of the control.
         family (google.cloud.auditmanager_v1.types.Control.Family):
-            Output only. Group where the control belongs.
-            E.g. Access Control.
+            Output only. Category that the control
+            belongs to.
         control_family (google.cloud.auditmanager_v1.types.ControlFamily):
-            Output only. Regulatory Family of the control
-            E.g. Access Control
+            Output only. Regulatory family of the
+            control.
         description (str):
-            Output only. Regulatory control ask of the
-            control
+            Output only. Description of the control.
         responsibility_type (str):
-            Output only. The type of responsibility for
-            implementing this control. It can be google,
-            customer or shared.
+            Output only. Who is responsible for implementing this
+            control. Set to one of the following values: ``GOOGLE``,
+            ``CUSTOMER``, or ``SHARED``.
         google_responsibility_description (str):
-            Output only. Description of the google
-            responsibility for implementing this control.
+            Output only. A description of Google's
+            responsibility for this control.
         google_responsibility_implementation (str):
-            Output only. Implementation of the google
-            responsibility for implementing this control.
+            Output only. A description of how Google
+            implements its responsibility for this control.
         customer_responsibility_description (str):
-            Output only. Description of the customer
-            responsibility for implementing this control.
+            Output only. A description of your
+            responsibility for this control.
         customer_responsibility_implementation (str):
-            Output only. Implementation of the customer
-            responsibility for implementing this control.
+            Output only. A description of how you can
+            implement your responsibility for this control.
     """
 
     class Family(proto.Enum):
-        r"""The family of the control. For example, Access Control.
+        r"""Category of the control.
 
         Values:
             FAMILY_UNSPECIFIED (0):
-                Unspecified. Invalid state.
+                Default value. This value is unused.
             AC (1):
-                Access Control
+                Access control.
             AT (2):
-                Awareness and Training
+                Awareness and training.
             AU (3):
-                Audit and Accountability
+                Audit and accountability.
             CA (4):
-                Certification, Accreditation and Security
-                Assessments
+                Certification, accreditation and security
+                assessments.
             CM (5):
-                Configuration Management
+                Configuration management and change control.
             CP (6):
-                Contingency Planning
+                Contingency planning and disaster recovery.
             IA (7):
-                Identification and Authentication
+                Identification and authentication.
             IR (8):
-                Incident Response
+                Incident response.
             MA (9):
-                Maintenance
+                Maintenance.
             MP (10):
-                Media Protection
+                Media protection.
             PE (11):
-                Physical and Environmental Protection
+                Physical and environmental protection.
             PL (12):
-                Security Planning
+                Security planning.
             PS (13):
-                Personnel Security
+                Personnel security.
             RA (14):
-                Risk Assessment
+                Risk assessment.
             SA (15):
-                System Services and Acquisition
+                System services and acquisition.
             SC (16):
-                System and Communications Protection
+                System and communications protection.
             SI (17):
-                System and Information Integrity
+                System and information integrity.
             SR (18):
-                Supply Chain Risk Management
+                Supply chain risk management.
         """
 
         FAMILY_UNSPECIFIED = 0
@@ -1031,14 +1123,14 @@ class Control(proto.Message):
 
 
 class DestinationDetails(proto.Message):
-    r"""The locations where the generated reports are saved.
+    r"""Cloud Storage bucket where the audit report is uploaded to.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_bucket_uri (str):
-            The Cloud Storage bucket where the audit
-            report is/will be uploaded.
+            URI for the Cloud Storage bucket, in the format
+            ``gs://{bucket_name}``.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -1051,21 +1143,22 @@ class DestinationDetails(proto.Message):
 
 
 class ReportSummary(proto.Message):
-    r"""The additional information for an audit operation.
+    r"""Additional information about the number of checks that were
+    made during an audit operation.
 
     Attributes:
         total_count (int):
-            Total number of checks.
+            Total number of evaluated checks.
         compliant_count (int):
             Number of compliant checks.
         violation_count (int):
             Number of checks with violations.
         manual_review_needed_count (int):
-            Number of checks with "manual review needed"
-            status.
+            Number of checks that require a manual
+            review.
         error_count (int):
-            Number of checks that could not be performed
-            due to errors.
+            Number of checks that can't be performed due
+            to errors.
     """
 
     total_count: int = proto.Field(
@@ -1091,18 +1184,19 @@ class ReportSummary(proto.Message):
 
 
 class ControlDetails(proto.Message):
-    r"""The evaluation details for a control.
+    r"""Evaluation details for a control.
 
     Attributes:
         control (google.cloud.auditmanager_v1.types.Control):
-            The control for which the findings are being
-            reported.
+            Control that the findings are being reported
+            for.
         compliance_state (google.cloud.auditmanager_v1.types.ComplianceState):
             Output only. Overall status of the findings
             for the control.
         control_report_summary (google.cloud.auditmanager_v1.types.ReportSummary):
-            Report summary with compliance, violation
-            counts etc.
+            A control report summary that provides a
+            high-level overview of the compliance controls
+            and the assessment status.
     """
 
     control: "Control" = proto.Field(

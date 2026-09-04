@@ -307,9 +307,10 @@ def _merge_markdown_content(
             content before the base file content.
     """
     try:
-        with open(base_file, "r+") as base, open(
-            additional_content_file, "r"
-        ) as additional_content:
+        with (
+            open(base_file, "r+") as base,
+            open(additional_content_file, "r") as additional_content,
+        ):
             file_content = (
                 f"{additional_content.read()}\n{base.read()}"
                 if prepend_additional_content

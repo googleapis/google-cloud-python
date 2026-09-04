@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.contentwarehouse_v1._compat import transcode_request
 from google.cloud.contentwarehouse_v1.types import (
     document_schema,
     document_schema_service,
@@ -61,8 +62,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class DocumentSchemaServiceRestInterceptor:
@@ -519,21 +519,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_create_document_schema(
                 request, metadata
             )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema,
+                    "_BaseCreateDocumentSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -670,17 +667,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_document_schema(
                 request, metadata
             )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema,
+                    "_BaseDeleteDocumentSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -786,17 +784,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_get_document_schema(
                 request, metadata
             )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema,
+                    "_BaseGetDocumentSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -936,17 +935,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_http_options()
-
             request, metadata = self._interceptor.pre_list_document_schemas(
                 request, metadata
             )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas,
+                    "_BaseListDocumentSchemas__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1091,21 +1091,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_http_options()
-
             request, metadata = self._interceptor.pre_update_document_schema(
                 request, metadata
             )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema,
+                    "_BaseUpdateDocumentSchema__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1302,15 +1299,16 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             """
 
             http_options = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDocumentSchemaServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -106,6 +106,9 @@ class GetDocumentRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     name: str = proto.Field(
@@ -127,6 +130,11 @@ class GetDocumentRequest(proto.Message):
         number=5,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=common.RequestOptions,
     )
 
 
@@ -216,6 +224,9 @@ class ListDocumentsRequest(proto.Message):
 
             Requests with ``show_missing`` may not specify ``where`` or
             ``order_by``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -257,6 +268,11 @@ class ListDocumentsRequest(proto.Message):
     show_missing: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=common.RequestOptions,
     )
 
 
@@ -315,6 +331,9 @@ class CreateDocumentRequest(proto.Message):
             If the document has a field that is not present
             in this mask, that field will not be returned in
             the response.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -338,6 +357,11 @@ class CreateDocumentRequest(proto.Message):
         proto.MESSAGE,
         number=5,
         message=common.DocumentMask,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=common.RequestOptions,
     )
 
 
@@ -371,6 +395,9 @@ class UpdateDocumentRequest(proto.Message):
             An optional precondition on the document.
             The request will fail if this is set and not met
             by the target document.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     document: gf_document.Document = proto.Field(
@@ -393,6 +420,11 @@ class UpdateDocumentRequest(proto.Message):
         number=4,
         message=common.Precondition,
     )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=common.RequestOptions,
+    )
 
 
 class DeleteDocumentRequest(proto.Message):
@@ -408,6 +440,9 @@ class DeleteDocumentRequest(proto.Message):
             An optional precondition on the document.
             The request will fail if this is set and not met
             by the target document.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     name: str = proto.Field(
@@ -418,6 +453,11 @@ class DeleteDocumentRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=common.Precondition,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.RequestOptions,
     )
 
 
@@ -468,6 +508,9 @@ class BatchGetDocumentsRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -499,6 +542,11 @@ class BatchGetDocumentsRequest(proto.Message):
         number=7,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=common.RequestOptions,
     )
 
 
@@ -569,6 +617,9 @@ class BeginTransactionRequest(proto.Message):
         options (google.cloud.firestore_v1.types.TransactionOptions):
             The options for the transaction.
             Defaults to a read-write transaction.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -579,6 +630,11 @@ class BeginTransactionRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=common.TransactionOptions,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.RequestOptions,
     )
 
 
@@ -612,6 +668,9 @@ class CommitRequest(proto.Message):
         transaction (bytes):
             If set, applies all writes in this
             transaction, and commits it.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -626,6 +685,11 @@ class CommitRequest(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=3,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.RequestOptions,
     )
 
 
@@ -667,6 +731,9 @@ class RollbackRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``.
         transaction (bytes):
             Required. The transaction to roll back.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -676,6 +743,11 @@ class RollbackRequest(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=2,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.RequestOptions,
     )
 
 
@@ -731,6 +803,9 @@ class RunQueryRequest(proto.Message):
             set, additional query statistics will be
             returned. If not, only query results will be
             returned.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -764,6 +839,11 @@ class RunQueryRequest(proto.Message):
         proto.MESSAGE,
         number=10,
         message=query_profile.ExplainOptions,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=common.RequestOptions,
     )
 
 
@@ -888,6 +968,9 @@ class ExecutePipelineRequest(proto.Message):
             Optional. Automatically commits the transaction after the
             pipeline has been executed. Only permitted in combination
             with ``transaction`` or ``new_transaction``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -920,6 +1003,11 @@ class ExecutePipelineRequest(proto.Message):
     auto_commit_transaction: bool = proto.Field(
         proto.BOOL,
         number=9,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=common.RequestOptions,
     )
 
 
@@ -1045,6 +1133,9 @@ class RunAggregationQueryRequest(proto.Message):
             set, additional query statistics will be
             returned. If not, only query results will be
             returned.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -1078,6 +1169,11 @@ class RunAggregationQueryRequest(proto.Message):
         proto.MESSAGE,
         number=8,
         message=query_profile.ExplainOptions,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=common.RequestOptions,
     )
 
 
@@ -1201,6 +1297,9 @@ class PartitionQueryRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -1230,6 +1329,11 @@ class PartitionQueryRequest(proto.Message):
         number=6,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=common.RequestOptions,
     )
 
 
@@ -1328,6 +1432,9 @@ class WriteRequest(proto.Message):
             Leave this field unset when creating a new stream.
         labels (MutableMapping[str, str]):
             Labels associated with this write request.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -1351,6 +1458,11 @@ class WriteRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=5,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=common.RequestOptions,
     )
 
 
@@ -1426,6 +1538,9 @@ class ListenRequest(proto.Message):
             This field is a member of `oneof`_ ``target_change``.
         labels (MutableMapping[str, str]):
             Labels associated with this target change.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -1447,6 +1562,11 @@ class ListenRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=4,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=common.RequestOptions,
     )
 
 
@@ -1807,6 +1927,9 @@ class ListCollectionIdsRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     parent: str = proto.Field(
@@ -1826,6 +1949,11 @@ class ListCollectionIdsRequest(proto.Message):
         number=4,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=common.RequestOptions,
     )
 
 
@@ -1872,6 +2000,9 @@ class BatchWriteRequest(proto.Message):
             same document more than once per request.
         labels (MutableMapping[str, str]):
             Labels associated with this batch write.
+        request_options (google.cloud.firestore_v1.types.RequestOptions):
+            Optional. Any additional options for the
+            request.
     """
 
     database: str = proto.Field(
@@ -1887,6 +2018,11 @@ class BatchWriteRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=3,
+    )
+    request_options: common.RequestOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.RequestOptions,
     )
 
 

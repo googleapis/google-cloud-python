@@ -133,6 +133,12 @@ class Table(object):
         self._app_profile_id = app_profile_id
         self.mutation_timeout = mutation_timeout
 
+        self._table_impl = self._instance._client._veneer_data_client.get_table(
+            self._instance.instance_id,
+            self.table_id,
+            app_profile_id=self._app_profile_id,
+        )
+
     @property
     def name(self):
         """Table name used in requests.
@@ -867,6 +873,13 @@ class Table(object):
             :end-before: [END bigtable_api_mutations_batcher]
             :dedent: 4
 
+        .. warning::
+
+           If using ``MutationsBatcher``, please ensure you are using
+           ``google-cloud-bigtable >= 2.42.0``, or consider migrating to the
+           batcher provided by the synchronous/asynchronous data client
+           (:mod:`google.cloud.bigtable.data`).
+
         :type flush_count: int
         :param flush_count: (Optional) Maximum number of rows per batch. If it
                 reaches the max number of rows it calls finish_batch() to
@@ -1322,7 +1335,7 @@ def _create_row_request(
         raise ValueError("Row range and row set cannot be set simultaneously")
 
     if filter_ is not None:
-        request_kwargs["filter"] = filter_.to_pb()
+        request_kwargs["filter"] = filter_._to_pb()
     if limit is not None:
         request_kwargs["rows_limit"] = limit
     if app_profile_id is not None:
@@ -1361,7 +1374,7 @@ def _compile_mutation_entries(table_name, rows):
     for row in rows:
         _check_row_table_name(table_name, row)
         _check_row_type(row)
-        mutations = row._get_mutations()
+        mutations = row._get_mutation_pbs()
         entries.append(entry_klass(row_key=row.row_key, mutations=mutations))
         mutations_count += len(mutations)
 

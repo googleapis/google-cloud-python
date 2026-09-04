@@ -17,9 +17,8 @@ import os
 import pathlib
 import re
 import shutil
-
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -160,6 +159,15 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", RUFF_VERSION)
+
+    # 1. Check imports
+    session.run(
+        "ruff", "check",
+        "--select", "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
     # 2. Check formatting
     session.run(
@@ -503,9 +511,12 @@ def prerelease_deps(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    # Locate the monorepo 'packages' directory containing core dependencies
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     # Extract the base package name, safely ignoring version bounds and spaces
     # (e.g., "grpcio>=1.75.1" becomes "grpcio")
@@ -564,7 +575,7 @@ def prerelease_deps(session, protobuf_implementation):
     )
 
 
-@nox.session(python=PREVIEW_PYTHON_VERSION)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -616,9 +627,12 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    # Locate the monorepo 'packages' directory containing core dependencies
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]

@@ -2,8 +2,11 @@
 branch = True
 
 [report]
-fail_under = 99
+fail_under = 100
 show_missing = True
+omit =
+    tests/*
+    */tests/*
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

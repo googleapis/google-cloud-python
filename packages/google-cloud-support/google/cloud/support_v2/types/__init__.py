@@ -59,6 +59,7 @@ from .support_event_subscription import (
 from .support_event_subscription_service import (
     CreateSupportEventSubscriptionRequest,
     DeleteSupportEventSubscriptionRequest,
+    ExpungeSupportEventSubscriptionRequest,
     GetSupportEventSubscriptionRequest,
     ListSupportEventSubscriptionsRequest,
     ListSupportEventSubscriptionsResponse,
@@ -94,6 +95,7 @@ __all__ = (
     "SupportEventSubscription",
     "CreateSupportEventSubscriptionRequest",
     "DeleteSupportEventSubscriptionRequest",
+    "ExpungeSupportEventSubscriptionRequest",
     "GetSupportEventSubscriptionRequest",
     "ListSupportEventSubscriptionsRequest",
     "ListSupportEventSubscriptionsResponse",

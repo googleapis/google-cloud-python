@@ -55,9 +55,7 @@ from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ChatServiceTransport(abc.ABC):
@@ -69,6 +67,9 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
         "https://www.googleapis.com/auth/chat.admin.spaces",
         "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+        "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
         "https://www.googleapis.com/auth/chat.app.delete",
         "https://www.googleapis.com/auth/chat.app.memberships",
         "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -289,6 +290,20 @@ class ChatServiceTransport(abc.ABC):
             ),
             self.delete_message: gapic_v1.method.wrap_method(
                 self.delete_message,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.search_messages: gapic_v1.method.wrap_method(
+                self.search_messages,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -948,6 +963,17 @@ class ChatServiceTransport(abc.ABC):
     ) -> Callable[
         [message.DeleteMessageRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_messages(
+        self,
+    ) -> Callable[
+        [message.SearchMessagesRequest],
+        Union[
+            message.SearchMessagesResponse, Awaitable[message.SearchMessagesResponse]
+        ],
     ]:
         raise NotImplementedError()
 

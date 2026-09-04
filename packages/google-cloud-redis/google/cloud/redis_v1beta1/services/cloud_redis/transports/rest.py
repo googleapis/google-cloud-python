@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.redis_v1beta1._compat import transcode_request
 from google.cloud.redis_v1beta1.types import cloud_redis
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CloudRedisRestInterceptor:
@@ -924,23 +924,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseCloudRedisRestTransport._BaseCreateInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseCreateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1079,17 +1072,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseDeleteInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1228,23 +1220,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseExportInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_export_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseExportInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseCloudRedisRestTransport._BaseExportInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseExportInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseExportInstance,
+                    "_BaseExportInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1384,21 +1369,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseFailoverInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_failover_instance(
                 request, metadata
             )
-            transcoded_request = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseFailoverInstance,
+                    "_BaseFailoverInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1534,19 +1516,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseCloudRedisRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1681,17 +1660,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance_auth_string(
                 request, metadata
             )
-            transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseGetInstanceAuthString,
+                    "_BaseGetInstanceAuthString__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1832,23 +1812,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseImportInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_import_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseImportInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseCloudRedisRestTransport._BaseImportInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseImportInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseImportInstance,
+                    "_BaseImportInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1986,19 +1959,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = (
-                _BaseCloudRedisRestTransport._BaseListInstances._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2139,21 +2109,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_http_options()
-
             request, metadata = self._interceptor.pre_reschedule_maintenance(
                 request, metadata
             )
-            transcoded_request = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseRescheduleMaintenance,
+                    "_BaseRescheduleMaintenance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2293,23 +2260,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseCloudRedisRestTransport._BaseUpdateInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCloudRedisRestTransport._BaseUpdateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseUpdateInstance,
+                    "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2449,21 +2409,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             http_options = (
                 _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_upgrade_instance(
                 request, metadata
             )
-            transcoded_request = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudRedisRestTransport._BaseUpgradeInstance,
+                    "_BaseUpgradeInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

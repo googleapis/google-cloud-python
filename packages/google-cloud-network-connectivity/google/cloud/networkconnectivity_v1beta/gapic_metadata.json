@@ -527,6 +527,11 @@
                 "list_transports"
               ]
             },
+            "ParseFromActivationKey": {
+              "methods": [
+                "parse_from_activation_key"
+              ]
+            },
             "UpdateTransport": {
               "methods": [
                 "update_transport"
@@ -570,6 +575,11 @@
             "ListTransports": {
               "methods": [
                 "list_transports"
+              ]
+            },
+            "ParseFromActivationKey": {
+              "methods": [
+                "parse_from_activation_key"
               ]
             },
             "UpdateTransport": {

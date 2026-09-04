@@ -254,7 +254,26 @@ class GenerateEvaluationRequest(proto.Message):
             Optional. Indicate the source of the
             conversation. If not set, all sources will be
             searched.
+        evaluation_type (google.cloud.ces_v1beta.types.GenerateEvaluationRequest.EvaluationType):
+            Optional. The type of evaluation to generate.
+            Defaults to GOLDEN if unspecified.
     """
+
+    class EvaluationType(proto.Enum):
+        r"""The type of evaluation to generate.
+
+        Values:
+            EVALUATION_TYPE_UNSPECIFIED (0):
+                Unspecified type. Defaults to GOLDEN.
+            GOLDEN (1):
+                Golden evaluation.
+            SCENARIO (2):
+                Scenario evaluation.
+        """
+
+        EVALUATION_TYPE_UNSPECIFIED = 0
+        GOLDEN = 1
+        SCENARIO = 2
 
     conversation: str = proto.Field(
         proto.STRING,
@@ -264,6 +283,11 @@ class GenerateEvaluationRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gcc_conversation.Conversation.Source,
+    )
+    evaluation_type: EvaluationType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EvaluationType,
     )
 
 

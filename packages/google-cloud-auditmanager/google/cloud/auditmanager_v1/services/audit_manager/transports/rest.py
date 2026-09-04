@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.auditmanager_v1._compat import transcode_request
 from google.cloud.auditmanager_v1.types import auditmanager
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AuditManagerRestInterceptor:
@@ -892,9 +892,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.EnrollResourceRequest):
-                    The request object. Request message to subscribe the
-                Audit Manager service for given
-                resource.
+                    The request object. Request message for
+                [EnrollResource][google.cloud.auditmanager.v1.AuditManager.EnrollResource].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -905,25 +904,24 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.Enrollment:
-                    The enrollment resource.
+                    Organization, folder, or project to
+                enroll for audit reports.
+
             """
 
             http_options = (
                 _BaseAuditManagerRestTransport._BaseEnrollResource._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_enroll_resource(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseEnrollResource._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseEnrollResource._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseEnrollResource._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseEnrollResource,
+                    "_BaseEnrollResource__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1044,8 +1042,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.GenerateAuditReportRequest):
-                    The request object. Message for requesting the Audit
-                Report.
+                    The request object. Request message for
+                [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1063,21 +1061,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_audit_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGenerateAuditReport,
+                    "_BaseGenerateAuditReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1198,8 +1193,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.GenerateAuditScopeReportRequest):
-                        The request object. Message for requesting audit scope
-                    report.
+                        The request object. Request message for
+                    [GenerateAuditScopeReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditScopeReport].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1210,25 +1205,22 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.AuditScopeReport:
-                        The audit scope report.
+                        Audit scope report.
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_audit_scope_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport,
+                    "_BaseGenerateAuditScopeReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1350,8 +1342,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.GetAuditReportRequest):
-                    The request object. Message for requesting the overall
-                audit report for an audit report name.
+                    The request object. Request message for
+                [GetAuditReport][google.cloud.auditmanager.v1.AuditManager.GetAuditReport].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1368,17 +1360,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetAuditReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_audit_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetAuditReport._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGetAuditReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetAuditReport,
+                    "_BaseGetAuditReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1499,8 +1492,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.GetResourceEnrollmentStatusRequest):
-                        The request object. Message for getting the enrollment
-                    status of a resource.
+                        The request object. Request message for
+                    [GetResourceEnrollmentStatus][google.cloud.auditmanager.v1.AuditManager.GetResourceEnrollmentStatus].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1511,23 +1504,24 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.ResourceEnrollmentStatus:
-                        A resource with its enrollment
-                    status.
+                        An organization, folder, or project
+                    with its enrollment status.
 
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_http_options()
-
             request, metadata = self._interceptor.pre_get_resource_enrollment_status(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus,
+                    "_BaseGetResourceEnrollmentStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1652,8 +1646,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.ListAuditReportsRequest):
-                    The request object. Message for requesting to list the
-                audit reports.
+                    The request object. Request message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1664,25 +1658,26 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.ListAuditReportsResponse:
-                    Response message with all the audit
-                reports.
+                    Response message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
 
             """
 
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListAuditReports._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_audit_reports(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListAuditReports._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListAuditReports._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListAuditReports,
+                    "_BaseListAuditReports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1803,8 +1798,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.ListControlsRequest):
-                    The request object. Message for requesting all the
-                controls for a compliance standard.
+                    The request object. Request message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1815,25 +1810,24 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.ListControlsResponse:
-                    Response message with all the
-                controls for a compliance standard.
+                    Response message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
 
             """
 
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListControls._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_controls(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListControls._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseListControls._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListControls,
+                    "_BaseListControls__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1956,9 +1950,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.ListResourceEnrollmentStatusesRequest):
-                        The request object. Message for listing all the
-                    descendent resources under parent with
-                    enrollment.
+                        The request object. Request message for
+                    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1969,23 +1962,24 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.ListResourceEnrollmentStatusesResponse:
-                        Response message with all the
-                    descendent resources with enrollment.
+                        Response message for
+                    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
 
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_resource_enrollment_statuses(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses,
+                    "_BaseListResourceEnrollmentStatuses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2214,19 +2208,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAuditManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2358,15 +2349,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2496,21 +2488,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2615,17 +2604,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2732,17 +2722,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2874,15 +2863,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

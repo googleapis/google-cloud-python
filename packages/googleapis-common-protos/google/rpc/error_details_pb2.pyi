@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -55,7 +56,10 @@ class RetryInfo(_message.Message):
     RETRY_DELAY_FIELD_NUMBER: _ClassVar[int]
     retry_delay: _duration_pb2.Duration
     def __init__(
-        self, retry_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...
+        self,
+        retry_delay: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
     ) -> None: ...
 
 class DebugInfo(_message.Message):

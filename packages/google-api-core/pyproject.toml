@@ -43,12 +43,12 @@ classifiers = [
   "Topic :: Internet",
 ]
 dependencies = [
-  "googleapis-common-protos >= 1.63.2, < 2.0.0",
-  "protobuf >= 5.29.6, < 8.0.0",
-  "proto-plus >= 1.24.0, < 2.0.0",
-  "proto-plus >= 1.25.0, < 2.0.0; python_version >= '3.13'",
+  "googleapis-common-protos >= 1.69.2, < 2.0.0",
+  "protobuf >= 6.33.5, < 8.0.0",
+  "proto-plus >= 1.26.1, < 2.0.0",
   "google-auth >= 2.14.1, < 3.0.0",
   "requests >= 2.33.0, < 3.0.0",
+  "opentelemetry-api >= 1.44.0, < 2.0.0",
 ]
 dynamic = ["version"]
 
@@ -60,12 +60,16 @@ Repository = "https://github.com/googleapis/google-cloud-python"
 [project.optional-dependencies]
 async_rest = ["google-auth[aiohttp] >= 2.14.1, < 3.0.0", "aiohttp >= 3.13.4"]
 grpc = [
-  "grpcio >= 1.41.0, < 2.0.0",
-  "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11'",
+  "grpcio >= 1.59.0, < 2.0.0",
   "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-  "grpcio-status >= 1.41.0, < 2.0.0",
-  "grpcio-status >= 1.49.1, < 2.0.0; python_version >= '3.11'",
+  "grpcio-status >= 1.59.0, < 2.0.0",
   "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
+]
+tracing = [
+  "opentelemetry-instrumentation-grpc >= 0.65b0, < 1.0.0",
+]
+testing = [
+  "opentelemetry-sdk >= 1.44.0, < 2.0.0",
 ]
 
 
@@ -88,6 +92,8 @@ filterwarnings = [
   "error",
   # Prevent Python version warnings from interfering with tests
   "ignore:.* Python version .*:FutureWarning",
+  # TODO: Remove once b/544782314 is resolved (when grpcio >= 1.83.0 is enforced)
+  "ignore:.*does not support Post-Quantum Cryptography.*:FutureWarning",
   # Remove once https://github.com/pytest-dev/pytest-cov/issues/621 is fixed
   "ignore:.*The --rsyncdir command line argument and rsyncdirs config variable are deprecated:DeprecationWarning",
   # Remove once https://github.com/protocolbuffers/protobuf/issues/12186 is fixed

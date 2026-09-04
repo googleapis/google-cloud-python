@@ -14,7 +14,7 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
@@ -36,6 +36,18 @@ nox.options.error_on_missing_interpreters = True
 
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
+CURRENT_DIRECTORY = Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 # Ruff uses globs for excludes (different from Black's regex)
@@ -44,7 +56,6 @@ LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
 RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -59,8 +70,6 @@ NEWEST_PYTHON = ALL_PYTHON[-2]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-    if session.python == "3.9":
-        session.skip("Skipping Python 3.9 unit tests temporarily.")
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
@@ -476,6 +485,22 @@ def showcase_mtls(
         )
 
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/17752):
+# Remove showcase_pqc once grpcio >= 1.83.0 is enforced by default.
+@nox.session(python=NEWEST_PYTHON)
+def showcase_pqc(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase PQC verification test suite against grpcio 1.83+ over standard TLS."""
+    with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        session.install("--upgrade", "grpcio>=1.83.0", "grpcio-status>=1.83.0")
+        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
+
+
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
@@ -714,7 +739,7 @@ def mypy(session):
         "click==8.1.3",
     )
     session.install(".")
-    session.run("mypy", "-p", "gapic")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -726,7 +751,7 @@ def lint(session):
     """
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
     session.skip(
         "Linting was not enforced in the split repo. "
@@ -734,6 +759,17 @@ def lint(session):
     )
 
     session.install("flake8", RUFF_VERSION)
+
+    # 1. Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
 
     # 2. Check formatting
     session.run(
@@ -756,9 +792,11 @@ def lint(session):
 @nox.session(python=NEWEST_PYTHON)
 def lint_setup_py(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo 
+    # SKIP: This session was not enforced in the standalone (split) repo
     # and is disabled here to ensure a "move-only" migration.
-    session.skip("Skipping now to avoid changing code during migration. See Issue #16186")
+    session.skip(
+        "Skipping now to avoid changing code during migration. See Issue #16186"
+    )
 
 
 @nox.session(python="3.10")
@@ -833,9 +871,11 @@ def prerelease_deps(session, protobuf_implementation):
     """
     Run all tests with pre-release versions of dependencies installed.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16184):
     # Implement pre-release dependency logic to test against upcoming runtime changes.
-    session.skip("prerelease_deps session is not yet implemented for gapic-generator-python.")
+    session.skip(
+        "prerelease_deps session is not yet implemented for gapic-generator-python."
+    )
 
 
 @nox.session(python=NEWEST_PYTHON)
@@ -845,6 +885,8 @@ def prerelease_deps(session, protobuf_implementation):
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185): 
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/16185):
     # Implement logic to install core packages directly from the mono-repo directories.
-    session.skip("core_deps_from_source session is not yet implemented for gapic-generator-python.")
+    session.skip(
+        "core_deps_from_source session is not yet implemented for gapic-generator-python."
+    )

@@ -34,11 +34,11 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_v1/__init__.py",
     ]
     before: |
-      import sys\n
       import google.api_core as api_core\n
       from google.cloud.firestore_v1 import gapic_version as package_version
       [\s\S]*?"WriteResult",\n\)
     after: |
+      import google.api_core as api_core\n
       """Python idiomatic client for Google Cloud Firestore."""\n
       from google.cloud.firestore_v1 import gapic_version as package_version
 
@@ -349,11 +349,11 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_admin_v1/__init__.py",
     ]
     before: |
-      import sys\n
       import google.api_core as api_core\n
       from google.cloud.firestore_admin_v1 import gapic_version as package_version
       [\s\S]*?"WeeklyRecurrence",\n\)
     after: |
+      import google.api_core as api_core\n
       from .services.firestore_admin import FirestoreAdminClient
       from .types.field import Field
       from .types.firestore_admin import (
@@ -473,10 +473,14 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_bundle/__init__.py",
     ]
     before: |
-      metadata\n
+      __lazy_modules__ = \{
+      \    "google.cloud.firestore_bundle.types.bundle",
+      \}\n\n
       from .types.bundle import \(
     after: |
-      metadata\n
+      __lazy_modules__ = {
+          "google.cloud.firestore_bundle.types.bundle",
+      }\n\n
       from .bundle import FirestoreBundle
       from .types.bundle import (
     count: 1

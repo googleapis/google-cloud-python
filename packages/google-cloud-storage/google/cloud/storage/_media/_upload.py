@@ -676,6 +676,11 @@ class ResumableUpload(UploadBase):
             msg = _STREAM_ERROR_TEMPLATE.format(start_byte, self.bytes_uploaded)
             raise ValueError(msg)
 
+        if self._total_bytes is None and not content_range.endswith("/*"):
+            total_str = content_range.split("/")[-1]
+            if total_str.isdigit():
+                self._total_bytes = int(total_str)
+
         self._update_checksum(start_byte, payload)
 
         headers = {

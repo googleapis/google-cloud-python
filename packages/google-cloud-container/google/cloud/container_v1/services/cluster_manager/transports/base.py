@@ -32,9 +32,7 @@ from google.cloud.container_v1.types import cluster_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ClusterManagerTransport(abc.ABC):
@@ -417,6 +415,11 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.complete_control_plane_upgrade: gapic_v1.method.wrap_method(
+                self.complete_control_plane_upgrade,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -773,6 +776,15 @@ class ClusterManagerTransport(abc.ABC):
             cluster_service.NodePoolUpgradeInfo,
             Awaitable[cluster_service.NodePoolUpgradeInfo],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def complete_control_plane_upgrade(
+        self,
+    ) -> Callable[
+        [cluster_service.CompleteControlPlaneUpgradeRequest],
+        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
     ]:
         raise NotImplementedError()
 

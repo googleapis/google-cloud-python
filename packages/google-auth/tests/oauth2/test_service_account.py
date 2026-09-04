@@ -290,6 +290,10 @@ class TestCredentials(object):
         )
         assert url == expected_url
 
+    def test_build_regional_access_boundary_lookup_url_with_subject(self):
+        credentials = self.make_credentials().with_subject("user@example.com")
+        assert credentials._build_regional_access_boundary_lookup_url() is None
+
     def test_with_token_uri(self):
         credentials = self.make_credentials()
         new_token_uri = "https://example2.com/oauth2/token"

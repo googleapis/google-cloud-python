@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -114,7 +115,9 @@ class Distribution(_message.Message):
         def __init__(
             self,
             value: _Optional[float] = ...,
-            timestamp: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+            timestamp: _Optional[
+                _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+            ] = ...,
             attachments: _Optional[_Iterable[_Union[_any_pb2.Any, _Mapping]]] = ...,
         ) -> None: ...
 

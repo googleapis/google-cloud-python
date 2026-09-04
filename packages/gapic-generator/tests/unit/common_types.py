@@ -45,7 +45,8 @@ class DummyMethod:
 
     @property
     def client_method_name(self):
-        method_wrapper = make_method(name=self.name, is_internal=self.is_internal)
+        name = self.name if isinstance(self.name, str) else ""
+        method_wrapper = make_method(name=name, is_internal=self.is_internal)
         return method_wrapper.client_method_name
 
 

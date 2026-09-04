@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -33,7 +33,7 @@ class Http(_message.Message):
     def __init__(
         self,
         rules: _Optional[_Iterable[_Union[HttpRule, _Mapping]]] = ...,
-        fully_decode_reserved_expansion: bool = ...,
+        fully_decode_reserved_expansion: _Optional[bool] = ...,
     ) -> None: ...
 
 class HttpRule(_message.Message):

@@ -46,6 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
@@ -56,6 +57,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.ces_v1.services.agent_service import pagers
 from google.cloud.ces_v1.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,
@@ -6602,9 +6604,7 @@ class AgentServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("AgentServiceAsyncClient",)
