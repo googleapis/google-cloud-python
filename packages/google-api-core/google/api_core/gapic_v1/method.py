@@ -218,7 +218,8 @@ class _GapicCallable(object):
                         span.record_exception(exc)
                         span.set_status(trace.StatusCode.ERROR, str(exc))
                         raise
-            except ImportError:
+            # If OpenTelemetry cannot be imported in the current environment, continue without tracing.
+            except ImportError:  # pragma: NO COVER
                 pass
 
         return wrapped_func(*args, **kwargs)
