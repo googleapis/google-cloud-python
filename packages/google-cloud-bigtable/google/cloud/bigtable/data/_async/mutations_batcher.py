@@ -16,15 +16,19 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import logging
 import time
 import warnings
 from collections import deque
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Any, Callable, Sequence, cast
+
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
     _get_retryable_errors,
+    _get_statuses_from_mutations_exception_group,
     _get_timeouts,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
@@ -54,6 +58,7 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.mutations_batc
 
 # used to make more readable default values
 _MB_SIZE = 1024 * 1024
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync.convert_class(sync_name="_FlowControl", add_mapping_for_name="_FlowControl")
@@ -294,6 +299,9 @@ class MutationsBatcherAsync:
         self._newest_exceptions: deque[Exception] = deque(
             maxlen=self._exception_list_limit
         )
+        self._user_batch_completed_callback: (
+            Callable[[list[status_pb2.Status]], Any] | None
+        ) = None
         # clean up on program exit
         atexit.register(self._on_exit)
 
@@ -410,6 +418,7 @@ class MutationsBatcherAsync:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information
         """
+        statuses = [status_pb2.Status(code=code_pb2.UNKNOWN) for _ in range(len(batch))]
         try:
             operation = CrossSync._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -422,13 +431,26 @@ class MutationsBatcherAsync:
             )
             await operation.start()
         except MutationsExceptionGroup as e:
+            statuses = _get_statuses_from_mutations_exception_group(e, len(batch))
+
             # strip index information from exceptions, since it is not useful in a batch context
             for subexc in e.exceptions:
                 subexc.index = None
             return list(e.exceptions)
+        else:
+            statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))]
         finally:
             # mark batch as complete in flow control
             await self._flow_control.remove_from_flow(batch)
+
+            # Call batch done callback with list of statuses.
+            if self._user_batch_completed_callback:
+                try:
+                    self._user_batch_completed_callback(statuses)
+                except Exception as exc:
+                    _LOGGER.warning(
+                        f"Exception raised in user batch completion callback: {exc}"
+                    )
         return []
 
     def _add_exceptions(self, excs: list[Exception]):
