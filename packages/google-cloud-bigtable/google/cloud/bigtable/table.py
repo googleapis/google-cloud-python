@@ -568,7 +568,7 @@ class Table(object):
             default value :attr:`DEFAULT_RETRY_READ_ROWS` can be used and
             modified with the :meth:`~google.api_core.retry.Retry.with_delay`
             method or the :meth:`~google.api_core.retry.Retry.with_deadline`
-            method.
+            method. Custom on_error and predicate values will be ignored.
 
         :rtype: :class:`.PartialRowData`, :data:`NoneType <types.NoneType>`
         :returns: The contents of the row if any chunks were returned in
@@ -639,7 +639,7 @@ class Table(object):
             default value :attr:`DEFAULT_RETRY_READ_ROWS` can be used and
             modified with the :meth:`~google.api_core.retry.Retry.with_delay`
             method or the :meth:`~google.api_core.retry.Retry.with_deadline`
-            method.
+            method. Custom on_error and predicate values will be ignored.
 
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` a generator for consuming
@@ -731,7 +731,8 @@ class Table(object):
             (Optional) Retry delay and deadline arguments. To override, the
             default value :attr:`DEFAULT_RETRY` can be used and modified with
             the :meth:`~google.api_core.retry.Retry.with_delay` method or the
-            :meth:`~google.api_core.retry.Retry.with_deadline` method.
+            :meth:`~google.api_core.retry.Retry.with_deadline` method. Custom
+            on_error and predicate values will be ignored.
 
         :type timeout: float
         :param timeout: number of seconds bounding retries for the call
