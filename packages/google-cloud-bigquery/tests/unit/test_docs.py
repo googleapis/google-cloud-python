@@ -22,6 +22,7 @@ def test_docs_conf_executes_successfully():
 
     if not conf_path.exists():
         import pytest
+
         pytest.skip("docs/conf.py not found")
 
     res = runpy.run_path(str(conf_path))
