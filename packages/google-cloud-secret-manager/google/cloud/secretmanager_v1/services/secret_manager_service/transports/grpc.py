@@ -35,7 +35,13 @@ from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 
-# ClientInterceptor type alias for channel interceptors
+# NOTE: ClientInterceptor has been centralized in google.api_core.grpc_helpers
+# (merged in PR #18236). This local type definition is a prototype-only
+# convenience for google-cloud-secret-manager to allow CI and backwards-compatibility
+# test matrix runs against older released PyPI versions of google-api-core without
+# breaking on import. Once google-api-core is officially published to PyPI,
+# the GAPIC generator templates will generate the centralized import directly
+# (`from google.api_core.grpc_helpers import ClientInterceptor`).
 ClientInterceptor = Union[
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
