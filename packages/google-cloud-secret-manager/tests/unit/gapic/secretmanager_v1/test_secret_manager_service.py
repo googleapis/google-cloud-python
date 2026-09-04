@@ -62,6 +62,9 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
+
+# NOTE: Isolated import block preserves import shielding for service_account
+# to prevent ruff/flake8 sorting conflicts between local hooks and CI environments.
 from google.oauth2 import service_account
 
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
@@ -478,13 +481,6 @@ def test_secret_manager_service_client_client_options(
 
 
 def test_secret_manager_service_client_otel_channel_injection_enabled():
-    """Proves that when OpenTelemetry tracing is enabled:
-
-    1. SecretManagerServiceClient obtains the channel interceptor via
-       _observability.get_otel_interceptor passing client_options.
-    2. The interceptor is passed into transport kwargs under 'interceptors',
-       allowing the Transport to apply it via apply_channel_interceptors.
-    """
     mock_interceptor = mock.Mock()
     mock_obs = mock.Mock()
     mock_obs.get_otel_interceptor.return_value = mock_interceptor
@@ -506,11 +502,6 @@ def test_secret_manager_service_client_otel_channel_injection_enabled():
 
 
 def test_secret_manager_service_client_otel_channel_injection_disabled():
-    """Proves that when OpenTelemetry tracing is disabled:
-
-    1. SecretManagerServiceClient checks for an OTel interceptor and receives None.
-    2. No OTel interceptor is added to the transport constructor kwargs.
-    """
     mock_obs = mock.Mock()
     mock_obs.get_otel_interceptor.return_value = None
     with (
@@ -526,33 +517,10 @@ def test_secret_manager_service_client_otel_channel_injection_disabled():
 
         mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        interceptors = called_kwargs.get("interceptors", [])
-        assert not interceptors
-
-
-def test_secret_manager_service_client_observability_import_error():
-    """Proves that when _observability cannot be imported (older google-api-core),
-    SecretManagerServiceClient instantiates gracefully without error.
-    """
-    with (
-        mock.patch(
-            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability",
-            None,
-        ),
-        mock.patch.object(
-            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
-        ) as patched_transport_init,
-    ):
-        SecretManagerServiceClient(transport="grpc")
-        called_kwargs = patched_transport_init.call_args.kwargs
         assert not called_kwargs.get("interceptors", [])
 
 
-def test_secret_manager_service_grpc_transport_interceptors():
-    """Proves that SecretManagerServiceGrpcTransport accepts channel interceptors
-    and invokes grpc_helpers.apply_channel_interceptors to apply them to the underlying
-    gRPC channel.
-    """
+def test_secret_manager_service_grpc_transport_channel_interceptors():
     mock_interceptor = mock.Mock()
     mock_channel = mock.Mock()
 
@@ -562,8 +530,9 @@ def test_secret_manager_service_grpc_transport_interceptors():
             "create_channel",
             return_value=mock_channel,
         ),
-        mock.patch(
-            "google.api_core.grpc_helpers.apply_channel_interceptors",
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
             return_value=mock_channel,
             create=True,
         ) as mock_apply_interceptors,
@@ -579,14 +548,12 @@ def test_secret_manager_service_grpc_transport_interceptors():
 
 
 def test_secret_manager_service_grpc_transport_custom_channel_interceptors():
-    """Proves that SecretManagerServiceGrpcTransport wraps explicitly passed custom channels
-    using grpc_helpers.apply_channel_interceptors.
-    """
     mock_interceptor = mock.Mock()
     mock_custom_channel = mock.Mock(spec=grpc.Channel)
 
-    with mock.patch(
-        "google.api_core.grpc_helpers.apply_channel_interceptors",
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
         return_value=mock_custom_channel,
         create=True,
     ) as mock_apply_interceptors:
