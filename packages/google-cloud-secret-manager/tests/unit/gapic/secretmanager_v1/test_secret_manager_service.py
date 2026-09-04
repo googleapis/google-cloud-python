@@ -568,6 +568,7 @@ def test_secret_manager_service_grpc_transport_interceptors():
         ) as mock_apply_interceptors,
     ):
         transports.SecretManagerServiceGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
             interceptors=[mock_interceptor],
         )
 
