@@ -51,7 +51,7 @@ setup(
     extras_require={"tool": TOOL_DEPENDENCIES},
     entry_points={
         "console_scripts": [
-            "google-oauthlib-tool" "=google_auth_oauthlib.tool.__main__:main [tool]"
+            "google-oauthlib-tool=google_auth_oauthlib.tool.__main__:main [tool]"
         ]
     },
     python_requires=">=3.10",

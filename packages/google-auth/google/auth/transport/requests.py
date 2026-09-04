@@ -35,11 +35,9 @@ from requests.packages.urllib3.util.ssl_ import (  # type: ignore
     create_urllib3_context,
 )  # pylint: disable=ungrouped-imports
 
-from google.auth import _helpers
-from google.auth import exceptions
-from google.auth import transport
-from google.auth.transport import _mtls_helper
 import google.auth.transport._mtls_helper
+from google.auth import _helpers, exceptions, transport
+from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
 _LOGGER = logging.getLogger(__name__)
@@ -161,7 +159,7 @@ class Request(transport.Request):
         body=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Make an HTTP request using requests.
 
@@ -209,8 +207,9 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
     """
 
     def __init__(self, cert, key, **kwargs):
-        import certifi
         import ssl
+
+        import certifi
 
         ctx_poolmanager = create_urllib3_context()
         ctx_poolmanager.load_verify_locations(cafile=certifi.where())
@@ -285,6 +284,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
 
     def __init__(self, enterprise_cert_file_path):
         import certifi
+
         from google.auth.transport import _custom_tls_signer
 
         self.signer = _custom_tls_signer.CustomTlsSigner(enterprise_cert_file_path)
@@ -570,7 +570,7 @@ class AuthorizedSession(requests.Session):
         headers=None,
         max_allowed_time=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Implementation of Requests' request.
 
@@ -632,7 +632,7 @@ class AuthorizedSession(requests.Session):
                 data=data,
                 headers=request_headers,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
         remaining_time = guard.remaining_timeout
 
@@ -705,7 +705,7 @@ class AuthorizedSession(requests.Session):
                 max_allowed_time=remaining_time,
                 timeout=timeout,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs
+                **kwargs,
             )
 
         return response
