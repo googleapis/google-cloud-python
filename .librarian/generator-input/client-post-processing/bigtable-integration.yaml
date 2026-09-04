@@ -451,7 +451,7 @@ replacements:
           "mypy",
           "cover",
           "lint",
-          "twine_check",
+          "lint_twine_check",
           "blacken",
           "docs",
           "format",
@@ -569,9 +569,9 @@ replacements:
       @nox.session(python=DEFAULT_PYTHON_VERSION)
       def lint_twine_check(session):
           """Verify that the package is valid using twine."""
+          session.install("twine", "build")
           session.run("python", "-m", "build", "--sdist")
-          session.install("twine")
-          session.run("twine", "check", "--strict")
+          session.run("twine", "check", "--strict", "dist/*")
 
 
       def install_unittest_dependencies(session, *constraints):

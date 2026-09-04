@@ -792,9 +792,9 @@ def lint(session):
 @nox.session(python=NEWEST_PYTHON)
 def lint_twine_check(session):
     """Verify that the package is valid using twine."""
+    session.install("twine", "build")
     session.run("python", "-m", "build", "--sdist")
-    session.install("twine")
-    session.run("twine", "check", "--strict")
+    session.run("twine", "check", "--strict", "dist/*")
 
 
 @nox.session(python="3.10")
