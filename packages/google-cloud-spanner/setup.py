@@ -61,8 +61,7 @@ dependencies = [
     "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
     "google-cloud-monitoring >= 2.28.0",
     "mmh3 >= 4.1.0",
-    "cryptography >= 38.0.3; python_version < '3.14'",
-    "cryptography >= 41.0.5; python_version >= '3.14'",
+    "cryptography >= 44.0.0",
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",
