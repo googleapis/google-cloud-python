@@ -446,3 +446,215 @@ def test_wrap_method_otel_tracing_enabled_error(monkeypatch):
 
     mock_span.record_exception.assert_called_once_with(err)
     mock_span.set_status.assert_called_once_with("ERROR", str(err))
+
+
+def test_wrap_method_otel_tracing_bytes_method(monkeypatch):
+    """Proves that when raw _method is bytes, it is decoded properly to utf-8."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+    mock_target._method = (
+        b"/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target, default_timeout=60
+    )
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        result = wrapped()
+
+    assert result == "success"
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+            "rpc.method": "ListSecrets",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_fallback_with_name(monkeypatch):
+    """Proves that when raw _method is absent, fallback uses target.__name__."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    def custom_rpc(*args, **kwargs):
+        return "success"
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(custom_rpc)
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        result = wrapped()
+
+    assert result == "success"
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.api_core/custom_rpc",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.api_core",
+            "rpc.method": "custom_rpc",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_fallback_without_name(monkeypatch):
+    """Proves that when raw _method is absent and target has no explicit __name__,
+    fallback uses target class name assigned by error wrapper.
+    """
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    class TargetWithoutName:
+        def __call__(self, *args, **kwargs):
+            return "success"
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(TargetWithoutName())
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        result = wrapped()
+
+    assert result == "success"
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.api_core/TargetWithoutName",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.api_core",
+            "rpc.method": "TargetWithoutName",
+        },
+    )
+
+
+def test_gapic_callable_otel_tracing_fallback_call_default(monkeypatch):
+    """Proves that _GapicCallable defaults method to 'call' if target has no __name__."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    class NoNameTarget:
+        def __call__(self, *args, **kwargs):
+            return "success"
+
+    target = NoNameTarget()
+    callable_obj = google.api_core.gapic_v1.method._GapicCallable(
+        target, None, None, None
+    )
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        result = callable_obj()
+
+    assert result == "success"
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.api_core/call",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.api_core",
+            "rpc.method": "call",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_import_error(monkeypatch):
+    """Proves that if opentelemetry raises ImportError, execution proceeds gracefully."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": None,
+                "opentelemetry.trace": None,
+            },
+        ),
+    ):
+        result = wrapped()
+
+    assert result == "success"
+    mock_target.assert_called_once()
