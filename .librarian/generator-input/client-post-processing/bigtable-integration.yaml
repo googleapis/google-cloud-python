@@ -451,7 +451,7 @@ replacements:
           "mypy",
           "cover",
           "lint",
-          "lint_setup_py",
+          "twine_check",
           "blacken",
           "docs",
           "format",
@@ -567,10 +567,11 @@ replacements:
 
 
       @nox.session(python=DEFAULT_PYTHON_VERSION)
-      def lint_setup_py(session):
-          """Verify that setup.py is valid (including RST check)."""
-          session.install("setuptools", "docutils", "pygments")
-          session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+      def lint_twine_check(session):
+          """Verify that the package is valid using twine."""
+          session.run("python", "-m", "build", "--sdist")
+          session.install("twine")
+          session.run("twine", "check", "--strict")
 
 
       def install_unittest_dependencies(session, *constraints):
