@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.14.0...google-cloud-storage-v3.14.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* **storage:** resolve reST link target mismatch in README and add long_description_content_type ([#18210](https://github.com/googleapis/google-cloud-python/issues/18210)) ([400f465](https://github.com/googleapis/google-cloud-python/commit/400f46526893ae07506301d9852c1207e827f02a)), refs [#18211](https://github.com/googleapis/google-cloud-python/issues/18211)
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.1...google-cloud-storage-v3.14.0) (2026-08-21)
 
 
