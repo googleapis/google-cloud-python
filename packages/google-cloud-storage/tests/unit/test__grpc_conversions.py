@@ -15,6 +15,7 @@
 import datetime
 from unittest import mock
 
+import pytest
 from google.cloud import _storage_v2
 from google.cloud.storage import _grpc_conversions
 
@@ -33,6 +34,7 @@ def test_blob_to_proto_simple_fields():
             "content_language",
             "temporary_hold",
             "event_based_hold",
+            "storage_class",
             "custom_time",
             "acl",
             "retention",
@@ -49,6 +51,7 @@ def test_blob_to_proto_simple_fields():
     blob.content_language = "en"
     blob.temporary_hold = True
     blob.event_based_hold = False
+    blob.storage_class = "STANDARD"
     blob.custom_time = None
     blob.acl = None
     blob.retention = None
@@ -66,6 +69,7 @@ def test_blob_to_proto_simple_fields():
     assert proto.content_language == "en"
     assert proto.temporary_hold is True
     assert proto.event_based_hold is False
+    assert proto.storage_class == "STANDARD"
 
 
 def test_blob_to_proto_custom_time():
@@ -158,3 +162,49 @@ def test_blob_to_proto_contexts():
 
     assert "key" in proto.contexts.custom
     assert proto.contexts.custom["key"].value == "val"
+
+
+@pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID", "NEARLINE"])
+def test_blob_to_proto_storage_class(storage_class):
+    blob = mock.Mock(spec=["name", "bucket", "storage_class"])
+    blob.name = "blob-name"
+    blob.bucket.name = "bucket-name"
+    blob.storage_class = storage_class
+    for attr in _grpc_conversions._BLOB_ATTR_TO_PROTO_FIELD:
+        if attr != "storage_class":
+            setattr(blob, attr, None)
+    blob.custom_time = None
+    blob.acl = None
+    blob.retention = None
+    blob.contexts = None
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+    assert proto.storage_class == storage_class
+
+
+def test_blob_to_proto_storage_class_default():
+    blob = mock.Mock(spec=["name", "bucket"])
+    blob.name = "blob-name"
+    blob.bucket.name = "bucket-name"
+    for attr in _grpc_conversions._BLOB_ATTR_TO_PROTO_FIELD:
+        setattr(blob, attr, None)
+    blob.custom_time = None
+    blob.acl = None
+    blob.retention = None
+    blob.contexts = None
+
+    proto = _grpc_conversions.blob_to_proto(blob)
+    assert proto.storage_class == ""
+
+
+def test_blob_to_proto_real_blob():
+    from google.cloud.storage.blob import Blob
+    from google.cloud.storage.bucket import Bucket
+
+    bucket = mock.Mock(spec=Bucket)
+    bucket.name = "my-bucket"
+    blob = Blob(name="my-blob", bucket=bucket, storage_class="RAPID")
+    proto = _grpc_conversions.blob_to_proto(blob)
+    assert proto.name == "my-blob"
+    assert proto.bucket == "projects/_/buckets/my-bucket"
+    assert proto.storage_class == "RAPID"
