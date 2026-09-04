@@ -790,13 +790,11 @@ def lint(session):
 
 
 @nox.session(python=NEWEST_PYTHON)
-def lint_setup_py(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16186):
-    # SKIP: This session was not enforced in the standalone (split) repo
-    # and is disabled here to ensure a "move-only" migration.
-    session.skip(
-        "Skipping now to avoid changing code during migration. See Issue #16186"
-    )
+def lint_twine_check(session):
+    """Verify that the package is valid using twine."""
+    session.install("twine", "build")
+    session.run("python", "-m", "build", "--sdist")
+    session.run("twine", "check", "--strict", "dist/*")
 
 
 @nox.session(python="3.10")

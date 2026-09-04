@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # This script requires the following environment variables to be set:
-# `TEST_TYPE` should be one of ["lint", "lint_setup_py", "docs", "docfx", "prerelease"]
+# `TEST_TYPE` should be one of ["lint", "lint_twine_check", "docs", "docfx", "prerelease"]
 # `PY_VERSION` should be one of ["3.10", "3.11", "3.12", "3.13"]
 
 # This script is called by the `ci/run_conditional_tests.sh` script.

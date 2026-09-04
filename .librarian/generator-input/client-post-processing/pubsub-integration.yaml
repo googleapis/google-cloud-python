@@ -401,7 +401,7 @@ replacements:
     count: 1
   - paths:
       - "packages/google-cloud-pubsub/noxfile.py"
-    before: 'nox\.options\.sessions = \[\n(?:[ \t]+)"unit",\n(?:[ \t]+)"system",\n(?:[ \t]+)"cover",\n(?:[ \t]+)"lint",\n(?:[ \t]+)"lint_setup_py",\n(?:[ \t]+)"blacken",\n(?:[ \t]+)"docs",\n\]'
+    before: 'nox\.options\.sessions = \[\n(?:[ \t]+)"unit",\n(?:[ \t]+)"system",\n(?:[ \t]+)"cover",\n(?:[ \t]+)"lint",\n(?:[ \t]+)"lint_twine_check",\n(?:[ \t]+)"blacken",\n(?:[ \t]+)"docs",\n\]'
     after: |-
       CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
       # Path to the centralized mypy configuration file at the repository root.
@@ -420,7 +420,7 @@ replacements:
           "system",
           "cover",
           "lint",
-          "lint_setup_py",
+          "lint_twine_check",
           "blacken",
           "mypy",
           # https://github.com/googleapis/python-pubsub/pull/552#issuecomment-1016256936
