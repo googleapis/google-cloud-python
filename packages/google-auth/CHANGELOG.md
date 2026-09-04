@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.57.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.0...google-auth-v2.57.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **auth:** parse hostname for mTLS and PSC endpoint certificate rotation ([#18147](https://github.com/googleapis/google-cloud-python/issues/18147)) ([#18201](https://github.com/googleapis/google-cloud-python/issues/18201)) ([b18bb4c](https://github.com/googleapis/google-cloud-python/commit/b18bb4cb749d2dd10d0e2f7d8505460d305e54fc))
+
 ## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.3...google-auth-v2.57.0) (2026-08-21)
 
 
