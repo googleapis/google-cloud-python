@@ -30,8 +30,9 @@ from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.secretmanager_v1.types import resources, service
 from google.protobuf.json_format import MessageToJson
+
+from google.cloud.secretmanager_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 
