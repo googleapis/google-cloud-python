@@ -292,9 +292,9 @@ def random_oracle_sha256(x: bytes, max_val: int) -> bytes:
     hash_output_length = 256
     output_bit_length = max_val.bit_length() + hash_output_length
     iter_count = (output_bit_length + hash_output_length - 1) // hash_output_length
-    if iter_count * hash_output_length > 130048:
+    if iter_count > 255:
         raise ValueError(
-            f"Domain bit length must not be greater than 130048: {output_bit_length}"
+            f"Domain bit length must not be greater than 65280: {output_bit_length}"
         )
     excess_bit_count = (iter_count * hash_output_length) - output_bit_length
     hash_output = 0

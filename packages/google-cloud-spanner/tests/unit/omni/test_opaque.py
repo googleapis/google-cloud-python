@@ -30,6 +30,14 @@ class TestOpaqueCrypto(unittest.TestCase):
                 out = opaque.random_oracle_sha256(inp, max_val)
                 self.assertEqual(out, expected)
 
+    def test_random_oracle_sha256_large_domain_raises(self):
+        max_val = 1 << 65500
+        with self.assertRaises(ValueError) as cm:
+            opaque.random_oracle_sha256(b"key", max_val)
+        self.assertIn(
+            "Domain bit length must not be greater than 65280", str(cm.exception)
+        )
+
     def test_mac(self):
         tests = [
             (b"key", b"data"),
