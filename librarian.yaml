@@ -661,7 +661,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.44.0
+    version: 2.45.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -2024,7 +2024,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.14.0
+    version: 3.14.1
     apis:
       - path: google/storage/v2
     python:

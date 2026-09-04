@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.44.0...google-cloud-bigtable-v2.45.0) (2026-09-04)
+
+
+### Features
+
+* **bigtable:** Rerouted MutateRows to use the data client ([#18195](https://github.com/googleapis/google-cloud-python/issues/18195)) ([3bbcbdf](https://github.com/googleapis/google-cloud-python/commit/3bbcbdf1a62dd10ab96f72e5c8198cffe9174ac7))
+
 ## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.43.0...google-cloud-bigtable-v2.44.0) (2026-09-03)
 
 
