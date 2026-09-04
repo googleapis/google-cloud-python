@@ -1,5 +1,5 @@
 {
-  "packages/google-cloud-apptopology": "0.1.0",
+  "packages/google-cloud-apptopology": "0.1.1",
   "packages/google-cloud-ftp": "0.1.0",
   "packages/google-cloud-sql": "0.1.1",
   "packages/google-cloud-workloadidentity": "0.1.0",
