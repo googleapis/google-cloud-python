@@ -106,9 +106,7 @@ class PartialRowsData(object):
         self.rows: dict[bytes, PartialRowData] = {}
 
     @classmethod
-    def _from_generator(
-        cls, generator: Generator[Row, Any, Any]
-    ) -> PartialRowsData:
+    def _from_generator(cls, generator: Generator[Row, Any, Any]) -> PartialRowsData:
         """Internal constructor for Table.read_rows."""
         return cls(generator=generator)
 

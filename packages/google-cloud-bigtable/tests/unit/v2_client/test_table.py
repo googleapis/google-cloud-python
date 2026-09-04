@@ -591,7 +591,6 @@ def _make_gapic_api(client):
 _DEFAULT_SENTINEL = object()
 
 
-
 def _table_mutate_rows_helper(
     mutation_timeout=None,
     app_profile_id=None,
