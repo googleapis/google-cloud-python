@@ -7,7 +7,7 @@ from google.cloud.spanner_v1.omni.proto import (
     login_pb2 as google_dot_cloud_dot_spanner__v1_dot_omni_dot_proto_dot_login__pb2,
 )
 
-GRPC_GENERATED_VERSION = "1.83.0"
+GRPC_GENERATED_VERSION = "1.59.0"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -18,7 +18,7 @@ try:
         GRPC_VERSION, GRPC_GENERATED_VERSION
     )
 except ImportError:
-    _version_not_supported = True
+    _version_not_supported = False
 
 if _version_not_supported:
     raise RuntimeError(

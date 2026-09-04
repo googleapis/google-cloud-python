@@ -13,9 +13,9 @@ from google.protobuf.internal import builder as _builder
 
 _runtime_version.ValidateProtobufRuntimeVersion(
     _runtime_version.Domain.PUBLIC,
-    7,
-    35,
-    1,
+    6,
+    33,
+    5,
     "",
     "google/cloud/spanner_v1/omni/proto/authentication.proto",
 )
