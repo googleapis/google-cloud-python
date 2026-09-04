@@ -24,13 +24,15 @@ repos:
     hooks:
     -   id: ruff-check
         name: ruff check (monorepo)
-        entry: python3 ci/run_ruff.py check
+        entry: python ci/run_ruff.py check
         language: python
+        additional_dependencies: ['ruff==0.14.14']
         types: [python]
         require_serial: true
     -   id: ruff-format
         name: ruff format (monorepo)
-        entry: python3 ci/run_ruff.py format
+        entry: python ci/run_ruff.py format
         language: python
+        additional_dependencies: ['ruff==0.14.14']
         types: [python]
         require_serial: true

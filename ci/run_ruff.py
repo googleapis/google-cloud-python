@@ -84,8 +84,15 @@ def run_ruff_for_package(
     else:
         cmd = ["ruff", command, *extra_args, *rel_files]
 
-    res = subprocess.run(cmd, cwd=str(pkg_root))
-    return res.returncode
+    try:
+        res = subprocess.run(cmd, cwd=str(pkg_root))
+        return res.returncode
+    except FileNotFoundError:
+        print(
+            "Error: 'ruff' command not found. Please ensure Ruff is installed and available in your PATH.",
+            file=sys.stderr,
+        )
+        return 1
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -125,7 +132,7 @@ def main(argv: list[str] | None = None) -> int:
     for f in args.files:
         if not f.exists():
             continue
-        if f.suffix != ".py":
+        if f.suffix not in (".py", ".pyi", ".ipynb"):
             continue
         pkg_root = find_package_root(f, repo_root)
         package_groups[pkg_root].append(f)
