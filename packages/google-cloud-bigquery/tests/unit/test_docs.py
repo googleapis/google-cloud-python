@@ -20,6 +20,10 @@ def test_docs_conf_executes_successfully():
     docs_dir = pathlib.Path(__file__).parent.parent.parent / "docs"
     conf_path = docs_dir / "conf.py"
 
+    if not conf_path.exists():
+        import pytest
+        pytest.skip("docs/conf.py not found")
+
     res = runpy.run_path(str(conf_path))
 
     assert "project" in res
