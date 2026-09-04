@@ -137,6 +137,8 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         if self.generation_number is None or self.generation_number == 0:
             if self.blob:
                 resource = _grpc_conversions.blob_to_proto(self.blob)
+                if not resource.storage_class and self.storage_class:
+                    resource.storage_class = self.storage_class
             else:
                 resource = _storage_v2.Object(
                     name=self.object_name,

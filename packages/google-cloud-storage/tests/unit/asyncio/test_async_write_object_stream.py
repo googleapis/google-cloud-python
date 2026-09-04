@@ -230,6 +230,7 @@ class TestAsyncWriteObjectStream:
         mock_blob.content_language = "content-language"
         mock_blob.temporary_hold = True
         mock_blob.event_based_hold = True
+        mock_blob.storage_class = "RAPID"
 
         custom_time = datetime.datetime(
             2025, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
@@ -269,6 +270,7 @@ class TestAsyncWriteObjectStream:
         assert resource.content_language == "content-language"
         assert resource.temporary_hold is True
         assert resource.event_based_hold is True
+        assert resource.storage_class == "RAPID"
 
         assert int(resource.custom_time.timestamp()) == int(custom_time.timestamp())
 
@@ -282,6 +284,50 @@ class TestAsyncWriteObjectStream:
         )
         assert "context-key" in resource.contexts.custom
         assert resource.contexts.custom["context-key"].value == "context-value"
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID"])
+    async def test_open_new_object_with_real_blob_storage_class(
+        self, mock_rpc_cls, mock_client, storage_class
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        mock_bucket = mock.Mock(spec=Bucket)
+        mock_bucket.name = BUCKET
+
+        blob = Blob(name=OBJECT, bucket=mock_bucket, storage_class=storage_class)
+        stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=blob)
+        await stream.open()
+
+        initial_request = mock_rpc_cls.call_args.kwargs["initial_request"]
+        resource = initial_request.write_object_spec.resource
+        assert resource.storage_class == storage_class
+        assert resource.name == OBJECT
+
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
+    @pytest.mark.asyncio
+    async def test_open_new_object_with_blob_and_stream_storage_class_fallback(
+        self, mock_rpc_cls, mock_client
+    ):
+        mock_rpc = mock_rpc_cls.return_value
+        mock_rpc.open = AsyncMock()
+        mock_rpc.recv = AsyncMock(return_value=MagicMock(resource=None))
+
+        mock_bucket = mock.Mock(spec=Bucket)
+        mock_bucket.name = BUCKET
+
+        blob = Blob(name=OBJECT, bucket=mock_bucket)  # storage_class is None
+        stream = _AsyncWriteObjectStream(
+            mock_client, BUCKET, OBJECT, blob=blob, storage_class="RAPID"
+        )
+        await stream.open()
+
+        initial_request = mock_rpc_cls.call_args.kwargs["initial_request"]
+        resource = initial_request.write_object_spec.resource
+        assert resource.storage_class == "RAPID"
 
     @pytest.mark.asyncio
     async def test_open_already_open_raises(self, mock_client):
