@@ -709,3 +709,5 @@ sources like Adwords, DoubleClick Campaign Manager, DoubleClick for Publishers
 and YouTube.
 
 PyPI: https://pypi.org/project/google-cloud-bigquery-datatransfer/0.1.0/
+
+<!-- trigger system tests -->

@@ -376,3 +376,5 @@
 ### Miscellaneous Chores
 
 * setup release 1.0.0 ([#165](https://www.github.com/googleapis/python-spanner-sqlalchemy/issues/165)) ([37a415d](https://www.github.com/googleapis/python-spanner-sqlalchemy/commit/37a415d071d39e99f233a1c15c1c4b89bd436570))
+
+<!-- trigger system tests -->
