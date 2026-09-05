@@ -1293,18 +1293,23 @@ class Blob(_PropertyMixin):
         For *args and **kwargs, refer to the documentation for download_to_filename() for more information.
         """
 
-        try:
-            with open(filename, "wb") as file_obj:
+        with open(filename, "wb") as file_obj:
+            try:
                 self._prep_and_do_download(
                     file_obj,
                     *args,
                     **kwargs,
                 )
-
-        except (DataCorruption, NotFound):
-            # Delete the corrupt or empty downloaded file.
-            os.remove(filename)
-            raise
+            except Exception:
+                # Remove the (empty or partial) file before re-raising so
+                # callers never see a corrupt destination file.  This extends
+                # the existing DataCorruption/NotFound cleanup to cover network
+                # errors, timeouts, and any other unexpected failures.
+                try:
+                    os.remove(filename)
+                except OSError:
+                    pass  # file may not exist if open() itself failed
+                raise
 
         updated = self.updated
         if updated is not None:
@@ -1333,6 +1338,13 @@ class Blob(_PropertyMixin):
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
+
+        .. note::
+            If the download fails for any reason (network error, timeout,
+            :exc:`~google.cloud.exceptions.NotFound`, etc.), any partially
+            written destination file is removed before re-raising the
+            exception, so the filesystem is never left with an empty or
+            incomplete file.
 
         See a [code sample](https://cloud.google.com/storage/docs/samples/storage-download-encrypted-file#storage_download_encrypted_file-python)
         to download a file with a [`customer-supplied encryption key`](https://cloud.google.com/storage/docs/encryption#customer-supplied).
