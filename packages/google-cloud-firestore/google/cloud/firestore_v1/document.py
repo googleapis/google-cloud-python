@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import datetime
 import logging
-from typing import Any, Callable, Generator, Iterable
+from typing import TYPE_CHECKING, Any, Callable, Generator, Iterable
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -34,10 +34,15 @@ from google.cloud.firestore_v1.base_document import (
 from google.cloud.firestore_v1.types import write
 from google.cloud.firestore_v1.watch import Watch
 
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.client import Client
+else:
+    Client = None
+
 logger = logging.getLogger(__name__)
 
 
-class DocumentReference(BaseDocumentReference):
+class DocumentReference(BaseDocumentReference[Client]):
     """A reference to a document in a Firestore database.
 
     The document may already exist or can be created by this class.
@@ -353,6 +358,8 @@ class DocumentReference(BaseDocumentReference):
         """
         request, kwargs = self._prep_delete(option, retry, timeout)
 
+        if self._client is None:
+            raise ValueError("A deletion requires a `client`.")
         commit_response = self._client._firestore_api.commit(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -410,6 +417,8 @@ class DocumentReference(BaseDocumentReference):
             field_paths, transaction, retry, timeout, read_time
         )
 
+        if self._client is None:
+            raise ValueError("A get requires a `client`.")
         response_iter = self._client._firestore_api.batch_get_documents(
             request=request,
             metadata=self._client._rpc_metadata,
@@ -470,6 +479,8 @@ class DocumentReference(BaseDocumentReference):
         """
         request, kwargs = self._prep_collections(page_size, retry, timeout, read_time)
 
+        if self._client is None:
+            raise ValueError("A collection reference requires a `client`.")
         iterator = self._client._firestore_api.list_collection_ids(
             request=request,
             metadata=self._client._rpc_metadata,
