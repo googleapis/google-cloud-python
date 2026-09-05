@@ -86,6 +86,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIs(blob._acl.blob, blob)
         self.assertEqual(blob._encryption_key, None)
         self.assertEqual(blob.kms_key_name, None)
+        self.assertIsNone(blob.storage_class)
 
     def test_ctor_with_encoded_unicode(self):
         blob_name = b"wet \xe2\x9b\xb5"
@@ -138,6 +139,43 @@ class Test_Blob(unittest.TestCase):
         bucket = _Bucket()
         blob = self._make_one(BLOB_NAME, bucket=bucket, generation=GENERATION)
         self.assertEqual(blob.generation, GENERATION)
+
+    def test_ctor_with_storage_class(self):
+        BLOB_NAME = "blob-name"
+        STORAGE_CLASS = "STANDARD"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, storage_class=STORAGE_CLASS)
+        self.assertEqual(blob.storage_class, STORAGE_CLASS)
+        self.assertEqual(blob._properties.get("storageClass"), STORAGE_CLASS)
+
+    def test_ctor_with_storage_class_rapid(self):
+        BLOB_NAME = "blob-name"
+        STORAGE_CLASS = "RAPID"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket, storage_class=STORAGE_CLASS)
+        self.assertEqual(blob.storage_class, STORAGE_CLASS)
+        self.assertEqual(blob._properties.get("storageClass"), STORAGE_CLASS)
+
+    def test_ctor_with_storage_class_default(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.storage_class)
+        self.assertNotIn("storageClass", blob._properties)
+
+    def test_storage_class_property(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.storage_class)
+        blob.storage_class = "STANDARD"
+        self.assertEqual(blob.storage_class, "STANDARD")
+        self.assertEqual(blob._properties.get("storageClass"), "STANDARD")
+        self.assertIn("storageClass", blob._changes)
+
+        blob.storage_class = None
+        self.assertIsNone(blob.storage_class)
+        self.assertIsNone(blob._properties.get("storageClass"))
 
     def _set_properties_helper(self, kms_key_name=None):
         from google.cloud._helpers import _RFC3339_MICROS

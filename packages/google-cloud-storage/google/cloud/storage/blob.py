@@ -183,6 +183,11 @@ class Blob(_PropertyMixin):
     :type generation: long
     :param generation:
         (Optional) If present, selects a specific revision of this object.
+
+    :type storage_class: str
+    :param storage_class:
+        (Optional) The storage class for the blob. Default value is None. If
+        nothing specified, its value will be the same as bucket's storage_class.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -216,6 +221,7 @@ class Blob(_PropertyMixin):
         encryption_key=None,
         kms_key_name=None,
         generation=None,
+        storage_class=None,
     ):
         """
         property :attr:`name`
@@ -238,6 +244,9 @@ class Blob(_PropertyMixin):
 
         if generation is not None:
             self._properties["generation"] = generation
+
+        if storage_class is not None:
+            self._properties["storageClass"] = storage_class
 
     @property
     def bucket(self):
@@ -4943,28 +4952,42 @@ class Blob(_PropertyMixin):
         """
         self._patch_property("kmsKeyName", value)
 
-    storage_class = _scalar_property("storageClass")
-    """Retrieve the storage class for the object.
+    @property
+    def storage_class(self):
+        """Retrieve the storage class for the object.
 
-    This can only be set at blob / object **creation** time. If you'd
-    like to change the storage class **after** the blob / object already
-    exists in a bucket, call :meth:`update_storage_class` (which uses
-    :meth:`rewrite`).
+        Default value is None. If nothing specified, its value will be the
+        same as bucket's storage_class.
 
-    See https://cloud.google.com/storage/docs/storage-classes
+        This can only be set at blob / object **creation** time. If you'd
+        like to change the storage class **after** the blob / object already
+        exists in a bucket, call :meth:`update_storage_class` (which uses
+        :meth:`rewrite`).
 
-    :rtype: str or ``NoneType``
-    :returns:
-        If set, one of
-        :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
-        :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_STORAGE_CLASS`,
-        else ``None``.
-    """
+        See https://cloud.google.com/storage/docs/storage-classes
+
+        :rtype: str or ``NoneType``
+        :returns:
+            If set, one of
+            :attr:`~google.cloud.storage.constants.STANDARD_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.NEARLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.COLDLINE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.ARCHIVE_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.MULTI_REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`,
+            :attr:`~google.cloud.storage.constants.DURABLE_REDUCED_AVAILABILITY_STORAGE_CLASS`,
+            else ``None``.
+        """
+        return self._properties.get("storageClass")
+
+    @storage_class.setter
+    def storage_class(self, value):
+        """Set the storage class for the object.
+
+        :type value: str or ``NoneType``
+        :param value: new storage class name (None to clear any existing storage class).
+        """
+        self._patch_property("storageClass", value)
 
     temporary_hold = _scalar_property("temporaryHold")
     """Is a temporary hold active on the object?
