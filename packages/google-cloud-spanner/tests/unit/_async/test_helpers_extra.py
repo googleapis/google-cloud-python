@@ -141,3 +141,161 @@ class TestHelpersExtra(unittest.IsolatedAsyncioTestCase):
                 MUT._create_experimental_host_transport(
                     InstanceAdminGrpcTransport, "host", False, None, None, None
                 )
+
+    async def test_create_spanner_omni_transport(self):
+        mock_factory = mock.MagicMock()
+
+        # Plaintext with create_async_auth_interceptors
+        mock_creds1 = mock.MagicMock()
+        mock_creds1.create_async_auth_interceptors.return_value = ["interceptor1"]
+        with mock.patch("grpc.aio.insecure_channel") as mock_insecure:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "localhost:9010",
+                use_plain_text=True,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+                credentials=mock_creds1,
+            )
+            mock_insecure.assert_called_once_with(
+                target="localhost:9010", interceptors=["interceptor1"]
+            )
+
+        # Credentials with create_async_auth_interceptor returning list and single item
+        mock_creds2 = mock.MagicMock(spec=["create_async_auth_interceptor"])
+        mock_creds2.create_async_auth_interceptor.return_value = ["interceptor2"]
+        with mock.patch("grpc.aio.insecure_channel") as mock_insecure:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "localhost:9010",
+                use_plain_text=True,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+                credentials=mock_creds2,
+            )
+            mock_insecure.assert_called_once_with(
+                target="localhost:9010", interceptors=["interceptor2"]
+            )
+
+        mock_creds2.create_async_auth_interceptor.return_value = "single_interceptor"
+        with mock.patch("grpc.aio.insecure_channel") as mock_insecure:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "localhost:9010",
+                use_plain_text=True,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+                credentials=mock_creds2,
+            )
+            mock_insecure.assert_called_once_with(
+                target="localhost:9010", interceptors=["single_interceptor"]
+            )
+
+        # Credentials with create_auth_interceptor returning list and single item
+        mock_creds3 = mock.MagicMock(spec=["create_auth_interceptor"])
+        mock_creds3.create_auth_interceptor.return_value = ["interceptor3"]
+        with mock.patch("grpc.aio.insecure_channel") as mock_insecure:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "localhost:9010",
+                use_plain_text=True,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+                credentials=mock_creds3,
+            )
+            mock_insecure.assert_called_once_with(
+                target="localhost:9010", interceptors=["interceptor3"]
+            )
+
+        mock_creds3.create_auth_interceptor.return_value = "single_interceptor3"
+        with mock.patch("grpc.aio.insecure_channel") as mock_insecure:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "localhost:9010",
+                use_plain_text=True,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+                credentials=mock_creds3,
+            )
+            mock_insecure.assert_called_once_with(
+                target="localhost:9010", interceptors=["single_interceptor3"]
+            )
+
+        # TLS and mTLS
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds:
+                with mock.patch("grpc.aio.secure_channel") as mock_secure:
+                    # TLS only
+                    MUT._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate=None,
+                        client_key=None,
+                    )
+                    mock_ssl_creds.assert_called_with(root_certificates=b"cert_data")
+                    mock_secure.assert_called_with(
+                        "omni-host:15000", mock_ssl_creds.return_value, interceptors=[]
+                    )
+
+                    # mTLS
+                    MUT._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate="client.pem",
+                        client_key="key.pem",
+                    )
+                    mock_ssl_creds.assert_called_with(
+                        root_certificates=b"cert_data",
+                        private_key=b"cert_data",
+                        certificate_chain=b"cert_data",
+                    )
+
+        # Validation errors
+        with self.assertRaises(ValueError) as cm:
+            MUT._create_spanner_omni_transport(
+                mock_factory,
+                "omni-host:15000",
+                use_plain_text=False,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+            )
+        self.assertIn("TLS/mTLS connection requires ca_certificate", str(cm.exception))
+
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with self.assertRaises(ValueError) as cm:
+                MUT._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate="client.pem",
+                    client_key=None,
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )
+
+            with self.assertRaises(ValueError) as cm:
+                MUT._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate=None,
+                    client_key="key.pem",
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )

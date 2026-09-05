@@ -103,6 +103,7 @@ class TestDatabase(Database):
                     client._client_certificate,
                     client._client_key,
                     self._interceptors,
+                    credentials=client.credentials,
                 )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
