@@ -119,6 +119,9 @@ class LoginClient:
                     f"Unsupported password authentication protocol: {method}"
                 )
 
+            if not handshake_resp.handshake_response.HasField("hash_parameters"):
+                raise ValueError("Handshake response missing hash_parameters")
+
             hash_params = handshake_resp.handshake_response.hash_parameters
             authenticator = UserAuthenticator(username, password, hash_params)
 

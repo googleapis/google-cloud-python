@@ -354,7 +354,10 @@ class SpannerOmniCredentials(google.auth.credentials.Credentials):
                 token_bytes = proto_token.SerializeToString()
                 self.token = base64.b64encode(token_bytes).decode("ascii")
 
-                if proto_token.HasField("expiration_time"):
+                if proto_token.HasField("expiration_time") and (
+                    proto_token.expiration_time.seconds > 0
+                    or proto_token.expiration_time.nanos > 0
+                ):
                     seconds = proto_token.expiration_time.seconds
                     nanos = proto_token.expiration_time.nanos
                     self.expiry = datetime.datetime.fromtimestamp(
@@ -364,6 +367,8 @@ class SpannerOmniCredentials(google.auth.credentials.Credentials):
                     self.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
                         tzinfo=None
                     ) + datetime.timedelta(hours=1)
+            except (grpc.RpcError, google.auth.exceptions.RefreshError):
+                raise
             except Exception as e:
                 raise google.auth.exceptions.RefreshError(
                     f"Failed to login to Spanner Omni: {e}"

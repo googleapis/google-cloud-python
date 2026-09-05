@@ -1049,3 +1049,56 @@ class TestClient(unittest.TestCase):
             "username and password can only be used when instance_type='omni'.",
             str(ctx.exception),
         )
+
+    def test_instance_admin_api_omni(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        client = self._make_one(
+            project=self.PROJECT,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+            username="test_user",
+            password="test_password",
+            use_plain_text=True,
+        )
+
+        inst_module = "google.cloud.spanner_v1.client.InstanceAdminClient"
+        with mock.patch(inst_module) as instance_admin_client:
+            api = client.instance_admin_api
+            self.assertIs(api, instance_admin_client.return_value)
+            instance_admin_client.assert_called_once()
+            called_kw = instance_admin_client.call_args[1]
+            self.assertIn("transport", called_kw)
+
+    def test_database_admin_api_omni(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        client = self._make_one(
+            project=self.PROJECT,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+            username="test_user",
+            password="test_password",
+            use_plain_text=True,
+        )
+
+        db_module = "google.cloud.spanner_v1.client.DatabaseAdminClient"
+        with mock.patch(db_module) as database_admin_client:
+            api = client.database_admin_api
+            self.assertIs(api, database_admin_client.return_value)
+            database_admin_client.assert_called_once()
+            called_kw = database_admin_client.call_args[1]
+            self.assertIn("transport", called_kw)
+
+    def test_constructor_w_omni_explicit_credentials_instance(self):
+        from google.cloud.spanner_v1.client import InstanceType
+        from google.cloud.spanner_v1.omni.credentials import SpannerOmniCredentials
+
+        creds = SpannerOmniCredentials("user", "pass", "omni-host:15000")
+        client = self._make_one(
+            project=self.PROJECT,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+            credentials=creds,
+        )
+        self.assertIs(client._credentials, creds)

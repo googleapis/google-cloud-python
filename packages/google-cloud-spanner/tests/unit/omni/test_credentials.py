@@ -20,6 +20,7 @@ from collections import namedtuple
 from unittest import mock
 
 import google.auth.exceptions
+import grpc
 from google.protobuf import timestamp_pb2
 
 from google.cloud.spanner_v1.omni.credentials import SpannerOmniCredentials
@@ -148,6 +149,55 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             )
             self.assertIsNotNone(creds.token)
 
+    def test_refresh_zero_expiration_time_falls_back_to_default_ttl(self):
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", use_plain_text=True
+        )
+        mock_token_proto = login_pb2.AccessToken(username="user")
+        mock_token_proto.expiration_time.seconds = 0
+        mock_token_proto.expiration_time.nanos = 0
+
+        with (
+            mock.patch("grpc.insecure_channel"),
+            mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls,
+        ):
+            mock_client = mock_login_client_cls.return_value
+            mock_client.login.return_value = mock_token_proto
+
+            creds.refresh()
+
+            self.assertIsNotNone(creds.token)
+            self.assertTrue(creds.valid)
+            now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+            self.assertGreater(creds.expiry, now + datetime.timedelta(minutes=50))
+
+    def test_refresh_nanos_only_expiration_time(self):
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", use_plain_text=True
+        )
+        now_ts = datetime.datetime.now(datetime.timezone.utc).timestamp()
+        mock_token_proto = login_pb2.AccessToken(username="user")
+        mock_token_proto.expiration_time.seconds = int(now_ts) + 300
+        mock_token_proto.expiration_time.nanos = 500000
+
+        with (
+            mock.patch("grpc.insecure_channel"),
+            mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls,
+        ):
+            mock_client = mock_login_client_cls.return_value
+            mock_client.login.return_value = mock_token_proto
+
+            creds.refresh()
+
+            self.assertIsNotNone(creds.token)
+            self.assertTrue(creds.valid)
+            now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+            self.assertGreater(creds.expiry, now + datetime.timedelta(minutes=4))
+
     def test_refresh_mtls_missing_key_raises(self):
         creds = SpannerOmniCredentials(
             "user",
@@ -182,6 +232,27 @@ class TestSpannerOmniCredentials(unittest.TestCase):
             mock_client.login.side_effect = ValueError("Handshake failed")
 
             with self.assertRaises(google.auth.exceptions.RefreshError):
+                creds.refresh()
+
+    def test_refresh_grpc_error_is_reraised(self):
+        creds = SpannerOmniCredentials(
+            "user", "pass", "localhost:9010", ca_certificate="/dummy/ca.pem"
+        )
+
+        class CustomRpcError(grpc.RpcError):
+            pass
+
+        with (
+            mock.patch("builtins.open", mock.mock_open(read_data=b"dummy_data")),
+            mock.patch("grpc.secure_channel"),
+            mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls,
+        ):
+            mock_client = mock_login_client_cls.return_value
+            mock_client.login.side_effect = CustomRpcError("Service Unavailable")
+
+            with self.assertRaises(CustomRpcError):
                 creds.refresh()
 
     def test_refresh_skips_when_valid_inside_lock(self):
@@ -362,6 +433,126 @@ class TestSpannerOmniCredentials(unittest.TestCase):
                 )
 
         asyncio.run(run_test())
+
+    def test_init_channel(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        mock_ssl = mock.Mock(spec=grpc.ChannelCredentials)
+        creds.init_channel(
+            use_plain_text=True,
+            ca_certificate="ca.pem",
+            client_certificate="client.pem",
+            client_key="key.pem",
+            ssl_credentials=mock_ssl,
+        )
+        self.assertTrue(creds.use_plain_text)
+        self.assertEqual(creds.ca_certificate, "ca.pem")
+        self.assertEqual(creds.client_certificate, "client.pem")
+        self.assertEqual(creds.client_key, "key.pem")
+        self.assertIs(creds.ssl_credentials, mock_ssl)
+
+        # Also test with use_plain_text=False
+        creds.init_channel(use_plain_text=False)
+        self.assertFalse(creds.use_plain_text)
+
+    def test_create_auth_interceptor_async_dispatch(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        interceptors = creds.create_auth_interceptor(is_async=True)
+        self.assertIsInstance(interceptors, list)
+        self.assertEqual(len(interceptors), 4)
+
+        interceptors_alias = creds.create_async_auth_interceptor()
+        self.assertIsInstance(interceptors_alias, list)
+        self.assertEqual(len(interceptors_alias), 4)
+
+    def test_sync_interceptor_triggers_refresh_when_invalid(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        interceptor = creds.create_auth_interceptor()
+
+        DummyCallDetails = namedtuple(
+            "DummyCallDetails",
+            ["method", "timeout", "metadata", "credentials", "wait_for_ready"],
+        )
+        call_details = DummyCallDetails(
+            method="/google.spanner.v1.Spanner/ExecuteSql",
+            timeout=30.0,
+            metadata=[],
+            credentials=None,
+            wait_for_ready=None,
+        )
+
+        def dummy_continuation(details, req):
+            return details
+
+        with mock.patch.object(creds, "refresh") as mock_refresh:
+
+            def do_refresh():
+                creds.token = "refreshed_sync_token"
+                creds.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
+                    tzinfo=None
+                ) + datetime.timedelta(hours=1)
+
+            mock_refresh.side_effect = do_refresh
+
+            res = interceptor.intercept_unary_unary(
+                dummy_continuation, call_details, "req"
+            )
+            mock_refresh.assert_called_once()
+            self.assertIn(
+                ("authorization", "Bearer refreshed_sync_token"), res.metadata
+            )
+
+    def test_perform_refresh_token_with_ssl_credentials(self):
+        mock_ssl = mock.Mock(spec=grpc.ChannelCredentials)
+        creds = SpannerOmniCredentials(
+            "user",
+            "pass",
+            "localhost:9010",
+            ssl_credentials=mock_ssl,
+        )
+        with mock.patch("grpc.secure_channel") as mock_secure_channel:
+            mock_channel = mock.MagicMock()
+            mock_secure_channel.return_value = mock_channel
+            with mock.patch(
+                "google.cloud.spanner_v1.omni.credentials.LoginClient"
+            ) as mock_login_client_cls:
+                mock_client = mock.MagicMock()
+                mock_login_client_cls.return_value = mock_client
+                proto_token = login_pb2.AccessToken(
+                    username="user", signature=b"secure_token"
+                )
+                mock_client.login.return_value = proto_token
+
+                creds.refresh()
+
+                mock_secure_channel.assert_called_once_with("localhost:9010", mock_ssl)
+                self.assertTrue(creds.valid)
+                self.assertIsNotNone(creds.token)
+                mock_channel.close.assert_called_once()
+
+    def test_before_request(self):
+        creds = SpannerOmniCredentials("user", "pass", "localhost:9010")
+        headers = {}
+
+        with mock.patch.object(creds, "refresh") as mock_refresh:
+
+            def do_refresh(request=None):
+                creds.token = "refreshed_token"
+                creds.expiry = datetime.datetime.now(datetime.timezone.utc).replace(
+                    tzinfo=None
+                ) + datetime.timedelta(hours=1)
+
+            mock_refresh.side_effect = do_refresh
+
+            creds.before_request(None, "GET", "http://example.com", headers)
+            mock_refresh.assert_called_once()
+            self.assertEqual(headers["authorization"], "Bearer refreshed_token")
+
+            # Call again when valid - refresh should not be called again
+            mock_refresh.reset_mock()
+            headers_2 = {}
+            creds.before_request(None, "GET", "http://example.com", headers_2)
+            mock_refresh.assert_not_called()
+            self.assertEqual(headers_2["authorization"], "Bearer refreshed_token")
 
 
 if __name__ == "__main__":

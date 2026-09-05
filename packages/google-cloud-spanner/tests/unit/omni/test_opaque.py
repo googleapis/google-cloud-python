@@ -687,6 +687,334 @@ class TestOpaqueCrypto(unittest.TestCase):
             auth.final_request(resp)
         self.assertIn("Invalid masked response length", str(cm.exception))
 
+    def test_clear(self):
+        opaque._clear(None)
+        b = bytearray(b"hello")
+        opaque._clear(b)
+        self.assertEqual(b, bytearray(5))
+
+    def test_point_add_identity_and_inversion(self):
+        pt = (opaque.GX, opaque.GY)
+        self.assertEqual(opaque.point_add(None, pt), pt)
+        self.assertEqual(opaque.point_add(pt, None), pt)
+        self.assertIsNone(opaque.point_add(None, None))
+
+        inv_pt = (opaque.GX, (opaque.P - opaque.GY) % opaque.P)
+        self.assertIsNone(opaque.point_add(pt, inv_pt))
+
+    def test_point_mul_infinity_and_zero(self):
+        self.assertIsNone(opaque.point_mul(None, 5))
+        self.assertIsNone(opaque.point_mul(opaque.G, 0))
+
+    def test_marshal_compressed_none(self):
+        with self.assertRaises(ValueError) as cm:
+            opaque.marshal_compressed(None)
+        self.assertIn("Point at infinity cannot be compressed", str(cm.exception))
+
+    def test_unmarshal_compressed_errors(self):
+        # Invalid length
+        with self.assertRaises(ValueError) as cm:
+            opaque.unmarshal_compressed(b"\x02" * 32)
+        self.assertIn("Invalid compressed point length", str(cm.exception))
+
+        # Invalid prefix
+        with self.assertRaises(ValueError) as cm:
+            opaque.unmarshal_compressed(b"\x04" + b"\x00" * 32)
+        self.assertIn("Invalid compressed point prefix", str(cm.exception))
+
+        # x coordinate exceeds P
+        with self.assertRaises(ValueError) as cm:
+            opaque.unmarshal_compressed(b"\x02" + (opaque.P + 1).to_bytes(32, "big"))
+        self.assertIn("x coordinate exceeds field prime", str(cm.exception))
+
+        # Point not on curve (find an x that produces a quadratic non-residue)
+        for candidate_x in range(1, 100):
+            rhs = (
+                pow(candidate_x, 3, opaque.P) + opaque.A * candidate_x + opaque.B
+            ) % opaque.P
+            if pow(rhs, opaque.P_MINUS_1_OVER_2, opaque.P) != 1:
+                with self.assertRaises(ValueError) as cm:
+                    opaque.unmarshal_compressed(
+                        b"\x02" + candidate_x.to_bytes(32, "big")
+                    )
+                self.assertIn("Point is not on curve", str(cm.exception))
+                break
+
+    def test_expand_message_xmd_oversize_dst(self):
+        res = opaque.expand_message_xmd(b"msg", b"D" * 256, 32)
+        self.assertEqual(len(res), 32)
+
+    def test_map_to_curve_sswu_zero(self):
+        pt = opaque.map_to_curve_sswu(0)
+        self.assertIsInstance(pt, tuple)
+        self.assertEqual(len(pt), 2)
+
+    def test_hash_to_curve_p256_infinity(self):
+        from unittest import mock
+
+        with mock.patch(
+            "google.cloud.spanner_v1.omni.opaque.point_add", return_value=None
+        ):
+            with self.assertRaises(ValueError) as cm:
+                opaque.hash_to_curve_p256(b"msg", b"dst")
+            self.assertIn("Hash to curve produced point at infinity", str(cm.exception))
+
+    def test_validate_hash_parameters_errors(self):
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(None)
+        self.assertIn("hash_parameters cannot be None", str(cm.exception))
+
+        # Missing argon2_id_parameters on proto message
+        proto_empty = authentication_pb2.HashParameters()
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(proto_empty)
+        self.assertIn(
+            "hash_parameters must contain non-nil argon2_id_parameters",
+            str(cm.exception),
+        )
+
+        # Missing argon2_id_parameters on non-proto object
+        class EmptyParams:
+            argon2_id_parameters = None
+
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(EmptyParams())
+        self.assertIn(
+            "hash_parameters must contain non-nil argon2_id_parameters",
+            str(cm.exception),
+        )
+
+        # Invalid memory usage
+        params = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=7,
+                parallelism=4,
+                hash_size=32,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params)
+        self.assertIn("Invalid Argon2Id memory usage", str(cm.exception))
+
+        # Invalid parallelism
+        params = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=0,
+                hash_size=32,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params)
+        self.assertIn("Invalid Argon2Id parallelism", str(cm.exception))
+
+        # Invalid iteration count (0 and 11)
+        params_low = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=0,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=32,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params_low)
+        self.assertIn("Invalid Argon2Id iteration count", str(cm.exception))
+
+        params_high = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=11,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=32,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params_high)
+        self.assertIn("Invalid Argon2Id iteration count", str(cm.exception))
+
+        # Valid non-proto hash parameters
+        class ValidNonProtoParams:
+            argon2_id_parameters = authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=32,
+            )
+
+        opaque._validate_hash_parameters(ValidNonProtoParams())
+
+        # Invalid hash_size
+        params = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=0,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params)
+        self.assertIn("Invalid Argon2Id hash size", str(cm.exception))
+
+    def test_random_oracle_sha256_large_max_val(self):
+        max_val = (1 << 264) + 1
+        res = opaque.random_oracle_sha256(b"seed", max_val)
+        self.assertEqual(len(res), 34)
+
+    def test_derive_key_pair_zero_priv(self):
+        from unittest import mock
+
+        with mock.patch(
+            "google.cloud.spanner_v1.omni.opaque.random_oracle_sha256",
+            return_value=b"\x00" * 32,
+        ):
+            pub, priv = opaque.derive_key_pair(b"seed", b"info")
+            self.assertEqual(priv, (1).to_bytes(32, "big"))
+            self.assertEqual(pub, opaque.marshal_compressed(opaque.G))
+
+    def test_blind_and_finalize_edge_cases(self):
+        with self.assertRaises(ValueError) as cm:
+            opaque.blind(b"")
+        self.assertIn("Password cannot be empty", str(cm.exception))
+
+        # Explicit blind scalar
+        explicit_scalar = (5).to_bytes(32, "big")
+        blinded, returned_scalar = opaque.blind(b"pass", blind_scalar=explicit_scalar)
+        self.assertEqual(returned_scalar, explicit_scalar)
+
+        with self.assertRaises(ValueError) as cm:
+            opaque.finalize(b"", b"evaluated")
+        self.assertIn("Blind scalar cannot be empty", str(cm.exception))
+
+    def test_recover_client_mismatched_auth_tag(self):
+        with self.assertRaises(ValueError) as cm:
+            opaque.recover_client(
+                "user",
+                b"\x01" * 32,
+                b"\x02" * 32,
+                b"\x00" * 32,
+                opaque.marshal_compressed(opaque.G),
+            )
+        self.assertIn("Auth tag mismatch", str(cm.exception))
+
+    def test_final_request_edge_cases(self):
+        from unittest import mock
+
+        params = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=32,
+            )
+        )
+        auth = opaque.UserAuthenticator("user", "pass", params)
+        auth.initial_request()
+
+        with self.assertRaises(ValueError) as cm:
+            auth.final_request(None)
+        self.assertIn("initial_response cannot be None", str(cm.exception))
+
+        empty_resp = login_pb2.LoginResponse()
+        with self.assertRaises(ValueError) as cm:
+            auth.final_request(empty_resp)
+        self.assertIn("Expected initial opaque response from server", str(cm.exception))
+
+        final_only_resp = login_pb2.LoginResponse()
+        final_only_resp.opaque_response.final_response.SetInParent()
+        with self.assertRaises(ValueError) as cm:
+            auth.final_request(final_only_resp)
+        self.assertIn("Expected initial opaque response from server", str(cm.exception))
+
+        # Test blind when secrets.randbelow initially returns 0
+        with mock.patch("secrets.randbelow", side_effect=[0, 7]):
+            blinded_msg, blind_s = opaque.blind(b"testpass")
+            self.assertEqual(blind_s, (7).to_bytes(32, "big"))
+
+        # Test server MAC mismatch
+        oprf_seed = opaque.nonce()
+        oprf_key_seed = opaque.expand(oprf_seed, b"userOprfKey", 32)
+        _, oprf_priv = opaque.derive_key_pair(oprf_key_seed, b"OPAQUE-DeriveKeyPair")
+        h_pt = opaque.hash_to_curve_p256(b"pass", opaque.LOGIN_DOMAIN_SEPARATION_TAG)
+        prf_pt = opaque.point_mul(h_pt, int.from_bytes(oprf_priv, "big"))
+        prf = opaque.marshal_compressed(prf_pt)
+        stretched_oprf = opaque.stretch(prf, params)
+        randomized_password = opaque.extract(opaque.concat(prf, stretched_oprf))
+
+        server_key_seed = opaque.nonce()
+        server_pub, _ = opaque.derive_key_pair(
+            server_key_seed, opaque.DIFFIE_HELLMAN_KEY_INFO
+        )
+        envelope_nonce = opaque.nonce()
+        auth_key = opaque.expand(
+            randomized_password, envelope_nonce + opaque.AUTH_KEY_INFO, 32
+        )
+        auth_tag = opaque.mac(auth_key, envelope_nonce + server_pub + b"user")
+        serialized_envelope = opaque.concat(server_pub, envelope_nonce, auth_tag)
+        masking_key = opaque.expand(randomized_password, opaque.MASKING_KEY_INFO, 32)
+        masking_nonce = opaque.nonce()
+        credential_pad = opaque.expand(
+            masking_key,
+            opaque.concat(masking_nonce, b"CredentialResponsePad"),
+            len(serialized_envelope),
+        )
+        masked_response = opaque.xor_bytes(serialized_envelope, credential_pad)
+
+        blinded_pt = opaque.point_mul(h_pt, int.from_bytes(auth._blind, "big"))
+        eval_pt = opaque.point_mul(blinded_pt, int.from_bytes(oprf_priv, "big"))
+        server_ephemeral_pub, _ = opaque.derive_key_pair(
+            opaque.nonce(), opaque.DIFFIE_HELLMAN_KEY_INFO
+        )
+
+        resp = login_pb2.LoginResponse(
+            opaque_response=login_pb2.OpaqueLoginResponse(
+                initial_response=login_pb2.InitialOpaqueLoginResponse(
+                    server_nonce=opaque.nonce(),
+                    server_public_keyshare=server_ephemeral_pub,
+                    server_mac=b"bad_server_mac" * 2 + b"\x00" * 4,
+                    evaluated_message=opaque.marshal_compressed(eval_pt),
+                    masking_nonce=masking_nonce,
+                    masked_response=masked_response,
+                )
+            )
+        )
+
+        # Test server MAC mismatch on auth (which matches auth._blind)
+        with self.assertRaises(ValueError) as cm:
+            auth.final_request(resp)
+        self.assertIn("Server MAC mismatch", str(cm.exception))
+
+        # Test xor_bytes returning invalid envelope length
+        auth_short = opaque.UserAuthenticator("user", "pass", params)
+        auth_short.initial_request()
+        blinded_pt_short = opaque.point_mul(
+            h_pt, int.from_bytes(auth_short._blind, "big")
+        )
+        eval_pt_short = opaque.point_mul(
+            blinded_pt_short, int.from_bytes(oprf_priv, "big")
+        )
+        resp_short = login_pb2.LoginResponse(
+            opaque_response=login_pb2.OpaqueLoginResponse(
+                initial_response=login_pb2.InitialOpaqueLoginResponse(
+                    server_nonce=opaque.nonce(),
+                    server_public_keyshare=server_ephemeral_pub,
+                    server_mac=b"bad_server_mac" * 2 + b"\x00" * 4,
+                    evaluated_message=opaque.marshal_compressed(eval_pt_short),
+                    masking_nonce=masking_nonce,
+                    masked_response=masked_response,
+                )
+            )
+        )
+        with mock.patch(
+            "google.cloud.spanner_v1.omni.opaque.xor_bytes", return_value=b"too_short"
+        ):
+            with self.assertRaises(ValueError) as cm:
+                auth_short.final_request(resp_short)
+            self.assertIn("Invalid serialized envelope length", str(cm.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

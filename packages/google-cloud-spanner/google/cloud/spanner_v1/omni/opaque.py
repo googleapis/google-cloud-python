@@ -242,16 +242,18 @@ def extract(input_key_material: bytes) -> bytes:
 def _validate_hash_parameters(hash_parameters) -> None:
     if hash_parameters is None:
         raise ValueError("hash_parameters cannot be None")
-    if not hasattr(hash_parameters, "HasField") or not hash_parameters.HasField(
-        "argon2_id_parameters"
-    ):
+    if hasattr(hash_parameters, "HasField"):
+        if not hash_parameters.HasField("argon2_id_parameters"):
+            raise ValueError(
+                "hash_parameters must contain non-nil argon2_id_parameters"
+            )
+        argon2_params = hash_parameters.argon2_id_parameters
+    else:
         argon2_params = getattr(hash_parameters, "argon2_id_parameters", None)
         if argon2_params is None:
             raise ValueError(
                 "hash_parameters must contain non-nil argon2_id_parameters"
             )
-    else:
-        argon2_params = hash_parameters.argon2_id_parameters
 
     if not (1 <= argon2_params.iteration_count <= 10):
         raise ValueError(
@@ -479,10 +481,14 @@ class UserAuthenticator:
                 "Authenticator not initialized; initial_request must be called first"
             )
 
-        opaque_resp = initial_response.opaque_response
-        initial_opaque_resp = opaque_resp.initial_response if opaque_resp else None
-        if initial_opaque_resp is None:
+        if (
+            not hasattr(initial_response, "HasField")
+            or not initial_response.HasField("opaque_response")
+            or not initial_response.opaque_response.HasField("initial_response")
+        ):
             raise ValueError("Expected initial opaque response from server")
+
+        initial_opaque_resp = initial_response.opaque_response.initial_response
 
         evaluated_message = initial_opaque_resp.evaluated_message
         masking_nonce = initial_opaque_resp.masking_nonce

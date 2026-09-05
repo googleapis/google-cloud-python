@@ -211,8 +211,6 @@ class Test_connect(unittest.TestCase):
             client_certificate=None,
             client_key=None,
             instance_type="omni",
-            username="test_user",
-            password="test_password",
         )
         creds = mock_client.call_args_list[0][1]["credentials"]
         self.assertIsInstance(creds, SpannerOmniCredentials)
@@ -231,5 +229,62 @@ class Test_connect(unittest.TestCase):
             )
         self.assertIn(
             "Both username and password must be specified for Omni authentication",
+            str(ctx.exception),
+        )
+
+        with self.assertRaises(ValueError) as ctx:
+            connect(
+                INSTANCE,
+                DATABASE,
+                instance_type="omni",
+                client_options={"api_endpoint": "omni-host:15000"},
+                password="test_password",
+            )
+        self.assertIn(
+            "Both username and password must be specified for Omni authentication",
+            str(ctx.exception),
+        )
+
+    def test_connect_omni_client_options_variants(self, mock_client):
+        from google.api_core.client_options import ClientOptions
+
+        from google.cloud.spanner_dbapi import connect
+
+        # client_options is None
+        connect(
+            INSTANCE,
+            DATABASE,
+            instance_type="omni",
+            experimental_host="omni-host:15000",
+            client_options=None,
+        )
+
+        # client_options is dict
+        connect(
+            INSTANCE,
+            DATABASE,
+            instance_type="omni",
+            experimental_host="omni-host:15000",
+            client_options={"quota_project_id": "test-project"},
+        )
+
+        # client_options is ClientOptions object with api_endpoint
+        opts_with_ep = ClientOptions(api_endpoint="omni-host:15000")
+        connect(
+            INSTANCE,
+            DATABASE,
+            instance_type="omni",
+            client_options=opts_with_ep,
+        )
+
+        # Missing host when instance_type='omni' raises ValueError
+        with self.assertRaises(ValueError) as ctx:
+            connect(
+                INSTANCE,
+                DATABASE,
+                instance_type="omni",
+            )
+        self.assertIn(
+            "Host must be set for connecting to Spanner Omni instances",
             str(ctx.exception),
         )

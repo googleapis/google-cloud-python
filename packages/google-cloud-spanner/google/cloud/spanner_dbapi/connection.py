@@ -995,14 +995,6 @@ def connect(
                     import copy
 
                     client_options = copy.copy(client_options)
-                    client_options.api_endpoint = host_endpoint
-
-            client_kwargs = {}
-            if username is not None:
-                client_kwargs["username"] = username
-            if password is not None:
-                client_kwargs["password"] = password
-
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
@@ -1014,7 +1006,6 @@ def connect(
                 client_certificate=client_certificate,
                 client_key=client_key,
                 instance_type=instance_type,
-                **client_kwargs,
             )
     else:
         if project is not None and client.project != project:
