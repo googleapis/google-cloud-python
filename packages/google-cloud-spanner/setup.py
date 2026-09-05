@@ -64,6 +64,7 @@ dependencies = [
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",
+    "pyarrow": ["pyarrow >= 14.0.0"],
     "test": [
         "pytest",
         "mock",
@@ -71,6 +72,7 @@ extras = {
         "pytest-cov",
         "pytest-asyncio",
         "pytest-xdist",
+        "pyarrow >= 14.0.0",
     ],
 }
 
