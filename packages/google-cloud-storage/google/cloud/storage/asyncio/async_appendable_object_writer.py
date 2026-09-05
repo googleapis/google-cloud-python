@@ -49,6 +49,7 @@ _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
 _BIDI_WRITE_REDIRECTED_TYPE_URL = (
     "type.googleapis.com/google.storage.v2.BidiWriteObjectRedirectedError"
 )
+_SUPPORTED_STORAGE_CLASSES = ("STANDARD", "RAPID")
 logger = logging.getLogger(__name__)
 
 
@@ -111,6 +112,7 @@ class AsyncAppendableObjectWriter:
         generation: Optional[int] = None,
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
+        storage_class: Optional[str] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -179,13 +181,26 @@ class AsyncAppendableObjectWriter:
                 The number of bytes to append before "persisting" data in GCS
                 servers. Default is `_DEFAULT_FLUSH_INTERVAL_BYTES`.
                 Must be a multiple of `_MAX_CHUNK_SIZE_BYTES`.
+        :type storage_class: Optional[str]
+        :param storage_class: (Optional) Storage class of the object bytes.
+            Possible values are STANDARD | RAPID. If specified,
+            it overrides the bucket's `storage_class`. If not, object storage class
+            will be the same as bucket's storage_class.
         """
         _utils.raise_if_no_fast_crc32c()
+        if (
+            storage_class is not None
+            and storage_class not in _SUPPORTED_STORAGE_CLASSES
+        ):
+            raise ValueError(
+                f"storage_class must be either 'STANDARD' or 'RAPID', got '{storage_class}'"
+            )
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
         self.write_handle = write_handle
         self.generation = generation
+        self.storage_class = storage_class
 
         self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
@@ -361,6 +376,7 @@ class AsyncAppendableObjectWriter:
                 generation_number=self.generation,
                 write_handle=self.write_handle,
                 routing_token=self._routing_token,
+                storage_class=self.storage_class,
             )
 
             if self._routing_token:
