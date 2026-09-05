@@ -126,6 +126,13 @@ class Client(ClientWithProject):
         (Optional) An API key. Mutually exclusive with any other credentials.
         This parameter is an alias for setting `client_options.api_key` and
         will supercede any api key set in the `client_options` parameter.
+
+    :type enable_bucket_metadata_cache: bool
+    :param enable_bucket_metadata_cache:
+        (Optional, default True) Enables the background bucket-metadata cache
+        (App-centric Observability / ACO). Setting this to False disables the
+        cache and the background ``storage.buckets.get`` probe it triggers on
+        object-level operations, for principals granted object-only IAM roles.
     """
 
     SCOPE = (
@@ -146,6 +153,7 @@ class Client(ClientWithProject):
         extra_headers={},
         *,
         api_key=None,
+        enable_bucket_metadata_cache: bool = True,
     ):
         self._base_connection = None
 
@@ -292,7 +300,10 @@ class Client(ClientWithProject):
         connection.extra_headers = extra_headers
         self._connection = connection
         self._batch_stack = _LocalStack()
-        self._bucket_metadata_cache = BucketMetadataCache(self)
+        self._enable_bucket_metadata_cache = enable_bucket_metadata_cache
+        self._bucket_metadata_cache = (
+            BucketMetadataCache(self) if enable_bucket_metadata_cache else None
+        )
 
     def close(self):
         """Close the client and clear any cached metadata or active connections."""
@@ -1189,9 +1200,9 @@ class Client(ClientWithProject):
                 predefined_default_object_acl = DefaultObjectACL.validate_predefined(
                     predefined_default_object_acl
                 )
-                query_params["predefinedDefaultObjectAcl"] = (
-                    predefined_default_object_acl
-                )
+                query_params[
+                    "predefinedDefaultObjectAcl"
+                ] = predefined_default_object_acl
 
             if user_project is not None:
                 query_params["userProject"] = user_project
