@@ -457,7 +457,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     def quote_value(self, value):
         # A more complete implementation isn't currently required.
         if isinstance(value, str):
-            return "'%s'" % value.replace("'", "''")
+            # GoogleSQL string literals use backslash escaping; '' quote
+            # doubling is not recognized, so escape the backslash first and
+            # then the quote (matching the db_default/generated inlining above).
+            return "'%s'" % value.replace("\\", "\\\\").replace("'", "\\'")
         if isinstance(value, bool):
             return "TRUE" if value else "FALSE"
         return str(value)
