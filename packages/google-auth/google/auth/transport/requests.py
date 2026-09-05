@@ -441,6 +441,21 @@ class AuthorizedSession(requests.Session):
                 "https://{}/".format(self._default_host) if self._default_host else None
             )
 
+    def _is_mtls_configured(self) -> bool:
+        """Check if mTLS is currently active based on flag, adapter type, or cached cert."""
+        if self._is_mtls:
+            return True
+        if getattr(self, "_cached_cert", None) is not None:
+            return True
+        adapter = self.adapters.get("https://")
+        if isinstance(adapter, (_MutualTlsAdapter, _MutualTlsOffloadAdapter)):
+            return True
+        if self._auth_request_session is not None:
+            auth_adapter = self._auth_request_session.adapters.get("https://")
+            if isinstance(auth_adapter, (_MutualTlsAdapter, _MutualTlsOffloadAdapter)):
+                return True
+        return False
+
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -469,6 +484,13 @@ class AuthorizedSession(requests.Session):
         """
         use_client_cert = google.auth.transport._mtls_helper.check_use_client_cert()
         if not use_client_cert:
+            # Dynamically disabling mTLS on an active session is unsafe in concurrent
+            # environments and can cause a state mismatch where mTLS adapters
+            # remain attached while auth checks believe mTLS is disabled.
+            if self._is_mtls_configured():
+                raise exceptions.MutualTLSChannelError(
+                    "Cannot disable mTLS on an active session. A new AuthorizedSession must be created."
+                )
             return
 
         try:
@@ -479,6 +501,12 @@ class AuthorizedSession(requests.Session):
             ) = google.auth.transport._mtls_helper.get_client_cert_and_key(
                 client_cert_callback
             )
+
+            # Prevent mid-lifecycle transition from mTLS-enabled to mTLS-disabled state.
+            if self._is_mtls_configured() and not is_mtls:
+                raise exceptions.MutualTLSChannelError(
+                    "Cannot disable mTLS on an active session. A new AuthorizedSession must be created."
+                )
 
             old_adapter = self.adapters.get("https://")
 
