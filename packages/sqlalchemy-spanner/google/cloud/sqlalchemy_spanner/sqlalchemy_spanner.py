@@ -264,6 +264,16 @@ class SpannerIdentifierPreparer(IdentifierPreparer):
             dialect, initial_quote="`", final_quote="`"
         )
 
+    def _escape_identifier(self, value):
+        """Escape backslashes and backticks inside a backtick-quoted identifier.
+
+        The base preparer only doubles the ANSI double-quote, which does not
+        neutralize a backtick in a Spanner backtick-quoted identifier. Match the
+        backslash escaping used by ``parse_utils.escape_name`` so a name that
+        carries a backtick cannot terminate the quoted identifier.
+        """
+        return value.replace("\\", "\\\\").replace("`", "\\`")
+
     def _requires_quotes(self, value):
         """Return True if the given identifier requires quoting."""
         lc_value = value.lower()
@@ -697,15 +707,18 @@ class SpannerDDLCompiler(DDLCompiler):
         Returns:
             str: primary key difinition to add to the table CREATE request.
         """
-        cols = [col.name for col in table.primary_key.columns]
+        cols = [self.preparer.quote(col.name) for col in table.primary_key.columns]
         post_cmds = " PRIMARY KEY ({})".format(", ".join(cols))
 
         if "TEMPORARY" in table._prefixes:
             raise NotImplementedError("Temporary tables are not supported.")
 
-        if table.kwargs.get("spanner_interleave_in"):
+        parent = table.kwargs.get("spanner_interleave_in")
+        if parent is not None and hasattr(parent, "name"):
+            parent = parent.name
+        if parent:
             post_cmds += ",\nINTERLEAVE IN PARENT {}".format(
-                table.kwargs["spanner_interleave_in"]
+                self.preparer.quote(parent)
             )
 
             if table.kwargs.get("spanner_interleave_on_delete_cascade"):
