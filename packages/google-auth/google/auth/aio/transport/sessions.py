@@ -412,7 +412,6 @@ class AsyncAuthorizedSession:
                                                 "Failed to check client certificate parameters: %s. Proceeding with original response.",
                                                 e,
                                             )
-                                            return response
                                         else:
                                             if (
                                                 current_cert_fingerprint is not None
