@@ -191,11 +191,9 @@ async def check_parameters_for_unauthorized_response(
             key bytes both in PEM format.
 
     Returns:
-        bytes: The client callback cert bytes.
-        bytes: The client callback key bytes.
-        str: The base64-encoded SHA256 cached fingerprint.
-        str: The base64-encoded SHA256 current cert fingerprint.
-
+        Tuple[Optional[bytes], Optional[bytes], Optional[str], Optional[str]]:
+            call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint.
+        Returns (None, None, None, None) if mTLS is disabled or no client certificate is present.
     """
     is_mtls, call_cert_bytes, call_key_bytes = await get_client_cert_and_key(
         client_cert_callback
@@ -213,7 +211,7 @@ async def check_parameters_for_unauthorized_response(
                 cached_cert
             )
         else:
-            cached_fingerprint = current_fingerprint
+            cached_fingerprint = None
         return cached_fingerprint, current_fingerprint
 
     cached_fingerprint, current_cert_fingerprint = await _run_in_executor(
