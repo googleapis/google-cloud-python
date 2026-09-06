@@ -224,8 +224,10 @@ class AsyncAuthorizedSession:
 
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
-                            while len(self._old_auth_requests) >= 2:
-                                oldest_auth_request = self._old_auth_requests.pop(0)
+                            self._old_auth_requests.append(old_auth_request)
+
+                            while len(self._old_auth_requests) > 2:
+                                oldest_auth_request = self._old_auth_requests[0]
                                 try:
                                     if hasattr(oldest_auth_request, "close"):
                                         res = oldest_auth_request.close()
@@ -233,8 +235,7 @@ class AsyncAuthorizedSession:
                                             await res
                                 except Exception:
                                     pass
-
-                            self._old_auth_requests.append(old_auth_request)
+                                self._old_auth_requests.pop(0) 
 
                         else:
                             is_mtls = False
@@ -469,9 +470,8 @@ class AsyncAuthorizedSession:
                                 try:
                                     await self._credentials.refresh(self._auth_request)
                                 except NotImplementedError:
-                                    _LOGGER.debug(
-                                        "Credentials do not implement refresh()."
-                                    )
+                                    _LOGGER.debug("Credentials do not implement refresh().")
+                                    return response
                                 except (
                                     exceptions.RefreshError,
                                     getattr(exceptions, "InvalidOperation", Exception),
