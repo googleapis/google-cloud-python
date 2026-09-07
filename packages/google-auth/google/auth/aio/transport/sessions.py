@@ -367,7 +367,7 @@ class AsyncAuthorizedSession:
 
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
-                        if getattr(self, "is_mtls", False):
+                        if self._is_mtls::
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
                                 is_mtls_endpoint = any(
@@ -426,16 +426,15 @@ class AsyncAuthorizedSession:
                                                         "Client certificate has changed, reconfiguring mTLS "
                                                         "channel."
                                                     )
-                                                    if (
-                                                        self._mtls_init_task
-                                                        and self._mtls_init_task.done()
-                                                    ):
+                                                    if self._mtls_init_task is not None:
+                                                        if not self._mtls_init_task.done():
+                                                            try:
+                                                                await self._mtls_init_task
+                                                            except Exception:
+                                                                pass
                                                         self._mtls_init_task = None
                                                     await self.configure_mtls_channel(
-                                                        lambda: (
-                                                            call_cert_bytes,
-                                                            call_key_bytes,
-                                                        )
+                                                        lambda: (call_cert_bytes, call_key_bytes)
                                                     )
                                                 except Exception as e:
                                                     _LOGGER.error(
