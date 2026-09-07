@@ -91,11 +91,16 @@ def format_markdown_summary(
         else:
             mem_str = "N/A"
 
+        try:
+            throughput_str = f"{float(throughput_mib):,.2f} MiB/s"
+        except (ValueError, TypeError):
+            throughput_str = f"{throughput_mib} MiB/s"
+
         short_name = name.replace(
             "test_downloads_multi_proc_multi_coro[", ""
         ).replace("]", "")
         rows.append(
-            f"| **`{short_name}`** | **`{throughput_mib} MiB/s`** |"
+            f"| **`{short_name}`** | **`{throughput_str}`** |"
             f" **`{net_str}`** | `{cpu_max}` |  Passed |"
         )
 
@@ -267,19 +272,19 @@ def main():
     )
     parser.add_argument("--build-id", default="", help="Cloud Build ID")
     parser.add_argument(
-        "--project-id", default="vaibhavpratap-sdk-test", help="GCP Project ID"
+        "--project-id", default="gcs-python-sdk-testing", help="GCP Project ID"
     )
     parser.add_argument(
         "--region", default="us-west4", help="Cloud Build Region"
     )
     parser.add_argument(
         "--vm-name",
-        default="shradhakatyal-benchmarks-us-west4-a",
+        default="gcs-benchmark-runner-us-west4-a",
         help="VM Instance Name",
     )
     parser.add_argument(
         "--zonal-bucket",
-        default="shradhakatyal-read-bench-zb-us-west4-a",
+        default="gcs-read-bench-zb-us-west4-a",
         help="Target Zonal Bucket",
     )
     parser.add_argument(
