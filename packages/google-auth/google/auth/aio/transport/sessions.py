@@ -235,7 +235,7 @@ class AsyncAuthorizedSession:
                                             await res
                                 except Exception:
                                     pass
-                                self._old_auth_requests.pop(0) 
+                                self._old_auth_requests.pop(0)
 
                         else:
                             is_mtls = False
@@ -426,14 +426,19 @@ class AsyncAuthorizedSession:
                                                         "channel."
                                                     )
                                                     if self._mtls_init_task is not None:
-                                                        if not self._mtls_init_task.done():
+                                                        if (
+                                                            not self._mtls_init_task.done()
+                                                        ):
                                                             try:
                                                                 await self._mtls_init_task
                                                             except Exception:
                                                                 pass
                                                         self._mtls_init_task = None
                                                     await self.configure_mtls_channel(
-                                                        lambda: (call_cert_bytes, call_key_bytes)
+                                                        lambda: (
+                                                            call_cert_bytes,
+                                                            call_key_bytes,
+                                                        )
                                                     )
                                                 except Exception as e:
                                                     _LOGGER.error(
@@ -467,7 +472,9 @@ class AsyncAuthorizedSession:
                                 try:
                                     await self._credentials.refresh(self._auth_request)
                                 except NotImplementedError:
-                                    _LOGGER.debug("Credentials do not implement refresh().")
+                                    _LOGGER.debug(
+                                        "Credentials do not implement refresh()."
+                                    )
                                     return response
                                 except (
                                     exceptions.RefreshError,

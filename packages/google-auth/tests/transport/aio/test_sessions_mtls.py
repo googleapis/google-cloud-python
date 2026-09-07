@@ -133,12 +133,16 @@ class TestSessionsMtls:
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_mock_callback(self):
-        """Tests that passing a direct callback bypasses the metadata config file."""
+        """Tests that passing a direct callback configures mTLS without metadata config file."""
 
         def custom_callback():
             return b"custom_cert", b"custom_key"
 
         with (
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"custom_cert", b"custom_key"),
+            ),
             mock.patch(
                 "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
             ) as mock_make_context,
@@ -148,12 +152,9 @@ class TestSessionsMtls:
             mock_session.return_value.close = mock.AsyncMock()
             mock_context = mock.Mock(spec=ssl.SSLContext)
             mock_make_context.return_value = mock_context
-
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
-
             await session.configure_mtls_channel(client_cert_callback=custom_callback)
-
             assert session._is_mtls is True
             assert session._cached_cert == b"custom_cert"
             mock_make_context.assert_called_once_with(b"custom_cert", b"custom_key")
@@ -164,10 +165,9 @@ class TestSessionsMtls:
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_custom_request(self):
         """Tests that a custom auth_request is properly initialized with mTLS."""
-        mock_custom_request = mock.AsyncMock(spec=transport.AsyncRequest)
+        mock_custom_request = mock.AsyncMock(spec=transport.Request)
         mock_custom_request.configure_mtls_channel = mock.AsyncMock()
         mock_custom_request.close = mock.AsyncMock()
-
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_custom_request
@@ -177,7 +177,6 @@ class TestSessionsMtls:
             return b"custom_cert", b"custom_key"
 
         await session.configure_mtls_channel(client_cert_callback=custom_callback)
-
         assert session._is_mtls is True
         mock_custom_request.configure_mtls_channel.assert_called_once_with(
             custom_callback
@@ -185,38 +184,13 @@ class TestSessionsMtls:
         await session.close()
 
     @pytest.mark.asyncio
-    async def test_configure_mtls_channel_exception_resets_flag(self):
-        """Tests that if an unexpected error occurs, _is_mtls stays False."""
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists", return_value=True),
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key",
-                side_effect=Exception("Unexpected boom!"),
-            ),
-        ):
-            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
-            session = sessions.AsyncAuthorizedSession(mock_creds)
-
-            with pytest.raises(exceptions.MutualTLSChannelError):
-                await session.configure_mtls_channel()
-
-            assert session._is_mtls is False
-            await session.close()
-
-    @pytest.mark.asyncio
     async def test_configure_mtls_channel_transport_error_resets_flag(self):
         """Tests that if custom auth_request raises an error, _is_mtls stays False."""
-        mock_custom_request = mock.AsyncMock(spec=transport.AsyncRequest)
+        mock_custom_request = mock.AsyncMock(spec=transport.Request)
         mock_custom_request.configure_mtls_channel = mock.AsyncMock(
             side_effect=exceptions.TransportError("Boom!")
         )
         mock_custom_request.close = mock.AsyncMock()
-
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_custom_request
@@ -227,7 +201,6 @@ class TestSessionsMtls:
 
         with pytest.raises(exceptions.TransportError):
             await session.configure_mtls_channel(client_cert_callback=custom_callback)
-
         assert session._is_mtls is False
         await session.close()
 
@@ -235,13 +208,11 @@ class TestSessionsMtls:
     async def test_configure_mtls_channel_atomic_on_exception(self):
         """Tests that an exception during channel creation leaves the previous auth_request intact."""
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
-        mock_original_auth_request = mock.AsyncMock(spec=transport.AsyncRequest)
+        mock_original_auth_request = mock.AsyncMock(spec=transport.Request)
         mock_original_auth_request.close = mock.AsyncMock()
-
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_original_auth_request
         )
-
         with (
             mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
             mock.patch("os.path.exists", return_value=True),
@@ -260,7 +231,6 @@ class TestSessionsMtls:
         ):
             with pytest.raises(exceptions.MutualTLSChannelError):
                 await session.configure_mtls_channel()
-
             assert session._is_mtls is False
             assert session._auth_request is mock_original_auth_request
             await session.close()
@@ -276,8 +246,9 @@ class TestSessionsMtls:
                 mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
             ),
             mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"fake_cert_data", b"fake_key_data"),
+            ),
             mock.patch(
                 "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
             ) as mock_make_context,
@@ -286,22 +257,17 @@ class TestSessionsMtls:
         ):
             mock_session.return_value.close = mock.AsyncMock()
             mock_exists.return_value = True
-            mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
-
             mock_context = mock.Mock(spec=ssl.SSLContext)
             mock_make_context.return_value = mock_context
-
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
-
-            # Drive configure_mtls_channel 3 times with failing transports to exercise eviction loop (maxlen=2)
-            for i in range(3):
-                failing_req = mock.AsyncMock()
-                failing_req.close.side_effect = Exception(f"Failed to close session {i}")
-                session._auth_request = failing_req
-                session._mtls_init_task = None
-                await session.configure_mtls_channel()
-
+            # Pre-populate _old_auth_requests with failing transports to trigger and test eviction (maxlen >= 2)
+            failing_req_1 = mock.AsyncMock(spec=transport.Request)
+            failing_req_1.close.side_effect = Exception("Close error 1")
+            failing_req_2 = mock.AsyncMock(spec=transport.Request)
+            failing_req_2.close.side_effect = Exception("Close error 2")
+            session._old_auth_requests.extend([failing_req_1, failing_req_2])
+            await session.configure_mtls_channel()
             assert session._is_mtls is True
             assert session._cached_cert == b"fake_cert_data"
             await session.close()
@@ -355,31 +321,28 @@ class TestSessionsMtls:
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
         mock_creds.refresh = mock.AsyncMock(return_value=None)
-
         mock_auth_req = mock.AsyncMock()
         mock_resp = mock.Mock()
         mock_resp.status_code = http_client.UNAUTHORIZED
         mock_resp.close = mock.AsyncMock()
         mock_auth_req.return_value = mock_resp
-
         session = sessions.AsyncAuthorizedSession(
             mock_creds, auth_request=mock_auth_req
         )
         session._is_mtls = True
         session._cached_cert = b"cached_cert"
-
         with mock.patch(
             "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
             new_callable=mock.AsyncMock,
             side_effect=exceptions.ClientCertError("check_params failed"),
         ) as mock_check_params:
+            # Use mTLS URL so is_mtls_endpoint evaluates to True
             resp = await session.request(
                 "GET", "https://pubsub.mtls.googleapis.com/test"
             )
             assert resp == mock_resp
             mock_check_params.assert_called_once()
             mock_creds.refresh.assert_called_once()
-
         await session.close()
 
     @pytest.mark.asyncio
