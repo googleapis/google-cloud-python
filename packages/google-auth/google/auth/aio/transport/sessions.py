@@ -321,6 +321,7 @@ class AsyncAuthorizedSession:
         request_headers = dict(headers) if headers is not None else {}
         start_time = time.monotonic()
         refresh_counter_at_error = self._refresh_counter
+        check_counter_at_error = self._mtls_check_counter
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -367,7 +368,7 @@ class AsyncAuthorizedSession:
 
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
-                        if self._is_mtls::
+                        if self._is_mtls:
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
                                 is_mtls_endpoint = any(
@@ -380,8 +381,6 @@ class AsyncAuthorizedSession:
                             if is_mtls_endpoint:
                                 if self._mtls_rotation_lock is None:
                                     self._mtls_rotation_lock = asyncio.Lock()
-                                # Snapshot the counter state BEFORE acquiring the lock.
-                                check_counter_at_error = self._mtls_check_counter
                                 async with self._mtls_rotation_lock:
                                     # Check if another coroutine already reconfigured mTLS or
                                     # ran the validation check.
