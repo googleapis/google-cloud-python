@@ -319,5 +319,7 @@ async def test_wrap_method_async_with_otel_tracing(monkeypatch):
             "rpc.system": "grpc",
             "rpc.service": "google.test.AsyncService",
             "rpc.method": "AsyncMethod",
+            "gcp.client.service": "AsyncService",
+            "gcp.client.repo": "googleapis/google-cloud-python",
         },
     )

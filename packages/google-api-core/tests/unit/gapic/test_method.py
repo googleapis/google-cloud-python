@@ -25,11 +25,11 @@ except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
 
-import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions, retry, timeout
+from google.api_core.gapic_v1 import client_info
 
 
 def _utcnow_monotonic():
@@ -477,6 +477,8 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name):
             "rpc.system": "grpc",
             "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
             "rpc.method": "ListSecrets",
+            "gcp.client.service": "SecretManagerService",
+            "gcp.client.repo": "googleapis/google-cloud-python",
         },
     )
 
@@ -506,6 +508,8 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
             "rpc.system": "grpc",
             "rpc.service": "google.test.Service",
             "rpc.method": "TestMethod",
+            "gcp.client.service": "Service",
+            "gcp.client.repo": "googleapis/google-cloud-python",
         },
     )
 
@@ -630,6 +634,8 @@ def test_wrap_method_async_otel_tracing(mock_otel):
             "rpc.system": "grpc",
             "rpc.service": "google.test.AsyncService",
             "rpc.method": "AsyncMethod",
+            "gcp.client.service": "AsyncService",
+            "gcp.client.repo": "googleapis/google-cloud-python",
         },
     )
 
@@ -654,4 +660,144 @@ def test_wrap_method_async_otel_tracing_streaming_skips_span(mock_otel):
         mock_target,
         mock_trace=mock_otel.trace,
         expected_result="async_success",
+    )
+
+
+def test_wrap_method_otel_tracing_attributes_with_client_info(mock_otel):
+    """Proves that client_info version, repo, and artifact attributes are included in the T3 span."""
+    mock_target = mock.Mock(return_value="success")
+
+    info = client_info.ClientInfo(
+        client_library_version="2.16.0",
+    )
+    info.client_repo = "googleapis/google-cloud-python-test"
+    info.client_artifact = "google-cloud-secretmanager"
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_info=info,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = wrapped()
+
+    assert result == "success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+            "rpc.method": "ListSecrets",
+            "gcp.client.service": "SecretManagerService",
+            "gcp.client.repo": "googleapis/google-cloud-python-test",
+            "gcp.client.version": "2.16.0",
+            "gcp.client.artifact": "google-cloud-secretmanager",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_attributes_fallback_gapic_version(mock_otel):
+    """Proves that gapic_version is used when client_library_version is not set."""
+    mock_target = mock.Mock(return_value="success")
+
+    info = client_info.ClientInfo(
+        gapic_version="1.5.0",
+    )
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_info=info,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = wrapped()
+
+    assert result == "success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+            "rpc.method": "ListSecrets",
+            "gcp.client.service": "SecretManagerService",
+            "gcp.client.repo": "googleapis/google-cloud-python",
+            "gcp.client.version": "1.5.0",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_attributes_no_client_info(mock_otel):
+    """Proves that when client_info is None, gcp.client repo, version, and artifact are omitted."""
+    mock_target = mock.Mock(return_value="success")
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_info=None,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = wrapped()
+
+    assert result == "success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+            "rpc.method": "ListSecrets",
+            "gcp.client.service": "SecretManagerService",
+        },
+    )
+
+
+def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
+    """Proves that when method_name has no service prefix, gcp.client.service is omitted."""
+    mock_target = mock.Mock(return_value="success")
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_info=None,
+        method_name="ListSecrets",
+    )
+    result = wrapped()
+
+    assert result == "success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "",
+            "rpc.method": "ListSecrets",
+        },
+    )
+
+
+def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
+    """Proves that method_async.wrap_method passes client_info to _GapicCallable."""
+    from google.api_core.gapic_v1 import method_async
+
+    mock_target = mock.Mock(return_value="async_success")
+    info = client_info.ClientInfo(client_library_version="3.0.0")
+
+    wrapped = method_async.wrap_method(
+        mock_target,
+        kind=None,
+        client_info=info,
+        method_name="google.test.AsyncService/AsyncMethod",
+    )
+    result = wrapped()
+
+    assert result == "async_success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.test.AsyncService/AsyncMethod",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.test.AsyncService",
+            "rpc.method": "AsyncMethod",
+            "gcp.client.service": "AsyncService",
+            "gcp.client.repo": "googleapis/google-cloud-python",
+            "gcp.client.version": "3.0.0",
+        },
     )
