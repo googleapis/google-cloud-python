@@ -149,7 +149,7 @@ class _GapicCallable(object):
         method_name (Optional[str]): The optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
-            Streaming methods are currently gated and do not generate Tier 3 spans.
+            Note: Streaming methods do not currently generate Tier 3 observability spans.
     """
 
     def __init__(
