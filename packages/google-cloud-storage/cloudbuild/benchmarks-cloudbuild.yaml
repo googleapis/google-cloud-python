@@ -57,15 +57,29 @@ steps:
       - "-c"
       - |
         set -e
+        cleanup() {
+          set +e
+          echo "Stopping VM ${_VM_NAME}..."
+          gcloud compute instances stop "${_VM_NAME}" --zone="${_ZONE}" --quiet
+        }
+        trap cleanup EXIT
+
         echo "Waiting for VM ${_VM_NAME} to become accessible over internal SSH..."
+        SSH_READY=0
         for i in $(seq 1 20); do
           if gcloud compute ssh "${_VM_NAME}" --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="echo VM is ready" 2>/dev/null; then
             echo "VM internal SSH connection established successfully."
+            SSH_READY=1
             break
           fi
           echo "Waiting for VM internal SSH availability... (attempt $$i/20)"
           sleep 10
         done
+
+        if [ $$SSH_READY -ne 1 ]; then
+          echo "ERROR: VM internal SSH connection could not be established." >&2
+          exit 1
+        fi
 
         echo "Copying package archive and runner script to VM over internal IP..."
         gcloud compute scp /workspace/google-cloud-storage.tar.gz \
@@ -84,10 +98,6 @@ steps:
         echo "Fetching benchmark result JSON from VM..."
         gcloud compute scp "${_VM_NAME}":~/bench_result.json /workspace/report/bench_result.json \
           --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine 2>/dev/null || true
-
-        # Turn off the standing VM to save quota and cost
-        echo "Stopping VM ${_VM_NAME}..."
-        gcloud compute instances stop "${_VM_NAME}" --zone="${_ZONE}" --quiet || true
 
         exit $$TEST_EXIT_CODE
     waitFor:
@@ -112,8 +122,12 @@ steps:
         with open(result_path) as f:
             data = json.load(f)
 
+        if not isinstance(data, dict):
+            print("ERROR: Invalid JSON structure in benchmark result file.", file=sys.stderr)
+            sys.exit(1)
+
         benchmarks = data.get("benchmarks", [])
-        if not benchmarks:
+        if not isinstance(benchmarks, list) or not benchmarks:
             print("No benchmarks found in result file.")
             sys.exit(0)
 
@@ -124,8 +138,12 @@ steps:
         print(header)
         print("|" + "-" * 38 + "|" + "-" * 19 + "|" + "-" * 24 + "|" + "-" * 11 + "|")
         for b in benchmarks:
+            if not isinstance(b, dict):
+                continue
             name = b.get("name", "").replace("test_downloads_multi_proc_multi_coro[", "").replace("]", "")
             extra = b.get("extra_info", {})
+            if not isinstance(extra, dict):
+                extra = {}
             avg_mib = extra.get("avg_throughput_mib_s", "N/A")
             net_mb = extra.get("net_throughput_mb_s")
             if net_mb:

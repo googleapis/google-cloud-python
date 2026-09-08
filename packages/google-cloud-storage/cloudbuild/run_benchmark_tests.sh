@@ -105,7 +105,11 @@ try:
     with open(path) as f:
         s = f.read()
     if '_create_files(' in s:
-        s = s.replace('files_names = _create_files(\n            params.num_files,\n            params.bucket_name,\n            params.bucket_type,\n            params.file_size_bytes,\n        )', 'files_names = [f\"fio-go_storage_fio.0.{i}\" for i in range(params.num_files)]')
+        target = 'files_names = _create_files(\n            params.num_files,\n            params.bucket_name,\n            params.bucket_type,\n            params.file_size_bytes,\n)'
+        replacement = 'files_names = [f\"fio-go_storage_fio.0.{i}\" for i in range(params.num_files)]'
+        if target not in s:
+            raise ValueError('Exact _create_files call signature not found in conftest.py')
+        s = s.replace(target, replacement)
         with open(path, 'w') as f:
             f.write(s)
 except Exception as e:
@@ -120,10 +124,16 @@ python3 -m pytest --benchmark-json="${OUT_JSON}" \
 
 if [ -s "${OUT_JSON}" ]; then
   python3 -c "
-import json
+import json, sys
 with open('${OUT_JSON}') as f:
     d = json.load(f)
+if not isinstance(d, dict):
+    print('ERROR: Invalid JSON structure in benchmark result file.', file=sys.stderr)
+    sys.exit(1)
 benchmarks = d.get('benchmarks', [])
+if not isinstance(benchmarks, list) or not benchmarks:
+    print('No benchmarks found in result file.')
+    sys.exit(0)
 print('\n' + '='*85)
 print('              GCS DIRECTPATH READ BENCHMARK PERFORMANCE RESULTS')
 print('='*85)
@@ -131,16 +141,23 @@ header = f'| {\"Workload Pattern\":<36} | {\"Avg Throughput\":<17} | {\"Network 
 print(header)
 print('|' + '-'*38 + '|' + '-'*19 + '|' + '-'*24 + '|' + '-'*11 + '|')
 for b in benchmarks:
+    if not isinstance(b, dict):
+        continue
     name = b.get('name', '').replace('test_downloads_multi_proc_multi_coro[', '').replace(']', '')
     extra = b.get('extra_info', {})
+    if not isinstance(extra, dict):
+        extra = {}
     avg_mib = extra.get('avg_throughput_mib_s', 'N/A')
     net_mb = extra.get('net_throughput_mb_s')
     if net_mb:
-        net_str = f'{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)'
+        try:
+            net_str = f'{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)'
+        except Exception:
+            net_str = str(net_mb)
     else:
         net_str = 'N/A'
     cpu = extra.get('cpu_max_global', 'N/A')
-    row = f'| {name:<36} | {avg_mib + \" MiB/s\":<17} | {net_str:<22} | {str(cpu):<9} |'
+    row = f'| {name:<36} | {str(avg_mib) + \" MiB/s\":<17} | {net_str:<22} | {str(cpu):<9} |'
     print(row)
 print('='*85 + '\n')
 "
