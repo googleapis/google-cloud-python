@@ -632,6 +632,58 @@ def test_wrap_method_otel_tracing_import_error(monkeypatch):
     mock_target.assert_called_once()
 
 
+def test_wrap_method_otel_tracing_provider_attribute_error(monkeypatch):
+    """Proves that if tracer_provider raises AttributeError, execution proceeds gracefully."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.side_effect = AttributeError(
+        "Malformed provider interface"
+    )
+    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
+
+    with mock.patch(
+        "google.api_core._observability.is_otel_capabilities_enabled",
+        return_value=True,
+    ):
+        wrapped = google.api_core.gapic_v1.method.wrap_method(
+            mock_target,
+            client_options=client_options,
+            method_name="google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        )
+        result = wrapped()
+
+    assert result == "success"
+    mock_target.assert_called_once()
+
+
+def test_wrap_method_otel_tracing_provider_type_error(monkeypatch):
+    """Proves that if tracer_provider raises TypeError, execution proceeds gracefully."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.side_effect = TypeError(
+        "get_tracer takes unexpected arguments"
+    )
+    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
+
+    with mock.patch(
+        "google.api_core._observability.is_otel_capabilities_enabled",
+        return_value=True,
+    ):
+        wrapped = google.api_core.gapic_v1.method.wrap_method(
+            mock_target,
+            client_options=client_options,
+            method_name="google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        )
+        result = wrapped()
+
+    assert result == "success"
+    mock_target.assert_called_once()
+
+
 def test_wrap_method_async_otel_tracing(monkeypatch):
     """Proves that method_async.wrap_method correctly passes client_options and method_name to _GapicCallable."""
     from google.api_core.gapic_v1 import method_async

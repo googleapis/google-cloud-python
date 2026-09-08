@@ -213,7 +213,8 @@ class _GapicCallable(object):
                     "rpc.service": self._rpc_service,
                     "rpc.method": self._rpc_method,
                 }
-            except Exception:  # pragma: NO COVER
+            except (ImportError, AttributeError, TypeError):
+                # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._tracer = None
                 self._span_name = None
                 self._span_attributes = None
