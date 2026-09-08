@@ -394,8 +394,8 @@ def test_wrap_method_otel_tracing_omitted_method_name_skips_span(monkeypatch):
     mock_trace.get_tracer.assert_not_called()
 
 
-def test_wrap_method_otel_tracing_explicit_trace_false_skips_span(monkeypatch):
-    """Proves that when trace=False is explicitly passed (e.g. streaming call), no span is created."""
+def test_wrap_method_otel_tracing_streaming_skips_span(monkeypatch):
+    """Proves that when is_streaming=True is passed, no Tier 3 span is created."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_target = mock.Mock(return_value="success")
 
@@ -417,7 +417,7 @@ def test_wrap_method_otel_tracing_explicit_trace_false_skips_span(monkeypatch):
         wrapped = google.api_core.gapic_v1.method.wrap_method(
             mock_target,
             method_name="/google.cloud.secretmanager.v1.SecretManagerService/StreamingRead",
-            trace=False,
+            is_streaming=True,
         )
         result = wrapped()
 
@@ -685,8 +685,8 @@ def test_wrap_method_async_otel_tracing(monkeypatch):
     )
 
 
-def test_wrap_method_async_otel_tracing_trace_false_skips_span(monkeypatch):
-    """Proves that method_async.wrap_method with trace=False skips span creation."""
+def test_wrap_method_async_otel_tracing_streaming_skips_span(monkeypatch):
+    """Proves that method_async.wrap_method with is_streaming=True skips span creation."""
     from google.api_core.gapic_v1 import method_async
 
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
@@ -710,7 +710,7 @@ def test_wrap_method_async_otel_tracing_trace_false_skips_span(monkeypatch):
             mock_target,
             kind=None,
             method_name="google.test.AsyncService/AsyncMethod",
-            trace=False,
+            is_streaming=True,
         )
         result = wrapped()
 

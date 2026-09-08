@@ -148,10 +148,9 @@ class _GapicCallable(object):
                 custom OpenTelemetry tracer providers. Defaults to None.
         method_name (Optional[str]): The optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-            Used to identify the RPC for observability and tracing.
-        trace (bool): Whether to create OpenTelemetry Tier 3 tracing spans for this
-            callable. Defaults to True. When False, or when method_name is None,
-            tracing spans are bypassed.
+            Used to identify the RPC for observability.
+        is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
+            Streaming methods are currently gated and do not generate Tier 3 spans.
     """
 
     def __init__(
@@ -163,7 +162,7 @@ class _GapicCallable(object):
         metadata=None,
         client_options=None,
         method_name=None,
-        trace=True,
+        is_streaming=False,
     ):
         self._target = target
         self._retry = retry
@@ -171,7 +170,7 @@ class _GapicCallable(object):
         self._compression = compression
         self._client_options = client_options
         self._method_name = method_name
-        self._trace = trace
+        self._is_streaming = is_streaming
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -185,14 +184,14 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
-        # Tracing is gated to calls where trace is True and an explicit method_name is provided.
+        # Tracing is gated to non-streaming calls where an explicit method_name is provided.
         self._tracer = None
         self._span_name = None
         self._span_attributes = None
         if (
-            trace
+            not is_streaming
             and method_name is not None
-            and _observability.is_otel_capabilities_enabled()
+            and _observability.is_otel_capabilities_enabled(client_options)
         ):
             try:
                 from opentelemetry import trace
@@ -293,7 +292,7 @@ def wrap_method(
     with_call=False,
     client_options=None,
     method_name=None,
-    trace=True,
+    is_streaming=False,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -383,10 +382,9 @@ def wrap_method(
                 custom OpenTelemetry tracer providers. Defaults to None.
         method_name (Optional[str]): Optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-            Used to identify the RPC for observability and tracing.
-        trace (bool): Whether to create OpenTelemetry Tier 3 tracing spans for this
-            callable. Defaults to True. When False, or when method_name is None,
-            tracing spans are bypassed.
+            Used to identify the RPC for observability.
+        is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
+            Streaming methods are currently gated and do not generate Tier 3 spans.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -416,6 +414,6 @@ def wrap_method(
             metadata=user_agent_metadata,
             client_options=client_options,
             method_name=method_name,
-            trace=trace,
+            is_streaming=is_streaming,
         )
     )
