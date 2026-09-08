@@ -537,6 +537,46 @@ class TestOpaqueCrypto(unittest.TestCase):
         with self.assertRaises(ValueError):
             auth.initial_request()
 
+    def test_user_authenticator_clear_and_del(self):
+        params = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=32,
+            )
+        )
+        auth = opaque.UserAuthenticator("user", "password", params)
+        auth.initial_request()
+
+        pw_ref = auth._password
+        blind_ref = auth._blind
+        priv_keyshare_ref = auth._client_private_keyshare
+
+        # Test clear() zeroizes buffers and sets them to None
+        auth.clear()
+        self.assertIsNone(auth._password)
+        self.assertIsNone(auth._blind)
+        self.assertIsNone(auth._client_private_keyshare)
+        if pw_ref is not None:
+            self.assertEqual(pw_ref, bytearray(len(pw_ref)))
+        if blind_ref is not None:
+            self.assertEqual(blind_ref, bytearray(len(blind_ref)))
+        if priv_keyshare_ref is not None:
+            self.assertEqual(priv_keyshare_ref, bytearray(len(priv_keyshare_ref)))
+
+        # Calling clear again is safe
+        auth.clear()
+
+        # Test __del__ calls clear
+        auth2 = opaque.UserAuthenticator("user", "password", params)
+        auth2.initial_request()
+        pw_ref2 = auth2._password
+        auth2.__del__()
+        self.assertIsNone(auth2._password)
+        if pw_ref2 is not None:
+            self.assertEqual(pw_ref2, bytearray(len(pw_ref2)))
+
     def test_full_opaque_handshake_simulation(self):
         username = "alice"
         password = b"secret_password_123"
@@ -744,6 +784,12 @@ class TestOpaqueCrypto(unittest.TestCase):
         res = opaque.expand_message_xmd(b"msg", b"D" * 256, 32)
         self.assertEqual(len(res), 32)
 
+    def test_expand_message_xmd_bytearray_input(self):
+        res_ba = opaque.expand_message_xmd(bytearray(b"msg"), b"dst", 32)
+        res_bytes = opaque.expand_message_xmd(b"msg", b"dst", 32)
+        self.assertEqual(res_ba, res_bytes)
+        self.assertEqual(len(res_ba), 32)
+
     def test_map_to_curve_sswu_zero(self):
         pt = opaque.map_to_curve_sswu(0)
         self.assertIsInstance(pt, tuple)
@@ -846,17 +892,29 @@ class TestOpaqueCrypto(unittest.TestCase):
 
         opaque._validate_hash_parameters(ValidNonProtoParams())
 
-        # Invalid hash_size
-        params = authentication_pb2.HashParameters(
+        # Invalid hash_size (< 8 and > 512)
+        params_low = authentication_pb2.HashParameters(
             argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
                 iteration_count=3,
                 memory_usage=64 * 1024,
                 parallelism=4,
-                hash_size=0,
+                hash_size=7,
             )
         )
         with self.assertRaises(ValueError) as cm:
-            opaque._validate_hash_parameters(params)
+            opaque._validate_hash_parameters(params_low)
+        self.assertIn("Invalid Argon2Id hash size", str(cm.exception))
+
+        params_high = authentication_pb2.HashParameters(
+            argon2_id_parameters=authentication_pb2.HashParameters.Argon2IdParameters(
+                iteration_count=3,
+                memory_usage=64 * 1024,
+                parallelism=4,
+                hash_size=513,
+            )
+        )
+        with self.assertRaises(ValueError) as cm:
+            opaque._validate_hash_parameters(params_high)
         self.assertIn("Invalid Argon2Id hash size", str(cm.exception))
 
     def test_random_oracle_sha256_large_max_val(self):
