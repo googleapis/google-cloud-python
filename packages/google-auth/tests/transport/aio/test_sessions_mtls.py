@@ -23,7 +23,6 @@ import pytest
 
 from google.auth import exceptions
 from google.auth.aio import credentials
-from google.auth.aio import transport
 from google.auth.aio.transport import sessions
 from google.auth.exceptions import TimeoutError
 
