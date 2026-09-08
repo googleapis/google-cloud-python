@@ -260,7 +260,11 @@ class AsyncAuthorizedSession:
 
             self._mtls_init_task = asyncio.create_task(_do_configure())
 
-        return await self._mtls_init_task
+        try:
+            return await self._mtls_init_task
+        except BaseException:
+            self._mtls_init_task = None
+            raise
 
     async def request(
         self,
@@ -308,9 +312,12 @@ class AsyncAuthorizedSession:
                 channel reconfiguration fails for any reason during certificate rotation.
         """
         _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
-        if self._mtls_init_task:
+        if self._mtls_init_task and not self._mtls_init_task.done():
             try:
                 await self._mtls_init_task
+            except asyncio.CancelledError:
+                if not self._mtls_init_task.cancelled():
+                    raise
             except Exception:
                 # Suppress all exceptions from the background mTLS initialization task,
                 # allowing the request to fail naturally elsewhere.
@@ -453,12 +460,18 @@ class AsyncAuthorizedSession:
                                                         saved_callback
                                                     )
                                             else:
-                                                _LOGGER.info(
-                                                    "Skipping reconfiguration of mTLS channel because the client"
-                                                    " certificate has not changed."
-                                                )
-                                            # Always increment so waiting tasks skip the check block
-                                            self._mtls_check_counter += 1
+                                                if current_cert_fingerprint is None:
+                                                    _LOGGER.info(
+                                                        "Skipping reconfiguration of mTLS channel because the client"
+                                                        " certificate does not exist."
+                                                    )
+                                                else:
+                                                    _LOGGER.info(
+                                                        "Skipping reconfiguration of mTLS channel because the client"
+                                                        " certificate has not changed."
+                                                    )
+                                        # Always increment so waiting tasks skip the check block
+                                        self._mtls_check_counter += 1
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
 
