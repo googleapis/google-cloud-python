@@ -39,6 +39,8 @@ def wrap_method(
     kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
     method_name=None,
     tracer_provider=None,
+    rpc_system="grpc",
+    is_streaming=False,
 ):
     """Wrap an async RPC method with common behavior.
 
@@ -61,5 +63,7 @@ def wrap_method(
             metadata=metadata,
             method_name=method_name,
             tracer_provider=tracer_provider,
+            rpc_system=rpc_system,
+            is_streaming=is_streaming,
         )
     )
