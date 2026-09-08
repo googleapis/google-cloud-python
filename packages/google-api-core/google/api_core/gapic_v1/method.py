@@ -148,7 +148,6 @@ class _GapicCallable(object):
                 custom OpenTelemetry tracer providers. Defaults to None.
         method_name (Optional[str]): The optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-            Used to identify the RPC for observability.
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Streaming methods are currently gated and do not generate Tier 3 spans.
     """
