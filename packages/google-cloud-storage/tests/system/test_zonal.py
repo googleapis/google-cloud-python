@@ -27,10 +27,16 @@ from google.cloud.storage.blob import (
     ObjectContexts,
     ObjectCustomContextPayload,
 )
+from google.api_core.client_options import ClientOptions
+
+PREPROD_GRPC_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
 
 pytestmark = pytest.mark.skipif(
-    os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
-    reason="Zonal system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
+    not (
+        (os.getenv("RUN_ZONAL_SYSTEM_TESTS") == "True")
+        ^ (os.getenv("RUN_RCU_SYSTEM_TESTS") == "True")
+    ),
+    reason="Any one of Zonal or RCU system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
 )
 
 
@@ -40,10 +46,20 @@ _ZONAL_BUCKET = os.getenv("ZONAL_BUCKET")
 _CROSS_REGION_BUCKET = os.getenv("CROSS_REGION_BUCKET")
 _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
+RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
+_RCU_BUCKET = os.getenv("RCU_BUCKET")
+bucket_for_testing = (
+    _ZONAL_BUCKET if os.getenv("RUN_ZONAL_SYSTEM_TESTS") else _RCU_BUCKET
+)
 
-async def create_async_grpc_client(attempt_direct_path=True):
+async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
     """Initializes async client and gets the current event loop."""
-    return AsyncGrpcClient(attempt_direct_path=attempt_direct_path)
+    return AsyncGrpcClient(
+        attempt_direct_path=attempt_direct_path,
+        client_options=ClientOptions(api_endpoint=PREPROD_GRPC_ENDPOINT)
+        if preprod
+        else None,
+    )
 
 
 @pytest.fixture(scope="session")
@@ -107,7 +123,7 @@ def event_loop():
 
 
 @pytest.fixture(scope="session")
-def grpc_clients(event_loop):
+def grpc_clients(event_loop, run_system_tests_on_preprod):
     # grpc clients has to be instantiated in the event loop,
     # otherwise grpc creates it's own event loop and attaches to the client.
     # Which will lead to deadlock because client running in one event loop and
@@ -116,10 +132,14 @@ def grpc_clients(event_loop):
     # https://github.com/grpc/grpc/blob/61fe9b40a986792ab7d4eb8924027b671faf26ba/src/python/grpcio/grpc/_cython/_cygrpc/aio/common.pyx.pxi#L249
     clients = {
         True: event_loop.run_until_complete(
-            create_async_grpc_client(attempt_direct_path=True)
+            create_async_grpc_client(
+                attempt_direct_path=True, preprod=run_system_tests_on_preprod
+            )
         ),
         False: event_loop.run_until_complete(
-            create_async_grpc_client(attempt_direct_path=False)
+            create_async_grpc_client(
+                attempt_direct_path=False, preprod=run_system_tests_on_preprod
+            )
         ),
     }
     return clients
@@ -217,8 +237,13 @@ def test_basic_wrd(
         object_data = os.urandom(object_size)
         object_checksum = google_crc32c.value(object_data)
         grpc_client = grpc_clients[attempt_direct_path]
-
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        print("bucket for testing", bucket_for_testing)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
         await writer.open()
         await writer.append(object_data)
         object_metadata = await writer.close(finalize_on_close=True)
@@ -227,7 +252,7 @@ def test_basic_wrd(
 
         buffer = BytesIO()
         async with AsyncMultiRangeDownloader(
-            grpc_client, _ZONAL_BUCKET, object_name
+            grpc_client, bucket_for_testing, object_name
         ) as mrd:
             # (0, 0) means read the whole object
             await mrd.download_ranges([(0, 0, buffer)])
@@ -236,7 +261,9 @@ def test_basic_wrd(
         assert buffer.getvalue() == object_data
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         gc.collect()
 
