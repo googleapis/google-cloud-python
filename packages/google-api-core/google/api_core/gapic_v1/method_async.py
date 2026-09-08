@@ -40,7 +40,7 @@ def wrap_method(
     *,
     client_options=None,
     method_name=None,
-    trace=True,
+    is_streaming=False,
 ):
     """Wrap an async RPC method with common behavior.
 
@@ -63,6 +63,6 @@ def wrap_method(
             metadata=metadata,
             client_options=client_options,
             method_name=method_name,
-            trace=trace,
+            is_streaming=is_streaming,
         )
     )
