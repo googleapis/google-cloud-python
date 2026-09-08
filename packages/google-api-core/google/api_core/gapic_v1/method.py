@@ -25,6 +25,7 @@ from typing import List, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
+from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.api_core.timeout import TimeToDeadlineTimeout
 
 USE_DEFAULT_METADATA = object()
@@ -93,7 +94,7 @@ def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     if not metadata:
         return "", []
 
-    key_to_find = client_info.METRICS_METADATA_KEY
+    key_to_find = METRICS_METADATA_KEY
 
     metric_str = _deduplicate_metadata_tokens(
         " ".join([v for k, v in metadata if k == key_to_find])
@@ -150,6 +151,9 @@ class _GapicCallable(object):
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Note: Streaming methods do not currently generate Tier 3 observability spans.
+        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+            Client information used to extract client library metadata (e.g. version, repo)
+            for observability attributes. Defaults to None.
     """
 
     def __init__(
@@ -162,6 +166,7 @@ class _GapicCallable(object):
         client_options=None,
         method_name=None,
         is_streaming=False,
+        client_info=None,
     ):
         self._target = target
         self._retry = retry
@@ -176,7 +181,7 @@ class _GapicCallable(object):
         self._static_metadata = tuple(remaining)
         if self._x_goog_api_client:
             self._default_metadata = (
-                (client_info.METRICS_METADATA_KEY, self._x_goog_api_client),
+                (METRICS_METADATA_KEY, self._x_goog_api_client),
                 *self._static_metadata,
             )
         else:
@@ -213,6 +218,23 @@ class _GapicCallable(object):
                     "rpc.service": self._rpc_service,
                     "rpc.method": self._rpc_method,
                 }
+                if self._rpc_service:
+                    self._span_attributes["gcp.client.service"] = (
+                        self._rpc_service.rpartition(".")[-1]
+                    )
+                if client_info is not None:
+                    client_version = getattr(
+                        client_info, "client_library_version", None
+                    ) or getattr(client_info, "gapic_version", None)
+                    if client_version:
+                        self._span_attributes["gcp.client.version"] = client_version
+                    self._span_attributes["gcp.client.repo"] = (
+                        getattr(client_info, "client_repo", None)
+                        or "googleapis/google-cloud-python"
+                    )
+                    client_artifact = getattr(client_info, "client_artifact", None)
+                    if client_artifact:
+                        self._span_attributes["gcp.client.artifact"] = client_artifact
             except (ImportError, AttributeError, TypeError):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._tracer = None
@@ -248,7 +270,7 @@ class _GapicCallable(object):
                 self._x_goog_api_client, user_x_goog
             )
             if merged_header:
-                final_metadata.append((client_info.METRICS_METADATA_KEY, merged_header))
+                final_metadata.append((METRICS_METADATA_KEY, merged_header))
             final_metadata.extend(remaining)
             kwargs["metadata"] = final_metadata
         elif self._default_metadata:
@@ -416,5 +438,6 @@ def wrap_method(
             client_options=client_options,
             method_name=method_name,
             is_streaming=is_streaming,
+            client_info=client_info,
         )
     )
