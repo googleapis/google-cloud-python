@@ -183,7 +183,7 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
-        # Tracing is gated to non-streaming calls where an explicit method_name is provided.
+        # For now, tracing is gated to non-streaming calls where an explicit method_name is provided.
         self._tracer = None
         self._span_name = None
         self._span_attributes = None
