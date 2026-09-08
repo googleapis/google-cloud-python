@@ -14,7 +14,6 @@
 
 import datetime
 import sys
-import types
 from unittest import mock
 
 import pytest
@@ -30,6 +29,7 @@ import google.api_core.page_iterator
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions, retry, timeout
 from google.api_core.gapic_v1 import client_info
+from tests.helpers import assert_uninstrumented_gapic_callable
 
 
 def _utcnow_monotonic():
@@ -351,28 +351,6 @@ def test__deduplicate_metadata_tokens(headers, expected):
     assert dedup(*headers) == expected
 
 
-def _assert_uninstrumented_rpc(
-    wrapped,
-    result,
-    mock_target,
-    mock_trace=None,
-    expected_result="success",
-):
-    """Verifies that an uninstrumented RPC callable succeeds without tracing."""
-    # 1. Prove the RPC executed successfully
-    assert result == expected_result
-    mock_target.assert_called_once()
-
-    # 2. Prove the OpenTelemetry API was never invoked
-    if mock_trace is not None:
-        mock_trace.get_tracer.assert_not_called()
-
-    # 3. Prove the callable holds no tracer or span configuration
-    assert wrapped._tracer is None
-    assert wrapped._span_name is None
-    assert wrapped._span_attributes is None
-
-
 _BASE_SPAN_ATTRIBUTES = {
     "rpc.system": "grpc",
     "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
@@ -384,47 +362,6 @@ _DEFAULT_SPAN_ATTRIBUTES = {
     **_BASE_SPAN_ATTRIBUTES,
     "gcp.client.repo": "googleapis/google-cloud-python",
 }
-
-_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES = {
-    "rpc.system": "grpc",
-    "rpc.service": "google.test.AsyncService",
-    "rpc.method": "AsyncMethod",
-    "gcp.client.service": "AsyncService",
-    "gcp.client.repo": "googleapis/google-cloud-python",
-}
-
-
-@pytest.fixture
-def mock_otel(monkeypatch):
-    """Provides a mocked OpenTelemetry environment with tracing enabled."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    mock_span = mock.MagicMock()
-    mock_tracer = mock.MagicMock()
-    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
-
-    mock_trace = mock.Mock()
-    mock_trace.get_tracer.return_value = mock_tracer
-    mock_trace.SpanKind.CLIENT = "CLIENT"
-    mock_trace.StatusCode.ERROR = "ERROR"
-
-    with (
-        mock.patch(
-            "google.api_core._observability.is_otel_capabilities_enabled",
-            return_value=True,
-        ),
-        mock.patch.dict(
-            sys.modules,
-            {
-                "opentelemetry": mock.Mock(trace=mock_trace),
-                "opentelemetry.trace": mock_trace,
-            },
-        ),
-    ):
-        yield types.SimpleNamespace(
-            trace=mock_trace,
-            tracer=mock_tracer,
-            span=mock_span,
-        )
 
 
 @pytest.mark.parametrize(
@@ -468,7 +405,9 @@ def test_wrap_method_otel_tracing_skips_span(monkeypatch, kwargs, capabilities_e
         wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target, **kwargs)
         result = wrapped()
 
-    _assert_uninstrumented_rpc(wrapped, result, mock_target, mock_trace=mock_trace)
+    assert_uninstrumented_gapic_callable(
+        wrapped, result, mock_target, mock_trace=mock_trace
+    )
 
 
 @pytest.mark.parametrize(
@@ -570,7 +509,7 @@ def test_wrap_method_otel_tracing_import_error(monkeypatch):
         )
         result = wrapped()
 
-    _assert_uninstrumented_rpc(wrapped, result, mock_target)
+    assert_uninstrumented_gapic_callable(wrapped, result, mock_target)
 
 
 @pytest.mark.parametrize(
@@ -601,7 +540,7 @@ def test_wrap_method_otel_tracing_provider_error(monkeypatch, exc):
         )
         result = wrapped()
 
-    _assert_uninstrumented_rpc(wrapped, result, mock_target)
+    assert_uninstrumented_gapic_callable(wrapped, result, mock_target)
 
 
 def test_wrap_method_otel_tracing_start_span_error_bypasses_tracing(mock_otel):
@@ -620,56 +559,6 @@ def test_wrap_method_otel_tracing_start_span_error_bypasses_tracing(mock_otel):
     assert result == "success"
     mock_target.assert_called_once()
     mock_otel.tracer.start_as_current_span.assert_called_once()
-
-
-def test_wrap_method_async_otel_tracing(mock_otel):
-    """Proves that method_async.wrap_method correctly passes client_options and method_name to _GapicCallable."""
-    from google.api_core.gapic_v1 import method_async
-
-    mock_target = mock.Mock(return_value="async_success")
-    mock_provider = mock.Mock()
-    mock_provider.get_tracer.return_value = mock_otel.tracer
-
-    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
-
-    wrapped = method_async.wrap_method(
-        mock_target,
-        kind=None,
-        client_options=client_options,
-        method_name="google.test.AsyncService/AsyncMethod",
-    )
-    result = wrapped()
-
-    assert result == "async_success"
-    mock_provider.get_tracer.assert_called_once_with("google.api_core")
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.test.AsyncService/AsyncMethod",
-        kind="CLIENT",
-        attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
-    )
-
-
-def test_wrap_method_async_otel_tracing_streaming_skips_span(mock_otel):
-    """Proves that method_async.wrap_method with is_streaming=True skips span creation."""
-    from google.api_core.gapic_v1 import method_async
-
-    mock_target = mock.Mock(return_value="async_success")
-
-    wrapped = method_async.wrap_method(
-        mock_target,
-        kind=None,
-        method_name="google.test.AsyncService/AsyncMethod",
-        is_streaming=True,
-    )
-    result = wrapped()
-
-    _assert_uninstrumented_rpc(
-        wrapped,
-        result,
-        mock_target,
-        mock_trace=mock_otel.trace,
-        expected_result="async_success",
-    )
 
 
 def test_wrap_method_otel_tracing_attributes_with_client_info(mock_otel):
@@ -766,31 +655,5 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
             "rpc.system": "grpc",
             "rpc.service": "",
             "rpc.method": "ListSecrets",
-        },
-    )
-
-
-def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
-    """Proves that method_async.wrap_method passes client_info to _GapicCallable."""
-    from google.api_core.gapic_v1 import method_async
-
-    mock_target = mock.Mock(return_value="async_success")
-    info = client_info.ClientInfo(client_library_version="3.0.0")
-
-    wrapped = method_async.wrap_method(
-        mock_target,
-        kind=None,
-        client_info=info,
-        method_name="google.test.AsyncService/AsyncMethod",
-    )
-    result = wrapped()
-
-    assert result == "async_success"
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.test.AsyncService/AsyncMethod",
-        kind="CLIENT",
-        attributes={
-            **_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
-            "gcp.client.version": "3.0.0",
         },
     )
