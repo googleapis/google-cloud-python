@@ -133,7 +133,14 @@ def expand_message_xmd(msg: bytes, dst: bytes, len_in_bytes: int) -> bytes:
     ell = (len_in_bytes + b_in_bytes - 1) // b_in_bytes
     z_pad = b"\x00" * 64
     lib_str = len_in_bytes.to_bytes(2, "big")
-    b0 = hashlib.sha256(z_pad + msg + lib_str + b"\x00" + dst + dst_len).digest()
+    h = hashlib.sha256()
+    h.update(z_pad)
+    h.update(msg)
+    h.update(lib_str)
+    h.update(b"\x00")
+    h.update(dst)
+    h.update(dst_len)
+    b0 = h.digest()
     b1 = hashlib.sha256(b0 + b"\x01" + dst + dst_len).digest()
     res = bytearray(b1)
     prev = b1
@@ -267,9 +274,9 @@ def _validate_hash_parameters(hash_parameters) -> None:
         raise ValueError(
             f"Invalid Argon2Id parallelism: {argon2_params.parallelism} (must be between 1 and 255)"
         )
-    if not (1 <= argon2_params.hash_size <= 512):
+    if not (8 <= argon2_params.hash_size <= 512):
         raise ValueError(
-            f"Invalid Argon2Id hash size: {argon2_params.hash_size} (must be between 1 and 512)"
+            f"Invalid Argon2Id hash size: {argon2_params.hash_size} (must be between 8 and 512)"
         )
 
 
@@ -413,7 +420,27 @@ def recover_client(
 class UserAuthenticator:
     """Manages the client state and key exchanges for OPAQUE login authentication."""
 
+    def clear(self) -> None:
+        """Zeroizes and clears all sensitive cryptographic state."""
+        _clear(self._password)
+        self._password = None
+        _clear(self._blind)
+        self._blind = None
+        _clear(self._client_private_keyshare)
+        self._client_private_keyshare = None
+
+    def __del__(self) -> None:
+        self.clear()
+
     def __init__(self, username: str, password: str | bytes, hash_parameters):
+        self.username = None
+        self._password: Optional[bytearray] = None
+        self.hash_parameters = None
+        self._blind: Optional[bytearray] = None
+        self._client_nonce: Optional[bytes] = None
+        self._client_public_keyshare: Optional[bytes] = None
+        self._client_private_keyshare: Optional[bytearray] = None
+
         if not username:
             raise ValueError("username cannot be empty")
         if isinstance(password, str):
@@ -425,13 +452,8 @@ class UserAuthenticator:
         _validate_hash_parameters(hash_parameters)
 
         self.username = username
-        self._password: Optional[bytearray] = bytearray(password)
+        self._password = bytearray(password)
         self.hash_parameters = hash_parameters
-
-        self._blind: Optional[bytearray] = None
-        self._client_nonce: Optional[bytes] = None
-        self._client_public_keyshare: Optional[bytes] = None
-        self._client_private_keyshare: Optional[bytearray] = None
 
     def initial_request(self) -> login_pb2.LoginRequest:
         """Generates the initial OPAQUE login request."""
