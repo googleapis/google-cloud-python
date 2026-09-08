@@ -212,7 +212,7 @@
   "packages/google-cloud-source-context": "1.11.0",
   "packages/google-cloud-spanner": "3.71.0",
   "packages/google-cloud-speech": "2.40.0",
-  "packages/google-cloud-storage": "3.14.0",
+  "packages/google-cloud-storage": "3.14.1",
   "packages/google-cloud-storage-control": "1.15.0",
   "packages/google-cloud-storage-transfer": "1.21.0",
   "packages/google-cloud-storagebatchoperations": "0.8.0",
