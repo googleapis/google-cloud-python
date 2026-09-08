@@ -155,6 +155,8 @@ class _GapicCallable(object):
             additional metadata will be passed to the RPC method.
         method_name (Optional[str]): The optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+        tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
+            to obtain the tracer from.
     """
 
     def __init__(
@@ -165,6 +167,7 @@ class _GapicCallable(object):
         compression,
         metadata=None,
         method_name=None,
+        tracer_provider=None,
     ):
         self._target = target
         self._retry = retry
@@ -183,6 +186,19 @@ class _GapicCallable(object):
             )
         else:
             self._default_metadata = self._static_metadata
+
+        # Resolve and cache the OpenTelemetry tracer once at initialization.
+        self._tracer = None
+        if _observability.is_otel_capabilities_enabled():
+            try:
+                from opentelemetry import trace
+
+                if tracer_provider is not None:
+                    self._tracer = tracer_provider.get_tracer("google.api_core")
+                else:
+                    self._tracer = trace.get_tracer("google.api_core")
+            except Exception:  # pragma: NO COVER
+                self._tracer = None
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -222,12 +238,11 @@ class _GapicCallable(object):
         if self._compression is not None:
             kwargs["compression"] = compression
 
-        if _observability.is_otel_capabilities_enabled():
+        if self._tracer is not None:
             try:
                 from opentelemetry import trace
 
-                tracer = trace.get_tracer("google.api_core")
-                with tracer.start_as_current_span(
+                with self._tracer.start_as_current_span(
                     self._rpc_method_name,
                     kind=trace.SpanKind.CLIENT,
                     attributes={
@@ -258,6 +273,7 @@ def wrap_method(
     *,
     with_call=False,
     method_name=None,
+    tracer_provider=None,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -343,6 +359,8 @@ def wrap_method(
             Defaults to False.
         method_name (Optional[str]): Optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+        tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
+            to obtain the tracer from.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -371,5 +389,6 @@ def wrap_method(
             default_compression,
             metadata=user_agent_metadata,
             method_name=method_name,
+            tracer_provider=tracer_provider,
         )
     )
