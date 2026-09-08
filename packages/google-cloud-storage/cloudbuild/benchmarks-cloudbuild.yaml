@@ -1,0 +1,163 @@
+substitutions:
+  _ZONE: "us-west4-a"
+  _VM_NAME: "gcs-benchmark-runner-us-west4-a"
+  _ULIMIT: "65536"
+  _PROCESSES: "48"
+  _COROS: "1"
+  _FILE_SIZE_MIB: "10240"
+  _CHUNK_SIZE_KIB: "102400"
+  _ROUNDS: "2"
+  _ZONAL_BUCKET: "gcs-read-bench-zb-us-west4-a"
+  _PR_NUMBER: ""
+  _REPO: "googleapis/google-cloud-python"
+
+steps:
+  # Step 0: Generate a temporary SSH key for this build run and register with OS Login
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "generate-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /workspace/.ssh
+        ssh-keygen -t rsa -f /workspace/.ssh/google_compute_engine -N '' -C gcb
+        cat /workspace/.ssh/google_compute_engine.pub > /workspace/gcb_ssh_key.pub
+        gcloud compute os-login ssh-keys add \
+          --key-file=/workspace/.ssh/google_compute_engine.pub \
+          --ttl=1h
+    waitFor: ["-"]
+
+  # Step 1: Package google-cloud-storage directory for direct transfer to VM
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "package-code"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' \
+          -czf /workspace/google-cloud-storage.tar.gz -C /workspace/packages google-cloud-storage
+    waitFor: ["-"]
+
+  # Step 2: Start the standing high-bandwidth VM
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "start-vm"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "Starting standing VM ${_VM_NAME} in zone ${_ZONE}..."
+        gcloud compute instances start "${_VM_NAME}" --zone="${_ZONE}"
+    waitFor: ["-"]
+
+  # Step 3: Run the benchmark directly on the VM via private internal IP SSH, fetch results, and stop the VM
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "run-benchmark-on-vm"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -e
+        echo "Waiting for VM ${_VM_NAME} to become accessible over internal SSH..."
+        for i in $(seq 1 20); do
+          if gcloud compute ssh "${_VM_NAME}" --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="echo VM is ready" 2>/dev/null; then
+            echo "VM internal SSH connection established successfully."
+            break
+          fi
+          echo "Waiting for VM internal SSH availability... (attempt $$i/20)"
+          sleep 10
+        done
+
+        echo "Copying package archive and runner script to VM over internal IP..."
+        gcloud compute scp /workspace/google-cloud-storage.tar.gz \
+          packages/google-cloud-storage/cloudbuild/run_benchmark_tests.sh \
+          "${_VM_NAME}":~ --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
+
+        echo "Executing benchmark test suite directly on VM via SSH..."
+        set +e
+        gcloud compute ssh "${_VM_NAME}" --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine \
+          --command="tar -xzf google-cloud-storage.tar.gz && cd google-cloud-storage && ulimit -n ${_ULIMIT}; PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} ROUNDS=${_ROUNDS} TARGET_BUCKET=${_ZONAL_BUCKET} bash cloudbuild/run_benchmark_tests.sh"
+        TEST_EXIT_CODE=$?
+        set -e
+
+        # Copy JSON report back from VM to Cloud Build workspace
+        mkdir -p /workspace/report
+        echo "Fetching benchmark result JSON from VM..."
+        gcloud compute scp "${_VM_NAME}":~/bench_result.json /workspace/report/bench_result.json \
+          --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine 2>/dev/null || true
+
+        # Turn off the standing VM to save quota and cost
+        echo "Stopping VM ${_VM_NAME}..."
+        gcloud compute instances stop "${_VM_NAME}" --zone="${_ZONE}" --quiet || true
+
+        exit $$TEST_EXIT_CODE
+    waitFor:
+      - "start-vm"
+      - "generate-ssh-key"
+      - "package-code"
+
+  # Step 4: Display benchmark performance summary table in Cloud Build logs
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "display-benchmark-results"
+    entrypoint: "python3"
+    args:
+      - "-c"
+      - |
+        import json, os, sys
+
+        result_path = "/workspace/report/bench_result.json"
+        if not os.path.exists(result_path):
+            print("ERROR: Benchmark result file not found at " + result_path, file=sys.stderr)
+            sys.exit(1)
+
+        with open(result_path) as f:
+            data = json.load(f)
+
+        benchmarks = data.get("benchmarks", [])
+        if not benchmarks:
+            print("No benchmarks found in result file.")
+            sys.exit(0)
+
+        print("\n" + "=" * 88)
+        print("                 GCS DIRECTPATH READ BENCHMARK PERFORMANCE RESULTS")
+        print("=" * 88)
+        header = f"| {'Workload Pattern':<36} | {'Avg Throughput':<17} | {'Network Bandwidth':<22} | {'CPU Usage':<9} |"
+        print(header)
+        print("|" + "-" * 38 + "|" + "-" * 19 + "|" + "-" * 24 + "|" + "-" * 11 + "|")
+        for b in benchmarks:
+            name = b.get("name", "").replace("test_downloads_multi_proc_multi_coro[", "").replace("]", "")
+            extra = b.get("extra_info", {})
+            avg_mib = extra.get("avg_throughput_mib_s", "N/A")
+            net_mb = extra.get("net_throughput_mb_s")
+            if net_mb:
+                try:
+                    net_str = f"{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)"
+                except Exception:
+                    net_str = str(net_mb)
+            else:
+                net_str = "N/A"
+            cpu = extra.get("cpu_max_global", "N/A")
+            print(f"| {name:<36} | {str(avg_mib) + ' MiB/s':<17} | {net_str:<22} | {str(cpu):<9} |")
+        print("=" * 88 + "\n")
+    waitFor:
+      - "run-benchmark-on-vm"
+
+  # Step 5: Clean up SSH key from OS Login profile
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "cleanup-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "Removing temporary build SSH key from OS Login profile..."
+        gcloud compute os-login ssh-keys remove \
+          --key-file=/workspace/gcb_ssh_key.pub || true
+    waitFor:
+      - "display-benchmark-results"
+
+timeout: "3600s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+  pool:
+    name: "projects/${PROJECT_ID}/locations/us-west4/workerPools/benchmark-worker-pool"
