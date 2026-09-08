@@ -66,7 +66,7 @@ async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
 def zonal_kms_key(storage_client, kms_client):
     """Provisions a KMS key in the same location as of the zonal bucket."""
     # Get the zonal bucket and extract its location
-    bucket = storage_client.get_bucket(_ZONAL_BUCKET)
+    bucket = storage_client.get_bucket(bucket_for_testing)
     location = bucket.location.lower()
 
     project = storage_client.project
@@ -160,7 +160,7 @@ def _get_equal_dist(a: int, b: int) -> tuple[int, int]:
     step = (b - a) // 3
     return a + step, a + 2 * step
 
-
+@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='X regions reads/writes for RCU not supported in SDK yet')
 @pytest.mark.parametrize(
     "object_size",
     [
@@ -237,7 +237,6 @@ def test_basic_wrd(
         object_data = os.urandom(object_size)
         object_checksum = google_crc32c.value(object_data)
         grpc_client = grpc_clients[attempt_direct_path]
-        print("bucket for testing", bucket_for_testing)
         writer = AsyncAppendableObjectWriter(
             grpc_client,
             bucket_for_testing,
@@ -287,7 +286,12 @@ def test_basic_wrd_in_slices(
         object_data = os.urandom(object_size)
         object_checksum = google_crc32c.value(object_data)
 
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
         await writer.open()
         mark1, mark2 = _get_equal_dist(0, object_size)
         await writer.append(object_data[0:mark1])
@@ -297,7 +301,7 @@ def test_basic_wrd_in_slices(
         assert object_metadata.size == object_size
         assert int(object_metadata.checksums.crc32c) == object_checksum
 
-        mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client, bucket_for_testing, object_name)
         buffer = BytesIO()
         await mrd.open()
         # (0, 0) means read the whole object
@@ -307,7 +311,7 @@ def test_basic_wrd_in_slices(
         assert mrd.persisted_size == object_size
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         del mrd
         gc.collect()
@@ -340,8 +344,9 @@ def test_wrd_with_non_default_flush_interval(
 
         writer = AsyncAppendableObjectWriter(
             grpc_client,
-            _ZONAL_BUCKET,
+            bucket_for_testing,
             object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
             writer_options={"FLUSH_INTERVAL_BYTES": flush_interval},
         )
         await writer.open()
@@ -353,7 +358,7 @@ def test_wrd_with_non_default_flush_interval(
         assert object_metadata.size == object_size
         assert int(object_metadata.checksums.crc32c) == object_checksum
 
-        mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client, bucket_for_testing, object_name)
         buffer = BytesIO()
         await mrd.open()
         # (0, 0) means read the whole object
@@ -363,14 +368,14 @@ def test_wrd_with_non_default_flush_interval(
         assert mrd.persisted_size == object_size
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         del mrd
         gc.collect()
 
     event_loop.run_until_complete(_run())
 
-
+@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write from blob for RCU not supported in SDK yet')
 def test_write_from_blob(
     storage_client,
     blobs_to_delete,
@@ -389,7 +394,7 @@ def test_write_from_blob(
 
     async def _run():
         # 1. Create a Blob instance
-        blob = storage_client.bucket(_ZONAL_BUCKET).blob(object_name)
+        blob = storage_client.bucket(bucket_for_testing).blob(object_name)
         blob.content_type = content_type
         blob.metadata = metadata
         blob.cache_control = cache_control
@@ -406,7 +411,7 @@ def test_write_from_blob(
 
         # 3. Verify the object metadata
         obj = await grpc_client.get_object(
-            bucket_name=_ZONAL_BUCKET,
+            bucket_name=bucket_for_testing,
             object_name=object_name,
         )
 
@@ -423,6 +428,7 @@ def test_write_from_blob(
     event_loop.run_until_complete(_run())
 
 
+@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write from blob with KMS key for RCU not supported in SDK yet')
 def test_write_from_blob_with_kms_key(
     storage_client,
     blobs_to_delete,
@@ -437,7 +443,7 @@ def test_write_from_blob_with_kms_key(
 
     async def _run():
         # Create a local Blob instance with the KMS key
-        blob = storage_client.bucket(_ZONAL_BUCKET).blob(
+        blob = storage_client.bucket(bucket_for_testing).blob(
             object_name, kms_key_name=zonal_kms_key
         )
 
@@ -450,7 +456,7 @@ def test_write_from_blob_with_kms_key(
 
         # Verify the encryption metadata
         obj = await grpc_client.get_object(
-            bucket_name=_ZONAL_BUCKET,
+            bucket_name=bucket_for_testing,
             object_name=object_name,
         )
 
@@ -463,12 +469,13 @@ def test_write_from_blob_with_kms_key(
     event_loop.run_until_complete(_run())
 
 
+@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write blob with contexts for RCU not supported in SDK yet')
 @pytest.mark.asyncio
 async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
     async_client = await create_async_grpc_client()
     blob_name = f"ObjectContextsGrpc-{uuid.uuid4().hex}"
 
-    bucket = storage_client.bucket(_ZONAL_BUCKET)
+    bucket = storage_client.bucket(bucket_for_testing)
     blob = bucket.blob(blob_name)
     blob.contexts = ObjectContexts(
         blob, custom={"foo": ObjectCustomContextPayload(value="bar")}
@@ -480,17 +487,17 @@ async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
 
     try:
         blobs = list(
-            storage_client.list_blobs(_ZONAL_BUCKET, filter_='contexts."foo"="bar"')
+            storage_client.list_blobs(bucket_for_testing, filter_='contexts."foo"="bar"')
         )
         names = [b.name for b in blobs]
         assert blob_name in names
 
         # Assert contexts via gRPC GetObject
-        obj_proto = await async_client.get_object(_ZONAL_BUCKET, blob_name)
+        obj_proto = await async_client.get_object(bucket_for_testing, blob_name)
         assert "foo" in obj_proto.contexts.custom
         assert obj_proto.contexts.custom["foo"].value == "bar"
     finally:
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(blob_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(blob_name))
 
 
 def test_read_unfinalized_appendable_object(
@@ -500,12 +507,17 @@ def test_read_unfinalized_appendable_object(
 
     async def _run():
         grpc_client = grpc_client_direct
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
         await writer.open()
         await writer.append(_BYTES_TO_UPLOAD)
         await writer.flush()
 
-        mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client, bucket_for_testing, object_name)
         buffer = BytesIO()
         await mrd.open()
         assert mrd.persisted_size == len(_BYTES_TO_UPLOAD)
@@ -515,7 +527,7 @@ def test_read_unfinalized_appendable_object(
         assert buffer.getvalue() == _BYTES_TO_UPLOAD
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         del mrd
         gc.collect()
@@ -529,20 +541,23 @@ def test_mrd_open_with_read_handle(event_loop, grpc_client_direct):
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(_BYTES_TO_UPLOAD)
         await writer.close()
 
-        mrd = AsyncMultiRangeDownloader(grpc_client_direct, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client_direct, bucket_for_testing, object_name)
         await mrd.open()
         read_handle = mrd.read_handle
         await mrd.close()
 
         # Open a new MRD using the `read_handle` obtained above
         new_mrd = AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name, read_handle=read_handle
+            grpc_client_direct, bucket_for_testing, object_name, read_handle=read_handle
         )
         await new_mrd.open()
         # persisted_size not set when opened with read_handle
@@ -562,19 +577,24 @@ def test_mrd_open_with_read_handle_over_cloud_path(event_loop, grpc_client):
     object_name = f"test_read_handl-{str(uuid.uuid4())[:4]}"
 
     async def _run():
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
         await writer.open()
         await writer.append(_BYTES_TO_UPLOAD)
         await writer.close()
 
-        mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client, bucket_for_testing, object_name)
         await mrd.open()
         read_handle = mrd.read_handle
         await mrd.close()
 
         # Open a new MRD using the `read_handle` obtained above
         new_mrd = AsyncMultiRangeDownloader(
-            grpc_client, _ZONAL_BUCKET, object_name, read_handle=read_handle
+            grpc_client, bucket_for_testing, object_name, read_handle=read_handle
         )
         await new_mrd.open()
         # persisted_size is set regardless of whether we use read_handle or not
@@ -599,7 +619,10 @@ def test_wrd_open_with_write_handle(
     async def _run():
         # 1. Create an object and get its write_handle
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         write_handle = writer.write_handle
@@ -608,10 +631,11 @@ def test_wrd_open_with_write_handle(
         # 2. Open a new writer using the obtained `write_handle` and generation
         new_writer = AsyncAppendableObjectWriter(
             grpc_client_direct,
-            _ZONAL_BUCKET,
+            bucket_for_testing,
             object_name,
             write_handle=write_handle,
             generation=writer.generation,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await new_writer.open()
         # Verify that the new writer is open and has the same write_handle
@@ -624,7 +648,7 @@ def test_wrd_open_with_write_handle(
         await new_writer.close()
 
         # 4. Verify the data was written correctly by reading it back
-        mrd = AsyncMultiRangeDownloader(grpc_client_direct, _ZONAL_BUCKET, object_name)
+        mrd = AsyncMultiRangeDownloader(grpc_client_direct, bucket_for_testing, object_name)
         buffer = BytesIO()
         await mrd.open()
         await mrd.download_ranges([(0, 0, buffer)])
@@ -632,7 +656,7 @@ def test_wrd_open_with_write_handle(
         assert buffer.getvalue() == test_data
 
         # Clean up
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         del new_writer
         del mrd
@@ -651,7 +675,7 @@ def test_read_unfinalized_appendable_object_with_generation(
         async def _read_and_verify(expected_content, generation=None):
             """Helper to read object content and verify against expected."""
             mrd = AsyncMultiRangeDownloader(
-                grpc_client, _ZONAL_BUCKET, object_name, generation
+                grpc_client, bucket_for_testing, object_name, generation
             )
             buffer = BytesIO()
             await mrd.open()
@@ -664,7 +688,12 @@ def test_read_unfinalized_appendable_object_with_generation(
             return mrd
 
         # First write
-        writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+        writer = AsyncAppendableObjectWriter(
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
+        )
         await writer.open()
         await writer.append(_BYTES_TO_UPLOAD)
         await writer.flush()
@@ -675,7 +704,11 @@ def test_read_unfinalized_appendable_object_with_generation(
 
         # Second write, using generation from the first write.
         writer_2 = AsyncAppendableObjectWriter(
-            grpc_client, _ZONAL_BUCKET, object_name, generation=generation
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            generation=generation,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer_2.open()
         await writer_2.append(_BYTES_TO_UPLOAD)
@@ -685,7 +718,7 @@ def test_read_unfinalized_appendable_object_with_generation(
         mrd_2 = await _read_and_verify(_BYTES_TO_UPLOAD + _BYTES_TO_UPLOAD, generation)
 
         # Clean up
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         del writer_2
         del mrd
@@ -710,7 +743,11 @@ def test_open_with_generation_zero(
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client, _ZONAL_BUCKET, object_name, generation=0
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            generation=0,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
 
         # Empty object is created.
@@ -722,7 +759,11 @@ def test_open_with_generation_zero(
 
         with pytest.raises(FailedPrecondition) as exc_info:
             writer_fail = AsyncAppendableObjectWriter(
-                grpc_client, _ZONAL_BUCKET, object_name, generation=0
+                grpc_client,
+                bucket_for_testing,
+                object_name,
+                generation=0,
+                storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
             )
             await writer_fail.open()
         assert exc_info.value.code == 400
@@ -731,7 +772,7 @@ def test_open_with_generation_zero(
         del writer
         gc.collect()
 
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -746,7 +787,11 @@ def test_open_existing_object_with_gen_None_overrides_existing(
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client, _ZONAL_BUCKET, object_name, generation=0
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            generation=0,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
 
         # Empty object is created.
@@ -758,7 +803,11 @@ def test_open_existing_object_with_gen_None_overrides_existing(
         assert not writer.is_stream_open
 
         new_writer = AsyncAppendableObjectWriter(
-            grpc_client, _ZONAL_BUCKET, object_name, generation=None
+            grpc_client,
+            bucket_for_testing,
+            object_name,
+            generation=None,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await new_writer.open()
         assert new_writer.generation != old_gen
@@ -768,7 +817,7 @@ def test_open_existing_object_with_gen_None_overrides_existing(
         del new_writer
         gc.collect()
 
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -781,7 +830,11 @@ def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name, generation=0
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            generation=0,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
 
         # Empty object is created.
@@ -789,13 +842,13 @@ def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
         await writer.append(b"some_bytes")
         await writer.close()
 
-        await grpc_client_direct.delete_object(_ZONAL_BUCKET, object_name)
+        await grpc_client_direct.delete_object(bucket_for_testing, object_name)
 
         # trying to get raises raises 404.
         with pytest.raises(NotFound):
             # TODO: Remove this once GET_OBJECT is exposed in `AsyncGrpcClient`
             await grpc_client_direct._grpc_client.get_object(
-                bucket=f"projects/_/buckets/{_ZONAL_BUCKET}", object_=object_name
+                bucket=f"projects/_/buckets/{bucket_for_testing}", object_=object_name
             )
         # cleanup
         del writer
@@ -833,14 +886,17 @@ def test_mrd_concurrent_download(
         object_data = os.urandom(object_size)
 
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct, bucket_for_testing, object_name
         ) as mrd:
             tasks = []
             ranges_to_fetch = []
@@ -876,7 +932,7 @@ def test_mrd_concurrent_download(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -896,14 +952,17 @@ def test_mrd_concurrent_download_cancellation(
         object_data = os.urandom(object_size)
 
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct, bucket_for_testing, object_name
         ) as mrd:
             tasks = []
             num_chunks = 40
@@ -937,7 +996,7 @@ def test_mrd_concurrent_download_cancellation(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -957,14 +1016,17 @@ def test_mrd_concurrent_download_out_of_bounds(
         object_data = os.urandom(object_size)
 
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct, bucket_for_testing, object_name
         ) as mrd:
             valid_buffer = BytesIO()
             valid_task = asyncio.create_task(
@@ -986,7 +1048,7 @@ def test_mrd_concurrent_download_out_of_bounds(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -1018,14 +1080,17 @@ def test_mrd_checksum_validation(
         object_data = os.urandom(object_size)
 
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
         await writer.close(finalize_on_close=True)
 
         async with AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct, bucket_for_testing, object_name
         ) as mrd:
             buffer = BytesIO()
             await mrd.download_ranges(
@@ -1036,7 +1101,7 @@ def test_mrd_checksum_validation(
         # cleanup
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -1052,7 +1117,10 @@ def test_mrd_checksum_unfinalized_appendable_skipped(
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(_BYTES_TO_UPLOAD)
@@ -1060,7 +1128,7 @@ def test_mrd_checksum_unfinalized_appendable_skipped(
 
         # Download the unfinalized appendable object with enable_checksum=True
         async with AsyncMultiRangeDownloader(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct, bucket_for_testing, object_name
         ) as mrd:
             buffer = BytesIO()
             # Since it's unfinalized, it should skip the checksum check without raising
@@ -1071,7 +1139,7 @@ def test_mrd_checksum_unfinalized_appendable_skipped(
         await writer.close()
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
 
     event_loop.run_until_complete(_run())
 
@@ -1088,7 +1156,10 @@ def test_finalize_with_correct_checksum(
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
@@ -1098,7 +1169,7 @@ def test_finalize_with_correct_checksum(
         assert int(object_metadata.checksums.crc32c) == object_checksum
 
         # clean up
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         gc.collect()
 
@@ -1118,7 +1189,10 @@ def test_finalize_with_incorrect_checksum_fails(
 
     async def _run():
         writer = AsyncAppendableObjectWriter(
-            grpc_client_direct, _ZONAL_BUCKET, object_name
+            grpc_client_direct,
+            bucket_for_testing,
+            object_name,
+            storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
         )
         await writer.open()
         await writer.append(object_data)
@@ -1134,7 +1208,7 @@ def test_finalize_with_incorrect_checksum_fails(
         )
 
         # clean up
-        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
         del writer
         gc.collect()
 
