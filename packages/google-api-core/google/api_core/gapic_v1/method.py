@@ -18,9 +18,10 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 compression, pagination, and long-running operations to gRPC methods.
 """
 
+import contextlib
 import enum
 import functools
-from typing import Any, List, Optional, Sequence, Tuple
+from typing import Any, List, Optional, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -195,9 +196,11 @@ class _GapicCallable(object):
         else:
             self._default_metadata = self._static_metadata
 
-        # Resolve and cache the OpenTelemetry tracer once at initialization.
+        # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
         # Tracing is gated to non-streaming gRPC calls for Tier 3 method spans.
         self._tracer = None
+        self._span_name = None
+        self._span_attributes = None
         if (
             rpc_system == "grpc"
             and not is_streaming
@@ -210,8 +213,17 @@ class _GapicCallable(object):
                     self._tracer = tracer_provider.get_tracer("google.api_core")
                 else:
                     self._tracer = trace.get_tracer("google.api_core")
+
+                self._span_name = self._rpc_method_name
+                self._span_attributes = {
+                    "rpc.system": "grpc",
+                    "rpc.service": self._rpc_service,
+                    "rpc.method": self._rpc_method,
+                }
             except Exception:  # pragma: NO COVER
                 self._tracer = None
+                self._span_name = None
+                self._span_attributes = None
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -251,30 +263,29 @@ class _GapicCallable(object):
         if self._compression is not None:
             kwargs["compression"] = compression
 
-        if self._tracer is not None:
+        span_context_manager = contextlib.nullcontext()
+        if self._tracer is not None and self._span_name is not None:
             try:
                 from opentelemetry import trace
 
-                with self._tracer.start_as_current_span(
-                    self._rpc_method_name,
+                span_context_manager = self._tracer.start_as_current_span(
+                    self._span_name,
                     kind=trace.SpanKind.CLIENT,
-                    attributes={
-                        "rpc.system": "grpc",
-                        "rpc.service": self._rpc_service,
-                        "rpc.method": self._rpc_method,
-                    },
-                ) as span:
-                    try:
-                        return wrapped_func(*args, **kwargs)
-                    except Exception as exc:
-                        span.record_exception(exc)
-                        span.set_status(trace.StatusCode.ERROR, str(exc))
-                        raise
-            # If OpenTelemetry cannot be imported in the current environment, continue without tracing.
-            except ImportError:  # pragma: NO COVER
-                pass
+                    attributes=self._span_attributes,
+                )
+            except Exception:  # pragma: NO COVER
+                span_context_manager = contextlib.nullcontext()
 
-        return wrapped_func(*args, **kwargs)
+        with span_context_manager as span:
+            try:
+                return wrapped_func(*args, **kwargs)
+            except Exception as exc:
+                if span is not None and hasattr(span, "record_exception"):
+                    from opentelemetry import trace
+
+                    span.record_exception(exc)
+                    span.set_status(trace.StatusCode.ERROR, str(exc))
+                raise
 
 
 def wrap_method(
