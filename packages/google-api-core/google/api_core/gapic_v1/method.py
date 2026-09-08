@@ -157,6 +157,10 @@ class _GapicCallable(object):
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
         tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
             to obtain the tracer from.
+        rpc_system (Optional[str]): The RPC system (defaults to "grpc"). If not "grpc",
+            tracing will not be enabled.
+        is_streaming (bool): Whether the callable is a streaming RPC. Streaming RPC
+            tracing is currently gated and will not produce T3 spans.
     """
 
     def __init__(
@@ -168,11 +172,15 @@ class _GapicCallable(object):
         metadata=None,
         method_name=None,
         tracer_provider=None,
+        rpc_system="grpc",
+        is_streaming=False,
     ):
         self._target = target
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
+        self._rpc_system = rpc_system
+        self._is_streaming = is_streaming
         self._rpc_method_name, self._rpc_service, self._rpc_method = (
             _extract_rpc_identity(target, method_name)
         )
@@ -188,8 +196,13 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Resolve and cache the OpenTelemetry tracer once at initialization.
+        # Tracing is gated to non-streaming gRPC calls for Tier 3 method spans.
         self._tracer = None
-        if _observability.is_otel_capabilities_enabled():
+        if (
+            rpc_system == "grpc"
+            and not is_streaming
+            and _observability.is_otel_capabilities_enabled()
+        ):
             try:
                 from opentelemetry import trace
 
@@ -274,6 +287,8 @@ def wrap_method(
     with_call=False,
     method_name=None,
     tracer_provider=None,
+    rpc_system="grpc",
+    is_streaming=False,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -361,6 +376,9 @@ def wrap_method(
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
         tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
             to obtain the tracer from.
+        rpc_system (Optional[str]): The RPC system (defaults to "grpc"). If not "grpc",
+            tracing will not be enabled.
+        is_streaming (bool): Whether the callable is a streaming RPC. Defaults to False.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -390,5 +408,7 @@ def wrap_method(
             metadata=user_agent_metadata,
             method_name=method_name,
             tracer_provider=tracer_provider,
+            rpc_system=rpc_system,
+            is_streaming=is_streaming,
         )
     )
