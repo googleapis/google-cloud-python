@@ -21,7 +21,7 @@ compression, pagination, and long-running operations to gRPC methods.
 import contextlib
 import enum
 import functools
-from typing import Any, List, Optional, Tuple
+from typing import List, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -106,33 +106,21 @@ def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
 
 
 def _extract_rpc_identity(
-    target: Any, method_name: Optional[str] = None
+    method_name: str,
 ) -> Tuple[str, str, str]:
-    """Extract (full_rpc_name, service_name, rpc_method_name) from an explicit method name or target callable.
+    """Extract (full_rpc_name, service_name, rpc_method_name) from an explicit method name.
 
     Args:
-        target: The underlying callable method.
-        method_name: Optional explicit RPC name (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+        method_name: Explicit RPC name (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
 
     Returns:
         Tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name, rpc_method_name).
     """
-    if method_name:
-        method_str = method_name.lstrip("/")
-        service, _, method = method_str.rpartition("/")
-        return method_str, service, method
-
-    raw_method = getattr(target, "_method", None)
-    if raw_method and isinstance(raw_method, (str, bytes)):
-        if isinstance(raw_method, bytes):
-            raw_method = raw_method.decode("utf-8")
-        method_str = raw_method.lstrip("/")
-        service, _, method = method_str.rpartition("/")
-        return method_str, service, method
-
-    service = "google.api_core"
-    method = getattr(target, "__name__", "call")
-    return f"{service}/{method}", service, method
+    if isinstance(method_name, bytes):
+        method_name = method_name.decode("utf-8")
+    method_str = method_name.lstrip("/")
+    service, _, method = method_str.rpartition("/")
+    return method_str, service, method
 
 
 class _GapicCallable(object):
@@ -154,14 +142,13 @@ class _GapicCallable(object):
             provided to the RPC method on every invocation. This is merged with
             any metadata specified during invocation. If ``None``, no
             additional metadata will be passed to the RPC method.
+        client_options
+            (Optional[google.api_core.client_options.ClientOptions]):
+                Client options used to configure client-level behavior, such as
+                custom OpenTelemetry tracer providers. Defaults to None.
         method_name (Optional[str]): The optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-        tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
-            to obtain the tracer from.
-        rpc_system (Optional[str]): The RPC system (defaults to "grpc"). If not "grpc",
-            tracing will not be enabled.
-        is_streaming (bool): Whether the callable is a streaming RPC. Streaming RPC
-            tracing is currently gated and will not produce T3 spans.
+            If omitted or None, method-level tracing spans are not generated.
     """
 
     def __init__(
@@ -171,20 +158,16 @@ class _GapicCallable(object):
         timeout,
         compression,
         metadata=None,
+        client_options=None,
         method_name=None,
-        tracer_provider=None,
-        rpc_system="grpc",
-        is_streaming=False,
     ):
         self._target = target
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
-        self._rpc_system = rpc_system
-        self._is_streaming = is_streaming
-        self._rpc_method_name, self._rpc_service, self._rpc_method = (
-            _extract_rpc_identity(target, method_name)
-        )
+        self._client_options = client_options
+        self._method_name = method_name
+
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
         self._static_metadata = tuple(remaining)
@@ -197,24 +180,27 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
-        # Tracing is gated to non-streaming gRPC calls for Tier 3 method spans.
+        # Tracing is gated to calls where an explicit method_name is provided.
         self._tracer = None
         self._span_name = None
         self._span_attributes = None
-        if (
-            rpc_system == "grpc"
-            and not is_streaming
-            and _observability.is_otel_capabilities_enabled()
-        ):
+        if method_name is not None and _observability.is_otel_capabilities_enabled():
             try:
                 from opentelemetry import trace
 
+                tracer_provider = (
+                    getattr(client_options, "tracer_provider", None)
+                    if client_options is not None
+                    else None
+                )
                 if tracer_provider is not None:
                     self._tracer = tracer_provider.get_tracer("google.api_core")
                 else:
                     self._tracer = trace.get_tracer("google.api_core")
 
-                self._span_name = self._rpc_method_name
+                self._span_name, self._rpc_service, self._rpc_method = (
+                    _extract_rpc_identity(method_name)
+                )
                 self._span_attributes = {
                     "rpc.system": "grpc",
                     "rpc.service": self._rpc_service,
@@ -296,10 +282,8 @@ def wrap_method(
     client_info=client_info.DEFAULT_CLIENT_INFO,
     *,
     with_call=False,
+    client_options=None,
     method_name=None,
-    tracer_provider=None,
-    rpc_system="grpc",
-    is_streaming=False,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -383,13 +367,13 @@ def wrap_method(
             return a tuple of (response, grpc.Call) instead of just the response.
             This is useful for extracting trailing metadata from unary calls.
             Defaults to False.
+        client_options
+            (Optional[google.api_core.client_options.ClientOptions]):
+                Client options used to configure client-level behavior, such as
+                custom OpenTelemetry tracer providers. Defaults to None.
         method_name (Optional[str]): Optional explicit full RPC method name
             (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
-        tracer_provider (Optional[Any]): Optional custom OpenTelemetry TracerProvider
-            to obtain the tracer from.
-        rpc_system (Optional[str]): The RPC system (defaults to "grpc"). If not "grpc",
-            tracing will not be enabled.
-        is_streaming (bool): Whether the callable is a streaming RPC. Defaults to False.
+            If omitted or None, method-level tracing spans are not generated.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -417,9 +401,7 @@ def wrap_method(
             default_timeout,
             default_compression,
             metadata=user_agent_metadata,
+            client_options=client_options,
             method_name=method_name,
-            tracer_provider=tracer_provider,
-            rpc_system=rpc_system,
-            is_streaming=is_streaming,
         )
     )
