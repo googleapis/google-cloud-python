@@ -77,7 +77,7 @@ class StructuredLogHandler(logging.StreamHandler):
         Args:
             labels (Optional[dict]): Additional labels to attach to logs.
             stream (Optional[IO]): Stream to be used by the handler.
-            project (Optional[str]): Project Id associated with the logs.
+            project_id (Optional[str]): Project Id associated with the logs.
             json_encoder_cls (Optional[Type[JSONEncoder]]): Custom JSON encoder. Defaults to json.JSONEncoder
         """
         super(StructuredLogHandler, self).__init__(stream=stream)

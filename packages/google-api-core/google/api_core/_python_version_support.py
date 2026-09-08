@@ -17,13 +17,12 @@
 import datetime
 import enum
 import functools
-from importlib import metadata
 import logging
-import warnings
 import sys
 import textwrap
-from typing import Any, List, NamedTuple, Optional, Dict, Tuple
-
+import warnings
+from importlib import metadata
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 _LOGGER = logging.getLogger(__name__)
 

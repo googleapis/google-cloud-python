@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -69,14 +70,14 @@ class Policy(_message.Message):
             denied_values: _Optional[_Iterable[str]] = ...,
             all_values: _Optional[_Union[Policy.ListPolicy.AllValues, str]] = ...,
             suggested_value: _Optional[str] = ...,
-            inherit_from_parent: bool = ...,
+            inherit_from_parent: _Optional[bool] = ...,
         ) -> None: ...
 
     class BooleanPolicy(_message.Message):
         __slots__ = ("enforced",)
         ENFORCED_FIELD_NUMBER: _ClassVar[int]
         enforced: bool
-        def __init__(self, enforced: bool = ...) -> None: ...
+        def __init__(self, enforced: _Optional[bool] = ...) -> None: ...
 
     class RestoreDefault(_message.Message):
         __slots__ = ()
@@ -101,7 +102,9 @@ class Policy(_message.Message):
         version: _Optional[int] = ...,
         constraint: _Optional[str] = ...,
         etag: _Optional[bytes] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
         list_policy: _Optional[_Union[Policy.ListPolicy, _Mapping]] = ...,
         boolean_policy: _Optional[_Union[Policy.BooleanPolicy, _Mapping]] = ...,
         restore_default: _Optional[_Union[Policy.RestoreDefault, _Mapping]] = ...,

@@ -466,6 +466,36 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_team_folder"]
 
     @property
+    def delete_team_folder_tree(
+        self,
+    ) -> Callable[
+        [dataform.DeleteTeamFolderTreeRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete team folder tree method over gRPC.
+
+        Deletes a TeamFolder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteTeamFolderTreeRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_team_folder_tree" not in self._stubs:
+            self._stubs["delete_team_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteTeamFolderTree",
+                request_serializer=dataform.DeleteTeamFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_team_folder_tree"]
+
+    @property
     def query_team_folder_contents(
         self,
     ) -> Callable[
@@ -629,6 +659,36 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_folder"]
+
+    @property
+    def delete_folder_tree(
+        self,
+    ) -> Callable[
+        [dataform.DeleteFolderTreeRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete folder tree method over gRPC.
+
+        Deletes a Folder with its contents (Folders,
+        Repositories, Workspaces, ReleaseConfigs, and
+        WorkflowConfigs).
+
+        Returns:
+            Callable[[~.DeleteFolderTreeRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_folder_tree" not in self._stubs:
+            self._stubs["delete_folder_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteFolderTree",
+                request_serializer=dataform.DeleteFolderTreeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_folder_tree"]
 
     @property
     def query_folder_contents(
@@ -860,6 +920,37 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_repository"]
+
+    @property
+    def delete_repository_long_running(
+        self,
+    ) -> Callable[
+        [dataform.DeleteRepositoryLongRunningRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete repository long running method over gRPC.
+
+        Deletes a single repository asynchronously.
+
+        Returns:
+            Callable[[~.DeleteRepositoryLongRunningRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_repository_long_running" not in self._stubs:
+            self._stubs["delete_repository_long_running"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1beta1.Dataform/DeleteRepositoryLongRunning",
+                    request_serializer=dataform.DeleteRepositoryLongRunningRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["delete_repository_long_running"]
 
     @property
     def move_repository(
@@ -1239,6 +1330,151 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 response_deserializer=dataform.PullGitCommitsResponse.deserialize,
             )
         return self._stubs["pull_git_commits"]
+
+    @property
+    def sync_workspace_refs(
+        self,
+    ) -> Callable[
+        [dataform.SyncWorkspaceRefsRequest],
+        Awaitable[dataform.SyncWorkspaceRefsResponse],
+    ]:
+        r"""Return a callable for the sync workspace refs method over gRPC.
+
+        Syncs the refs of a Workspace.
+
+        Returns:
+            Callable[[~.SyncWorkspaceRefsRequest],
+                    Awaitable[~.SyncWorkspaceRefsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "sync_workspace_refs" not in self._stubs:
+            self._stubs["sync_workspace_refs"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/SyncWorkspaceRefs",
+                request_serializer=dataform.SyncWorkspaceRefsRequest.serialize,
+                response_deserializer=dataform.SyncWorkspaceRefsResponse.deserialize,
+            )
+        return self._stubs["sync_workspace_refs"]
+
+    @property
+    def fetch_workspace_branches(
+        self,
+    ) -> Callable[
+        [dataform.FetchWorkspaceBranchesRequest],
+        Awaitable[dataform.FetchWorkspaceBranchesResponse],
+    ]:
+        r"""Return a callable for the fetch workspace branches method over gRPC.
+
+        Fetches branches in a Workspace.
+
+        Returns:
+            Callable[[~.FetchWorkspaceBranchesRequest],
+                    Awaitable[~.FetchWorkspaceBranchesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_workspace_branches" not in self._stubs:
+            self._stubs["fetch_workspace_branches"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/FetchWorkspaceBranches",
+                request_serializer=dataform.FetchWorkspaceBranchesRequest.serialize,
+                response_deserializer=dataform.FetchWorkspaceBranchesResponse.deserialize,
+            )
+        return self._stubs["fetch_workspace_branches"]
+
+    @property
+    def delete_branch(
+        self,
+    ) -> Callable[
+        [dataform.DeleteBranchRequest], Awaitable[dataform.DeleteBranchResponse]
+    ]:
+        r"""Return a callable for the delete branch method over gRPC.
+
+        Deletes a branch in a Workspace.
+
+        Returns:
+            Callable[[~.DeleteBranchRequest],
+                    Awaitable[~.DeleteBranchResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_branch" not in self._stubs:
+            self._stubs["delete_branch"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteBranch",
+                request_serializer=dataform.DeleteBranchRequest.serialize,
+                response_deserializer=dataform.DeleteBranchResponse.deserialize,
+            )
+        return self._stubs["delete_branch"]
+
+    @property
+    def checkout_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.CheckoutWorkspaceBranchRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the checkout workspace branch method over gRPC.
+
+        Checkout a branch in a Workspace.
+
+        Returns:
+            Callable[[~.CheckoutWorkspaceBranchRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "checkout_workspace_branch" not in self._stubs:
+            self._stubs["checkout_workspace_branch"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CheckoutWorkspaceBranch",
+                request_serializer=dataform.CheckoutWorkspaceBranchRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["checkout_workspace_branch"]
+
+    @property
+    def fetch_current_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.FetchCurrentWorkspaceBranchRequest],
+        Awaitable[dataform.FetchCurrentWorkspaceBranchResponse],
+    ]:
+        r"""Return a callable for the fetch current workspace branch method over gRPC.
+
+        Fetches the current branch of a Workspace.
+
+        Returns:
+            Callable[[~.FetchCurrentWorkspaceBranchRequest],
+                    Awaitable[~.FetchCurrentWorkspaceBranchResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_current_workspace_branch" not in self._stubs:
+            self._stubs["fetch_current_workspace_branch"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1beta1.Dataform/FetchCurrentWorkspaceBranch",
+                    request_serializer=dataform.FetchCurrentWorkspaceBranchRequest.serialize,
+                    response_deserializer=dataform.FetchCurrentWorkspaceBranchResponse.deserialize,
+                )
+            )
+        return self._stubs["fetch_current_workspace_branch"]
 
     @property
     def push_git_commits(
@@ -2432,6 +2668,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_team_folder_tree: self._wrap_method(
+                self.delete_team_folder_tree,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.query_team_folder_contents: self._wrap_method(
                 self.query_team_folder_contents,
                 default_timeout=None,
@@ -2459,6 +2700,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             ),
             self.delete_folder: self._wrap_method(
                 self.delete_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_folder_tree: self._wrap_method(
+                self.delete_folder_tree,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2499,6 +2745,11 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             ),
             self.delete_repository: self._wrap_method(
                 self.delete_repository,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_repository_long_running: self._wrap_method(
+                self.delete_repository_long_running,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -2564,6 +2815,31 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
             ),
             self.pull_git_commits: self._wrap_method(
                 self.pull_git_commits,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.sync_workspace_refs: self._wrap_method(
+                self.sync_workspace_refs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_workspace_branches: self._wrap_method(
+                self.fetch_workspace_branches,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_branch: self._wrap_method(
+                self.delete_branch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.checkout_workspace_branch: self._wrap_method(
+                self.checkout_workspace_branch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_current_workspace_branch: self._wrap_method(
+                self.fetch_current_workspace_branch,
                 default_timeout=None,
                 client_info=client_info,
             ),

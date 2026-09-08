@@ -63,10 +63,10 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
     b"-----END CERTIFICATE-----\n"
 )
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
+MDS_PING_METRICS_HEADER_VALUE = (
+    "gl-python/<python-version> auth/<library-version> auth-request-type/mds"
 )
-MDS_PING_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 auth-request-type/mds"
 MDS_PING_REQUEST_HEADER = {
     "metadata-flavor": "Google",
     "x-goog-api-client": MDS_PING_METRICS_HEADER_VALUE,
@@ -993,9 +993,13 @@ def test__is_service_account_email():
         _metadata._is_service_account_email("my-sa@my-project.iam.gserviceaccount.com")
         is True
     )
-    assert _metadata._is_service_account_email("test@example.com") is True
+    assert (
+        _metadata._is_service_account_email("my-sa@my-project.iam.GSERVICEACCOUNT.COM")
+        is True
+    )
 
     # Empty inputs and standard string placeholders
+    assert _metadata._is_service_account_email("test@example.com") is False
     assert _metadata._is_service_account_email("default") is False
     assert _metadata._is_service_account_email("") is False
     assert _metadata._is_service_account_email(None) is False

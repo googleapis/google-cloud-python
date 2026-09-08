@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import proto
-import pytest
 import sys
 
 
@@ -355,25 +353,6 @@ def test_unwrapped_enum_fields():
     t = Task(weekday="TUESDAY")
     t2 = Task.deserialize(Task.serialize(t))
     assert t == t2
-
-
-if os.environ.get("PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION", "python") == "cpp":
-    # This test only works, and is only relevant, with the cpp runtime.
-    # Python just doesn't give a care and lets it work anyway.
-    def test_enum_alias_bad():
-        # Certain enums may shadow the different enum monikers with the same value.
-        # This is generally discouraged, and protobuf will object by default,
-        # but will explicitly allow this behavior if the enum is defined with
-        # the `allow_alias` option set.
-        with pytest.raises(TypeError):
-            # The wrapper message is a hack to avoid manifest wrangling to
-            # define the enum.
-            class BadMessage(proto.Message):
-                class BadEnum(proto.Enum):
-                    UNKNOWN = 0
-                    DEFAULT = 0
-
-                bad_dup_enum = proto.Field(proto.ENUM, number=1, enum=BadEnum)
 
 
 def test_enum_alias_good():

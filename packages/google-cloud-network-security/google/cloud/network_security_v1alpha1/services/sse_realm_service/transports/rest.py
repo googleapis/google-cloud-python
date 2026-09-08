@@ -34,6 +34,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.network_security_v1alpha1._compat import transcode_request
 from google.cloud.network_security_v1alpha1.types import sse_realm
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -59,8 +60,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class SSERealmServiceRestInterceptor:
@@ -1200,21 +1200,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_http_options()
-
             request, metadata = self._interceptor.pre_create_partner_sse_realm(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm,
+                    "_BaseCreatePartnerSSERealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1354,21 +1351,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_sac_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment,
+                    "_BaseCreateSACAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1505,21 +1499,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_http_options()
-
             request, metadata = self._interceptor.pre_create_sac_realm(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseCreateSACRealm,
+                    "_BaseCreateSACRealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1657,17 +1648,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_partner_sse_realm(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm,
+                    "_BaseDeletePartnerSSERealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1805,17 +1797,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_sac_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment,
+                    "_BaseDeleteSACAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1950,17 +1943,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_sac_realm(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm,
+                    "_BaseDeleteSACRealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2095,17 +2089,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_http_options()
-
             request, metadata = self._interceptor.pre_get_partner_sse_realm(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm,
+                    "_BaseGetPartnerSSERealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2244,17 +2239,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_sac_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetSACAttachment,
+                    "_BaseGetSACAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2395,15 +2391,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_sac_realm(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetSACRealm._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetSACRealm,
+                    "_BaseGetSACRealm__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2541,17 +2538,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_http_options()
-
             request, metadata = self._interceptor.pre_list_partner_sse_realms(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms,
+                    "_BaseListPartnerSSERealms__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2688,17 +2686,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_sac_attachments(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseListSACAttachments,
+                    "_BaseListSACAttachments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2836,15 +2835,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_sac_realms(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListSACRealms._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseListSACRealms,
+                    "_BaseListSACRealms__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3083,15 +3083,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3223,15 +3224,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3363,15 +3365,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3504,19 +3507,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3649,21 +3649,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3792,21 +3789,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3909,17 +3903,18 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4026,15 +4021,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             http_options = (
                 _BaseSSERealmServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4164,15 +4160,16 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
             """
 
             http_options = _BaseSSERealmServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSSERealmServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseSSERealmServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSSERealmServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -43,6 +43,17 @@ from google.apps.chat_v1.types.attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from google.apps.chat_v1.types.audience import Audience
+from google.apps.chat_v1.types.availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from google.apps.chat_v1.types.contextual_addon import ContextualAddOnMarkup
 from google.apps.chat_v1.types.deletion_metadata import DeletionMetadata
 from google.apps.chat_v1.types.event_payload import (
@@ -67,6 +78,7 @@ from google.apps.chat_v1.types.event_payload import (
 )
 from google.apps.chat_v1.types.group import Group
 from google.apps.chat_v1.types.history_state import HistoryState
+from google.apps.chat_v1.types.markup_syntax import MarkupSyntax
 from google.apps.chat_v1.types.matched_url import MatchedUrl
 from google.apps.chat_v1.types.membership import (
     CreateMembershipRequest,
@@ -94,6 +106,9 @@ from google.apps.chat_v1.types.message import (
     Message,
     QuotedMessageMetadata,
     QuotedMessageSnapshot,
+    SearchMessageResult,
+    SearchMessagesRequest,
+    SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
 )
@@ -189,6 +204,15 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",
@@ -211,6 +235,7 @@ __all__ = (
     "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
+    "MarkupSyntax",
     "MatchedUrl",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",
@@ -235,6 +260,9 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "QuotedMessageSnapshot",
+    "SearchMessageResult",
+    "SearchMessagesRequest",
+    "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
     "CreateCustomEmojiRequest",

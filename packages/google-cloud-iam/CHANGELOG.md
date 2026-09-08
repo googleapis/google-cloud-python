@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.24.1...google-cloud-iam-v2.25.0) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
+## [2.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.24.0...google-cloud-iam-v2.24.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.23.0...google-cloud-iam-v2.24.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[e-i] packages ([#17079](https://github.com/googleapis/google-cloud-python/issues/17079)) ([5239b18](https://github.com/googleapis/google-cloud-python/commit/5239b1814f216676bf02dea08726313ad355439d))
+
 ## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.22.0...google-cloud-iam-v2.23.0) (2026-05-06)
 
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.21.0...google-cloud-iam-v2.22.0) (2026-03-26)

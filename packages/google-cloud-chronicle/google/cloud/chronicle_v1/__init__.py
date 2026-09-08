@@ -13,15 +13,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import sys
-
 import google.api_core as api_core
 
 from google.cloud.chronicle_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-from importlib import metadata
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.chronicle_v1.services.big_query_export_service",
+    "google.cloud.chronicle_v1.services.dashboard_chart_service",
+    "google.cloud.chronicle_v1.services.dashboard_query_service",
+    "google.cloud.chronicle_v1.services.data_access_control_service",
+    "google.cloud.chronicle_v1.services.data_table_service",
+    "google.cloud.chronicle_v1.services.entity_service",
+    "google.cloud.chronicle_v1.services.featured_content_native_dashboard_service",
+    "google.cloud.chronicle_v1.services.findings_refinement_service",
+    "google.cloud.chronicle_v1.services.instance_service",
+    "google.cloud.chronicle_v1.services.native_dashboard_service",
+    "google.cloud.chronicle_v1.services.reference_list_service",
+    "google.cloud.chronicle_v1.services.rule_execution_error_service",
+    "google.cloud.chronicle_v1.services.rule_service",
+    "google.cloud.chronicle_v1.types.big_query_export",
+    "google.cloud.chronicle_v1.types.dashboard_chart",
+    "google.cloud.chronicle_v1.types.dashboard_query",
+    "google.cloud.chronicle_v1.types.data_access_control",
+    "google.cloud.chronicle_v1.types.data_table",
+    "google.cloud.chronicle_v1.types.entity",
+    "google.cloud.chronicle_v1.types.featured_content_metadata",
+    "google.cloud.chronicle_v1.types.featured_content_native_dashboard",
+    "google.cloud.chronicle_v1.types.findings_refinement",
+    "google.cloud.chronicle_v1.types.instance",
+    "google.cloud.chronicle_v1.types.native_dashboard",
+    "google.cloud.chronicle_v1.types.reference_list",
+    "google.cloud.chronicle_v1.types.rule",
+    "google.cloud.chronicle_v1.types.rule_execution_error",
+}
+
 
 from .services.big_query_export_service import (
     BigQueryExportServiceAsyncClient,
@@ -48,6 +81,10 @@ from .services.featured_content_native_dashboard_service import (
     FeaturedContentNativeDashboardServiceAsyncClient,
     FeaturedContentNativeDashboardServiceClient,
 )
+from .services.findings_refinement_service import (
+    FindingsRefinementServiceAsyncClient,
+    FindingsRefinementServiceClient,
+)
 from .services.instance_service import InstanceServiceAsyncClient, InstanceServiceClient
 from .services.native_dashboard_service import (
     NativeDashboardServiceAsyncClient,
@@ -56,6 +93,10 @@ from .services.native_dashboard_service import (
 from .services.reference_list_service import (
     ReferenceListServiceAsyncClient,
     ReferenceListServiceClient,
+)
+from .services.rule_execution_error_service import (
+    RuleExecutionErrorServiceAsyncClient,
+    RuleExecutionErrorServiceClient,
 )
 from .services.rule_service import RuleServiceAsyncClient, RuleServiceClient
 from .types.big_query_export import (
@@ -173,6 +214,28 @@ from .types.featured_content_native_dashboard import (
     ListFeaturedContentNativeDashboardsRequest,
     ListFeaturedContentNativeDashboardsResponse,
 )
+from .types.findings_refinement import (
+    ComputeAllFindingsRefinementActivitiesRequest,
+    ComputeAllFindingsRefinementActivitiesResponse,
+    ComputeFindingsRefinementActivityRequest,
+    ComputeFindingsRefinementActivityResponse,
+    CreateFindingsRefinementRequest,
+    DetectionExclusionActivity,
+    DetectionExclusionApplication,
+    FindingsRefinement,
+    FindingsRefinementActivity,
+    FindingsRefinementDeployment,
+    FindingsRefinementType,
+    GetFindingsRefinementDeploymentRequest,
+    GetFindingsRefinementRequest,
+    ListAllFindingsRefinementDeploymentsRequest,
+    ListAllFindingsRefinementDeploymentsResponse,
+    ListFindingsRefinementsRequest,
+    ListFindingsRefinementsResponse,
+    OutcomeFilter,
+    UpdateFindingsRefinementDeploymentRequest,
+    UpdateFindingsRefinementRequest,
+)
 from .types.instance import GetInstanceRequest, Instance
 from .types.native_dashboard import (
     AddChartRequest,
@@ -211,11 +274,14 @@ from .types.reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from .types.rule import (
     CompilationDiagnostic,
@@ -245,90 +311,14 @@ from .types.rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
 )
-
-if hasattr(api_core, "check_python_version") and hasattr(
-    api_core, "check_dependency_versions"
-):  # pragma: NO COVER
-    api_core.check_python_version("google.cloud.chronicle_v1")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.chronicle_v1")  # type: ignore
-else:  # pragma: NO COVER
-    # An older version of api_core is installed which does not define the
-    # functions above. We do equivalent checks manually.
-    try:
-        import warnings
-
-        _py_version_str = sys.version.split()[0]
-        _package_label = "google.cloud.chronicle_v1"
-        if sys.version_info < (3, 10):
-            warnings.warn(
-                "You are using a non-supported Python version "
-                + f"({_py_version_str}).  Google will not post any further "
-                + f"updates to {_package_label} supporting this Python version. "
-                + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.10, and then update {_package_label}.",
-                FutureWarning,
-            )
-
-        def parse_version_to_tuple(version_string: str):
-            """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
-            Ignores non-numeric parts and handles common version formats.
-            Args:
-                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-            Returns:
-                Tuple of integers for the parsed version string.
-            """
-            parts = []
-            for part in version_string.split("."):
-                try:
-                    parts.append(int(part))
-                except ValueError:
-                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                    # This is a simplification compared to 'packaging.parse_version', but sufficient
-                    # for comparing strictly numeric semantic versions.
-                    break
-            return tuple(parts)
-
-        def _get_version(dependency_name):
-            try:
-                version_string: str = metadata.version(dependency_name)
-                parsed_version = parse_version_to_tuple(version_string)
-                return (parsed_version, version_string)
-            except Exception:
-                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
-                # or errors during parse_version_to_tuple
-                return (None, "--")
-
-        _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
-        (_version_used, _version_used_string) = _get_version(_dependency_package)
-        if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(
-                f"Package {_package_label} depends on "
-                + f"{_dependency_package}, currently installed at version "
-                + f"{_version_used_string}. Future updates to "
-                + f"{_package_label} will require {_dependency_package} at "
-                + f"version {_next_supported_version} or higher{_recommendation}."
-                + " Please ensure "
-                + "that either (a) your Python environment doesn't pin the "
-                + f"version of {_dependency_package}, so that updates to "
-                + f"{_package_label} can require the higher version, or "
-                + "(b) you manually update your Python environment to use at "
-                + f"least version {_next_supported_version} of "
-                + f"{_dependency_package}.",
-                FutureWarning,
-            )
-    except Exception:
-        warnings.warn(
-            "Could not determine the version of Python "
-            + "currently being used. To continue receiving "
-            + "updates for {_package_label}, ensure you are "
-            + "using a supported version of Python; see "
-            + "https://devguide.python.org/versions/"
-        )
+from .types.rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
+)
 
 __all__ = (
     "BigQueryExportServiceAsyncClient",
@@ -338,9 +328,11 @@ __all__ = (
     "DataTableServiceAsyncClient",
     "EntityServiceAsyncClient",
     "FeaturedContentNativeDashboardServiceAsyncClient",
+    "FindingsRefinementServiceAsyncClient",
     "InstanceServiceAsyncClient",
     "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceAsyncClient",
+    "RuleExecutionErrorServiceAsyncClient",
     "RuleServiceAsyncClient",
     "AddChartRequest",
     "AddChartResponse",
@@ -364,10 +356,15 @@ __all__ = (
     "ColumnMetadata",
     "CompilationDiagnostic",
     "CompilationPosition",
+    "ComputeAllFindingsRefinementActivitiesRequest",
+    "ComputeAllFindingsRefinementActivitiesResponse",
+    "ComputeFindingsRefinementActivityRequest",
+    "ComputeFindingsRefinementActivityResponse",
     "CreateDataAccessLabelRequest",
     "CreateDataAccessScopeRequest",
     "CreateDataTableRequest",
     "CreateDataTableRowRequest",
+    "CreateFindingsRefinementRequest",
     "CreateNativeDashboardRequest",
     "CreateReferenceListRequest",
     "CreateRetrohuntRequest",
@@ -402,6 +399,8 @@ __all__ = (
     "DeleteNativeDashboardRequest",
     "DeleteRuleRequest",
     "DeleteWatchlistRequest",
+    "DetectionExclusionActivity",
+    "DetectionExclusionApplication",
     "DuplicateChartRequest",
     "DuplicateChartResponse",
     "DuplicateNativeDashboardRequest",
@@ -417,6 +416,11 @@ __all__ = (
     "FeaturedContentNativeDashboardServiceClient",
     "FilterOperator",
     "FilterOperatorAndValues",
+    "FindingsRefinement",
+    "FindingsRefinementActivity",
+    "FindingsRefinementDeployment",
+    "FindingsRefinementServiceClient",
+    "FindingsRefinementType",
     "GetBigQueryExportRequest",
     "GetDashboardChartRequest",
     "GetDashboardQueryRequest",
@@ -426,6 +430,8 @@ __all__ = (
     "GetDataTableRequest",
     "GetDataTableRowRequest",
     "GetFeaturedContentNativeDashboardRequest",
+    "GetFindingsRefinementDeploymentRequest",
+    "GetFindingsRefinementRequest",
     "GetInstanceRequest",
     "GetNativeDashboardRequest",
     "GetReferenceListRequest",
@@ -449,6 +455,8 @@ __all__ = (
     "LatestExportJobState",
     "LegendAlign",
     "LegendOrient",
+    "ListAllFindingsRefinementDeploymentsRequest",
+    "ListAllFindingsRefinementDeploymentsResponse",
     "ListDataAccessLabelsRequest",
     "ListDataAccessLabelsResponse",
     "ListDataAccessScopesRequest",
@@ -459,6 +467,8 @@ __all__ = (
     "ListDataTablesResponse",
     "ListFeaturedContentNativeDashboardsRequest",
     "ListFeaturedContentNativeDashboardsResponse",
+    "ListFindingsRefinementsRequest",
+    "ListFindingsRefinementsResponse",
     "ListNativeDashboardsRequest",
     "ListNativeDashboardsResponse",
     "ListReferenceListsRequest",
@@ -467,6 +477,8 @@ __all__ = (
     "ListRetrohuntsResponse",
     "ListRuleDeploymentsRequest",
     "ListRuleDeploymentsResponse",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
     "ListRuleRevisionsRequest",
     "ListRuleRevisionsResponse",
     "ListRulesRequest",
@@ -481,12 +493,14 @@ __all__ = (
     "NativeDashboardServiceClient",
     "NativeDashboardView",
     "NativeDashboardWithChartsAndQueries",
+    "OutcomeFilter",
     "PlotMode",
     "PointSizeType",
     "ProvisionBigQueryExportRequest",
     "QueryRuntimeError",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ReferenceListServiceClient",
     "ReferenceListSyntaxType",
@@ -497,6 +511,8 @@ __all__ = (
     "RetrohuntMetadata",
     "Rule",
     "RuleDeployment",
+    "RuleExecutionError",
+    "RuleExecutionErrorServiceClient",
     "RuleServiceClient",
     "RuleType",
     "RuleView",
@@ -514,12 +530,21 @@ __all__ = (
     "UpdateDataAccessScopeRequest",
     "UpdateDataTableRequest",
     "UpdateDataTableRowRequest",
+    "UpdateFindingsRefinementDeploymentRequest",
+    "UpdateFindingsRefinementRequest",
     "UpdateNativeDashboardRequest",
     "UpdateReferenceListRequest",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
     "UpdateWatchlistRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "VisualMapType",
     "Watchlist",
     "WatchlistUserPreferences",
 )
+
+api_core.check_python_version("google.cloud.chronicle_v1")
+api_core.check_dependency_versions("google.cloud.chronicle_v1")

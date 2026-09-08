@@ -13,15 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .age_range import (
     AgeRange,
 )
 from .audience import (
     AudienceMember,
     CompositeData,
+    GoogleUserIdData,
     IpData,
     MobileData,
     PairData,
+    PartnerProvidedIdData,
     PpidData,
     UserIdData,
 )
@@ -47,6 +59,7 @@ from .encrypted_user_id import (
 )
 from .encryption_info import (
     AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
     EncryptionInfo,
     GcpWrappedKeyInfo,
 )
@@ -69,10 +82,14 @@ from .gender import (
 )
 from .ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    RemoveAllAudienceMembersRequest,
+    RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
     RetrieveRequestStatusRequest,
@@ -92,17 +109,22 @@ from .match_rate import (
 from .partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
 from .processing_errors import (
     ErrorCount,
     ErrorInfo,
+    FieldWarning,
     ProcessingErrorReason,
     ProcessingWarningReason,
     WarningCount,
     WarningInfo,
+    WarningReason,
 )
 from .request_status_per_destination import (
     RequestStatusPerDestination,
@@ -181,14 +203,29 @@ from .user_properties import (
     UserProperties,
     UserProperty,
 )
+from .viewability_info import (
+    MediaQuartile,
+    ViewabilityInfo,
+    ViewType,
+)
 
 __all__ = (
+    "AdEvent",
+    "AdFormat",
+    "AdPlacement",
+    "AdType",
+    "AttributionHint",
+    "Platform",
+    "PlatformType",
+    "TargetingType",
     "AgeRange",
     "AudienceMember",
     "CompositeData",
+    "GoogleUserIdData",
     "IpData",
     "MobileData",
     "PairData",
+    "PartnerProvidedIdData",
     "PpidData",
     "UserIdData",
     "CartData",
@@ -202,6 +239,7 @@ __all__ = (
     "DeviceInfo",
     "EncryptedUserId",
     "AwsWrappedKeyInfo",
+    "CoordinatorKeyInfo",
     "EncryptionInfo",
     "GcpWrappedKeyInfo",
     "ErrorReason",
@@ -213,10 +251,14 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "Gender",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
+    "RemoveAllAudienceMembersRequest",
+    "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
     "RetrieveRequestStatusRequest",
@@ -229,15 +271,20 @@ __all__ = (
     "MatchRateRange",
     "CreatePartnerLinkRequest",
     "DeletePartnerLinkRequest",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "SearchPartnerLinksRequest",
     "SearchPartnerLinksResponse",
+    "FeatureSet",
     "ErrorCount",
     "ErrorInfo",
+    "FieldWarning",
     "WarningCount",
     "WarningInfo",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
+    "WarningReason",
     "RequestStatusPerDestination",
     "TermsOfService",
     "TermsOfServiceStatus",
@@ -285,4 +332,7 @@ __all__ = (
     "UserProperty",
     "CustomerType",
     "CustomerValueBucket",
+    "ViewabilityInfo",
+    "MediaQuartile",
+    "ViewType",
 )

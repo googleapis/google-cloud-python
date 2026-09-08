@@ -34,7 +34,9 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.network_services_v1._compat import transcode_request
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     endpoint_policy,
     extensibility,
     gateway,
@@ -47,6 +49,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -86,8 +89,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class NetworkServicesRestInterceptor:
@@ -105,6 +107,14 @@ class NetworkServicesRestInterceptor:
 
     .. code-block:: python
         class MyCustomNetworkServicesInterceptor(NetworkServicesRestInterceptor):
+            def pre_create_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -193,6 +203,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -278,6 +296,14 @@ class NetworkServicesRestInterceptor:
                 return request, metadata
 
             def post_delete_wasm_plugin_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_agent_gateway(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -385,6 +411,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_agent_gateways(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_agent_gateways(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_endpoint_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -489,6 +523,14 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_agent_gateway(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_agent_gateway(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -574,6 +616,55 @@ class NetworkServicesRestInterceptor:
 
 
     """
+
+    def pre_create_agent_gateway(
+        self,
+        request: gcn_agent_gateway.CreateAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_agent_gateway.CreateAgentGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_create_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_agent_gateway
+
+        DEPRECATED. Please use the `post_create_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_create_agent_gateway` interceptor runs
+        before the `post_create_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_create_agent_gateway` interceptor.
+        When both interceptors are used, this `post_create_agent_gateway_with_metadata` interceptor runs after the
+        `post_create_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_create_agent_gateway` will be passed to
+        `post_create_agent_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_endpoint_policy(
         self,
@@ -1105,6 +1196,54 @@ class NetworkServicesRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_agent_gateway(
+        self,
+        request: agent_gateway.DeleteAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.DeleteAgentGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_delete_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_agent_gateway
+
+        DEPRECATED. Please use the `post_delete_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_delete_agent_gateway` interceptor runs
+        before the `post_delete_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_delete_agent_gateway` interceptor.
+        When both interceptors are used, this `post_delete_agent_gateway_with_metadata` interceptor runs after the
+        `post_delete_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_delete_agent_gateway` will be passed to
+        `post_delete_agent_gateway_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_endpoint_policy(
         self,
         request: endpoint_policy.DeleteEndpointPolicyRequest,
@@ -1630,6 +1769,54 @@ class NetworkServicesRestInterceptor:
         `post_delete_wasm_plugin_version` interceptor. The (possibly modified) response returned by
         `post_delete_wasm_plugin_version` will be passed to
         `post_delete_wasm_plugin_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_agent_gateway(
+        self,
+        request: agent_gateway.GetAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.GetAgentGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_get_agent_gateway(
+        self, response: agent_gateway.AgentGateway
+    ) -> agent_gateway.AgentGateway:
+        """Post-rpc interceptor for get_agent_gateway
+
+        DEPRECATED. Please use the `post_get_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_get_agent_gateway` interceptor runs
+        before the `post_get_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_agent_gateway_with_metadata(
+        self,
+        response: agent_gateway.AgentGateway,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[agent_gateway.AgentGateway, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_get_agent_gateway` interceptor.
+        When both interceptors are used, this `post_get_agent_gateway_with_metadata` interceptor runs after the
+        `post_get_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_get_agent_gateway` will be passed to
+        `post_get_agent_gateway_with_metadata`.
         """
         return response, metadata
 
@@ -2240,6 +2427,56 @@ class NetworkServicesRestInterceptor:
         `post_get_wasm_plugin_version` interceptor. The (possibly modified) response returned by
         `post_get_wasm_plugin_version` will be passed to
         `post_get_wasm_plugin_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_agent_gateways(
+        self,
+        request: agent_gateway.ListAgentGatewaysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.ListAgentGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_agent_gateways
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_list_agent_gateways(
+        self, response: agent_gateway.ListAgentGatewaysResponse
+    ) -> agent_gateway.ListAgentGatewaysResponse:
+        """Post-rpc interceptor for list_agent_gateways
+
+        DEPRECATED. Please use the `post_list_agent_gateways_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_list_agent_gateways` interceptor runs
+        before the `post_list_agent_gateways_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_agent_gateways_with_metadata(
+        self,
+        response: agent_gateway.ListAgentGatewaysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        agent_gateway.ListAgentGatewaysResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_agent_gateways
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_agent_gateways_with_metadata`
+        interceptor in new development instead of the `post_list_agent_gateways` interceptor.
+        When both interceptors are used, this `post_list_agent_gateways_with_metadata` interceptor runs after the
+        `post_list_agent_gateways` interceptor. The (possibly modified) response returned by
+        `post_list_agent_gateways` will be passed to
+        `post_list_agent_gateways_with_metadata`.
         """
         return response, metadata
 
@@ -2887,6 +3124,55 @@ class NetworkServicesRestInterceptor:
         `post_list_wasm_plugin_versions` interceptor. The (possibly modified) response returned by
         `post_list_wasm_plugin_versions` will be passed to
         `post_list_wasm_plugin_versions_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_agent_gateway(
+        self,
+        request: gcn_agent_gateway.UpdateAgentGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_agent_gateway.UpdateAgentGatewayRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_agent_gateway
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_update_agent_gateway(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_agent_gateway
+
+        DEPRECATED. Please use the `post_update_agent_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_update_agent_gateway` interceptor runs
+        before the `post_update_agent_gateway_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_agent_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_agent_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_agent_gateway_with_metadata`
+        interceptor in new development instead of the `post_update_agent_gateway` interceptor.
+        When both interceptors are used, this `post_update_agent_gateway_with_metadata` interceptor runs after the
+        `post_update_agent_gateway` interceptor. The (possibly modified) response returned by
+        `post_update_agent_gateway` will be passed to
+        `post_update_agent_gateway_with_metadata`.
         """
         return response, metadata
 
@@ -3737,6 +4023,156 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseCreateAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.CreateAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_agent_gateway.CreateAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create agent gateway method over HTTP.
+
+            Args:
+                request (~.gcn_agent_gateway.CreateAgentGatewayRequest):
+                    The request object. Request used by the
+                CreateAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseCreateAgentGateway._get_http_options()
+            request, metadata = self._interceptor.pre_create_agent_gateway(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateAgentGateway,
+                    "_BaseCreateAgentGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._CreateAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy,
         NetworkServicesRestStub,
@@ -3798,21 +4234,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_create_endpoint_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy,
+                    "_BaseCreateEndpointPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3952,19 +4385,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateGateway._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_gateway(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateGateway._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateGateway._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateGateway._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateGateway,
+                    "_BaseCreateGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4102,21 +4532,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_create_grpc_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute,
+                    "_BaseCreateGrpcRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4253,21 +4680,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_create_http_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateHttpRoute,
+                    "_BaseCreateHttpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4407,19 +4831,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateMesh._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_mesh(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateMesh._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateMesh._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateMesh._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateMesh,
+                    "_BaseCreateMesh__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4558,21 +4979,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_http_options()
-
             request, metadata = self._interceptor.pre_create_service_binding(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateServiceBinding,
+                    "_BaseCreateServiceBinding__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4711,21 +5129,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_create_service_lb_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy,
+                    "_BaseCreateServiceLbPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4864,21 +5279,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_create_tcp_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateTcpRoute,
+                    "_BaseCreateTcpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5015,21 +5427,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_create_tls_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateTlsRoute,
+                    "_BaseCreateTlsRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5166,21 +5575,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_http_options()
-
             request, metadata = self._interceptor.pre_create_wasm_plugin(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin,
+                    "_BaseCreateWasmPlugin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5319,21 +5725,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_create_wasm_plugin_version(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion,
+                    "_BaseCreateWasmPluginVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5413,6 +5816,154 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _DeleteAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.DeleteAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.DeleteAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete agent gateway method over HTTP.
+
+            Args:
+                request (~.agent_gateway.DeleteAgentGatewayRequest):
+                    The request object. Request used by the
+                DeleteAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway._get_http_options()
+            request, metadata = self._interceptor.pre_delete_agent_gateway(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteAgentGateway,
+                    "_BaseDeleteAgentGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._DeleteAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy,
         NetworkServicesRestStub,
@@ -5473,17 +6024,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_endpoint_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy,
+                    "_BaseDeleteEndpointPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5621,15 +6173,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_gateway(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteGateway,
+                    "_BaseDeleteGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5765,17 +6318,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_grpc_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute,
+                    "_BaseDeleteGrpcRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5911,17 +6465,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_http_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute,
+                    "_BaseDeleteHttpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6059,15 +6614,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_mesh(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteMesh,
+                    "_BaseDeleteMesh__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6204,17 +6760,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_service_binding(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding,
+                    "_BaseDeleteServiceBinding__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6351,17 +6908,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_service_lb_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy,
+                    "_BaseDeleteServiceLbPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6499,17 +7057,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_tcp_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute,
+                    "_BaseDeleteTcpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6645,17 +7204,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_tls_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute,
+                    "_BaseDeleteTlsRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6790,17 +7350,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_wasm_plugin(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin,
+                    "_BaseDeleteWasmPlugin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6937,17 +7498,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_wasm_plugin_version(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion,
+                    "_BaseDeleteWasmPluginVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7026,6 +7588,154 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _GetAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseGetAgentGateway, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.GetAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.GetAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> agent_gateway.AgentGateway:
+            r"""Call the get agent gateway method over HTTP.
+
+            Args:
+                request (~.agent_gateway.GetAgentGatewayRequest):
+                    The request object. Request used by the GetAgentGateway
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.agent_gateway.AgentGateway:
+                    AgentGateway represents the agent
+                gateway resource.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseGetAgentGateway._get_http_options()
+            request, metadata = self._interceptor.pre_get_agent_gateway(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetAgentGateway,
+                    "_BaseGetAgentGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._GetAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = agent_gateway.AgentGateway()
+            pb_resp = agent_gateway.AgentGateway.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = agent_gateway.AgentGateway.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy,
         NetworkServicesRestStub,
@@ -7089,17 +7799,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_endpoint_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy,
+                    "_BaseGetEndpointPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7244,15 +7955,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetGateway._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_gateway(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetGateway._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetGateway._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetGateway,
+                    "_BaseGetGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7390,17 +8102,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_http_options()
-
             request, metadata = self._interceptor.pre_get_gateway_route_view(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView,
+                    "_BaseGetGatewayRouteView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7540,15 +8253,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_grpc_route(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetGrpcRoute,
+                    "_BaseGetGrpcRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7688,15 +8402,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_http_route(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetHttpRoute,
+                    "_BaseGetHttpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7838,19 +8553,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetMesh._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_mesh(request, metadata)
-            transcoded_request = (
-                _BaseNetworkServicesRestTransport._BaseGetMesh._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseNetworkServicesRestTransport._BaseGetMesh._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetMesh,
+                    "_BaseGetMesh__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7987,17 +8699,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_http_options()
-
             request, metadata = self._interceptor.pre_get_mesh_route_view(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetMeshRouteView,
+                    "_BaseGetMeshRouteView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8145,17 +8858,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_http_options()
-
             request, metadata = self._interceptor.pre_get_service_binding(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetServiceBinding,
+                    "_BaseGetServiceBinding__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8295,17 +9009,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_service_lb_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy,
+                    "_BaseGetServiceLbPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8447,15 +9162,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_tcp_route(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetTcpRoute,
+                    "_BaseGetTcpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8595,15 +9311,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_tls_route(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetTlsRoute,
+                    "_BaseGetTlsRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8741,15 +9458,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_wasm_plugin(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetWasmPlugin,
+                    "_BaseGetWasmPlugin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8887,17 +9605,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_get_wasm_plugin_version(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion,
+                    "_BaseGetWasmPluginVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8976,6 +9695,157 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _ListAgentGateways(
+        _BaseNetworkServicesRestTransport._BaseListAgentGateways,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.ListAgentGateways")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: agent_gateway.ListAgentGatewaysRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> agent_gateway.ListAgentGatewaysResponse:
+            r"""Call the list agent gateways method over HTTP.
+
+            Args:
+                request (~.agent_gateway.ListAgentGatewaysRequest):
+                    The request object. Request used with the
+                ListAgentGateways method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.agent_gateway.ListAgentGatewaysResponse:
+                    Response returned by the
+                ListAgentGateways method.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseListAgentGateways._get_http_options()
+            request, metadata = self._interceptor.pre_list_agent_gateways(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListAgentGateways,
+                    "_BaseListAgentGateways__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListAgentGateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListAgentGateways",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._ListAgentGateways._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = agent_gateway.ListAgentGatewaysResponse()
+            pb_resp = agent_gateway.ListAgentGatewaysResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_agent_gateways(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_agent_gateways_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = agent_gateway.ListAgentGatewaysResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_agent_gateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListAgentGateways",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListEndpointPolicies(
         _BaseNetworkServicesRestTransport._BaseListEndpointPolicies,
         NetworkServicesRestStub,
@@ -9035,17 +9905,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_http_options()
-
             request, metadata = self._interceptor.pre_list_endpoint_policies(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListEndpointPolicies,
+                    "_BaseListEndpointPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9185,17 +10056,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_gateway_route_views(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews,
+                    "_BaseListGatewayRouteViews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9338,15 +10210,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListGateways._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_gateways(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListGateways._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListGateways._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListGateways,
+                    "_BaseListGateways__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9483,17 +10356,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_grpc_routes(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListGrpcRoutes,
+                    "_BaseListGrpcRoutes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9632,17 +10506,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_http_options()
-
             request, metadata = self._interceptor.pre_list_http_routes(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListHttpRoutes,
+                    "_BaseListHttpRoutes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9783,15 +10658,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListMeshes._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_meshes(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListMeshes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListMeshes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListMeshes,
+                    "_BaseListMeshes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -9929,17 +10805,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_mesh_route_views(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListMeshRouteViews,
+                    "_BaseListMeshRouteViews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10079,17 +10956,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_http_options()
-
             request, metadata = self._interceptor.pre_list_service_bindings(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListServiceBindings,
+                    "_BaseListServiceBindings__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10229,17 +11107,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_http_options()
-
             request, metadata = self._interceptor.pre_list_service_lb_policies(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies,
+                    "_BaseListServiceLbPolicies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10384,15 +11263,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_tcp_routes(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListTcpRoutes,
+                    "_BaseListTcpRoutes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10531,15 +11411,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_tls_routes(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListTlsRoutes,
+                    "_BaseListTlsRoutes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10673,17 +11554,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_http_options()
-
             request, metadata = self._interceptor.pre_list_wasm_plugins(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListWasmPlugins,
+                    "_BaseListWasmPlugins__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10822,17 +11704,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_wasm_plugin_versions(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions,
+                    "_BaseListWasmPluginVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -10915,6 +11798,156 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _UpdateAgentGateway(
+        _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.UpdateAgentGateway")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_agent_gateway.UpdateAgentGatewayRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update agent gateway method over HTTP.
+
+            Args:
+                request (~.gcn_agent_gateway.UpdateAgentGatewayRequest):
+                    The request object. Request used by the
+                UpdateAgentGateway method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway._get_http_options()
+            request, metadata = self._interceptor.pre_update_agent_gateway(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateAgentGateway,
+                    "_BaseUpdateAgentGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateAgentGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateAgentGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._UpdateAgentGateway._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_agent_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_agent_gateway_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_agent_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateAgentGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy,
         NetworkServicesRestStub,
@@ -10976,21 +12009,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_update_endpoint_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy,
+                    "_BaseUpdateEndpointPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11130,19 +12160,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_gateway(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateGateway,
+                    "_BaseUpdateGateway__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11280,21 +12307,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_update_grpc_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute,
+                    "_BaseUpdateGrpcRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11432,21 +12456,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_update_http_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute,
+                    "_BaseUpdateHttpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11586,19 +12607,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_mesh(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateMesh,
+                    "_BaseUpdateMesh__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11737,21 +12755,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_http_options()
-
             request, metadata = self._interceptor.pre_update_service_binding(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding,
+                    "_BaseUpdateServiceBinding__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -11890,21 +12905,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_update_service_lb_policy(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy,
+                    "_BaseUpdateServiceLbPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12044,21 +13056,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_update_tcp_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute,
+                    "_BaseUpdateTcpRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12196,21 +13205,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_http_options()
-
             request, metadata = self._interceptor.pre_update_tls_route(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute,
+                    "_BaseUpdateTlsRoute__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12347,21 +13353,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_http_options()
-
             request, metadata = self._interceptor.pre_update_wasm_plugin(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin,
+                    "_BaseUpdateWasmPlugin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -12438,6 +13441,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     },
                 )
             return resp
+
+    @property
+    def create_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.CreateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_endpoint_policy(
@@ -12538,6 +13551,14 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         )  # type: ignore
 
     @property
+    def delete_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.DeleteAgentGatewayRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_endpoint_policy(
         self,
     ) -> Callable[
@@ -12634,6 +13655,14 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._DeleteWasmPluginVersion(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def get_agent_gateway(
+        self,
+    ) -> Callable[[agent_gateway.GetAgentGatewayRequest], agent_gateway.AgentGateway]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_endpoint_policy(
@@ -12742,6 +13771,17 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_agent_gateways(
+        self,
+    ) -> Callable[
+        [agent_gateway.ListAgentGatewaysRequest],
+        agent_gateway.ListAgentGatewaysResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAgentGateways(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_endpoint_policies(
@@ -12871,6 +13911,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._ListWasmPluginVersions(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def update_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.UpdateAgentGatewayRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAgentGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_endpoint_policy(
@@ -13018,15 +14068,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13158,15 +14209,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13298,15 +14350,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13439,19 +14492,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13584,21 +14634,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13727,21 +14774,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13844,17 +14888,18 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -13961,15 +15006,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -14099,15 +15145,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             """
 
             http_options = _BaseNetworkServicesRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseNetworkServicesRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNetworkServicesRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNetworkServicesRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -798,7 +798,7 @@ def test_instance_table_factory():
     from google.cloud.bigtable.table import Table
 
     app_profile_id = "appProfileId1262094415"
-    instance = _make_instance(INSTANCE_ID, None)
+    instance = _make_instance(INSTANCE_ID, mock.MagicMock())
 
     table = instance.table(TABLE_ID, app_profile_id=app_profile_id)
     assert isinstance(table, Table)

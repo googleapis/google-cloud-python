@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import application_messages, application_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ApplicationServiceRestInterceptor:
@@ -756,21 +756,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_archive_applications(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseBatchArchiveApplications,
+                    "_BaseBatchArchiveApplications__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -913,21 +910,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_create_applications(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseBatchCreateApplications._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseBatchCreateApplications,
+                    "_BaseBatchCreateApplications__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1074,21 +1068,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_unarchive_applications(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseBatchUnarchiveApplications,
+                    "_BaseBatchUnarchiveApplications__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1229,21 +1220,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_applications(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseBatchUpdateApplications,
+                    "_BaseBatchUpdateApplications__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1390,21 +1378,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_http_options()
-
             request, metadata = self._interceptor.pre_create_application(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseCreateApplication._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseCreateApplication,
+                    "_BaseCreateApplication__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1546,15 +1531,16 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseGetApplication._get_http_options()
-
             request, metadata = self._interceptor.pre_get_application(request, metadata)
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseGetApplication._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseGetApplication._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseGetApplication,
+                    "_BaseGetApplication__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1693,17 +1679,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseListApplications._get_http_options()
-
             request, metadata = self._interceptor.pre_list_applications(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseListApplications._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseListApplications._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseListApplications,
+                    "_BaseListApplications__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1845,21 +1832,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_http_options()
-
             request, metadata = self._interceptor.pre_update_application(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseUpdateApplication._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseUpdateApplication,
+                    "_BaseUpdateApplication__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2090,17 +2074,18 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2206,15 +2191,16 @@ class ApplicationServiceRestTransport(_BaseApplicationServiceRestTransport):
             """
 
             http_options = _BaseApplicationServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseApplicationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseApplicationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseApplicationServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

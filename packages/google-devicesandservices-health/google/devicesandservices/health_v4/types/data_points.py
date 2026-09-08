@@ -258,6 +258,26 @@ class DataPoint(proto.Message):
             data type collection.
 
             This field is a member of `oneof`_ ``data``.
+        menstrual_period (google.devicesandservices.health_v4.types.MenstrualPeriod):
+            Optional. Data for points in the ``menstrual-period``
+            interval data type collection.
+
+            This field is a member of `oneof`_ ``data``.
+        ovulation_test (google.devicesandservices.health_v4.types.OvulationTest):
+            Optional. Data for points in the ``ovulation-test`` sample
+            data type collection.
+
+            This field is a member of `oneof`_ ``data``.
+        symptoms (google.devicesandservices.health_v4.types.Symptoms):
+            Optional. Data for points in the ``symptoms`` sample data
+            type collection.
+
+            This field is a member of `oneof`_ ``data``.
+        moods (google.devicesandservices.health_v4.types.Moods):
+            Optional. Data for points in the ``moods`` sample data type
+            collection.
+
+            This field is a member of `oneof`_ ``data``.
         name (str):
             Identifier. Data point name, only supported for the subset
             of identifiable data types. For the majority of the data
@@ -277,8 +297,7 @@ class DataPoint(proto.Message):
             The ``{data_type}`` ID corresponds to the kebab-case version
             of the field names in the [DataPoint
             data][google.devicesandservices.health.v4.DataPoint] union
-            field, e.g. ``total-calories`` for the ``total_calories``
-            field.
+            field, e.g. ``heart-rate`` for the ``heart_rate`` field.
 
             The ``{data_point}`` ID can be client-provided or
             system-generated. If client-provided, it must be a string of
@@ -521,6 +540,30 @@ class DataPoint(proto.Message):
         oneof="data",
         message=data_model.BloodGlucose,
     )
+    menstrual_period: data_model.MenstrualPeriod = proto.Field(
+        proto.MESSAGE,
+        number=49,
+        oneof="data",
+        message=data_model.MenstrualPeriod,
+    )
+    ovulation_test: data_model.OvulationTest = proto.Field(
+        proto.MESSAGE,
+        number=50,
+        oneof="data",
+        message=data_model.OvulationTest,
+    )
+    symptoms: data_model.Symptoms = proto.Field(
+        proto.MESSAGE,
+        number=52,
+        oneof="data",
+        message=data_model.Symptoms,
+    )
+    moods: data_model.Moods = proto.Field(
+        proto.MESSAGE,
+        number=53,
+        oneof="data",
+        message=data_model.Moods,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -733,8 +776,7 @@ class ReconciledDataPoint(proto.Message):
             The ``{data_type}`` ID corresponds to the kebab-case version
             of the field names in the [DataPoint
             data][google.devicesandservices.health.v4.DataPoint] union
-            field, e.g. ``total-calories`` for the ``total_calories``
-            field.
+            field, e.g. ``heart-rate`` for the ``heart_rate`` field.
 
             The ``{data_point}`` ID can be client-provided or
             system-generated. If client-provided, it must be a string of
@@ -1936,14 +1978,15 @@ class ReconcileDataPointsRequest(proto.Message):
 
             Format: ``users/me/dataSourceFamilies/{data_source_family}``
 
-            The supported values are:
-
-            - ``users/me/dataSourceFamilies/all-sources`` - default
-              value
-            - ``users/me/dataSourceFamilies/google-wearables`` - tracker
-              devices
-            - ``users/me/dataSourceFamilies/google-sources`` - Google
-              first party sources
+            - ``users/me/dataSourceFamilies/all-sources`` - Default
+              value. Includes data from all available data sources.
+            - ``users/me/dataSourceFamilies/google-wearables`` -
+              Includes data from Google and Fitbit tracker devices (such
+              as Fitbit trackers and Pixel Watch). Excludes manually
+              logged data.
+            - ``users/me/dataSourceFamilies/google-sources`` - Includes
+              first-party Google data, such as data from tracker
+              devices, manually logged data, and Health Connect.
     """
 
     parent: str = proto.Field(
@@ -2019,7 +2062,8 @@ class RollUpDataPointsRequest(proto.Message):
         window_size (google.protobuf.duration_pb2.Duration):
             Required. The size of the time window to
             group data points into before applying the
-            aggregation functions.
+            aggregation functions. Must be at least 1
+            second.
         page_size (int):
             Optional. The maximum number of data points
             to return. If unspecified, at most 1440 data
@@ -2040,12 +2084,15 @@ class RollUpDataPointsRequest(proto.Message):
 
             The supported values are:
 
-            - ``users/me/dataSourceFamilies/all-sources`` - default
-              value
-            - ``users/me/dataSourceFamilies/google-wearables`` - tracker
-              devices
-            - ``users/me/dataSourceFamilies/google-sources`` - Google
-              first party sources
+            - ``users/me/dataSourceFamilies/all-sources`` - Default
+              value. Includes data from all available data sources.
+            - ``users/me/dataSourceFamilies/google-wearables`` -
+              Includes data from Google and Fitbit tracker devices (such
+              as Fitbit trackers and Pixel Watch). Excludes manually
+              logged data.
+            - ``users/me/dataSourceFamilies/google-sources`` - Includes
+              first-party Google data, such as data from tracker
+              devices, manually logged data, and Health Connect.
     """
 
     parent: str = proto.Field(
@@ -2148,12 +2195,15 @@ class DailyRollUpDataPointsRequest(proto.Message):
 
             The supported values are:
 
-            - ``users/me/dataSourceFamilies/all-sources`` - default
-              value
-            - ``users/me/dataSourceFamilies/google-wearables`` - tracker
-              devices
-            - ``users/me/dataSourceFamilies/google-sources`` - Google
-              first party sources
+            - ``users/me/dataSourceFamilies/all-sources`` - Default
+              value. Includes data from all available data sources.
+            - ``users/me/dataSourceFamilies/google-wearables`` -
+              Includes data from Google and Fitbit tracker devices (such
+              as Fitbit trackers and Pixel Watch). Excludes manually
+              logged data.
+            - ``users/me/dataSourceFamilies/google-sources`` - Includes
+              first-party Google data, such as data from tracker
+              devices, manually logged data, and Health Connect.
     """
 
     parent: str = proto.Field(

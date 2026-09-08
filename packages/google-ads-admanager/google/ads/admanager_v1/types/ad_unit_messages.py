@@ -184,6 +184,12 @@ class AdUnit(proto.Message):
             defaulted to true.
 
             This field is a member of `oneof`_ ``_effective_adsense_enabled``.
+        refresh_rate_type (google.ads.admanager_v1.types.RefreshRateTypeEnum.RefreshRateType):
+            Optional. Non-empty default. Defines the type of refresh
+            rate control for this ad unit. This field defaults to
+            ``DISABLED``.
+
+            This field is a member of `oneof`_ ``_refresh_rate_type``.
     """
 
     name: str = proto.Field(
@@ -318,6 +324,12 @@ class AdUnit(proto.Message):
         proto.BOOL,
         number=27,
         optional=True,
+    )
+    refresh_rate_type: ad_unit_enums.RefreshRateTypeEnum.RefreshRateType = proto.Field(
+        proto.ENUM,
+        number=78,
+        optional=True,
+        enum=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType,
     )
 
 

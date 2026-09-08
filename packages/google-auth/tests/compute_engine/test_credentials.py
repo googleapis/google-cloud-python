@@ -13,6 +13,7 @@
 # limitations under the License.
 import base64
 import datetime
+import re
 from unittest import mock
 
 import pytest  # type: ignore
@@ -43,13 +44,9 @@ SAMPLE_ID_TOKEN = (
     b"bsxbLa6Fp0SYeYwO8ifEnkRvasVpc1WTQqfRB2JCj5pTBDzJpIpFCMmnQ"
 )
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
-)
-ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
-)
-FAKE_SERVICE_ACCOUNT_EMAIL = "foo@bar.com"
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/mds"
+FAKE_SERVICE_ACCOUNT_EMAIL = "foo@project.iam.gserviceaccount.com"
 FAKE_QUOTA_PROJECT_ID = "fake-quota-project"
 FAKE_SCOPES = ["scope1", "scope2"]
 FAKE_DEFAULT_SCOPES = ["scope3", "scope4"]
@@ -101,7 +98,7 @@ class TestCredentials(object):
         get.side_effect = [
             {
                 # First request is for sevice account info.
-                "email": "service-account@example.com",
+                "email": "service-account@project.iam.gserviceaccount.com",
                 "scopes": ["one", "two"],
             },
             {
@@ -119,7 +116,10 @@ class TestCredentials(object):
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
 
         # Check the credential info
-        assert self.credentials.service_account_email == "service-account@example.com"
+        assert (
+            self.credentials.service_account_email
+            == "service-account@project.iam.gserviceaccount.com"
+        )
         assert self.credentials._scopes == ["one", "two"]
 
         # Check that the credentials are valid (have a token and are not
@@ -139,7 +139,7 @@ class TestCredentials(object):
         get.side_effect = [
             {
                 # First request is for sevice account info.
-                "email": "service-account@example.com",
+                "email": "service-account@project.iam.gserviceaccount.com",
                 "scopes": ["one", "two"],
             },
             {
@@ -159,7 +159,10 @@ class TestCredentials(object):
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
 
         # Check the credential info
-        assert self.credentials.service_account_email == "service-account@example.com"
+        assert (
+            self.credentials.service_account_email
+            == "service-account@project.iam.gserviceaccount.com"
+        )
         assert self.credentials._scopes == scopes
 
         # Check that the credentials are valid (have a token and are not
@@ -198,7 +201,7 @@ class TestCredentials(object):
         get.side_effect = [
             {
                 # First request is for sevice account info.
-                "email": "service-account@example.com",
+                "email": "service-account@project.iam.gserviceaccount.com",
                 "scopes": "one two",
             },
             {
@@ -206,6 +209,7 @@ class TestCredentials(object):
                 "access_token": "token",
                 "expires_in": 500,
             },
+            "googleapis.com",
         ]
 
         # Credentials should start as invalid
@@ -252,7 +256,11 @@ class TestCredentials(object):
         assert creds.universe_domain == "universe_domain"
         assert creds._universe_domain_cached
 
-    def test_token_usage_metrics(self):
+    @mock.patch(
+        "google.auth.compute_engine._metadata.get_universe_domain",
+        return_value="googleapis.com",
+    )
+    def test_token_usage_metrics(self, mock_get_universe_domain):
         self.credentials.token = "token"
         self.credentials.expiry = None
 
@@ -298,7 +306,7 @@ class TestCredentials(object):
         self, mock_get_service_account_info
     ):
         mock_get_service_account_info.return_value = {
-            "email": "resolved-email@example.com"
+            "email": "resolved-email@project.iam.gserviceaccount.com"
         }
         creds = self.credentials
         creds._universe_domain_cached = True
@@ -306,15 +314,17 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url(request=mock_request)
 
         mock_get_service_account_info.assert_called_once_with(mock_request, "default")
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@project.iam.gserviceaccount.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@project.iam.gserviceaccount.com/allowedLocations"
         assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_build_regional_access_boundary_lookup_url_http_client_request(
         self, mock_get
     ):
-        mock_get.return_value = {"email": "resolved-email@example.com"}
+        mock_get.return_value = {
+            "email": "resolved-email@project.iam.gserviceaccount.com"
+        }
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -324,8 +334,8 @@ class TestCredentials(object):
 
         url = creds._build_regional_access_boundary_lookup_url(request=req)
 
-        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
-        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@example.com/allowedLocations"
+        expected_url_standard = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@project.iam.gserviceaccount.com/allowedLocations"
+        expected_url_mtls = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/resolved-email@project.iam.gserviceaccount.com/allowedLocations"
         assert url in (expected_url_standard, expected_url_mtls)
 
     @mock.patch(
@@ -350,7 +360,7 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
 
         mock_get_service_account_info.assert_not_called()
-        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        expected_url = "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/foo@project.iam.gserviceaccount.com/allowedLocations"
         assert url == expected_url
 
     @mock.patch(
@@ -375,7 +385,7 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
 
         mock_get_service_account_info.assert_not_called()
-        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@bar.com/allowedLocations"
+        expected_url = "https://iamcredentials.mtls.googleapis.com/v1/projects/-/serviceAccounts/foo@project.iam.gserviceaccount.com/allowedLocations"
         assert url == expected_url
 
     @mock.patch(
@@ -410,11 +420,7 @@ class TestCredentials(object):
         url = creds._build_regional_access_boundary_lookup_url()
         assert url is None
 
-    @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    def test_is_regional_access_boundary_lookup_required(self, mock_enabled):
+    def test_is_regional_access_boundary_lookup_required(self):
         creds = self.credentials
         creds._universe_domain_cached = True
 
@@ -443,14 +449,10 @@ class TestCredentials(object):
         assert url is None
 
     @mock.patch(
-        "google.auth._regional_access_boundary_utils.is_regional_access_boundary_enabled",
-        return_value=True,
-    )
-    @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_regional_access_boundary_disabled_state_transitions(
-        self, mock_get_service_account_info, mock_enabled
+        self, mock_get_service_account_info
     ):
         mock_get_service_account_info.return_value = {
             "email": "spiffe://trust-domain/ns/ns/sa/sa",
@@ -497,7 +499,10 @@ class TestCredentials(object):
         mock_get_path.return_value = str(cert_path)
 
         mock_metadata_get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]},
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            },
             {"access_token": "token", "expires_in": 500},
         ]
 
@@ -532,7 +537,10 @@ class TestCredentials(object):
         mock_get_path.return_value = str(cert_path)
 
         mock_metadata_get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]},
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            },
             {"access_token": "token", "expires_in": 500},
         ]
 
@@ -559,7 +567,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_default_state(self, get):
         get.side_effect = [
-            {"email": "service-account@example.com", "scope": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scope": ["one", "two"],
+            }
         ]
 
         request = mock.create_autospec(transport.Request, instance=True)
@@ -571,10 +582,16 @@ class TestIDTokenCredentials(object):
         # Expiration hasn't been set yet
         assert not self.credentials.expired
         # Service account email hasn't been populated
-        assert self.credentials.service_account_email == "service-account@example.com"
+        assert (
+            self.credentials.service_account_email
+            == "service-account@project.iam.gserviceaccount.com"
+        )
         # Signer is initialized
         assert self.credentials.signer
-        assert self.credentials.signer_email == "service-account@example.com"
+        assert (
+            self.credentials.signer_email
+            == "service-account@project.iam.gserviceaccount.com"
+        )
         # No quota project
         assert not self.credentials._quota_project_id
 
@@ -586,7 +603,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_make_authorization_grant_assertion(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -607,7 +627,7 @@ class TestIDTokenCredentials(object):
             "aud": "https://www.googleapis.com/oauth2/v4/token",
             "exp": 3600,
             "iat": 0,
-            "iss": "service-account@example.com",
+            "iss": "service-account@project.iam.gserviceaccount.com",
             "target_audience": "https://audience.com",
         }
 
@@ -651,7 +671,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_additional_claims(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -674,7 +697,7 @@ class TestIDTokenCredentials(object):
             "aud": "https://www.googleapis.com/oauth2/v4/token",
             "exp": 3600,
             "iat": 0,
-            "iss": "service-account@example.com",
+            "iss": "service-account@project.iam.gserviceaccount.com",
             "target_audience": "https://audience.com",
             "foo": "bar",
         }
@@ -685,7 +708,7 @@ class TestIDTokenCredentials(object):
         self.credentials = credentials.IDTokenCredentials(
             request=request,
             signer=mock.Mock(),
-            service_account_email="foo@example.com",
+            service_account_email="foo@project.iam.gserviceaccount.com",
             target_audience="https://audience.com",
         )
         assert self.credentials._token_uri == credentials._DEFAULT_TOKEN_URI
@@ -693,7 +716,7 @@ class TestIDTokenCredentials(object):
         self.credentials = credentials.IDTokenCredentials(
             request=request,
             signer=mock.Mock(),
-            service_account_email="foo@example.com",
+            service_account_email="foo@project.iam.gserviceaccount.com",
             target_audience="https://audience.com",
             token_uri="https://example.com/token",
         )
@@ -707,7 +730,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_with_target_audience(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -729,7 +755,7 @@ class TestIDTokenCredentials(object):
             "aud": "https://www.googleapis.com/oauth2/v4/token",
             "exp": 3600,
             "iat": 0,
-            "iss": "service-account@example.com",
+            "iss": "service-account@project.iam.gserviceaccount.com",
             "target_audience": "https://actually.not",
         }
 
@@ -754,7 +780,7 @@ class TestIDTokenCredentials(object):
             content_type="application/json",
             json={
                 "scopes": "email",
-                "email": "service-account@example.com",
+                "email": "service-account@project.iam.gserviceaccount.com",
                 "aliases": ["default"],
             },
         )
@@ -767,6 +793,15 @@ class TestIDTokenCredentials(object):
             status=200,
             content_type="application/json",
             json={},
+        )
+
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
         )
 
         # mock token for credentials
@@ -787,8 +822,10 @@ class TestIDTokenCredentials(object):
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@project\.iam\.gserviceaccount\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
@@ -811,7 +848,7 @@ class TestIDTokenCredentials(object):
 
         self.credentials = credentials.IDTokenCredentials(
             request=requests.Request(),
-            service_account_email="service-account@example.com",
+            service_account_email="service-account@project.iam.gserviceaccount.com",
             target_audience="https://audience.com",
         )
 
@@ -829,7 +866,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_with_quota_project(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -853,12 +893,17 @@ class TestIDTokenCredentials(object):
             "aud": "https://www.googleapis.com/oauth2/v4/token",
             "exp": 3600,
             "iat": 0,
-            "iss": "service-account@example.com",
+            "iss": "service-account@project.iam.gserviceaccount.com",
             "target_audience": "https://audience.com",
         }
 
         # Check that the signer have been initialized with a Request object
         assert isinstance(self.credentials._signer._request, transport.Request)
+
+        headers = {}
+        self.credentials.token = "fake-token"
+        self.credentials.before_request(request, "GET", "https://example.com", headers)
+        assert headers.get("x-goog-user-project") == "project-foo"
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -868,7 +913,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_with_token_uri(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -890,7 +938,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_with_token_uri_exception(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -922,7 +973,7 @@ class TestIDTokenCredentials(object):
             content_type="application/json",
             json={
                 "scopes": "email",
-                "email": "service-account@example.com",
+                "email": "service-account@project.iam.gserviceaccount.com",
                 "aliases": ["default"],
             },
         )
@@ -951,12 +1002,23 @@ class TestIDTokenCredentials(object):
             json={},
         )
 
+        # mock allowedLocations for Regional Access Boundary
+        responses.add(
+            responses.GET,
+            re.compile(r".*/allowedLocations$"),
+            status=200,
+            content_type="application/json",
+            json={"encodedLocations": "0xABC"},
+        )
+
         # mock sign blob endpoint
         signature = base64.b64encode(b"some-signature").decode("utf-8")
         responses.add(
             responses.POST,
-            "https://iamcredentials.googleapis.com/v1/projects/-/"
-            "serviceAccounts/service-account@example.com:signBlob",
+            re.compile(
+                r"https://iamcredentials\.(mtls\.)?googleapis\.com/v1/projects/-/"
+                r"serviceAccounts/service-account@project\.iam\.gserviceaccount\.com:signBlob"
+            ),
             status=200,
             content_type="application/json",
             json={"keyId": "some-key-id", "signedBlob": signature},
@@ -979,7 +1041,7 @@ class TestIDTokenCredentials(object):
 
         self.credentials = credentials.IDTokenCredentials(
             request=requests.Request(),
-            service_account_email="service-account@example.com",
+            service_account_email="service-account@project.iam.gserviceaccount.com",
             target_audience="https://audience.com",
         )
 
@@ -999,7 +1061,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
     def test_refresh_success(self, id_token_jwt_grant, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
         id_token_jwt_grant.side_effect = [
@@ -1023,7 +1088,10 @@ class TestIDTokenCredentials(object):
         assert self.credentials.expiry == _helpers.utcfromtimestamp(3600)
 
         # Check the credential info
-        assert self.credentials.service_account_email == "service-account@example.com"
+        assert (
+            self.credentials.service_account_email
+            == "service-account@project.iam.gserviceaccount.com"
+        )
 
         # Check that the credentials are valid (have a token and are not
         # expired)
@@ -1037,7 +1105,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_refresh_error(self, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -1065,7 +1136,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.oauth2._client.id_token_jwt_grant", autospec=True)
     def test_before_request_refreshes(self, id_token_jwt_grant, sign, get, utcnow):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": "one two"}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": "one two",
+            }
         ]
         sign.side_effect = [b"signature"]
         id_token_jwt_grant.side_effect = [
@@ -1098,7 +1172,10 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.iam.Signer.sign", autospec=True)
     def test_sign_bytes(self, sign, get):
         get.side_effect = [
-            {"email": "service-account@example.com", "scopes": ["one", "two"]}
+            {
+                "email": "service-account@project.iam.gserviceaccount.com",
+                "scopes": ["one", "two"],
+            }
         ]
         sign.side_effect = [b"signature"]
 
@@ -1130,7 +1207,9 @@ class TestIDTokenCredentials(object):
         self, get, get_service_account_info, mock_metrics_header_value
     ):
         get.return_value = SAMPLE_ID_TOKEN
-        get_service_account_info.return_value = {"email": "foo@example.com"}
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
 
         cred = credentials.IDTokenCredentials(
             mock.Mock(), "audience", use_metadata_identity_endpoint=True
@@ -1146,7 +1225,7 @@ class TestIDTokenCredentials(object):
         assert cred._use_metadata_identity_endpoint
         assert cred._signer is None
         assert cred._token_uri is None
-        assert cred._service_account_email == "foo@example.com"
+        assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
         assert cred._target_audience == "audience"
         with pytest.raises(ValueError):
             cred.sign_bytes(b"bytes")
@@ -1155,7 +1234,9 @@ class TestIDTokenCredentials(object):
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_with_target_audience_for_metadata(self, get_service_account_info):
-        get_service_account_info.return_value = {"email": "foo@example.com"}
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
 
         cred = credentials.IDTokenCredentials(
             mock.Mock(), "audience", use_metadata_identity_endpoint=True
@@ -1166,13 +1247,15 @@ class TestIDTokenCredentials(object):
         assert cred._use_metadata_identity_endpoint
         assert cred._signer is None
         assert cred._token_uri is None
-        assert cred._service_account_email == "foo@example.com"
+        assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
     def test_id_token_with_quota_project(self, get_service_account_info):
-        get_service_account_info.return_value = {"email": "foo@example.com"}
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
 
         cred = credentials.IDTokenCredentials(
             mock.Mock(), "audience", use_metadata_identity_endpoint=True
@@ -1183,7 +1266,7 @@ class TestIDTokenCredentials(object):
         assert cred._use_metadata_identity_endpoint
         assert cred._signer is None
         assert cred._token_uri is None
-        assert cred._service_account_email == "foo@example.com"
+        assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
 
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
@@ -1191,7 +1274,9 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_invalid_id_token_from_metadata(self, get, get_service_account_info):
         get.return_value = "invalid_id_token"
-        get_service_account_info.return_value = {"email": "foo@example.com"}
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
 
         cred = credentials.IDTokenCredentials(
             mock.Mock(), "audience", use_metadata_identity_endpoint=True
@@ -1206,7 +1291,9 @@ class TestIDTokenCredentials(object):
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_transport_error_from_metadata(self, get, get_service_account_info):
         get.side_effect = exceptions.TransportError("transport error")
-        get_service_account_info.return_value = {"email": "foo@example.com"}
+        get_service_account_info.return_value = {
+            "email": "foo@project.iam.gserviceaccount.com"
+        }
 
         cred = credentials.IDTokenCredentials(
             mock.Mock(), "audience", use_metadata_identity_endpoint=True
@@ -1243,5 +1330,5 @@ class TestIDTokenCredentials(object):
                 mock.Mock(),
                 "audience",
                 use_metadata_identity_endpoint=True,
-                service_account_email="foo@example.com",
+                service_account_email="foo@project.iam.gserviceaccount.com",
             )

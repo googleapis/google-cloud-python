@@ -21,9 +21,11 @@ import functools
 
 from google.api_core import grpc_helpers_async
 from google.api_core.gapic_v1 import client_info
-from google.api_core.gapic_v1.method import _GapicCallable
-from google.api_core.gapic_v1.method import DEFAULT  # noqa: F401
-from google.api_core.gapic_v1.method import USE_DEFAULT_METADATA  # noqa: F401
+from google.api_core.gapic_v1.method import (  # noqa: F401
+    DEFAULT,
+    USE_DEFAULT_METADATA,
+    _GapicCallable,
+)
 
 _DEFAULT_ASYNC_TRANSPORT_KIND = "grpc_asyncio"
 

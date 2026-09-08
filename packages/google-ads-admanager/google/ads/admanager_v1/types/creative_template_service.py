@@ -68,22 +68,21 @@ class ListCreativeTemplatesRequest(proto.Message):
             ``ListCreativeTemplates`` must match the call that provided
             the page token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>description</code></li>
-              <li><code>displayName</code></li>
-              <li><code>interstitial</code></li>
-              <li><code>name</code></li>
-              <li><code>nativeEligible</code></li>
-              <li><code>nativeVideoEligible</code></li>
-              <li><code>safeFrameCompatible</code></li>
-              <li><code>status</code></li>
-              <li><code>type</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``description``
+            - ``displayName``
+            - ``interstitial``
+            - ``name``
+            - ``nativeEligible``
+            - ``nativeVideoEligible``
+            - ``safeFrameCompatible``
+            - ``status``
+            - ``type``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

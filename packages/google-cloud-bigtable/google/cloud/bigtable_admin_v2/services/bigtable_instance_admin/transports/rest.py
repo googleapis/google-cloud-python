@@ -32,6 +32,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.bigtable_admin_v2._compat import transcode_request
 from google.cloud.bigtable_admin_v2.types import bigtable_instance_admin, instance
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -57,8 +58,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class BigtableInstanceAdminRestInterceptor:
@@ -1873,21 +1873,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_http_options()
-
             request, metadata = self._interceptor.pre_create_app_profile(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseCreateAppProfile,
+                    "_BaseCreateAppProfile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2030,19 +2027,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseCreateCluster,
+                    "_BaseCreateCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2181,19 +2175,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2332,21 +2323,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_http_options()
-
             request, metadata = self._interceptor.pre_create_logical_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseCreateLogicalView,
+                    "_BaseCreateLogicalView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2487,21 +2475,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_http_options()
-
             request, metadata = self._interceptor.pre_create_materialized_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseCreateMaterializedView,
+                    "_BaseCreateMaterializedView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2632,17 +2617,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_app_profile(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseDeleteAppProfile,
+                    "_BaseDeleteAppProfile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2742,15 +2728,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseDeleteCluster,
+                    "_BaseDeleteCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2848,15 +2835,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2954,17 +2942,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_logical_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseDeleteLogicalView,
+                    "_BaseDeleteLogicalView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3064,17 +3053,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_materialized_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseDeleteMaterializedView,
+                    "_BaseDeleteMaterializedView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3179,15 +3169,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_http_options()
-
             request, metadata = self._interceptor.pre_get_app_profile(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetAppProfile,
+                    "_BaseGetAppProfile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3327,15 +3318,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetCluster,
+                    "_BaseGetCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3546,19 +3538,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3701,15 +3690,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3847,17 +3837,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView._get_http_options()
-
             request, metadata = self._interceptor.pre_get_logical_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetLogicalView,
+                    "_BaseGetLogicalView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3995,17 +3986,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView._get_http_options()
-
             request, metadata = self._interceptor.pre_get_materialized_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetMaterializedView,
+                    "_BaseGetMaterializedView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4145,17 +4137,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_http_options()
-
             request, metadata = self._interceptor.pre_list_app_profiles(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles,
+                    "_BaseListAppProfiles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4299,15 +4292,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_http_options()
-
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListClusters._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListClusters,
+                    "_BaseListClusters__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4447,17 +4441,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_http_options()
-
             request, metadata = self._interceptor.pre_list_hot_tablets(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListHotTablets,
+                    "_BaseListHotTablets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4597,15 +4592,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_http_options()
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4745,17 +4741,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_logical_views(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListLogicalViews,
+                    "_BaseListLogicalViews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4899,17 +4896,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_materialized_views(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListMaterializedViews,
+                    "_BaseListMaterializedViews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5055,21 +5053,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_partial_update_cluster(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateCluster,
+                    "_BasePartialUpdateCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5210,21 +5205,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_partial_update_instance(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BasePartialUpdateInstance,
+                    "_BasePartialUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5436,19 +5428,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5585,21 +5574,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5742,21 +5728,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_http_options()
-
             request, metadata = self._interceptor.pre_update_app_profile(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateAppProfile,
+                    "_BaseUpdateAppProfile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5899,19 +5882,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_http_options()
-
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateCluster,
+                    "_BaseUpdateCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6057,19 +6037,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateInstance,
+                    "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6210,21 +6187,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_http_options()
-
             request, metadata = self._interceptor.pre_update_logical_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateLogicalView,
+                    "_BaseUpdateLogicalView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6365,21 +6339,18 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
             """
 
             http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_http_options()
-
             request, metadata = self._interceptor.pre_update_materialized_view(
                 request, metadata
             )
-            transcoded_request = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateMaterializedView,
+                    "_BaseUpdateMaterializedView__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

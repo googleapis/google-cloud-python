@@ -508,6 +508,8 @@ class BulkWriter(AsyncBulkWriterMixin):
         )
 
         for _ in range(take_until_index):
+            if not self._retries:
+                break
             retry: OperationRetry = self._retries.popleft()
             retry.retry(self)
         return None

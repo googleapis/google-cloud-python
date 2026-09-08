@@ -20,6 +20,7 @@ from unittest.mock import AsyncMock
 import google_crc32c
 import pytest
 from google.api_core import exceptions
+from google.rpc import error_details_pb2, status_pb2
 
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream
@@ -60,6 +61,7 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
+        mock_stream.object_metadata = mock.Mock()
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             mock_client, bucket_name, object_name, generation, read_handle
@@ -93,6 +95,7 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.read_handle == _TEST_READ_HANDLE
         assert mrd.persisted_size == _TEST_OBJECT_SIZE
         assert mrd.is_stream_open
+        assert mrd.object_metadata == mrd.read_obj_str.object_metadata
         assert mrd._open_retries == 0
 
     @mock.patch(
@@ -275,6 +278,7 @@ class TestAsyncMultiRangeDownloader:
 
         # Assert
         assert not mrd.is_stream_open
+        assert mrd.object_metadata is None
 
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):
@@ -503,6 +507,48 @@ class TestAsyncMultiRangeDownloader:
         on_error(ValueError("test"))
         assert mrd._open_retries == 1
 
+    @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.AsyncRetry")
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_open_uses_redirect_aware_retry_predicate(
+        self, mock_cls_async_read_object_stream, mock_async_retry
+    ):
+        mock_policy = mock.MagicMock()
+        mock_policy.side_effect = lambda f: f
+        mock_async_retry.return_value = mock_policy
+
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+
+        mrd = AsyncMultiRangeDownloader(
+            mock_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+        await mrd.open()
+
+        predicate = mock_async_retry.call_args.kwargs["predicate"]
+        redirect = _storage_v2.BidiReadObjectRedirectedError(
+            routing_token="redirect-token"
+        )
+        status = status_pb2.Status()
+        detail = status.details.add()
+        detail.type_url = (
+            "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"
+        )
+        detail.value = _storage_v2.BidiReadObjectRedirectedError.serialize(redirect)
+        grpc_error = mock.MagicMock()
+        grpc_error.trailing_metadata.return_value = [
+            ("grpc-status-details-bin", status.SerializeToString())
+        ]
+
+        assert predicate(exceptions.ServiceUnavailable("unavailable")) is True
+        assert predicate(exceptions.Aborted("redirect", errors=[grpc_error])) is True
+        assert predicate(exceptions.Aborted("bare aborted")) is False
+        assert predicate(ConnectionResetError("connection reset")) is False
+
     @mock.patch("google.cloud.storage.asyncio.async_multi_range_downloader.logger")
     @pytest.mark.asyncio
     async def test_on_open_error_logs_warning(self, mock_logger):
@@ -707,3 +753,115 @@ class TestAsyncMultiRangeDownloader:
             await mrd.download_ranges([(0, 0, BytesIO())])
 
         mrd.close.assert_called_once()
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+    )
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_download_ranges_retries_on_aborted_idle_stream_from_recv(
+        self, mock_cls_async_read_object_stream, mock_random_int
+    ):
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+
+        initial_stream = mock.MagicMock()
+        initial_stream.open = AsyncMock()
+        initial_stream.close = AsyncMock()
+        initial_stream.send = AsyncMock()
+        initial_stream.generation_number = _TEST_GENERATION_NUMBER
+        initial_stream.persisted_size = _TEST_OBJECT_SIZE
+        initial_stream.read_handle = _TEST_READ_HANDLE
+        initial_stream.is_finalized = True
+        initial_stream.full_obj_server_crc32c = None
+        initial_stream.is_stream_open = True
+
+        replacement_stream = mock.MagicMock()
+        replacement_stream.open = AsyncMock()
+        replacement_stream.close = AsyncMock()
+        replacement_stream.send = AsyncMock()
+        replacement_stream.generation_number = _TEST_GENERATION_NUMBER
+        replacement_stream.persisted_size = _TEST_OBJECT_SIZE
+        replacement_stream.read_handle = _TEST_READ_HANDLE
+        replacement_stream.is_finalized = True
+        replacement_stream.full_obj_server_crc32c = None
+        replacement_stream.is_stream_open = True
+
+        mock_cls_async_read_object_stream.side_effect = [
+            initial_stream,
+            replacement_stream,
+        ]
+
+        error_info = error_details_pb2.ErrorInfo(
+            reason="GRPC_REQUEST_TIMEOUT",
+            domain="storage.googleapis.com",
+        )
+        initial_stream.recv = AsyncMock(
+            side_effect=exceptions.Aborted(
+                "Idle stream has been closed.",
+                details=[error_info],
+                error_info=error_info,
+            )
+        )
+
+        response = _storage_v2.BidiReadObjectResponse(
+            object_data_ranges=[
+                _storage_v2.ObjectRangeData(
+                    checksummed_data=_storage_v2.ChecksummedData(
+                        content=b"data", crc32c=google_crc32c.value(b"data")
+                    ),
+                    range_end=True,
+                    read_range=_storage_v2.ReadRange(
+                        read_offset=0, read_length=4, read_id=123
+                    ),
+                )
+            ]
+        )
+        replacement_stream.recv = AsyncMock(side_effect=[response])
+        mock_random_int.return_value = 123
+
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client,
+            _TEST_BUCKET_NAME,
+            _TEST_OBJECT_NAME,
+            _TEST_GENERATION_NUMBER,
+            _TEST_READ_HANDLE,
+        )
+
+        buffer = BytesIO()
+        await mrd.download_ranges([(0, 4, buffer)])
+
+        assert buffer.getvalue() == b"data"
+        assert mock_cls_async_read_object_stream.call_count == 2
+        initial_stream.close.assert_awaited_once()
+        replacement_stream.open.assert_awaited_once()
+        replacement_stream.send.assert_awaited_once_with(
+            _storage_v2.BidiReadObjectRequest(
+                read_ranges=[
+                    _storage_v2.ReadRange(read_offset=0, read_length=4, read_id=123)
+                ]
+            )
+        )
+
+    def test_is_read_retryable_predicate(self):
+        """Tests that _is_read_retryable correctly classifies retryable read errors."""
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
+            _is_read_retryable,
+        )
+
+        # Retryable exceptions
+        assert _is_read_retryable(exceptions.Aborted("Idle stream closed")) is True
+        assert _is_read_retryable(exceptions.ServiceUnavailable("unavailable")) is True
+        assert _is_read_retryable(exceptions.InternalServerError("internal")) is True
+        assert _is_read_retryable(exceptions.DeadlineExceeded("timeout")) is True
+        assert _is_read_retryable(exceptions.TooManyRequests("quota")) is True
+        assert _is_read_retryable(ConnectionResetError("connection reset")) is False
+        assert _is_read_retryable(BrokenPipeError("broken pipe")) is False
+
+        # Non-retryable exceptions
+        assert _is_read_retryable(ValueError("invalid")) is False
+        assert _is_read_retryable(exceptions.NotFound("not found")) is False
+        assert _is_read_retryable(exceptions.PermissionDenied("denied")) is False
+        assert _is_read_retryable(exceptions.InvalidArgument("invalid")) is False

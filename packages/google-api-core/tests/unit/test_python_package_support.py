@@ -18,12 +18,13 @@ from unittest.mock import patch
 import pytest
 
 from google.api_core._python_package_support import (
-    parse_version_to_tuple,
-    get_dependency_version,
-    warn_deprecation_for_versions_less_than,
-    check_dependency_versions,
+    PQC_GRPC_WARNING_TEMPLATE,
     DependencyConstraint,
     DependencyVersion,
+    check_dependency_versions,
+    get_dependency_version,
+    parse_version_to_tuple,
+    warn_deprecation_for_versions_less_than,
 )
 
 
@@ -37,7 +38,6 @@ def test_get_dependency_version(mocker, version_string_to_test):
         parse_version_to_tuple(version_string_to_test), version_string_to_test
     )
     assert get_dependency_version("some-package") == expected
-
     mock_importlib.assert_called_once_with("some-package")
 
     # Test package not found
@@ -112,6 +112,22 @@ def test_warn_deprecation_for_versions_less_than(mock_get_version, mock_get_pack
         in str(record[0].message)
     )
 
+    # Case 6: Recommended version is properly formatted.
+    mock_get_packages.reset_mock()
+    mock_get_packages.side_effect = [
+        ("dep-package (dep.package)", "dep-package"),
+        ("my-package (my.package)", "my-package"),
+    ]
+    mock_get_version.return_value = DependencyVersion(
+        parse_version_to_tuple("1.0.0"), "1.0.0"
+    )
+    with pytest.warns(FutureWarning) as record:
+        warn_deprecation_for_versions_less_than(
+            "my.package", "dep.package", "2.0.0", recommended_version="3.0.0"
+        )
+    assert len(record) == 1
+    assert "version 2.0.0 or higher (we recommend 3.0.0)." in str(record[0].message)
+
 
 @patch(
     "google.api_core._python_package_support.warn_deprecation_for_versions_less_than"
@@ -125,8 +141,40 @@ def test_check_dependency_versions_with_custom_warnings(mock_warn):
 
     assert mock_warn.call_count == 2
     mock_warn.assert_any_call(
-        "my-consumer", "pkg1", "1.0.0", recommended_version="2.0.0"
+        "my-consumer",
+        "pkg1",
+        "1.0.0",
+        recommended_version="2.0.0",
+        message_template=None,
     )
     mock_warn.assert_any_call(
-        "my-consumer", "pkg2", "2.0.0", recommended_version="3.0.0"
+        "my-consumer",
+        "pkg2",
+        "2.0.0",
+        recommended_version="3.0.0",
+        message_template=None,
+    )
+
+
+@patch(
+    "google.api_core._python_package_support.warn_deprecation_for_versions_less_than"
+)
+def test_check_dependency_versions_default(mock_warn):
+    """Test check_dependency_versions with default package dependency warnings."""
+    check_dependency_versions("my-consumer")
+
+    assert mock_warn.call_count == 2
+    mock_warn.assert_any_call(
+        "my-consumer",
+        "google.protobuf",
+        "6.33.5",
+        recommended_version="6.x",
+        message_template=None,
+    )
+    mock_warn.assert_any_call(
+        "my-consumer",
+        "grpcio",
+        "1.83.0",
+        recommended_version="1.83.x",
+        message_template=PQC_GRPC_WARNING_TEMPLATE,
     )

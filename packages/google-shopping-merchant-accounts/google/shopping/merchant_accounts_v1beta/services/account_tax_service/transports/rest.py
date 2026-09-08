@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_accounts_v1beta._compat import transcode_request
 from google.shopping.merchant_accounts_v1beta.types import account_tax
 from google.shopping.merchant_accounts_v1beta.types import (
     account_tax as gsma_account_tax,
@@ -56,8 +57,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AccountTaxServiceRestInterceptor:
@@ -409,15 +409,16 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             """
 
             http_options = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_http_options()
-
             request, metadata = self._interceptor.pre_get_account_tax(request, metadata)
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAccountTaxServiceRestTransport._BaseGetAccountTax,
+                    "_BaseGetAccountTax__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -560,17 +561,18 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             """
 
             http_options = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_http_options()
-
             request, metadata = self._interceptor.pre_list_account_tax(
                 request, metadata
             )
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAccountTaxServiceRestTransport._BaseListAccountTax,
+                    "_BaseListAccountTax__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -711,21 +713,18 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             """
 
             http_options = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_http_options()
-
             request, metadata = self._interceptor.pre_update_account_tax(
                 request, metadata
             )
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax,
+                    "_BaseUpdateAccountTax__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

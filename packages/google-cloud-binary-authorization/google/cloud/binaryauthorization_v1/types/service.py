@@ -41,7 +41,8 @@ __protobuf__ = proto.module(
 
 
 class GetPolicyRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.GetPolicy][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.GetPolicy][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.GetPolicy].
 
     Attributes:
         name (str):
@@ -57,7 +58,8 @@ class GetPolicyRequest(proto.Message):
 
 
 class UpdatePolicyRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.UpdatePolicy][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.UpdatePolicy][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.UpdatePolicy].
 
     Attributes:
         policy (google.cloud.binaryauthorization_v1.types.Policy):
@@ -77,7 +79,8 @@ class UpdatePolicyRequest(proto.Message):
 
 
 class CreateAttestorRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.CreateAttestor][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.CreateAttestor][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.CreateAttestor].
 
     Attributes:
         parent (str):
@@ -112,7 +115,8 @@ class CreateAttestorRequest(proto.Message):
 
 
 class GetAttestorRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.GetAttestor][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.GetAttestor][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.GetAttestor].
 
     Attributes:
         name (str):
@@ -128,7 +132,8 @@ class GetAttestorRequest(proto.Message):
 
 
 class UpdateAttestorRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.UpdateAttestor][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.UpdateAttestor][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.UpdateAttestor].
 
     Attributes:
         attestor (google.cloud.binaryauthorization_v1.types.Attestor):
@@ -148,7 +153,8 @@ class UpdateAttestorRequest(proto.Message):
 
 
 class ListAttestorsRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.ListAttestors][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.ListAttestors][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.ListAttestors].
 
     Attributes:
         parent (str):
@@ -183,7 +189,8 @@ class ListAttestorsRequest(proto.Message):
 
 
 class ListAttestorsResponse(proto.Message):
-    r"""Response message for [BinauthzManagementService.ListAttestors][].
+    r"""Response message for
+    [BinauthzManagementServiceV1.ListAttestors][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.ListAttestors].
 
     Attributes:
         attestors (MutableSequence[google.cloud.binaryauthorization_v1.types.Attestor]):
@@ -213,7 +220,8 @@ class ListAttestorsResponse(proto.Message):
 
 
 class DeleteAttestorRequest(proto.Message):
-    r"""Request message for [BinauthzManagementService.DeleteAttestor][].
+    r"""Request message for
+    [BinauthzManagementServiceV1.DeleteAttestor][google.cloud.binaryauthorization.v1.BinauthzManagementServiceV1.DeleteAttestor].
 
     Attributes:
         name (str):
@@ -257,9 +265,10 @@ class ValidateAttestationOccurrenceRequest(proto.Message):
         attestation (grafeas.grafeas_v1.types.AttestationOccurrence):
             Required. An
             [AttestationOccurrence][grafeas.v1.AttestationOccurrence] to
-            be checked that it can be verified by the Attestor. It does
-            not have to be an existing entity in Container Analysis. It
-            must otherwise be a valid AttestationOccurrence.
+            be checked that it can be verified by the ``Attestor``. It
+            does not have to be an existing entity in Container
+            Analysis. It must otherwise be a valid
+            ``AttestationOccurrence``.
         occurrence_note (str):
             Required. The resource name of the [Note][grafeas.v1.Note]
             to which the containing [Occurrence][grafeas.v1.Occurrence]
@@ -302,7 +311,7 @@ class ValidateAttestationOccurrenceResponse(proto.Message):
     """
 
     class Result(proto.Enum):
-        r"""The enum returned in the "result" field.
+        r"""The enum returned in the ``result`` field.
 
         Values:
             RESULT_UNSPECIFIED (0):

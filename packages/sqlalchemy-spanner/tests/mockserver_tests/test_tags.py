@@ -63,9 +63,7 @@ class TestStaleReads(MockServerTestBase):
 
         add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
         add_single_singer_query_result(
-            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
-            "FROM singers\n"
-            "WHERE singers.id = @a0"
+            "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
         )
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
         engine = self.create_engine()

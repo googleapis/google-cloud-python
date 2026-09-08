@@ -22,10 +22,7 @@ import collections
 
 import grpc
 
-from google.api_core import exceptions
-from google.api_core import retry
-from google.api_core import timeout
-
+from google.api_core import exceptions, retry, timeout
 
 _MILLIS_PER_SECOND = 1000.0
 

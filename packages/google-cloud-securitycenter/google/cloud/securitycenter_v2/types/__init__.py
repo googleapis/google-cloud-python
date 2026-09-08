@@ -21,6 +21,17 @@ from .access import (
 from .affected_resources import (
     AffectedResources,
 )
+from .agent import (
+    Agent,
+)
+from .agent_anomaly import (
+    AgentAnomaly,
+    DetectorReference,
+    InvocationReference,
+)
+from .agent_session import (
+    AgentSession,
+)
 from .ai_model import (
     AiModel,
 )
@@ -263,6 +274,11 @@ __all__ = (
     "Geolocation",
     "ServiceAccountDelegationInfo",
     "AffectedResources",
+    "Agent",
+    "AgentAnomaly",
+    "DetectorReference",
+    "InvocationReference",
+    "AgentSession",
     "AiModel",
     "Application",
     "AttackExposure",

@@ -208,6 +208,32 @@ def test_rows_w_empty_stream_arrow(class_under_test, mock_gapic_client):
     assert tuple(got) == ()
 
 
+@pytest.mark.parametrize(
+    "use_session",
+    [False, True],
+    ids=["no_session", "with_session"],
+)
+def test_to_arrow_empty_stream(class_under_test, mock_gapic_client, use_session):
+    """Verify that to_arrow() handles empty streams safely.
+
+    Note: This test focuses specifically on ReadRowsStream.to_arrow(), which
+    accepts a read_session argument to provide schema hints for empty streams,
+    unlike ReadRowsIterable.to_arrow().
+    """
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    mock_gapic_client.read_rows.return_value = iter([])
+
+    reader = class_under_test(mock_gapic_client, "name", 0, {})
+
+    read_session = _generate_arrow_read_session(arrow_schema) if use_session else None
+    expected_schema = arrow_schema if use_session else pyarrow.schema([])
+
+    table = reader.to_arrow(read_session)
+
+    assert len(table) == 0
+    assert table.schema == expected_schema
+
+
 def test_rows_w_scalars_arrow(class_under_test, mock_gapic_client):
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
@@ -402,3 +428,52 @@ def test_to_dataframe_mid_stream_failure(mut, class_under_test, mock_gapic_clien
 
         with pytest.raises(RuntimeError, match="Stream format changed mid-stream"):
             it.to_dataframe()
+
+
+def test_to_arrow_delegates_to_pandas_gbq_when_installed(mut):
+    mock_parser = mock.Mock()
+    mock_message = mock.Mock()
+    page = mut.ReadRowsPage(mock_parser, mock_message)
+    expected_batch = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([100])], names=["id"]
+    )
+
+    mock_arrow_module = mock.Mock()
+    mock_arrow_module.from_read_rows_response.return_value = expected_batch
+
+    mock_pandas_gbq = mock.Mock()
+    mock_pandas_gbq.arrow = mock_arrow_module
+
+    with mock.patch.dict(
+        "sys.modules",
+        {"pandas_gbq": mock_pandas_gbq, "pandas_gbq.arrow": mock_arrow_module},
+    ):
+        with pytest.warns(
+            PendingDeprecationWarning,
+            match="google-cloud-bigquery-storage is deprecated",
+        ):
+            actual_batch = page.to_arrow()
+
+    assert actual_batch == expected_batch
+    mock_arrow_module.from_read_rows_response.assert_called_once_with(
+        mock_message, arrow_schema=mock_parser._schema
+    )
+
+
+def test_to_arrow_falls_back_when_pandas_gbq_uninstalled(mut):
+    mock_parser = mock.Mock()
+    mock_message = mock.Mock()
+    expected_batch = pyarrow.RecordBatch.from_arrays(
+        [pyarrow.array([200])], names=["id"]
+    )
+    mock_parser.to_arrow.return_value = expected_batch
+    with mock.patch.dict("sys.modules", {"pandas_gbq": None, "pandas_gbq.arrow": None}):
+        page = mut.ReadRowsPage(mock_parser, mock_message)
+        with pytest.warns(
+            PendingDeprecationWarning,
+            match="google-cloud-bigquery-storage is deprecated",
+        ):
+            actual_batch = page.to_arrow()
+
+    assert actual_batch == expected_batch
+    mock_parser.to_arrow.assert_called_once_with(mock_message)

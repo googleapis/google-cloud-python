@@ -265,7 +265,7 @@ class BigtableOptions(proto.Message):
     class Type(proto.Enum):
         r"""The type of values in a Bigtable column or column family. The values
         are expected to be encoded using `HBase
-        Bytes.toBytes <https://hbase.apache.org/apidocs/org/apache/hadoop/hbase/util/Bytes.html>`__
+        Bytes.toBytes <https://hbase.apache.org/1.4/apidocs/org/apache/hadoop/hbase/util/Bytes.html>`__
         function when the encoding value is set to ``BINARY``.
 
         Values:
@@ -485,6 +485,17 @@ class FhirStoreSource(proto.Message):
             be a subset of all `supported FHIR resource
             types <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
             Default to all supported FHIR resource types if empty.
+        update_from_latest_predefined_schema (bool):
+            Optional. Whether to update the DataStore schema to the
+            latest predefined schema.
+
+            If true, the DataStore schema will be updated to include any
+            FHIR fields or resource types that have been added since the
+            last import and corresponding FHIR resources will be
+            imported from the FHIR store.
+
+            Note this field cannot be used in conjunction with
+            ``resource_types``. It should be used after initial import.
     """
 
     fhir_store: str = proto.Field(
@@ -498,6 +509,10 @@ class FhirStoreSource(proto.Message):
     resource_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    update_from_latest_predefined_schema: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -817,8 +832,9 @@ class ImportUserEventsMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Output only. Operation last update time. If
+            the operation is done, this is also the finish
+            time.
         success_count (int):
             Count of entries that were processed
             successfully.
@@ -1025,8 +1041,14 @@ class ImportDocumentsRequest(proto.Message):
               INVALID_ARGUMENT error is thrown.
             - [SpannerSource][google.cloud.discoveryengine.v1beta.SpannerSource].
             - [CloudSqlSource][google.cloud.discoveryengine.v1beta.CloudSqlSource].
-            - [FirestoreSource][google.cloud.discoveryengine.v1beta.FirestoreSource].
             - [BigtableSource][google.cloud.discoveryengine.v1beta.BigtableSource].
+        force_refresh_content (bool):
+            Optional. Whether to force refresh the unstructured content
+            of the documents.
+
+            If set to ``true``, the content part of the documents will
+            be refreshed regardless of the update status of the
+            referencing content.
     """
 
     class ReconciliationMode(proto.Enum):
@@ -1043,7 +1065,11 @@ class ImportDocumentsRequest(proto.Message):
                 Calculates diff and replaces the entire
                 document dataset. Existing documents may be
                 deleted if they are not present in the source
-                location.
+                location. When using this mode, there won't be
+                any downtime on the dataset targeted. Any
+                document that should remain unchanged or that
+                should be updated will continue serving while
+                the operation is running.
         """
 
         RECONCILIATION_MODE_UNSPECIFIED = 0
@@ -1148,6 +1174,10 @@ class ImportDocumentsRequest(proto.Message):
     id_field: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    force_refresh_content: bool = proto.Field(
+        proto.BOOL,
+        number=16,
     )
 
 

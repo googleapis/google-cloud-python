@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.maps.geocode_v4._compat import transcode_request
 from google.maps.geocode_v4.types import geocode_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class GeocodeServiceRestInterceptor:
@@ -404,15 +404,16 @@ class GeocodeServiceRestTransport(_BaseGeocodeServiceRestTransport):
             http_options = (
                 _BaseGeocodeServiceRestTransport._BaseGeocodeAddress._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_geocode_address(request, metadata)
-            transcoded_request = _BaseGeocodeServiceRestTransport._BaseGeocodeAddress._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGeocodeServiceRestTransport._BaseGeocodeAddress._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGeocodeServiceRestTransport._BaseGeocodeAddress,
+                    "_BaseGeocodeAddress__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -551,17 +552,18 @@ class GeocodeServiceRestTransport(_BaseGeocodeServiceRestTransport):
             """
 
             http_options = _BaseGeocodeServiceRestTransport._BaseGeocodeLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_geocode_location(
                 request, metadata
             )
-            transcoded_request = _BaseGeocodeServiceRestTransport._BaseGeocodeLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGeocodeServiceRestTransport._BaseGeocodeLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGeocodeServiceRestTransport._BaseGeocodeLocation,
+                    "_BaseGeocodeLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -702,15 +704,16 @@ class GeocodeServiceRestTransport(_BaseGeocodeServiceRestTransport):
             http_options = (
                 _BaseGeocodeServiceRestTransport._BaseGeocodePlace._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_geocode_place(request, metadata)
-            transcoded_request = _BaseGeocodeServiceRestTransport._BaseGeocodePlace._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGeocodeServiceRestTransport._BaseGeocodePlace._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGeocodeServiceRestTransport._BaseGeocodePlace,
+                    "_BaseGeocodePlace__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

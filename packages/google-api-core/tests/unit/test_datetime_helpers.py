@@ -16,10 +16,9 @@ import calendar
 import datetime
 
 import pytest
-
-from google.api_core import datetime_helpers
 from google.protobuf import timestamp_pb2
 
+from google.api_core import datetime_helpers
 
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
 

@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import re
 
+import pytest
 from google.api import http_pb2
-from google.api_core import protobuf_helpers
 from google.longrunning import operations_pb2
-from google.protobuf import any_pb2
-from google.protobuf import message
-from google.protobuf import source_context_pb2
-from google.protobuf import struct_pb2
-from google.protobuf import timestamp_pb2
-from google.protobuf import type_pb2
-from google.protobuf import wrappers_pb2
-from google.type import color_pb2
-from google.type import date_pb2
-from google.type import timeofday_pb2
+from google.protobuf import (
+    any_pb2,
+    message,
+    source_context_pb2,
+    struct_pb2,
+    timestamp_pb2,
+    type_pb2,
+    wrappers_pb2,
+)
+from google.type import color_pb2, date_pb2, timeofday_pb2
+
+from google.api_core import protobuf_helpers
 
 
 def test_from_any_pb_success():

@@ -1,4 +1,7 @@
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -17,14 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: "3.10"
     - name: Install nox
@@ -34,24 +38,26 @@ jobs:
     - name: Run docs
       env:
         BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docs
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
   docfx:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
       # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
       # See https://github.com/googleapis/google-cloud-python/issues/12013
       # and https://github.com/actions/checkout#checkout-head.
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Setup Python
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
       with:
         python-version: "3.10"
     - name: Install nox
@@ -61,7 +67,7 @@ jobs:
     - name: Run docfx
       env:
         BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docfx
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"

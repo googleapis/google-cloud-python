@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-alloydb/#history
 
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.11.0...google-cloud-alloydb-v0.11.1) (2026-08-21)
+
+
+### Features
+
+* update sources and regenerate ([#18164](https://github.com/googleapis/google-cloud-python/issues/18164)) ([5ff8274](https://github.com/googleapis/google-cloud-python/commit/5ff8274ac2eb9375e918dff68303d3abdc3e6d6f))
+
+## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.10.0...google-cloud-alloydb-v0.11.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17413) ([59fe7cf83c123102baf5439af4acd6218d7ce01b](https://github.com/googleapis/google-cloud-python/commit/59fe7cf83c123102baf5439af4acd6218d7ce01b))
+
 ## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.9.0...google-cloud-alloydb-v0.10.0) (2026-06-02)
 
 

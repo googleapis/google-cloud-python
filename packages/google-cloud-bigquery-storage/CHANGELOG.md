@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.40.0...google-cloud-bigquery-storage-v2.41.0) (2026-08-21)
+
+
+### Features
+
+* add pandas-gbq to optional extras ([#18020](https://github.com/googleapis/google-cloud-python/issues/18020)) ([fe91d93](https://github.com/googleapis/google-cloud-python/commit/fe91d93dfa4f26df7ae3ebf4463bd198efac75b6))
+* **bigquery-storage:** add deprecation warning for to_dataframe ([#18022](https://github.com/googleapis/google-cloud-python/issues/18022)) ([57e7822](https://github.com/googleapis/google-cloud-python/commit/57e7822651e0f255fa3090f2fafbe0be3af272eb))
+* update sources and regenerate ([#18164](https://github.com/googleapis/google-cloud-python/issues/18164)) ([5ff8274](https://github.com/googleapis/google-cloud-python/commit/5ff8274ac2eb9375e918dff68303d3abdc3e6d6f))
+
+
+### Bug Fixes
+
+* **storage:** support updated GapicCallable metadata in tests ([#18031](https://github.com/googleapis/google-cloud-python/issues/18031)) ([24fe2e3](https://github.com/googleapis/google-cloud-python/commit/24fe2e3fd6320fe0e676105b54df6f6322f211bd))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.39.0...google-cloud-bigquery-storage-v2.40.0) (2026-08-06)
+
+
+### Features
+
+* delegate ReadRowsPage.to_arrow to pandas_gbq.arrow ([#17938](https://github.com/googleapis/google-cloud-python/issues/17938)) ([aedc66f](https://github.com/googleapis/google-cloud-python/commit/aedc66fe757079ea5343fa1438504689c3bf73e7))
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.38.0...google-cloud-bigquery-storage-v2.39.0) (2026-06-02)
 
 

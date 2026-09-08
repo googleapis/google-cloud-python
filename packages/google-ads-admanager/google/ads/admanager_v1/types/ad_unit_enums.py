@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "AdUnitStatusEnum",
         "SmartSizeModeEnum",
         "TargetWindowEnum",
+        "RefreshRateTypeEnum",
     },
 )
 
@@ -110,6 +111,33 @@ class TargetWindowEnum(proto.Message):
         TARGET_WINDOW_UNSPECIFIED = 0
         TOP = 1
         BLANK = 2
+
+
+class RefreshRateTypeEnum(proto.Message):
+    r"""Wrapper message for
+    [RefreshRateType][google.ads.admanager.v1.RefreshRateTypeEnum.RefreshRateType]
+
+    """
+
+    class RefreshRateType(proto.Enum):
+        r"""Represents the refresh rate control type for an ad unit.
+        New values may be added in the future.
+
+        Values:
+            REFRESH_RATE_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            DISABLED (1):
+                Indicates refresh is disabled.
+            OPTIMIZED (2):
+                Represents the Google optimized refresh rate.
+            FIXED_INTERVAL (3):
+                Represents a fixed interval refresh rate.
+        """
+
+        REFRESH_RATE_TYPE_UNSPECIFIED = 0
+        DISABLED = 1
+        OPTIMIZED = 2
+        FIXED_INTERVAL = 3
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

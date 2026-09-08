@@ -133,7 +133,9 @@ class ErrorReason(proto.Enum):
             authorization.
         NO_IDENTIFIERS_PROVIDED (39):
             Events data contains no user identifiers or
-            ad identifiers.
+            ad identifiers. For Floodlight Event ingestion
+            this error indicates requests contains no ad
+            identifiers.
         INVALID_PROPERTY_TYPE (40):
             The property type is not supported.
         INVALID_STREAM_TYPE (41):
@@ -353,6 +355,14 @@ class ErrorReason(proto.Enum):
             of baseline location failed.
         INSIGHTS_MISSING_FOR_DIMENSION (123):
             Insights missing for this dimension.
+        REQUIRED_PREREQUISITE_LINK_MISSING (124):
+            A required prerequisite link (such as a
+            Google Ads link) must exist for the Google
+            Analytics property to perform this operation.
+        INVALID_REMOVE_AS_OF_TIME (125):
+            The remove as of time must be in the past or
+            present. Future timestamps are not permitted for
+            removing audience members.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -478,6 +488,8 @@ class ErrorReason(proto.Enum):
     CUSTOM_VARIABLE_NOT_FOUND = 120
     BASELINE_LOCATION_AUTO_DETECTION_FAILED = 122
     INSIGHTS_MISSING_FOR_DIMENSION = 123
+    REQUIRED_PREREQUISITE_LINK_MISSING = 124
+    INVALID_REMOVE_AS_OF_TIME = 125
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

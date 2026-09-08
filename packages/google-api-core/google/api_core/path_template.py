@@ -25,10 +25,11 @@ in Google APIs for `resource names`_.
 
 from __future__ import unicode_literals
 
-from collections import deque
 import copy
 import functools
 import re
+import urllib.parse
+from collections import deque
 
 # Regular expression for extracting variable parts from a path template.
 # The variables can be expressed as:
@@ -62,6 +63,41 @@ _SINGLE_SEGMENT_PATTERN = r"([^/]+)"
 _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
+def _extract_and_validate_wildcards(
+    val: str, template_str: str | None, property_name: str = "property"
+) -> None:
+    """Extract and validate wildcard variables against path traversal.
+
+    Ensures that values matched against single-segment wildcards ('*') are
+    not '.' or '..', and values matched against multi-segment wildcards ('**')
+    do not contain '.' or '..' segments.
+
+    If the value does not match the sub-template structure, validation is
+    deferred to allow subsequent bindings to be evaluated.
+
+    Args:
+        val (str): The raw string value to validate.
+        template_str (str | None): The template string of the variable (e.g.
+            'projects/*/locations/*').
+        property_name (str): The name of the property being validated, for use
+            in error messages.
+
+    Raises:
+        ValueError: If a wildcard value contains invalid dot segments.
+    """
+    tmpl = template_str or "*"
+    m = re.fullmatch(_generate_pattern_for_template(tmpl), val)
+    if m is not None:
+        groups = m.groups()
+        for g in groups:
+            if "." in g and any(seg in (".", "..") for seg in g.split("/")):
+                if "**" in tmpl or "/" in tmpl:
+                    raise ValueError(
+                        f"Value for {property_name} must not contain segments that are exactly . or .. ."
+                    )
+                raise ValueError(f"Invalid value {g} for {property_name}.")
+
+
 def _expand_variable_match(positional_vars, named_vars, match):
     """Expand a matched variable with its value.
 
@@ -81,9 +117,13 @@ def _expand_variable_match(positional_vars, named_vars, match):
     """
     positional = match.group("positional")
     name = match.group("name")
+    template = match.group("template")
+
     if name is not None:
         try:
-            return str(named_vars[name])
+            val = str(named_vars[name])
+            _extract_and_validate_wildcards(val, template, name)
+            return val
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -91,7 +131,9 @@ def _expand_variable_match(positional_vars, named_vars, match):
             )
     elif positional is not None:
         try:
-            return str(positional_vars.pop(0))
+            val = str(positional_vars.pop(0))
+            _extract_and_validate_wildcards(val, positional, "positional variable")
+            return val
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "
@@ -159,6 +201,7 @@ def _replace_variable_with_pattern(match):
         raise ValueError("Unknown template expression {}".format(match.group(0)))
 
 
+@functools.lru_cache(maxsize=256)
 def _generate_pattern_for_template(tmpl):
     """Generate a pattern that can validate a path template.
 
@@ -172,12 +215,17 @@ def _generate_pattern_for_template(tmpl):
     return _VARIABLE_RE.sub(_replace_variable_with_pattern, tmpl)
 
 
-def get_field(request, field):
+def get_field(request, field, encode=False):
     """Get the value of a field from a given dictionary.
 
     Args:
         request (dict | Message): A dictionary or a Message object.
         field (str): The key to the request in dot notation.
+        encode (bool): Whether to percent-encode the field value. If enabled,
+            will encode all characters except `[-_.~/0-9a-zA-Z]` for URI path
+            variable parts per
+            https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312.
+            Defaults to False.
 
     Returns:
         The value of the field.
@@ -192,6 +240,8 @@ def get_field(request, field):
             value = value.get(part)
     if isinstance(value, dict):
         return
+    if encode and value is not None:
+        return urllib.parse.quote(str(value), safe="/")
     return value
 
 
@@ -284,7 +334,10 @@ def transcode(http_options, message=None, **request_kwargs):
         ]
         bindings.append((uri_template, fields))
 
-        path_args = {field: get_field(transcoded_value, field) for field, _ in fields}
+        path_args = {
+            field: get_field(transcoded_value, field, encode=True)
+            for field, _ in fields
+        }
         request["uri"] = expand(uri_template, **path_args)
 
         if not validate(uri_template, request["uri"]) or not all(path_args.values()):
@@ -321,8 +374,7 @@ def transcode(http_options, message=None, **request_kwargs):
         return request
 
     bindings_description = [
-        '\n\tURI: "{}"'
-        "\n\tRequired request fields:\n\t\t{}".format(
+        '\n\tURI: "{}"\n\tRequired request fields:\n\t\t{}'.format(
             uri,
             "\n\t\t".join(
                 [

@@ -329,7 +329,7 @@ class MutationsBatcher:
             CrossSync._Sync_Impl.Future[list[FailedMutationEntryError]]
         ] = []
         for batch, metric in self._flow_control.add_to_flow_with_metrics(
-            new_entries, self._target._metrics
+            new_entries, self._target.client._metrics
         ):
             batch_task = CrossSync._Sync_Impl.create_task(
                 self._execute_mutate_rows,

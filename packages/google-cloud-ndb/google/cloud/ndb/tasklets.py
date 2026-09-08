@@ -314,8 +314,7 @@ class _TaskletFuture(Future):
             with self.context.use():
                 # Send the next value or exception into the generator
                 if error:
-                    traceback = error.__traceback__
-                    yielded = self.generator.throw(type(error), error, traceback)
+                    yielded = self.generator.throw(error)
 
                 else:
                     # send_value will be None if this is the first time

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 from unittest import mock
 
 import pytest
@@ -362,6 +363,39 @@ class Test_TaskletFuture:
         assert future.exception() is error
         with pytest.raises(Exception):
             future.result()
+
+    @staticmethod
+    def test__advance_tasklet_dependency_raises_preserves_traceback(in_context):
+        """Regression test: the error reaches the generator with its traceback
+        and without a DeprecationWarning from the legacy throw() signature."""
+
+        def generator_function(dependency):
+            try:
+                yield dependency
+            except Exception as caught:
+                raise tasklets.Return(caught.__traceback__ is not None)
+
+        error = Exception("Spurious error.")
+        dependency = tasklets.Future()
+        generator = generator_function(dependency)
+        future = tasklets._TaskletFuture(generator, in_context)
+        future._advance_tasklet()
+
+        try:
+            raise error
+        except Exception:
+            pass  # give the exception a traceback, as a real failure would have
+
+        with warnings.catch_warnings(record=True) as caught_warnings:
+            warnings.simplefilter("always")
+            dependency.set_exception(error)
+
+        assert future.result() is True
+        assert not [
+            warning
+            for warning in caught_warnings
+            if issubclass(warning.category, DeprecationWarning)
+        ]
 
     @staticmethod
     def test__advance_tasklet_dependency_raises_with_try_except(in_context):

@@ -57,6 +57,9 @@ from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
     access,
     affected_resources,
+    agent,
+    agent_anomaly,
+    agent_session,
     ai_model,
     application,
     attack_exposure,
@@ -1119,7 +1122,7 @@ class SecurityCenterAsyncClient:
             self._client._transport.create_mute_config
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)$"
@@ -1644,7 +1647,7 @@ class SecurityCenterAsyncClient:
             self._client._transport.delete_mute_config
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)/muteConfigs/[^/]+$"
@@ -2496,7 +2499,7 @@ class SecurityCenterAsyncClient:
             self._client._transport.get_mute_config
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)/muteConfigs/[^/]+$"
@@ -3609,7 +3612,7 @@ class SecurityCenterAsyncClient:
             self._client._transport.list_mute_configs
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)/muteConfigs$"
@@ -5258,7 +5261,7 @@ class SecurityCenterAsyncClient:
             self._client._transport.update_mute_config
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)/muteConfigs/[^/]+$"
@@ -6086,9 +6089,7 @@ class SecurityCenterAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SecurityCenterAsyncClient",)

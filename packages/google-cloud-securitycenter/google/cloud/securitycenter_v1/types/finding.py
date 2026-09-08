@@ -22,20 +22,10 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import access as gcs_access
-from google.cloud.securitycenter_v1.types import application as gcs_application
-from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
+from google.cloud.securitycenter_v1.types import agent as gcs_agent
+from google.cloud.securitycenter_v1.types import agent_anomaly as gcs_agent_anomaly
 from google.cloud.securitycenter_v1.types import (
-    backup_disaster_recovery as gcs_backup_disaster_recovery,
-)
-from google.cloud.securitycenter_v1.types import chokepoint as gcs_chokepoint
-from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
-)
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
-)
-from google.cloud.securitycenter_v1.types import (
+    agent_session,
     compliance,
     connection,
     contact_details,
@@ -48,6 +38,19 @@ from google.cloud.securitycenter_v1.types import (
     log_entry,
     org_policy,
     process,
+)
+from google.cloud.securitycenter_v1.types import application as gcs_application
+from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
+from google.cloud.securitycenter_v1.types import (
+    backup_disaster_recovery as gcs_backup_disaster_recovery,
+)
+from google.cloud.securitycenter_v1.types import chokepoint as gcs_chokepoint
+from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
+)
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
 )
 from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
@@ -311,6 +314,15 @@ class Finding(proto.Message):
         external_exposure (google.cloud.securitycenter_v1.types.ExternalExposure):
             External exposure associated with the
             finding.
+        agent (google.cloud.securitycenter_v1.types.Agent):
+            Primary Agent that the specified finding was
+            flagged for
+        agent_sessions (MutableSequence[google.cloud.securitycenter_v1.types.AgentSession]):
+            Conversational session(s) where the finding
+            occurred.
+        agent_anomaly (google.cloud.securitycenter_v1.types.AgentAnomaly):
+            Details about behavior anomalies detected in
+            AI agents.
     """
 
     class State(proto.Enum):
@@ -831,6 +843,21 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=84,
         message=gcs_external_exposure.ExternalExposure,
+    )
+    agent: gcs_agent.Agent = proto.Field(
+        proto.MESSAGE,
+        number=88,
+        message=gcs_agent.Agent,
+    )
+    agent_sessions: MutableSequence[agent_session.AgentSession] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=89,
+        message=agent_session.AgentSession,
+    )
+    agent_anomaly: gcs_agent_anomaly.AgentAnomaly = proto.Field(
+        proto.MESSAGE,
+        number=90,
+        message=gcs_agent_anomaly.AgentAnomaly,
     )
 
 

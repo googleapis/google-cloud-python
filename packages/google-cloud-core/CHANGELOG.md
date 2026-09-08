@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.6.1...google-cloud-core-v2.7.0) (2026-08-21)
+
+
+### Features
+
+* **core:** implement PEP 0810 explicit lazy imports in google-cloud-core ([#18052](https://github.com/googleapis/google-cloud-python/issues/18052)) ([5a7ed02](https://github.com/googleapis/google-cloud-python/commit/5a7ed029c8942e090db3e8b7ae6c2bb42ff79e6b))
+
+
+### Bug Fixes
+
+* use lowercase x-goog-api-client header ([#18064](https://github.com/googleapis/google-cloud-python/issues/18064)) ([d465d1e](https://github.com/googleapis/google-cloud-python/commit/d465d1ebdb03bc61abf51be02663d795ac8806af))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.6.0...google-cloud-core-v2.6.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.5.1...google-cloud-core-v2.6.0) (2026-05-06)
 
 

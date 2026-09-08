@@ -32,9 +32,7 @@ from google.cloud.biglake_hive_v1beta.types import hive_metastore
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class HiveMetastoreServiceTransport(abc.ABC):
@@ -241,6 +239,11 @@ class HiveMetastoreServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.failover_hive_catalog: gapic_v1.method.wrap_method(
+                self.failover_hive_catalog,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -437,6 +440,18 @@ class HiveMetastoreServiceTransport(abc.ABC):
         Union[
             hive_metastore.ListPartitionsResponse,
             Awaitable[hive_metastore.ListPartitionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def failover_hive_catalog(
+        self,
+    ) -> Callable[
+        [hive_metastore.FailoverHiveCatalogRequest],
+        Union[
+            hive_metastore.FailoverHiveCatalogResponse,
+            Awaitable[hive_metastore.FailoverHiveCatalogResponse],
         ],
     ]:
         raise NotImplementedError()

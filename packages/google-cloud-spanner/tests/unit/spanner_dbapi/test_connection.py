@@ -145,6 +145,26 @@ class TestConnection(unittest.TestCase):
         connection.read_only = False
         self.assertFalse(connection.read_only)
 
+    def test_property_data_boost_enabled(self):
+        connection = self._make_connection()
+        self.assertFalse(connection.data_boost_enabled)
+
+        connection.data_boost_enabled = True
+        self.assertTrue(connection.data_boost_enabled)
+
+        connection.data_boost_enabled = False
+        self.assertFalse(connection.data_boost_enabled)
+
+    def test_property_auto_partition_mode(self):
+        connection = self._make_connection()
+        self.assertFalse(connection.auto_partition_mode)
+
+        connection.auto_partition_mode = True
+        self.assertTrue(connection.auto_partition_mode)
+
+        connection.auto_partition_mode = False
+        self.assertFalse(connection.auto_partition_mode)
+
     def test__session_checkout_read_only(self):
         connection = build_connection(read_only=True)
         database = connection._database
@@ -922,6 +942,46 @@ class TestConnection(unittest.TestCase):
             )
         self.assertIn(
             "instance_type must be one of 'cloud' or 'omni'", str(ctx.exception)
+        )
+
+    def test_partition_query_data_boost_enabled(self):
+        from google.cloud.spanner_dbapi.parse_utils import classify_statement
+
+        connection = self._make_connection(read_only=True, data_boost_enabled=True)
+        batch_snapshot = mock.MagicMock()
+        batch_snapshot.generate_query_batches.return_value = []
+        batch_snapshot.get_batch_transaction_id.return_value = mock.MagicMock(
+            transaction_id=b"tx", session_id="sess", read_timestamp=None
+        )
+        connection.database.batch_snapshot = mock.MagicMock(return_value=batch_snapshot)
+
+        parsed_stmt = classify_statement("PARTITION SELECT 1")
+        res = connection.partition_query(parsed_stmt)
+        self.assertEqual(res, [])
+        batch_snapshot.generate_query_batches.assert_called_once_with(
+            "SELECT 1",
+            None,
+            None,
+            query_options=None,
+            data_boost_enabled=True,
+        )
+
+    def test_run_partitioned_query_data_boost_enabled(self):
+        from google.cloud.spanner_dbapi.parse_utils import classify_statement
+
+        connection = self._make_connection(read_only=True, data_boost_enabled=True)
+        batch_snapshot = mock.MagicMock()
+        batch_snapshot.run_partitioned_query.return_value = "merged_result_set"
+        connection.database.batch_snapshot = mock.MagicMock(return_value=batch_snapshot)
+
+        parsed_stmt = classify_statement("RUN PARTITIONED QUERY SELECT 1")
+        res = connection.run_partitioned_query(parsed_stmt)
+        self.assertEqual(res, "merged_result_set")
+        batch_snapshot.run_partitioned_query.assert_called_once_with(
+            "SELECT 1",
+            None,
+            None,
+            data_boost_enabled=True,
         )
 
 

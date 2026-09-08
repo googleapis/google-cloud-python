@@ -513,6 +513,39 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_cloud_exadata_infrastructure"]
 
     @property
+    def configure_exascale_cloud_exadata_infrastructure(
+        self,
+    ) -> Callable[
+        [exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the configure exascale cloud
+        exadata infrastructure method over gRPC.
+
+        Configures Exascale for a single Exadata
+        Infrastructure.
+
+        Returns:
+            Callable[[~.ConfigureExascaleCloudExadataInfrastructureRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "configure_exascale_cloud_exadata_infrastructure" not in self._stubs:
+            self._stubs["configure_exascale_cloud_exadata_infrastructure"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ConfigureExascaleCloudExadataInfrastructure",
+                    request_serializer=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["configure_exascale_cloud_exadata_infrastructure"]
+
+    @property
     def list_cloud_vm_clusters(
         self,
     ) -> Callable[
@@ -1258,6 +1291,70 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["failover_autonomous_database"]
+
+    @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the refresh autonomous database method over gRPC.
+
+        Refreshes the refreshable clone of an Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.RefreshAutonomousDatabaseRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refresh_autonomous_database" not in self._stubs:
+            self._stubs["refresh_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RefreshAutonomousDatabase",
+                    request_serializer=oracledatabase.RefreshAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["refresh_autonomous_database"]
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        oracledatabase.AutonomousDatabaseRefreshableClones,
+    ]:
+        r"""Return a callable for the get autonomous database
+        refreshable clones method over gRPC.
+
+        Gets the refreshable clones for a given Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.GetAutonomousDatabaseRefreshableClonesRequest],
+                    ~.AutonomousDatabaseRefreshableClones]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_autonomous_database_refreshable_clones" not in self._stubs:
+            self._stubs["get_autonomous_database_refreshable_clones"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetAutonomousDatabaseRefreshableClones",
+                    request_serializer=oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest.serialize,
+                    response_deserializer=oracledatabase.AutonomousDatabaseRefreshableClones.deserialize,
+                )
+            )
+        return self._stubs["get_autonomous_database_refreshable_clones"]
 
     @property
     def list_odb_networks(
@@ -2340,38 +2437,6 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["delete_goldengate_connection"]
 
     @property
-    def get_goldengate_deployment_version(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_version.GetGoldengateDeploymentVersionRequest],
-        goldengate_deployment_version.GoldengateDeploymentVersion,
-    ]:
-        r"""Return a callable for the get goldengate deployment
-        version method over gRPC.
-
-        Gets details of a single GoldengateDeploymentVersion.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentVersionRequest],
-                    ~.GoldengateDeploymentVersion]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_version" not in self._stubs:
-            self._stubs["get_goldengate_deployment_version"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentVersion",
-                    request_serializer=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest.serialize,
-                    response_deserializer=goldengate_deployment_version.GoldengateDeploymentVersion.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_version"]
-
-    @property
     def list_goldengate_deployment_versions(
         self,
     ) -> Callable[
@@ -2403,37 +2468,6 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["list_goldengate_deployment_versions"]
-
-    @property
-    def get_goldengate_deployment_type(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_type.GetGoldengateDeploymentTypeRequest],
-        goldengate_deployment_type.GoldengateDeploymentType,
-    ]:
-        r"""Return a callable for the get goldengate deployment type method over gRPC.
-
-        Gets details of a single GoldenGateDeploymentType.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentTypeRequest],
-                    ~.GoldengateDeploymentType]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_type" not in self._stubs:
-            self._stubs["get_goldengate_deployment_type"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentType",
-                    request_serializer=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest.serialize,
-                    response_deserializer=goldengate_deployment_type.GoldengateDeploymentType.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_type"]
 
     @property
     def list_goldengate_deployment_types(
@@ -2469,39 +2503,6 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
         return self._stubs["list_goldengate_deployment_types"]
 
     @property
-    def get_goldengate_deployment_environment(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest],
-        goldengate_deployment_environment.GoldengateDeploymentEnvironment,
-    ]:
-        r"""Return a callable for the get goldengate deployment
-        environment method over gRPC.
-
-        Gets details of a single
-        GoldengateDeploymentEnvironment.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentEnvironmentRequest],
-                    ~.GoldengateDeploymentEnvironment]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_environment" not in self._stubs:
-            self._stubs["get_goldengate_deployment_environment"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentEnvironment",
-                    request_serializer=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest.serialize,
-                    response_deserializer=goldengate_deployment_environment.GoldengateDeploymentEnvironment.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_environment"]
-
-    @property
     def list_goldengate_deployment_environments(
         self,
     ) -> Callable[
@@ -2533,37 +2534,6 @@ class OracleDatabaseGrpcTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["list_goldengate_deployment_environments"]
-
-    @property
-    def get_goldengate_connection_type(
-        self,
-    ) -> Callable[
-        [goldengate_connection_type.GetGoldengateConnectionTypeRequest],
-        goldengate_connection_type.GoldengateConnectionType,
-    ]:
-        r"""Return a callable for the get goldengate connection type method over gRPC.
-
-        Gets details of a single GoldengateConnectionType.
-
-        Returns:
-            Callable[[~.GetGoldengateConnectionTypeRequest],
-                    ~.GoldengateConnectionType]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_connection_type" not in self._stubs:
-            self._stubs["get_goldengate_connection_type"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateConnectionType",
-                    request_serializer=goldengate_connection_type.GetGoldengateConnectionTypeRequest.serialize,
-                    response_deserializer=goldengate_connection_type.GoldengateConnectionType.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_connection_type"]
 
     @property
     def list_goldengate_connection_types(

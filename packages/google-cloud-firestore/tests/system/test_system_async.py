@@ -39,6 +39,7 @@ from test__helpers import (
     FIRESTORE_CREDS,
     FIRESTORE_EMULATOR,
     FIRESTORE_ENTERPRISE_DB,
+    FIRESTORE_OTHER_DB,
     FIRESTORE_PROJECT,
     MISSING_DOCUMENT,
     RANDOM_ID_REGEX,
@@ -160,8 +161,8 @@ async def cleanup():
     operations = []
     yield operations.append
 
-    for operation in operations:
-        await operation()
+    if operations:
+        await asyncio.gather(*[operation() for operation in operations])
 
 
 @pytest.fixture
@@ -1046,7 +1047,9 @@ def check_snapshot(snapshot, document, data, write_result):
     assert snapshot.update_time == write_result.update_time
 
 
-@pytest.mark.parametrize("database", TEST_DATABASES, indirect=True)
+# We explicitly parameterize test_document_get with FIRESTORE_OTHER_DB to test
+# named database path routing natively, without inflating the rest of the test suite.
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 async def test_document_get(client, cleanup, database):
     now = datetime.datetime.now(tz=datetime.timezone.utc)
     document_id = "for-get" + UNIQUE_RESOURCE_ID
@@ -1243,7 +1246,7 @@ async def test_list_collections_with_read_time(client, cleanup, database):
     }
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
@@ -1272,13 +1275,13 @@ async def query_docs(client):
         await operation()
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def collection(query_docs):
     collection, _, _ = query_docs
     yield collection
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(scope="module")
 async def async_query(collection):
     return collection.where(filter=FieldFilter("a", "==", 1))
 
@@ -3705,3 +3708,41 @@ async def test_query_in_transaction_with_read_time(client, cleanup, database):
         await in_transaction(transaction)
         # make sure we didn't skip assertions in inner function
         assert inner_fn_ran is True
+
+
+@pytest.mark.skip(reason="Temporarily skipped. Not yet in production.")
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_large_document_standard_writes_async(client, cleanup, database):
+    """Test standard write and read operations for 5MB document on Enterprise DB (async)."""
+    collection_id = "large_docs_async_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "c" * (5 * 1024 * 1024)
+    await doc_ref.set({"payload": large_payload})
+
+    snapshot = await doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {"payload": large_payload}
+
+
+@pytest.mark.skip(reason="Temporarily skipped. Not yet in production.")
+@pytest.mark.parametrize("method", ["execute", "stream"])
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_large_document_pipeline_async(client, cleanup, database, method):
+    """Test async pipeline execution over 5MB document on Enterprise DB."""
+    collection_id = "large_pipeline_async_" + UNIQUE_RESOURCE_ID
+    col_ref = client.collection(collection_id)
+    doc_ref = col_ref.document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "d" * (5 * 1024 * 1024)
+    await doc_ref.set({"payload": large_payload})
+
+    pipeline = client.pipeline().collection(collection_id)
+    if method == "execute":
+        results = await pipeline.execute()
+    else:
+        results = [doc async for doc in pipeline.stream()]
+
+    assert [doc.data() for doc in results] == [{"payload": large_payload}]

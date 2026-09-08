@@ -84,6 +84,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -139,215 +151,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert KeyManagementServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        KeyManagementServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert KeyManagementServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                KeyManagementServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert KeyManagementServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            KeyManagementServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert KeyManagementServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert KeyManagementServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert KeyManagementServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert KeyManagementServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                KeyManagementServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert KeyManagementServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -383,103 +186,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    KeyManagementServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(KeyManagementServiceClient),
-)
-@mock.patch.object(
-    KeyManagementServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(KeyManagementServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = KeyManagementServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = KeyManagementServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = KeyManagementServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == KeyManagementServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == KeyManagementServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == KeyManagementServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        KeyManagementServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        KeyManagementServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        KeyManagementServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        KeyManagementServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        KeyManagementServiceClient._get_universe_domain(None, None)
-        == KeyManagementServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        KeyManagementServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1015,11 +721,19 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1062,11 +776,19 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1785,6 +1507,9 @@ def test_list_key_rings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.KeyRing) for i in results)
@@ -1873,6 +1598,8 @@ async def test_list_key_rings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2311,6 +2038,9 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKey) for i in results)
@@ -2399,6 +2129,8 @@ async def test_list_crypto_keys_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2860,6 +2592,9 @@ def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKeyVersion) for i in results)
@@ -2952,6 +2687,8 @@ async def test_list_crypto_key_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3392,6 +3129,9 @@ def test_list_import_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ImportJob) for i in results)
@@ -3480,6 +3220,8 @@ async def test_list_import_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3935,6 +3677,9 @@ def test_list_retired_resources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.RetiredResource) for i in results)
@@ -4027,6 +3772,8 @@ async def test_list_retired_resources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4766,6 +4513,8 @@ def test_get_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.get_crypto_key_version(request)
 
@@ -4795,6 +4544,8 @@ def test_get_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_get_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -4946,6 +4697,8 @@ async def test_get_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.get_crypto_key_version(request)
@@ -4976,6 +4729,8 @@ async def test_get_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_get_crypto_key_version_field_headers():
@@ -5496,6 +5251,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.get_import_job(request)
@@ -5515,6 +5271,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -5651,6 +5408,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -5671,6 +5429,7 @@ async def test_get_import_job_async(request_type, transport: str = "grpc_asyncio
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -6909,6 +6668,8 @@ def test_create_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.create_crypto_key_version(request)
 
@@ -6938,6 +6699,8 @@ def test_create_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_create_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -7089,6 +6852,8 @@ async def test_create_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.create_crypto_key_version(request)
@@ -7119,6 +6884,8 @@ async def test_create_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_create_crypto_key_version_field_headers():
@@ -8007,6 +7774,8 @@ def test_import_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.import_crypto_key_version(request)
 
@@ -8036,6 +7805,8 @@ def test_import_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_import_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -8191,6 +7962,8 @@ async def test_import_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.import_crypto_key_version(request)
@@ -8221,6 +7994,8 @@ async def test_import_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_import_crypto_key_version_field_headers():
@@ -8291,6 +8066,592 @@ async def test_import_crypto_key_version_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.ImportTrustedKeyWrappedCryptoKeyVersionRequest(),
+        {},
+    ],
+)
+def test_import_trusted_key_wrapped_crypto_key_version(
+    request_type, transport: str = "grpc"
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.CryptoKeyVersion(
+            name="name_value",
+            state=resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION,
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+            algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
+            import_job="import_job_value",
+            import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
+            reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
+        )
+        response = client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CryptoKeyVersion)
+    assert response.name == "name_value"
+    assert (
+        response.state
+        == resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION
+    )
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert (
+        response.algorithm
+        == resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION
+    )
+    assert response.import_job == "import_job_value"
+    assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
+    assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
+
+
+def test_import_trusted_key_wrapped_crypto_key_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest(
+        parent="parent_value",
+        importing_key="importing_key_value",
+        crypto_key_version="crypto_key_version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.import_trusted_key_wrapped_crypto_key_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest(
+            parent="parent_value",
+            importing_key="importing_key_value",
+            crypto_key_version="crypto_key_version_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_import_trusted_key_wrapped_crypto_key_version_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.import_trusted_key_wrapped_crypto_key_version
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.import_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+        request = {}
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_import_trusted_key_wrapped_crypto_key_version_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.import_trusted_key_wrapped_crypto_key_version
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.import_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+
+        request = {}
+        await client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportTrustedKeyWrappedCryptoKeyVersionRequest(),
+        {},
+    ],
+)
+async def test_import_trusted_key_wrapped_crypto_key_version_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.CryptoKeyVersion(
+                name="name_value",
+                state=resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION,
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+                algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
+                import_job="import_job_value",
+                import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
+                reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
+            )
+        )
+        response = await client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CryptoKeyVersion)
+    assert response.name == "name_value"
+    assert (
+        response.state
+        == resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION
+    )
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert (
+        response.algorithm
+        == resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION
+    )
+    assert response.import_job == "import_job_value"
+    assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
+    assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
+
+
+def test_import_trusted_key_wrapped_crypto_key_version_field_headers():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = resources.CryptoKeyVersion()
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_trusted_key_wrapped_crypto_key_version_field_headers_async():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.CryptoKeyVersion()
+        )
+        await client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportTrustedKeyWrappedCryptoKeyVersionRequest(),
+        {},
+    ],
+)
+def test_export_trusted_key_wrapped_crypto_key_version(
+    request_type, transport: str = "grpc"
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse(
+            wrapped_key=b"wrapped_key_blob",
+        )
+        response = client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ExportTrustedKeyWrappedCryptoKeyVersionResponse)
+    assert response.wrapped_key == b"wrapped_key_blob"
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest(
+        name="name_value",
+        wrapping_key="wrapping_key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_trusted_key_wrapped_crypto_key_version(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest(
+            name="name_value",
+            wrapping_key="wrapping_key_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_trusted_key_wrapped_crypto_key_version
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+        request = {}
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_trusted_key_wrapped_crypto_key_version_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.export_trusted_key_wrapped_crypto_key_version
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.export_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+
+        request = {}
+        await client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportTrustedKeyWrappedCryptoKeyVersionRequest(),
+        {},
+    ],
+)
+async def test_export_trusted_key_wrapped_crypto_key_version_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse(
+                wrapped_key=b"wrapped_key_blob",
+            )
+        )
+        response = await client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ExportTrustedKeyWrappedCryptoKeyVersionResponse)
+    assert response.wrapped_key == b"wrapped_key_blob"
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_field_headers():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_trusted_key_wrapped_crypto_key_version_field_headers_async():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+        )
+        await client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.CreateImportJobRequest(),
         {},
     ],
@@ -8315,6 +8676,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
         response = client.create_import_job(request)
@@ -8334,6 +8696,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -8478,6 +8841,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -8498,6 +8862,7 @@ async def test_create_import_job_async(request_type, transport: str = "grpc_asyn
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -9054,6 +9419,8 @@ def test_update_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.update_crypto_key_version(request)
 
@@ -9083,6 +9450,8 @@ def test_update_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_update_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -9230,6 +9599,8 @@ async def test_update_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.update_crypto_key_version(request)
@@ -9260,6 +9631,8 @@ async def test_update_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_update_crypto_key_version_field_headers():
@@ -9820,6 +10193,8 @@ def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.destroy_crypto_key_version(request)
 
@@ -9849,6 +10224,8 @@ def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_destroy_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -10000,6 +10377,8 @@ async def test_destroy_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.destroy_crypto_key_version(request)
@@ -10030,6 +10409,8 @@ async def test_destroy_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_destroy_crypto_key_version_field_headers():
@@ -10215,6 +10596,8 @@ def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
         response = client.restore_crypto_key_version(request)
 
@@ -10244,6 +10627,8 @@ def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_restore_crypto_key_version_non_empty_request_with_auto_populated_field():
@@ -10395,6 +10780,8 @@ async def test_restore_crypto_key_version_async(
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         response = await client.restore_crypto_key_version(request)
@@ -10425,6 +10812,8 @@ async def test_restore_crypto_key_version_async(
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 def test_restore_crypto_key_version_field_headers():
@@ -13882,28 +14271,29 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_key_rings._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListKeyRings,
+        "_BaseListKeyRings__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_key_rings._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -13949,25 +14339,6 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_key_rings_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_key_rings._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_key_rings_rest_flattened():
@@ -14079,6 +14450,9 @@ def test_list_key_rings_rest_pager(transport: str = "rest"):
 
         pager = client.list_key_rings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.KeyRing) for i in results)
@@ -14141,29 +14515,30 @@ def test_list_crypto_keys_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_crypto_keys._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListCryptoKeys,
+        "_BaseListCryptoKeys__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_crypto_keys._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
-            "version_view",
+            "orderBy",
+            "pageSize",
+            "pageToken",
+            "versionView",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -14209,26 +14584,6 @@ def test_list_crypto_keys_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_crypto_keys_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_crypto_keys._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-                "versionView",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_crypto_keys_rest_flattened():
@@ -14345,6 +14700,9 @@ def test_list_crypto_keys_rest_pager(transport: str = "rest"):
 
         pager = client.list_crypto_keys(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKey) for i in results)
@@ -14410,29 +14768,30 @@ def test_list_crypto_key_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_crypto_key_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListCryptoKeyVersions,
+        "_BaseListCryptoKeyVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_crypto_key_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
             "view",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -14478,26 +14837,6 @@ def test_list_crypto_key_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_crypto_key_versions_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_crypto_key_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-                "view",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_crypto_key_versions_rest_flattened():
@@ -14616,6 +14955,9 @@ def test_list_crypto_key_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_crypto_key_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.CryptoKeyVersion) for i in results)
@@ -14678,28 +15020,29 @@ def test_list_import_jobs_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_import_jobs._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListImportJobs,
+        "_BaseListImportJobs__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_import_jobs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -14745,25 +15088,6 @@ def test_list_import_jobs_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_import_jobs_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_import_jobs._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_import_jobs_rest_flattened():
@@ -14880,6 +15204,9 @@ def test_list_import_jobs_rest_pager(transport: str = "rest"):
 
         pager = client.list_import_jobs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.ImportJob) for i in results)
@@ -14945,26 +15272,27 @@ def test_list_retired_resources_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_retired_resources._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListRetiredResources,
+        "_BaseListRetiredResources__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_retired_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -15010,23 +15338,6 @@ def test_list_retired_resources_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_retired_resources_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_retired_resources._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_retired_resources_rest_flattened():
@@ -15141,6 +15452,9 @@ def test_list_retired_resources_rest_pager(transport: str = "rest"):
 
         pager = client.list_retired_resources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.RetiredResource) for i in results)
@@ -15199,19 +15513,19 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_key_ring._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetKeyRing,
+        "_BaseGetKeyRing__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_key_ring._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15257,15 +15571,6 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_key_ring_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_key_ring._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_key_ring_rest_flattened():
@@ -15374,19 +15679,19 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_crypto_key._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCryptoKey,
+        "_BaseGetCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_crypto_key._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15432,15 +15737,6 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_crypto_key_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_crypto_key._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_crypto_key_rest_flattened():
@@ -15559,19 +15855,19 @@ def test_get_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCryptoKeyVersion,
+        "_BaseGetCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15617,15 +15913,6 @@ def test_get_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_crypto_key_version_rest_flattened():
@@ -15737,21 +16024,22 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_public_key._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetPublicKey,
+        "_BaseGetPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_public_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("public_key_format",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("publicKeyFormat",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15797,15 +16085,6 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_public_key_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_public_key._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("publicKeyFormat",)) & set(("name",)))
 
 
 def test_get_public_key_rest_flattened():
@@ -15917,19 +16196,22 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_import_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetImportJob,
+        "_BaseGetImportJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_import_job._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("publicKeyFormat",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -15975,15 +16257,6 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_import_job_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_import_job._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_import_job_rest_flattened():
@@ -16101,19 +16374,19 @@ def test_get_retired_resource_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_retired_resource._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetRetiredResource,
+        "_BaseGetRetiredResource__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_retired_resource._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -16159,15 +16432,6 @@ def test_get_retired_resource_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_retired_resource_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_retired_resource._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_retired_resource_rest_flattened():
@@ -16283,9 +16547,14 @@ def test_create_key_ring_rest_required_fields(
     # verify fields with default values are dropped
     assert "keyRingId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_key_ring._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateKeyRing,
+        "_BaseCreateKeyRing__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -16295,12 +16564,8 @@ def test_create_key_ring_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["keyRingId"] = "key_ring_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_key_ring._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("key_ring_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("keyRingId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16355,24 +16620,6 @@ def test_create_key_ring_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_key_ring_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_key_ring._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("keyRingId",))
-        & set(
-            (
-                "parent",
-                "keyRingId",
-                "keyRing",
-            )
-        )
-    )
 
 
 def test_create_key_ring_rest_flattened():
@@ -16491,9 +16738,14 @@ def test_create_crypto_key_rest_required_fields(
     # verify fields with default values are dropped
     assert "cryptoKeyId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_crypto_key._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCryptoKey,
+        "_BaseCreateCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -16503,17 +16755,14 @@ def test_create_crypto_key_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["cryptoKeyId"] = "crypto_key_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_crypto_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "crypto_key_id",
-            "skip_initial_version_creation",
+            "cryptoKeyId",
+            "skipInitialVersionCreation",
+            "trustedWrappingEnabled",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16568,29 +16817,6 @@ def test_create_crypto_key_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_crypto_key_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_crypto_key._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "cryptoKeyId",
-                "skipInitialVersionCreation",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "cryptoKeyId",
-                "cryptoKey",
-            )
-        )
-    )
 
 
 def test_create_crypto_key_rest_flattened():
@@ -16713,19 +16939,19 @@ def test_create_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCryptoKeyVersion,
+        "_BaseCreateCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -16772,23 +16998,6 @@ def test_create_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "cryptoKeyVersion",
-            )
-        )
-    )
 
 
 def test_create_crypto_key_version_rest_flattened():
@@ -16910,19 +17119,19 @@ def test_delete_crypto_key_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_crypto_key._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteCryptoKey,
+        "_BaseDeleteCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_crypto_key._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -16965,15 +17174,6 @@ def test_delete_crypto_key_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_crypto_key_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_crypto_key._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_crypto_key_rest_flattened():
@@ -17094,19 +17294,19 @@ def test_delete_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteCryptoKeyVersion,
+        "_BaseDeleteCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -17149,15 +17349,6 @@ def test_delete_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_crypto_key_version_rest_flattened():
@@ -17275,20 +17466,20 @@ def test_import_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseImportCryptoKeyVersion,
+        "_BaseImportCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["importJob"] = "import_job_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -17339,22 +17530,263 @@ def test_import_crypto_key_version_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_import_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+def test_import_trusted_key_wrapped_crypto_key_version_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.import_trusted_key_wrapped_crypto_key_version
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.import_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+
+        request = {}
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_import_trusted_key_wrapped_crypto_key_version_rest_required_fields(
+    request_type=service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+):
+    transport_class = transports.KeyManagementServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["importing_key"] = ""
+    request_init["wrapped_key"] = b""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
-    unset_fields = transport.import_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "algorithm",
-                "importJob",
-            )
-        )
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseImportTrustedKeyWrappedCryptoKeyVersion,
+        "_BaseImportTrustedKeyWrappedCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["importingKey"] = "importing_key_value"
+    jsonified_request["wrappedKey"] = b"wrapped_key_blob"
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "importingKey" in jsonified_request
+    assert jsonified_request["importingKey"] == "importing_key_value"
+    assert "wrappedKey" in jsonified_request
+    assert jsonified_request["wrappedKey"] == b"wrapped_key_blob"
+
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.CryptoKeyVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.CryptoKeyVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.import_trusted_key_wrapped_crypto_key_version(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = KeyManagementServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.export_trusted_key_wrapped_crypto_key_version
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.export_trusted_key_wrapped_crypto_key_version
+        ] = mock_rpc
+
+        request = {}
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_rest_required_fields(
+    request_type=service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+):
+    transport_class = transports.KeyManagementServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["wrapping_key"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "wrappingKey" not in jsonified_request
+
+    default_values = getattr(
+        transport_class._BaseExportTrustedKeyWrappedCryptoKeyVersion,
+        "_BaseExportTrustedKeyWrappedCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "wrappingKey" in jsonified_request
+    assert jsonified_request["wrappingKey"] == request_init["wrapping_key"]
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["wrappingKey"] = "wrapping_key_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("wrappingKey",))
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "wrappingKey" in jsonified_request
+    assert jsonified_request["wrappingKey"] == "wrapping_key_value"
+
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.export_trusted_key_wrapped_crypto_key_version(request)
+
+            expected_params = [
+                (
+                    "wrappingKey",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_import_job_rest_use_cached_wrapped_rpc():
@@ -17412,9 +17844,14 @@ def test_create_import_job_rest_required_fields(
     # verify fields with default values are dropped
     assert "importJobId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_import_job._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateImportJob,
+        "_BaseCreateImportJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -17424,12 +17861,8 @@ def test_create_import_job_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["importJobId"] = "import_job_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_import_job._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("import_job_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("importJobId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -17484,24 +17917,6 @@ def test_create_import_job_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_import_job_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_import_job._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("importJobId",))
-        & set(
-            (
-                "parent",
-                "importJobId",
-                "importJob",
-            )
-        )
-    )
 
 
 def test_create_import_job_rest_flattened():
@@ -17620,19 +18035,20 @@ def test_update_crypto_key_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateCryptoKey,
+        "_BaseUpdateCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -17677,23 +18093,6 @@ def test_update_crypto_key_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_crypto_key_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_crypto_key._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "cryptoKey",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_crypto_key_rest_flattened():
@@ -17815,19 +18214,20 @@ def test_update_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateCryptoKeyVersion,
+        "_BaseUpdateCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -17872,23 +18272,6 @@ def test_update_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "cryptoKeyVersion",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_crypto_key_version_rest_flattened():
@@ -18012,20 +18395,20 @@ def test_update_crypto_key_primary_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key_primary_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateCryptoKeyPrimaryVersion,
+        "_BaseUpdateCryptoKeyPrimaryVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["cryptoKeyVersionId"] = "crypto_key_version_id_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_crypto_key_primary_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18074,25 +18457,6 @@ def test_update_crypto_key_primary_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_crypto_key_primary_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.update_crypto_key_primary_version._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "cryptoKeyVersionId",
-            )
-        )
-    )
 
 
 def test_update_crypto_key_primary_version_rest_flattened():
@@ -18215,19 +18579,19 @@ def test_destroy_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).destroy_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDestroyCryptoKeyVersion,
+        "_BaseDestroyCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).destroy_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18274,15 +18638,6 @@ def test_destroy_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_destroy_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.destroy_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_destroy_crypto_key_version_rest_flattened():
@@ -18401,19 +18756,19 @@ def test_restore_crypto_key_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_crypto_key_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRestoreCryptoKeyVersion,
+        "_BaseRestoreCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_crypto_key_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18460,15 +18815,6 @@ def test_restore_crypto_key_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_restore_crypto_key_version_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.restore_crypto_key_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_restore_crypto_key_version_rest_flattened():
@@ -18581,20 +18927,20 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).encrypt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseEncrypt,
+        "_BaseEncrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["plaintext"] = b"plaintext_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).encrypt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18643,23 +18989,6 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_encrypt_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.encrypt._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "plaintext",
-            )
-        )
-    )
 
 
 def test_encrypt_rest_flattened():
@@ -18774,20 +19103,20 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).decrypt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDecrypt,
+        "_BaseDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["ciphertext"] = b"ciphertext_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).decrypt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -18836,23 +19165,6 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_decrypt_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.decrypt._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "ciphertext",
-            )
-        )
-    )
 
 
 def test_decrypt_rest_flattened():
@@ -18967,20 +19279,20 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).raw_encrypt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRawEncrypt,
+        "_BaseRawEncrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["plaintext"] = b"plaintext_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).raw_encrypt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19029,23 +19341,6 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_raw_encrypt_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.raw_encrypt._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "plaintext",
-            )
-        )
-    )
 
 
 def test_raw_decrypt_rest_use_cached_wrapped_rpc():
@@ -19099,9 +19394,14 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).raw_decrypt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRawDecrypt,
+        "_BaseRawDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -19109,11 +19409,6 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
     jsonified_request["name"] = "name_value"
     jsonified_request["ciphertext"] = b"ciphertext_blob"
     jsonified_request["initializationVector"] = b"initialization_vector_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).raw_decrypt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19164,24 +19459,6 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_raw_decrypt_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.raw_decrypt._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "ciphertext",
-                "initializationVector",
-            )
-        )
-    )
 
 
 def test_asymmetric_sign_rest_use_cached_wrapped_rpc():
@@ -19235,19 +19512,19 @@ def test_asymmetric_sign_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).asymmetric_sign._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAsymmetricSign,
+        "_BaseAsymmetricSign__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).asymmetric_sign._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19294,15 +19571,6 @@ def test_asymmetric_sign_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_asymmetric_sign_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.asymmetric_sign._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_asymmetric_sign_rest_flattened():
@@ -19423,20 +19691,20 @@ def test_asymmetric_decrypt_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).asymmetric_decrypt._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAsymmetricDecrypt,
+        "_BaseAsymmetricDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["ciphertext"] = b"ciphertext_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).asymmetric_decrypt._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19485,23 +19753,6 @@ def test_asymmetric_decrypt_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_asymmetric_decrypt_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.asymmetric_decrypt._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "ciphertext",
-            )
-        )
-    )
 
 
 def test_asymmetric_decrypt_rest_flattened():
@@ -19616,20 +19867,20 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mac_sign._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMacSign,
+        "_BaseMacSign__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["data"] = b"data_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mac_sign._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19678,23 +19929,6 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_mac_sign_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.mac_sign._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "data",
-            )
-        )
-    )
 
 
 def test_mac_sign_rest_flattened():
@@ -19810,9 +20044,14 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mac_verify._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMacVerify,
+        "_BaseMacVerify__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -19820,11 +20059,6 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
     jsonified_request["name"] = "name_value"
     jsonified_request["data"] = b"data_blob"
     jsonified_request["mac"] = b"mac_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mac_verify._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19875,24 +20109,6 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_mac_verify_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.mac_verify._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "data",
-                "mac",
-            )
-        )
-    )
 
 
 def test_mac_verify_rest_flattened():
@@ -20009,20 +20225,20 @@ def test_decapsulate_rest_required_fields(request_type=service.DecapsulateReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).decapsulate._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDecapsulate,
+        "_BaseDecapsulate__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["ciphertext"] = b"ciphertext_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).decapsulate._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20071,23 +20287,6 @@ def test_decapsulate_rest_required_fields(request_type=service.DecapsulateReques
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_decapsulate_rest_unset_required_fields():
-    transport = transports.KeyManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.decapsulate._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "ciphertext",
-            )
-        )
-    )
 
 
 def test_generate_random_bytes_rest_use_cached_wrapped_rpc():
@@ -20654,6 +20853,50 @@ def test_import_crypto_key_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_trusted_key_wrapped_crypto_key_version_empty_call_grpc():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = resources.CryptoKeyVersion()
+        client.import_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_trusted_key_wrapped_crypto_key_version_empty_call_grpc():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        call.return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+        client.export_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
         assert args[0] == request_msg
 
 
@@ -21226,6 +21469,8 @@ async def test_get_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.get_crypto_key_version(request=None)
@@ -21285,6 +21530,7 @@ async def test_get_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -21409,6 +21655,8 @@ async def test_create_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.create_crypto_key_version(request=None)
@@ -21497,6 +21745,8 @@ async def test_import_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.import_crypto_key_version(request=None)
@@ -21505,6 +21755,72 @@ async def test_import_crypto_key_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_trusted_key_wrapped_crypto_key_version_empty_call_grpc_asyncio():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.CryptoKeyVersion(
+                name="name_value",
+                state=resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION,
+                protection_level=resources.ProtectionLevel.SOFTWARE,
+                algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
+                import_job="import_job_value",
+                import_failure_reason="import_failure_reason_value",
+                generation_failure_reason="generation_failure_reason_value",
+                external_destruction_failure_reason="external_destruction_failure_reason_value",
+                reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
+            )
+        )
+        await client.import_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_trusted_key_wrapped_crypto_key_version_empty_call_grpc_asyncio():
+    client = KeyManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse(
+                wrapped_key=b"wrapped_key_blob",
+            )
+        )
+        await client.export_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
         assert args[0] == request_msg
 
 
@@ -21528,6 +21844,7 @@ async def test_create_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
                 crypto_key_backend="crypto_key_backend_value",
             )
         )
@@ -21596,6 +21913,8 @@ async def test_update_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.update_crypto_key_version(request=None)
@@ -21663,6 +21982,8 @@ async def test_destroy_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.destroy_crypto_key_version(request=None)
@@ -21699,6 +22020,8 @@ async def test_restore_crypto_key_version_empty_call_grpc_asyncio():
                 generation_failure_reason="generation_failure_reason_value",
                 external_destruction_failure_reason="external_destruction_failure_reason_value",
                 reimport_eligible=True,
+                trusted_wrapping_enabled=True,
+                hsm_trusted=True,
             )
         )
         await client.restore_crypto_key_version(request=None)
@@ -23015,6 +23338,8 @@ def test_get_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -23049,6 +23374,8 @@ def test_get_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -23311,6 +23638,7 @@ def test_get_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -23335,6 +23663,7 @@ def test_get_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -23814,6 +24143,8 @@ def test_create_crypto_key_rest_call_success(request_type):
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
             },
             "reimport_eligible": True,
+            "trusted_wrapping_enabled": True,
+            "hsm_trusted": True,
         },
         "purpose": 1,
         "create_time": {},
@@ -24066,6 +24397,8 @@ def test_create_crypto_key_version_rest_call_success(request_type):
             "ekm_connection_key_path": "ekm_connection_key_path_value",
         },
         "reimport_eligible": True,
+        "trusted_wrapping_enabled": True,
+        "hsm_trusted": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24149,6 +24482,8 @@ def test_create_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -24183,6 +24518,8 @@ def test_create_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24571,6 +24908,8 @@ def test_import_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -24605,6 +24944,8 @@ def test_import_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24674,6 +25015,320 @@ def test_import_crypto_key_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_import_trusted_key_wrapped_crypto_key_version_rest_bad_request(
+    request_type=service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.import_trusted_key_wrapped_crypto_key_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+        dict,
+    ],
+)
+def test_import_trusted_key_wrapped_crypto_key_version_rest_call_success(request_type):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.CryptoKeyVersion(
+            name="name_value",
+            state=resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION,
+            protection_level=resources.ProtectionLevel.SOFTWARE,
+            algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
+            import_job="import_job_value",
+            import_failure_reason="import_failure_reason_value",
+            generation_failure_reason="generation_failure_reason_value",
+            external_destruction_failure_reason="external_destruction_failure_reason_value",
+            reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.CryptoKeyVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.import_trusted_key_wrapped_crypto_key_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.CryptoKeyVersion)
+    assert response.name == "name_value"
+    assert (
+        response.state
+        == resources.CryptoKeyVersion.CryptoKeyVersionState.PENDING_GENERATION
+    )
+    assert response.protection_level == resources.ProtectionLevel.SOFTWARE
+    assert (
+        response.algorithm
+        == resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION
+    )
+    assert response.import_job == "import_job_value"
+    assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.generation_failure_reason == "generation_failure_reason_value"
+    assert (
+        response.external_destruction_failure_reason
+        == "external_destruction_failure_reason_value"
+    )
+    assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_trusted_key_wrapped_crypto_key_version_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.KeyManagementServiceRestInterceptor(),
+    )
+    client = KeyManagementServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "post_import_trusted_key_wrapped_crypto_key_version",
+        ) as post,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "post_import_trusted_key_wrapped_crypto_key_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "pre_import_trusted_key_wrapped_crypto_key_version",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest.pb(
+            service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
+        req.return_value.content = return_value
+
+        request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.CryptoKeyVersion()
+        post_with_metadata.return_value = resources.CryptoKeyVersion(), metadata
+
+        client.import_trusted_key_wrapped_crypto_key_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_export_trusted_key_wrapped_crypto_key_version_rest_bad_request(
+    request_type=service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.export_trusted_key_wrapped_crypto_key_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+        dict,
+    ],
+)
+def test_export_trusted_key_wrapped_crypto_key_version_rest_call_success(request_type):
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/keyRings/sample3/cryptoKeys/sample4/cryptoKeyVersions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse(
+            wrapped_key=b"wrapped_key_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.export_trusted_key_wrapped_crypto_key_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.ExportTrustedKeyWrappedCryptoKeyVersionResponse)
+    assert response.wrapped_key == b"wrapped_key_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_trusted_key_wrapped_crypto_key_version_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.KeyManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.KeyManagementServiceRestInterceptor(),
+    )
+    client = KeyManagementServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "post_export_trusted_key_wrapped_crypto_key_version",
+        ) as post,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "post_export_trusted_key_wrapped_crypto_key_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.KeyManagementServiceRestInterceptor,
+            "pre_export_trusted_key_wrapped_crypto_key_version",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest.pb(
+            service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.to_json(
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+        post_with_metadata.return_value = (
+            service.ExportTrustedKeyWrappedCryptoKeyVersionResponse(),
+            metadata,
+        )
+
+        client.export_trusted_key_wrapped_crypto_key_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_create_import_job_rest_bad_request(
     request_type=service.CreateImportJobRequest,
 ):
@@ -24723,7 +25378,8 @@ def test_create_import_job_rest_call_success(request_type):
         "expire_time": {},
         "expire_event_time": {},
         "state": 1,
-        "public_key": {"pem": "pem_value"},
+        "public_key": {"pem": "pem_value", "data": b"data_blob"},
+        "public_key_format": 1,
         "attestation": {
             "format": 3,
             "content": b"content_blob",
@@ -24818,6 +25474,7 @@ def test_create_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            public_key_format=resources.PublicKey.PublicKeyFormat.PEM,
             crypto_key_backend="crypto_key_backend_value",
         )
 
@@ -24842,6 +25499,7 @@ def test_create_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.public_key_format == resources.PublicKey.PublicKeyFormat.PEM
     assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
@@ -24992,6 +25650,8 @@ def test_update_crypto_key_rest_call_success(request_type):
                 "ekm_connection_key_path": "ekm_connection_key_path_value",
             },
             "reimport_eligible": True,
+            "trusted_wrapping_enabled": True,
+            "hsm_trusted": True,
         },
         "purpose": 1,
         "create_time": {},
@@ -25248,6 +25908,8 @@ def test_update_crypto_key_version_rest_call_success(request_type):
             "ekm_connection_key_path": "ekm_connection_key_path_value",
         },
         "reimport_eligible": True,
+        "trusted_wrapping_enabled": True,
+        "hsm_trusted": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25331,6 +25993,8 @@ def test_update_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -25365,6 +26029,8 @@ def test_update_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -25636,6 +26302,8 @@ def test_destroy_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -25670,6 +26338,8 @@ def test_destroy_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -25798,6 +26468,8 @@ def test_restore_crypto_key_version_rest_call_success(request_type):
             generation_failure_reason="generation_failure_reason_value",
             external_destruction_failure_reason="external_destruction_failure_reason_value",
             reimport_eligible=True,
+            trusted_wrapping_enabled=True,
+            hsm_trusted=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -25832,6 +26504,8 @@ def test_restore_crypto_key_version_rest_call_success(request_type):
         == "external_destruction_failure_reason_value"
     )
     assert response.reimport_eligible is True
+    assert response.trusted_wrapping_enabled is True
+    assert response.hsm_trusted is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -28018,6 +28692,48 @@ def test_import_crypto_key_version_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_import_trusted_key_wrapped_crypto_key_version_empty_call_rest():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        client.import_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_trusted_key_wrapped_crypto_key_version_empty_call_rest():
+    client = KeyManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_trusted_key_wrapped_crypto_key_version), "__call__"
+    ) as call:
+        client.export_trusted_key_wrapped_crypto_key_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_create_import_job_empty_call_rest():
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28403,6 +29119,8 @@ def test_key_management_service_base_transport():
         "delete_crypto_key",
         "delete_crypto_key_version",
         "import_crypto_key_version",
+        "import_trusted_key_wrapped_crypto_key_version",
+        "export_trusted_key_wrapped_crypto_key_version",
         "create_import_job",
         "update_crypto_key",
         "update_crypto_key_version",
@@ -28759,6 +29477,12 @@ def test_key_management_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.import_crypto_key_version._session
     session2 = client2.transport.import_crypto_key_version._session
+    assert session1 != session2
+    session1 = client1.transport.import_trusted_key_wrapped_crypto_key_version._session
+    session2 = client2.transport.import_trusted_key_wrapped_crypto_key_version._session
+    assert session1 != session2
+    session1 = client1.transport.export_trusted_key_wrapped_crypto_key_version._session
+    session2 = client2.transport.export_trusted_key_wrapped_crypto_key_version._session
     assert session1 != session2
     session1 = client1.transport.create_import_job._session
     session2 = client2.transport.create_import_job._session

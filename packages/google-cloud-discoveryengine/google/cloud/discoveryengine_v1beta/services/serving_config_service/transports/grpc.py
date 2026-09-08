@@ -20,6 +20,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -333,6 +334,73 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service."""
         return self._grpc_channel
+
+    @property
+    def create_serving_config(
+        self,
+    ) -> Callable[
+        [serving_config_service.CreateServingConfigRequest],
+        gcd_serving_config.ServingConfig,
+    ]:
+        r"""Return a callable for the create serving config method over gRPC.
+
+        Creates a ServingConfig.
+
+        Note: The Google Cloud console works only with the default
+        serving config. Additional ServingConfigs can be created and
+        managed only via the API.
+
+        A maximum of 100
+        [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig]s
+        are allowed in an
+        [Engine][google.cloud.discoveryengine.v1beta.Engine], otherwise
+        a RESOURCE_EXHAUSTED error is returned.
+
+        Returns:
+            Callable[[~.CreateServingConfigRequest],
+                    ~.ServingConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_serving_config" not in self._stubs:
+            self._stubs["create_serving_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ServingConfigService/CreateServingConfig",
+                request_serializer=serving_config_service.CreateServingConfigRequest.serialize,
+                response_deserializer=gcd_serving_config.ServingConfig.deserialize,
+            )
+        return self._stubs["create_serving_config"]
+
+    @property
+    def delete_serving_config(
+        self,
+    ) -> Callable[[serving_config_service.DeleteServingConfigRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete serving config method over gRPC.
+
+        Deletes a ServingConfig.
+
+        Returns a NOT_FOUND error if the ServingConfig does not exist.
+
+        Returns:
+            Callable[[~.DeleteServingConfigRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_serving_config" not in self._stubs:
+            self._stubs["delete_serving_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ServingConfigService/DeleteServingConfig",
+                request_serializer=serving_config_service.DeleteServingConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_serving_config"]
 
     @property
     def update_serving_config(

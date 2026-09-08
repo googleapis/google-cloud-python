@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.bigquery_biglake_v1alpha1._compat import transcode_request
 from google.cloud.bigquery_biglake_v1alpha1.types import metastore
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MetastoreServiceRestInterceptor:
@@ -1210,19 +1210,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCheckLock._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_check_lock(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCheckLock._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseCheckLock._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCheckLock._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseCheckLock,
+                    "_BaseCheckLock__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1361,19 +1358,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_create_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseCreateCatalog,
+                    "_BaseCreateCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1510,19 +1504,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_create_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseCreateDatabase,
+                    "_BaseCreateDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1661,19 +1652,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCreateLock._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_lock(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateLock._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseCreateLock._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateLock._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseCreateLock,
+                    "_BaseCreateLock__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1812,19 +1800,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCreateTable._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseCreateTable,
+                    "_BaseCreateTable__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1962,15 +1947,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseDeleteCatalog,
+                    "_BaseDeleteCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2105,15 +2091,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseDeleteDatabase,
+                    "_BaseDeleteDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2246,15 +2233,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseDeleteLock._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_lock(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteLock._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteLock._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseDeleteLock,
+                    "_BaseDeleteLock__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2357,15 +2345,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseDeleteTable,
+                    "_BaseDeleteTable__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2504,15 +2493,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseGetCatalog,
+                    "_BaseGetCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2649,15 +2639,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseGetDatabase,
+                    "_BaseGetDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2794,17 +2785,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetTable._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetTable._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseMetastoreServiceRestTransport._BaseGetTable._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseGetTable,
+                    "_BaseGetTable__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2943,15 +2933,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_catalogs(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseListCatalogs,
+                    "_BaseListCatalogs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3088,15 +3079,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
-
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseListDatabases,
+                    "_BaseListDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3235,15 +3227,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListLocks._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locks(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListLocks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListLocks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseListLocks,
+                    "_BaseListLocks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3382,15 +3375,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListTables._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_tables(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListTables._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListTables._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseListTables,
+                    "_BaseListTables__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3528,19 +3522,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseRenameTable._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_rename_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseRenameTable,
+                    "_BaseRenameTable__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3677,19 +3668,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             """
 
             http_options = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
-
             request, metadata = self._interceptor.pre_update_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseUpdateDatabase,
+                    "_BaseUpdateDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3828,19 +3816,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMetastoreServiceRestTransport._BaseUpdateTable,
+                    "_BaseUpdateTable__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

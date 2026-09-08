@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.discoveryengine_v1beta._compat import transcode_request
 from google.cloud.discoveryengine_v1beta.types import (
     completion_service,
     import_config,
@@ -59,8 +60,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CompletionServiceRestInterceptor:
@@ -123,6 +123,14 @@ class CompletionServiceRestInterceptor:
                 return request, metadata
 
             def post_purge_suggestion_deny_list_entries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_remove_suggestion(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_remove_suggestion(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -431,6 +439,58 @@ class CompletionServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_remove_suggestion(
+        self,
+        request: completion_service.RemoveSuggestionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        completion_service.RemoveSuggestionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for remove_suggestion
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompletionService server.
+        """
+        return request, metadata
+
+    def post_remove_suggestion(
+        self, response: completion_service.RemoveSuggestionResponse
+    ) -> completion_service.RemoveSuggestionResponse:
+        """Post-rpc interceptor for remove_suggestion
+
+        DEPRECATED. Please use the `post_remove_suggestion_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CompletionService server but before
+        it is returned to user code. This `post_remove_suggestion` interceptor runs
+        before the `post_remove_suggestion_with_metadata` interceptor.
+        """
+        return response
+
+    def post_remove_suggestion_with_metadata(
+        self,
+        response: completion_service.RemoveSuggestionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        completion_service.RemoveSuggestionResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for remove_suggestion
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompletionService server but before it is returned to user code.
+
+        We recommend only using this `post_remove_suggestion_with_metadata`
+        interceptor in new development instead of the `post_remove_suggestion` interceptor.
+        When both interceptors are used, this `post_remove_suggestion_with_metadata` interceptor runs after the
+        `post_remove_suggestion` interceptor. The (possibly modified) response returned by
+        `post_remove_suggestion` will be passed to
+        `post_remove_suggestion_with_metadata`.
+        """
+        return response, metadata
+
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
@@ -652,6 +712,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/assistants/*/agents/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
                     },
                     {
@@ -673,6 +737,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                     },
                     {
                         "method": "get",
@@ -735,6 +803,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -825,21 +897,18 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_advanced_complete_query(
                 request, metadata
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseAdvancedCompleteQuery,
+                    "_BaseAdvancedCompleteQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -986,15 +1055,16 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_complete_query(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseCompleteQuery._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseCompleteQuery,
+                    "_BaseCompleteQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1138,21 +1208,18 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_http_options()
-
             request, metadata = self._interceptor.pre_import_completion_suggestions(
                 request, metadata
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseImportCompletionSuggestions,
+                    "_BaseImportCompletionSuggestions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1297,23 +1364,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_import_suggestion_deny_list_entries(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseImportSuggestionDenyListEntries,
+                    "_BaseImportSuggestionDenyListEntries__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1456,21 +1520,18 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_http_options()
-
             request, metadata = self._interceptor.pre_purge_completion_suggestions(
                 request, metadata
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BasePurgeCompletionSuggestions,
+                    "_BasePurgeCompletionSuggestions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1611,23 +1672,20 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_purge_suggestion_deny_list_entries(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BasePurgeSuggestionDenyListEntries,
+                    "_BasePurgeSuggestionDenyListEntries__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1707,6 +1765,161 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 )
             return resp
 
+    class _RemoveSuggestion(
+        _BaseCompletionServiceRestTransport._BaseRemoveSuggestion,
+        CompletionServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CompletionServiceRestTransport.RemoveSuggestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: completion_service.RemoveSuggestionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> completion_service.RemoveSuggestionResponse:
+            r"""Call the remove suggestion method over HTTP.
+
+            Args:
+                request (~.completion_service.RemoveSuggestionRequest):
+                    The request object. Request message for
+                [CompletionService.RemoveSuggestion][google.cloud.discoveryengine.v1beta.CompletionService.RemoveSuggestion]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.completion_service.RemoveSuggestionResponse:
+                    Response message for
+                [CompletionService.RemoveSuggestion][google.cloud.discoveryengine.v1beta.CompletionService.RemoveSuggestion]
+                method.
+
+            """
+
+            http_options = _BaseCompletionServiceRestTransport._BaseRemoveSuggestion._get_http_options()
+            request, metadata = self._interceptor.pre_remove_suggestion(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseRemoveSuggestion,
+                    "_BaseRemoveSuggestion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.CompletionServiceClient.RemoveSuggestion",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.CompletionService",
+                        "rpcName": "RemoveSuggestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompletionServiceRestTransport._RemoveSuggestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = completion_service.RemoveSuggestionResponse()
+            pb_resp = completion_service.RemoveSuggestionResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_remove_suggestion(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_suggestion_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        completion_service.RemoveSuggestionResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.CompletionServiceClient.remove_suggestion",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.CompletionService",
+                        "rpcName": "RemoveSuggestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def advanced_complete_query(
         self,
@@ -1778,6 +1991,17 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
         )  # type: ignore
 
     @property
+    def remove_suggestion(
+        self,
+    ) -> Callable[
+        [completion_service.RemoveSuggestionRequest],
+        completion_service.RemoveSuggestionResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RemoveSuggestion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
@@ -1834,21 +2058,18 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1954,15 +2175,16 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2093,15 +2315,16 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             """
 
             http_options = _BaseCompletionServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCompletionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompletionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompletionServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

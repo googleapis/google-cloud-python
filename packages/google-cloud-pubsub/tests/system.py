@@ -447,11 +447,19 @@ def test_subscriber_not_leaking_open_sockets(
     subscriber = pubsub_v1.SubscriberClient(transport="grpc")
     subscriber_2 = pubsub_v1.SubscriberClient(transport="grpc")
 
+    # Construct a secondary publisher client to clean up the topic,
+    # so we can safely close the main publisher client inside the test.
+    if "Rest" in type(publisher._transport).__name__:
+        publisher_2 = pubsub_v1.PublisherClient(transport="rest")
+    else:
+        publisher_2 = pubsub_v1.PublisherClient(transport="grpc")
+
     cleanup.append(
         (subscriber_2.delete_subscription, (), {"subscription": subscription_path})
     )
     cleanup.append((subscriber_2.close, (), {}))
-    cleanup.append((publisher.delete_topic, (), {"topic": topic_path}))
+    cleanup.append((publisher_2.delete_topic, (), {"topic": topic_path}))
+    cleanup.append((publisher_2._transport.close, (), {}))
 
     # Create topic before starting to track connection count (any sockets opened
     # by the publisher client are not counted by this test).
@@ -477,7 +485,16 @@ def test_subscriber_not_leaking_open_sockets(
         response = subscriber.pull(subscription=subscription_path, max_messages=3)
         assert len(response.received_messages) == 3
 
-    conn_count_end = len(current_process.net_connections())
+    # Close the publisher client's transport used in the test to ensure all its socket connections
+    # (including any opened asynchronously on the background publisher threads) are closed.
+    publisher._transport.close()
+
+    # Wait a bit for the asynchronous channel teardown to complete and the socket to be closed.
+    for _ in range(30):
+        conn_count_end = len(current_process.net_connections())
+        if conn_count_end <= conn_count_start:
+            break
+        time.sleep(0.1)
 
     # To avoid flakiness, use <= in the assertion, since on rare occasions additional
     # sockets are closed, causing the == assertion to fail.

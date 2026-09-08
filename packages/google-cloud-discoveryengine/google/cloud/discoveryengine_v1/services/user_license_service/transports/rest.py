@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.discoveryengine_v1._compat import transcode_request
 from google.cloud.discoveryengine_v1.types import user_license_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class UserLicenseServiceRestInterceptor:
@@ -610,21 +610,18 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             """
 
             http_options = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_user_licenses(
                 request, metadata
             )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserLicenseServiceRestTransport._BaseBatchUpdateUserLicenses,
+                    "_BaseBatchUpdateUserLicenses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -763,17 +760,18 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             """
 
             http_options = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_user_licenses(
                 request, metadata
             )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseListUserLicenses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserLicenseServiceRestTransport._BaseListUserLicenses,
+                    "_BaseListUserLicenses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -934,21 +932,18 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             """
 
             http_options = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserLicenseServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1055,15 +1050,16 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             """
 
             http_options = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserLicenseServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1194,15 +1190,16 @@ class UserLicenseServiceRestTransport(_BaseUserLicenseServiceRestTransport):
             """
 
             http_options = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserLicenseServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserLicenseServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

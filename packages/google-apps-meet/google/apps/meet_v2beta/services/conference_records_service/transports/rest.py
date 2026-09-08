@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.apps.meet_v2beta._compat import transcode_request
 from google.apps.meet_v2beta.types import resource, service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ConferenceRecordsServiceRestInterceptor:
@@ -898,17 +898,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_http_options()
-
             request, metadata = self._interceptor.pre_get_conference_record(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord,
+                    "_BaseGetConferenceRecord__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1045,15 +1046,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_http_options()
-
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant,
+                    "_BaseGetParticipant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1199,17 +1201,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_http_options()
-
             request, metadata = self._interceptor.pre_get_participant_session(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession,
+                    "_BaseGetParticipantSession__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1347,15 +1350,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_http_options()
-
             request, metadata = self._interceptor.pre_get_recording(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetRecording,
+                    "_BaseGetRecording__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1496,15 +1500,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_http_options()
-
             request, metadata = self._interceptor.pre_get_transcript(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript,
+                    "_BaseGetTranscript__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1644,17 +1649,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_http_options()
-
             request, metadata = self._interceptor.pre_get_transcript_entry(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry,
+                    "_BaseGetTranscriptEntry__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1794,17 +1800,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_http_options()
-
             request, metadata = self._interceptor.pre_list_conference_records(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords,
+                    "_BaseListConferenceRecords__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1942,17 +1949,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_http_options()
-
             request, metadata = self._interceptor.pre_list_participants(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListParticipants,
+                    "_BaseListParticipants__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2093,17 +2101,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_participant_sessions(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions,
+                    "_BaseListParticipantSessions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2240,15 +2249,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_http_options()
-
             request, metadata = self._interceptor.pre_list_recordings(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListRecordings,
+                    "_BaseListRecordings__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2388,17 +2398,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_http_options()
-
             request, metadata = self._interceptor.pre_list_transcript_entries(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries,
+                    "_BaseListTranscriptEntries__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2535,17 +2546,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             """
 
             http_options = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_http_options()
-
             request, metadata = self._interceptor.pre_list_transcripts(
                 request, metadata
             )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts,
+                    "_BaseListTranscripts__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

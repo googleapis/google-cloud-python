@@ -452,6 +452,36 @@ class ReferenceListServiceGrpcAsyncIOTransport(ReferenceListServiceTransport):
             )
         return self._stubs["update_reference_list"]
 
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        Awaitable[reference_list.VerifyReferenceListResponse],
+    ]:
+        r"""Return a callable for the verify reference list method over gRPC.
+
+        VerifyReferenceList validates list content and
+        returns line errors, if any.
+
+        Returns:
+            Callable[[~.VerifyReferenceListRequest],
+                    Awaitable[~.VerifyReferenceListResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_reference_list" not in self._stubs:
+            self._stubs["verify_reference_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.chronicle.v1.ReferenceListService/VerifyReferenceList",
+                request_serializer=reference_list.VerifyReferenceListRequest.serialize,
+                response_deserializer=reference_list.VerifyReferenceListResponse.deserialize,
+            )
+        return self._stubs["verify_reference_list"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -490,6 +520,20 @@ class ReferenceListServiceGrpcAsyncIOTransport(ReferenceListServiceTransport):
             ),
             self.update_reference_list: self._wrap_method(
                 self.update_reference_list,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_reference_list: self._wrap_method(
+                self.verify_reference_list,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),

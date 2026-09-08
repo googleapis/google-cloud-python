@@ -29,6 +29,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.locationfinder_v1._compat import transcode_request
 from google.cloud.locationfinder_v1.types import cloud_location
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CloudLocationFinderRestInterceptor:
@@ -455,17 +455,18 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             """
 
             http_options = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_cloud_location(
                 request, metadata
             )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation,
+                    "_BaseGetCloudLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -603,17 +604,18 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             """
 
             http_options = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_cloud_locations(
                 request, metadata
             )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudLocationFinderRestTransport._BaseListCloudLocations,
+                    "_BaseListCloudLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -755,17 +757,18 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             """
 
             http_options = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_search_cloud_locations(
                 request, metadata
             )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations,
+                    "_BaseSearchCloudLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -939,15 +942,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             """
 
             http_options = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudLocationFinderRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1078,15 +1082,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             """
 
             http_options = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCloudLocationFinderRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

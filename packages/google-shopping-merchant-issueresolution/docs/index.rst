@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Merchant.
+This package includes clients for multiple versions of Shopping Merchant Issue Resolution.
 By default, you will get version ``merchant_issueresolution_v1``.
 
 

@@ -3,7 +3,7 @@ Python Client for Audit Manager
 
 |preview| |pypi| |versions|
 
-`Audit Manager`_: 
+`Audit Manager`_: The Audit Manager API allows customers to manage compliance audits.
 
 - `Client Library Documentation`_
 - `Product Documentation`_

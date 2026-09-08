@@ -36,13 +36,13 @@ Preview
 -------
 
 **Preview** indicates that the client library for a particular service is
-under development—either in **Beta** or **Alpha**—and is being prepared for 
-release. 
+under development—either in **Beta** or **Alpha**—and is being prepared for
+release.
 
-* **Beta** indicates the library is mostly stable. Issues and requests 
-  against beta libraries are addressed with a higher priority. 
+* **Beta** indicates the library is mostly stable. Issues and requests
+  against beta libraries are addressed with a higher priority.
   (``Development Status :: 4 - Beta``)
-* **Alpha** indicates the library is still a work-in-progress and is more 
+* **Alpha** indicates the library is still a work-in-progress and is more
   likely to get backwards-incompatible updates. (``Development Status :: 3 - Alpha``)
 
 If you need support for other Google APIs, check out the
@@ -73,12 +73,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `A unified Python API in BigQuery <https://github.com/googleapis/google-cloud-python/tree/main/packages/bigframes>`_
+   * - `A unified Python API in BigQuery <https://github.com/google/bigframes>`_
      - stable
      - |PyPI-bigframes|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+     - `Client Library Issues <https://github.com/google/bigframes/issues>`_
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - stable
      - |PyPI-google-cloud-aiplatform|
@@ -970,12 +970,6 @@ Libraries
    * - `Anti Money Laundering AI API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-financialservices>`_
      - preview
      - |PyPI-google-cloud-financialservices|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Apigee Registry API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-registry>`_
-     - preview
-     - |PyPI-google-cloud-apigee-registry|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
@@ -2038,8 +2032,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-multicloud
 .. |PyPI-google-cloud-financialservices| image:: https://img.shields.io/pypi/v/google-cloud-financialservices.svg
      :target: https://pypi.org/project/google-cloud-financialservices
-.. |PyPI-google-cloud-apigee-registry| image:: https://img.shields.io/pypi/v/google-cloud-apigee-registry.svg
-     :target: https://pypi.org/project/google-cloud-apigee-registry
 .. |PyPI-google-cloud-apphub| image:: https://img.shields.io/pypi/v/google-cloud-apphub.svg
      :target: https://pypi.org/project/google-cloud-apphub
 .. |PyPI-google-cloud-appoptimize| image:: https://img.shields.io/pypi/v/google-cloud-appoptimize.svg

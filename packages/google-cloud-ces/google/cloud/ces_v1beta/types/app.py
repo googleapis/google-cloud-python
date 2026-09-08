@@ -589,13 +589,13 @@ class BargeInConfig(proto.Message):
 
     Attributes:
         disable_barge_in (bool):
-            Optional. Disables user barge-in while the agent is
-            speaking. If true, user input during agent response playback
-            will be ignored.
-
-            Deprecated: ``disable_barge_in`` is deprecated in favor of
+            Optional. Deprecated: ``disable_barge_in`` is deprecated in
+            favor of
             [``disable_barge_in_control``][google.cloud.ces.v1beta.ChannelProfile.disable_barge_in_control]
             in ChannelProfile.
+
+            Disables user barge-in while the agent is speaking. If true,
+            user input during agent response playback will be ignored.
         barge_in_awareness (bool):
             Optional. If enabled, the agent will adapt
             its next response based on the assumption that
@@ -628,20 +628,50 @@ class SynthesizeSpeechConfig(proto.Message):
             voices and
             languages <https://cloud.google.com/text-to-speech/docs/voices>`__
             from Cloud Text-to-Speech.
+        voice_sample_gcs_uri (str):
+            Optional. The Cloud Storage URI to the audio sample for
+            voice cloning. The audio sample should be a mono-channel,
+            24kHz WAV file.
+
+            Note: Please make sure the CES service agent
+            ``service-<PROJECT-NUMBER>@gcp-sa-ces.iam.gserviceaccount.com``
+            has ``storage.objects.get`` permission to the Cloud Storage
+            object.
         speaking_rate (float):
             Optional. The speaking rate/speed in the range [0.25, 2.0].
             1.0 is the normal native speed supported by the specific
             voice. 2.0 is twice as fast, and 0.5 is half as fast. Values
             outside of the range [0.25, 2.0] will return an error.
+        model (str):
+            Optional. The model used to synthesize audio.
+            Currently supported values:
+
+            - "gemini-3.1-flash-tts-preview"
+            If empty, Chirp3-HD is used.
+        instruction (str):
+            Optional. The instruction used to synthesize
+            speech when using a generative model.
     """
 
     voice: str = proto.Field(
         proto.STRING,
         number=1,
     )
+    voice_sample_gcs_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     speaking_rate: float = proto.Field(
         proto.DOUBLE,
         number=2,
+    )
+    model: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    instruction: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -686,6 +716,11 @@ class LoggingSettings(proto.Message):
             app. The conversation data is subject to redaction as
             configured in
             [RedactionConfig][google.cloud.ces.v1beta.LoggingSettings.redaction_config].
+        unredacted_bigquery_export_settings (google.cloud.ces_v1beta.types.BigQueryExportSettings):
+            Optional. Configures the BigQuery export
+            behaviors for the app. The unredacted
+            conversation data will be exported to BigQuery
+            tables if it is enabled.
         cloud_logging_settings (google.cloud.ces_v1beta.types.CloudLoggingSettings):
             Optional. Settings to describe the Cloud
             Logging behaviors for the app.
@@ -722,6 +757,13 @@ class LoggingSettings(proto.Message):
         proto.MESSAGE,
         number=3,
         message=bigquery_export.BigQueryExportSettings,
+    )
+    unredacted_bigquery_export_settings: bigquery_export.BigQueryExportSettings = (
+        proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=bigquery_export.BigQueryExportSettings,
+        )
     )
     cloud_logging_settings: "CloudLoggingSettings" = proto.Field(
         proto.MESSAGE,
@@ -1080,6 +1122,9 @@ class EvaluationSettings(proto.Message):
         scenario_execution_mode (google.cloud.ces_v1beta.types.EvaluationSettings.ScenarioExecutionMode):
             Optional. The execution mode for scenario evaluations. If
             not provided, will default to QUALITY_OPTIMIZED.
+        evaluation_run_caching_settings (google.cloud.ces_v1beta.types.EvaluationRunCachingSettings):
+            Optional. The caching settings to use for the
+            evaluation run.
     """
 
     class ScenarioConversationInitiator(proto.Enum):
@@ -1148,6 +1193,11 @@ class EvaluationSettings(proto.Message):
         proto.ENUM,
         number=6,
         enum=ScenarioExecutionMode,
+    )
+    evaluation_run_caching_settings: common.EvaluationRunCachingSettings = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=common.EvaluationRunCachingSettings,
     )
 
 

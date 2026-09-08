@@ -26,8 +26,10 @@ Services for Google Cloud Compute v1beta API
     global_public_delegated_prefixes
     global_vm_extension_policies
     health_checks
+    hosts
     image_family_views
     images
+    image_views
     instance_group_manager_resize_requests
     instance_group_managers
     instance_groups
@@ -46,6 +48,7 @@ Services for Google Cloud Compute v1beta API
     licenses
     machine_images
     machine_types
+    managed_rulesets
     network_attachments
     network_edge_security_services
     network_endpoint_groups
@@ -55,10 +58,13 @@ Services for Google Cloud Compute v1beta API
     node_groups
     node_templates
     node_types
+    organization_rollout_plans
+    organization_rollouts
     organization_security_policies
     packet_mirrorings
     preview_features
     projects
+    project_views
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers
@@ -98,6 +104,7 @@ Services for Google Cloud Compute v1beta API
     region_target_tcp_proxies
     region_url_maps
     region_zones
+    reliability_risks
     reservation_blocks
     reservations
     reservation_slots

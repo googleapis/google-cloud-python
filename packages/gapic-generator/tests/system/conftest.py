@@ -18,6 +18,7 @@ from unittest import mock
 import os
 import pytest
 import pytest_asyncio
+from requests.adapters import HTTPAdapter
 
 from typing import Sequence, Tuple
 
@@ -113,15 +114,18 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         )
 
 
-dir = os.path.dirname(__file__)
-with open(os.path.join(dir, "../cert/mtls.crt"), "rb") as fh:
+base_dir = os.path.dirname(__file__)
+CERT_PATH = os.path.join(base_dir, "../cert/mtls.crt")
+KEY_PATH = os.path.join(base_dir, "../cert/mtls.key")
+with open(CERT_PATH, "rb") as fh:
     cert = fh.read()
-with open(os.path.join(dir, "../cert/mtls.key"), "rb") as fh:
+with open(KEY_PATH, "rb") as fh:
     key = fh.read()
 
 ssl_credentials = grpc.ssl_channel_credentials(
     root_certificates=cert, certificate_chain=cert, private_key=key
 )
+tls_credentials = grpc.ssl_channel_credentials(root_certificates=cert)
 
 
 def callback():
@@ -135,6 +139,9 @@ client_options.client_cert_source = callback
 def pytest_addoption(parser):
     parser.addoption(
         "--mtls", action="store_true", help="Run system test with mutual TLS channel"
+    )
+    parser.addoption(
+        "--tls", action="store_true", help="Run system test with standard one-way TLS channel"
     )
 
 
@@ -187,6 +194,11 @@ def construct_client(
 @pytest.fixture
 def use_mtls(request):
     return request.config.getoption("--mtls")
+
+
+@pytest.fixture
+def use_tls(request):
+    return request.config.getoption("--tls") or request.config.getoption("--mtls")
 
 
 @pytest.fixture
@@ -328,7 +340,7 @@ class EchoMetadataClientGrpcInterceptor(
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in response.initial_metadata()] + [(k, str(v)) for k, v in response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
@@ -387,7 +399,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         await self._add_request_metadata(client_call_details)
         response = await continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in await response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in await response.initial_metadata()] + [(k, str(v)) for k, v in await response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
@@ -412,7 +424,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
 
 @pytest.fixture
-def intercepted_echo_grpc(use_mtls):
+def intercepted_echo_grpc(use_mtls, use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -421,11 +433,12 @@ def intercepted_echo_grpc(use_mtls):
         "intercepted",
     )
     host = "localhost:7469"
-    channel = (
-        grpc.secure_channel(host, ssl_credentials)
-        if use_mtls
-        else grpc.insecure_channel(host)
-    )
+    if use_mtls:
+        channel = grpc.secure_channel(host, ssl_credentials)
+    elif use_tls:
+        channel = grpc.secure_channel(host, tls_credentials)
+    else:
+        channel = grpc.insecure_channel(host)
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -435,7 +448,7 @@ def intercepted_echo_grpc(use_mtls):
 
 
 @pytest_asyncio.fixture
-async def intercepted_echo_grpc_async():
+async def intercepted_echo_grpc_async(use_mtls, use_tls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
@@ -444,8 +457,12 @@ async def intercepted_echo_grpc_async():
         "intercepted",
     )
     host = "localhost:7469"
-    channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
-    # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
+    if use_mtls:
+        channel = grpc.aio.secure_channel(host, ssl_credentials, interceptors=[interceptor])
+    elif use_tls:
+        channel = grpc.aio.secure_channel(host, tls_credentials, interceptors=[interceptor])
+    else:
+        channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
     transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=ga_credentials.AnonymousCredentials(),
         channel=channel,
@@ -453,19 +470,32 @@ async def intercepted_echo_grpc_async():
     return EchoAsyncClient(transport=transport), interceptor
 
 
+class HostNameIgnoringAdapter(HTTPAdapter):
+    """Custom HTTPAdapter that disables hostname verification for local self-signed certs."""
+    def cert_verify(self, conn, url, verify, cert):
+        super().cert_verify(conn, url, verify, cert)
+        conn.assert_hostname = False
+
+
 @pytest.fixture
-def intercepted_echo_rest():
+def intercepted_echo_rest(use_mtls, use_tls):
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestInterceptor()
 
-    # The custom host explicitly bypasses https.
+    url_scheme = "https" if (use_mtls or use_tls) else "http"
     transport = transport_cls(
         credentials=ga_credentials.AnonymousCredentials(),
         host="localhost:7469",
-        url_scheme="http",
+        url_scheme=url_scheme,
         interceptor=interceptor,
     )
+    if use_mtls or use_tls:
+        transport._session.verify = CERT_PATH
+        transport._session.mount("https://", HostNameIgnoringAdapter())
+    if use_mtls:
+        transport._session.cert = (CERT_PATH, KEY_PATH)
+
     return EchoClient(transport=transport), interceptor
 
 
@@ -478,11 +508,11 @@ def intercepted_echo_rest_async():
     transport_cls = EchoAsyncClient.get_transport_class(transport_name)
     interceptor = EchoMetadataClientRestAsyncInterceptor()
 
-    # The custom host explicitly bypasses https.
     transport = transport_cls(
         credentials=async_anonymous_credentials(),
         host="localhost:7469",
         url_scheme="http",
         interceptor=interceptor,
     )
+
     return EchoAsyncClient(transport=transport), interceptor

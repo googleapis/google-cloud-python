@@ -37,3 +37,5 @@ omit =
   */core/*.py
   */site-packages/*.py
   sqlalchemy_bigquery/requirements.py
+  tests/*
+  */tests/*

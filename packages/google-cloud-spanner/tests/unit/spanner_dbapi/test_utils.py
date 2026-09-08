@@ -12,15 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import unittest
 
 
 class TestUtils(unittest.TestCase):
-    skip_condition = sys.version_info[0] < 3
-    skip_message = "Subtests are not supported in Python 2"
-
-    @unittest.skipIf(skip_condition, skip_message)
     def test_PeekIterator(self):
         from google.cloud.spanner_dbapi.utils import PeekIterator
 
@@ -38,7 +33,6 @@ class TestUtils(unittest.TestCase):
                 actual = list(pitr)
                 self.assertEqual(actual, expected)
 
-    @unittest.skipIf(skip_condition, "Python 2 has an outdated iterator definition")
     def test_peekIterator_list_rows_converted_to_tuples(self):
         from google.cloud.spanner_dbapi.utils import PeekIterator
 
@@ -60,7 +54,6 @@ class TestUtils(unittest.TestCase):
         pit = PeekIterator([("Clark", "Kent")])
         self.assertEqual(next(pit), ("Clark", "Kent"))
 
-    @unittest.skipIf(skip_condition, "Python 2 has an outdated iterator definition")
     def test_peekIterator_nonlist_rows_unconverted(self):
         from google.cloud.spanner_dbapi.utils import PeekIterator
 
@@ -69,7 +62,6 @@ class TestUtils(unittest.TestCase):
         want = ["a", "b", "c", "d", "e"]
         self.assertEqual(got, want, "Values should be returned unchanged")
 
-    @unittest.skipIf(skip_condition, skip_message)
     def test_backtick_unicode(self):
         from google.cloud.spanner_dbapi.utils import backtick_unicode
 
@@ -85,7 +77,6 @@ class TestUtils(unittest.TestCase):
                 got = backtick_unicode(sql)
                 self.assertEqual(got, want)
 
-    @unittest.skipIf(skip_condition, skip_message)
     def test_StreamedManyResultSets(self):
         from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 
@@ -100,3 +91,45 @@ class TestUtils(unittest.TestCase):
                 stream_result._iterators.append(data_in)
                 actual = list(stream_result)
                 self.assertEqual(actual, expected)
+
+    def test_BufferedIterator(self):
+        from google.cloud.spanner_dbapi.utils import BufferedIterator
+
+        cases = [
+            ("list_of_lists", [["a", 1], ["b", 2]], [("a", 1), ("b", 2)]),
+            ("iter_of_lists", iter([["a", 1], ["b", 2]]), [("a", 1), ("b", 2)]),
+            ("list_of_tuples", [("a", 1), ("b", 2)], [("a", 1), ("b", 2)]),
+            ("iter_of_tuples", iter([("a", 1), ("b", 2)]), [("a", 1), ("b", 2)]),
+            ("empty_list", [], []),
+            ("empty_tuple", (), []),
+            ("none_source", None, []),
+        ]
+
+        for name, data_in, expected in cases:
+            with self.subTest(name=name):
+                bitr = BufferedIterator(data_in)
+                self.assertEqual(len(bitr), len(expected))
+                actual = list(bitr)
+                self.assertEqual(actual, expected)
+                with self.assertRaises(StopIteration):
+                    next(bitr)
+
+    def test_BufferedIterator_eagerly_drains_stream(self):
+        from google.cloud.spanner_dbapi.utils import BufferedIterator
+
+        drained = False
+
+        def generator():
+            nonlocal drained
+            yield ["first", 1]
+            yield ["second", 2]
+            drained = True
+
+        bitr = BufferedIterator(generator())
+        # The generator must be completely drained during __init__
+        self.assertTrue(drained)
+        self.assertEqual(len(bitr), 2)
+        self.assertEqual(next(bitr), ("first", 1))
+        self.assertEqual(next(bitr), ("second", 2))
+        with self.assertRaises(StopIteration):
+            next(bitr)

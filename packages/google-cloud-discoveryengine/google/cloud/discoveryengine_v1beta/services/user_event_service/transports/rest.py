@@ -31,6 +31,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.discoveryengine_v1beta._compat import transcode_request
 from google.cloud.discoveryengine_v1beta.types import (
     import_config,
     purge_config,
@@ -61,8 +62,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class UserEventServiceRestInterceptor:
@@ -534,6 +534,10 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/assistants/*/agents/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
                     },
                     {
@@ -555,6 +559,10 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
                     },
                     {
                         "method": "get",
@@ -617,6 +625,10 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/identityMappingStores/*}/operations",
                     },
                     {
                         "method": "get",
@@ -751,17 +763,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
-
             request, metadata = self._interceptor.pre_collect_user_event(
                 request, metadata
             )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseCollectUserEvent,
+                    "_BaseCollectUserEvent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -901,21 +914,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
-
             request, metadata = self._interceptor.pre_import_user_events(
                 request, metadata
             )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseImportUserEvents,
+                    "_BaseImportUserEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1054,21 +1064,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
-
             request, metadata = self._interceptor.pre_purge_user_events(
                 request, metadata
             )
-            transcoded_request = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BasePurgeUserEvents,
+                    "_BasePurgeUserEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1207,21 +1214,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
-
             request, metadata = self._interceptor.pre_write_user_event(
                 request, metadata
             )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseWriteUserEvent,
+                    "_BaseWriteUserEvent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1390,21 +1394,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1512,15 +1513,16 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             http_options = (
                 _BaseUserEventServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1650,15 +1652,16 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             """
 
             http_options = _BaseUserEventServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseUserEventServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

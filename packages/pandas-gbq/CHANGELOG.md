@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.2](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.1...pandas-gbq-v0.35.2) (2026-08-21)
+
+
+### Bug Fixes
+
+* **pandas-gbq:** reject backticks in parse_table_id ([#18156](https://github.com/googleapis/google-cloud-python/issues/18156)) ([f687060](https://github.com/googleapis/google-cloud-python/commit/f68706084a7c44f4fb0865230568f65ad7dff22c))
+
+## [0.35.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.0...pandas-gbq-v0.35.1) (2026-08-06)
+
+
+### Features
+
+* **pandas-gbq:** add arrow decoder for read rows response ([#17958](https://github.com/googleapis/google-cloud-python/issues/17958)) ([e1df28c](https://github.com/googleapis/google-cloud-python/commit/e1df28c5330c67f949f7b8888f4d906488e07a3b))
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+
+### Documentation
+
+* add project ID to pandas-gbq run sample ([#17692](https://github.com/googleapis/google-cloud-python/issues/17692)) ([bd5d1a4](https://github.com/googleapis/google-cloud-python/commit/bd5d1a4b100cd1d22fc19da75d07a0b47396edd3))
+
 ## [0.35.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.1...pandas-gbq-v0.35.0) (2026-04-09)
 
 

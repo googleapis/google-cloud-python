@@ -52,3 +52,127 @@ class TestParseUtils(unittest.TestCase):
                 )
             ),
         )
+
+
+class TestClientSideStatementExecutor(unittest.TestCase):
+    def test_execute_set_data_boost_enabled(self):
+        from unittest import mock
+
+        from google.cloud.spanner_dbapi.client_side_statement_executor import execute
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        cursor = mock.MagicMock()
+        cursor.connection.is_closed = False
+        cursor.connection.data_boost_enabled = False
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = TRUE")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.data_boost_enabled)
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = FALSE")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.data_boost_enabled)
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = TRUE;")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.data_boost_enabled)
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = 'FALSE';")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.data_boost_enabled)
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = INVALID")
+        with self.assertRaises(ProgrammingError):
+            execute(cursor, stmt)
+
+    def test_execute_show_data_boost_enabled(self):
+        from unittest import mock
+
+        from google.cloud.spanner_dbapi.client_side_statement_executor import execute
+        from google.cloud.spanner_v1 import TypeCode
+
+        cursor = mock.MagicMock()
+        cursor.connection.is_closed = False
+        cursor.connection.data_boost_enabled = True
+
+        stmt = classify_statement("SHOW VARIABLE DATA_BOOST_ENABLED")
+        res = execute(cursor, stmt)
+        rows = list(res)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], True)
+        self.assertEqual(res.fields[0].name, "DATA_BOOST_ENABLED")
+        self.assertEqual(res.fields[0].type_.code, TypeCode.BOOL)
+
+        stmt_semicolon = classify_statement("SHOW VARIABLE DATA_BOOST_ENABLED;")
+        res_semicolon = execute(cursor, stmt_semicolon)
+        rows_semicolon = list(res_semicolon)
+        self.assertEqual(len(rows_semicolon), 1)
+        self.assertEqual(rows_semicolon[0][0], True)
+
+        cursor.connection.data_boost_enabled = False
+        res = execute(cursor, stmt)
+        rows = list(res)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], False)
+
+    def test_execute_set_auto_partition_mode(self):
+        from unittest import mock
+
+        from google.cloud.spanner_dbapi.client_side_statement_executor import execute
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        cursor = mock.MagicMock()
+        cursor.connection.is_closed = False
+        cursor.connection.auto_partition_mode = False
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = TRUE")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = FALSE")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = TRUE;")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = 'FALSE';")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = INVALID")
+        with self.assertRaises(ProgrammingError):
+            execute(cursor, stmt)
+
+    def test_execute_show_auto_partition_mode(self):
+        from unittest import mock
+
+        from google.cloud.spanner_dbapi.client_side_statement_executor import execute
+        from google.cloud.spanner_v1 import TypeCode
+
+        cursor = mock.MagicMock()
+        cursor.connection.is_closed = False
+        cursor.connection.auto_partition_mode = True
+
+        stmt = classify_statement("SHOW VARIABLE AUTO_PARTITION_MODE")
+        res = execute(cursor, stmt)
+        rows = list(res)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], True)
+        self.assertEqual(res.fields[0].name, "AUTO_PARTITION_MODE")
+        self.assertEqual(res.fields[0].type_.code, TypeCode.BOOL)
+
+        cursor.connection.auto_partition_mode = False
+        res = execute(cursor, stmt)
+        rows = list(res)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], False)

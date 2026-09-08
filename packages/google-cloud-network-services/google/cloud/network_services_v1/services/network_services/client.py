@@ -46,6 +46,13 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.network_services_v1 import gapic_version as package_version
+from google.cloud.network_services_v1._compat import (
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    get_universe_domain,
+    read_environment_variables,
+    should_use_client_cert,
+)
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -75,6 +82,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.network_services_v1.services.network_services import pagers
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     common,
     endpoint_policy,
     extensibility,
@@ -88,6 +96,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -148,76 +157,12 @@ class NetworkServicesClientMeta(type):
 class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
     """Service describing handlers for resources."""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
-        """Converts api endpoint to mTLS endpoint.
-
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            Optional[str]: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "networkservices.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT)
 
     _DEFAULT_ENDPOINT_TEMPLATE = "networkservices.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
-
-    @staticmethod
-    def _use_client_cert_effective():
-        """Returns whether client certificate should be used for mTLS if the
-        google-auth version supports should_use_client_cert automatic mTLS enablement.
-
-        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
-
-        Returns:
-            bool: whether client certificate should be used for mTLS
-        Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
-        """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else:  # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv(
-                "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-            ).lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -284,6 +229,28 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         """Parses a address path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/addresses/(?P<address>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def agent_gateway_path(
+        project: str,
+        location: str,
+        agent_gateway: str,
+    ) -> str:
+        """Returns a fully-qualified agent_gateway string."""
+        return "projects/{project}/locations/{location}/agentGateways/{agent_gateway}".format(
+            project=project,
+            location=location,
+            agent_gateway=agent_gateway,
+        )
+
+    @staticmethod
+    def parse_agent_gateway_path(path: str) -> Dict[str, str]:
+        """Parses a agent_gateway path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agentGateways/(?P<agent_gateway>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -690,6 +657,28 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def target_tcp_proxy_path(
+        project: str,
+        location: str,
+        target_tcp_proxy: str,
+    ) -> str:
+        """Returns a fully-qualified target_tcp_proxy string."""
+        return "projects/{project}/locations/{location}/targetTcpProxies/{target_tcp_proxy}".format(
+            project=project,
+            location=location,
+            target_tcp_proxy=target_tcp_proxy,
+        )
+
+    @staticmethod
+    def parse_target_tcp_proxy_path(path: str) -> Dict[str, str]:
+        """Parses a target_tcp_proxy path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetTcpProxies/(?P<target_tcp_proxy>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def tcp_route_path(
         project: str,
         location: str,
@@ -899,7 +888,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = NetworkServicesClient._use_client_cert_effective()
+        use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError(
@@ -920,34 +909,11 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT  # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
         return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
-
-        Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
-        """
-        use_client_cert = NetworkServicesClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -967,65 +933,6 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             elif mtls.has_default_client_cert_source():
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ) -> str:
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            _default_universe = NetworkServicesClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
-            api_endpoint = NetworkServicesClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = NetworkServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = NetworkServicesClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -1158,13 +1065,15 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            NetworkServicesClient._read_environment_variables()
+            read_environment_variables()
         )
         self._client_cert_source = NetworkServicesClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = NetworkServicesClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
+        self._universe_domain = get_universe_domain(
+            universe_domain_opt,
+            self._universe_domain_env,
+            default_universe=NetworkServicesClient._DEFAULT_UNIVERSE,
         )
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
@@ -1199,14 +1108,14 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             self._transport = cast(NetworkServicesTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or NetworkServicesClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or get_api_endpoint(
+            api_override=self._client_options.api_endpoint,
+            universe_domain=self._universe_domain,
+            default_universe=NetworkServicesClient._DEFAULT_UNIVERSE,
+            default_mtls_endpoint=NetworkServicesClient.DEFAULT_MTLS_ENDPOINT,
+            default_endpoint_template=NetworkServicesClient._DEFAULT_ENDPOINT_TEMPLATE,
+            use_mtls=self._use_mtls_endpoint == "always"
+            or (self._use_mtls_endpoint == "auto" and self._client_cert_source),
         )
 
         if not transport_provided:
@@ -1310,7 +1219,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the
                 EndpointPolicies should be listed, specified in the
-                format ``projects/*/locations/global``.
+                format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1433,7 +1342,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             name (str):
                 Required. A name of the EndpointPolicy to get. Must be
                 in the format
-                ``projects/*/locations/global/endpointPolicies/*``.
+                ``projects/*/locations/*/endpointPolicies/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1559,7 +1468,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 CreateEndpointPolicy method.
             parent (str):
                 Required. The parent resource of the EndpointPolicy.
-                Must be in the format ``projects/*/locations/global``.
+                Must be in the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1853,7 +1762,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             name (str):
                 Required. A name of the EndpointPolicy to delete. Must
                 be in the format
-                ``projects/*/locations/global/endpointPolicies/*``.
+                ``projects/*/locations/*/endpointPolicies/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3810,7 +3719,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the
                 GrpcRoutes should be listed, specified in the format
-                ``projects/*/locations/global``.
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3932,7 +3841,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the GrpcRoute to get. Must be in the
-                format ``projects/*/locations/global/grpcRoutes/*``.
+                format ``projects/*/locations/*/grpcRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4053,7 +3962,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             parent (str):
                 Required. The parent resource of the GrpcRoute. Must be
-                in the format ``projects/*/locations/global``.
+                in the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4332,7 +4241,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the GrpcRoute to delete. Must be in
-                the format ``projects/*/locations/global/grpcRoutes/*``.
+                the format ``projects/*/locations/*/grpcRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4460,7 +4369,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the
                 HttpRoutes should be listed, specified in the format
-                ``projects/*/locations/global``.
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4582,7 +4491,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the HttpRoute to get. Must be in the
-                format ``projects/*/locations/global/httpRoutes/*``.
+                format ``projects/*/locations/*/httpRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4702,7 +4611,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 The request object. Request used by the HttpRoute method.
             parent (str):
                 Required. The parent resource of the HttpRoute. Must be
-                in the format ``projects/*/locations/global``.
+                in the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4981,7 +4890,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the HttpRoute to delete. Must be in
-                the format ``projects/*/locations/global/httpRoutes/*``.
+                the format ``projects/*/locations/*/httpRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5109,7 +5018,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the
                 TcpRoutes should be listed, specified in the format
-                ``projects/*/locations/global``.
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5231,7 +5140,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the TcpRoute to get. Must be in the
-                format ``projects/*/locations/global/tcpRoutes/*``.
+                format ``projects/*/locations/*/tcpRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5347,7 +5256,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 The request object. Request used by the TcpRoute method.
             parent (str):
                 Required. The parent resource of the TcpRoute. Must be
-                in the format ``projects/*/locations/global``.
+                in the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5622,7 +5531,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the TcpRoute to delete. Must be in
-                the format ``projects/*/locations/global/tcpRoutes/*``.
+                the format ``projects/*/locations/*/tcpRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5750,7 +5659,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the
                 TlsRoutes should be listed, specified in the format
-                ``projects/*/locations/global``.
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5872,7 +5781,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the TlsRoute to get. Must be in the
-                format ``projects/*/locations/global/tlsRoutes/*``.
+                format ``projects/*/locations/*/tlsRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5992,7 +5901,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 The request object. Request used by the TlsRoute method.
             parent (str):
                 Required. The parent resource of the TlsRoute. Must be
-                in the format ``projects/*/locations/global``.
+                in the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6271,7 +6180,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the TlsRoute to delete. Must be in
-                the format ``projects/*/locations/global/tlsRoutes/*``.
+                the format ``projects/*/locations/*/tlsRoutes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7077,7 +6986,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
             parent (str):
                 Required. The project and location from which the Meshes
                 should be listed, specified in the format
-                ``projects/*/locations/global``.
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7198,7 +7107,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 The request object. Request used by the GetMesh method.
             name (str):
                 Required. A name of the Mesh to get. Must be in the
-                format ``projects/*/locations/global/meshes/*``.
+                format ``projects/*/locations/*/meshes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7317,7 +7226,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             parent (str):
                 Required. The parent resource of the Mesh. Must be in
-                the format ``projects/*/locations/global``.
+                the format ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7596,7 +7505,7 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
                 method.
             name (str):
                 Required. A name of the Mesh to delete. Must be in the
-                format ``projects/*/locations/global/meshes/*``.
+                format ``projects/*/locations/*/meshes/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -8810,6 +8719,656 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
         # Done; return the response.
         return response
 
+    def list_agent_gateways(
+        self,
+        request: Optional[Union[agent_gateway.ListAgentGatewaysRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAgentGatewaysPager:
+        r"""Lists AgentGateways in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_list_agent_gateways():
+                # Create a client
+                client = network_services_v1.NetworkServicesClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.ListAgentGatewaysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_agent_gateways(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.ListAgentGatewaysRequest, dict]):
+                The request object. Request used with the
+                ListAgentGateways method.
+            parent (str):
+                Required. The project and location from which the
+                AgentGateways should be listed, specified in the format
+                ``projects/*/locations/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.services.network_services.pagers.ListAgentGatewaysPager:
+                Response returned by the
+                ListAgentGateways method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent_gateway.ListAgentGatewaysRequest):
+            request = agent_gateway.ListAgentGatewaysRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_agent_gateways]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAgentGatewaysPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_agent_gateway(
+        self,
+        request: Optional[Union[agent_gateway.GetAgentGatewayRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> agent_gateway.AgentGateway:
+        r"""Gets details of a single AgentGateway.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_get_agent_gateway():
+                # Create a client
+                client = network_services_v1.NetworkServicesClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.GetAgentGatewayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_agent_gateway(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.GetAgentGatewayRequest, dict]):
+                The request object. Request used by the GetAgentGateway
+                method.
+            name (str):
+                Required. A name of the AgentGateway to get. Must be in
+                the format ``projects/*/locations/*/agentGateways/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.types.AgentGateway:
+                AgentGateway represents the agent
+                gateway resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent_gateway.GetAgentGatewayRequest):
+            request = agent_gateway.GetAgentGatewayRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_agent_gateway]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_agent_gateway(
+        self,
+        request: Optional[
+            Union[gcn_agent_gateway.CreateAgentGatewayRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        agent_gateway: Optional[gcn_agent_gateway.AgentGateway] = None,
+        agent_gateway_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new AgentGateway in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_create_agent_gateway():
+                # Create a client
+                client = network_services_v1.NetworkServicesClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.CreateAgentGatewayRequest(
+                    parent="parent_value",
+                    agent_gateway_id="agent_gateway_id_value",
+                )
+
+                # Make the request
+                operation = client.create_agent_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.CreateAgentGatewayRequest, dict]):
+                The request object. Request used by the
+                CreateAgentGateway method.
+            parent (str):
+                Required. The parent resource of the AgentGateway. Must
+                be in the format ``projects/*/locations/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            agent_gateway (google.cloud.network_services_v1.types.AgentGateway):
+                Required. AgentGateway resource to be
+                created.
+
+                This corresponds to the ``agent_gateway`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            agent_gateway_id (str):
+                Required. Short name of the
+                AgentGateway resource to be created.
+
+                This corresponds to the ``agent_gateway_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.network_services_v1.types.AgentGateway`
+                AgentGateway represents the agent gateway resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, agent_gateway, agent_gateway_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_agent_gateway.CreateAgentGatewayRequest):
+            request = gcn_agent_gateway.CreateAgentGatewayRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if agent_gateway is not None:
+                request.agent_gateway = agent_gateway
+            if agent_gateway_id is not None:
+                request.agent_gateway_id = agent_gateway_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_agent_gateway]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_agent_gateway.AgentGateway,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_agent_gateway(
+        self,
+        request: Optional[
+            Union[gcn_agent_gateway.UpdateAgentGatewayRequest, dict]
+        ] = None,
+        *,
+        agent_gateway: Optional[gcn_agent_gateway.AgentGateway] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of a single AgentGateway.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_update_agent_gateway():
+                # Create a client
+                client = network_services_v1.NetworkServicesClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.UpdateAgentGatewayRequest(
+                )
+
+                # Make the request
+                operation = client.update_agent_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.UpdateAgentGatewayRequest, dict]):
+                The request object. Request used by the
+                UpdateAgentGateway method.
+            agent_gateway (google.cloud.network_services_v1.types.AgentGateway):
+                Required. Updated AgentGateway
+                resource.
+
+                This corresponds to the ``agent_gateway`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the AgentGateway resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.network_services_v1.types.AgentGateway`
+                AgentGateway represents the agent gateway resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [agent_gateway, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_agent_gateway.UpdateAgentGatewayRequest):
+            request = gcn_agent_gateway.UpdateAgentGatewayRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if agent_gateway is not None:
+                request.agent_gateway = agent_gateway
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_agent_gateway]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("agent_gateway.name", request.agent_gateway.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_agent_gateway.AgentGateway,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_agent_gateway(
+        self,
+        request: Optional[Union[agent_gateway.DeleteAgentGatewayRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single AgentGateway.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_delete_agent_gateway():
+                # Create a client
+                client = network_services_v1.NetworkServicesClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.DeleteAgentGatewayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_agent_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.DeleteAgentGatewayRequest, dict]):
+                The request object. Request used by the
+                DeleteAgentGateway method.
+            name (str):
+                Required. A name of the AgentGateway to delete. Must be
+                in the format
+                ``projects/*/locations/*/agentGateways/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent_gateway.DeleteAgentGatewayRequest):
+            request = agent_gateway.DeleteAgentGatewayRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_agent_gateway]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "NetworkServicesClient":
         return self
 
@@ -9531,8 +10090,6 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("NetworkServicesClient",)

@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.servicecontrol_v1._compat import transcode_request
 from google.cloud.servicecontrol_v1.types import service_controller
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ServiceControllerRestInterceptor:
@@ -205,7 +205,8 @@ class ServiceControllerRestStub:
 class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
     """REST backend synchronous transport for ServiceController.
 
-    `Google Service Control API </service-control/overview>`__
+    `Google Service Control
+    API <https://cloud.google.com/service-control/overview>`__
 
     Lets clients check and report operations against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.
@@ -351,25 +352,16 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
             http_options = (
                 _BaseServiceControllerRestTransport._BaseCheck._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_check(request, metadata)
-            transcoded_request = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceControllerRestTransport._BaseCheck._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceControllerRestTransport._BaseCheck,
+                    "_BaseCheck__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -512,25 +504,16 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
             http_options = (
                 _BaseServiceControllerRestTransport._BaseReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_report(request, metadata)
-            transcoded_request = (
-                _BaseServiceControllerRestTransport._BaseReport._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseServiceControllerRestTransport._BaseReport._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceControllerRestTransport._BaseReport._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceControllerRestTransport._BaseReport,
+                    "_BaseReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

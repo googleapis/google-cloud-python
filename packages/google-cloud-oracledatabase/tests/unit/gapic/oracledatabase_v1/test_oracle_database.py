@@ -135,6 +135,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -190,210 +202,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert OracleDatabaseClient._get_default_mtls_endpoint(None) is None
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    )
-    assert (
-        OracleDatabaseClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert OracleDatabaseClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                OracleDatabaseClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert OracleDatabaseClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            OracleDatabaseClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert OracleDatabaseClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert OracleDatabaseClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert OracleDatabaseClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert OracleDatabaseClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                OracleDatabaseClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert OracleDatabaseClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert OracleDatabaseClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -425,97 +233,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    OracleDatabaseClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OracleDatabaseClient),
-)
-@mock.patch.object(
-    OracleDatabaseAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OracleDatabaseAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = OracleDatabaseClient._DEFAULT_UNIVERSE
-    default_endpoint = OracleDatabaseClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = OracleDatabaseClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        OracleDatabaseClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == OracleDatabaseClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(None, None, default_universe, "always")
-        == OracleDatabaseClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == OracleDatabaseClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        OracleDatabaseClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        OracleDatabaseClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        OracleDatabaseClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        OracleDatabaseClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        OracleDatabaseClient._get_universe_domain(None, None)
-        == OracleDatabaseClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        OracleDatabaseClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1019,11 +736,19 @@ def test_oracle_database_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1066,11 +791,19 @@ def test_oracle_database_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1798,6 +1531,9 @@ def test_list_cloud_exadata_infrastructures_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1892,6 +1628,8 @@ async def test_list_cloud_exadata_infrastructures_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3039,6 +2777,374 @@ async def test_delete_cloud_exadata_infrastructure_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
+def test_configure_exascale_cloud_exadata_infrastructure(
+    request_type, transport: str = "grpc"
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.configure_exascale_cloud_exadata_infrastructure(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+        request = {}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = OracleDatabaseAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+
+        request = {}
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+        {},
+    ],
+)
+async def test_configure_exascale_cloud_exadata_infrastructure_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_field_headers():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_field_headers_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.configure_exascale_cloud_exadata_infrastructure(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].total_storage_size_gb
+        mock_val = 2234
+        assert arg == mock_val
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_flattened_error():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.configure_exascale_cloud_exadata_infrastructure(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].total_storage_size_gb
+        mock_val = 2234
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_flattened_error_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         oracledatabase.ListCloudVmClustersRequest(),
         {},
     ],
@@ -3440,6 +3546,9 @@ def test_list_cloud_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vm_cluster.CloudVmCluster) for i in results)
@@ -3532,6 +3641,8 @@ async def test_list_cloud_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3620,6 +3731,7 @@ def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
             odb_network="odb_network_value",
             odb_subnet="odb_subnet_value",
             backup_odb_subnet="backup_odb_subnet_value",
+            exascale_db_storage_vault="exascale_db_storage_vault_value",
         )
         response = client.get_cloud_vm_cluster(request)
 
@@ -3641,6 +3753,7 @@ def test_get_cloud_vm_cluster(request_type, transport: str = "grpc"):
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 def test_get_cloud_vm_cluster_non_empty_request_with_auto_populated_field():
@@ -3792,6 +3905,7 @@ async def test_get_cloud_vm_cluster_async(
                 odb_network="odb_network_value",
                 odb_subnet="odb_subnet_value",
                 backup_odb_subnet="backup_odb_subnet_value",
+                exascale_db_storage_vault="exascale_db_storage_vault_value",
             )
         )
         response = await client.get_cloud_vm_cluster(request)
@@ -3814,6 +3928,7 @@ async def test_get_cloud_vm_cluster_async(
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 def test_get_cloud_vm_cluster_field_headers():
@@ -5080,6 +5195,9 @@ def test_list_entitlements_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -5172,6 +5290,8 @@ async def test_list_entitlements_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5602,6 +5722,9 @@ def test_list_db_servers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_server.DbServer) for i in results)
@@ -5690,6 +5813,8 @@ async def test_list_db_servers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6118,6 +6243,9 @@ def test_list_db_nodes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -6206,6 +6334,8 @@ async def test_list_db_nodes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6638,6 +6768,9 @@ def test_list_gi_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gi_version.GiVersion) for i in results)
@@ -6726,6 +6859,8 @@ async def test_list_gi_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7176,6 +7311,9 @@ def test_list_minor_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -7268,6 +7406,8 @@ async def test_list_minor_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7723,6 +7863,9 @@ def test_list_db_system_shapes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system_shape.DbSystemShape) for i in results)
@@ -7815,6 +7958,8 @@ async def test_list_db_system_shapes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8278,6 +8423,9 @@ def test_list_autonomous_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -8372,6 +8520,8 @@ async def test_list_autonomous_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11057,6 +11207,9 @@ def test_list_autonomous_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11151,6 +11304,8 @@ async def test_list_autonomous_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11610,6 +11765,9 @@ def test_list_autonomous_database_character_sets_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11707,6 +11865,8 @@ async def test_list_autonomous_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12171,6 +12331,9 @@ def test_list_autonomous_database_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12266,6 +12429,8 @@ async def test_list_autonomous_database_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14098,6 +14263,706 @@ async def test_failover_autonomous_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        oracledatabase.RefreshAutonomousDatabaseRequest(),
+        {},
+    ],
+)
+def test_refresh_autonomous_database(request_type, transport: str = "grpc"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = oracledatabase.RefreshAutonomousDatabaseRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_refresh_autonomous_database_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oracledatabase.RefreshAutonomousDatabaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.refresh_autonomous_database(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.RefreshAutonomousDatabaseRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_refresh_autonomous_database_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.refresh_autonomous_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.refresh_autonomous_database
+        ] = mock_rpc
+        request = {}
+        client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.refresh_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_refresh_autonomous_database_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = OracleDatabaseAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.refresh_autonomous_database
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.refresh_autonomous_database
+        ] = mock_rpc
+
+        request = {}
+        await client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.refresh_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.RefreshAutonomousDatabaseRequest(),
+        {},
+    ],
+)
+async def test_refresh_autonomous_database_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = oracledatabase.RefreshAutonomousDatabaseRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_refresh_autonomous_database_field_headers():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oracledatabase.RefreshAutonomousDatabaseRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_refresh_autonomous_database_field_headers_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oracledatabase.RefreshAutonomousDatabaseRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_refresh_autonomous_database_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.refresh_autonomous_database(
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].refresh_cutoff_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+def test_refresh_autonomous_database_flattened_error():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.refresh_autonomous_database(
+            oracledatabase.RefreshAutonomousDatabaseRequest(),
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.asyncio
+async def test_refresh_autonomous_database_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.refresh_autonomous_database(
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].refresh_cutoff_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+@pytest.mark.asyncio
+async def test_refresh_autonomous_database_flattened_error_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.refresh_autonomous_database(
+            oracledatabase.RefreshAutonomousDatabaseRequest(),
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(),
+        {},
+    ],
+)
+def test_get_autonomous_database_refreshable_clones(
+    request_type, transport: str = "grpc"
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+        response = client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, oracledatabase.AutonomousDatabaseRefreshableClones)
+
+
+def test_get_autonomous_database_refreshable_clones_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_autonomous_database_refreshable_clones(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_autonomous_database_refreshable_clones_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_autonomous_database_refreshable_clones
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_autonomous_database_refreshable_clones
+        ] = mock_rpc
+        request = {}
+        client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_autonomous_database_refreshable_clones_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = OracleDatabaseAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_autonomous_database_refreshable_clones
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_autonomous_database_refreshable_clones
+        ] = mock_rpc
+
+        request = {}
+        await client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(),
+        {},
+    ],
+)
+async def test_get_autonomous_database_refreshable_clones_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oracledatabase.AutonomousDatabaseRefreshableClones()
+        )
+        response = await client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, oracledatabase.AutonomousDatabaseRefreshableClones)
+
+
+def test_get_autonomous_database_refreshable_clones_field_headers():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        call.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+        client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_autonomous_database_refreshable_clones_field_headers_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oracledatabase.AutonomousDatabaseRefreshableClones()
+        )
+        await client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_autonomous_database_refreshable_clones_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_autonomous_database_refreshable_clones(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_autonomous_database_refreshable_clones_flattened_error():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_autonomous_database_refreshable_clones(
+            oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_autonomous_database_refreshable_clones_flattened_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oracledatabase.AutonomousDatabaseRefreshableClones()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_autonomous_database_refreshable_clones(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_autonomous_database_refreshable_clones_flattened_error_async():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_autonomous_database_refreshable_clones(
+            oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         odb_network.ListOdbNetworksRequest(),
         {},
     ],
@@ -14496,6 +15361,9 @@ def test_list_odb_networks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -14588,6 +15456,8 @@ async def test_list_odb_networks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16082,6 +16952,9 @@ def test_list_odb_subnets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -16170,6 +17043,8 @@ async def test_list_odb_subnets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17675,6 +18550,9 @@ def test_list_exadb_vm_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, exadb_vm_cluster.ExadbVmCluster) for i in results)
@@ -17767,6 +18645,8 @@ async def test_list_exadb_vm_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20040,6 +20920,9 @@ def test_list_exascale_db_storage_vaults_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -20135,6 +21018,8 @@ async def test_list_exascale_db_storage_vaults_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20222,6 +21107,7 @@ def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             gcp_oracle_zone="gcp_oracle_zone_value",
             entitlement_id="entitlement_id_value",
+            exadata_infrastructure="exadata_infrastructure_value",
         )
         response = client.get_exascale_db_storage_vault(request)
 
@@ -20237,6 +21123,7 @@ def test_get_exascale_db_storage_vault(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 def test_get_exascale_db_storage_vault_non_empty_request_with_auto_populated_field():
@@ -20383,6 +21270,7 @@ async def test_get_exascale_db_storage_vault_async(
                 display_name="display_name_value",
                 gcp_oracle_zone="gcp_oracle_zone_value",
                 entitlement_id="entitlement_id_value",
+                exadata_infrastructure="exadata_infrastructure_value",
             )
         )
         response = await client.get_exascale_db_storage_vault(request)
@@ -20399,6 +21287,7 @@ async def test_get_exascale_db_storage_vault_async(
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 def test_get_exascale_db_storage_vault_field_headers():
@@ -21698,6 +22587,9 @@ def test_list_db_system_initial_storage_sizes_pager(transport_name: str = "grpc"
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -21793,6 +22685,8 @@ async def test_list_db_system_initial_storage_sizes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -22230,6 +23124,9 @@ def test_list_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, database.Database) for i in results)
@@ -22318,6 +23215,8 @@ async def test_list_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23169,6 +24068,9 @@ def test_list_pluggable_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -23261,6 +24163,8 @@ async def test_list_pluggable_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -24050,6 +24954,9 @@ def test_list_db_systems_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system.DbSystem) for i in results)
@@ -24138,6 +25045,8 @@ async def test_list_db_systems_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -25625,6 +26534,9 @@ def test_list_goldengate_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -25719,6 +26631,8 @@ async def test_list_goldengate_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -27979,6 +28893,9 @@ def test_list_goldengate_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -28073,6 +28990,8 @@ async def test_list_goldengate_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -29226,361 +30145,6 @@ async def test_delete_goldengate_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_version(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion(
-            name="name_value",
-            ocid="ocid_value",
-        )
-        response = client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-def test_get_goldengate_deployment_version_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_version(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(
-                name="name_value",
-            )
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_version_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_version
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_version
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_version_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion(
-                name="name_value",
-                ocid="ocid_value",
-            )
-        )
-        response = await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-def test_get_goldengate_deployment_version_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion()
-        )
-        await client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_version_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_version(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_version_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_version(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
         goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest(),
         {},
     ],
@@ -29998,6 +30562,9 @@ def test_list_goldengate_deployment_versions_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -30093,6 +30660,8 @@ async def test_list_goldengate_deployment_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -30151,403 +30720,6 @@ async def test_list_goldengate_deployment_versions_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_type(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType(
-            name="name_value",
-            deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-            category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            connection_types=["connection_types_value"],
-            display_name="display_name_value",
-            ogg_version="ogg_version_value",
-            source_technologies=["source_technologies_value"],
-            supported_capabilities=["supported_capabilities_value"],
-            supported_technologies_url="supported_technologies_url_value",
-            target_technologies=["target_technologies_value"],
-            default_username="default_username_value",
-        )
-        response = client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-def test_get_goldengate_deployment_type_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_type(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(
-            name="name_value",
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_type_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_type
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_type_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType(
-                name="name_value",
-                deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-                category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                connection_types=["connection_types_value"],
-                display_name="display_name_value",
-                ogg_version="ogg_version_value",
-                source_technologies=["source_technologies_value"],
-                supported_capabilities=["supported_capabilities_value"],
-                supported_technologies_url="supported_technologies_url_value",
-                target_technologies=["target_technologies_value"],
-                default_username="default_username_value",
-            )
-        )
-        response = await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-def test_get_goldengate_deployment_type_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        await client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_type_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_type_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -30966,6 +31138,9 @@ def test_list_goldengate_deployment_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -31061,6 +31236,8 @@ async def test_list_goldengate_deployment_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -31119,421 +31296,6 @@ async def test_list_goldengate_deployment_types_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_deployment_environment(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-            name="name_value",
-            category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            display_name="display_name_value",
-            default_cpu_core_count=2332,
-            environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-            auto_scaling_enabled=True,
-            max_cpu_core_count=1917,
-            memory_gb_per_cpu_core=2326,
-            min_cpu_core_count=1915,
-            network_bandwidth_gbps_per_cpu_core=3710,
-            storage_usage_limit_gb_per_cpu_core=3684,
-        )
-        response = client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-def test_get_goldengate_deployment_environment_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(
-            name="name_value",
-        )
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_deployment_environment(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(
-                name="name_value",
-            )
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_deployment_environment_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_environment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_deployment_environment
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_deployment_environment_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-                name="name_value",
-                category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                display_name="display_name_value",
-                default_cpu_core_count=2332,
-                environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-                auto_scaling_enabled=True,
-                max_cpu_core_count=1917,
-                memory_gb_per_cpu_core=2326,
-                min_cpu_core_count=1915,
-                network_bandwidth_gbps_per_cpu_core=3710,
-                storage_usage_limit_gb_per_cpu_core=3684,
-            )
-        )
-        response = await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-def test_get_goldengate_deployment_environment_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-    )
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = (
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-    )
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        await client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_deployment_environment_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_deployment_environment(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_deployment_environment_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_deployment_environment(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -31946,6 +31708,9 @@ def test_list_goldengate_deployment_environments_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -32043,6 +31808,8 @@ async def test_list_goldengate_deployment_environments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -32103,365 +31870,6 @@ async def test_list_goldengate_deployment_environments_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-        {},
-    ],
-)
-def test_get_goldengate_connection_type(request_type, transport: str = "grpc"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType(
-            name="name_value",
-            connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-            technology_types=["technology_types_value"],
-        )
-        response = client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-def test_get_goldengate_connection_type_non_empty_request_with_auto_populated_field():
-    # This test is a coverage failsafe to make sure that UUID4 fields are
-    # automatically populated, according to AIP-4235, with non-empty requests.
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Populate all string fields in the request which are not UUID4
-    # since we want to check that UUID4 are populated automatically
-    # if they meet the requirements of AIP 4235.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest(
-        name="name_value",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_goldengate_connection_type(request=request)
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest(
-            name="name_value",
-        )
-        assert args[0] == request_msg
-
-
-def test_get_goldengate_connection_type_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="grpc",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_connection_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-        request = {}
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = OracleDatabaseAsyncClient(
-            credentials=async_anonymous_credentials(),
-            transport=transport,
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._client._transport.get_goldengate_connection_type
-            in client._client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.AsyncMock()
-        mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-
-        request = {}
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-        {},
-    ],
-)
-async def test_get_goldengate_connection_type_async(
-    request_type, transport: str = "grpc_asyncio"
-):
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType(
-                name="name_value",
-                connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-                technology_types=["technology_types_value"],
-            )
-        )
-        response = await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-def test_get_goldengate_connection_type_field_headers():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_field_headers_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        await client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-def test_get_goldengate_connection_type_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_goldengate_connection_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-def test_get_goldengate_connection_type_flattened_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_flattened_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.get_goldengate_connection_type(
-            name="name_value",
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        arg = args[0].name
-        mock_val = "name_value"
-        assert arg == mock_val
-
-
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_flattened_error_async():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
 
 
 @pytest.mark.parametrize(
@@ -32878,6 +32286,9 @@ def test_list_goldengate_connection_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -32973,6 +32384,8 @@ async def test_list_goldengate_connection_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -33412,6 +32825,9 @@ def test_list_db_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_version.DbVersion) for i in results)
@@ -33500,6 +32916,8 @@ async def test_list_db_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -33955,6 +33373,9 @@ def test_list_database_character_sets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -34049,6 +33470,8 @@ async def test_list_database_character_sets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -34525,6 +33948,9 @@ def test_list_goldengate_connection_assignments_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -34622,6 +34048,8 @@ async def test_list_goldengate_connection_assignments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -36222,28 +35650,29 @@ def test_list_cloud_exadata_infrastructures_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_cloud_exadata_infrastructures._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListCloudExadataInfrastructures,
+        "_BaseListCloudExadataInfrastructures__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_cloud_exadata_infrastructures._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -36291,27 +35720,6 @@ def test_list_cloud_exadata_infrastructures_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_cloud_exadata_infrastructures_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_cloud_exadata_infrastructures._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_cloud_exadata_infrastructures_rest_flattened():
@@ -36431,6 +35839,9 @@ def test_list_cloud_exadata_infrastructures_rest_pager(transport: str = "rest"):
 
         pager = client.list_cloud_exadata_infrastructures(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -36500,19 +35911,19 @@ def test_get_cloud_exadata_infrastructure_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCloudExadataInfrastructure,
+        "_BaseGetCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -36558,17 +35969,6 @@ def test_get_cloud_exadata_infrastructure_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_cloud_exadata_infrastructure_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_cloud_exadata_infrastructure._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_cloud_exadata_infrastructure_rest_flattened():
@@ -36693,9 +36093,14 @@ def test_create_cloud_exadata_infrastructure_rest_required_fields(
     # verify fields with default values are dropped
     assert "cloudExadataInfrastructureId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCloudExadataInfrastructure,
+        "_BaseCreateCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -36710,17 +36115,13 @@ def test_create_cloud_exadata_infrastructure_rest_required_fields(
         "cloud_exadata_infrastructure_id_value"
     )
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "cloud_exadata_infrastructure_id",
-            "request_id",
+            "cloudExadataInfrastructureId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -36775,31 +36176,6 @@ def test_create_cloud_exadata_infrastructure_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_cloud_exadata_infrastructure_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.create_cloud_exadata_infrastructure._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "cloudExadataInfrastructureId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "cloudExadataInfrastructureId",
-                "cloudExadataInfrastructure",
-            )
-        )
-    )
 
 
 def test_create_cloud_exadata_infrastructure_rest_flattened():
@@ -36928,26 +36304,27 @@ def test_delete_cloud_exadata_infrastructure_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteCloudExadataInfrastructure,
+        "_BaseDeleteCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cloud_exadata_infrastructure._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "force",
-            "request_id",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -36990,25 +36367,6 @@ def test_delete_cloud_exadata_infrastructure_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_cloud_exadata_infrastructure_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.delete_cloud_exadata_infrastructure._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "force",
-                "requestId",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_cloud_exadata_infrastructure_rest_flattened():
@@ -37071,6 +36429,190 @@ def test_delete_cloud_exadata_infrastructure_rest_flattened_error(
         )
 
 
+def test_configure_exascale_cloud_exadata_infrastructure_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.configure_exascale_cloud_exadata_infrastructure
+        ] = mock_rpc
+
+        request = {}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_required_fields(
+    request_type=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["total_storage_size_gb"] = 0
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseConfigureExascaleCloudExadataInfrastructure,
+        "_BaseConfigureExascaleCloudExadataInfrastructure__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["totalStorageSizeGb"] = 2234
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "totalStorageSizeGb" in jsonified_request
+    assert jsonified_request["totalStorageSizeGb"] == 2234
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.configure_exascale_cloud_exadata_infrastructure(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/cloudExadataInfrastructures/*}:configureExascale"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_configure_exascale_cloud_exadata_infrastructure_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.configure_exascale_cloud_exadata_infrastructure(
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest(),
+            name="name_value",
+            total_storage_size_gb=2234,
+        )
+
+
 def test_list_cloud_vm_clusters_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -37127,27 +36669,28 @@ def test_list_cloud_vm_clusters_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_cloud_vm_clusters._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListCloudVmClusters,
+        "_BaseListCloudVmClusters__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_cloud_vm_clusters._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -37193,24 +36736,6 @@ def test_list_cloud_vm_clusters_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_cloud_vm_clusters_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_cloud_vm_clusters._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_cloud_vm_clusters_rest_flattened():
@@ -37325,6 +36850,9 @@ def test_list_cloud_vm_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_cloud_vm_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vm_cluster.CloudVmCluster) for i in results)
@@ -37389,19 +36917,19 @@ def test_get_cloud_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCloudVmCluster,
+        "_BaseGetCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -37447,15 +36975,6 @@ def test_get_cloud_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_cloud_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_cloud_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_cloud_vm_cluster_rest_flattened():
@@ -37580,9 +37099,14 @@ def test_create_cloud_vm_cluster_rest_required_fields(
     # verify fields with default values are dropped
     assert "cloudVmClusterId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCloudVmCluster,
+        "_BaseCreateCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -37592,17 +37116,13 @@ def test_create_cloud_vm_cluster_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["cloudVmClusterId"] = "cloud_vm_cluster_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "cloud_vm_cluster_id",
-            "request_id",
+            "cloudVmClusterId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -37654,29 +37174,6 @@ def test_create_cloud_vm_cluster_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_cloud_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_cloud_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "cloudVmClusterId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "cloudVmClusterId",
-                "cloudVmCluster",
-            )
-        )
-    )
 
 
 def test_create_cloud_vm_cluster_rest_flattened():
@@ -37799,26 +37296,27 @@ def test_delete_cloud_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteCloudVmCluster,
+        "_BaseDeleteCloudVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cloud_vm_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "force",
-            "request_id",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -37861,23 +37359,6 @@ def test_delete_cloud_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_cloud_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_cloud_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "force",
-                "requestId",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_delete_cloud_vm_cluster_rest_flattened():
@@ -37991,26 +37472,27 @@ def test_list_entitlements_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_entitlements._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListEntitlements,
+        "_BaseListEntitlements__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_entitlements._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38056,23 +37538,6 @@ def test_list_entitlements_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_entitlements_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_entitlements._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_entitlements_rest_flattened():
@@ -38187,6 +37652,9 @@ def test_list_entitlements_rest_pager(transport: str = "rest"):
 
         pager = client.list_entitlements(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entitlement.Entitlement) for i in results)
@@ -38247,26 +37715,27 @@ def test_list_db_servers_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_servers._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbServers,
+        "_BaseListDbServers__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_servers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38312,23 +37781,6 @@ def test_list_db_servers_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_servers_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_db_servers._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_servers_rest_flattened():
@@ -38447,6 +37899,9 @@ def test_list_db_servers_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_servers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_server.DbServer) for i in results)
@@ -38507,26 +37962,27 @@ def test_list_db_nodes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_nodes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbNodes,
+        "_BaseListDbNodes__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_nodes._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38572,23 +38028,6 @@ def test_list_db_nodes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_nodes_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_db_nodes._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_nodes_rest_flattened():
@@ -38707,6 +38146,9 @@ def test_list_db_nodes_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_nodes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_node.DbNode) for i in results)
@@ -38769,27 +38211,28 @@ def test_list_gi_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_gi_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGiVersions,
+        "_BaseListGiVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_gi_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38835,24 +38278,6 @@ def test_list_gi_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_gi_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_gi_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_gi_versions_rest_flattened():
@@ -38966,6 +38391,9 @@ def test_list_gi_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_gi_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, gi_version.GiVersion) for i in results)
@@ -39030,27 +38458,28 @@ def test_list_minor_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_minor_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListMinorVersions,
+        "_BaseListMinorVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_minor_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -39096,24 +38525,6 @@ def test_list_minor_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_minor_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_minor_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_minor_versions_rest_flattened():
@@ -39232,6 +38643,9 @@ def test_list_minor_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_minor_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, minor_version.MinorVersion) for i in results)
@@ -39297,27 +38711,28 @@ def test_list_db_system_shapes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_system_shapes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbSystemShapes,
+        "_BaseListDbSystemShapes__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_system_shapes._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -39363,24 +38778,6 @@ def test_list_db_system_shapes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_system_shapes_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_db_system_shapes._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_system_shapes_rest_flattened():
@@ -39495,6 +38892,9 @@ def test_list_db_system_shapes_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_system_shapes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system_shape.DbSystemShape) for i in results)
@@ -39560,28 +38960,29 @@ def test_list_autonomous_databases_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_databases._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAutonomousDatabases,
+        "_BaseListAutonomousDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_databases._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -39629,25 +39030,6 @@ def test_list_autonomous_databases_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_autonomous_databases_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_autonomous_databases._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_autonomous_databases_rest_flattened():
@@ -39762,6 +39144,9 @@ def test_list_autonomous_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_autonomous_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -39829,19 +39214,19 @@ def test_get_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetAutonomousDatabase,
+        "_BaseGetAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -39887,15 +39272,6 @@ def test_get_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_autonomous_database_rest_flattened():
@@ -40020,9 +39396,14 @@ def test_create_autonomous_database_rest_required_fields(
     # verify fields with default values are dropped
     assert "autonomousDatabaseId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateAutonomousDatabase,
+        "_BaseCreateAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -40035,17 +39416,13 @@ def test_create_autonomous_database_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["autonomousDatabaseId"] = "autonomous_database_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "autonomous_database_id",
-            "request_id",
+            "autonomousDatabaseId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -40097,29 +39474,6 @@ def test_create_autonomous_database_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "autonomousDatabaseId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "autonomousDatabaseId",
-                "autonomousDatabase",
-            )
-        )
-    )
 
 
 def test_create_autonomous_database_rest_flattened():
@@ -40245,24 +39599,25 @@ def test_update_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateAutonomousDatabase,
+        "_BaseUpdateAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_autonomous_database._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "request_id",
-            "update_mask",
+            "requestId",
+            "updateMask",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -40304,23 +39659,6 @@ def test_update_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "requestId",
-                "updateMask",
-            )
-        )
-        & set(("autonomousDatabase",))
-    )
 
 
 def test_update_autonomous_database_rest_flattened():
@@ -40449,21 +39787,22 @@ def test_delete_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteAutonomousDatabase,
+        "_BaseDeleteAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40506,15 +39845,6 @@ def test_delete_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_autonomous_database_rest_flattened():
@@ -40635,19 +39965,19 @@ def test_restore_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRestoreAutonomousDatabase,
+        "_BaseRestoreAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40691,23 +40021,6 @@ def test_restore_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_restore_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.restore_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "restoreTime",
-            )
-        )
-    )
 
 
 def test_restore_autonomous_database_rest_flattened():
@@ -40827,20 +40140,20 @@ def test_generate_autonomous_database_wallet_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGenerateAutonomousDatabaseWallet,
+        "_BaseGenerateAutonomousDatabaseWallet__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["password"] = "password_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40891,25 +40204,6 @@ def test_generate_autonomous_database_wallet_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_generate_autonomous_database_wallet_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.generate_autonomous_database_wallet._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "password",
-            )
-        )
-    )
 
 
 def test_generate_autonomous_database_wallet_rest_flattened():
@@ -41038,26 +40332,27 @@ def test_list_autonomous_db_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAutonomousDbVersions,
+        "_BaseListAutonomousDbVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -41105,23 +40400,6 @@ def test_list_autonomous_db_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_autonomous_db_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_autonomous_db_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_autonomous_db_versions_rest_flattened():
@@ -41236,6 +40514,9 @@ def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_autonomous_db_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41303,31 +40584,28 @@ def test_list_autonomous_database_character_sets_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_character_sets._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseListAutonomousDatabaseCharacterSets,
+        "_BaseListAutonomousDatabaseCharacterSets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_character_sets._get_unset_required_fields(
-        jsonified_request
-    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -41377,26 +40655,6 @@ def test_list_autonomous_database_character_sets_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_autonomous_database_character_sets_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_autonomous_database_character_sets._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_autonomous_database_character_sets_rest_flattened():
@@ -41516,6 +40774,9 @@ def test_list_autonomous_database_character_sets_rest_pager(transport: str = "re
 
         pager = client.list_autonomous_database_character_sets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41588,27 +40849,28 @@ def test_list_autonomous_database_backups_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListAutonomousDatabaseBackups,
+        "_BaseListAutonomousDatabaseBackups__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -41656,26 +40918,6 @@ def test_list_autonomous_database_backups_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_autonomous_database_backups_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_autonomous_database_backups._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_autonomous_database_backups_rest_flattened():
@@ -41793,6 +41035,9 @@ def test_list_autonomous_database_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_autonomous_database_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41867,19 +41112,19 @@ def test_stop_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseStopAutonomousDatabase,
+        "_BaseStopAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -41923,15 +41168,6 @@ def test_stop_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_stop_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.stop_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_stop_autonomous_database_rest_flattened():
@@ -42052,19 +41288,19 @@ def test_start_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseStartAutonomousDatabase,
+        "_BaseStartAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -42108,15 +41344,6 @@ def test_start_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_start_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.start_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_start_autonomous_database_rest_flattened():
@@ -42237,19 +41464,19 @@ def test_restart_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restart_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRestartAutonomousDatabase,
+        "_BaseRestartAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restart_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -42293,15 +41520,6 @@ def test_restart_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_restart_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.restart_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_restart_autonomous_database_rest_flattened():
@@ -42422,19 +41640,19 @@ def test_switchover_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).switchover_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSwitchoverAutonomousDatabase,
+        "_BaseSwitchoverAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).switchover_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -42478,17 +41696,6 @@ def test_switchover_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_switchover_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.switchover_autonomous_database._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_switchover_autonomous_database_rest_flattened():
@@ -42611,19 +41818,19 @@ def test_failover_autonomous_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).failover_autonomous_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFailoverAutonomousDatabase,
+        "_BaseFailoverAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).failover_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -42667,15 +41874,6 @@ def test_failover_autonomous_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_failover_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.failover_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_failover_autonomous_database_rest_flattened():
@@ -42738,6 +41936,366 @@ def test_failover_autonomous_database_rest_flattened_error(transport: str = "res
         )
 
 
+def test_refresh_autonomous_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.refresh_autonomous_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.refresh_autonomous_database
+        ] = mock_rpc
+
+        request = {}
+        client.refresh_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.refresh_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_refresh_autonomous_database_rest_required_fields(
+    request_type=oracledatabase.RefreshAutonomousDatabaseRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseRefreshAutonomousDatabase,
+        "_BaseRefreshAutonomousDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.refresh_autonomous_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_refresh_autonomous_database_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.refresh_autonomous_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:refresh"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_refresh_autonomous_database_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.refresh_autonomous_database(
+            oracledatabase.RefreshAutonomousDatabaseRequest(),
+            name="name_value",
+            refresh_cutoff_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+def test_get_autonomous_database_refreshable_clones_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_autonomous_database_refreshable_clones
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_autonomous_database_refreshable_clones
+        ] = mock_rpc
+
+        request = {}
+        client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_autonomous_database_refreshable_clones(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_autonomous_database_refreshable_clones_rest_required_fields(
+    request_type=oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseGetAutonomousDatabaseRefreshableClones,
+        "_BaseGetAutonomousDatabaseRefreshableClones__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = oracledatabase.AutonomousDatabaseRefreshableClones.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_autonomous_database_refreshable_clones(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_autonomous_database_refreshable_clones_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = oracledatabase.AutonomousDatabaseRefreshableClones.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_autonomous_database_refreshable_clones(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:getRefreshableClones"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_autonomous_database_refreshable_clones_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_autonomous_database_refreshable_clones(
+            oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(),
+            name="name_value",
+        )
+
+
 def test_list_odb_networks_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -42791,28 +42349,29 @@ def test_list_odb_networks_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_odb_networks._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListOdbNetworks,
+        "_BaseListOdbNetworks__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_odb_networks._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -42858,25 +42417,6 @@ def test_list_odb_networks_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_odb_networks_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_odb_networks._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_odb_networks_rest_flattened():
@@ -42991,6 +42531,9 @@ def test_list_odb_networks_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_networks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_network.OdbNetwork) for i in results)
@@ -43051,19 +42594,19 @@ def test_get_odb_network_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_odb_network._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetOdbNetwork,
+        "_BaseGetOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_odb_network._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -43109,15 +42652,6 @@ def test_get_odb_network_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_odb_network_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_odb_network._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_odb_network_rest_flattened():
@@ -43241,9 +42775,14 @@ def test_create_odb_network_rest_required_fields(
     # verify fields with default values are dropped
     assert "odbNetworkId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_odb_network._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateOdbNetwork,
+        "_BaseCreateOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -43253,17 +42792,13 @@ def test_create_odb_network_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["odbNetworkId"] = "odb_network_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_odb_network._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "odb_network_id",
-            "request_id",
+            "odbNetworkId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -43315,29 +42850,6 @@ def test_create_odb_network_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_odb_network_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_odb_network._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "odbNetworkId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "odbNetworkId",
-                "odbNetwork",
-            )
-        )
-    )
 
 
 def test_create_odb_network_rest_flattened():
@@ -43459,21 +42971,22 @@ def test_delete_odb_network_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_odb_network._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteOdbNetwork,
+        "_BaseDeleteOdbNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_odb_network._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -43516,15 +43029,6 @@ def test_delete_odb_network_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_odb_network_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_odb_network._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_odb_network_rest_flattened():
@@ -43638,28 +43142,29 @@ def test_list_odb_subnets_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_odb_subnets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListOdbSubnets,
+        "_BaseListOdbSubnets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_odb_subnets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -43705,25 +43210,6 @@ def test_list_odb_subnets_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_odb_subnets_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_odb_subnets._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_odb_subnets_rest_flattened():
@@ -43840,6 +43326,9 @@ def test_list_odb_subnets_rest_pager(transport: str = "rest"):
 
         pager = client.list_odb_subnets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, odb_subnet.OdbSubnet) for i in results)
@@ -43900,19 +43389,19 @@ def test_get_odb_subnet_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_odb_subnet._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetOdbSubnet,
+        "_BaseGetOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_odb_subnet._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -43958,15 +43447,6 @@ def test_get_odb_subnet_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_odb_subnet_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_odb_subnet._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_odb_subnet_rest_flattened():
@@ -44088,9 +43568,14 @@ def test_create_odb_subnet_rest_required_fields(
     # verify fields with default values are dropped
     assert "odbSubnetId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_odb_subnet._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateOdbSubnet,
+        "_BaseCreateOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -44100,17 +43585,13 @@ def test_create_odb_subnet_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["odbSubnetId"] = "odb_subnet_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_odb_subnet._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "odb_subnet_id",
-            "request_id",
+            "odbSubnetId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -44162,29 +43643,6 @@ def test_create_odb_subnet_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_odb_subnet_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_odb_subnet._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "odbSubnetId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "odbSubnetId",
-                "odbSubnet",
-            )
-        )
-    )
 
 
 def test_create_odb_subnet_rest_flattened():
@@ -44306,21 +43764,22 @@ def test_delete_odb_subnet_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_odb_subnet._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteOdbSubnet,
+        "_BaseDeleteOdbSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_odb_subnet._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -44363,15 +43822,6 @@ def test_delete_odb_subnet_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_odb_subnet_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_odb_subnet._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_odb_subnet_rest_flattened():
@@ -44488,28 +43938,29 @@ def test_list_exadb_vm_clusters_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_exadb_vm_clusters._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListExadbVmClusters,
+        "_BaseListExadbVmClusters__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_exadb_vm_clusters._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -44555,25 +44006,6 @@ def test_list_exadb_vm_clusters_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_exadb_vm_clusters_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_exadb_vm_clusters._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_exadb_vm_clusters_rest_flattened():
@@ -44688,6 +44120,9 @@ def test_list_exadb_vm_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_exadb_vm_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, exadb_vm_cluster.ExadbVmCluster) for i in results)
@@ -44752,19 +44187,19 @@ def test_get_exadb_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetExadbVmCluster,
+        "_BaseGetExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -44810,15 +44245,6 @@ def test_get_exadb_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_exadb_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_exadb_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_exadb_vm_cluster_rest_flattened():
@@ -44943,9 +44369,14 @@ def test_create_exadb_vm_cluster_rest_required_fields(
     # verify fields with default values are dropped
     assert "exadbVmClusterId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateExadbVmCluster,
+        "_BaseCreateExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -44955,17 +44386,13 @@ def test_create_exadb_vm_cluster_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["exadbVmClusterId"] = "exadb_vm_cluster_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "exadb_vm_cluster_id",
-            "request_id",
+            "exadbVmClusterId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -45017,29 +44444,6 @@ def test_create_exadb_vm_cluster_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_exadb_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_exadb_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "exadbVmClusterId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "exadbVmClusterId",
-                "exadbVmCluster",
-            )
-        )
-    )
 
 
 def test_create_exadb_vm_cluster_rest_flattened():
@@ -45162,21 +44566,22 @@ def test_delete_exadb_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteExadbVmCluster,
+        "_BaseDeleteExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -45219,15 +44624,6 @@ def test_delete_exadb_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_exadb_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_exadb_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_exadb_vm_cluster_rest_flattened():
@@ -45347,24 +44743,25 @@ def test_update_exadb_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateExadbVmCluster,
+        "_BaseUpdateExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_exadb_vm_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "request_id",
-            "update_mask",
+            "requestId",
+            "updateMask",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -45406,23 +44803,6 @@ def test_update_exadb_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_exadb_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_exadb_vm_cluster._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "requestId",
-                "updateMask",
-            )
-        )
-        & set(("exadbVmCluster",))
-    )
 
 
 def test_update_exadb_vm_cluster_rest_flattened():
@@ -45548,24 +44928,20 @@ def test_remove_virtual_machine_exadb_vm_cluster_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_virtual_machine_exadb_vm_cluster._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseRemoveVirtualMachineExadbVmCluster,
+        "_BaseRemoveVirtualMachineExadbVmCluster__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["hostnames"] = "hostnames_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_virtual_machine_exadb_vm_cluster._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -45611,25 +44987,6 @@ def test_remove_virtual_machine_exadb_vm_cluster_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_remove_virtual_machine_exadb_vm_cluster_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.remove_virtual_machine_exadb_vm_cluster._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "hostnames",
-            )
-        )
-    )
 
 
 def test_remove_virtual_machine_exadb_vm_cluster_rest_flattened():
@@ -45750,28 +45107,29 @@ def test_list_exascale_db_storage_vaults_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_exascale_db_storage_vaults._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListExascaleDbStorageVaults,
+        "_BaseListExascaleDbStorageVaults__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_exascale_db_storage_vaults._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -45821,27 +45179,6 @@ def test_list_exascale_db_storage_vaults_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_exascale_db_storage_vaults_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_exascale_db_storage_vaults._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_exascale_db_storage_vaults_rest_flattened():
@@ -45959,6 +45296,9 @@ def test_list_exascale_db_storage_vaults_rest_pager(transport: str = "rest"):
 
         pager = client.list_exascale_db_storage_vaults(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -46029,19 +45369,19 @@ def test_get_exascale_db_storage_vault_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetExascaleDbStorageVault,
+        "_BaseGetExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -46089,17 +45429,6 @@ def test_get_exascale_db_storage_vault_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_exascale_db_storage_vault_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_exascale_db_storage_vault._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_exascale_db_storage_vault_rest_flattened():
@@ -46224,9 +45553,14 @@ def test_create_exascale_db_storage_vault_rest_required_fields(
     # verify fields with default values are dropped
     assert "exascaleDbStorageVaultId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateExascaleDbStorageVault,
+        "_BaseCreateExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -46239,17 +45573,13 @@ def test_create_exascale_db_storage_vault_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["exascaleDbStorageVaultId"] = "exascale_db_storage_vault_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "exascale_db_storage_vault_id",
-            "request_id",
+            "exascaleDbStorageVaultId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -46304,31 +45634,6 @@ def test_create_exascale_db_storage_vault_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_exascale_db_storage_vault_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.create_exascale_db_storage_vault._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "exascaleDbStorageVaultId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "exascaleDbStorageVaultId",
-                "exascaleDbStorageVault",
-            )
-        )
-    )
 
 
 def test_create_exascale_db_storage_vault_rest_flattened():
@@ -46455,21 +45760,22 @@ def test_delete_exascale_db_storage_vault_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteExascaleDbStorageVault,
+        "_BaseDeleteExascaleDbStorageVault__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_exascale_db_storage_vault._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -46512,17 +45818,6 @@ def test_delete_exascale_db_storage_vault_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_exascale_db_storage_vault_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.delete_exascale_db_storage_vault._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_exascale_db_storage_vault_rest_flattened():
@@ -46639,26 +45934,27 @@ def test_list_db_system_initial_storage_sizes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_system_initial_storage_sizes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbSystemInitialStorageSizes,
+        "_BaseListDbSystemInitialStorageSizes__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_system_initial_storage_sizes._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -46708,25 +46004,6 @@ def test_list_db_system_initial_storage_sizes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_system_initial_storage_sizes_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_db_system_initial_storage_sizes._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_system_initial_storage_sizes_rest_flattened():
@@ -46852,6 +46129,9 @@ def test_list_db_system_initial_storage_sizes_rest_pager(transport: str = "rest"
 
         pager = client.list_db_system_initial_storage_sizes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -46917,27 +46197,28 @@ def test_list_databases_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_databases._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDatabases,
+        "_BaseListDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_databases._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -46983,24 +46264,6 @@ def test_list_databases_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_databases_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_databases._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_databases_rest_flattened():
@@ -47112,6 +46375,9 @@ def test_list_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, database.Database) for i in results)
@@ -47170,19 +46436,19 @@ def test_get_database_rest_required_fields(request_type=database.GetDatabaseRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetDatabase,
+        "_BaseGetDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -47228,15 +46494,6 @@ def test_get_database_rest_required_fields(request_type=database.GetDatabaseRequ
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_database_rest_flattened():
@@ -47354,27 +46611,28 @@ def test_list_pluggable_databases_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_pluggable_databases._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListPluggableDatabases,
+        "_BaseListPluggableDatabases__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_pluggable_databases._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -47422,24 +46680,6 @@ def test_list_pluggable_databases_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_pluggable_databases_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_pluggable_databases._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_pluggable_databases_rest_flattened():
@@ -47557,6 +46797,9 @@ def test_list_pluggable_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_pluggable_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pluggable_database.PluggableDatabase) for i in results)
@@ -47622,19 +46865,19 @@ def test_get_pluggable_database_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_pluggable_database._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetPluggableDatabase,
+        "_BaseGetPluggableDatabase__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_pluggable_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -47680,15 +46923,6 @@ def test_get_pluggable_database_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_pluggable_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_pluggable_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_pluggable_database_rest_flattened():
@@ -47802,28 +47036,29 @@ def test_list_db_systems_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_systems._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbSystems,
+        "_BaseListDbSystems__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_systems._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -47869,25 +47104,6 @@ def test_list_db_systems_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_systems_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_db_systems._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_systems_rest_flattened():
@@ -47999,6 +47215,9 @@ def test_list_db_systems_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_systems(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_system.DbSystem) for i in results)
@@ -48057,19 +47276,19 @@ def test_get_db_system_rest_required_fields(request_type=db_system.GetDbSystemRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_db_system._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetDbSystem,
+        "_BaseGetDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_db_system._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -48115,15 +47334,6 @@ def test_get_db_system_rest_required_fields(request_type=db_system.GetDbSystemRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_db_system_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_db_system._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_db_system_rest_flattened():
@@ -48244,9 +47454,14 @@ def test_create_db_system_rest_required_fields(
     # verify fields with default values are dropped
     assert "dbSystemId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_db_system._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateDbSystem,
+        "_BaseCreateDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -48256,17 +47471,13 @@ def test_create_db_system_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["dbSystemId"] = "db_system_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_db_system._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "db_system_id",
-            "request_id",
+            "dbSystemId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -48318,29 +47529,6 @@ def test_create_db_system_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_db_system_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_db_system._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "dbSystemId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "dbSystemId",
-                "dbSystem",
-            )
-        )
-    )
 
 
 def test_create_db_system_rest_flattened():
@@ -48459,21 +47647,22 @@ def test_delete_db_system_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_db_system._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteDbSystem,
+        "_BaseDeleteDbSystem__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_db_system._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -48516,15 +47705,6 @@ def test_delete_db_system_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_db_system_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_db_system._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_db_system_rest_flattened():
@@ -48640,28 +47820,29 @@ def test_list_goldengate_deployments_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployments._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoldengateDeployments,
+        "_BaseListGoldengateDeployments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -48709,25 +47890,6 @@ def test_list_goldengate_deployments_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_deployments_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_goldengate_deployments._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_deployments_rest_flattened():
@@ -48845,6 +48007,9 @@ def test_list_goldengate_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -48912,19 +48077,19 @@ def test_get_goldengate_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGoldengateDeployment,
+        "_BaseGetGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -48970,15 +48135,6 @@ def test_get_goldengate_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_goldengate_deployment_rest_flattened():
@@ -49103,9 +48259,14 @@ def test_create_goldengate_deployment_rest_required_fields(
     # verify fields with default values are dropped
     assert "goldengateDeploymentId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateGoldengateDeployment,
+        "_BaseCreateGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -49118,17 +48279,13 @@ def test_create_goldengate_deployment_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["goldengateDeploymentId"] = "goldengate_deployment_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "goldengate_deployment_id",
-            "request_id",
+            "goldengateDeploymentId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -49182,29 +48339,6 @@ def test_create_goldengate_deployment_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_goldengate_deployment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_goldengate_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "goldengateDeploymentId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "goldengateDeploymentId",
-                "goldengateDeployment",
-            )
-        )
-    )
 
 
 def test_create_goldengate_deployment_rest_flattened():
@@ -49331,21 +48465,22 @@ def test_delete_goldengate_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteGoldengateDeployment,
+        "_BaseDeleteGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -49388,15 +48523,6 @@ def test_delete_goldengate_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_goldengate_deployment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_goldengate_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_goldengate_deployment_rest_flattened():
@@ -49517,19 +48643,19 @@ def test_stop_goldengate_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_goldengate_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseStopGoldengateDeployment,
+        "_BaseStopGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_goldengate_deployment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -49573,15 +48699,6 @@ def test_stop_goldengate_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_stop_goldengate_deployment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.stop_goldengate_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_stop_goldengate_deployment_rest_flattened():
@@ -49702,19 +48819,19 @@ def test_start_goldengate_deployment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_goldengate_deployment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseStartGoldengateDeployment,
+        "_BaseStartGoldengateDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_goldengate_deployment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -49758,15 +48875,6 @@ def test_start_goldengate_deployment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_start_goldengate_deployment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.start_goldengate_deployment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_start_goldengate_deployment_rest_flattened():
@@ -49883,28 +48991,29 @@ def test_list_goldengate_connections_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connections._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoldengateConnections,
+        "_BaseListGoldengateConnections__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connections._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -49952,25 +49061,6 @@ def test_list_goldengate_connections_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_connections_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_goldengate_connections._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_connections_rest_flattened():
@@ -50088,6 +49178,9 @@ def test_list_goldengate_connections_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -50155,19 +49248,19 @@ def test_get_goldengate_connection_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGoldengateConnection,
+        "_BaseGetGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -50213,15 +49306,6 @@ def test_get_goldengate_connection_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_connection_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_goldengate_connection_rest_flattened():
@@ -50346,9 +49430,14 @@ def test_create_goldengate_connection_rest_required_fields(
     # verify fields with default values are dropped
     assert "goldengateConnectionId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateGoldengateConnection,
+        "_BaseCreateGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -50361,17 +49450,13 @@ def test_create_goldengate_connection_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["goldengateConnectionId"] = "goldengate_connection_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "goldengate_connection_id",
-            "request_id",
+            "goldengateConnectionId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -50425,29 +49510,6 @@ def test_create_goldengate_connection_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_goldengate_connection_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_goldengate_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "goldengateConnectionId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "goldengateConnectionId",
-                "goldengateConnection",
-            )
-        )
-    )
 
 
 def test_create_goldengate_connection_rest_flattened():
@@ -50574,21 +49636,22 @@ def test_delete_goldengate_connection_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_connection._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteGoldengateConnection,
+        "_BaseDeleteGoldengateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -50631,15 +49694,6 @@ def test_delete_goldengate_connection_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_goldengate_connection_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_goldengate_connection._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_goldengate_connection_rest_flattened():
@@ -50700,199 +49754,6 @@ def test_delete_goldengate_connection_rest_flattened_error(transport: str = "res
         )
 
 
-def test_get_goldengate_deployment_version_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_version
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_version
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_version(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_version_rest_required_fields(
-    request_type=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_version(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_version_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_goldengate_deployment_version._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_version_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_version(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentVersions/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_version_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_version(
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest(),
-            name="name_value",
-        )
-
-
 def test_list_goldengate_deployment_versions_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -50949,27 +49810,28 @@ def test_list_goldengate_deployment_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoldengateDeploymentVersions,
+        "_BaseListGoldengateDeploymentVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -51019,26 +49881,6 @@ def test_list_goldengate_deployment_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_deployment_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_goldengate_deployment_versions._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_deployment_versions_rest_flattened():
@@ -51164,6 +50006,9 @@ def test_list_goldengate_deployment_versions_rest_pager(transport: str = "rest")
 
         pager = client.list_goldengate_deployment_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -51176,197 +50021,6 @@ def test_list_goldengate_deployment_versions_rest_pager(transport: str = "rest")
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_deployment_type_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_type
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_type_rest_required_fields(
-    request_type=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_type.GoldengateDeploymentType()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_type(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_type_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_deployment_type._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_type_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_type.GoldengateDeploymentType()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_type(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentTypes/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_type_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_type(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_deployment_types_rest_use_cached_wrapped_rpc():
@@ -51425,28 +50079,29 @@ def test_list_goldengate_deployment_types_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_types._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoldengateDeploymentTypes,
+        "_BaseListGoldengateDeploymentTypes__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_types._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -51496,27 +50151,6 @@ def test_list_goldengate_deployment_types_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_deployment_types_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_goldengate_deployment_types._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_deployment_types_rest_flattened():
@@ -51638,6 +50272,9 @@ def test_list_goldengate_deployment_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_deployment_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -51650,209 +50287,6 @@ def test_list_goldengate_deployment_types_rest_pager(transport: str = "rest"):
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_deployment_environment_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_deployment_environment
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_deployment_environment
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_deployment_environment(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_deployment_environment_rest_required_fields(
-    request_type=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_environment._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_deployment_environment._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_deployment_environment(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_deployment_environment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_goldengate_deployment_environment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_deployment_environment_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_deployment_environment(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateDeploymentEnvironments/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_deployment_environment_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_deployment_environment(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_deployment_environments_rest_use_cached_wrapped_rpc():
@@ -51911,30 +50345,27 @@ def test_list_goldengate_deployment_environments_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_environments._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseListGoldengateDeploymentEnvironments,
+        "_BaseListGoldengateDeploymentEnvironments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_deployment_environments._get_unset_required_fields(
-        jsonified_request
-    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -51984,25 +50415,6 @@ def test_list_goldengate_deployment_environments_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_deployment_environments_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_goldengate_deployment_environments._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_deployment_environments_rest_flattened():
@@ -52124,6 +50536,9 @@ def test_list_goldengate_deployment_environments_rest_pager(transport: str = "re
 
         pager = client.list_goldengate_deployment_environments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -52138,197 +50553,6 @@ def test_list_goldengate_deployment_environments_rest_pager(transport: str = "re
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-def test_get_goldengate_connection_type_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_goldengate_connection_type
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_goldengate_connection_type
-        ] = mock_rpc
-
-        request = {}
-        client.get_goldengate_connection_type(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_goldengate_connection_type(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_goldengate_connection_type_rest_required_fields(
-    request_type=goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_type._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = goldengate_connection_type.GoldengateConnectionType()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-            response = client.get_goldengate_connection_type(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_connection_type_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_goldengate_connection_type._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
-
-
-def test_get_goldengate_connection_type_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_connection_type.GoldengateConnectionType()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-
-        client.get_goldengate_connection_type(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/goldengateConnectionTypes/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_get_goldengate_connection_type_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_goldengate_connection_type(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest(),
-            name="name_value",
-        )
 
 
 def test_list_goldengate_connection_types_rest_use_cached_wrapped_rpc():
@@ -52387,27 +50611,28 @@ def test_list_goldengate_connection_types_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connection_types._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListGoldengateConnectionTypes,
+        "_BaseListGoldengateConnectionTypes__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connection_types._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -52457,26 +50682,6 @@ def test_list_goldengate_connection_types_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_connection_types_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_goldengate_connection_types._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_connection_types_rest_flattened():
@@ -52598,6 +50803,9 @@ def test_list_goldengate_connection_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_goldengate_connection_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -52665,27 +50873,28 @@ def test_list_db_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDbVersions,
+        "_BaseListDbVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_db_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -52731,24 +50940,6 @@ def test_list_db_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_db_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_db_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_db_versions_rest_flattened():
@@ -52860,6 +51051,9 @@ def test_list_db_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_db_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, db_version.DbVersion) for i in results)
@@ -52925,27 +51119,28 @@ def test_list_database_character_sets_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_database_character_sets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDatabaseCharacterSets,
+        "_BaseListDatabaseCharacterSets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_database_character_sets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -52993,24 +51188,6 @@ def test_list_database_character_sets_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_database_character_sets_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_database_character_sets._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_database_character_sets_rest_flattened():
@@ -53128,6 +51305,9 @@ def test_list_database_character_sets_rest_pager(transport: str = "rest"):
 
         pager = client.list_database_character_sets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -53195,32 +51375,29 @@ def test_list_goldengate_connection_assignments_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connection_assignments._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseListGoldengateConnectionAssignments,
+        "_BaseListGoldengateConnectionAssignments__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_goldengate_connection_assignments._get_unset_required_fields(
-        jsonified_request
-    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -53270,27 +51447,6 @@ def test_list_goldengate_connection_assignments_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_goldengate_connection_assignments_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_goldengate_connection_assignments._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_goldengate_connection_assignments_rest_flattened():
@@ -53412,6 +51568,9 @@ def test_list_goldengate_connection_assignments_rest_pager(transport: str = "res
 
         pager = client.list_goldengate_connection_assignments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -53484,19 +51643,19 @@ def test_get_goldengate_connection_assignment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_assignment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetGoldengateConnectionAssignment,
+        "_BaseGetGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_goldengate_connection_assignment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -53546,17 +51705,6 @@ def test_get_goldengate_connection_assignment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_goldengate_connection_assignment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.get_goldengate_connection_assignment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_goldengate_connection_assignment_rest_flattened():
@@ -53687,11 +51835,14 @@ def test_create_goldengate_connection_assignment_rest_required_fields(
     # verify fields with default values are dropped
     assert "goldengateConnectionAssignmentId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseCreateGoldengateConnectionAssignment,
+        "_BaseCreateGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -53706,19 +51857,13 @@ def test_create_goldengate_connection_assignment_rest_required_fields(
         "goldengate_connection_assignment_id_value"
     )
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
-    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "goldengate_connection_assignment_id",
-            "request_id",
+            "goldengateConnectionAssignmentId",
+            "requestId",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -53773,31 +51918,6 @@ def test_create_goldengate_connection_assignment_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_goldengate_connection_assignment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.create_goldengate_connection_assignment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "goldengateConnectionAssignmentId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "goldengateConnectionAssignmentId",
-                "goldengateConnectionAssignment",
-            )
-        )
-    )
 
 
 def test_create_goldengate_connection_assignment_rest_flattened():
@@ -53926,25 +52046,22 @@ def test_delete_goldengate_connection_assignment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseDeleteGoldengateConnectionAssignment,
+        "_BaseDeleteGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
-    )
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -53987,17 +52104,6 @@ def test_delete_goldengate_connection_assignment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_goldengate_connection_assignment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.delete_goldengate_connection_assignment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 def test_delete_goldengate_connection_assignment_rest_flattened():
@@ -54116,23 +52222,19 @@ def test_test_goldengate_connection_assignment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseTestGoldengateConnectionAssignment,
+        "_BaseTestGoldengateConnectionAssignment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_goldengate_connection_assignment._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -54183,17 +52285,6 @@ def test_test_goldengate_connection_assignment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_test_goldengate_connection_assignment_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.test_goldengate_connection_assignment._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_test_goldengate_connection_assignment_rest_flattened():
@@ -54451,6 +52542,29 @@ def test_delete_cloud_exadata_infrastructure_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_configure_exascale_cloud_exadata_infrastructure_empty_call_grpc():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
         assert args[0] == request_msg
 
 
@@ -54995,6 +53109,50 @@ def test_failover_autonomous_database_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.FailoverAutonomousDatabaseRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_refresh_autonomous_database_empty_call_grpc():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.refresh_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.RefreshAutonomousDatabaseRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_autonomous_database_refreshable_clones_empty_call_grpc():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        call.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+        client.get_autonomous_database_refreshable_clones(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
         assert args[0] == request_msg
 
 
@@ -55804,30 +53962,6 @@ def test_delete_goldengate_connection_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_version_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_versions_empty_call_grpc():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -55849,28 +53983,6 @@ def test_list_goldengate_deployment_versions_empty_call_grpc():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_type_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -55900,30 +54012,6 @@ def test_list_goldengate_deployment_types_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_environment_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        call.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_environments_empty_call_grpc():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -55941,28 +54029,6 @@ def test_list_goldengate_deployment_environments_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_connection_type_empty_call_grpc():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        call.return_value = goldengate_connection_type.GoldengateConnectionType()
-        client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -56277,6 +54343,33 @@ async def test_delete_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_configure_exascale_cloud_exadata_infrastructure_empty_call_grpc_asyncio():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_list_cloud_vm_clusters_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -56329,6 +54422,7 @@ async def test_get_cloud_vm_cluster_empty_call_grpc_asyncio():
                 odb_network="odb_network_value",
                 odb_subnet="odb_subnet_value",
                 backup_odb_subnet="backup_odb_subnet_value",
+                exascale_db_storage_vault="exascale_db_storage_vault_value",
             )
         )
         await client.get_cloud_vm_cluster(request=None)
@@ -56973,6 +55067,58 @@ async def test_failover_autonomous_database_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_refresh_autonomous_database_empty_call_grpc_asyncio():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.refresh_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.RefreshAutonomousDatabaseRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_autonomous_database_refreshable_clones_empty_call_grpc_asyncio():
+    client = OracleDatabaseAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            oracledatabase.AutonomousDatabaseRefreshableClones()
+        )
+        await client.get_autonomous_database_refreshable_clones(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_list_odb_networks_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -57405,6 +55551,7 @@ async def test_get_exascale_db_storage_vault_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 gcp_oracle_zone="gcp_oracle_zone_value",
                 entitlement_id="entitlement_id_value",
+                exadata_infrastructure="exadata_infrastructure_value",
             )
         )
         await client.get_exascale_db_storage_vault(request=None)
@@ -58015,37 +56162,6 @@ async def test_delete_goldengate_connection_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_goldengate_deployment_version_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_version.GoldengateDeploymentVersion(
-                name="name_value",
-                ocid="ocid_value",
-            )
-        )
-        await client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
 async def test_list_goldengate_deployment_versions_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -58071,44 +56187,6 @@ async def test_list_goldengate_deployment_versions_empty_call_grpc_asyncio():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_goldengate_deployment_type_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_type.GoldengateDeploymentType(
-                name="name_value",
-                deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-                category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                connection_types=["connection_types_value"],
-                display_name="display_name_value",
-                ogg_version="ogg_version_value",
-                source_technologies=["source_technologies_value"],
-                supported_capabilities=["supported_capabilities_value"],
-                supported_technologies_url="supported_technologies_url_value",
-                target_technologies=["target_technologies_value"],
-                default_username="default_username_value",
-            )
-        )
-        await client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -58144,44 +56222,6 @@ async def test_list_goldengate_deployment_types_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_goldengate_deployment_environment_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-                name="name_value",
-                category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-                display_name="display_name_value",
-                default_cpu_core_count=2332,
-                environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-                auto_scaling_enabled=True,
-                max_cpu_core_count=1917,
-                memory_gb_per_cpu_core=2326,
-                min_cpu_core_count=1915,
-                network_bandwidth_gbps_per_cpu_core=3710,
-                storage_usage_limit_gb_per_cpu_core=3684,
-            )
-        )
-        await client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
 async def test_list_goldengate_deployment_environments_empty_call_grpc_asyncio():
     client = OracleDatabaseAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -58205,36 +56245,6 @@ async def test_list_goldengate_deployment_environments_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-@pytest.mark.asyncio
-async def test_get_goldengate_connection_type_empty_call_grpc_asyncio():
-    client = OracleDatabaseAsyncClient(
-        credentials=async_anonymous_credentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            goldengate_connection_type.GoldengateConnectionType(
-                name="name_value",
-                connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-                technology_types=["technology_types_value"],
-            )
-        )
-        await client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -58847,6 +56857,12 @@ def test_create_cloud_exadata_infrastructure_rest_call_success(request_type):
             "compute_model": 1,
             "database_server_type": "database_server_type_value",
             "storage_server_type": "storage_server_type_value",
+            "exascale_config": {
+                "total_storage_size_gb": 2234,
+                "available_storage_size_gb": 2615,
+                "total_vm_storage_size_gb": 2556,
+                "available_vm_storage_size_gb": 2937,
+            },
         },
         "labels": {},
         "create_time": {},
@@ -59144,6 +57160,144 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         post_with_metadata.assert_called_once()
 
 
+def test_configure_exascale_cloud_exadata_infrastructure_rest_bad_request(
+    request_type=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.configure_exascale_cloud_exadata_infrastructure(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest,
+        dict,
+    ],
+)
+def test_configure_exascale_cloud_exadata_infrastructure_rest_call_success(
+    request_type,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.configure_exascale_cloud_exadata_infrastructure(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_configure_exascale_cloud_exadata_infrastructure_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_configure_exascale_cloud_exadata_infrastructure",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_configure_exascale_cloud_exadata_infrastructure_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_configure_exascale_cloud_exadata_infrastructure",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = (
+            exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest.pb(
+                exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.configure_exascale_cloud_exadata_infrastructure(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_list_cloud_vm_clusters_rest_bad_request(
     request_type=oracledatabase.ListCloudVmClustersRequest,
 ):
@@ -59342,6 +57496,7 @@ def test_get_cloud_vm_cluster_rest_call_success(request_type):
             odb_network="odb_network_value",
             odb_subnet="odb_subnet_value",
             backup_odb_subnet="backup_odb_subnet_value",
+            exascale_db_storage_vault="exascale_db_storage_vault_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -59368,6 +57523,7 @@ def test_get_cloud_vm_cluster_rest_call_success(request_type):
     assert response.odb_network == "odb_network_value"
     assert response.odb_subnet == "odb_subnet_value"
     assert response.backup_odb_subnet == "backup_odb_subnet_value"
+    assert response.exascale_db_storage_vault == "exascale_db_storage_vault_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -59517,6 +57673,9 @@ def test_create_cloud_vm_cluster_rest_call_success(request_type):
             "dns_listener_ip": "dns_listener_ip_value",
             "cluster_name": "cluster_name_value",
             "compute_model": 1,
+            "storage_management_type": 1,
+            "vm_file_system_storage_type": 1,
+            "vm_backup_storage_type": 1,
         },
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -59531,6 +57690,7 @@ def test_create_cloud_vm_cluster_rest_call_success(request_type):
             "service_agent_email": "service_agent_email_value",
             "connection_state": 1,
         },
+        "exascale_db_storage_vault": "exascale_db_storage_vault_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -61114,6 +59274,7 @@ def test_create_autonomous_database_rest_call_success(request_type):
             "service_agent_email": "service_agent_email_value",
             "local_data_guard_enabled": True,
             "local_adg_auto_failover_max_data_loss_limit_duration": 5478,
+            "refreshable_clone": True,
         },
         "labels": {},
         "network": "network_value",
@@ -61123,6 +59284,15 @@ def test_create_autonomous_database_rest_call_success(request_type):
         "source_config": {
             "autonomous_database": "autonomous_database_value",
             "automatic_backups_replication_enabled": True,
+            "source_type": 1,
+            "clone_type": 1,
+            "refreshable_mode": 1,
+            "auto_refresh_frequency_seconds": 3206,
+            "auto_refresh_point_lag_seconds": 3185,
+            "auto_refresh_start_time": {},
+            "autonomous_database_backup": "autonomous_database_backup_value",
+            "backup_time": {},
+            "use_latest_available_backup": True,
         },
         "peer_autonomous_databases": [
             "peer_autonomous_databases_value1",
@@ -61470,6 +59640,7 @@ def test_update_autonomous_database_rest_call_success(request_type):
             "service_agent_email": "service_agent_email_value",
             "local_data_guard_enabled": True,
             "local_adg_auto_failover_max_data_loss_limit_duration": 5478,
+            "refreshable_clone": True,
         },
         "labels": {},
         "network": "network_value",
@@ -61479,6 +59650,15 @@ def test_update_autonomous_database_rest_call_success(request_type):
         "source_config": {
             "autonomous_database": "autonomous_database_value",
             "automatic_backups_replication_enabled": True,
+            "source_type": 1,
+            "clone_type": 1,
+            "refreshable_mode": 1,
+            "auto_refresh_frequency_seconds": 3206,
+            "auto_refresh_point_lag_seconds": 3185,
+            "auto_refresh_start_time": {},
+            "autonomous_database_backup": "autonomous_database_backup_value",
+            "backup_time": {},
+            "use_latest_available_backup": True,
         },
         "peer_autonomous_databases": [
             "peer_autonomous_databases_value1",
@@ -63120,6 +61300,277 @@ def test_failover_autonomous_database_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_refresh_autonomous_database_rest_bad_request(
+    request_type=oracledatabase.RefreshAutonomousDatabaseRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.refresh_autonomous_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.RefreshAutonomousDatabaseRequest,
+        dict,
+    ],
+)
+def test_refresh_autonomous_database_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.refresh_autonomous_database(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_refresh_autonomous_database_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "post_refresh_autonomous_database"
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_refresh_autonomous_database_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor, "pre_refresh_autonomous_database"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = oracledatabase.RefreshAutonomousDatabaseRequest.pb(
+            oracledatabase.RefreshAutonomousDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = oracledatabase.RefreshAutonomousDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.refresh_autonomous_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_autonomous_database_refreshable_clones_rest_bad_request(
+    request_type=oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_autonomous_database_refreshable_clones(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest,
+        dict,
+    ],
+)
+def test_get_autonomous_database_refreshable_clones_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.AutonomousDatabaseRefreshableClones.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_autonomous_database_refreshable_clones(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, oracledatabase.AutonomousDatabaseRefreshableClones)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_autonomous_database_refreshable_clones_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_autonomous_database_refreshable_clones",
+        ) as post,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "post_get_autonomous_database_refreshable_clones_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.OracleDatabaseRestInterceptor,
+            "pre_get_autonomous_database_refreshable_clones",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest.pb(
+            oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = oracledatabase.AutonomousDatabaseRefreshableClones.to_json(
+            oracledatabase.AutonomousDatabaseRefreshableClones()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.AutonomousDatabaseRefreshableClones()
+        post_with_metadata.return_value = (
+            oracledatabase.AutonomousDatabaseRefreshableClones(),
+            metadata,
+        )
+
+        client.get_autonomous_database_refreshable_clones(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_list_odb_networks_rest_bad_request(
     request_type=odb_network.ListOdbNetworksRequest,
 ):
@@ -64690,6 +63141,10 @@ def test_create_exadb_vm_cluster_rest_call_success(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "entitlement_id": "entitlement_id_value",
+        "identity_connector": {
+            "service_agent_email": "service_agent_email_value",
+            "connection_state": 1,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -65059,6 +63514,10 @@ def test_update_exadb_vm_cluster_rest_call_success(request_type):
         "display_name": "display_name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "entitlement_id": "entitlement_id_value",
+        "identity_connector": {
+            "service_agent_email": "service_agent_email_value",
+            "connection_state": 1,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -65547,6 +64006,7 @@ def test_get_exascale_db_storage_vault_rest_call_success(request_type):
             display_name="display_name_value",
             gcp_oracle_zone="gcp_oracle_zone_value",
             entitlement_id="entitlement_id_value",
+            exadata_infrastructure="exadata_infrastructure_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -65567,6 +64027,7 @@ def test_get_exascale_db_storage_vault_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
     assert response.entitlement_id == "entitlement_id_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -65704,6 +64165,7 @@ def test_create_exascale_db_storage_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "entitlement_id": "entitlement_id_value",
         "labels": {},
+        "exadata_infrastructure": "exadata_infrastructure_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -69371,158 +67833,6 @@ def test_delete_goldengate_connection_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_goldengate_deployment_version_rest_bad_request(
-    request_type=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_version(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_version.GetGoldengateDeploymentVersionRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_version_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentVersions/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion(
-            name="name_value",
-            ocid="ocid_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_version.GoldengateDeploymentVersion.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_version.GoldengateDeploymentVersion
-    )
-    assert response.name == "name_value"
-    assert response.ocid == "ocid_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_version_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_version",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_version_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_version",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest.pb(
-                goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            goldengate_deployment_version.GoldengateDeploymentVersion.to_json(
-                goldengate_deployment_version.GoldengateDeploymentVersion()
-            )
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_deployment_version.GoldengateDeploymentVersion()
-        post_with_metadata.return_value = (
-            goldengate_deployment_version.GoldengateDeploymentVersion(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
 def test_list_goldengate_deployment_versions_rest_bad_request(
     request_type=goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest,
 ):
@@ -69663,176 +67973,6 @@ def test_list_goldengate_deployment_versions_rest_interceptors(null_interceptor)
         )
 
         client.list_goldengate_deployment_versions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_get_goldengate_deployment_type_rest_bad_request(
-    request_type=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_type(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_type.GetGoldengateDeploymentTypeRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_type_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_type.GoldengateDeploymentType(
-            name="name_value",
-            deployment_type=goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG,
-            category=goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            connection_types=["connection_types_value"],
-            display_name="display_name_value",
-            ogg_version="ogg_version_value",
-            source_technologies=["source_technologies_value"],
-            supported_capabilities=["supported_capabilities_value"],
-            supported_technologies_url="supported_technologies_url_value",
-            target_technologies=["target_technologies_value"],
-            default_username="default_username_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_deployment_type.GoldengateDeploymentType)
-    assert response.name == "name_value"
-    assert (
-        response.deployment_type
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentType.OGG
-    )
-    assert (
-        response.category
-        == goldengate_deployment_type.GoldengateDeploymentType.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.connection_types == ["connection_types_value"]
-    assert response.display_name == "display_name_value"
-    assert response.ogg_version == "ogg_version_value"
-    assert response.source_technologies == ["source_technologies_value"]
-    assert response.supported_capabilities == ["supported_capabilities_value"]
-    assert response.supported_technologies_url == "supported_technologies_url_value"
-    assert response.target_technologies == ["target_technologies_value"]
-    assert response.default_username == "default_username_value"
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_type_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_type",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_type_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_type",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest.pb(
-            goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = goldengate_deployment_type.GoldengateDeploymentType.to_json(
-            goldengate_deployment_type.GoldengateDeploymentType()
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_deployment_type.GoldengateDeploymentType()
-        post_with_metadata.return_value = (
-            goldengate_deployment_type.GoldengateDeploymentType(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_type(
             request,
             metadata=[
                 ("key", "val"),
@@ -69993,184 +68133,6 @@ def test_list_goldengate_deployment_types_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_goldengate_deployment_environment_rest_bad_request(
-    request_type=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_deployment_environment(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_deployment_environment_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateDeploymentEnvironments/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_deployment_environment.GoldengateDeploymentEnvironment(
-            name="name_value",
-            category=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY,
-            display_name="display_name_value",
-            default_cpu_core_count=2332,
-            environment_type=goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION,
-            auto_scaling_enabled=True,
-            max_cpu_core_count=1917,
-            memory_gb_per_cpu_core=2326,
-            min_cpu_core_count=1915,
-            network_bandwidth_gbps_per_cpu_core=3710,
-            storage_usage_limit_gb_per_cpu_core=3684,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_deployment_environment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, goldengate_deployment_environment.GoldengateDeploymentEnvironment
-    )
-    assert response.name == "name_value"
-    assert (
-        response.category
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentCategory.DATA_REPLICATION_CATEGORY
-    )
-    assert response.display_name == "display_name_value"
-    assert response.default_cpu_core_count == 2332
-    assert (
-        response.environment_type
-        == goldengate_deployment_environment.GoldengateDeploymentEnvironment.DeploymentEnvironmentType.PRODUCTION
-    )
-    assert response.auto_scaling_enabled is True
-    assert response.max_cpu_core_count == 1917
-    assert response.memory_gb_per_cpu_core == 2326
-    assert response.min_cpu_core_count == 1915
-    assert response.network_bandwidth_gbps_per_cpu_core == 3710
-    assert response.storage_usage_limit_gb_per_cpu_core == 3684
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_deployment_environment_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_environment",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_deployment_environment_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_deployment_environment",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest.pb(
-            goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment.to_json(
-                goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-            )
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment()
-        )
-        post_with_metadata.return_value = (
-            goldengate_deployment_environment.GoldengateDeploymentEnvironment(),
-            metadata,
-        )
-
-        client.get_goldengate_deployment_environment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
 def test_list_goldengate_deployment_environments_rest_bad_request(
     request_type=goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest,
 ):
@@ -70301,157 +68263,6 @@ def test_list_goldengate_deployment_environments_rest_interceptors(null_intercep
         )
 
         client.list_goldengate_deployment_environments(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-        post_with_metadata.assert_called_once()
-
-
-def test_get_goldengate_connection_type_rest_bad_request(
-    request_type=goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with (
-        mock.patch.object(Session, "request") as req,
-        pytest.raises(core_exceptions.BadRequest),
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        json_return_value = ""
-        response_value.json = mock.Mock(return_value={})
-        response_value.status_code = 400
-        response_value.request = mock.Mock()
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_goldengate_connection_type(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        goldengate_connection_type.GetGoldengateConnectionTypeRequest,
-        dict,
-    ],
-)
-def test_get_goldengate_connection_type_rest_call_success(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/goldengateConnectionTypes/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = goldengate_connection_type.GoldengateConnectionType(
-            name="name_value",
-            connection_type=goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE,
-            technology_types=["technology_types_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
-        response_value.status_code = 200
-
-        # Convert return value to protobuf type
-        return_value = goldengate_connection_type.GoldengateConnectionType.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_goldengate_connection_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, goldengate_connection_type.GoldengateConnectionType)
-    assert response.name == "name_value"
-    assert (
-        response.connection_type
-        == goldengate_connection_type.GoldengateConnectionType.ConnectionType.GOLDENGATE
-    )
-    assert response.technology_types == ["technology_types_value"]
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_goldengate_connection_type_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-
-    with (
-        mock.patch.object(type(client.transport._session), "request") as req,
-        mock.patch.object(path_template, "transcode") as transcode,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_connection_type",
-        ) as post,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "post_get_goldengate_connection_type_with_metadata",
-        ) as post_with_metadata,
-        mock.patch.object(
-            transports.OracleDatabaseRestInterceptor,
-            "pre_get_goldengate_connection_type",
-        ) as pre,
-    ):
-        pre.assert_not_called()
-        post.assert_not_called()
-        post_with_metadata.assert_not_called()
-        pb_message = goldengate_connection_type.GetGoldengateConnectionTypeRequest.pb(
-            goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = mock.Mock()
-        req.return_value.status_code = 200
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = goldengate_connection_type.GoldengateConnectionType.to_json(
-            goldengate_connection_type.GoldengateConnectionType()
-        )
-        req.return_value.content = return_value
-
-        request = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = goldengate_connection_type.GoldengateConnectionType()
-        post_with_metadata.return_value = (
-            goldengate_connection_type.GoldengateConnectionType(),
-            metadata,
-        )
-
-        client.get_goldengate_connection_type(
             request,
             metadata=[
                 ("key", "val"),
@@ -72152,6 +69963,28 @@ def test_delete_cloud_exadata_infrastructure_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_configure_exascale_cloud_exadata_infrastructure_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.configure_exascale_cloud_exadata_infrastructure),
+        "__call__",
+    ) as call:
+        client.configure_exascale_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_cloud_vm_clusters_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -72666,6 +70499,48 @@ def test_failover_autonomous_database_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = oracledatabase.FailoverAutonomousDatabaseRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_refresh_autonomous_database_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_autonomous_database), "__call__"
+    ) as call:
+        client.refresh_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.RefreshAutonomousDatabaseRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_autonomous_database_refreshable_clones_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database_refreshable_clones), "__call__"
+    ) as call:
+        client.get_autonomous_database_refreshable_clones(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest()
         assert args[0] == request_msg
 
 
@@ -73434,29 +71309,6 @@ def test_delete_goldengate_connection_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_version_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_version), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_version(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = (
-            goldengate_deployment_version.GetGoldengateDeploymentVersionRequest()
-        )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_versions_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -73475,27 +71327,6 @@ def test_list_goldengate_deployment_versions_empty_call_rest():
         request_msg = (
             goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest()
         )
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_type_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_type), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_type.GetGoldengateDeploymentTypeRequest()
         assert args[0] == request_msg
 
 
@@ -73522,27 +71353,6 @@ def test_list_goldengate_deployment_types_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_deployment_environment_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_deployment_environment), "__call__"
-    ) as call:
-        client.get_goldengate_deployment_environment(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
 def test_list_goldengate_deployment_environments_empty_call_rest():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -73559,27 +71369,6 @@ def test_list_goldengate_deployment_environments_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest()
-        assert args[0] == request_msg
-
-
-# This test is a coverage failsafe to make sure that totally empty calls,
-# i.e. request == None and no flattened fields passed, work.
-def test_get_goldengate_connection_type_empty_call_rest():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_goldengate_connection_type), "__call__"
-    ) as call:
-        client.get_goldengate_connection_type(request=None)
-
-        # Establish that the underlying stub method was called.
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        request_msg = goldengate_connection_type.GetGoldengateConnectionTypeRequest()
         assert args[0] == request_msg
 
 
@@ -73807,6 +71596,7 @@ def test_oracle_database_base_transport():
         "get_cloud_exadata_infrastructure",
         "create_cloud_exadata_infrastructure",
         "delete_cloud_exadata_infrastructure",
+        "configure_exascale_cloud_exadata_infrastructure",
         "list_cloud_vm_clusters",
         "get_cloud_vm_cluster",
         "create_cloud_vm_cluster",
@@ -73832,6 +71622,8 @@ def test_oracle_database_base_transport():
         "restart_autonomous_database",
         "switchover_autonomous_database",
         "failover_autonomous_database",
+        "refresh_autonomous_database",
+        "get_autonomous_database_refreshable_clones",
         "list_odb_networks",
         "get_odb_network",
         "create_odb_network",
@@ -73869,13 +71661,9 @@ def test_oracle_database_base_transport():
         "get_goldengate_connection",
         "create_goldengate_connection",
         "delete_goldengate_connection",
-        "get_goldengate_deployment_version",
         "list_goldengate_deployment_versions",
-        "get_goldengate_deployment_type",
         "list_goldengate_deployment_types",
-        "get_goldengate_deployment_environment",
         "list_goldengate_deployment_environments",
-        "get_goldengate_connection_type",
         "list_goldengate_connection_types",
         "list_db_versions",
         "list_database_character_sets",
@@ -74172,6 +71960,13 @@ def test_oracle_database_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_cloud_exadata_infrastructure._session
     session2 = client2.transport.delete_cloud_exadata_infrastructure._session
     assert session1 != session2
+    session1 = (
+        client1.transport.configure_exascale_cloud_exadata_infrastructure._session
+    )
+    session2 = (
+        client2.transport.configure_exascale_cloud_exadata_infrastructure._session
+    )
+    assert session1 != session2
     session1 = client1.transport.list_cloud_vm_clusters._session
     session2 = client2.transport.list_cloud_vm_clusters._session
     assert session1 != session2
@@ -74246,6 +72041,12 @@ def test_oracle_database_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.failover_autonomous_database._session
     session2 = client2.transport.failover_autonomous_database._session
+    assert session1 != session2
+    session1 = client1.transport.refresh_autonomous_database._session
+    session2 = client2.transport.refresh_autonomous_database._session
+    assert session1 != session2
+    session1 = client1.transport.get_autonomous_database_refreshable_clones._session
+    session2 = client2.transport.get_autonomous_database_refreshable_clones._session
     assert session1 != session2
     session1 = client1.transport.list_odb_networks._session
     session2 = client2.transport.list_odb_networks._session
@@ -74358,26 +72159,14 @@ def test_oracle_database_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_goldengate_connection._session
     session2 = client2.transport.delete_goldengate_connection._session
     assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_version._session
-    session2 = client2.transport.get_goldengate_deployment_version._session
-    assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_versions._session
     session2 = client2.transport.list_goldengate_deployment_versions._session
-    assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_type._session
-    session2 = client2.transport.get_goldengate_deployment_type._session
     assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_types._session
     session2 = client2.transport.list_goldengate_deployment_types._session
     assert session1 != session2
-    session1 = client1.transport.get_goldengate_deployment_environment._session
-    session2 = client2.transport.get_goldengate_deployment_environment._session
-    assert session1 != session2
     session1 = client1.transport.list_goldengate_deployment_environments._session
     session2 = client2.transport.list_goldengate_deployment_environments._session
-    assert session1 != session2
-    session1 = client1.transport.get_goldengate_connection_type._session
-    session2 = client2.transport.get_goldengate_connection_type._session
     assert session1 != session2
     session1 = client1.transport.list_goldengate_connection_types._session
     session2 = client2.transport.list_goldengate_connection_types._session

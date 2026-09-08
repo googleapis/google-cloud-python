@@ -34,7 +34,7 @@ from db_dtypes.json import JSONArray, JSONArrowType, JSONDtype  # noqa: F401
 date_dtype_name = "dbdate"
 time_dtype_name = "dbtime"
 _EPOCH = datetime.datetime(1970, 1, 1)
-_NPEPOCH = numpy.datetime64(_EPOCH)
+_NPEPOCH = numpy.datetime64(_EPOCH, "ns")
 _NP_DTYPE = "datetime64[ns]"
 
 # Numpy converts datetime64 scalars to datetime.datetime only if microsecond or
@@ -119,7 +119,7 @@ class TimeArray(core.BaseDatetimeArray):
             )
 
         if pandas.isna(scalar):
-            return numpy.datetime64("NaT")
+            return numpy.datetime64("NaT", "ns")
         if isinstance(scalar, datetime.time):
             return pandas.Timestamp(
                 year=1970,
@@ -250,7 +250,7 @@ class DateArray(core.BaseDatetimeArray):
             scalar = scalar.as_py()
 
         if pandas.isna(scalar):
-            return numpy.datetime64("NaT")
+            return numpy.datetime64("NaT", "D")
         elif isinstance(scalar, numpy.datetime64):
             dateObj = pandas.Timestamp(scalar)
         elif isinstance(scalar, datetime.date):

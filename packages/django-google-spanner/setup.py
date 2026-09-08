@@ -18,7 +18,12 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
-dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 3.13.0"]
+# (django_spanner/__init__.py currently enforces SUPPORTED_DJANGO_VERSIONS = [(6, 0), (5, 2)])
+dependencies = [
+    "sqlparse >= 0.3.0",
+    "google-cloud-spanner >= 3.70.0",
+    "django >= 5.2, < 6.1",
+]
 extras = {
     "tracing": [
         "opentelemetry-api >= 1.1.0",
@@ -69,6 +74,7 @@ setup(
         "Topic :: Utilities",
         "Framework :: Django",
         "Framework :: Django :: 5.2",
+        "Framework :: Django :: 6.0",
     ],
     extras_require=extras,
     python_requires=">=3.10",

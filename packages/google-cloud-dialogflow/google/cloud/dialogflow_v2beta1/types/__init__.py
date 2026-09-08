@@ -120,6 +120,7 @@ from .conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     UpdateConversationProfileRequest,
 )
 from .document import (
@@ -341,6 +342,8 @@ from .sip_trunk import (
     GetSipTrunkRequest,
     ListSipTrunksRequest,
     ListSipTrunksResponse,
+    ProbeDetails,
+    SipHostname,
     SipTrunk,
     UpdateSipTrunkRequest,
 )
@@ -468,6 +471,7 @@ __all__ = (
     "NotificationConfig",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -655,6 +659,8 @@ __all__ = (
     "GetSipTrunkRequest",
     "ListSipTrunksRequest",
     "ListSipTrunksResponse",
+    "ProbeDetails",
+    "SipHostname",
     "SipTrunk",
     "UpdateSipTrunkRequest",
     "CreateToolRequest",

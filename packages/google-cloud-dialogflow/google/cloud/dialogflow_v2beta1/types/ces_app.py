@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
 class CesAppSpec(proto.Message):
     r"""Spec of CES app that the generator can choose from.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ces_app (str):
             Optional. Format:
@@ -39,6 +41,20 @@ class CesAppSpec(proto.Message):
         confirmation_requirement (google.cloud.dialogflow_v2beta1.types.Tool.ConfirmationRequirement):
             Optional. Indicates whether the app requires
             human confirmation.
+        proactive_enabled (bool):
+            Optional. Only applicable for CompanionAgent. Indicates
+            whether the ces app is enabled in proactive mode. At least
+            one of ``proactive_enabled`` or ``reactive_enabled`` should
+            be true; otherwise, the ces app will be ignored.
+
+            This field is a member of `oneof`_ ``_proactive_enabled``.
+        reactive_enabled (bool):
+            Optional. Only applicable for CompanionAgent. Indicates
+            whether the ces app is enabled in reactive mode. At least
+            one of ``proactive_enabled`` or ``reactive_enabled`` should
+            be true; otherwise, the ces app will be ignored.
+
+            This field is a member of `oneof`_ ``_reactive_enabled``.
     """
 
     ces_app: str = proto.Field(
@@ -49,6 +65,16 @@ class CesAppSpec(proto.Message):
         proto.ENUM,
         number=2,
         enum=tool.Tool.ConfirmationRequirement,
+    )
+    proactive_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    reactive_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        optional=True,
     )
 
 

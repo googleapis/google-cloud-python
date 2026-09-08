@@ -153,11 +153,6 @@ class ThreadScheduler(Scheduler):
         """
         dropped_messages = []
 
-        # Drop all pending item from the executor. Without this, the executor will also
-        # try to process any pending work items before termination, which is undesirable.
-        #
-        # TODO: Replace the logic below by passing `cancel_futures=True` to shutdown()
-        # once we only need to support Python 3.9+.
         try:
             while True:
                 work_item = self._executor._work_queue.get(block=False)

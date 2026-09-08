@@ -82,8 +82,12 @@ class Gateway(proto.Message):
             Required. One or more port numbers (1-65535), on which the
             Gateway will receive traffic. The proxy binds to the
             specified ports. Gateways of type 'SECURE_WEB_GATEWAY' are
-            limited to 1 port. Gateways of type 'OPEN_MESH' listen on
+            limited to 5 ports. Gateways of type 'OPEN_MESH' listen on
             0.0.0.0 for IPv4 and :: for IPv6 and support multiple ports.
+        all_ports (bool):
+            Optional. If true, the Gateway will listen on all ports.
+            This is mutually exclusive with the ``ports`` field. This
+            field only applies to gateways of type 'SECURE_WEB_GATEWAY'.
         scope (str):
             Optional. Scope determines how configuration
             across multiple Gateway instances are merged.
@@ -145,6 +149,11 @@ class Gateway(proto.Message):
             Optional. The routing mode of the Gateway. This field is
             configurable only for gateways of type SECURE_WEB_GATEWAY.
             This field is required for gateways of type
+            SECURE_WEB_GATEWAY.
+        allow_global_access (bool):
+            Optional. If true, the gateway will allow traffic from
+            clients outside of the region where the gateway is located.
+            This field is configurable only for gateways of type
             SECURE_WEB_GATEWAY.
     """
 
@@ -255,6 +264,10 @@ class Gateway(proto.Message):
         proto.INT32,
         number=11,
     )
+    all_ports: bool = proto.Field(
+        proto.BOOL,
+        number=34,
+    )
     scope: str = proto.Field(
         proto.STRING,
         number=8,
@@ -294,6 +307,10 @@ class Gateway(proto.Message):
         proto.ENUM,
         number=32,
         enum=RoutingMode,
+    )
+    allow_global_access: bool = proto.Field(
+        proto.BOOL,
+        number=33,
     )
 
 

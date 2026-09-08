@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-retail/#history
 
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.11.0...google-cloud-retail-v2.12.0) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.10.0...google-cloud-retail-v2.11.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[o-r] packages ([#17075](https://github.com/googleapis/google-cloud-python/issues/17075)) ([f4bd018](https://github.com/googleapis/google-cloud-python/commit/f4bd0182d808ae73c3c6981e6ce3d565f78a6051))
+
 ## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.9.0...google-cloud-retail-v2.10.0) (2026-03-26)
 
 

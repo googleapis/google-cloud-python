@@ -62,6 +62,7 @@ from google.cloud.vectorsearch_v1.types.data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
+    VertexRanker,
 )
 from google.cloud.vectorsearch_v1.types.data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -137,6 +138,7 @@ __all__ = (
     "SemanticSearch",
     "TextSearch",
     "VectorSearch",
+    "VertexRanker",
     "AggregationMethod",
     "BatchCreateDataObjectsRequest",
     "BatchCreateDataObjectsResponse",

@@ -42,9 +42,12 @@ import google.auth
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.options_pb2 as options_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.iam.v1.resource_policy_member_pb2 as resource_policy_member_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
     client_options,
@@ -74,6 +77,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -131,215 +146,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert SecretManagerServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        SecretManagerServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert SecretManagerServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                SecretManagerServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert SecretManagerServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            SecretManagerServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert SecretManagerServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert SecretManagerServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert SecretManagerServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert SecretManagerServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                SecretManagerServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert SecretManagerServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -375,103 +181,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    SecretManagerServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SecretManagerServiceClient),
-)
-@mock.patch.object(
-    SecretManagerServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SecretManagerServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = SecretManagerServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = SecretManagerServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = SecretManagerServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == SecretManagerServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == SecretManagerServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == SecretManagerServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        SecretManagerServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        SecretManagerServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        SecretManagerServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        SecretManagerServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        SecretManagerServiceClient._get_universe_domain(None, None)
-        == SecretManagerServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        SecretManagerServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1007,11 +716,19 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1054,11 +771,19 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1772,6 +1497,9 @@ def test_list_secrets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Secret) for i in results)
@@ -1860,6 +1588,8 @@ async def test_list_secrets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1936,6 +1666,7 @@ def test_create_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.create_secret(request)
 
@@ -1949,6 +1680,7 @@ def test_create_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_create_secret_non_empty_request_with_auto_populated_field():
@@ -2084,6 +1816,7 @@ async def test_create_secret_async(request_type, transport: str = "grpc_asyncio"
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.create_secret(request)
@@ -2098,6 +1831,7 @@ async def test_create_secret_async(request_type, transport: str = "grpc_asyncio"
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_create_secret_field_headers():
@@ -2646,6 +2380,7 @@ def test_get_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.get_secret(request)
 
@@ -2659,6 +2394,7 @@ def test_get_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_get_secret_non_empty_request_with_auto_populated_field():
@@ -2790,6 +2526,7 @@ async def test_get_secret_async(request_type, transport: str = "grpc_asyncio"):
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.get_secret(request)
@@ -2804,6 +2541,7 @@ async def test_get_secret_async(request_type, transport: str = "grpc_asyncio"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_get_secret_field_headers():
@@ -2968,6 +2706,7 @@ def test_update_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.update_secret(request)
 
@@ -2981,6 +2720,7 @@ def test_update_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_update_secret_non_empty_request_with_auto_populated_field():
@@ -3110,6 +2850,7 @@ async def test_update_secret_async(request_type, transport: str = "grpc_asyncio"
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.update_secret(request)
@@ -3124,6 +2865,7 @@ async def test_update_secret_async(request_type, transport: str = "grpc_asyncio"
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_update_secret_field_headers():
@@ -3992,6 +3734,9 @@ def test_list_secret_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SecretVersion) for i in results)
@@ -4084,6 +3829,8 @@ async def test_list_secret_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6715,6 +6462,723 @@ def test_test_iam_permissions_from_dict_foreign():
         call.assert_called()
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest(),
+        {},
+    ],
+)
+def test_enable_managed_rotation(request_type, transport: str = "grpc"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+        response = client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.EnableManagedRotationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_enable_managed_rotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.EnableManagedRotationRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.enable_managed_rotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_enable_managed_rotation_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.enable_managed_rotation
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.enable_managed_rotation
+        ] = mock_rpc
+        request = {}
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.enable_managed_rotation
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.enable_managed_rotation
+        ] = mock_rpc
+
+        request = {}
+        await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest(),
+        {},
+    ],
+)
+async def test_enable_managed_rotation_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        response = await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.EnableManagedRotationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_enable_managed_rotation_field_headers():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.EnableManagedRotationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_field_headers_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.EnableManagedRotationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_enable_managed_rotation_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.enable_managed_rotation(
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        assert (
+            args[0].cloud_sql_single_user_credentials
+            == service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            )
+        )
+
+
+def test_enable_managed_rotation_flattened_error():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.enable_managed_rotation(
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        assert (
+            args[0].cloud_sql_single_user_credentials
+            == service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            )
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_flattened_error_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest(),
+        {},
+    ],
+)
+def test_rotate_secret(request_type, transport: str = "grpc"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+        response = client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.RotateSecretRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_rotate_secret_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.RotateSecretRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.rotate_secret(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_rotate_secret_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.rotate_secret in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.rotate_secret] = mock_rpc
+        request = {}
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.rotate_secret
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.rotate_secret
+        ] = mock_rpc
+
+        request = {}
+        await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest(),
+        {},
+    ],
+)
+async def test_rotate_secret_async(request_type, transport: str = "grpc_asyncio"):
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        response = await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.RotateSecretRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_rotate_secret_field_headers():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RotateSecretRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = resources.SecretVersion()
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_field_headers_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RotateSecretRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_rotate_secret_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rotate_secret(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_rotate_secret_flattened_error():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rotate_secret(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_flattened_error_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
+
+
 def test_list_secrets_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6764,27 +7228,28 @@ def test_list_secrets_rest_required_fields(request_type=service.ListSecretsReque
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_secrets._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSecrets,
+        "_BaseListSecrets__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_secrets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -6830,24 +7295,6 @@ def test_list_secrets_rest_required_fields(request_type=service.ListSecretsReque
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_secrets_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_secrets._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_secrets_rest_flattened():
@@ -6958,6 +7405,9 @@ def test_list_secrets_rest_pager(transport: str = "rest"):
 
         pager = client.list_secrets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Secret) for i in results)
@@ -7018,9 +7468,14 @@ def test_create_secret_rest_required_fields(request_type=service.CreateSecretReq
     # verify fields with default values are dropped
     assert "secretId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_secret._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSecret,
+        "_BaseCreateSecret__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -7030,12 +7485,8 @@ def test_create_secret_rest_required_fields(request_type=service.CreateSecretReq
     jsonified_request["parent"] = "parent_value"
     jsonified_request["secretId"] = "secret_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_secret._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("secret_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("secretId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -7090,24 +7541,6 @@ def test_create_secret_rest_required_fields(request_type=service.CreateSecretReq
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_secret_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_secret._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("secretId",))
-        & set(
-            (
-                "parent",
-                "secretId",
-                "secret",
-            )
-        )
-    )
 
 
 def test_create_secret_rest_flattened():
@@ -7225,19 +7658,19 @@ def test_add_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAddSecretVersion,
+        "_BaseAddSecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -7284,23 +7717,6 @@ def test_add_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_add_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.add_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "payload",
-            )
-        )
-    )
 
 
 def test_add_secret_version_rest_flattened():
@@ -7411,19 +7827,19 @@ def test_get_secret_rest_required_fields(request_type=service.GetSecretRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_secret._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSecret,
+        "_BaseGetSecret__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_secret._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -7469,15 +7885,6 @@ def test_get_secret_rest_required_fields(request_type=service.GetSecretRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_secret_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_secret._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_secret_rest_flattened():
@@ -7584,19 +7991,20 @@ def test_update_secret_rest_required_fields(request_type=service.UpdateSecretReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_secret._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSecret,
+        "_BaseUpdateSecret__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_secret._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -7641,23 +8049,6 @@ def test_update_secret_rest_required_fields(request_type=service.UpdateSecretReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_secret_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_secret._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "secret",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_secret_rest_flattened():
@@ -7767,21 +8158,22 @@ def test_delete_secret_rest_required_fields(request_type=service.DeleteSecretReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_secret._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSecret,
+        "_BaseDeleteSecret__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_secret._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("etag",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -7824,15 +8216,6 @@ def test_delete_secret_rest_required_fields(request_type=service.DeleteSecretReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_secret_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_secret._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
 def test_delete_secret_rest_flattened():
@@ -7944,27 +8327,28 @@ def test_list_secret_versions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_secret_versions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSecretVersions,
+        "_BaseListSecretVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_secret_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -8010,24 +8394,6 @@ def test_list_secret_versions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_secret_versions_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_secret_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_secret_versions_rest_flattened():
@@ -8141,6 +8507,9 @@ def test_list_secret_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_secret_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SecretVersion) for i in results)
@@ -8205,19 +8574,19 @@ def test_get_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSecretVersion,
+        "_BaseGetSecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -8263,15 +8632,6 @@ def test_get_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_secret_version_rest_flattened():
@@ -8387,19 +8747,19 @@ def test_access_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).access_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseAccessSecretVersion,
+        "_BaseAccessSecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).access_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -8445,15 +8805,6 @@ def test_access_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_access_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.access_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_access_secret_version_rest_flattened():
@@ -8570,19 +8921,19 @@ def test_disable_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).disable_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDisableSecretVersion,
+        "_BaseDisableSecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).disable_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -8629,15 +8980,6 @@ def test_disable_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_disable_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.disable_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_disable_secret_version_rest_flattened():
@@ -8754,19 +9096,19 @@ def test_enable_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).enable_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseEnableSecretVersion,
+        "_BaseEnableSecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).enable_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -8813,15 +9155,6 @@ def test_enable_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_enable_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.enable_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_enable_secret_version_rest_flattened():
@@ -8938,19 +9271,19 @@ def test_destroy_secret_version_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).destroy_secret_version._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDestroySecretVersion,
+        "_BaseDestroySecretVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).destroy_secret_version._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -8997,15 +9330,6 @@ def test_destroy_secret_version_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_destroy_secret_version_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.destroy_secret_version._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_destroy_secret_version_rest_flattened():
@@ -9117,19 +9441,19 @@ def test_set_iam_policy_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSetIamPolicy,
+        "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -9174,23 +9498,6 @@ def test_set_iam_policy_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "policy",
-            )
-        )
-    )
 
 
 def test_get_iam_policy_rest_use_cached_wrapped_rpc():
@@ -9244,21 +9551,22 @@ def test_get_iam_policy_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetIamPolicy,
+        "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("options",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -9302,15 +9610,6 @@ def test_get_iam_policy_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("options",)) & set(("resource",)))
 
 
 def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
@@ -9369,20 +9668,20 @@ def test_test_iam_permissions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseTestIamPermissions,
+        "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
     jsonified_request["permissions"] = "permissions_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -9431,21 +9730,349 @@ def test_test_iam_permissions_rest_required_fields(
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+def test_enable_managed_rotation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.enable_managed_rotation
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.enable_managed_rotation
+        ] = mock_rpc
+
+        request = {}
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_enable_managed_rotation_rest_required_fields(
+    request_type=service.EnableManagedRotationRequest,
+):
+    transport_class = transports.SecretManagerServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
-    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "permissions",
-            )
-        )
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseEnableManagedRotation,
+        "_BaseEnableManagedRotation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SecretVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.SecretVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.enable_managed_rotation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_enable_managed_rotation_rest_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/secrets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.enable_managed_rotation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/secrets/*}:enableManagedRotation"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_enable_managed_rotation_rest_flattened_error(transport: str = "rest"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+def test_rotate_secret_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.rotate_secret in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.rotate_secret] = mock_rpc
+
+        request = {}
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_rotate_secret_rest_required_fields(request_type=service.RotateSecretRequest):
+    transport_class = transports.SecretManagerServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    default_values = getattr(
+        transport_class._BaseRotateSecret,
+        "_BaseRotateSecret__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SecretVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.SecretVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.rotate_secret(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_rotate_secret_rest_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/secrets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.rotate_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/secrets/*}:rotateSecret" % client.transport._host,
+            args[1],
+        )
+
+
+def test_rotate_secret_rest_flattened_error(transport: str = "rest"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
 
 
 def test_credentials_transport_error():
@@ -9870,6 +10497,48 @@ def test_test_iam_permissions_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_managed_rotation_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rotate_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = resources.SecretVersion()
+        client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = SecretManagerServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -9927,6 +10596,7 @@ async def test_create_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.create_secret(request=None)
@@ -9985,6 +10655,7 @@ async def test_get_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.get_secret(request=None)
@@ -10012,6 +10683,7 @@ async def test_update_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.update_secret(request=None)
@@ -10308,6 +10980,66 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_rotate_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_kind_rest():
     transport = SecretManagerServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
@@ -10502,12 +11234,33 @@ def test_create_secret_rest_call_success(request_type):
         "expire_time": {},
         "ttl": {"seconds": 751, "nanos": 543},
         "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "rotation": {
+            "next_rotation_time": {},
+            "rotation_period": {},
+            "managed_rotation_status": {
+                "state": 1,
+                "error": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
         "version_aliases": {},
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
         "tags": {},
+        "secret_type": 1,
+        "policy_member": {
+            "iam_policy_name_principal": "iam_policy_name_principal_value",
+            "iam_policy_uid_principal": "iam_policy_uid_principal_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10584,6 +11337,7 @@ def test_create_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -10602,6 +11356,7 @@ def test_create_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10850,6 +11605,7 @@ def test_get_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -10868,6 +11624,7 @@ def test_get_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10989,12 +11746,33 @@ def test_update_secret_rest_call_success(request_type):
         "expire_time": {},
         "ttl": {"seconds": 751, "nanos": 543},
         "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "rotation": {
+            "next_rotation_time": {},
+            "rotation_period": {},
+            "managed_rotation_status": {
+                "state": 1,
+                "error": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
         "version_aliases": {},
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
         "tags": {},
+        "secret_type": 1,
+        "policy_member": {
+            "iam_policy_name_principal": "iam_policy_name_principal_value",
+            "iam_policy_uid_principal": "iam_policy_uid_principal_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11071,6 +11849,7 @@ def test_update_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -11089,6 +11868,7 @@ def test_update_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12468,6 +13248,278 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_enable_managed_rotation_rest_bad_request(
+    request_type=service.EnableManagedRotationRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.enable_managed_rotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest,
+        dict,
+    ],
+)
+def test_enable_managed_rotation_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.enable_managed_rotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_managed_rotation_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_managed_rotation",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_managed_rotation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "pre_enable_managed_rotation",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.EnableManagedRotationRequest.pb(
+            service.EnableManagedRotationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.EnableManagedRotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
+
+        client.enable_managed_rotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_rotate_secret_rest_bad_request(request_type=service.RotateSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.rotate_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest,
+        dict,
+    ],
+)
+def test_rotate_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.rotate_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rotate_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_rotate_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_rotate_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_rotate_secret"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.RotateSecretRequest.pb(service.RotateSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.RotateSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
+
+        client.rotate_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12898,6 +13950,46 @@ def test_test_iam_permissions_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_managed_rotation_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rotate_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = SecretManagerServiceClient(
@@ -12946,6 +14038,8 @@ def test_secret_manager_service_base_transport():
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
+        "enable_managed_rotation",
+        "rotate_secret",
         "get_location",
         "list_locations",
     )
@@ -13259,6 +14353,12 @@ def test_secret_manager_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.enable_managed_rotation._session
+    session2 = client2.transport.enable_managed_rotation._session
+    assert session1 != session2
+    session1 = client1.transport.rotate_secret._session
+    session2 = client2.transport.rotate_secret._session
     assert session1 != session2
 
 

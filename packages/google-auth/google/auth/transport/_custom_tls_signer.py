@@ -21,9 +21,9 @@ import ctypes
 import json
 import logging
 import os
+import ssl
 import sys
-
-import cffi  # type: ignore
+import sysconfig
 
 from google.auth import exceptions
 
@@ -46,15 +46,22 @@ SIGN_CALLBACK_CTYPE = ctypes.CFUNCTYPE(
 
 
 # Cast SSL_CTX* to void*
-def _cast_ssl_ctx_to_void_p_pyopenssl(ssl_ctx):
-    return ctypes.cast(int(cffi.FFI().cast("intptr_t", ssl_ctx)), ctypes.c_void_p)
-
-
-# Cast SSL_CTX* to void*
 def _cast_ssl_ctx_to_void_p_stdlib(context):
-    return ctypes.c_void_p.from_address(
-        id(context) + ctypes.sizeof(ctypes.c_void_p) * 2
-    )
+    if not issubclass(type(context), ssl.SSLContext):
+        raise TypeError("context must be an instance of ssl.SSLContext, not a mock")
+
+    if (
+        sys.implementation.name != "cpython"
+        or hasattr(sys, "getobjects")
+        or sysconfig.get_config_var("Py_DEBUG")
+        or sysconfig.get_config_var("Py_GIL_DISABLED") == 1
+    ):
+        raise exceptions.MutualTLSChannelError(
+            "Custom TLS signing is only supported on standard release CPython runtimes."
+        )
+
+    offset = sys.getsizeof(object())
+    return ctypes.c_void_p.from_address(id(context) + offset)
 
 
 # Load offload library and set up the function types.
@@ -274,7 +281,7 @@ class CustomTlsSigner(object):
             if not self._offload_lib.ConfigureSslContext(
                 self._sign_callback,
                 ctypes.c_char_p(self._cert),
-                _cast_ssl_ctx_to_void_p_pyopenssl(ctx._ctx._context),
+                _cast_ssl_ctx_to_void_p_stdlib(ctx),
             ):
                 raise exceptions.MutualTLSChannelError(
                     "failed to configure ECP Offload SSL context"

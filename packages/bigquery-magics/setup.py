@@ -45,15 +45,14 @@ extras = {
     # moved back to optional due to bloat.  See
     # https://github.com/googleapis/python-bigquery/issues/1196 for more background.
     "bqstorage": [
-        "google-cloud-bigquery-storage >= 2.25.0, <3.0.0",
+        "google-cloud-bigquery-storage >= 2.29.0, <3.0.0",
         # Due to an issue in pip's dependency resolver, the `grpc` extra is not
         # installed, even though `google-cloud-bigquery-storage` specifies it
         # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
         # See: https://github.com/googleapis/python-bigquery/issues/83 The
         # grpc.Channel.close() method isn't added until 1.32.0.
         # https://github.com/grpc/grpc/pull/15254
-        "grpcio >= 1.47.0, < 2.0.0",
-        "grpcio >= 1.49.1, < 2.0.0; python_version >= '3.11' and python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     ],
     "bigframes": ["bigframes >= 1.17.0"],

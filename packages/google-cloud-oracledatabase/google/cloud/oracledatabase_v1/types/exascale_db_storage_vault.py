@@ -70,6 +70,11 @@ class ExascaleDbStorageVault(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. The labels or tags associated with
             the ExascaleDbStorageVault.
+        exadata_infrastructure (str):
+            Optional. The Exadata Infrastructure resource on which
+            ExascaleDbStorageVault resource is created, in the following
+            format:
+            projects/{project}/locations/{region}/cloudExadataInfrastuctures/{cloud_extradata_infrastructure}
     """
 
     name: str = proto.Field(
@@ -102,6 +107,10 @@ class ExascaleDbStorageVault(proto.Message):
         proto.STRING,
         proto.STRING,
         number=7,
+    )
+    exadata_infrastructure: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

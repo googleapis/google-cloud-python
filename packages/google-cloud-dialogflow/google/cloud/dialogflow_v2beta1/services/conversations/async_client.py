@@ -97,10 +97,6 @@ class ConversationsAsyncClient:
     parse_ces_tool_path = staticmethod(ConversationsClient.parse_ces_tool_path)
     conversation_path = staticmethod(ConversationsClient.conversation_path)
     parse_conversation_path = staticmethod(ConversationsClient.parse_conversation_path)
-    conversation_model_path = staticmethod(ConversationsClient.conversation_model_path)
-    parse_conversation_model_path = staticmethod(
-        ConversationsClient.parse_conversation_model_path
-    )
     conversation_profile_path = staticmethod(
         ConversationsClient.conversation_profile_path
     )
@@ -2091,9 +2087,7 @@ class ConversationsAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ConversationsAsyncClient",)

@@ -550,6 +550,39 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             )
         return self._stubs["purge_completion_suggestions"]
 
+    @property
+    def remove_suggestion(
+        self,
+    ) -> Callable[
+        [completion_service.RemoveSuggestionRequest],
+        Awaitable[completion_service.RemoveSuggestionResponse],
+    ]:
+        r"""Return a callable for the remove suggestion method over gRPC.
+
+        Removes the search history suggestion in an engine for a user.
+        This will remove the suggestion from being returned in the
+        [AdvancedCompleteQueryResponse.recent_search_suggestions][google.cloud.discoveryengine.v1beta.AdvancedCompleteQueryResponse.recent_search_suggestions]
+        for this user. If the user searches the same suggestion again,
+        the new history will override and suggest this suggestion again.
+
+        Returns:
+            Callable[[~.RemoveSuggestionRequest],
+                    Awaitable[~.RemoveSuggestionResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_suggestion" not in self._stubs:
+            self._stubs["remove_suggestion"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.CompletionService/RemoveSuggestion",
+                request_serializer=completion_service.RemoveSuggestionRequest.serialize,
+                response_deserializer=completion_service.RemoveSuggestionResponse.deserialize,
+            )
+        return self._stubs["remove_suggestion"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -580,6 +613,11 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             ),
             self.purge_completion_suggestions: self._wrap_method(
                 self.purge_completion_suggestions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_suggestion: self._wrap_method(
+                self.remove_suggestion,
                 default_timeout=None,
                 client_info=client_info,
             ),

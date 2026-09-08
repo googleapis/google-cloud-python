@@ -18,8 +18,29 @@ import io
 import json
 import os
 from pickle import PicklingError
-from typing import Tuple
-from typing import Union
+from typing import Set, Tuple, Union
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+# NOTE: We statically define all modules here to ensure static analysis tools
+# (mypy, pyright, Ruff) can easily parse them. If support is not present, the
+# imports are ignored, making their presence safe.
+__lazy_modules__: Set[str] = {
+    "google.api_core.client_options",
+    "google.api_core.exceptions",
+    "google.auth",
+    "google.auth.api_key",
+    "google.auth.environment_vars",
+    "google.auth.credentials",
+    "google.auth.transport.requests",
+    "google.cloud._helpers",
+    "google.oauth2",
+    "google.oauth2.service_account",
+}
 
 import google.api_core.client_options
 import google.api_core.exceptions

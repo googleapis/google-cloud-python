@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.chronicle_v1._compat import transcode_request
 from google.cloud.chronicle_v1.types import rule
 from google.cloud.chronicle_v1.types import rule as gcc_rule
 
@@ -56,8 +57,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RuleServiceRestInterceptor:
@@ -164,6 +164,14 @@ class RuleServiceRestInterceptor:
                 return request, metadata
 
             def post_update_rule_deployment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_verify_rule_text(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_verify_rule_text(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -683,6 +691,52 @@ class RuleServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_verify_rule_text(
+        self,
+        request: rule.VerifyRuleTextRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[rule.VerifyRuleTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for verify_rule_text
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the RuleService server.
+        """
+        return request, metadata
+
+    def post_verify_rule_text(
+        self, response: rule.VerifyRuleTextResponse
+    ) -> rule.VerifyRuleTextResponse:
+        """Post-rpc interceptor for verify_rule_text
+
+        DEPRECATED. Please use the `post_verify_rule_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the RuleService server but before
+        it is returned to user code. This `post_verify_rule_text` interceptor runs
+        before the `post_verify_rule_text_with_metadata` interceptor.
+        """
+        return response
+
+    def post_verify_rule_text_with_metadata(
+        self,
+        response: rule.VerifyRuleTextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[rule.VerifyRuleTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for verify_rule_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RuleService server but before it is returned to user code.
+
+        We recommend only using this `post_verify_rule_text_with_metadata`
+        interceptor in new development instead of the `post_verify_rule_text` interceptor.
+        When both interceptors are used, this `post_verify_rule_text_with_metadata` interceptor runs after the
+        `post_verify_rule_text` interceptor. The (possibly modified) response returned by
+        `post_verify_rule_text` will be passed to
+        `post_verify_rule_text_with_metadata`.
+        """
+        return response, metadata
+
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
@@ -989,21 +1043,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseCreateRetrohunt._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_retrohunt(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseCreateRetrohunt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRuleServiceRestTransport._BaseCreateRetrohunt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseCreateRetrohunt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseCreateRetrohunt,
+                    "_BaseCreateRetrohunt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1142,23 +1193,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseCreateRule._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_rule(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseCreateRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseRuleServiceRestTransport._BaseCreateRule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseCreateRule._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseCreateRule,
+                    "_BaseCreateRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1292,19 +1336,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseDeleteRule._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_rule(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseDeleteRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseDeleteRule._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseDeleteRule,
+                    "_BaseDeleteRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1409,19 +1450,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseGetRetrohunt._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_retrohunt(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseGetRetrohunt._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseGetRetrohunt._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseGetRetrohunt,
+                    "_BaseGetRetrohunt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1557,19 +1595,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseGetRule._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseGetRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseGetRule._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseGetRule,
+                    "_BaseGetRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1709,17 +1744,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseGetRuleDeployment._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_rule_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseGetRuleDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseGetRuleDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseGetRuleDeployment,
+                    "_BaseGetRuleDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1858,15 +1894,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseListRetrohunts._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_retrohunts(request, metadata)
-            transcoded_request = _BaseRuleServiceRestTransport._BaseListRetrohunts._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseListRetrohunts._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseListRetrohunts,
+                    "_BaseListRetrohunts__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2003,17 +2040,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             """
 
             http_options = _BaseRuleServiceRestTransport._BaseListRuleDeployments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_rule_deployments(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseListRuleDeployments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseListRuleDeployments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseListRuleDeployments,
+                    "_BaseListRuleDeployments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2154,17 +2192,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseListRuleRevisions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_rule_revisions(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseListRuleRevisions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseListRuleRevisions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseListRuleRevisions,
+                    "_BaseListRuleRevisions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2300,19 +2339,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseListRules._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_rules(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseListRules._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseListRules._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseListRules,
+                    "_BaseListRules__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2452,23 +2488,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseUpdateRule._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_rule(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseUpdateRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseRuleServiceRestTransport._BaseUpdateRule._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseUpdateRule._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseUpdateRule,
+                    "_BaseUpdateRule__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2608,21 +2637,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             """
 
             http_options = _BaseRuleServiceRestTransport._BaseUpdateRuleDeployment._get_http_options()
-
             request, metadata = self._interceptor.pre_update_rule_deployment(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseUpdateRuleDeployment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRuleServiceRestTransport._BaseUpdateRuleDeployment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseUpdateRuleDeployment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseUpdateRuleDeployment,
+                    "_BaseUpdateRuleDeployment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2696,6 +2722,158 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.chronicle.v1.RuleService",
                         "rpcName": "UpdateRuleDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _VerifyRuleText(
+        _BaseRuleServiceRestTransport._BaseVerifyRuleText, RuleServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("RuleServiceRestTransport.VerifyRuleText")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: rule.VerifyRuleTextRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rule.VerifyRuleTextResponse:
+            r"""Call the verify rule text method over HTTP.
+
+            Args:
+                request (~.rule.VerifyRuleTextRequest):
+                    The request object. Request message for VerifyRuleText
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.rule.VerifyRuleTextResponse:
+                    Response message for VerifyRuleText
+                method.
+
+            """
+
+            http_options = (
+                _BaseRuleServiceRestTransport._BaseVerifyRuleText._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_verify_rule_text(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseVerifyRuleText,
+                    "_BaseVerifyRuleText__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.chronicle_v1.RuleServiceClient.VerifyRuleText",
+                    extra={
+                        "serviceName": "google.cloud.chronicle.v1.RuleService",
+                        "rpcName": "VerifyRuleText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = RuleServiceRestTransport._VerifyRuleText._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rule.VerifyRuleTextResponse()
+            pb_resp = rule.VerifyRuleTextResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_verify_rule_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_verify_rule_text_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = rule.VerifyRuleTextResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.chronicle_v1.RuleServiceClient.verify_rule_text",
+                    extra={
+                        "serviceName": "google.cloud.chronicle.v1.RuleService",
+                        "rpcName": "VerifyRuleText",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2787,6 +2965,14 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
         return self._UpdateRuleDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def verify_rule_text(
+        self,
+    ) -> Callable[[rule.VerifyRuleTextRequest], rule.VerifyRuleTextResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._VerifyRuleText(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
@@ -2844,21 +3030,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseRuleServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2963,17 +3146,18 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseRuleServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3080,19 +3264,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseRuleServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseRuleServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3224,15 +3405,16 @@ class RuleServiceRestTransport(_BaseRuleServiceRestTransport):
             http_options = (
                 _BaseRuleServiceRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseRuleServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseRuleServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseRuleServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

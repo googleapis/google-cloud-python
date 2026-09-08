@@ -19,6 +19,12 @@ from google.cloud.bigtable.data._metrics.data_model import (
     OperationState,
     OperationType,
 )
+from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+    GoogleCloudMetricsHandler,
+)
+from google.cloud.bigtable.data._metrics.handlers.opentelemetry import (
+    OpenTelemetryMetricsHandler,
+)
 from google.cloud.bigtable.data._metrics.metrics_controller import (
     BigtableClientSideMetricsController,
 )
@@ -26,6 +32,8 @@ from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 
 __all__ = (
     "BigtableClientSideMetricsController",
+    "OpenTelemetryMetricsHandler",
+    "GoogleCloudMetricsHandler",
     "OperationType",
     "OperationState",
     "ActiveOperationMetric",

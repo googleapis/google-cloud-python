@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-os-config/#history
 
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.24.0...google-cloud-os-config-v1.25.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[o-r] packages ([#17075](https://github.com/googleapis/google-cloud-python/issues/17075)) ([f4bd018](https://github.com/googleapis/google-cloud-python/commit/f4bd0182d808ae73c3c6981e6ce3d565f78a6051))
+
 ## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.23.0...google-cloud-os-config-v1.24.0) (2026-03-26)
 
 

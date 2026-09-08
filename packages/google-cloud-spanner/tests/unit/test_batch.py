@@ -35,6 +35,8 @@ from google.cloud.spanner_v1 import (
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_errors_with_request_id,
+    _make_list_value_pb,
+    _make_value_pb,
     _metadata_with_request_id,
     _metadata_with_request_id_and_req_id,
 )
@@ -182,6 +184,40 @@ class Test_BatchBase(_BaseTest):
         for found, expected in zip(key_set_pb.keys, keys):
             self.assertEqual([int(value) for value in found], expected)
 
+    def test_send(self):
+        queue = "TestQueue"
+        key = [2]
+        payload = "Hello, Queues!"
+        session = _Session()
+        base = self._make_one(session)
+
+        base.send(queue, key=key, payload=payload)
+
+        self.assertEqual(len(base._mutations), 1)
+        mutation = base._mutations[0]
+        self.assertIsInstance(mutation, Mutation)
+        send = mutation.send
+        self.assertIsInstance(send, Mutation.Send)
+        self.assertEqual(send.queue, queue)
+        self.assertEqual(send._pb.payload, _make_value_pb(payload))
+        self.assertEqual(send._pb.key, _make_list_value_pb(key))
+
+    def test_ack(self):
+        queue = "TestQueue"
+        key = [2]
+        session = _Session()
+        base = self._make_one(session)
+
+        base.ack(queue, key=key)
+
+        self.assertEqual(len(base._mutations), 1)
+        mutation = base._mutations[0]
+        self.assertIsInstance(mutation, Mutation)
+        ack = mutation.ack
+        self.assertIsInstance(ack, Mutation.Ack)
+        self.assertEqual(ack.queue, queue)
+        self.assertEqual(ack._pb.key, _make_list_value_pb(key))
+
 
 class TestBatch(_BaseTest, OpenTelemetryBase):
     def _getTargetClass(self):
@@ -310,7 +346,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         # Assertion: Ensure that calling batch.commit() raises Aborted
         with self.assertRaises(Aborted) as context:
-            batch.commit(timeout_secs=0.1, default_retry_delay=0)
+            batch.commit(timeout_secs=1.0, default_retry_delay=0)
 
         # Verify exception includes request_id attribute
         self.assertIn("409 Transaction was aborted", str(context.exception))
@@ -759,7 +795,14 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_batch_write_end_to_end_tracing_enabled(self, mock_region):
-        self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
+        if ot_helpers.HAS_OPENTELEMETRY_INSTALLED:
+            tracer = _opentelemetry_tracing.get_tracer()
+            with tracer.start_as_current_span("test"):
+                self._test_batch_write_with_request_options(
+                    enable_end_to_end_tracing=True
+                )
+        else:
+            self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

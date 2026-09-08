@@ -58,6 +58,12 @@ from google.cloud.chronicle_v1.services.featured_content_native_dashboard_servic
 from google.cloud.chronicle_v1.services.featured_content_native_dashboard_service.client import (
     FeaturedContentNativeDashboardServiceClient,
 )
+from google.cloud.chronicle_v1.services.findings_refinement_service.async_client import (
+    FindingsRefinementServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.findings_refinement_service.client import (
+    FindingsRefinementServiceClient,
+)
 from google.cloud.chronicle_v1.services.instance_service.async_client import (
     InstanceServiceAsyncClient,
 )
@@ -75,6 +81,12 @@ from google.cloud.chronicle_v1.services.reference_list_service.async_client impo
 )
 from google.cloud.chronicle_v1.services.reference_list_service.client import (
     ReferenceListServiceClient,
+)
+from google.cloud.chronicle_v1.services.rule_execution_error_service.async_client import (
+    RuleExecutionErrorServiceAsyncClient,
+)
+from google.cloud.chronicle_v1.services.rule_execution_error_service.client import (
+    RuleExecutionErrorServiceClient,
 )
 from google.cloud.chronicle_v1.services.rule_service.async_client import (
     RuleServiceAsyncClient,
@@ -197,6 +209,28 @@ from google.cloud.chronicle_v1.types.featured_content_native_dashboard import (
     ListFeaturedContentNativeDashboardsRequest,
     ListFeaturedContentNativeDashboardsResponse,
 )
+from google.cloud.chronicle_v1.types.findings_refinement import (
+    ComputeAllFindingsRefinementActivitiesRequest,
+    ComputeAllFindingsRefinementActivitiesResponse,
+    ComputeFindingsRefinementActivityRequest,
+    ComputeFindingsRefinementActivityResponse,
+    CreateFindingsRefinementRequest,
+    DetectionExclusionActivity,
+    DetectionExclusionApplication,
+    FindingsRefinement,
+    FindingsRefinementActivity,
+    FindingsRefinementDeployment,
+    FindingsRefinementType,
+    GetFindingsRefinementDeploymentRequest,
+    GetFindingsRefinementRequest,
+    ListAllFindingsRefinementDeploymentsRequest,
+    ListAllFindingsRefinementDeploymentsResponse,
+    ListFindingsRefinementsRequest,
+    ListFindingsRefinementsResponse,
+    OutcomeFilter,
+    UpdateFindingsRefinementDeploymentRequest,
+    UpdateFindingsRefinementRequest,
+)
 from google.cloud.chronicle_v1.types.instance import GetInstanceRequest, Instance
 from google.cloud.chronicle_v1.types.native_dashboard import (
     AddChartRequest,
@@ -235,11 +269,14 @@ from google.cloud.chronicle_v1.types.reference_list import (
     ListReferenceListsResponse,
     ReferenceList,
     ReferenceListEntry,
+    ReferenceListError,
     ReferenceListScope,
     ReferenceListSyntaxType,
     ReferenceListView,
     ScopeInfo,
     UpdateReferenceListRequest,
+    VerifyReferenceListRequest,
+    VerifyReferenceListResponse,
 )
 from google.cloud.chronicle_v1.types.rule import (
     CompilationDiagnostic,
@@ -269,6 +306,13 @@ from google.cloud.chronicle_v1.types.rule import (
     Severity,
     UpdateRuleDeploymentRequest,
     UpdateRuleRequest,
+    VerifyRuleTextRequest,
+    VerifyRuleTextResponse,
+)
+from google.cloud.chronicle_v1.types.rule_execution_error import (
+    ListRuleExecutionErrorsRequest,
+    ListRuleExecutionErrorsResponse,
+    RuleExecutionError,
 )
 
 __all__ = (
@@ -286,12 +330,16 @@ __all__ = (
     "EntityServiceAsyncClient",
     "FeaturedContentNativeDashboardServiceClient",
     "FeaturedContentNativeDashboardServiceAsyncClient",
+    "FindingsRefinementServiceClient",
+    "FindingsRefinementServiceAsyncClient",
     "InstanceServiceClient",
     "InstanceServiceAsyncClient",
     "NativeDashboardServiceClient",
     "NativeDashboardServiceAsyncClient",
     "ReferenceListServiceClient",
     "ReferenceListServiceAsyncClient",
+    "RuleExecutionErrorServiceClient",
+    "RuleExecutionErrorServiceAsyncClient",
     "RuleServiceClient",
     "RuleServiceAsyncClient",
     "BigQueryExport",
@@ -395,6 +443,26 @@ __all__ = (
     "InstallFeaturedContentNativeDashboardResponse",
     "ListFeaturedContentNativeDashboardsRequest",
     "ListFeaturedContentNativeDashboardsResponse",
+    "ComputeAllFindingsRefinementActivitiesRequest",
+    "ComputeAllFindingsRefinementActivitiesResponse",
+    "ComputeFindingsRefinementActivityRequest",
+    "ComputeFindingsRefinementActivityResponse",
+    "CreateFindingsRefinementRequest",
+    "DetectionExclusionActivity",
+    "DetectionExclusionApplication",
+    "FindingsRefinement",
+    "FindingsRefinementActivity",
+    "FindingsRefinementDeployment",
+    "GetFindingsRefinementDeploymentRequest",
+    "GetFindingsRefinementRequest",
+    "ListAllFindingsRefinementDeploymentsRequest",
+    "ListAllFindingsRefinementDeploymentsResponse",
+    "ListFindingsRefinementsRequest",
+    "ListFindingsRefinementsResponse",
+    "OutcomeFilter",
+    "UpdateFindingsRefinementDeploymentRequest",
+    "UpdateFindingsRefinementRequest",
+    "FindingsRefinementType",
     "GetInstanceRequest",
     "Instance",
     "AddChartRequest",
@@ -431,9 +499,12 @@ __all__ = (
     "ListReferenceListsResponse",
     "ReferenceList",
     "ReferenceListEntry",
+    "ReferenceListError",
     "ReferenceListScope",
     "ScopeInfo",
     "UpdateReferenceListRequest",
+    "VerifyReferenceListRequest",
+    "VerifyReferenceListResponse",
     "ReferenceListSyntaxType",
     "ReferenceListView",
     "CompilationDiagnostic",
@@ -460,7 +531,12 @@ __all__ = (
     "Severity",
     "UpdateRuleDeploymentRequest",
     "UpdateRuleRequest",
+    "VerifyRuleTextRequest",
+    "VerifyRuleTextResponse",
     "RuleType",
     "RuleView",
     "RunFrequency",
+    "ListRuleExecutionErrorsRequest",
+    "ListRuleExecutionErrorsResponse",
+    "RuleExecutionError",
 )

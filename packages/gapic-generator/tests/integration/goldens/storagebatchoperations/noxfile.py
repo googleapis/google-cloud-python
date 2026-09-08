@@ -17,9 +17,8 @@ import os
 import pathlib
 import re
 import shutil
-
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -37,16 +36,20 @@ ALL_PYTHON = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
-# Switch this to Python 3.15 alpha1
-# https://peps.python.org/pep-0790/
-PREVIEW_PYTHON_VERSION = "3.14"
+PREVIEW_PYTHON_VERSION = "3.15"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (str(p / "mypy.ini") for p in CURRENT_DIRECTORY.parents if (p / "mypy.ini").exists()),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 if (CURRENT_DIRECTORY / "testing").exists():
     LOWER_BOUND_CONSTRAINTS_FILE = (
@@ -108,6 +111,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "google",
         "--check-untyped-defs",
@@ -155,6 +159,15 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", RUFF_VERSION)
+
+    # 1. Check imports
+    session.run(
+        "ruff", "check",
+        "--select", "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
     # 2. Check formatting
     session.run(
@@ -498,9 +511,12 @@ def prerelease_deps(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    # Locate the monorepo 'packages' directory containing core dependencies
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     # Extract the base package name, safely ignoring version bounds and spaces
     # (e.g., "grpcio>=1.75.1" becomes "grpcio")
@@ -611,9 +627,12 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    # Locate the monorepo 'packages' directory containing core dependencies
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]

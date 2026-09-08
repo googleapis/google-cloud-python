@@ -321,7 +321,7 @@ class TestMutationsBatcherAsync:
                 DeadlineExceeded,
                 ServiceUnavailable,
             )
-            table._metrics = BigtableClientSideMetricsController([])
+            table.client._metrics = BigtableClientSideMetricsController([])
 
         return self._get_target_class()(table, **kwargs)
 
@@ -923,8 +923,12 @@ class TestMutationsBatcherAsync:
                 for m in mutations:
                     await instance.append(m)
                 assert instance._entries_processed_since_last_raise == 0
-                # let flush trigger due to timer
-                await CrossSync.sleep(0.1)
+                # Poll in short intervals to wait for the background timer flush to finish,
+                # avoiding timing/scheduling flakiness on slower or heavily loaded environments.
+                for _ in range(50):
+                    if instance._entries_processed_since_last_raise == num_mutations:
+                        break
+                    await CrossSync.sleep(0.05)
                 assert instance._entries_processed_since_last_raise == num_mutations
 
     @CrossSync.pytest
@@ -1201,7 +1205,13 @@ class TestMutationsBatcherAsync:
         Test that retryable functions support user-configurable arguments, and that the configured retryables are passed
         down to the gapic layer.
         """
-        from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+        from google.cloud.bigtable.data._metrics import (
+            ActiveOperationMetric,
+            BigtableClientSideMetricsController,
+        )
+
+        mock_client = mock.Mock()
+        mock_client._metrics = BigtableClientSideMetricsController(handlers=[])
 
         with mock.patch.object(
             google.api_core.retry, "if_exception_type"
@@ -1209,7 +1219,7 @@ class TestMutationsBatcherAsync:
             with mock.patch.object(CrossSync, "retry_target") as retry_fn_mock:
                 table = None
                 with mock.patch("asyncio.create_task"):
-                    table = CrossSync.Table(mock.Mock(), "instance", "table")
+                    table = CrossSync.Table(mock_client, "instance", "table")
                 async with self._make_one(
                     table, batch_retryable_errors=input_retryables
                 ) as instance:

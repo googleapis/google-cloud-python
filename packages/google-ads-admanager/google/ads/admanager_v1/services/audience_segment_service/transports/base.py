@@ -35,9 +35,7 @@ from google.ads.admanager_v1.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AudienceSegmentServiceTransport(abc.ABC):
@@ -159,6 +157,31 @@ class AudienceSegmentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_activate_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_activate_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_deactivate_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_approve_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_approve_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_reject_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_reject_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_populate_audience_segments: gapic_v1.method.wrap_method(
+                self.batch_populate_audience_segments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -200,6 +223,66 @@ class AudienceSegmentServiceTransport(abc.ABC):
         Union[
             audience_segment_service.ListAudienceSegmentsResponse,
             Awaitable[audience_segment_service.ListAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_activate_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchActivateAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchActivateAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchActivateAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchDeactivateAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchDeactivateAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchDeactivateAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_approve_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchApproveAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchApproveAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchApproveAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_reject_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchRejectAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchRejectAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchRejectAudienceSegmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_populate_audience_segments(
+        self,
+    ) -> Callable[
+        [audience_segment_service.BatchPopulateAudienceSegmentsRequest],
+        Union[
+            audience_segment_service.BatchPopulateAudienceSegmentsResponse,
+            Awaitable[audience_segment_service.BatchPopulateAudienceSegmentsResponse],
         ],
     ]:
         raise NotImplementedError()

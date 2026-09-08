@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import custom_field_messages, custom_field_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CustomFieldServiceRestInterceptor:
@@ -759,21 +759,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_activate_custom_fields(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseBatchActivateCustomFields,
+                    "_BaseBatchActivateCustomFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -915,21 +912,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_create_custom_fields(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseBatchCreateCustomFields,
+                    "_BaseBatchCreateCustomFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1076,21 +1070,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_deactivate_custom_fields(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseBatchDeactivateCustomFields,
+                    "_BaseBatchDeactivateCustomFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1232,21 +1223,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_custom_fields(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseBatchUpdateCustomFields,
+                    "_BaseBatchUpdateCustomFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1391,21 +1379,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_http_options()
-
             request, metadata = self._interceptor.pre_create_custom_field(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseCreateCustomField._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseCreateCustomField,
+                    "_BaseCreateCustomField__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1545,17 +1530,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseGetCustomField._get_http_options()
-
             request, metadata = self._interceptor.pre_get_custom_field(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseGetCustomField._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseGetCustomField._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseGetCustomField,
+                    "_BaseGetCustomField__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1694,17 +1680,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseListCustomFields._get_http_options()
-
             request, metadata = self._interceptor.pre_list_custom_fields(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseListCustomFields._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseListCustomFields._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseListCustomFields,
+                    "_BaseListCustomFields__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1844,21 +1831,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_http_options()
-
             request, metadata = self._interceptor.pre_update_custom_field(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseUpdateCustomField,
+                    "_BaseUpdateCustomField__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2091,17 +2075,18 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2207,15 +2192,16 @@ class CustomFieldServiceRestTransport(_BaseCustomFieldServiceRestTransport):
             """
 
             http_options = _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCustomFieldServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCustomFieldServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

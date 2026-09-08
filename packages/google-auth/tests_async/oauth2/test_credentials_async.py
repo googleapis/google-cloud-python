@@ -23,6 +23,7 @@ import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import exceptions
+from google.auth import transport
 from google.oauth2 import _credentials_async as _credentials_async
 from google.oauth2 import credentials
 from tests.oauth2 import test_credentials
@@ -344,7 +345,8 @@ class TestCredentials:
         creds.apply(headers)
         assert "x-goog-user-project" not in headers
 
-    def test_with_quota_project(self):
+    @pytest.mark.asyncio
+    async def test_with_quota_project(self):
         creds = _credentials_async.Credentials(
             token="token",
             refresh_token=self.REFRESH_TOKEN,
@@ -356,9 +358,10 @@ class TestCredentials:
 
         new_creds = creds.with_quota_project("new-project-456")
         assert new_creds.quota_project_id == "new-project-456"
+        request = mock.create_autospec(transport.Request, instance=True)
         headers = {}
-        creds.apply(headers)
-        assert "x-goog-user-project" in headers
+        await new_creds.before_request(request, "GET", "https://example.com", headers)
+        assert headers.get("x-goog-user-project") == "new-project-456"
 
     def test_from_authorized_user_info(self):
         info = test_credentials.AUTH_USER_INFO.copy()

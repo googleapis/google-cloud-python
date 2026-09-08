@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.20.0...google-cloud-talent-v2.21.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.19.0...google-cloud-talent-v2.20.0) (2026-03-26)
 
 

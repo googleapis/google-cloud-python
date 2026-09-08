@@ -19,7 +19,7 @@ import datetime
 import logging
 import random
 import time
-from typing import List, AsyncIterator
+from typing import AsyncIterator, List
 
 try:
     from unittest import mock
@@ -27,9 +27,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
 
-import pytest  # noqa: I202
-
 import proto
+import pytest  # noqa: I202
 
 try:
     from google.auth.aio.transport import Response
@@ -39,13 +38,11 @@ except ImportError:
         allow_module_level=True,
     )
 
+from google.api import http_pb2, httpbody_pb2
+
 from google.api_core import rest_streaming_async
-from google.api import http_pb2
-from google.api import httpbody_pb2
 
-
-from ..helpers import Composer, Song, EchoResponse, parse_responses
-
+from ..helpers import Composer, EchoResponse, Song, parse_responses
 
 __protobuf__ = proto.module(package=__name__)
 SEED = int(time.time())

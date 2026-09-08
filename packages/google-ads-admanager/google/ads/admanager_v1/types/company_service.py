@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import company_messages
@@ -27,12 +28,18 @@ __protobuf__ = proto.module(
         "GetCompanyRequest",
         "ListCompaniesRequest",
         "ListCompaniesResponse",
+        "CreateCompanyRequest",
+        "BatchCreateCompaniesRequest",
+        "BatchCreateCompaniesResponse",
+        "UpdateCompanyRequest",
+        "BatchUpdateCompaniesRequest",
+        "BatchUpdateCompaniesResponse",
     },
 )
 
 
 class GetCompanyRequest(proto.Message):
-    r"""Request object for ``GetCompany`` method.
+    r"""Request object for [GetCompany][] method.
 
     Attributes:
         name (str):
@@ -47,46 +54,45 @@ class GetCompanyRequest(proto.Message):
 
 
 class ListCompaniesRequest(proto.Message):
-    r"""Request object for ``ListCompanies`` method.
+    r"""Request object for [ListCompanies][] method.
 
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of
-            Companies. Format: ``networks/{network_code}``
+            [Companies][]. Format: ``networks/{network_code}``
         page_size (int):
-            Optional. The maximum number of ``Companies`` to return. The
+            Optional. The maximum number of [Companies][] to return. The
             service may return fewer than this value. If unspecified, at
-            most 50 ``Companies`` will be returned. The maximum value is
+            most 50 [Companies][] will be returned. The maximum value is
             1000; values greater than 1000 will be coerced to 1000.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListCompanies`` call. Provide this to retrieve the
+            [ListCompanies][] call. Provide this to retrieve the
             subsequent page.
 
             When paginating, all other parameters provided to
-            ``ListCompanies`` must match the call that provided the page
+            [ListCompanies][] must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>address</code></li>
-              <li><code>comment</code></li>
-              <li><code>companyId</code></li>
-              <li><code>creditStatus</code></li>
-              <li><code>displayName</code></li>
-              <li><code>email</code></li>
-              <li><code>externalId</code></li>
-              <li><code>fax</code></li>
-              <li><code>name</code></li>
-              <li><code>phone</code></li>
-              <li><code>thirdPartyCompanyId</code></li>
-              <li><code>type</code></li>
-              <li><code>updateTime</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``address``
+            - ``comment``
+            - ``companyId``
+            - ``creditStatus``
+            - ``displayName``
+            - ``email``
+            - ``externalId``
+            - ``fax``
+            - ``name``
+            - ``phone``
+            - ``thirdPartyCompanyId``
+            - ``type``
+            - ``updateTime``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -123,20 +129,23 @@ class ListCompaniesRequest(proto.Message):
 
 
 class ListCompaniesResponse(proto.Message):
-    r"""Response object for ``ListCompaniesRequest`` containing matching
-    ``Company`` objects.
+    r"""Response object for
+    [ListCompaniesRequest][google.ads.admanager.v1.ListCompaniesRequest]
+    containing matching [Company][google.ads.admanager.v1.Company]
+    objects.
 
     Attributes:
         companies (MutableSequence[google.ads.admanager_v1.types.Company]):
-            The ``Company`` objects from the specified network.
+            The [Company][google.ads.admanager.v1.Company] objects from
+            the specified network.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
             pages.
         total_size (int):
-            Total number of ``Company`` objects. If a filter was
-            included in the request, this reflects the total number
-            after the filtering is applied.
+            Total number of [Company][google.ads.admanager.v1.Company]
+            objects. If a filter was included in the request, this
+            reflects the total number after the filtering is applied.
 
             ``total_size`` won't be calculated in the response unless it
             has been included in a response field mask. The response
@@ -164,6 +173,139 @@ class ListCompaniesResponse(proto.Message):
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class CreateCompanyRequest(proto.Message):
+    r"""Request object for [CreateCompany][] method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this
+            [Company][google.ads.admanager.v1.Company] will be created.
+            Format: ``networks/{network_code}``
+        company (google.ads.admanager_v1.types.Company):
+            Required. The [Company][google.ads.admanager.v1.Company] to
+            create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    company: company_messages.Company = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=company_messages.Company,
+    )
+
+
+class BatchCreateCompaniesRequest(proto.Message):
+    r"""Request object for [BatchCreateCompanies][] method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where [Companies][] will be
+            created. Format: ``networks/{network_code}`` The parent
+            field in the CreateCompanyRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateCompanyRequest]):
+            Required. The [Company][google.ads.admanager.v1.Company]
+            objects to create. A maximum of 100 objects can be created
+            in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateCompanyRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateCompanyRequest",
+    )
+
+
+class BatchCreateCompaniesResponse(proto.Message):
+    r"""Response object for [BatchCreateCompanies][] method.
+
+    Attributes:
+        companies (MutableSequence[google.ads.admanager_v1.types.Company]):
+            The [Company][google.ads.admanager.v1.Company] objects
+            created.
+    """
+
+    companies: MutableSequence[company_messages.Company] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=company_messages.Company,
+    )
+
+
+class UpdateCompanyRequest(proto.Message):
+    r"""Request object for [UpdateCompany][] method.
+
+    Attributes:
+        company (google.ads.admanager_v1.types.Company):
+            Required. The [Company][google.ads.admanager.v1.Company] to
+            update.
+
+            The [Company][google.ads.admanager.v1.Company]'s ``name`` is
+            used to identify the
+            [Company][google.ads.admanager.v1.Company] to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update.
+    """
+
+    company: company_messages.Company = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=company_messages.Company,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchUpdateCompaniesRequest(proto.Message):
+    r"""Request object for [BatchUpdateCompanies][] method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where [Companies][] will be
+            updated. Format: ``networks/{network_code}`` The parent
+            field in the UpdateCompanyRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateCompanyRequest]):
+            Required. The [Company][google.ads.admanager.v1.Company]
+            objects to update. A maximum of 100 objects can be updated
+            in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateCompanyRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateCompanyRequest",
+    )
+
+
+class BatchUpdateCompaniesResponse(proto.Message):
+    r"""Response object for [BatchUpdateCompanies][] method.
+
+    Attributes:
+        companies (MutableSequence[google.ads.admanager_v1.types.Company]):
+            The [Company][google.ads.admanager.v1.Company] objects
+            updated.
+    """
+
+    companies: MutableSequence[company_messages.Company] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=company_messages.Company,
     )
 
 

@@ -32,6 +32,7 @@ from google.pubsub_v1.types.pubsub import (
     BigQueryConfig,
     BigtableConfig,
     CloudStorageConfig,
+    Compression,
     CreateSnapshotRequest,
     DeadLetterPolicy,
     DeleteSnapshotRequest,
@@ -83,6 +84,7 @@ from google.pubsub_v1.types.pubsub import (
 )
 from google.pubsub_v1.types.schema import (
     CommitSchemaRequest,
+    CompiledProtoSchema,
     CreateSchemaRequest,
     DeleteSchemaRequest,
     DeleteSchemaRevisionRequest,
@@ -113,6 +115,7 @@ __all__ = (
     "BigQueryConfig",
     "BigtableConfig",
     "CloudStorageConfig",
+    "Compression",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
     "DeleteSnapshotRequest",
@@ -162,6 +165,7 @@ __all__ = (
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
     "CommitSchemaRequest",
+    "CompiledProtoSchema",
     "CreateSchemaRequest",
     "DeleteSchemaRequest",
     "DeleteSchemaRevisionRequest",

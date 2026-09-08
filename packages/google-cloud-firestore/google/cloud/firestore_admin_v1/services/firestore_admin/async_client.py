@@ -4218,7 +4218,7 @@ class FirestoreAdminAsyncClient:
             self._client._transport.clone_database
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^projects/(?P<project_id>[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.pitr_snapshot.database)
@@ -4506,9 +4506,7 @@ class FirestoreAdminAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("FirestoreAdminAsyncClient",)

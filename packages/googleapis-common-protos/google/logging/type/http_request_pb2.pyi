@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -82,10 +83,12 @@ class HttpRequest(_message.Message):
         remote_ip: _Optional[str] = ...,
         server_ip: _Optional[str] = ...,
         referer: _Optional[str] = ...,
-        latency: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
-        cache_lookup: bool = ...,
-        cache_hit: bool = ...,
-        cache_validated_with_origin_server: bool = ...,
+        latency: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
+        cache_lookup: _Optional[bool] = ...,
+        cache_hit: _Optional[bool] = ...,
+        cache_validated_with_origin_server: _Optional[bool] = ...,
         cache_fill_bytes: _Optional[int] = ...,
         protocol: _Optional[str] = ...,
     ) -> None: ...

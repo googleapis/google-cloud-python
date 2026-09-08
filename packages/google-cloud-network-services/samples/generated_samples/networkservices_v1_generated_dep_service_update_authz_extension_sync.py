@@ -41,8 +41,6 @@ def sample_update_authz_extension():
     # Initialize request argument(s)
     authz_extension = network_services_v1.AuthzExtension()
     authz_extension.name = "name_value"
-    authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
-    authz_extension.authority = "authority_value"
     authz_extension.service = "service_value"
 
     request = network_services_v1.UpdateAuthzExtensionRequest(

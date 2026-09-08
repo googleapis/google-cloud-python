@@ -542,20 +542,36 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             allowed_locations (MutableSequence[str]):
-                A list of allowed location names represented by internal
-                URLs.
+                A list of location names that are allowed for the job's VMs
+                formatted as URLs. Each location can be a region or a zone,
+                but you can only specify one region or multiple zones in one
+                region per job. For example, ``["regions/us-central1"]``
+                allow VMs in any zones in region ``us-central1``, and
+                ``["zones/us-central1-a", "zones/us-central1-c"]`` only
+                allow VMs in zones ``us-central1-a`` and ``us-central1-c``.
+                However,
+                ``["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b", "zones/us-west1-a"]``
+                causes an error because it contains multiple regions
+                (``us-central1`` and ``us-west1``).
 
-                Each location can be a region or a zone. Only one region or
-                multiple zones in one region is supported now. For example,
-                ["regions/us-central1"] allow VMs in any zones in region
-                us-central1. ["zones/us-central1-a", "zones/us-central1-c"]
-                only allow VMs in zones us-central1-a and us-central1-c.
+                The specified region or zones must be in the same region in
+                which the job is created starting on the following dates:
 
-                Mixing locations from different regions would cause errors.
-                For example, ["regions/us-central1", "zones/us-central1-a",
-                "zones/us-central1-b", "zones/us-west1-a"] contains
-                locations from two distinct regions: us-central1 and
-                us-west1. This combination will trigger an error.
+                - For projects that have successfully submitted before July
+                  31, 2026 at least one job that uses the
+                  ``allowedLocations[]`` field with any region or zones
+                  outside of the job's location, the changes are starting on
+                  *June 30, 2027*.
+
+                - For all other projects, the changes are starting on *July
+                  31, 2026*.
+
+                For example, for job
+                ``projects/123/locations/us-central1/jobs/jobid``, the
+                specified region or zones must be in ``us-central1``. Using
+                a different region (e.g. ``regions/us-west1``) or a zone not
+                in ``us-central1`` (e.g. ``zones/us-west1-a``) causes an
+                error.
         """
 
         allowed_locations: MutableSequence[str] = proto.RepeatedField(
@@ -905,6 +921,8 @@ class AllocationPolicy(proto.Message):
     class NetworkInterface(proto.Message):
         r"""A network interface.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             network (str):
                 The URL of an existing network resource. You can specify the
@@ -935,7 +953,31 @@ class AllocationPolicy(proto.Message):
                 and
                 https://cloud.google.com/nat/docs/gce-example#create-nat
                 for more information.
+            nic_type (google.cloud.batch_v1.types.AllocationPolicy.NetworkInterface.NicType):
+                Optional. The NIC type of the network
+                interface.
+
+                This field is a member of `oneof`_ ``_nic_type``.
         """
+
+        class NicType(proto.Enum):
+            r"""Compute Engine VM instance NIC type.
+
+            Values:
+                NIC_TYPE_UNSPECIFIED (0):
+                    No type specified.
+                GVNIC (1):
+                    GVNIC
+                IRDMA (2):
+                    IRDMA
+                MRDMA (3):
+                    MRDMA
+            """
+
+            NIC_TYPE_UNSPECIFIED = 0
+            GVNIC = 1
+            IRDMA = 2
+            MRDMA = 3
 
         network: str = proto.Field(
             proto.STRING,
@@ -948,6 +990,12 @@ class AllocationPolicy(proto.Message):
         no_external_ip_address: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        nic_type: "AllocationPolicy.NetworkInterface.NicType" = proto.Field(
+            proto.ENUM,
+            number=7,
+            optional=True,
+            enum="AllocationPolicy.NetworkInterface.NicType",
         )
 
     class NetworkPolicy(proto.Message):

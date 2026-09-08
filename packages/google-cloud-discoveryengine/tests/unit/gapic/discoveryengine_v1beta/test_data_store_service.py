@@ -69,6 +69,7 @@ from google.cloud.discoveryengine_v1beta.services.data_store_service import (
     transports,
 )
 from google.cloud.discoveryengine_v1beta.types import (
+    cmek_config_service,
     common,
     data_store,
     data_store_service,
@@ -83,6 +84,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -140,211 +153,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert DataStoreServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        DataStoreServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert DataStoreServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                DataStoreServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert DataStoreServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            DataStoreServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert DataStoreServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert DataStoreServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert DataStoreServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert DataStoreServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                DataStoreServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert DataStoreServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert DataStoreServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -376,97 +184,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    DataStoreServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataStoreServiceClient),
-)
-@mock.patch.object(
-    DataStoreServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataStoreServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = DataStoreServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = DataStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = DataStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        DataStoreServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == DataStoreServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == DataStoreServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == DataStoreServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        DataStoreServiceClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        DataStoreServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        DataStoreServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        DataStoreServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        DataStoreServiceClient._get_universe_domain(None, None)
-        == DataStoreServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        DataStoreServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -994,11 +711,19 @@ def test_data_store_service_client_get_mtls_endpoint_and_cert_source(client_clas
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1041,11 +766,19 @@ def test_data_store_service_client_get_mtls_endpoint_and_cert_source(client_clas
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1359,7 +1092,11 @@ def test_data_store_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1417,6 +1154,7 @@ def test_create_data_store_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = data_store_service.CreateDataStoreRequest(
+        cmek_config_name="cmek_config_name_value",
         parent="parent_value",
         data_store_id="data_store_id_value",
     )
@@ -1432,6 +1170,7 @@ def test_create_data_store_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = data_store_service.CreateDataStoreRequest(
+            cmek_config_name="cmek_config_name_value",
             parent="parent_value",
             data_store_id="data_store_id_value",
         )
@@ -1763,6 +1502,11 @@ def test_get_data_store(request_type, transport: str = "grpc"):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
         response = client.get_data_store(request)
 
@@ -1780,6 +1524,14 @@ def test_get_data_store(request_type, transport: str = "grpc"):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_get_data_store_non_empty_request_with_auto_populated_field():
@@ -1917,6 +1669,11 @@ async def test_get_data_store_async(request_type, transport: str = "grpc_asyncio
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         response = await client.get_data_store(request)
@@ -1935,6 +1692,14 @@ async def test_get_data_store_async(request_type, transport: str = "grpc_asyncio
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_get_data_store_field_headers():
@@ -2459,6 +2224,9 @@ def test_list_data_stores_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_store.DataStore) for i in results)
@@ -2547,6 +2315,8 @@ async def test_list_data_stores_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2973,6 +2743,11 @@ def test_update_data_store(request_type, transport: str = "grpc"):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
         response = client.update_data_store(request)
 
@@ -2990,6 +2765,14 @@ def test_update_data_store(request_type, transport: str = "grpc"):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_update_data_store_non_empty_request_with_auto_populated_field():
@@ -3129,6 +2912,11 @@ async def test_update_data_store_async(request_type, transport: str = "grpc_asyn
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         response = await client.update_data_store(request)
@@ -3147,6 +2935,14 @@ async def test_update_data_store_async(request_type, transport: str = "grpc_asyn
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 def test_update_data_store_field_headers():
@@ -3369,9 +3165,14 @@ def test_create_data_store_rest_required_fields(
     # verify fields with default values are dropped
     assert "dataStoreId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_data_store._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateDataStore,
+        "_BaseCreateDataStore__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3381,18 +3182,16 @@ def test_create_data_store_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["dataStoreId"] = "data_store_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_data_store._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "create_advanced_site_search",
-            "data_store_id",
-            "skip_default_schema_creation",
+            "cmekConfigName",
+            "createAdvancedSiteSearch",
+            "dataStoreId",
+            "disableCmek",
+            "skipDefaultSchemaCreation",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3444,30 +3243,6 @@ def test_create_data_store_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_data_store_rest_unset_required_fields():
-    transport = transports.DataStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_data_store._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "createAdvancedSiteSearch",
-                "dataStoreId",
-                "skipDefaultSchemaCreation",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "dataStore",
-                "dataStoreId",
-            )
-        )
-    )
 
 
 def test_create_data_store_rest_flattened():
@@ -3581,19 +3356,19 @@ def test_get_data_store_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_data_store._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetDataStore,
+        "_BaseGetDataStore__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_data_store._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -3639,15 +3414,6 @@ def test_get_data_store_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_data_store_rest_unset_required_fields():
-    transport = transports.DataStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_data_store._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_data_store_rest_flattened():
@@ -3763,27 +3529,28 @@ def test_list_data_stores_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_data_stores._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDataStores,
+        "_BaseListDataStores__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_data_stores._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -3829,24 +3596,6 @@ def test_list_data_stores_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_data_stores_rest_unset_required_fields():
-    transport = transports.DataStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_data_stores._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_data_stores_rest_flattened():
@@ -3961,6 +3710,9 @@ def test_list_data_stores_rest_pager(transport: str = "rest"):
 
         pager = client.list_data_stores(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, data_store.DataStore) for i in results)
@@ -4027,19 +3779,19 @@ def test_delete_data_store_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_data_store._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteDataStore,
+        "_BaseDeleteDataStore__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_data_store._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4082,15 +3834,6 @@ def test_delete_data_store_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_data_store_rest_unset_required_fields():
-    transport = transports.DataStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_data_store._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_data_store_rest_flattened():
@@ -4203,19 +3946,20 @@ def test_update_data_store_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_data_store._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateDataStore,
+        "_BaseUpdateDataStore__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_data_store._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -4260,15 +4004,6 @@ def test_update_data_store_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_data_store_rest_unset_required_fields():
-    transport = transports.DataStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_data_store._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("dataStore",)))
 
 
 def test_update_data_store_rest_flattened():
@@ -4607,6 +4342,11 @@ async def test_get_data_store_empty_call_grpc_asyncio():
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         await client.get_data_store(request=None)
@@ -4692,6 +4432,11 @@ async def test_update_data_store_empty_call_grpc_asyncio():
                 solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
                 default_schema_id="default_schema_id_value",
                 content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+                kms_key_name="kms_key_name_value",
+                acl_enabled=True,
+                identity_mapping_store="identity_mapping_store_value",
+                is_infobot_faq_data_store=True,
+                configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
             )
         )
         await client.update_data_store(request=None)
@@ -4758,6 +4503,10 @@ def test_create_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "language_info": {
             "language_code": "language_code_value",
             "normalized_language_code": "normalized_language_code_value",
@@ -4765,6 +4514,17 @@ def test_create_data_store_rest_call_success(request_type):
             "region": "region_value",
         },
         "natural_language_query_understanding_config": {"mode": 1},
+        "kms_key_name": "kms_key_name_value",
+        "cmek_config": {
+            "name": "name_value",
+            "kms_key": "kms_key_value",
+            "kms_key_version": "kms_key_version_value",
+            "state": 1,
+            "is_default": True,
+            "last_rotation_timestamp_micros": 3234,
+            "single_region_keys": [{"kms_key": "kms_key_value"}],
+            "notebooklm_state": 1,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,
@@ -4773,6 +4533,7 @@ def test_create_data_store_rest_call_success(request_type):
             "unstructured_data_update_time": {},
             "website_data_update_time": {},
         },
+        "acl_enabled": True,
         "workspace_config": {
             "type_": 1,
             "dasher_customer_id": "dasher_customer_id_value",
@@ -4796,7 +4557,28 @@ def test_create_data_store_rest_call_success(request_type):
                     ],
                     "use_native_text": True,
                 },
-                "layout_parsing_config": {},
+                "layout_parsing_config": {
+                    "enable_table_annotation": True,
+                    "enable_image_annotation": True,
+                    "enable_llm_layout_parsing": True,
+                    "structured_content_types": [
+                        "structured_content_types_value1",
+                        "structured_content_types_value2",
+                    ],
+                    "exclude_html_elements": [
+                        "exclude_html_elements_value1",
+                        "exclude_html_elements_value2",
+                    ],
+                    "exclude_html_classes": [
+                        "exclude_html_classes_value1",
+                        "exclude_html_classes_value2",
+                    ],
+                    "exclude_html_ids": [
+                        "exclude_html_ids_value1",
+                        "exclude_html_ids_value2",
+                    ],
+                    "enable_get_processed_document": True,
+                },
             },
             "parsing_config_overrides": {},
         },
@@ -4805,7 +4587,38 @@ def test_create_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "healthcare_fhir_config": {
+            "enable_configurable_schema": True,
+            "enable_static_indexing_for_batch_ingestion": True,
+            "initial_filter_groups": [
+                "initial_filter_groups_value1",
+                "initial_filter_groups_value2",
+            ],
+        },
         "serving_config_data_store": {"disabled_for_serving": True},
+        "identity_mapping_store": "identity_mapping_store_value",
+        "is_infobot_faq_data_store": True,
+        "federated_search_config": {
+            "alloy_db_config": {
+                "alloydb_connection_config": {
+                    "instance": "instance_value",
+                    "database": "database_value",
+                    "user": "user_value",
+                    "password": "password_value",
+                    "auth_mode": 1,
+                    "enable_psvs": True,
+                },
+                "alloydb_ai_nl_config": {"nl_config_id": "nl_config_id_value"},
+                "returned_fields": ["returned_fields_value1", "returned_fields_value2"],
+            },
+            "third_party_oauth_config": {
+                "app_name": "app_name_value",
+                "instance_name": "instance_name_value",
+            },
+            "notebooklm_config": {"search_config": "search_config_value"},
+        },
+        "configurable_billing_approach": 1,
+        "configurable_billing_approach_update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5012,6 +4825,11 @@ def test_get_data_store_rest_call_success(request_type):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
 
         # Wrap the value into a proper Response obj
@@ -5034,6 +4852,14 @@ def test_get_data_store_rest_call_success(request_type):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5415,6 +5241,10 @@ def test_update_data_store_rest_call_success(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "advanced_site_search_config": {
+            "disable_initial_index": True,
+            "disable_automatic_refresh": True,
+        },
         "language_info": {
             "language_code": "language_code_value",
             "normalized_language_code": "normalized_language_code_value",
@@ -5422,6 +5252,17 @@ def test_update_data_store_rest_call_success(request_type):
             "region": "region_value",
         },
         "natural_language_query_understanding_config": {"mode": 1},
+        "kms_key_name": "kms_key_name_value",
+        "cmek_config": {
+            "name": "name_value",
+            "kms_key": "kms_key_value",
+            "kms_key_version": "kms_key_version_value",
+            "state": 1,
+            "is_default": True,
+            "last_rotation_timestamp_micros": 3234,
+            "single_region_keys": [{"kms_key": "kms_key_value"}],
+            "notebooklm_state": 1,
+        },
         "billing_estimation": {
             "structured_data_size": 2152,
             "unstructured_data_size": 2379,
@@ -5430,6 +5271,7 @@ def test_update_data_store_rest_call_success(request_type):
             "unstructured_data_update_time": {},
             "website_data_update_time": {},
         },
+        "acl_enabled": True,
         "workspace_config": {
             "type_": 1,
             "dasher_customer_id": "dasher_customer_id_value",
@@ -5453,7 +5295,28 @@ def test_update_data_store_rest_call_success(request_type):
                     ],
                     "use_native_text": True,
                 },
-                "layout_parsing_config": {},
+                "layout_parsing_config": {
+                    "enable_table_annotation": True,
+                    "enable_image_annotation": True,
+                    "enable_llm_layout_parsing": True,
+                    "structured_content_types": [
+                        "structured_content_types_value1",
+                        "structured_content_types_value2",
+                    ],
+                    "exclude_html_elements": [
+                        "exclude_html_elements_value1",
+                        "exclude_html_elements_value2",
+                    ],
+                    "exclude_html_classes": [
+                        "exclude_html_classes_value1",
+                        "exclude_html_classes_value2",
+                    ],
+                    "exclude_html_ids": [
+                        "exclude_html_ids_value1",
+                        "exclude_html_ids_value2",
+                    ],
+                    "enable_get_processed_document": True,
+                },
             },
             "parsing_config_overrides": {},
         },
@@ -5462,7 +5325,38 @@ def test_update_data_store_rest_call_success(request_type):
             "json_schema": "json_schema_value",
             "name": "name_value",
         },
+        "healthcare_fhir_config": {
+            "enable_configurable_schema": True,
+            "enable_static_indexing_for_batch_ingestion": True,
+            "initial_filter_groups": [
+                "initial_filter_groups_value1",
+                "initial_filter_groups_value2",
+            ],
+        },
         "serving_config_data_store": {"disabled_for_serving": True},
+        "identity_mapping_store": "identity_mapping_store_value",
+        "is_infobot_faq_data_store": True,
+        "federated_search_config": {
+            "alloy_db_config": {
+                "alloydb_connection_config": {
+                    "instance": "instance_value",
+                    "database": "database_value",
+                    "user": "user_value",
+                    "password": "password_value",
+                    "auth_mode": 1,
+                    "enable_psvs": True,
+                },
+                "alloydb_ai_nl_config": {"nl_config_id": "nl_config_id_value"},
+                "returned_fields": ["returned_fields_value1", "returned_fields_value2"],
+            },
+            "third_party_oauth_config": {
+                "app_name": "app_name_value",
+                "instance_name": "instance_name_value",
+            },
+            "notebooklm_config": {"search_config": "search_config_value"},
+        },
+        "configurable_billing_approach": 1,
+        "configurable_billing_approach_update_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5543,6 +5437,11 @@ def test_update_data_store_rest_call_success(request_type):
             solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
             default_schema_id="default_schema_id_value",
             content_config=gcd_data_store.DataStore.ContentConfig.NO_CONTENT,
+            kms_key_name="kms_key_name_value",
+            acl_enabled=True,
+            identity_mapping_store="identity_mapping_store_value",
+            is_infobot_faq_data_store=True,
+            configurable_billing_approach=gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE,
         )
 
         # Wrap the value into a proper Response obj
@@ -5565,6 +5464,14 @@ def test_update_data_store_rest_call_success(request_type):
     assert response.solution_types == [common.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
     assert response.default_schema_id == "default_schema_id_value"
     assert response.content_config == gcd_data_store.DataStore.ContentConfig.NO_CONTENT
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.acl_enabled is True
+    assert response.identity_mapping_store == "identity_mapping_store_value"
+    assert response.is_infobot_faq_data_store is True
+    assert (
+        response.configurable_billing_approach
+        == gcd_data_store.DataStore.ConfigurableBillingApproach.CONFIGURABLE_SUBSCRIPTION_INDEXING_CORE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6043,7 +5950,11 @@ def test_data_store_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6069,7 +5980,11 @@ def test_data_store_service_auth_adc():
         DataStoreServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -6089,7 +6004,11 @@ def test_data_store_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -6142,7 +6061,11 @@ def test_data_store_service_transport_create_channel(transport_class, grpc_helpe
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -6450,10 +6373,33 @@ def test_data_store_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_collection_path():
+def test_cmek_config_path():
     project = "squid"
     location = "clam"
-    collection = "whelk"
+    expected = "projects/{project}/locations/{location}/cmekConfig".format(
+        project=project,
+        location=location,
+    )
+    actual = DataStoreServiceClient.cmek_config_path(project, location)
+    assert expected == actual
+
+
+def test_parse_cmek_config_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+    }
+    path = DataStoreServiceClient.cmek_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_cmek_config_path(path)
+    assert expected == actual
+
+
+def test_collection_path():
+    project = "oyster"
+    location = "nudibranch"
+    collection = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/collections/{collection}".format(
             project=project,
@@ -6467,9 +6413,9 @@ def test_collection_path():
 
 def test_parse_collection_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "collection": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "collection": "nautilus",
     }
     path = DataStoreServiceClient.collection_path(**expected)
 
@@ -6478,10 +6424,75 @@ def test_parse_collection_path():
     assert expected == actual
 
 
-def test_data_store_path():
+def test_crypto_keys_path():
+    project = "scallop"
+    location = "abalone"
+    key_ring = "squid"
+    crypto_key = "clam"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = DataStoreServiceClient.crypto_keys_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_keys_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "key_ring": "oyster",
+        "crypto_key": "nudibranch",
+    }
+    path = DataStoreServiceClient.crypto_keys_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_crypto_keys_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_versions_path():
     project = "cuttlefish"
     location = "mussel"
-    data_store = "winkle"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    crypto_key_version = "scallop"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = DataStoreServiceClient.crypto_key_versions_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_versions_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "key_ring": "clam",
+        "crypto_key": "whelk",
+        "crypto_key_version": "octopus",
+    }
+    path = DataStoreServiceClient.crypto_key_versions_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_crypto_key_versions_path(path)
+    assert expected == actual
+
+
+def test_data_store_path():
+    project = "oyster"
+    location = "nudibranch"
+    data_store = "cuttlefish"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
         project=project,
         location=location,
@@ -6493,9 +6504,9 @@ def test_data_store_path():
 
 def test_parse_data_store_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "data_store": "abalone",
+        "project": "mussel",
+        "location": "winkle",
+        "data_store": "nautilus",
     }
     path = DataStoreServiceClient.data_store_path(**expected)
 
@@ -6505,9 +6516,9 @@ def test_parse_data_store_path():
 
 
 def test_document_processing_config_path():
-    project = "squid"
-    location = "clam"
-    data_store = "whelk"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
         project=project,
         location=location,
@@ -6521,9 +6532,9 @@ def test_document_processing_config_path():
 
 def test_parse_document_processing_config_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "data_store": "nudibranch",
+        "project": "clam",
+        "location": "whelk",
+        "data_store": "octopus",
     }
     path = DataStoreServiceClient.document_processing_config_path(**expected)
 
@@ -6532,11 +6543,39 @@ def test_parse_document_processing_config_path():
     assert expected == actual
 
 
+def test_identity_mapping_store_path():
+    project = "oyster"
+    location = "nudibranch"
+    identity_mapping_store = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}".format(
+        project=project,
+        location=location,
+        identity_mapping_store=identity_mapping_store,
+    )
+    actual = DataStoreServiceClient.identity_mapping_store_path(
+        project, location, identity_mapping_store
+    )
+    assert expected == actual
+
+
+def test_parse_identity_mapping_store_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "identity_mapping_store": "nautilus",
+    }
+    path = DataStoreServiceClient.identity_mapping_store_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_identity_mapping_store_path(path)
+    assert expected == actual
+
+
 def test_schema_path():
-    project = "cuttlefish"
-    location = "mussel"
-    data_store = "winkle"
-    schema = "nautilus"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    schema = "clam"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
         project=project,
         location=location,
@@ -6549,10 +6588,10 @@ def test_schema_path():
 
 def test_parse_schema_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "data_store": "squid",
-        "schema": "clam",
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "schema": "nudibranch",
     }
     path = DataStoreServiceClient.schema_path(**expected)
 
@@ -6562,7 +6601,7 @@ def test_parse_schema_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6572,7 +6611,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = DataStoreServiceClient.common_billing_account_path(**expected)
 
@@ -6582,7 +6621,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6592,7 +6631,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = DataStoreServiceClient.common_folder_path(**expected)
 
@@ -6602,7 +6641,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6612,7 +6651,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = DataStoreServiceClient.common_organization_path(**expected)
 
@@ -6622,7 +6661,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6632,7 +6671,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = DataStoreServiceClient.common_project_path(**expected)
 
@@ -6642,8 +6681,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6654,8 +6693,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = DataStoreServiceClient.common_location_path(**expected)
 

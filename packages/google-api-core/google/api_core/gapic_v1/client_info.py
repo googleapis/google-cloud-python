@@ -20,7 +20,6 @@ such as the library and Python version, to API services.
 
 from google.api_core import client_info
 
-
 METRICS_METADATA_KEY = "x-goog-api-client"
 
 

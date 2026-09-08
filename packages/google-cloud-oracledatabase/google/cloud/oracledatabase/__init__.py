@@ -31,6 +31,7 @@ from google.cloud.oracledatabase_v1.types.autonomous_database import (
     AutonomousDatabaseConnectionStrings,
     AutonomousDatabaseConnectionUrls,
     AutonomousDatabaseProperties,
+    AutonomousDatabaseRefreshableClone,
     AutonomousDatabaseStandbySummary,
     DatabaseConnectionStringProfile,
     DBWorkload,
@@ -106,6 +107,8 @@ from google.cloud.oracledatabase_v1.types.entitlement import (
 from google.cloud.oracledatabase_v1.types.exadata_infra import (
     CloudExadataInfrastructure,
     CloudExadataInfrastructureProperties,
+    ConfigureExascaleCloudExadataInfrastructureRequest,
+    ExascaleConfig,
     MaintenanceWindow,
 )
 from google.cloud.oracledatabase_v1.types.exadb_vm_cluster import (
@@ -186,7 +189,6 @@ from google.cloud.oracledatabase_v1.types.goldengate_connection_assignment impor
     TestGoldengateConnectionAssignmentResponse,
 )
 from google.cloud.oracledatabase_v1.types.goldengate_connection_type import (
-    GetGoldengateConnectionTypeRequest,
     GoldengateConnectionType,
     ListGoldengateConnectionTypesRequest,
     ListGoldengateConnectionTypesResponse,
@@ -212,19 +214,16 @@ from google.cloud.oracledatabase_v1.types.goldengate_deployment import (
     StopGoldengateDeploymentRequest,
 )
 from google.cloud.oracledatabase_v1.types.goldengate_deployment_environment import (
-    GetGoldengateDeploymentEnvironmentRequest,
     GoldengateDeploymentEnvironment,
     ListGoldengateDeploymentEnvironmentsRequest,
     ListGoldengateDeploymentEnvironmentsResponse,
 )
 from google.cloud.oracledatabase_v1.types.goldengate_deployment_type import (
-    GetGoldengateDeploymentTypeRequest,
     GoldengateDeploymentType,
     ListGoldengateDeploymentTypesRequest,
     ListGoldengateDeploymentTypesResponse,
 )
 from google.cloud.oracledatabase_v1.types.goldengate_deployment_version import (
-    GetGoldengateDeploymentVersionRequest,
     GoldengateDeploymentVersion,
     GoldengateDeploymentVersionProperties,
     ListGoldengateDeploymentVersionsRequest,
@@ -253,6 +252,7 @@ from google.cloud.oracledatabase_v1.types.odb_subnet import (
     OdbSubnet,
 )
 from google.cloud.oracledatabase_v1.types.oracledatabase import (
+    AutonomousDatabaseRefreshableClones,
     CreateAutonomousDatabaseRequest,
     CreateCloudExadataInfrastructureRequest,
     CreateCloudVmClusterRequest,
@@ -264,6 +264,7 @@ from google.cloud.oracledatabase_v1.types.oracledatabase import (
     FailoverAutonomousDatabaseRequest,
     GenerateAutonomousDatabaseWalletRequest,
     GenerateAutonomousDatabaseWalletResponse,
+    GetAutonomousDatabaseRefreshableClonesRequest,
     GetAutonomousDatabaseRequest,
     GetCloudExadataInfrastructureRequest,
     GetCloudVmClusterRequest,
@@ -293,6 +294,7 @@ from google.cloud.oracledatabase_v1.types.oracledatabase import (
     ListGiVersionsRequest,
     ListGiVersionsResponse,
     OperationMetadata,
+    RefreshAutonomousDatabaseRequest,
     RemoveVirtualMachineExadbVmClusterRequest,
     RestartAutonomousDatabaseRequest,
     RestoreAutonomousDatabaseRequest,
@@ -327,6 +329,7 @@ __all__ = (
     "AutonomousDatabaseConnectionStrings",
     "AutonomousDatabaseConnectionUrls",
     "AutonomousDatabaseProperties",
+    "AutonomousDatabaseRefreshableClone",
     "AutonomousDatabaseStandbySummary",
     "DatabaseConnectionStringProfile",
     "EncryptionKey",
@@ -382,6 +385,8 @@ __all__ = (
     "Entitlement",
     "CloudExadataInfrastructure",
     "CloudExadataInfrastructureProperties",
+    "ConfigureExascaleCloudExadataInfrastructureRequest",
+    "ExascaleConfig",
     "MaintenanceWindow",
     "ExadbVmCluster",
     "ExadbVmClusterProperties",
@@ -452,7 +457,6 @@ __all__ = (
     "TestConnectionAssignmentError",
     "TestGoldengateConnectionAssignmentRequest",
     "TestGoldengateConnectionAssignmentResponse",
-    "GetGoldengateConnectionTypeRequest",
     "GoldengateConnectionType",
     "ListGoldengateConnectionTypesRequest",
     "ListGoldengateConnectionTypesResponse",
@@ -474,15 +478,12 @@ __all__ = (
     "ListGoldengateDeploymentsResponse",
     "StartGoldengateDeploymentRequest",
     "StopGoldengateDeploymentRequest",
-    "GetGoldengateDeploymentEnvironmentRequest",
     "GoldengateDeploymentEnvironment",
     "ListGoldengateDeploymentEnvironmentsRequest",
     "ListGoldengateDeploymentEnvironmentsResponse",
-    "GetGoldengateDeploymentTypeRequest",
     "GoldengateDeploymentType",
     "ListGoldengateDeploymentTypesRequest",
     "ListGoldengateDeploymentTypesResponse",
-    "GetGoldengateDeploymentVersionRequest",
     "GoldengateDeploymentVersion",
     "GoldengateDeploymentVersionProperties",
     "ListGoldengateDeploymentVersionsRequest",
@@ -503,6 +504,7 @@ __all__ = (
     "ListOdbSubnetsRequest",
     "ListOdbSubnetsResponse",
     "OdbSubnet",
+    "AutonomousDatabaseRefreshableClones",
     "CreateAutonomousDatabaseRequest",
     "CreateCloudExadataInfrastructureRequest",
     "CreateCloudVmClusterRequest",
@@ -514,6 +516,7 @@ __all__ = (
     "FailoverAutonomousDatabaseRequest",
     "GenerateAutonomousDatabaseWalletRequest",
     "GenerateAutonomousDatabaseWalletResponse",
+    "GetAutonomousDatabaseRefreshableClonesRequest",
     "GetAutonomousDatabaseRequest",
     "GetCloudExadataInfrastructureRequest",
     "GetCloudVmClusterRequest",
@@ -543,6 +546,7 @@ __all__ = (
     "ListGiVersionsRequest",
     "ListGiVersionsResponse",
     "OperationMetadata",
+    "RefreshAutonomousDatabaseRequest",
     "RemoveVirtualMachineExadbVmClusterRequest",
     "RestartAutonomousDatabaseRequest",
     "RestoreAutonomousDatabaseRequest",

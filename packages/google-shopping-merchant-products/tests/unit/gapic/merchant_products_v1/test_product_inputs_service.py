@@ -71,6 +71,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -126,215 +138,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert ProductInputsServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        ProductInputsServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert ProductInputsServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                ProductInputsServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert ProductInputsServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            ProductInputsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert ProductInputsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert ProductInputsServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert ProductInputsServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert ProductInputsServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                ProductInputsServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert ProductInputsServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -370,103 +173,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    ProductInputsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ProductInputsServiceClient),
-)
-@mock.patch.object(
-    ProductInputsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ProductInputsServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = ProductInputsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = ProductInputsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = ProductInputsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == ProductInputsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == ProductInputsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == ProductInputsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        ProductInputsServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        ProductInputsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        ProductInputsServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        ProductInputsServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        ProductInputsServiceClient._get_universe_domain(None, None)
-        == ProductInputsServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        ProductInputsServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1002,11 +708,19 @@ def test_product_inputs_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1049,11 +763,19 @@ def test_product_inputs_service_client_get_mtls_endpoint_and_cert_source(client_
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -2455,9 +2177,14 @@ def test_insert_product_input_rest_required_fields(
     # verify fields with default values are dropped
     assert "dataSource" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert_product_input._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseInsertProductInput,
+        "_BaseInsertProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2467,12 +2194,8 @@ def test_insert_product_input_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["dataSource"] = "data_source_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert_product_input._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("data_source",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("dataSource",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -2527,24 +2250,6 @@ def test_insert_product_input_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_insert_product_input_rest_unset_required_fields():
-    transport = transports.ProductInputsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.insert_product_input._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("dataSource",))
-        & set(
-            (
-                "parent",
-                "productInput",
-                "dataSource",
-            )
-        )
-    )
 
 
 def test_update_product_input_rest_use_cached_wrapped_rpc():
@@ -2603,9 +2308,14 @@ def test_update_product_input_rest_required_fields(
     # verify fields with default values are dropped
     assert "dataSource" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_product_input._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateProductInput,
+        "_BaseUpdateProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2614,17 +2324,13 @@ def test_update_product_input_rest_required_fields(
 
     jsonified_request["dataSource"] = "data_source_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_product_input._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "data_source",
-            "update_mask",
+            "dataSource",
+            "updateMask",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "dataSource" in jsonified_request
@@ -2677,28 +2383,6 @@ def test_update_product_input_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_product_input_rest_unset_required_fields():
-    transport = transports.ProductInputsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_product_input._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "dataSource",
-                "updateMask",
-            )
-        )
-        & set(
-            (
-                "productInput",
-                "dataSource",
-            )
-        )
-    )
 
 
 def test_update_product_input_rest_flattened():
@@ -2820,9 +2504,14 @@ def test_delete_product_input_rest_required_fields(
     # verify fields with default values are dropped
     assert "dataSource" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_product_input._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteProductInput,
+        "_BaseDeleteProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2832,12 +2521,8 @@ def test_delete_product_input_rest_required_fields(
     jsonified_request["name"] = "name_value"
     jsonified_request["dataSource"] = "data_source_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_product_input._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("data_source",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("dataSource",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -2888,23 +2573,6 @@ def test_delete_product_input_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_product_input_rest_unset_required_fields():
-    transport = transports.ProductInputsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_product_input._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("dataSource",))
-        & set(
-            (
-                "name",
-                "dataSource",
-            )
-        )
-    )
 
 
 def test_delete_product_input_rest_flattened():
@@ -3338,6 +3006,7 @@ def test_insert_product_input_rest_call_success(request_type):
                 "downpayment": {},
                 "credit_type": 1,
                 "annual_percentage_rate": 0.2311,
+                "total_amount": {},
             },
             "subscription_cost": {"period": 1, "period_length": 1380, "amount": {}},
             "loyalty_points": {
@@ -3379,6 +3048,8 @@ def test_insert_product_input_rest_call_success(request_type):
                     "max_transit_time": 1720,
                     "handling_cutoff_time": "handling_cutoff_time_value",
                     "handling_cutoff_timezone": "handling_cutoff_timezone_value",
+                    "loyalty_program_label": "loyalty_program_label_value",
+                    "loyalty_tier_label": "loyalty_tier_label_value",
                 }
             ],
             "carrier_shipping": [
@@ -3457,6 +3128,7 @@ def test_insert_product_input_rest_call_success(request_type):
             "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
             "pickup_method": 1,
             "pickup_sla": 1,
+            "pickup_cost": {"flat_rate": {}, "free_threshold": {}},
             "link_template": "link_template_value",
             "mobile_link_template": "mobile_link_template_value",
             "custom_label_0": "custom_label_0_value",
@@ -3507,6 +3179,67 @@ def test_insert_product_input_rest_call_success(request_type):
                 {"amount": {}, "percentage": 0.10540000000000001, "type_": 1}
             ],
             "video_links": ["video_links_value1", "video_links_value2"],
+            "minimum_order_values": [
+                {
+                    "country": "country_value",
+                    "service": "service_value",
+                    "surface": 1,
+                    "price": {},
+                }
+            ],
+            "vin": "vin_value",
+            "model": "model_value",
+            "trim": "trim_value",
+            "body_style": 1,
+            "year": 433,
+            "mileage": {"value": 541, "unit": 1},
+            "electric_range": {},
+            "fuel_consumption": {"value": 0.541, "unit": 1},
+            "fuel_consumption_discharged_battery": {},
+            "energy_consumption": {"value": 0.541, "unit": 1},
+            "co2_emissions": {"value": 541, "unit": 1},
+            "date_first_registered": "date_first_registered_value",
+            "engine": 1,
+            "emissions_standard": 1,
+            "certified_pre_owned": True,
+            "vehicle_msrp": {},
+            "vehicle_all_in_price": {},
+            "vehicle_price_type": 1,
+            "vehicle_mandatory_inspection_included": True,
+            "vehicle_expenses": {},
+            "warranty": {"duration": 870, "mileage": {}},
+            "display_address": {
+                "street_number": "street_number_value",
+                "street_name": "street_name_value",
+                "city": "city_value",
+                "region": "region_value",
+                "postal_code": "postal_code_value",
+            },
+            "latitude": 0.86,
+            "longitude": 0.971,
+            "neighborhood": "neighborhood_value",
+            "unit_area": {"value": 0.541, "unit": 1},
+            "number_of_units": 1615,
+            "property_name": "property_name_value",
+            "number_of_bedrooms": 0.19110000000000002,
+            "number_of_bathrooms": 0.20270000000000002,
+            "property_type": 1,
+            "amenity_feature": [1],
+            "utilities_included": [1],
+            "pet_policy": {"pets_allowed": True, "pet_types": [1]},
+            "specialty_housing_type": 1,
+            "product_fee": [{"type_": 1, "amount": {}}],
+            "short_title": "short_title_value",
+            "questions_and_answers": [
+                {"question": "question_value", "answer": "answer_value"}
+            ],
+            "popularity_rank": 0.1636,
+            "item_group_title": "item_group_title_value",
+            "document_links": ["document_links_value1", "document_links_value2"],
+            "variant_options": [{"name": "name_value", "value": "value_value"}],
+            "related_products": [
+                {"relationship_type": 1, "id_type": 1, "id": "id_value"}
+            ],
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}
@@ -3773,6 +3506,7 @@ def test_update_product_input_rest_call_success(request_type):
                 "downpayment": {},
                 "credit_type": 1,
                 "annual_percentage_rate": 0.2311,
+                "total_amount": {},
             },
             "subscription_cost": {"period": 1, "period_length": 1380, "amount": {}},
             "loyalty_points": {
@@ -3814,6 +3548,8 @@ def test_update_product_input_rest_call_success(request_type):
                     "max_transit_time": 1720,
                     "handling_cutoff_time": "handling_cutoff_time_value",
                     "handling_cutoff_timezone": "handling_cutoff_timezone_value",
+                    "loyalty_program_label": "loyalty_program_label_value",
+                    "loyalty_tier_label": "loyalty_tier_label_value",
                 }
             ],
             "carrier_shipping": [
@@ -3892,6 +3628,7 @@ def test_update_product_input_rest_call_success(request_type):
             "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
             "pickup_method": 1,
             "pickup_sla": 1,
+            "pickup_cost": {"flat_rate": {}, "free_threshold": {}},
             "link_template": "link_template_value",
             "mobile_link_template": "mobile_link_template_value",
             "custom_label_0": "custom_label_0_value",
@@ -3942,6 +3679,67 @@ def test_update_product_input_rest_call_success(request_type):
                 {"amount": {}, "percentage": 0.10540000000000001, "type_": 1}
             ],
             "video_links": ["video_links_value1", "video_links_value2"],
+            "minimum_order_values": [
+                {
+                    "country": "country_value",
+                    "service": "service_value",
+                    "surface": 1,
+                    "price": {},
+                }
+            ],
+            "vin": "vin_value",
+            "model": "model_value",
+            "trim": "trim_value",
+            "body_style": 1,
+            "year": 433,
+            "mileage": {"value": 541, "unit": 1},
+            "electric_range": {},
+            "fuel_consumption": {"value": 0.541, "unit": 1},
+            "fuel_consumption_discharged_battery": {},
+            "energy_consumption": {"value": 0.541, "unit": 1},
+            "co2_emissions": {"value": 541, "unit": 1},
+            "date_first_registered": "date_first_registered_value",
+            "engine": 1,
+            "emissions_standard": 1,
+            "certified_pre_owned": True,
+            "vehicle_msrp": {},
+            "vehicle_all_in_price": {},
+            "vehicle_price_type": 1,
+            "vehicle_mandatory_inspection_included": True,
+            "vehicle_expenses": {},
+            "warranty": {"duration": 870, "mileage": {}},
+            "display_address": {
+                "street_number": "street_number_value",
+                "street_name": "street_name_value",
+                "city": "city_value",
+                "region": "region_value",
+                "postal_code": "postal_code_value",
+            },
+            "latitude": 0.86,
+            "longitude": 0.971,
+            "neighborhood": "neighborhood_value",
+            "unit_area": {"value": 0.541, "unit": 1},
+            "number_of_units": 1615,
+            "property_name": "property_name_value",
+            "number_of_bedrooms": 0.19110000000000002,
+            "number_of_bathrooms": 0.20270000000000002,
+            "property_type": 1,
+            "amenity_feature": [1],
+            "utilities_included": [1],
+            "pet_policy": {"pets_allowed": True, "pet_types": [1]},
+            "specialty_housing_type": 1,
+            "product_fee": [{"type_": 1, "amount": {}}],
+            "short_title": "short_title_value",
+            "questions_and_answers": [
+                {"question": "question_value", "answer": "answer_value"}
+            ],
+            "popularity_rank": 0.1636,
+            "item_group_title": "item_group_title_value",
+            "document_links": ["document_links_value1", "document_links_value2"],
+            "variant_options": [{"name": "name_value", "value": "value_value"}],
+            "related_products": [
+                {"relationship_type": 1, "id_type": 1, "id": "id_value"}
+            ],
         },
         "custom_attributes": [
             {"name": "name_value", "value": "value_value", "group_values": {}}

@@ -14,7 +14,6 @@
 
 import collections
 import queue
-import sys
 import threading
 from unittest import mock
 
@@ -403,10 +402,6 @@ def test_opentelemetry_modify_ack_deadline(span_exporter):
     assert subscribe_span.events[1].name == "modack end"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_ack(span_exporter):
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -602,10 +597,6 @@ def test_retry_acks_in_new_thread():
             assert ctor_call.kwargs["daemon"]
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_retry_acks(span_exporter):
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -789,10 +780,6 @@ def test_opentelemetry_retry_modacks(span_exporter):
     assert subscribe_span.events[0].name == "modack end"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_retry_nacks(span_exporter):
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
@@ -959,10 +946,6 @@ def test_drop_ordered_messages():
     manager.maybe_resume_consumer.assert_called_once()
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 8),
-    reason="Open Telemetry not supported below Python version 3.8",
-)
 def test_opentelemetry_nack(span_exporter):
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True

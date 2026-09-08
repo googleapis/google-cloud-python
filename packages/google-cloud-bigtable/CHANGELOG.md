@@ -4,6 +4,81 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.43.0...google-cloud-bigtable-v2.44.0) (2026-09-03)
+
+
+### Features
+
+* **bigtable:** Rerouted CheckAndMutateRows and ReadModifyWriteRows to data client ([#18190](https://github.com/googleapis/google-cloud-python/issues/18190)) ([990f86e](https://github.com/googleapis/google-cloud-python/commit/990f86e45df15c594e82d19d6fe482f12d128430))
+* **bigtable:** Rerouted DirectRow.commit to use mutate_row ([#18191](https://github.com/googleapis/google-cloud-python/issues/18191)) ([7126a54](https://github.com/googleapis/google-cloud-python/commit/7126a548e4231ae5f5e49599d53d84a94b9302ca))
+* update API sources and regenerate ([#18267](https://github.com/googleapis/google-cloud-python/issues/18267)) ([813a5c1](https://github.com/googleapis/google-cloud-python/commit/813a5c17cbe42b3a8386e7ad7475a3d7ada33842))
+
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.42.0...google-cloud-bigtable-v2.43.0) (2026-08-21)
+
+
+### Features
+
+* update sources and regenerate ([#18164](https://github.com/googleapis/google-cloud-python/issues/18164)) ([5ff8274](https://github.com/googleapis/google-cloud-python/commit/5ff8274ac2eb9375e918dff68303d3abdc3e6d6f))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.41.0...google-cloud-bigtable-v2.42.0) (2026-08-19)
+
+
+### Features
+
+* **bigtable:** client side metrics handlers ([#16760](https://github.com/googleapis/google-cloud-python/issues/16760)) ([43b786c](https://github.com/googleapis/google-cloud-python/commit/43b786c2c5f5f42d5caa3fa596a7368be09fd3a3))
+* **bigtable:** initialize internal data client in classic client ([#18080](https://github.com/googleapis/google-cloud-python/issues/18080)) ([92008e2](https://github.com/googleapis/google-cloud-python/commit/92008e2788f086790f1976198fa43a1f902eef25))
+
+
+### Bug Fixes
+
+* **bigtable:** data client should acknowledge all mutations in batch ([#18124](https://github.com/googleapis/google-cloud-python/issues/18124)) ([e7f6a34](https://github.com/googleapis/google-cloud-python/commit/e7f6a34309fac7640b8f74c56108bec48b7bf711))
+* **bigtable:** report swallowed batch flush errors and unacknowledged entries ([#18122](https://github.com/googleapis/google-cloud-python/issues/18122)) ([2fe5bdc](https://github.com/googleapis/google-cloud-python/commit/2fe5bdccd0fc964edc3427e25f86a4eab3c8267b))
+* **bigtable:** standardize client side metrics ([#17899](https://github.com/googleapis/google-cloud-python/issues/17899)) ([a69e2cb](https://github.com/googleapis/google-cloud-python/commit/a69e2cbc939320fef18eb61daa8c248edf325c5b))
+* **bigtable:** surface batcher flush errors and disable timer ([#18145](https://github.com/googleapis/google-cloud-python/issues/18145)) ([fac536e](https://github.com/googleapis/google-cloud-python/commit/fac536ea024f8f7a52e00fcc003d0fce1945b1f9))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.40.0...google-cloud-bigtable-v2.41.0) (2026-07-16)
+
+
+### Features
+
+* **bigtable:** support materialized views in the data client ([#17676](https://github.com/googleapis/google-cloud-python/issues/17676)) ([2c3c213](https://github.com/googleapis/google-cloud-python/commit/2c3c213998b3f3aa1cf490dfbf824d160544b732))
+
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.39.0...google-cloud-bigtable-v2.40.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-bigtable ([#17575](https://github.com/googleapis/google-cloud-python/issues/17575)) ([bd782cf](https://github.com/googleapis/google-cloud-python/commit/bd782cf279ae700f56d40702d4ef25ef89e2ff9b))
+
+
+### Bug Fixes
+
+* **bigtable:** populate Value type in _format_execute_query_view_params ([#17547](https://github.com/googleapis/google-cloud-python/issues/17547)) ([8cb77d9](https://github.com/googleapis/google-cloud-python/commit/8cb77d99103ba94d6e4ff488ddcdbccd37b2770c))
+
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.38.0...google-cloud-bigtable-v2.39.0) (2026-06-22)
+
+
+### Features
+
+* added client side metric instrumentation to read_rows and mutate_rows ([#16758](https://github.com/googleapis/google-cloud-python/issues/16758)) ([4005e66](https://github.com/googleapis/google-cloud-python/commit/4005e660a38fd770f8754af1cd07d6d8aa9ed60e))
+* **bigtable:** add client side metric instrumentation to basic rpcs ([#16712](https://github.com/googleapis/google-cloud-python/issues/16712)) ([636af26](https://github.com/googleapis/google-cloud-python/commit/636af26677af5be906220ad39d670e74daca58e0))
+* **bigtable:** add view_parameters support to execute_query ([#17382](https://github.com/googleapis/google-cloud-python/issues/17382)) ([2695aad](https://github.com/googleapis/google-cloud-python/commit/2695aad5c2949e20e77ae9dd432c6fc8ef787952))
+* support row_range in sample_row_keys method ([#17330](https://github.com/googleapis/google-cloud-python/issues/17330)) ([384724c](https://github.com/googleapis/google-cloud-python/commit/384724c2d4c955e15274e9824bcdb93c685b79f6)), closes [#17329](https://github.com/googleapis/google-cloud-python/issues/17329)
+* update API sources and regenerate ([#17431](https://github.com/googleapis/google-cloud-python/issues/17431)) ([2e75c78](https://github.com/googleapis/google-cloud-python/commit/2e75c78cdd09d4472ed412a2e925196effaea9fd))
+* update googleapis and regenerate ([33ba3af](https://github.com/googleapis/google-cloud-python/commit/33ba3afe520e2f64ac7464f1b4ee31c0624a65ac))
+
+
+### Bug Fixes
+
+* **bigtable:** ensure deadline is respected for read_rows_sharded ([#17352](https://github.com/googleapis/google-cloud-python/issues/17352)) ([6cc890b](https://github.com/googleapis/google-cloud-python/commit/6cc890b5b9088e19afc7dd3dfbb64c72309feb80))
+* require Python 3.10+ ([#17245](https://github.com/googleapis/google-cloud-python/issues/17245)) ([200b0d3](https://github.com/googleapis/google-cloud-python/commit/200b0d324df924c69c358203350fb01a08e41ad9))
+
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.37.0...google-cloud-bigtable-v2.38.0) (2026-05-07)
 
 

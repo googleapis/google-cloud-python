@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# BigLake API
+# Lakehouse API
 
-Overview of the APIs available for BigLake API.
+Overview of the APIs available for Lakehouse API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-BigLake API.
+Lakehouse API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-biglake-hive/latest/summary_class.html)
 

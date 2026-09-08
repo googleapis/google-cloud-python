@@ -210,10 +210,10 @@ class UnitCondition(proto.Message):
                 Condition type is operationError.
                 True when the last unit operation fails with a
                 non-ignorable error.
-            TYPE_APP_CREATED_OR_ALREADY_EXISTS (5):
+            TYPE_APP_CREATED_OR_ALREADY_EXISTS (6):
                 Indicates if AppHub app has been created or
                 if Apphub app has already existed.
-            TYPE_APP_COMPONENTS_REGISTERED (6):
+            TYPE_APP_COMPONENTS_REGISTERED (7):
                 Indicates if services and workloads have been
                 registered with AppHub.
         """
@@ -223,8 +223,8 @@ class UnitCondition(proto.Message):
         TYPE_UPDATING = 2
         TYPE_PROVISIONED = 3
         TYPE_OPERATION_ERROR = 4
-        TYPE_APP_CREATED_OR_ALREADY_EXISTS = 5
-        TYPE_APP_COMPONENTS_REGISTERED = 6
+        TYPE_APP_CREATED_OR_ALREADY_EXISTS = 6
+        TYPE_APP_COMPONENTS_REGISTERED = 7
 
     status: Status = proto.Field(
         proto.ENUM,

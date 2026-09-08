@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "IngestionServiceClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"
@@ -18,6 +23,11 @@
             "IngestEvents": {
               "methods": [
                 "ingest_events"
+              ]
+            },
+            "RemoveAllAudienceMembers": {
+              "methods": [
+                "remove_all_audience_members"
               ]
             },
             "RemoveAudienceMembers": {
@@ -35,6 +45,11 @@
         "grpc-async": {
           "libraryClient": "IngestionServiceAsyncClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"
@@ -43,6 +58,11 @@
             "IngestEvents": {
               "methods": [
                 "ingest_events"
+              ]
+            },
+            "RemoveAllAudienceMembers": {
+              "methods": [
+                "remove_all_audience_members"
               ]
             },
             "RemoveAudienceMembers": {
@@ -60,6 +80,11 @@
         "rest": {
           "libraryClient": "IngestionServiceClient",
           "rpcs": {
+            "IngestAdEvents": {
+              "methods": [
+                "ingest_ad_events"
+              ]
+            },
             "IngestAudienceMembers": {
               "methods": [
                 "ingest_audience_members"
@@ -68,6 +93,11 @@
             "IngestEvents": {
               "methods": [
                 "ingest_events"
+              ]
+            },
+            "RemoveAllAudienceMembers": {
+              "methods": [
+                "remove_all_audience_members"
               ]
             },
             "RemoveAudienceMembers": {

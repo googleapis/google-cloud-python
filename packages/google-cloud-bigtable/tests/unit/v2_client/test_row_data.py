@@ -937,7 +937,7 @@ def test_RRRM_build_updated_request(rrrm_data):
     row_filter = RowSampleFilter(0.33)
     last_scanned_key = b"row_key25"
     request = _ReadRowsRequestPB(
-        filter=row_filter.to_pb(),
+        filter=row_filter._to_pb(),
         rows_limit=8,
         table_name=TABLE_NAME,
         app_profile_id="app-profile-id-1",
@@ -950,7 +950,7 @@ def test_RRRM_build_updated_request(rrrm_data):
 
     expected_result = _ReadRowsRequestPB(
         table_name=TABLE_NAME,
-        filter=row_filter.to_pb(),
+        filter=row_filter._to_pb(),
         rows_limit=6,
         app_profile_id="app-profile-id-1",
     )
@@ -985,7 +985,7 @@ def test_RRRM_build_updated_request_no_start_key():
     row_filter = RowSampleFilter(0.33)
     last_scanned_key = b"row_key25"
     request = _ReadRowsRequestPB(
-        filter=row_filter.to_pb(), rows_limit=8, table_name=TABLE_NAME
+        filter=row_filter._to_pb(), rows_limit=8, table_name=TABLE_NAME
     )
     row_range1 = types.RowRange(end_key_open=b"row_key29")
     request.rows.row_ranges.append(row_range1)
@@ -995,7 +995,7 @@ def test_RRRM_build_updated_request_no_start_key():
     result = request_manager.build_updated_request()
 
     expected_result = _ReadRowsRequestPB(
-        table_name=TABLE_NAME, filter=row_filter.to_pb(), rows_limit=6
+        table_name=TABLE_NAME, filter=row_filter._to_pb(), rows_limit=6
     )
 
     row_range2 = types.RowRange(
@@ -1013,7 +1013,7 @@ def test_RRRM_build_updated_request_no_end_key():
     row_filter = RowSampleFilter(0.33)
     last_scanned_key = b"row_key25"
     request = _ReadRowsRequestPB(
-        filter=row_filter.to_pb(), rows_limit=8, table_name=TABLE_NAME
+        filter=row_filter._to_pb(), rows_limit=8, table_name=TABLE_NAME
     )
 
     row_range1 = types.RowRange(start_key_closed=b"row_key20")
@@ -1024,7 +1024,7 @@ def test_RRRM_build_updated_request_no_end_key():
     result = request_manager.build_updated_request()
 
     expected_result = _ReadRowsRequestPB(
-        table_name=TABLE_NAME, filter=row_filter.to_pb(), rows_limit=6
+        table_name=TABLE_NAME, filter=row_filter._to_pb(), rows_limit=6
     )
     row_range2 = types.RowRange(start_key_open=last_scanned_key)
     expected_result.rows.row_ranges.append(row_range2)
@@ -1038,7 +1038,7 @@ def test_RRRM_build_updated_request_rows():
     row_filter = RowSampleFilter(0.33)
     last_scanned_key = b"row_key4"
     request = _ReadRowsRequestPB(
-        filter=row_filter.to_pb(), rows_limit=5, table_name=TABLE_NAME
+        filter=row_filter._to_pb(), rows_limit=5, table_name=TABLE_NAME
     )
     request.rows.row_keys.extend(
         [b"row_key1", b"row_key2", b"row_key4", b"row_key5", b"row_key7", b"row_key9"]
@@ -1049,7 +1049,7 @@ def test_RRRM_build_updated_request_rows():
     result = request_manager.build_updated_request()
 
     expected_result = _ReadRowsRequestPB(
-        table_name=TABLE_NAME, filter=row_filter.to_pb(), rows_limit=2
+        table_name=TABLE_NAME, filter=row_filter._to_pb(), rows_limit=2
     )
     expected_result.rows.row_keys.extend([b"row_key5", b"row_key7", b"row_key9"])
 

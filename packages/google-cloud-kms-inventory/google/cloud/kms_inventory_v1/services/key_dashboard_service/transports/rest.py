@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.kms_inventory_v1._compat import transcode_request
 from google.cloud.kms_inventory_v1.types import key_dashboard_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class KeyDashboardServiceRestInterceptor:
@@ -292,17 +292,18 @@ class KeyDashboardServiceRestTransport(_BaseKeyDashboardServiceRestTransport):
             """
 
             http_options = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_http_options()
-
             request, metadata = self._interceptor.pre_list_crypto_keys(
                 request, metadata
             )
-            transcoded_request = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyDashboardServiceRestTransport._BaseListCryptoKeys,
+                    "_BaseListCryptoKeys__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

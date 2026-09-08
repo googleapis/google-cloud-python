@@ -14,8 +14,9 @@
 
 import datetime
 import itertools
-import pytest
 from unittest import mock
+
+import pytest
 
 from google.api_core import timeout as timeouts
 

@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_reviews_v1beta._compat import transcode_request
 from google.shopping.merchant_reviews_v1beta.types import merchantreviews
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MerchantReviewsServiceRestInterceptor:
@@ -418,17 +418,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             """
 
             http_options = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_merchant_review(
                 request, metadata
             )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMerchantReviewsServiceRestTransport._BaseDeleteMerchantReview,
+                    "_BaseDeleteMerchantReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -534,17 +535,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             """
 
             http_options = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_http_options()
-
             request, metadata = self._interceptor.pre_get_merchant_review(
                 request, metadata
             )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMerchantReviewsServiceRestTransport._BaseGetMerchantReview,
+                    "_BaseGetMerchantReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -685,21 +687,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             """
 
             http_options = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_http_options()
-
             request, metadata = self._interceptor.pre_insert_merchant_review(
                 request, metadata
             )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMerchantReviewsServiceRestTransport._BaseInsertMerchantReview,
+                    "_BaseInsertMerchantReview__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -837,17 +836,18 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
             """
 
             http_options = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_http_options()
-
             request, metadata = self._interceptor.pre_list_merchant_reviews(
                 request, metadata
             )
-            transcoded_request = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseMerchantReviewsServiceRestTransport._BaseListMerchantReviews,
+                    "_BaseListMerchantReviews__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.45.0...google-cloud-securitycenter-v1.46.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
 ## [1.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.44.0...google-cloud-securitycenter-v1.45.0) (2026-06-02)
 
 

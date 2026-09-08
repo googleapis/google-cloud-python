@@ -10,6 +10,16 @@
         "grpc": {
           "libraryClient": "MemorystoreClient",
           "rpcs": {
+            "AddAuthToken": {
+              "methods": [
+                "add_auth_token"
+              ]
+            },
+            "AddTokenAuthUser": {
+              "methods": [
+                "add_token_auth_user"
+              ]
+            },
             "BackupInstance": {
               "methods": [
                 "backup_instance"
@@ -18,6 +28,11 @@
             "CreateInstance": {
               "methods": [
                 "create_instance"
+              ]
+            },
+            "DeleteAuthToken": {
+              "methods": [
+                "delete_auth_token"
               ]
             },
             "DeleteBackup": {
@@ -30,9 +45,24 @@
                 "delete_instance"
               ]
             },
+            "DeleteTokenAuthUser": {
+              "methods": [
+                "delete_token_auth_user"
+              ]
+            },
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
+            "GetAuthToken": {
+              "methods": [
+                "get_auth_token"
               ]
             },
             "GetBackup": {
@@ -60,6 +90,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "GetTokenAuthUser": {
+              "methods": [
+                "get_token_auth_user"
+              ]
+            },
+            "ListAuthTokens": {
+              "methods": [
+                "list_auth_tokens"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -75,9 +115,19 @@
                 "list_instances"
               ]
             },
+            "ListTokenAuthUsers": {
+              "methods": [
+                "list_token_auth_users"
+              ]
+            },
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {
@@ -90,6 +140,16 @@
         "grpc-async": {
           "libraryClient": "MemorystoreAsyncClient",
           "rpcs": {
+            "AddAuthToken": {
+              "methods": [
+                "add_auth_token"
+              ]
+            },
+            "AddTokenAuthUser": {
+              "methods": [
+                "add_token_auth_user"
+              ]
+            },
             "BackupInstance": {
               "methods": [
                 "backup_instance"
@@ -98,6 +158,11 @@
             "CreateInstance": {
               "methods": [
                 "create_instance"
+              ]
+            },
+            "DeleteAuthToken": {
+              "methods": [
+                "delete_auth_token"
               ]
             },
             "DeleteBackup": {
@@ -110,9 +175,24 @@
                 "delete_instance"
               ]
             },
+            "DeleteTokenAuthUser": {
+              "methods": [
+                "delete_token_auth_user"
+              ]
+            },
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
+            "GetAuthToken": {
+              "methods": [
+                "get_auth_token"
               ]
             },
             "GetBackup": {
@@ -140,6 +220,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "GetTokenAuthUser": {
+              "methods": [
+                "get_token_auth_user"
+              ]
+            },
+            "ListAuthTokens": {
+              "methods": [
+                "list_auth_tokens"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -155,9 +245,19 @@
                 "list_instances"
               ]
             },
+            "ListTokenAuthUsers": {
+              "methods": [
+                "list_token_auth_users"
+              ]
+            },
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {
@@ -170,6 +270,16 @@
         "rest": {
           "libraryClient": "MemorystoreClient",
           "rpcs": {
+            "AddAuthToken": {
+              "methods": [
+                "add_auth_token"
+              ]
+            },
+            "AddTokenAuthUser": {
+              "methods": [
+                "add_token_auth_user"
+              ]
+            },
             "BackupInstance": {
               "methods": [
                 "backup_instance"
@@ -178,6 +288,11 @@
             "CreateInstance": {
               "methods": [
                 "create_instance"
+              ]
+            },
+            "DeleteAuthToken": {
+              "methods": [
+                "delete_auth_token"
               ]
             },
             "DeleteBackup": {
@@ -190,9 +305,24 @@
                 "delete_instance"
               ]
             },
+            "DeleteTokenAuthUser": {
+              "methods": [
+                "delete_token_auth_user"
+              ]
+            },
             "ExportBackup": {
               "methods": [
                 "export_backup"
+              ]
+            },
+            "FinishMigration": {
+              "methods": [
+                "finish_migration"
+              ]
+            },
+            "GetAuthToken": {
+              "methods": [
+                "get_auth_token"
               ]
             },
             "GetBackup": {
@@ -220,6 +350,16 @@
                 "get_shared_regional_certificate_authority"
               ]
             },
+            "GetTokenAuthUser": {
+              "methods": [
+                "get_token_auth_user"
+              ]
+            },
+            "ListAuthTokens": {
+              "methods": [
+                "list_auth_tokens"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -235,9 +375,19 @@
                 "list_instances"
               ]
             },
+            "ListTokenAuthUsers": {
+              "methods": [
+                "list_token_auth_users"
+              ]
+            },
             "RescheduleMaintenance": {
               "methods": [
                 "reschedule_maintenance"
+              ]
+            },
+            "StartMigration": {
+              "methods": [
+                "start_migration"
               ]
             },
             "UpdateInstance": {

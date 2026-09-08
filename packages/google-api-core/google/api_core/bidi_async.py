@@ -18,13 +18,11 @@ import asyncio
 import logging
 from typing import Callable, Optional, Union
 
+from google.protobuf.message import Message as ProtobufMessage
 from grpc import aio
 
 from google.api_core import exceptions
 from google.api_core.bidi_base import BidiRpcBase
-
-from google.protobuf.message import Message as ProtobufMessage
-
 
 _LOGGER = logging.getLogger(__name__)
 

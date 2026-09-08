@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -50,6 +50,6 @@ class UsageRule(_message.Message):
     def __init__(
         self,
         selector: _Optional[str] = ...,
-        allow_unregistered_calls: bool = ...,
-        skip_service_control: bool = ...,
+        allow_unregistered_calls: _Optional[bool] = ...,
+        skip_service_control: _Optional[bool] = ...,
     ) -> None: ...

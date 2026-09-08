@@ -124,14 +124,10 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
             "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% elif req_field.field_pb.type in [11, 14] %}{}{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
         }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
         {% endif %}{# required fields #}
-        
+
         {% set method_http_options = method.http_options %}
-        
+
         {{ shared_macros.http_options_method(method_http_options)|indent(8) }}
         
         @staticmethod
@@ -166,7 +162,8 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
                 use_integers_for_enums={{ opts.rest_numeric_enums }},
             ))
             {% if method.input.required_fields %}
-            query_params.update(_Base{{ service.name }}RestTransport._Base{{method.name}}._get_unset_required_fields(query_params))
+            default_values = _Base{{ service.name }}RestTransport._Base{{method.name}}._Base{{method.name}}__REQUIRED_FIELDS_DEFAULT_VALUES
+            query_params.update({k: v for k, v in default_values.items() if k not in query_params})
             {% endif %}{# required fields #}
 
             {% if opts.rest_numeric_enums %}

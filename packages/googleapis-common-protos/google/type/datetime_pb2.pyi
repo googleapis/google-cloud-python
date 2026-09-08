@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -62,7 +63,9 @@ class DateTime(_message.Message):
         minutes: _Optional[int] = ...,
         seconds: _Optional[int] = ...,
         nanos: _Optional[int] = ...,
-        utc_offset: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+        utc_offset: _Optional[
+            _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+        ] = ...,
         time_zone: _Optional[_Union[TimeZone, _Mapping]] = ...,
     ) -> None: ...
 

@@ -41,15 +41,17 @@ from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ConversationalSearchServiceTransport(abc.ABC):
     """Abstract transport class for ConversationalSearchService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/discoveryengine.readwrite",
+        "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+    )
 
     DEFAULT_HOST: str = "discoveryengine.googleapis.com"
 
@@ -187,6 +189,11 @@ class ConversationalSearchServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.stream_answer_query: gapic_v1.method.wrap_method(
+                self.stream_answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_answer: gapic_v1.method.wrap_method(
                 self.get_answer,
                 default_timeout=None,
@@ -305,6 +312,18 @@ class ConversationalSearchServiceTransport(abc.ABC):
 
     @property
     def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Union[
+            conversational_search_service.AnswerQueryResponse,
+            Awaitable[conversational_search_service.AnswerQueryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_answer_query(
         self,
     ) -> Callable[
         [conversational_search_service.AnswerQueryRequest],

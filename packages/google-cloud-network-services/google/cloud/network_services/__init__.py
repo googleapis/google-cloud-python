@@ -30,6 +30,15 @@ from google.cloud.network_services_v1.services.network_services.async_client imp
 from google.cloud.network_services_v1.services.network_services.client import (
     NetworkServicesClient,
 )
+from google.cloud.network_services_v1.types.agent_gateway import (
+    AgentGateway,
+    CreateAgentGatewayRequest,
+    DeleteAgentGatewayRequest,
+    GetAgentGatewayRequest,
+    ListAgentGatewaysRequest,
+    ListAgentGatewaysResponse,
+    UpdateAgentGatewayRequest,
+)
 from google.cloud.network_services_v1.types.common import (
     EndpointMatcher,
     EnvoyHeaders,
@@ -38,6 +47,7 @@ from google.cloud.network_services_v1.types.common import (
 )
 from google.cloud.network_services_v1.types.dep import (
     AuthzExtension,
+    BodySendMode,
     CreateAuthzExtensionRequest,
     CreateLbEdgeExtensionRequest,
     CreateLbRouteExtensionRequest,
@@ -183,6 +193,13 @@ __all__ = (
     "DepServiceAsyncClient",
     "NetworkServicesClient",
     "NetworkServicesAsyncClient",
+    "AgentGateway",
+    "CreateAgentGatewayRequest",
+    "DeleteAgentGatewayRequest",
+    "GetAgentGatewayRequest",
+    "ListAgentGatewaysRequest",
+    "ListAgentGatewaysResponse",
+    "UpdateAgentGatewayRequest",
     "EndpointMatcher",
     "OperationMetadata",
     "TrafficPortSelector",
@@ -216,6 +233,7 @@ __all__ = (
     "UpdateLbEdgeExtensionRequest",
     "UpdateLbRouteExtensionRequest",
     "UpdateLbTrafficExtensionRequest",
+    "BodySendMode",
     "EventType",
     "LoadBalancingScheme",
     "WireFormat",

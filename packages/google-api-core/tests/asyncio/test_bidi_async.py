@@ -14,7 +14,6 @@
 
 
 import asyncio
-
 from unittest import mock
 
 try:
@@ -30,8 +29,7 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import bidi_async
-from google.api_core import exceptions
+from google.api_core import bidi_async, exceptions
 
 
 @pytest.mark.asyncio

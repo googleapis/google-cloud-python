@@ -17,10 +17,8 @@ import operator as op
 import unittest
 from unittest import mock
 
-import pytest
-
 import google.cloud.bigquery.table as bq_table
-
+import pytest
 from google.api_core import exceptions
 
 from tests.unit.helpers import _to_pyarrow
@@ -180,8 +178,7 @@ class TestCursor(unittest.TestCase):
         return mock_results
 
     def test_ctor(self):
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import Cursor
+        from google.cloud.bigquery.dbapi import Cursor, connect
 
         connection = connect(self._mock_client())
         cursor = self._make_one(connection)
@@ -193,8 +190,16 @@ class TestCursor(unittest.TestCase):
 
         connection = connect(self._mock_client())
         cursor = connection.cursor()
-        # close() is a no-op, there is nothing to test.
+
+        # Simulate that cursor has data/references
+        cursor._query_data = mock.Mock()
+        cursor._query_rows = mock.Mock()
+
         cursor.close()
+
+        self.assertTrue(cursor._closed)
+        self.assertIsNone(cursor._query_data)
+        self.assertIsNone(cursor._query_rows)
 
     def test_raises_error_if_closed(self):
         from google.cloud.bigquery.dbapi import connect
@@ -519,8 +524,8 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(used_config)
 
     def test_execute_custom_job_config_wo_default_config(self):
-        from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.dbapi import connect
 
         config = job.QueryJobConfig(use_legacy_sql=True)
         client = self._mock_client(rows=[], num_dml_affected_rows=0)
@@ -533,8 +538,8 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(kwargs["job_config"], config)
 
     def test_execute_custom_job_config_w_default_config(self):
-        from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery import job
+        from google.cloud.bigquery.dbapi import connect
 
         client = self._mock_client(rows=[], num_dml_affected_rows=0)
         connection = connect(client)
@@ -563,8 +568,8 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(rows, [])
 
     def test_execute_w_query(self):
-        from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery.schema import SchemaField
 
         connection = dbapi.connect(
             self._mock_client(
@@ -607,9 +612,9 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(row)
 
     def test_execute_w_query_dry_run(self):
+        from google.cloud.bigquery import dbapi
         from google.cloud.bigquery.job import QueryJobConfig
         from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery import dbapi
 
         connection = dbapi.connect(
             self._mock_client(
@@ -637,10 +642,8 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_raises_if_result_raises(self):
         import google.cloud.exceptions
-
         from google.cloud.bigquery import client
-        from google.cloud.bigquery.dbapi import connect
-        from google.cloud.bigquery.dbapi import exceptions
+        from google.cloud.bigquery.dbapi import connect, exceptions
 
         client = mock.create_autospec(client.Client)
         client.query_and_wait.side_effect = google.cloud.exceptions.GoogleCloudError("")
@@ -702,7 +705,7 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(cursor.query_job)
 
     def test_query_job_w_execute(self):
-        from google.cloud.bigquery import dbapi, QueryJob
+        from google.cloud.bigquery import QueryJob, dbapi
 
         connection = dbapi.connect(self._mock_client())
         cursor = connection.cursor()
@@ -722,7 +725,7 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(cursor.query_job)
 
     def test_query_job_w_executemany(self):
-        from google.cloud.bigquery import dbapi, QueryJob
+        from google.cloud.bigquery import QueryJob, dbapi
 
         connection = dbapi.connect(self._mock_client())
         cursor = connection.cursor()
@@ -932,8 +935,8 @@ def test__extract_types(inp, expect):
     ],
 )
 def test__extract_types_fail(match, inp):
-    from google.cloud.bigquery.dbapi.cursor import _extract_types as et
     from google.cloud.bigquery.dbapi import exceptions
+    from google.cloud.bigquery.dbapi.cursor import _extract_types as et
 
     with pytest.raises(exceptions.ProgrammingError, match=match):
         et(inp)

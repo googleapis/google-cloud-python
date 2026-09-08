@@ -34,6 +34,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.visionai_v1._compat import transcode_request
 from google.cloud.visionai_v1.types import lva_resources, lva_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -59,8 +60,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class LiveVideoAnalyticsRestInterceptor:
@@ -1481,21 +1481,18 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_run_process(
                 request, metadata
             )
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess,
+                    "_BaseBatchRunProcess__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1633,19 +1630,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_http_options()
-
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis,
+                    "_BaseCreateAnalysis__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1783,19 +1777,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_http_options()
-
             request, metadata = self._interceptor.pre_create_operator(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator,
+                    "_BaseCreateOperator__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1933,19 +1924,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_http_options()
-
             request, metadata = self._interceptor.pre_create_process(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess,
+                    "_BaseCreateProcess__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2082,15 +2070,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis,
+                    "_BaseDeleteAnalysis__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2226,15 +2215,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operator(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator,
+                    "_BaseDeleteOperator__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2370,15 +2360,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_process(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess,
+                    "_BaseDeleteProcess__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2513,15 +2504,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_http_options()
-
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis,
+                    "_BaseGetAnalysis__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2658,15 +2650,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operator(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator,
+                    "_BaseGetOperator__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2804,15 +2797,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_process(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseGetProcess,
+                    "_BaseGetProcess__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2950,15 +2944,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses,
+                    "_BaseListAnalyses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3098,15 +3093,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operators(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListOperators,
+                    "_BaseListOperators__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3246,15 +3242,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_processes(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses,
+                    "_BaseListProcesses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3394,17 +3391,18 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_http_options()
-
             request, metadata = self._interceptor.pre_list_public_operators(
                 request, metadata
             )
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators,
+                    "_BaseListPublicOperators__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3547,21 +3545,18 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_http_options()
-
             request, metadata = self._interceptor.pre_resolve_operator_info(
                 request, metadata
             )
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo,
+                    "_BaseResolveOperatorInfo__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3705,19 +3700,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_http_options()
-
             request, metadata = self._interceptor.pre_update_analysis(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis,
+                    "_BaseUpdateAnalysis__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3855,19 +3847,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_http_options()
-
             request, metadata = self._interceptor.pre_update_operator(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator,
+                    "_BaseUpdateOperator__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4005,19 +3994,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_http_options()
-
             request, metadata = self._interceptor.pre_update_process(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess,
+                    "_BaseUpdateProcess__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4308,15 +4294,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4447,15 +4434,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4584,21 +4572,18 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4702,17 +4687,18 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4818,15 +4804,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4957,15 +4944,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             """
 
             http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLiveVideoAnalyticsRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

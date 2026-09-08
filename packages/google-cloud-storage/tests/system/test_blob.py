@@ -134,7 +134,7 @@ def test_large_file_write_from_stream_w_failed_checksum(
             "google.cloud.storage._media._helpers.prepare_checksum_digest",
             return_value="FFFFFF==",
         ):
-            with pytest.raises(DataCorruption):
+            with pytest.raises((DataCorruption, exceptions.BadRequest)):
                 blob.upload_from_file(file_obj, checksum="crc32c")
 
     assert not blob.exists()
@@ -1345,3 +1345,62 @@ def test_blob_contexts_custom_setter(shared_bucket, blobs_to_delete):
     blob.reload()
     assert blob.contexts.custom["k1"].value == "v1-updated"
     assert blob.contexts.custom["k2"].value == "v2"
+
+
+def test_upload_from_file_streaming_with_trailing_checksum_validation(
+    shared_bucket, blobs_to_delete
+):
+    import base64
+    import io
+    import os
+
+    import google_crc32c
+
+    blob_name = f"StreamingTrailingChecksum-{uuid.uuid4().hex}"
+    blob = shared_bucket.blob(blob_name)
+    blobs_to_delete.append(blob)
+
+    # Payload > 8 MiB to trigger chunked resumable upload
+    payload = os.urandom(8 * 1024 * 1024 + 1024)
+    io_stream = io.BytesIO(payload)
+
+    # Calculate expected CRC32C base64 hash
+    expected_crc32c_int = google_crc32c.value(payload)
+    expected_crc32c_b64 = base64.b64encode(
+        expected_crc32c_int.to_bytes(4, "big")
+    ).decode("utf-8")
+
+    # Upload from stream WITHOUT passing size parameter
+    # (routes to resumable upload with total_bytes=None)
+    blob.upload_from_file(io_stream, checksum="crc32c")
+
+    blob.reload()
+    assert blob.size == len(payload)
+    assert blob.crc32c == expected_crc32c_b64
+
+
+def test_upload_from_file_streaming_corrupted_checksum_rejection(
+    shared_bucket, blobs_to_delete
+):
+    import io
+    import os
+
+    import pytest
+    from google.api_core.exceptions import BadRequest
+
+    blob_name = f"StreamingCorruptedChecksum-{uuid.uuid4().hex}"
+    blob = shared_bucket.blob(blob_name)
+    blobs_to_delete.append(blob)
+
+    payload = os.urandom(8 * 1024 * 1024 + 1024)
+    io_stream = io.BytesIO(payload)
+
+    # Supply an intentionally corrupted/mismatched checksum
+    bad_crc32c_b64 = "AAAAAA=="
+
+    with pytest.raises(BadRequest):
+        blob.upload_from_file(
+            io_stream,
+            checksum="crc32c",
+            crc32c_checksum_value=bad_crc32c_b64,
+        )

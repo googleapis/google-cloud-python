@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.9.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.2...google-cloud-testutils-v1.9.3) (2026-08-21)
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.1...google-cloud-testutils-v1.9.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.0...google-cloud-testutils-v1.9.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* make test_utils unique_resource_id parallel-safe ([#17440](https://github.com/googleapis/google-cloud-python/issues/17440)) ([ac1f5d5](https://github.com/googleapis/google-cloud-python/commit/ac1f5d55900d4787f2ced6b5350ef530f700794b))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.8.0...google-cloud-testutils-v1.9.0) (2026-06-02)
 
 

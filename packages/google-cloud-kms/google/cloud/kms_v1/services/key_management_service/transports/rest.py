@@ -34,6 +34,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.kms_v1._compat import transcode_request
 from google.cloud.kms_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -59,8 +60,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class KeyManagementServiceRestInterceptor:
@@ -174,6 +174,14 @@ class KeyManagementServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_export_trusted_key_wrapped_crypto_key_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_trusted_key_wrapped_crypto_key_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_generate_random_bytes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -235,6 +243,14 @@ class KeyManagementServiceRestInterceptor:
                 return request, metadata
 
             def post_import_crypto_key_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_import_trusted_key_wrapped_crypto_key_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_trusted_key_wrapped_crypto_key_version(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -908,6 +924,58 @@ class KeyManagementServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_export_trusted_key_wrapped_crypto_key_version(
+        self,
+        request: service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for export_trusted_key_wrapped_crypto_key_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the KeyManagementService server.
+        """
+        return request, metadata
+
+    def post_export_trusted_key_wrapped_crypto_key_version(
+        self, response: service.ExportTrustedKeyWrappedCryptoKeyVersionResponse
+    ) -> service.ExportTrustedKeyWrappedCryptoKeyVersionResponse:
+        """Post-rpc interceptor for export_trusted_key_wrapped_crypto_key_version
+
+        DEPRECATED. Please use the `post_export_trusted_key_wrapped_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the KeyManagementService server but before
+        it is returned to user code. This `post_export_trusted_key_wrapped_crypto_key_version` interceptor runs
+        before the `post_export_trusted_key_wrapped_crypto_key_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_trusted_key_wrapped_crypto_key_version_with_metadata(
+        self,
+        response: service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for export_trusted_key_wrapped_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_export_trusted_key_wrapped_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_export_trusted_key_wrapped_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_export_trusted_key_wrapped_crypto_key_version_with_metadata` interceptor runs after the
+        `post_export_trusted_key_wrapped_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_export_trusted_key_wrapped_crypto_key_version` will be passed to
+        `post_export_trusted_key_wrapped_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
+
     def pre_generate_random_bytes(
         self,
         request: service.GenerateRandomBytesRequest,
@@ -1275,6 +1343,55 @@ class KeyManagementServiceRestInterceptor:
         `post_import_crypto_key_version` interceptor. The (possibly modified) response returned by
         `post_import_crypto_key_version` will be passed to
         `post_import_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_import_trusted_key_wrapped_crypto_key_version(
+        self,
+        request: service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for import_trusted_key_wrapped_crypto_key_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the KeyManagementService server.
+        """
+        return request, metadata
+
+    def post_import_trusted_key_wrapped_crypto_key_version(
+        self, response: resources.CryptoKeyVersion
+    ) -> resources.CryptoKeyVersion:
+        """Post-rpc interceptor for import_trusted_key_wrapped_crypto_key_version
+
+        DEPRECATED. Please use the `post_import_trusted_key_wrapped_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the KeyManagementService server but before
+        it is returned to user code. This `post_import_trusted_key_wrapped_crypto_key_version` interceptor runs
+        before the `post_import_trusted_key_wrapped_crypto_key_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_import_trusted_key_wrapped_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_trusted_key_wrapped_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_import_trusted_key_wrapped_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_import_trusted_key_wrapped_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_import_trusted_key_wrapped_crypto_key_version_with_metadata` interceptor runs after the
+        `post_import_trusted_key_wrapped_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_import_trusted_key_wrapped_crypto_key_version` will be passed to
+        `post_import_trusted_key_wrapped_crypto_key_version_with_metadata`.
         """
         return response, metadata
 
@@ -2238,21 +2355,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_http_options()
-
             request, metadata = self._interceptor.pre_asymmetric_decrypt(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseAsymmetricDecrypt,
+                    "_BaseAsymmetricDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2396,19 +2510,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_http_options()
-
             request, metadata = self._interceptor.pre_asymmetric_sign(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseAsymmetricSign,
+                    "_BaseAsymmetricSign__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2555,21 +2666,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_http_options()
-
             request, metadata = self._interceptor.pre_create_crypto_key(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKey,
+                    "_BaseCreateCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2722,21 +2830,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_create_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseCreateCryptoKeyVersion,
+                    "_BaseCreateCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2921,21 +3026,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_http_options()
-
             request, metadata = self._interceptor.pre_create_import_job(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateImportJob._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseCreateImportJob,
+                    "_BaseCreateImportJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3076,19 +3178,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_http_options()
-
             request, metadata = self._interceptor.pre_create_key_ring(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseCreateKeyRing,
+                    "_BaseCreateKeyRing__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3228,19 +3327,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_http_options()
-
             request, metadata = self._interceptor.pre_decapsulate(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDecapsulate._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseDecapsulate,
+                    "_BaseDecapsulate__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3382,19 +3478,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             http_options = (
                 _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_decrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDecrypt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseDecrypt,
+                    "_BaseDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3534,17 +3627,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKey._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_crypto_key(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKey._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKey,
+                    "_BaseDeleteCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3681,17 +3775,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseDeleteCryptoKeyVersion,
+                    "_BaseDeleteCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3844,21 +3939,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_destroy_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseDestroyCryptoKeyVersion,
+                    "_BaseDestroyCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4000,19 +4092,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             http_options = (
                 _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_encrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseEncrypt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseEncrypt,
+                    "_BaseEncrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4092,6 +4181,168 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
+    class _ExportTrustedKeyWrappedCryptoKeyVersion(
+        _BaseKeyManagementServiceRestTransport._BaseExportTrustedKeyWrappedCryptoKeyVersion,
+        KeyManagementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "KeyManagementServiceRestTransport.ExportTrustedKeyWrappedCryptoKeyVersion"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.ExportTrustedKeyWrappedCryptoKeyVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> service.ExportTrustedKeyWrappedCryptoKeyVersionResponse:
+            r"""Call the export trusted key
+            wrapped crypto key version method over HTTP.
+
+                Args:
+                    request (~.service.ExportTrustedKeyWrappedCryptoKeyVersionRequest):
+                        The request object. Request message for
+                    [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.service.ExportTrustedKeyWrappedCryptoKeyVersionResponse:
+                        Response message for
+                    [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+
+            """
+
+            http_options = _BaseKeyManagementServiceRestTransport._BaseExportTrustedKeyWrappedCryptoKeyVersion._get_http_options()
+            request, metadata = (
+                self._interceptor.pre_export_trusted_key_wrapped_crypto_key_version(
+                    request, metadata
+                )
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseExportTrustedKeyWrappedCryptoKeyVersion,
+                    "_BaseExportTrustedKeyWrappedCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.KeyManagementServiceClient.ExportTrustedKeyWrappedCryptoKeyVersion",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.KeyManagementService",
+                        "rpcName": "ExportTrustedKeyWrappedCryptoKeyVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = KeyManagementServiceRestTransport._ExportTrustedKeyWrappedCryptoKeyVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse()
+            pb_resp = service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_trusted_key_wrapped_crypto_key_version(
+                resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_export_trusted_key_wrapped_crypto_key_version_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.KeyManagementServiceClient.export_trusted_key_wrapped_crypto_key_version",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.KeyManagementService",
+                        "rpcName": "ExportTrustedKeyWrappedCryptoKeyVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GenerateRandomBytes(
         _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes,
         KeyManagementServiceRestStub,
@@ -4152,21 +4403,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_random_bytes(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGenerateRandomBytes,
+                    "_BaseGenerateRandomBytes__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4316,15 +4564,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_http_options()
-
             request, metadata = self._interceptor.pre_get_crypto_key(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetCryptoKey,
+                    "_BaseGetCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4475,17 +4724,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_get_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetCryptoKeyVersion,
+                    "_BaseGetCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4668,15 +4918,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_http_options()
-
             request, metadata = self._interceptor.pre_get_import_job(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetImportJob._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetImportJob,
+                    "_BaseGetImportJob__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4815,15 +5066,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_http_options()
-
             request, metadata = self._interceptor.pre_get_key_ring(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetKeyRing._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetKeyRing,
+                    "_BaseGetKeyRing__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4963,15 +5215,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_get_public_key(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetPublicKey,
+                    "_BaseGetPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5112,17 +5365,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetRetiredResource._get_http_options()
-
             request, metadata = self._interceptor.pre_get_retired_resource(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetRetiredResource._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetRetiredResource._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetRetiredResource,
+                    "_BaseGetRetiredResource__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5276,21 +5530,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_import_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseImportCryptoKeyVersion,
+                    "_BaseImportCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5372,6 +5623,179 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
                 )
             return resp
 
+    class _ImportTrustedKeyWrappedCryptoKeyVersion(
+        _BaseKeyManagementServiceRestTransport._BaseImportTrustedKeyWrappedCryptoKeyVersion,
+        KeyManagementServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "KeyManagementServiceRestTransport.ImportTrustedKeyWrappedCryptoKeyVersion"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.ImportTrustedKeyWrappedCryptoKeyVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.CryptoKeyVersion:
+            r"""Call the import trusted key
+            wrapped crypto key version method over HTTP.
+
+                Args:
+                    request (~.service.ImportTrustedKeyWrappedCryptoKeyVersionRequest):
+                        The request object. Request message for
+                    [KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.CryptoKeyVersion:
+                        A
+                    [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                    represents an individual cryptographic key, and the
+                    associated key material.
+
+                    An
+                    [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                    version can be used for cryptographic operations.
+
+                    For security reasons, the raw cryptographic key material
+                    represented by a
+                    [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                    can never be viewed or exported. It can only be used to
+                    encrypt, decrypt, or sign data when an authorized user
+                    or application invokes Cloud KMS.
+
+            """
+
+            http_options = _BaseKeyManagementServiceRestTransport._BaseImportTrustedKeyWrappedCryptoKeyVersion._get_http_options()
+            request, metadata = (
+                self._interceptor.pre_import_trusted_key_wrapped_crypto_key_version(
+                    request, metadata
+                )
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseImportTrustedKeyWrappedCryptoKeyVersion,
+                    "_BaseImportTrustedKeyWrappedCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.kms_v1.KeyManagementServiceClient.ImportTrustedKeyWrappedCryptoKeyVersion",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.KeyManagementService",
+                        "rpcName": "ImportTrustedKeyWrappedCryptoKeyVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = KeyManagementServiceRestTransport._ImportTrustedKeyWrappedCryptoKeyVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.CryptoKeyVersion()
+            pb_resp = resources.CryptoKeyVersion.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_import_trusted_key_wrapped_crypto_key_version(
+                resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_import_trusted_key_wrapped_crypto_key_version_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CryptoKeyVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.kms_v1.KeyManagementServiceClient.import_trusted_key_wrapped_crypto_key_version",
+                    extra={
+                        "serviceName": "google.cloud.kms.v1.KeyManagementService",
+                        "rpcName": "ImportTrustedKeyWrappedCryptoKeyVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListCryptoKeys(
         _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys,
         KeyManagementServiceRestStub,
@@ -5431,17 +5855,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_http_options()
-
             request, metadata = self._interceptor.pre_list_crypto_keys(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListCryptoKeys,
+                    "_BaseListCryptoKeys__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5579,17 +6004,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_http_options()
-
             request, metadata = self._interceptor.pre_list_crypto_key_versions(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListCryptoKeyVersions,
+                    "_BaseListCryptoKeyVersions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5731,17 +6157,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_http_options()
-
             request, metadata = self._interceptor.pre_list_import_jobs(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListImportJobs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListImportJobs,
+                    "_BaseListImportJobs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5879,15 +6306,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_http_options()
-
             request, metadata = self._interceptor.pre_list_key_rings(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListKeyRings._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListKeyRings,
+                    "_BaseListKeyRings__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6025,17 +6453,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListRetiredResources._get_http_options()
-
             request, metadata = self._interceptor.pre_list_retired_resources(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListRetiredResources._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListRetiredResources._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListRetiredResources,
+                    "_BaseListRetiredResources__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6180,19 +6609,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             http_options = (
                 _BaseKeyManagementServiceRestTransport._BaseMacSign._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_mac_sign(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseMacSign._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseMacSign,
+                    "_BaseMacSign__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6332,19 +6758,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_http_options()
-
             request, metadata = self._interceptor.pre_mac_verify(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseMacVerify._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseMacVerify,
+                    "_BaseMacVerify__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6484,19 +6907,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_http_options()
-
             request, metadata = self._interceptor.pre_raw_decrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRawDecrypt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseRawDecrypt,
+                    "_BaseRawDecrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6636,19 +7056,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_http_options()
-
             request, metadata = self._interceptor.pre_raw_encrypt(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRawEncrypt._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseRawEncrypt,
+                    "_BaseRawEncrypt__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6802,21 +7219,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_restore_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseRestoreCryptoKeyVersion,
+                    "_BaseRestoreCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6963,21 +7377,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_http_options()
-
             request, metadata = self._interceptor.pre_update_crypto_key(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKey,
+                    "_BaseUpdateCryptoKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7127,21 +7538,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_update_crypto_key_primary_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyPrimaryVersion,
+                    "_BaseUpdateCryptoKeyPrimaryVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7296,21 +7704,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_http_options()
-
             request, metadata = self._interceptor.pre_update_crypto_key_version(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseUpdateCryptoKeyVersion,
+                    "_BaseUpdateCryptoKeyVersion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7493,6 +7898,19 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         return self._Encrypt(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def export_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ExportTrustedKeyWrappedCryptoKeyVersionRequest],
+        service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportTrustedKeyWrappedCryptoKeyVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def generate_random_bytes(
         self,
     ) -> Callable[
@@ -7555,6 +7973,19 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportCryptoKeyVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def import_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ImportTrustedKeyWrappedCryptoKeyVersionRequest],
+        resources.CryptoKeyVersion,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportTrustedKeyWrappedCryptoKeyVersion(
             self._session, self._host, self._interceptor
         )  # type: ignore
 
@@ -7729,15 +8160,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -7868,15 +8300,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8007,15 +8440,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetIamPolicy,
+                    "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8147,19 +8581,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_http_options()
-
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseSetIamPolicy,
+                    "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8292,21 +8723,18 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_http_options()
-
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseTestIamPermissions,
+                    "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -8440,15 +8868,16 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             """
 
             http_options = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseKeyManagementServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseKeyManagementServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring-dashboards/#history
 
+## [3.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.22.0...google-cloud-monitoring-dashboards-v3.0.0) (2026-08-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove erroneous google/monitoring/dashboard clients ([#18165](https://github.com/googleapis/google-cloud-python/issues/18165))
+
+### Bug Fixes
+
+* Remove erroneous google/monitoring/dashboard clients ([#18165](https://github.com/googleapis/google-cloud-python/issues/18165)) ([fb0c1b9](https://github.com/googleapis/google-cloud-python/commit/fb0c1b92da0500431ff40a41b3032b741d414def))
+
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.21.0...google-cloud-monitoring-dashboards-v2.22.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.20.1...google-cloud-monitoring-dashboards-v2.21.0) (2026-03-26)
 
 

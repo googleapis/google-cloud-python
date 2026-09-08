@@ -231,6 +231,7 @@ __protobuf__ = proto.module(
         "ListSubpropertySyncConfigsResponse",
         "UpdateSubpropertySyncConfigRequest",
         "GetReportingIdentitySettingsRequest",
+        "UpdateReportingIdentitySettingsRequest",
         "GetUserProvidedDataSettingsRequest",
     },
 )
@@ -5232,6 +5233,34 @@ class GetReportingIdentitySettingsRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class UpdateReportingIdentitySettingsRequest(proto.Message):
+    r"""Request message for UpdateReportingIdentitySettings RPC.
+
+    Attributes:
+        reporting_identity_settings (google.analytics.admin_v1alpha.types.ReportingIdentitySettings):
+            Required. The reporting identity settings to update. The
+            settings' ``name`` field is used to identify the settings.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to be updated. Field names must
+            be in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "\*" to match all fields. If
+            omitted, the service will treat it as an implied field mask
+            equivalent to all fields that are populated.
+    """
+
+    reporting_identity_settings: resources.ReportingIdentitySettings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ReportingIdentitySettings,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

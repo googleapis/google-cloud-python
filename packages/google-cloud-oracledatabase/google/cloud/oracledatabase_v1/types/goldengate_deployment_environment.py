@@ -23,7 +23,6 @@ __protobuf__ = proto.module(
     package="google.cloud.oracledatabase.v1",
     manifest={
         "GoldengateDeploymentEnvironment",
-        "GetGoldengateDeploymentEnvironmentRequest",
         "ListGoldengateDeploymentEnvironmentsRequest",
         "ListGoldengateDeploymentEnvironmentsResponse",
     },
@@ -156,21 +155,6 @@ class GoldengateDeploymentEnvironment(proto.Message):
     storage_usage_limit_gb_per_cpu_core: int = proto.Field(
         proto.INT32,
         number=11,
-    )
-
-
-class GetGoldengateDeploymentEnvironmentRequest(proto.Message):
-    r"""Message for getting a GoldengateDeploymentEnvironment.
-
-    Attributes:
-        name (str):
-            Required. Name of the resource with the format:
-            projects/{project}/locations/{location}/goldengateDeploymentEnvironments/{goldengate_deployment_environment}
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 

@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.edgenetwork_v1._compat import transcode_request
 from google.cloud.edgenetwork_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class EdgeNetworkRestInterceptor:
@@ -1863,21 +1863,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             """
 
             http_options = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_create_interconnect_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment,
+                    "_BaseCreateInterconnectAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2020,23 +2017,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_network(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseCreateNetwork,
+                    "_BaseCreateNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2175,25 +2165,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseCreateRouter,
+                    "_BaseCreateRouter__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2332,25 +2313,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseCreateSubnet,
+                    "_BaseCreateSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2489,17 +2461,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             """
 
             http_options = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_interconnect_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment,
+                    "_BaseDeleteInterconnectAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2640,17 +2613,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_network(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDeleteNetwork,
+                    "_BaseDeleteNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2787,19 +2759,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDeleteRouter,
+                    "_BaseDeleteRouter__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2936,19 +2905,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDeleteSubnet,
+                    "_BaseDeleteSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3085,17 +3051,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             """
 
             http_options = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_http_options()
-
             request, metadata = self._interceptor.pre_diagnose_interconnect(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect,
+                    "_BaseDiagnoseInterconnect__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3237,17 +3204,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_diagnose_network(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork,
+                    "_BaseDiagnoseNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3386,15 +3354,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_diagnose_router(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter,
+                    "_BaseDiagnoseRouter__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3532,17 +3501,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_interconnect(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetInterconnect,
+                    "_BaseGetInterconnect__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3681,17 +3651,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             """
 
             http_options = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_http_options()
-
             request, metadata = self._interceptor.pre_get_interconnect_attachment(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment,
+                    "_BaseGetInterconnectAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3831,19 +3802,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_network(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetNetwork,
+                    "_BaseGetNetwork__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3977,19 +3945,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetRouter._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetRouter._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetRouter,
+                    "_BaseGetRouter__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4123,19 +4088,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetSubnet,
+                    "_BaseGetSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4270,19 +4232,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetZone._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetZone._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetZone._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetZone,
+                    "_BaseGetZone__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4420,19 +4379,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_initialize_zone(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseInitializeZone,
+                    "_BaseInitializeZone__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4572,17 +4528,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             """
 
             http_options = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_http_options()
-
             request, metadata = self._interceptor.pre_list_interconnect_attachments(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments,
+                    "_BaseListInterconnectAttachments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4727,17 +4684,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_interconnects(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListInterconnects,
+                    "_BaseListInterconnects__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4878,19 +4836,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListNetworks._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListNetworks._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListNetworks._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListNetworks,
+                    "_BaseListNetworks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5029,19 +4984,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListRouters._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_routers(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListRouters._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListRouters._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListRouters,
+                    "_BaseListRouters__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5180,19 +5132,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListSubnets._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListSubnets._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListSubnets._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListSubnets,
+                    "_BaseListSubnets__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5329,19 +5278,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListZones._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListZones._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListZones._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListZones,
+                    "_BaseListZones__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5481,25 +5427,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseUpdateRouter,
+                    "_BaseUpdateRouter__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5638,25 +5575,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_request_body_json(
-                    transcoded_request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseUpdateSubnet,
+                    "_BaseUpdateSubnet__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6015,19 +5943,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6159,17 +6084,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6299,21 +6223,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6418,17 +6339,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6535,19 +6457,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6679,15 +6598,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseEdgeNetworkRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

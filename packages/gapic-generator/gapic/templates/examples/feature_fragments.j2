@@ -297,10 +297,11 @@ response = {% if transport == "grpc-async" %}await {% endif %}operation.result()
 {% endmacro %}
 
 {% macro render_method_name(sample) %}
-{% if sample.is_internal %}
-_{{ sample.rpc|snake_case }}
+{% set name = (sample.client_method_name|default(sample.rpc, true))|snake_case %}
+{% if sample.is_internal and not name.startswith('_') %}
+_{{ name }}
 {% else %}
-{{ sample.rpc|snake_case }}
+{{ name }}
 {% endif %}
 {% endmacro %}
 

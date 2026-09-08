@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-containeranalysis/#history
 
+## [2.22.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.22.0...google-cloud-containeranalysis-v2.22.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.21.0...google-cloud-containeranalysis-v2.22.0) (2026-06-02)
 
 

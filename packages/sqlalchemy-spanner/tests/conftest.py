@@ -71,11 +71,11 @@ def literal_round_trip_spanner(metadata, connection):
         compare=None,
         support_whereclause=True,
     ):
-        t = Table("t", metadata, Column("x", type_))
+        t = Table("t_literal_round_trip_spanner", metadata, Column("x", type_))
         t.create(connection)
 
         for value in input_:
-            ins = t.insert().values(x=literal(value, type_, literal_execute=True))
+            ins = t.insert().values(x=literal(value, type_))
             connection.execute(ins)
 
         if support_whereclause:
@@ -85,13 +85,11 @@ def literal_round_trip_spanner(metadata, connection):
                     == literal(
                         compare,
                         type_,
-                        literal_execute=True,
                     ),
                     t.c.x
                     == literal(
                         input_[0],
                         type_,
-                        literal_execute=True,
                     ),
                 )
             else:
@@ -100,7 +98,6 @@ def literal_round_trip_spanner(metadata, connection):
                     == literal(
                         compare if compare is not None else input_[0],
                         type_,
-                        literal_execute=True,
                     )
                 )
         else:

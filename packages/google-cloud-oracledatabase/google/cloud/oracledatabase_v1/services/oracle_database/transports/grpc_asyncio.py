@@ -521,6 +521,39 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
         return self._stubs["delete_cloud_exadata_infrastructure"]
 
     @property
+    def configure_exascale_cloud_exadata_infrastructure(
+        self,
+    ) -> Callable[
+        [exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the configure exascale cloud
+        exadata infrastructure method over gRPC.
+
+        Configures Exascale for a single Exadata
+        Infrastructure.
+
+        Returns:
+            Callable[[~.ConfigureExascaleCloudExadataInfrastructureRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "configure_exascale_cloud_exadata_infrastructure" not in self._stubs:
+            self._stubs["configure_exascale_cloud_exadata_infrastructure"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/ConfigureExascaleCloudExadataInfrastructure",
+                    request_serializer=exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["configure_exascale_cloud_exadata_infrastructure"]
+
+    @property
     def list_cloud_vm_clusters(
         self,
     ) -> Callable[
@@ -1282,6 +1315,71 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["failover_autonomous_database"]
+
+    @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the refresh autonomous database method over gRPC.
+
+        Refreshes the refreshable clone of an Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.RefreshAutonomousDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refresh_autonomous_database" not in self._stubs:
+            self._stubs["refresh_autonomous_database"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/RefreshAutonomousDatabase",
+                    request_serializer=oracledatabase.RefreshAutonomousDatabaseRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["refresh_autonomous_database"]
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        Awaitable[oracledatabase.AutonomousDatabaseRefreshableClones],
+    ]:
+        r"""Return a callable for the get autonomous database
+        refreshable clones method over gRPC.
+
+        Gets the refreshable clones for a given Autonomous
+        Database.
+
+        Returns:
+            Callable[[~.GetAutonomousDatabaseRefreshableClonesRequest],
+                    Awaitable[~.AutonomousDatabaseRefreshableClones]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_autonomous_database_refreshable_clones" not in self._stubs:
+            self._stubs["get_autonomous_database_refreshable_clones"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetAutonomousDatabaseRefreshableClones",
+                    request_serializer=oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest.serialize,
+                    response_deserializer=oracledatabase.AutonomousDatabaseRefreshableClones.deserialize,
+                )
+            )
+        return self._stubs["get_autonomous_database_refreshable_clones"]
 
     @property
     def list_odb_networks(
@@ -2389,38 +2487,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
         return self._stubs["delete_goldengate_connection"]
 
     @property
-    def get_goldengate_deployment_version(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_version.GetGoldengateDeploymentVersionRequest],
-        Awaitable[goldengate_deployment_version.GoldengateDeploymentVersion],
-    ]:
-        r"""Return a callable for the get goldengate deployment
-        version method over gRPC.
-
-        Gets details of a single GoldengateDeploymentVersion.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentVersionRequest],
-                    Awaitable[~.GoldengateDeploymentVersion]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_version" not in self._stubs:
-            self._stubs["get_goldengate_deployment_version"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentVersion",
-                    request_serializer=goldengate_deployment_version.GetGoldengateDeploymentVersionRequest.serialize,
-                    response_deserializer=goldengate_deployment_version.GoldengateDeploymentVersion.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_version"]
-
-    @property
     def list_goldengate_deployment_versions(
         self,
     ) -> Callable[
@@ -2456,37 +2522,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
         return self._stubs["list_goldengate_deployment_versions"]
 
     @property
-    def get_goldengate_deployment_type(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_type.GetGoldengateDeploymentTypeRequest],
-        Awaitable[goldengate_deployment_type.GoldengateDeploymentType],
-    ]:
-        r"""Return a callable for the get goldengate deployment type method over gRPC.
-
-        Gets details of a single GoldenGateDeploymentType.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentTypeRequest],
-                    Awaitable[~.GoldengateDeploymentType]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_type" not in self._stubs:
-            self._stubs["get_goldengate_deployment_type"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentType",
-                    request_serializer=goldengate_deployment_type.GetGoldengateDeploymentTypeRequest.serialize,
-                    response_deserializer=goldengate_deployment_type.GoldengateDeploymentType.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_type"]
-
-    @property
     def list_goldengate_deployment_types(
         self,
     ) -> Callable[
@@ -2518,39 +2553,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["list_goldengate_deployment_types"]
-
-    @property
-    def get_goldengate_deployment_environment(
-        self,
-    ) -> Callable[
-        [goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest],
-        Awaitable[goldengate_deployment_environment.GoldengateDeploymentEnvironment],
-    ]:
-        r"""Return a callable for the get goldengate deployment
-        environment method over gRPC.
-
-        Gets details of a single
-        GoldengateDeploymentEnvironment.
-
-        Returns:
-            Callable[[~.GetGoldengateDeploymentEnvironmentRequest],
-                    Awaitable[~.GoldengateDeploymentEnvironment]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_deployment_environment" not in self._stubs:
-            self._stubs["get_goldengate_deployment_environment"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateDeploymentEnvironment",
-                    request_serializer=goldengate_deployment_environment.GetGoldengateDeploymentEnvironmentRequest.serialize,
-                    response_deserializer=goldengate_deployment_environment.GoldengateDeploymentEnvironment.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_deployment_environment"]
 
     @property
     def list_goldengate_deployment_environments(
@@ -2586,37 +2588,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 )
             )
         return self._stubs["list_goldengate_deployment_environments"]
-
-    @property
-    def get_goldengate_connection_type(
-        self,
-    ) -> Callable[
-        [goldengate_connection_type.GetGoldengateConnectionTypeRequest],
-        Awaitable[goldengate_connection_type.GoldengateConnectionType],
-    ]:
-        r"""Return a callable for the get goldengate connection type method over gRPC.
-
-        Gets details of a single GoldengateConnectionType.
-
-        Returns:
-            Callable[[~.GetGoldengateConnectionTypeRequest],
-                    Awaitable[~.GoldengateConnectionType]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_goldengate_connection_type" not in self._stubs:
-            self._stubs["get_goldengate_connection_type"] = (
-                self._logged_channel.unary_unary(
-                    "/google.cloud.oracledatabase.v1.OracleDatabase/GetGoldengateConnectionType",
-                    request_serializer=goldengate_connection_type.GetGoldengateConnectionTypeRequest.serialize,
-                    response_deserializer=goldengate_connection_type.GoldengateConnectionType.deserialize,
-                )
-            )
-        return self._stubs["get_goldengate_connection_type"]
 
     @property
     def list_goldengate_connection_types(
@@ -2923,6 +2894,11 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.configure_exascale_cloud_exadata_infrastructure: self._wrap_method(
+                self.configure_exascale_cloud_exadata_infrastructure,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_cloud_vm_clusters: self._wrap_method(
                 self.list_cloud_vm_clusters,
                 default_retry=retries.AsyncRetry(
@@ -3175,6 +3151,16 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
             ),
             self.failover_autonomous_database: self._wrap_method(
                 self.failover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.refresh_autonomous_database: self._wrap_method(
+                self.refresh_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_autonomous_database_refreshable_clones: self._wrap_method(
+                self.get_autonomous_database_refreshable_clones,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -3553,11 +3539,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_goldengate_deployment_version: self._wrap_method(
-                self.get_goldengate_deployment_version,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_goldengate_deployment_versions: self._wrap_method(
                 self.list_goldengate_deployment_versions,
                 default_retry=retries.AsyncRetry(
@@ -3571,11 +3552,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_goldengate_deployment_type: self._wrap_method(
-                self.get_goldengate_deployment_type,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_goldengate_deployment_types: self._wrap_method(
@@ -3593,11 +3569,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_goldengate_deployment_environment: self._wrap_method(
-                self.get_goldengate_deployment_environment,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_goldengate_deployment_environments: self._wrap_method(
                 self.list_goldengate_deployment_environments,
                 default_retry=retries.AsyncRetry(
@@ -3611,11 +3582,6 @@ class OracleDatabaseGrpcAsyncIOTransport(OracleDatabaseTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.get_goldengate_connection_type: self._wrap_method(
-                self.get_goldengate_connection_type,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_goldengate_connection_types: self._wrap_method(

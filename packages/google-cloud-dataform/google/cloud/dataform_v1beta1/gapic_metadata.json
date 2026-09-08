@@ -15,6 +15,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -70,9 +75,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
               ]
             },
             "DeleteReleaseConfig": {
@@ -85,9 +100,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -103,6 +128,11 @@
             "DeleteWorkspace": {
               "methods": [
                 "delete_workspace"
+              ]
+            },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
               ]
             },
             "FetchFileDiff": {
@@ -128,6 +158,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -323,6 +358,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {
@@ -375,6 +415,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -430,9 +475,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
               ]
             },
             "DeleteReleaseConfig": {
@@ -445,9 +500,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -463,6 +528,11 @@
             "DeleteWorkspace": {
               "methods": [
                 "delete_workspace"
+              ]
+            },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
               ]
             },
             "FetchFileDiff": {
@@ -488,6 +558,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -683,6 +758,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {
@@ -735,6 +815,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -790,9 +875,19 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
               ]
             },
             "DeleteReleaseConfig": {
@@ -805,9 +900,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -823,6 +928,11 @@
             "DeleteWorkspace": {
               "methods": [
                 "delete_workspace"
+              ]
+            },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
               ]
             },
             "FetchFileDiff": {
@@ -848,6 +958,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -1043,6 +1158,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {

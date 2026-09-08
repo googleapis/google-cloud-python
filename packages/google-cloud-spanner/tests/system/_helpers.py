@@ -15,9 +15,10 @@
 import operator
 import os
 import time
+import uuid
 
-from google.api_core import exceptions
-from test_utils import retry, system
+from google.api_core import datetime_helpers, exceptions
+from test_utils import retry
 
 from google.cloud.spanner_v1 import instance as instance_mod
 from tests import _fixtures
@@ -158,8 +159,34 @@ def cleanup_old_instances(spanner_client):
                 scrub_instance_ignore_not_found(instance)
 
 
+def cleanup_stale_databases(instance, cutoff_seconds=600):
+    """Delete stale databases in the given instance older than cutoff_seconds."""
+    cutoff_ms = (int(time.time()) - cutoff_seconds) * 1000
+
+    for database_pb in instance.list_databases():
+        if database_pb.create_time is not None:
+            create_time_ms = datetime_helpers.to_milliseconds(database_pb.create_time)
+
+            if create_time_ms < cutoff_ms:
+                db = instance.database(database_pb.name.split("/")[-1])
+                try:
+                    db.reload()
+                    if db.enable_drop_protection:
+                        db.enable_drop_protection = False
+                        operation = db.update(["enable_drop_protection"])
+                        operation.result(DATABASE_OPERATION_TIMEOUT_IN_SECONDS)
+                    db.drop()
+                except exceptions.NotFound:
+                    pass
+                except exceptions.GoogleAPIError:
+                    # Ignore other API errors during cleanup
+                    pass
+
+
 def unique_id(prefix, separator="-"):
-    return f"{prefix}{system.unique_resource_id(separator)}"
+    # Database name size: Spanner database names are limited to 30 characters.
+    # See: https://docs.cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.database.v1#createdatabaserequest
+    return f"{prefix}{separator}{uuid.uuid4().hex[:13]}"
 
 
 class FauxCall:

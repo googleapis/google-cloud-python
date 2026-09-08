@@ -74,24 +74,23 @@ class ListContactsRequest(proto.Message):
             ``ListContacts`` must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>address</code></li>
-              <li><code>cellPhone</code></li>
-              <li><code>comment</code></li>
-              <li><code>company</code></li>
-              <li><code>displayName</code></li>
-              <li><code>email</code></li>
-              <li><code>fax</code></li>
-              <li><code>name</code></li>
-              <li><code>status</code></li>
-              <li><code>title</code></li>
-              <li><code>workPhone</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``address``
+            - ``cellPhone``
+            - ``comment``
+            - ``company``
+            - ``displayName``
+            - ``email``
+            - ``fax``
+            - ``name``
+            - ``status``
+            - ``title``
+            - ``workPhone``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

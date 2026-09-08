@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.oslogin_v1._compat import transcode_request
 from google.cloud.oslogin_v1.common.types import common
 from google.cloud.oslogin_v1.types import oslogin
 
@@ -55,8 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class OsLoginServiceRestInterceptor:
@@ -551,21 +551,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_create_ssh_public_key(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseCreateSshPublicKey,
+                    "_BaseCreateSshPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -697,17 +694,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_posix_account(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseDeletePosixAccount,
+                    "_BaseDeletePosixAccount__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -804,17 +802,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_ssh_public_key(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseDeleteSshPublicKey,
+                    "_BaseDeleteSshPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -918,17 +917,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseGetLoginProfile._get_http_options()
-
             request, metadata = self._interceptor.pre_get_login_profile(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseGetLoginProfile._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseGetLoginProfile._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseGetLoginProfile,
+                    "_BaseGetLoginProfile__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1065,17 +1065,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_get_ssh_public_key(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseGetSshPublicKey,
+                    "_BaseGetSshPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1213,21 +1214,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_import_ssh_public_key(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseImportSshPublicKey,
+                    "_BaseImportSshPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1368,21 +1366,18 @@ class OsLoginServiceRestTransport(_BaseOsLoginServiceRestTransport):
             """
 
             http_options = _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_http_options()
-
             request, metadata = self._interceptor.pre_update_ssh_public_key(
                 request, metadata
             )
-            transcoded_request = _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseOsLoginServiceRestTransport._BaseUpdateSshPublicKey,
+                    "_BaseUpdateSshPublicKey__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

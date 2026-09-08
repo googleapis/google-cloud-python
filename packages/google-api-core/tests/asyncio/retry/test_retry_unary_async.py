@@ -22,8 +22,7 @@ except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
 import pytest
 
-from google.api_core import exceptions
-from google.api_core import retry_async
+from google.api_core import exceptions, retry_async
 
 from ...unit.retry.test_retry_base import Test_BaseRetry
 

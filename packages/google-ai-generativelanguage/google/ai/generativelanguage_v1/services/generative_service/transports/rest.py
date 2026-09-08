@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ai.generativelanguage_v1._compat import transcode_request
 from google.ai.generativelanguage_v1.types import generative_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class GenerativeServiceRestInterceptor:
@@ -623,21 +623,18 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_embed_contents(
                 request, metadata
             )
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents,
+                    "_BaseBatchEmbedContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -785,19 +782,16 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseCountTokens._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_count_tokens(request, metadata)
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseCountTokens._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseCountTokens._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseCountTokens._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseCountTokens,
+                    "_BaseCountTokens__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -936,19 +930,16 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_http_options()
-
             request, metadata = self._interceptor.pre_embed_content(request, metadata)
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseEmbedContent,
+                    "_BaseEmbedContent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1104,21 +1095,18 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_content(
                 request, metadata
             )
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseGenerateContent,
+                    "_BaseGenerateContent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1275,21 +1263,18 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_http_options()
-
             request, metadata = self._interceptor.pre_stream_generate_content(
                 request, metadata
             )
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent,
+                    "_BaseStreamGenerateContent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1476,21 +1461,18 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1594,17 +1576,18 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1709,15 +1692,16 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1848,15 +1832,16 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             """
 
             http_options = _BaseGenerativeServiceRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseGenerativeServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseGenerativeServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseGenerativeServiceRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

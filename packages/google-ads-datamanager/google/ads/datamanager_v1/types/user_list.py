@@ -402,6 +402,7 @@ class IngestedUserListInfo(proto.Message):
                 - Roku ID
                 - Amazon Fire TV ID
                 - Xbox or Microsoft ID
+                - Generic Device ID
         """
 
         UPLOAD_KEY_TYPE_UNSPECIFIED = 0

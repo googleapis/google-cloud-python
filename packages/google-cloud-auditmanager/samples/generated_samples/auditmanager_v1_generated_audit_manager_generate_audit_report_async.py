@@ -42,7 +42,6 @@ async def sample_generate_audit_report():
     request = auditmanager_v1.GenerateAuditReportRequest(
         gcs_uri="gcs_uri_value",
         scope="scope_value",
-        compliance_standard="compliance_standard_value",
         report_format="AUDIT_REPORT_FORMAT_ODF",
         compliance_framework="compliance_framework_value",
     )

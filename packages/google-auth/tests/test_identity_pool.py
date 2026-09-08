@@ -20,7 +20,8 @@ import os
 from unittest import mock
 import urllib
 
-from OpenSSL import crypto
+from cryptography import x509
+from cryptography.hazmat.primitives import serialization
 import pytest  # type: ignore
 
 from google.auth import _helpers, external_account
@@ -69,17 +70,15 @@ with open(SUBJECT_TOKEN_JSON_FILE) as fh:
     JSON_FILE_SUBJECT_TOKEN = JSON_FILE_CONTENT.get(SUBJECT_TOKEN_FIELD_NAME)
 
 with open(CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 with open(OTHER_CERT_FILE, "rb") as f:
+    cert = x509.load_pem_x509_certificate(f.read())
     OTHER_CERT_FILE_CONTENT = base64.b64encode(
-        crypto.dump_certificate(
-            crypto.FILETYPE_ASN1, crypto.load_certificate(crypto.FILETYPE_PEM, f.read())
-        )
+        cert.public_bytes(serialization.Encoding.DER)
     ).decode("utf-8")
 
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
@@ -368,9 +367,7 @@ class TestCredentials(object):
                 json.dumps({"userProject": workforce_pool_user_project})
             )
 
-        metrics_header_value = (
-            "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
-        )
+        metrics_header_value = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
         if service_account_impersonation_url:
             # Service account impersonation request/response.
             expire_time = (
@@ -603,6 +600,21 @@ class TestCredentials(object):
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
             trust_boundary=None,
         )
+
+    @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
+    def test_from_info_programmatic_supplier_keyword(self, mock_init):
+        supplier = TestSubjectTokenSupplier()
+        info = {
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+        }
+        credentials = identity_pool.Credentials.from_info(
+            info, subject_token_supplier=supplier
+        )
+
+        assert isinstance(credentials, identity_pool.Credentials)
+        assert mock_init.call_args[1]["subject_token_supplier"] == supplier
 
     @mock.patch.object(identity_pool.Credentials, "__init__", return_value=None)
     def test_from_file_full_options(self, mock_init, tmpdir):
@@ -1771,6 +1783,57 @@ class TestCredentials(object):
         assert excinfo.match(
             'The credential is not configured to use mtls requests. The credential should include a "certificate" section in the credential source.'
         )
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    def test_get_cert_bytes_none_raises_error(
+        self, mock_get_workload_cert_and_key_paths
+    ):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.ClientCertError) as excinfo:
+            credentials._get_cert_bytes()
+
+        assert excinfo.match(
+            "Workload certificate configuration could not be found or does not contain workload certificate paths."
+        )
+
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=exceptions.ClientCertError("mock error"),
+    )
+    def test_refresh_cert_error_raises_refresh_error(self, mock_get_cert_bytes):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        assert excinfo.match(
+            "Failed to retrieve certificate bytes for external account credentials"
+        )
+
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=OSError("mock os error"),
+    )
+    def test_refresh_os_error_raises_refresh_error(self, mock_get_cert_bytes):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        msg = "Failed to retrieve certificate bytes for external"
+        assert excinfo.match(msg + " account credentials")
 
     @mock.patch("google.auth._agent_identity_utils.parse_certificate")
     @mock.patch(

@@ -31,9 +31,7 @@ from google.developer_knowledge_v1.types import developerknowledge
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class DeveloperKnowledgeTransport(abc.ABC):
@@ -175,6 +173,11 @@ class DeveloperKnowledgeTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.answer_query: gapic_v1.method.wrap_method(
+                self.answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -215,6 +218,18 @@ class DeveloperKnowledgeTransport(abc.ABC):
         Union[
             developerknowledge.BatchGetDocumentsResponse,
             Awaitable[developerknowledge.BatchGetDocumentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def answer_query(
+        self,
+    ) -> Callable[
+        [developerknowledge.AnswerQueryRequest],
+        Union[
+            developerknowledge.AnswerQueryResponse,
+            Awaitable[developerknowledge.AnswerQueryResponse],
         ],
     ]:
         raise NotImplementedError()

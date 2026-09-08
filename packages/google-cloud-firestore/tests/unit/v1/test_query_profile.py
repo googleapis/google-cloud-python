@@ -96,8 +96,8 @@ def test_explain_metrics__from_pb_empty():
 
 def test_explain_metrics_execution_stats():
     """
-    Standard ExplainMetrics class should raise exception when execution_stats is accessed.
-    _ExplainAnalyzeMetrics should include the field
+    Standard ExplainMetrics class should raise exception when execution_stats
+    is accessed. _ExplainAnalyzeMetrics should include the field
     """
     from google.cloud.firestore_v1.query_profile import (
         ExplainMetrics,

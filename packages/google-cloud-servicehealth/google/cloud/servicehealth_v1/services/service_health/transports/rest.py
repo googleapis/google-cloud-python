@@ -29,6 +29,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.servicehealth_v1._compat import transcode_request
 from google.cloud.servicehealth_v1.types import event_resources
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ServiceHealthRestInterceptor:
@@ -637,19 +637,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetEvent._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_event(request, metadata)
-            transcoded_request = (
-                _BaseServiceHealthRestTransport._BaseGetEvent._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseGetEvent._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseGetEvent,
+                    "_BaseGetEvent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -789,17 +786,18 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             """
 
             http_options = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_http_options()
-
             request, metadata = self._interceptor.pre_get_organization_event(
                 request, metadata
             )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseGetOrganizationEvent,
+                    "_BaseGetOrganizationEvent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -941,17 +939,18 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             """
 
             http_options = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_http_options()
-
             request, metadata = self._interceptor.pre_get_organization_impact(
                 request, metadata
             )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseGetOrganizationImpact,
+                    "_BaseGetOrganizationImpact__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1091,19 +1090,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListEvents._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_events(request, metadata)
-            transcoded_request = (
-                _BaseServiceHealthRestTransport._BaseListEvents._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseListEvents._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseListEvents,
+                    "_BaseListEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1243,17 +1239,18 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             """
 
             http_options = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_http_options()
-
             request, metadata = self._interceptor.pre_list_organization_events(
                 request, metadata
             )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseListOrganizationEvents,
+                    "_BaseListOrganizationEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1394,17 +1391,18 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             """
 
             http_options = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_http_options()
-
             request, metadata = self._interceptor.pre_list_organization_impacts(
                 request, metadata
             )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseListOrganizationImpacts,
+                    "_BaseListOrganizationImpacts__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1614,17 +1612,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1756,15 +1753,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseServiceHealthRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

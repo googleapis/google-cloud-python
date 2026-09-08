@@ -23,14 +23,13 @@ from __future__ import annotations
 import logging
 import random
 import time
-
 from enum import Enum
-from typing import Any, Callable, Optional, Iterator, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Iterator, Optional
 
 import requests.exceptions
+from google.auth import exceptions as auth_exceptions
 
 from google.api_core import exceptions
-from google.auth import exceptions as auth_exceptions
 
 if TYPE_CHECKING:
     import sys

@@ -700,3 +700,20 @@ def test_to_arrow_avro_consumes_first_page(class_under_test, mock_gapic_client):
     # Since read_session was not provided, to_arrow() had to consume the first message
     # to find out it was Avro. So offset should be 1.
     assert reader._offset == 1
+
+
+def test_to_dataframe_emits_pending_deprecation_warning(mut):
+    mock_parser = mock.Mock()
+    mock_message = mock.Mock()
+    mock_df = mock.Mock()
+    mock_parser.to_dataframe.return_value = mock_df
+
+    page = mut.ReadRowsPage(mock_parser, mock_message)
+    with pytest.warns(
+        PendingDeprecationWarning,
+        match="google-cloud-bigquery-storage is deprecated",
+    ):
+        actual_df = page.to_dataframe()
+
+    assert actual_df == mock_df
+    mock_parser.to_dataframe.assert_called_once_with(mock_message, dtypes=None)

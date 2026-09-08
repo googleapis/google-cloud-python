@@ -9,3 +9,11 @@ exclude =
   .git,
   *.pyc,
   conf.py
+# PEP 0810 lazy imports require __lazy_modules__ to precede import statements,
+# which causes flake8 to flag module-level imports as E402.
+per-file-ignores =
+    google/cloud/_helpers/__init__.py: E402
+    google/cloud/_http/__init__.py: E402
+    google/cloud/client/__init__.py: E402
+    google/cloud/exceptions/__init__.py: E402
+    google/cloud/operation/__init__.py: E402

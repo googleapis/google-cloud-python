@@ -29,6 +29,13 @@ from google.cloud.securitycenter_v1.types.access import (
     Geolocation,
     ServiceAccountDelegationInfo,
 )
+from google.cloud.securitycenter_v1.types.agent import Agent
+from google.cloud.securitycenter_v1.types.agent_anomaly import (
+    AgentAnomaly,
+    DetectorReference,
+    InvocationReference,
+)
+from google.cloud.securitycenter_v1.types.agent_session import AgentSession
 from google.cloud.securitycenter_v1.types.application import Application
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.attack_exposure import AttackExposure
@@ -228,6 +235,11 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Agent",
+    "AgentAnomaly",
+    "DetectorReference",
+    "InvocationReference",
+    "AgentSession",
     "Application",
     "Asset",
     "AttackExposure",

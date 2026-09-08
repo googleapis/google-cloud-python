@@ -23,12 +23,10 @@ except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
 
-from google.api_core import exceptions
-from google.api_core import retry
-from google.api_core import timeout
 import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
+from google.api_core import exceptions, retry, timeout
 
 
 def _utcnow_monotonic():
@@ -119,6 +117,83 @@ def test_invoke_wrapped_method_with_metadata_as_none():
     metadata = method.call_args[1]["metadata"]
     # Metadata should have just one items: the client info metadata.
     assert len(metadata) == 1
+
+
+def test_invoke_wrapped_method_no_client_info_with_custom_metadata():
+    method = mock.Mock(spec=["__call__"])
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
+        method, client_info=None
+    )
+
+    wrapped_method(mock.sentinel.request, metadata=[("custom-header", "value")])
+
+    method.assert_called_once_with(
+        mock.sentinel.request, metadata=[("custom-header", "value")]
+    )
+
+
+def test_extract_metrics_header_duplicate_tokens():
+    metadata = [
+        ("x-goog-api-client", "token1 token2"),
+        ("x-goog-api-client", "token2 token3 token1"),
+        ("other-header", "value"),
+        ("x-goog-api-client", "token4 token2"),
+    ]
+
+    metric_str, arbitrary_metadata = (
+        google.api_core.gapic_v1.method._extract_metrics_header(metadata)
+    )
+
+    # Should maintain order of first appearance and eliminate duplicates
+    assert metric_str == "token1 token2 token3 token4"
+    assert arbitrary_metadata == [("other-header", "value")]
+
+
+def test_invoke_wrapped_method_with_duplicate_x_goog_api_client_metadata():
+    method = mock.Mock(spec=["__call__"])
+
+    # Create a custom ClientInfo with defined properties so we know exactly what is returned
+    client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+        user_agent="custom-user-agent/1.0",
+        python_version="3.14.0",
+        grpc_version="1.76.0",
+        api_core_version="2.29.0",
+    )
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
+        method, client_info=client_info
+    )
+
+    # Invoke the wrapped method with an explicit user-provided custom header that contains duplicates
+    # both within its own items and overlapping with the default client_info
+    wrapped_method(
+        mock.sentinel.request,
+        metadata=[
+            ("x-goog-api-client", "override-client/2.0"),
+            (
+                "x-goog-api-client",
+                "override-client/2.0 grpc/1.76.0 custom-user-agent/1.0",
+            ),
+            ("other-header", "value"),
+        ],
+    )
+
+    method.assert_called_once_with(mock.sentinel.request, metadata=mock.ANY)
+    metadata = method.call_args[1]["metadata"]
+
+    # There should only be one "x-goog-api-client" header, containing both values joined by space,
+    # plus the other-header.
+    assert len(metadata) == 2
+    metadata_dict = dict(metadata)
+    assert "other-header" in metadata_dict
+    assert metadata_dict["other-header"] == "value"
+    assert "x-goog-api-client" in metadata_dict
+    # Verify both the user-provided override value and the library system telemetry are merged explicitly
+    assert (
+        metadata_dict["x-goog-api-client"]
+        == "custom-user-agent/1.0 gl-python/3.14.0 grpc/1.76.0 gax/2.29.0 override-client/2.0"
+    )
 
 
 @mock.patch("time.sleep")
@@ -250,3 +325,24 @@ def test_wrap_method_with_call_not_supported():
     with pytest.raises(ValueError) as exc_info:
         google.api_core.gapic_v1.method.wrap_method(method, with_call=True)
     assert "with_call=True is only supported for unary calls" in str(exc_info.value)
+
+
+@pytest.mark.parametrize(
+    "headers,expected",
+    [
+        ((), ""),
+        (("",), ""),
+        ((None,), ""),
+        (("", None, ""), ""),
+        (("token1",), "token1"),
+        (("token1 token1",), "token1"),
+        (("token1", "token1"), "token1"),
+        (("token1 token2 token1",), "token1 token2"),
+        (("token1", "token2", "token1"), "token1 token2"),
+        (("token1 token2", "token2 token3"), "token1 token2 token3"),
+        (("token1", None, "token2", "", "token1"), "token1 token2"),
+    ],
+)
+def test__deduplicate_metadata_tokens(headers, expected):
+    dedup = google.api_core.gapic_v1.method._deduplicate_metadata_tokens
+    assert dedup(*headers) == expected

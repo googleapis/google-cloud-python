@@ -21,6 +21,8 @@ version of the ``db`` API (hence ``ndb``).
 .. autodata:: __all__
 """
 
+import google.api_core as api_core
+
 from google.cloud.ndb import version
 
 __version__: str = version.__version__
@@ -134,6 +136,9 @@ from google.cloud.ndb.tasklets import (
     wait_all,
     wait_any,
 )
+
+api_core.check_python_version(__name__)
+api_core.check_dependency_versions(__name__)
 
 __all__ = [
     "__version__",

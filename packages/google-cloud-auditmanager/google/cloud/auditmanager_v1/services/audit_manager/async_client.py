@@ -327,14 +327,12 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.Enrollment:
-        r"""Enrolls the customer
-        resource(folder/project/organization) to the audit
-        manager service by creating the audit managers Service
-        Agent in customers workload and granting required
-        permissions to the Service Agent. Please note that if
-        enrollment request is made on the already enrolled
-        workload then enrollment is executed overriding the
-        existing set of destinations.
+        r"""Adds your project, folder, or organization to Audit
+        Manager. This method creates the Audit Manager service
+        agent in your workload and grants required permissions
+        to the service agent. If you make this request on a
+        workload that's already enrolled, then this method
+        overrides the existing set of destinations.
 
         .. code-block:: python
 
@@ -368,33 +366,33 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.EnrollResourceRequest, dict]]):
-                The request object. Request message to subscribe the
-                Audit Manager service for given
-                resource.
+                The request object. Request message for
+                [EnrollResource][google.cloud.auditmanager.v1.AuditManager.EnrollResource].
             scope (:class:`str`):
-                Required. The resource to be enrolled to the audit
-                manager. Scope format should be
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
-                organizations/{organization}/locations/{location}
+                Required. Organization, folder, or project to enroll in
+                Audit Manager, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             destinations (:class:`MutableSequence[google.cloud.auditmanager_v1.types.EnrollResourceRequest.EligibleDestination]`):
-                Required. List of destination among
-                which customer can choose to upload
-                their reports during the audit process.
-                While enrolling at a organization/folder
-                level, customer can choose Cloud storage
-                bucket in any project. If the audit is
-                triggered at project level using the
-                service agent at organization/folder
-                level, all the destination options
-                associated with respective
-                organization/folder level service agent
-                will be available to auditing projects.
+                Required. Cloud Storage buckets that
+                you can upload your audit reports to
+                during the audit process.
+
+                When you enroll an organization or
+                folder, you can choose a Cloud Storage
+                bucket from any project in the
+                organization or folder. If you run an
+                audit at the project level using the
+                service agent at the organization or
+                folder level, all the buckets that are
+                associated with the service agent are
+                available.
 
                 This corresponds to the ``destinations`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -409,7 +407,9 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.types.Enrollment:
-                The enrollment resource.
+                Organization, folder, or project to
+                enroll for audit reports.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -477,10 +477,14 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.AuditScopeReport:
-        r"""Generates a demo report highlighting different
-        responsibilities (Google/Customer/ shared) required to
-        be fulfilled for the customer's workload to be compliant
-        with the given standard.
+        r"""Generates an audit scope report for the given standard.
+
+        The report includes the following:
+
+        - The technical attributes and constraints that Audit Manager
+          uses to verify your compliance with a framework.
+        - A list of Google Cloud services and resources that are within
+          the scope of the framework.
 
         .. code-block:: python
 
@@ -500,7 +504,6 @@ class AuditManagerAsyncClient:
                 # Initialize request argument(s)
                 request = auditmanager_v1.GenerateAuditScopeReportRequest(
                     scope="scope_value",
-                    compliance_standard="compliance_standard_value",
                     report_format="AUDIT_SCOPE_REPORT_FORMAT_ODF",
                     compliance_framework="compliance_framework_value",
                 )
@@ -513,28 +516,32 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.GenerateAuditScopeReportRequest, dict]]):
-                The request object. Message for requesting audit scope
-                report.
+                The request object. Request message for
+                [GenerateAuditScopeReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditScopeReport].
             scope (:class:`str`):
-                Required. Scope for which the AuditScopeReport is
-                required. Must be of format
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
+                Required. Project or folder that the audit scope report
+                is generated for, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             compliance_standard (:class:`str`):
-                Required. Compliance Standard against which the Scope
-                Report must be generated. Eg: FEDRAMP_MODERATE
+                Optional. Deprecated. The standard (industry or
+                regulatory requirements) that the audit scope report is
+                run against.
+
+                Use the ``compliance_framework`` field instead.
 
                 This corresponds to the ``compliance_standard`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             report_format (:class:`google.cloud.auditmanager_v1.types.GenerateAuditScopeReportRequest.AuditScopeReportFormat`):
-                Required. The format in which the
-                Scope report bytes should be returned.
+                Required. Format for the audit scope
+                report.
 
                 This corresponds to the ``report_format`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -549,7 +556,7 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.types.AuditScopeReport:
-                The audit scope report.
+                Audit scope report.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -618,9 +625,9 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Register the Audit Report generation requests and
-        returns the OperationId using which the customer can
-        track the report generation progress.
+        r"""Registers audit report generation requests. This
+        method returns the operation identifier that you can use
+        to track the report generation progress.
 
         .. code-block:: python
 
@@ -641,7 +648,6 @@ class AuditManagerAsyncClient:
                 request = auditmanager_v1.GenerateAuditReportRequest(
                     gcs_uri="gcs_uri_value",
                     scope="scope_value",
-                    compliance_standard="compliance_standard_value",
                     report_format="AUDIT_REPORT_FORMAT_ODF",
                     compliance_framework="compliance_framework_value",
                 )
@@ -658,39 +664,41 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.GenerateAuditReportRequest, dict]]):
-                The request object. Message for requesting the Audit
-                Report.
+                The request object. Request message for
+                [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport].
             scope (:class:`str`):
-                Required. Scope for which the AuditScopeReport is
-                required. Must be of format
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
+                Required. Organization, folder, or project that the
+                audit applies to, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             gcs_uri (:class:`str`):
-                Destination Cloud storage bucket
-                where report and evidence must be
-                uploaded. The Cloud storage bucket
-                provided here must be selected among the
-                buckets entered during the enrollment
+                URL for the Cloud Storage bucket
+                where the report and evidence is
+                uploaded. You must select a bucket that
+                was provided during the enrollment
                 process.
 
                 This corresponds to the ``gcs_uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             compliance_standard (:class:`str`):
-                Required. Compliance Standard against which the Scope
-                Report must be generated. Eg: FEDRAMP_MODERATE
+                Optional. Deprecated. Compliance standard for the audit
+                report.
+
+                Use the ``compliance_framework`` field instead.
 
                 This corresponds to the ``compliance_standard`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             report_format (:class:`google.cloud.auditmanager_v1.types.GenerateAuditReportRequest.AuditReportFormat`):
-                Required. The format in which the
-                audit report should be created.
+                Required. Format for the audit
+                report.
 
                 This corresponds to the ``report_format`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -784,7 +792,8 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAuditReportsAsyncPager:
-        r"""Lists audit reports in the selected parent scope
+        r"""Lists the audit reports for the organization, folder,
+        or project that you specify as the parent scope.
 
         .. code-block:: python
 
@@ -815,11 +824,15 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.ListAuditReportsRequest, dict]]):
-                The request object. Message for requesting to list the
-                audit reports.
+                The request object. Request message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
             parent (:class:`str`):
-                Required. The parent scope for which
-                to list the reports.
+                Required. Parent organization, folder, or project to
+                list reports for, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -834,11 +847,11 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListAuditReportsAsyncPager:
-                Response message with all the audit
-                reports.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -910,7 +923,8 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.AuditReport:
-        r"""Get the overall audit report
+        r"""Gets the full metadata and findings for an audit
+        report.
 
         .. code-block:: python
 
@@ -940,12 +954,15 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.GetAuditReportRequest, dict]]):
-                The request object. Message for requesting the overall
-                audit report for an audit report name.
+                The request object. Request message for
+                [GetAuditReport][google.cloud.auditmanager.v1.AuditManager.GetAuditReport].
             name (:class:`str`):
-                Required. Format
-                projects/{project}/locations/{location}/auditReports/{audit_report},
-                folders/{folder}/locations/{location}/auditReports/{audit_report}
+                Required. Name of the audit report, in one of the
+                following formats:
+
+                - ``projects/{project}/locations/{location}/auditReports/{audit_report}``
+                - ``folders/{folder}/locations/{location}/auditReports/{audit_report}``
+                - ``organizations/{organization}/locations/{location}/auditReports/{audit_report}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1022,7 +1039,7 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.ResourceEnrollmentStatus:
-        r"""Get a resource along with its enrollment status.
+        r"""Gets a resource and its enrollment status.
 
         .. code-block:: python
 
@@ -1052,13 +1069,15 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.GetResourceEnrollmentStatusRequest, dict]]):
-                The request object. Message for getting the enrollment
-                status of a resource.
+                The request object. Request message for
+                [GetResourceEnrollmentStatus][google.cloud.auditmanager.v1.AuditManager.GetResourceEnrollmentStatus].
             name (:class:`str`):
-                Required. Format
-                folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-                projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-                organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}
+                Required. Name of the resource enrollment status, in one
+                of the following formats:
+
+                - ``folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+                - ``projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+                - ``organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1073,8 +1092,8 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.types.ResourceEnrollmentStatus:
-                A resource with its enrollment
-                status.
+                An organization, folder, or project
+                with its enrollment status.
 
         """
         # Create or coerce a protobuf request object.
@@ -1137,8 +1156,8 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListResourceEnrollmentStatusesAsyncPager:
-        r"""Fetches all resources under the parent along with
-        their enrollment.
+        r"""Lists all the folders and projects in an organization
+        or folder, along with their enrollments.
 
         .. code-block:: python
 
@@ -1169,13 +1188,15 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.ListResourceEnrollmentStatusesRequest, dict]]):
-                The request object. Message for listing all the
-                descendent resources under parent with
-                enrollment.
+                The request object. Request message for
+                [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
             parent (:class:`str`):
-                Required. The parent scope for which
-                the list of resources with enrollments
-                are required.
+                Required. Parent organization or folder to list
+                enrollment statuses for, in one of the following
+                formats:
+
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1190,11 +1211,11 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListResourceEnrollmentStatusesAsyncPager:
-                Response message with all the
-                descendent resources with enrollment.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1266,8 +1287,8 @@ class AuditManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListControlsAsyncPager:
-        r"""Gets controls needed to be implemented to be
-        compliant to a standard.
+        r"""Lists the controls that you must implement to become
+        compliant to a regulatory standard.
 
         .. code-block:: python
 
@@ -1298,12 +1319,15 @@ class AuditManagerAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.auditmanager_v1.types.ListControlsRequest, dict]]):
-                The request object. Message for requesting all the
-                controls for a compliance standard.
+                The request object. Request message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
             parent (:class:`str`):
-                Required. Format
-                projects/{project}/locations/{location}/standards/{standard},
-                folders/{folder}/locations/{location}/standards/{standard}
+                Required. Standard to list controls for, in one of the
+                following formats:
+
+                - ``projects/{project}/locations/{location}/standards/{standard}``
+                - ``folders/{folder}/locations/{location}/standards/{standard}``
+                - ``organizations/{organization}/locations/{location}/standards/{standard}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1318,11 +1342,11 @@ class AuditManagerAsyncClient:
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListControlsAsyncPager:
-                Response message with all the
-                controls for a compliance standard.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1750,9 +1774,7 @@ class AuditManagerAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("AuditManagerAsyncClient",)

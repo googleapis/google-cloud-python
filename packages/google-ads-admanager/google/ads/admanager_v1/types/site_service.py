@@ -78,18 +78,17 @@ class ListSitesRequest(proto.Message):
             ``ListSites`` must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>approvalStatus</code></li>
-              <li><code>approvalStatusUpdateTime</code></li>
-            <li><code>childNetworkCode</code></li>
-              <li><code>name</code></li>
-              <li><code>url</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``approvalStatus``
+            - ``approvalStatusUpdateTime``
+            - ``childNetworkCode``
+            - ``name``
+            - ``url``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

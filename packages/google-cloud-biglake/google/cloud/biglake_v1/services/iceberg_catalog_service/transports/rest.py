@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.biglake_v1._compat import transcode_request
 from google.cloud.biglake_v1.types import iceberg_rest_catalog
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -53,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IcebergCatalogServiceRestInterceptor:
@@ -386,34 +386,15 @@ class IcebergCatalogServiceRestStub:
 class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport):
     """REST backend synchronous transport for IcebergCatalogService.
 
-    Iceberg Catalog Service API: this implements the open-source Iceberg
-    REST Catalog API. See the API definition here:
-    https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+    Lakehouse runtime catalog supports the following catalog
+    management methods:
 
-    The API is defined as OpenAPI 3.1.1 spec.
-
-    Currently we only support the following methods:
-
-    - GetConfig/GetIcebergCatalogConfig
-    - ListIcebergNamespaces
-    - CheckIcebergNamespaceExists
-    - GetIcebergNamespace
-    - CreateIcebergNamespace (only supports single level)
-    - DeleteIcebergNamespace
-    - UpdateIcebergNamespace properties
-    - ListTableIdentifiers
-    - CreateIcebergTable
-    - DeleteIcebergTable
-    - GetIcebergTable
-    - UpdateIcebergTable (CommitTable)
-    - LoadIcebergTableCredentials
-    - RegisterTable
-
-    Users are required to provided the ``X-Goog-User-Project`` header
-    with the project id or number which can be different from the bucket
-    project id. That project will be charged for the API calls and the
-    calling user must have access to that project. The caller must have
-    ``serviceusage.services.use`` permission on the project.
+    - GetIcebergCatalog
+    - ListIcebergCatalogs
+    - DeleteIcebergCatalog
+    - UpdateIcebergCatalog
+    - CreateIcebergCatalog
+    - FailoverIcebergCatalog
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -554,21 +535,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             """
 
             http_options = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_create_iceberg_catalog(
                 request, metadata
             )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog,
+                    "_BaseCreateIcebergCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -712,21 +690,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             """
 
             http_options = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_failover_iceberg_catalog(
                 request, metadata
             )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog,
+                    "_BaseFailoverIcebergCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -866,17 +841,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             """
 
             http_options = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_get_iceberg_catalog(
                 request, metadata
             )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog,
+                    "_BaseGetIcebergCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1017,17 +993,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             """
 
             http_options = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_http_options()
-
             request, metadata = self._interceptor.pre_list_iceberg_catalogs(
                 request, metadata
             )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs,
+                    "_BaseListIcebergCatalogs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1170,21 +1147,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             """
 
             http_options = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_http_options()
-
             request, metadata = self._interceptor.pre_update_iceberg_catalog(
                 request, metadata
             )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog,
+                    "_BaseUpdateIcebergCatalog__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

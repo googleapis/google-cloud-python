@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_products_v1._compat import transcode_request
 from google.shopping.merchant_products_v1.types import productinputs
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -54,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ProductInputsServiceRestInterceptor:
@@ -356,17 +356,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             """
 
             http_options = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_product_input(
                 request, metadata
             )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductInputsServiceRestTransport._BaseDeleteProductInput,
+                    "_BaseDeleteProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -505,21 +506,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             """
 
             http_options = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_http_options()
-
             request, metadata = self._interceptor.pre_insert_product_input(
                 request, metadata
             )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductInputsServiceRestTransport._BaseInsertProductInput,
+                    "_BaseInsertProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -698,21 +696,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             """
 
             http_options = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
-
             request, metadata = self._interceptor.pre_update_product_input(
                 request, metadata
             )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseProductInputsServiceRestTransport._BaseUpdateProductInput,
+                    "_BaseUpdateProductInput__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
