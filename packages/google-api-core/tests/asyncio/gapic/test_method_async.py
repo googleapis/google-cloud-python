@@ -27,12 +27,17 @@ except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import (
+    client_options as client_options_lib,
+)
+from google.api_core import (
     exceptions,
     gapic_v1,
     grpc_helpers_async,
     retry_async,
     timeout,
 )
+from google.api_core.gapic_v1 import client_info
+from tests.helpers import assert_uninstrumented_gapic_callable
 
 
 def _utcnow_monotonic():
@@ -276,50 +281,104 @@ async def test_wrap_method_without_wrap_errors():
         method.assert_not_called()
 
 
-@pytest.mark.asyncio
-async def test_wrap_method_async_with_otel_tracing(monkeypatch):
-    import sys
+_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES = {
+    "rpc.system": "grpc",
+    "rpc.service": "google.test.AsyncService",
+    "rpc.method": "AsyncMethod",
+    "gcp.client.service": "AsyncService",
+    "gcp.client.repo": "googleapis/google-cloud-python",
+}
 
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_with_otel_tracing(mock_otel):
+    """Proves that method_async.wrap_method creates a T3 span upon invocation."""
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
     method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
 
-    mock_span = mock.MagicMock()
-    mock_tracer = mock.MagicMock()
-    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
-
-    mock_trace = mock.Mock()
-    mock_trace.get_tracer.return_value = mock_tracer
-    mock_trace.SpanKind.CLIENT = "CLIENT"
-
-    with (
-        mock.patch(
-            "google.api_core._observability.is_otel_capabilities_enabled",
-            return_value=True,
-        ),
-        mock.patch.dict(
-            sys.modules,
-            {
-                "opentelemetry": mock.Mock(trace=mock_trace),
-                "opentelemetry.trace": mock_trace,
-            },
-        ),
-    ):
-        wrapped_method = gapic_v1.method_async.wrap_method(
-            method,
-            method_name="google.test.AsyncService/AsyncMethod",
-        )
-        result = await wrapped_method(1, 2, meep="moop")
+    wrapped_method = gapic_v1.method_async.wrap_method(
+        method,
+        method_name="google.test.AsyncService/AsyncMethod",
+    )
+    result = await wrapped_method(1, 2, meep="moop")
 
     assert result == 42
-    mock_tracer.start_as_current_span.assert_called_once_with(
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.test.AsyncService/AsyncMethod",
+        kind="CLIENT",
+        attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
+    )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_streaming_skips_span(mock_otel):
+    """Proves that method_async.wrap_method with is_streaming=True skips span creation."""
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        method,
+        method_name="google.test.AsyncService/AsyncMethod",
+        is_streaming=True,
+    )
+    result = await wrapped(1, 2)
+
+    assert_uninstrumented_gapic_callable(
+        wrapped,
+        result,
+        method,
+        mock_trace=mock_otel.trace,
+        expected_result=42,
+    )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
+    """Proves that method_async.wrap_method forwards custom client_options tracer_provider."""
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_otel.tracer
+    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        method,
+        client_options=client_options,
+        method_name="google.test.AsyncService/AsyncMethod",
+    )
+    result = await wrapped(1, 2)
+
+    assert result == 42
+    mock_provider.get_tracer.assert_called_once_with("google.api_core")
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.test.AsyncService/AsyncMethod",
+        kind="CLIENT",
+        attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
+    )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
+    """Proves that method_async.wrap_method passes client_info to _GapicCallable."""
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    info = client_info.ClientInfo(client_library_version="3.0.0")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        method,
+        client_info=info,
+        method_name="google.test.AsyncService/AsyncMethod",
+    )
+    result = await wrapped(1, 2)
+
+    assert result == 42
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.test.AsyncService/AsyncMethod",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.test.AsyncService",
-            "rpc.method": "AsyncMethod",
-            "gcp.client.service": "AsyncService",
-            "gcp.client.repo": "googleapis/google-cloud-python",
+            **_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
+            "gcp.client.version": "3.0.0",
         },
     )

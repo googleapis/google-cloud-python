@@ -78,3 +78,30 @@ warn_deprecated_credentials_file = functools.partial(
     DeprecationWarning,
     match="argument is deprecated because of a potential security risk",
 )
+
+
+def assert_uninstrumented_gapic_callable(
+    wrapped,
+    result,
+    mock_target,
+    mock_trace=None,
+    expected_result="success",
+):
+    """Verifies that an uninstrumented RPC callable succeeds without tracing overhead.
+
+    1. Proves the RPC executed successfully with the expected return value.
+    2. Proves the OpenTelemetry API was never invoked.
+    3. Proves the callable holds no tracer or span configuration.
+    """
+    # 1. Prove the RPC executed successfully
+    assert result == expected_result
+    mock_target.assert_called_once()
+
+    # 2. Prove the OpenTelemetry API was never invoked
+    if mock_trace is not None:
+        mock_trace.get_tracer.assert_not_called()
+
+    # 3. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
