@@ -394,6 +394,37 @@ def test_wrap_method_otel_tracing_omitted_method_name_skips_span(monkeypatch):
     mock_trace.get_tracer.assert_not_called()
 
 
+def test_wrap_method_otel_tracing_explicit_trace_false_skips_span(monkeypatch):
+    """Proves that when trace=False is explicitly passed (e.g. streaming call), no span is created."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+
+    mock_trace = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        wrapped = google.api_core.gapic_v1.method.wrap_method(
+            mock_target,
+            method_name="/google.cloud.secretmanager.v1.SecretManagerService/StreamingRead",
+            trace=False,
+        )
+        result = wrapped()
+
+    assert result == "success"
+    mock_trace.get_tracer.assert_not_called()
+
+
 def test_wrap_method_otel_tracing_enabled_success(monkeypatch):
     """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
@@ -652,3 +683,36 @@ def test_wrap_method_async_otel_tracing(monkeypatch):
             "rpc.method": "AsyncMethod",
         },
     )
+
+
+def test_wrap_method_async_otel_tracing_trace_false_skips_span(monkeypatch):
+    """Proves that method_async.wrap_method with trace=False skips span creation."""
+    from google.api_core.gapic_v1 import method_async
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="async_success")
+    mock_trace = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        wrapped = method_async.wrap_method(
+            mock_target,
+            kind=None,
+            method_name="google.test.AsyncService/AsyncMethod",
+            trace=False,
+        )
+        result = wrapped()
+
+    assert result == "async_success"
+    mock_trace.get_tracer.assert_not_called()
