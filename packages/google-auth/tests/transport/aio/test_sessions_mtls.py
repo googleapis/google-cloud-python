@@ -853,3 +853,109 @@ class TestSessionsMtls:
         assert all(r.status_code == 200 for r in results)
         assert refresh_count == 1
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_with_completed_mtls_init_task():
+        """
+        Verifies that when _mtls_init_task is already completed, the
+        _mtls_init_task.done() reset branch in configure_mtls_channel() is exercised.
+        """
+        old_cert = b"old_cert_data"
+        new_cert = b"new_cert_data"
+        new_key = b"new_key_data"
+    
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        
+        # Mock a completed initial task
+        async def dummy_init():
+            return None
+        completed_task = asyncio.create_task(dummy_init())
+        await completed_task
+    
+        # Mock response returning 401 first, then 200 after rotation
+        mock_auth_request = mock.AsyncMock(spec=transport.Request)
+        mock_resp_401 = mock.Mock(spec=transport.Response, status_code=401)
+        mock_resp_200 = mock.Mock(spec=transport.Response, status_code=200)
+        mock_auth_request.side_effect = [mock_resp_401, mock_resp_200]
+    
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_request
+        )
+        session._is_mtls = True
+        session._cached_cert = old_cert
+        session._mtls_init_task = completed_task  # Pre-populate completed task
+    
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response",
+            return_value=(new_cert, new_key, "old_fp", "new_fp"),
+        ), mock.patch.object(
+            session, "configure_mtls_channel", wraps=session.configure_mtls_channel
+        ) as spy_configure:
+            resp = await session.request("GET", "https://example.com")
+            
+            assert resp.status_code == 200
+            assert spy_configure.called
+            # Verify the previous task was replaced and new configuration completed
+            assert session._mtls_init_task is not completed_task
+            assert session._mtls_init_task.done()
+    
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_retry_raises_timeout_before_refresh():
+        """
+        Tests that TimeoutError is raised if max_allowed_time expires before
+        credentials.refresh can be executed following a 401.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_auth_request = mock.AsyncMock(spec=transport.Request)
+        mock_resp_401 = mock.Mock(spec=transport.Response, status_code=401)
+        mock_auth_request.return_value = mock_resp_401
+    
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_request
+        )
+    
+        # Initial monotonic call: start (0), before_request (0.2), request (0.4)
+        # Then monotonic advances to 10.0 (exceeding max_allowed_time=1.0) before refresh
+        with mock.patch("time.monotonic", side_effect=[0, 0.2, 0.4, 10.0, 10.0, 10.0]):
+            with pytest.raises(exceptions.TimeoutError):
+                await session.request("GET", "https://example.com", max_allowed_time=1.0)
+    
+        # Assert refresh was never called because timeout expired beforehand
+        mock_creds.refresh.assert_not_called()
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_retry_raises_timeout_before_subsequent_retry():
+        """
+        Tests that TimeoutError is raised if credentials.refresh succeeds on 401,
+        but remaining time expires before the retry request can complete.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_auth_request = mock.AsyncMock(spec=transport.Request)
+        mock_resp_401 = mock.Mock(spec=transport.Response, status_code=401)
+        mock_auth_request.return_value = mock_resp_401
+    
+        async def mock_refresh(auth_request):
+            # Refresh takes time
+            return None
+    
+        mock_creds.refresh = mock.AsyncMock(side_effect=mock_refresh)
+    
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_request
+        )
+    
+        # Simulate monotonic advancing so refresh completes but remaining time <= 0 for the retry
+        with mock.patch(
+            "time.monotonic",
+            side_effect=[0.0, 0.1, 0.2, 0.3, 0.4, 5.0, 5.0, 5.0],
+        ):
+            with pytest.raises(exceptions.TimeoutError):
+                await session.request("GET", "https://example.com", max_allowed_time=1.0)
+    
+        # Assert refresh was called once, but the subsequent request aborted on timeout
+        assert mock_creds.refresh.call_count == 1
+        assert mock_auth_request.call_count == 1
+        await session.close()
