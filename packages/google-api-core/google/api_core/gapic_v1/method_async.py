@@ -37,10 +37,9 @@ def wrap_method(
     default_compression=None,
     client_info=client_info.DEFAULT_CLIENT_INFO,
     kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
+    *,
+    client_options=None,
     method_name=None,
-    tracer_provider=None,
-    rpc_system="grpc",
-    is_streaming=False,
 ):
     """Wrap an async RPC method with common behavior.
 
@@ -61,9 +60,7 @@ def wrap_method(
             default_timeout,
             default_compression,
             metadata=metadata,
+            client_options=client_options,
             method_name=method_name,
-            tracer_provider=tracer_provider,
-            rpc_system=rpc_system,
-            is_streaming=is_streaming,
         )
     )
