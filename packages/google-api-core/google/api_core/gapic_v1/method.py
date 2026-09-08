@@ -267,7 +267,8 @@ class _GapicCallable(object):
                     kind=trace.SpanKind.CLIENT,
                     attributes=self._span_attributes,
                 )
-            except Exception:  # pragma: NO COVER
+            except Exception:
+                # Purposefully and gracefully bypass OpenTelemetry errors to ensure RPC success.
                 span_context_manager = contextlib.nullcontext()
 
         with span_context_manager as span:

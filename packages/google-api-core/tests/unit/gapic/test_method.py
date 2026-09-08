@@ -684,6 +684,44 @@ def test_wrap_method_otel_tracing_provider_type_error(monkeypatch):
     mock_target.assert_called_once()
 
 
+def test_wrap_method_otel_tracing_start_span_error_bypasses_tracing(monkeypatch):
+    """Proves that if start_as_current_span raises an Exception, execution proceeds gracefully with nullcontext."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    mock_target = mock.Mock(return_value="success")
+
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.side_effect = RuntimeError(
+        "Tracing context failed"
+    )
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        wrapped = google.api_core.gapic_v1.method.wrap_method(
+            mock_target,
+            method_name="google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        )
+        result = wrapped()
+
+    assert result == "success"
+    mock_target.assert_called_once()
+    mock_tracer.start_as_current_span.assert_called_once()
+
+
 def test_wrap_method_async_otel_tracing(monkeypatch):
     """Proves that method_async.wrap_method correctly passes client_options and method_name to _GapicCallable."""
     from google.api_core.gapic_v1 import method_async
