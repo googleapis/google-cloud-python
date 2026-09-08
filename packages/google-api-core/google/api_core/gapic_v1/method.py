@@ -20,7 +20,7 @@ compression, pagination, and long-running operations to gRPC methods.
 
 import enum
 import functools
-from typing import List, Tuple
+from typing import Any, List, Optional, Sequence, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -104,6 +104,36 @@ def _extract_metrics_header(metadata) -> Tuple[str, List[Tuple[str, str]]]:
     return metric_str, arbitrary_metadata
 
 
+def _extract_rpc_identity(
+    target: Any, method_name: Optional[str] = None
+) -> Tuple[str, str, str]:
+    """Extract (full_rpc_name, service_name, rpc_method_name) from an explicit method name or target callable.
+
+    Args:
+        target: The underlying callable method.
+        method_name: Optional explicit RPC name (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+
+    Returns:
+        Tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name, rpc_method_name).
+    """
+    if method_name:
+        method_str = method_name.lstrip("/")
+        service, _, method = method_str.rpartition("/")
+        return method_str, service, method
+
+    raw_method = getattr(target, "_method", None)
+    if raw_method and isinstance(raw_method, (str, bytes)):
+        if isinstance(raw_method, bytes):
+            raw_method = raw_method.decode("utf-8")
+        method_str = raw_method.lstrip("/")
+        service, _, method = method_str.rpartition("/")
+        return method_str, service, method
+
+    service = "google.api_core"
+    method = getattr(target, "__name__", "call")
+    return f"{service}/{method}", service, method
+
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -123,6 +153,8 @@ class _GapicCallable(object):
             provided to the RPC method on every invocation. This is merged with
             any metadata specified during invocation. If ``None``, no
             additional metadata will be passed to the RPC method.
+        method_name (Optional[str]): The optional explicit full RPC method name
+            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
     """
 
     def __init__(
@@ -132,11 +164,15 @@ class _GapicCallable(object):
         timeout,
         compression,
         metadata=None,
+        method_name=None,
     ):
         self._target = target
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
+        self._rpc_method_name, self._rpc_service, self._rpc_method = (
+            _extract_rpc_identity(target, method_name)
+        )
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
         self._static_metadata = tuple(remaining)
@@ -191,25 +227,13 @@ class _GapicCallable(object):
                 from opentelemetry import trace
 
                 tracer = trace.get_tracer("google.api_core")
-                raw_method = getattr(self._target, "_method", None)
-                if raw_method and isinstance(raw_method, (str, bytes)):
-                    if isinstance(raw_method, bytes):
-                        raw_method = raw_method.decode("utf-8")
-                    method_str = raw_method.lstrip("/")
-                    service, _, method = method_str.rpartition("/")
-                    span_name = method_str
-                else:
-                    service = "google.api_core"
-                    method = getattr(self._target, "__name__", "call")
-                    span_name = f"{service}/{method}"
-
                 with tracer.start_as_current_span(
-                    span_name,
+                    self._rpc_method_name,
                     kind=trace.SpanKind.CLIENT,
                     attributes={
                         "rpc.system": "grpc",
-                        "rpc.service": service,
-                        "rpc.method": method,
+                        "rpc.service": self._rpc_service,
+                        "rpc.method": self._rpc_method,
                     },
                 ) as span:
                     try:
@@ -233,6 +257,7 @@ def wrap_method(
     client_info=client_info.DEFAULT_CLIENT_INFO,
     *,
     with_call=False,
+    method_name=None,
 ):
     """Wrap an RPC method with common behavior.
 
@@ -316,6 +341,8 @@ def wrap_method(
             return a tuple of (response, grpc.Call) instead of just the response.
             This is useful for extracting trailing metadata from unary calls.
             Defaults to False.
+        method_name (Optional[str]): Optional explicit full RPC method name
+            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -343,5 +370,6 @@ def wrap_method(
             default_timeout,
             default_compression,
             metadata=user_agent_metadata,
+            method_name=method_name,
         )
     )
