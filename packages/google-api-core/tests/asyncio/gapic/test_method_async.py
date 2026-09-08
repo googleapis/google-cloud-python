@@ -274,3 +274,50 @@ async def test_wrap_method_without_wrap_errors():
         await wrapped_method()
 
         method.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_with_otel_tracing(monkeypatch):
+    import sys
+
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_trace = mock.Mock()
+    mock_trace.get_tracer.return_value = mock_tracer
+    mock_trace.SpanKind.CLIENT = "CLIENT"
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        wrapped_method = gapic_v1.method_async.wrap_method(
+            method,
+            method_name="google.test.AsyncService/AsyncMethod",
+        )
+        result = await wrapped_method(1, 2, meep="moop")
+
+    assert result == 42
+    mock_tracer.start_as_current_span.assert_called_once_with(
+        "google.test.AsyncService/AsyncMethod",
+        kind="CLIENT",
+        attributes={
+            "rpc.system": "grpc",
+            "rpc.service": "google.test.AsyncService",
+            "rpc.method": "AsyncMethod",
+        },
+    )
