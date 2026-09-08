@@ -352,19 +352,39 @@ def test__deduplicate_metadata_tokens(headers, expected):
 
 def test_wrap_method_otel_tracing_disabled(monkeypatch):
     """Proves that when OpenTelemetry tracing is disabled, no span is created."""
-    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
     mock_target = mock.Mock(return_value="success")
+    mock_trace = mock.Mock()
 
-    with mock.patch(
-        "google.api_core._observability.is_otel_capabilities_enabled",
-        return_value=False,
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=False,
+        ),
+        mock.patch.dict(
+            sys.modules,
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
     ):
         wrapped = google.api_core.gapic_v1.method.wrap_method(
             mock_target,
             method_name="google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         )
-        assert wrapped() == "success"
+        result = wrapped()
+
+    # 1. Prove the RPC executed successfully
+    assert result == "success"
     mock_target.assert_called_once()
+
+    # 2. Prove the OpenTelemetry API was never invoked
+    mock_trace.get_tracer.assert_not_called()
+
+    # 3. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_omitted_method_name_skips_span(monkeypatch):
@@ -390,8 +410,17 @@ def test_wrap_method_otel_tracing_omitted_method_name_skips_span(monkeypatch):
         wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "success"
+    mock_target.assert_called_once()
+
+    # 2. Prove the OpenTelemetry API was never invoked
     mock_trace.get_tracer.assert_not_called()
+
+    # 3. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_streaming_skips_span(monkeypatch):
@@ -421,8 +450,17 @@ def test_wrap_method_otel_tracing_streaming_skips_span(monkeypatch):
         )
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "success"
+    mock_target.assert_called_once()
+
+    # 2. Prove the OpenTelemetry API was never invoked
     mock_trace.get_tracer.assert_not_called()
+
+    # 3. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_enabled_success(monkeypatch):
@@ -628,8 +666,14 @@ def test_wrap_method_otel_tracing_import_error(monkeypatch):
         )
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "success"
     mock_target.assert_called_once()
+
+    # 2. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_provider_attribute_error(monkeypatch):
@@ -654,8 +698,14 @@ def test_wrap_method_otel_tracing_provider_attribute_error(monkeypatch):
         )
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "success"
     mock_target.assert_called_once()
+
+    # 2. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_provider_type_error(monkeypatch):
@@ -680,8 +730,14 @@ def test_wrap_method_otel_tracing_provider_type_error(monkeypatch):
         )
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "success"
     mock_target.assert_called_once()
+
+    # 2. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
 
 
 def test_wrap_method_otel_tracing_start_span_error_bypasses_tracing(monkeypatch):
@@ -804,5 +860,14 @@ def test_wrap_method_async_otel_tracing_streaming_skips_span(monkeypatch):
         )
         result = wrapped()
 
+    # 1. Prove the RPC executed successfully
     assert result == "async_success"
+    mock_target.assert_called_once()
+
+    # 2. Prove the OpenTelemetry API was never invoked
     mock_trace.get_tracer.assert_not_called()
+
+    # 3. Prove the callable holds no tracer or span configuration
+    assert wrapped._tracer is None
+    assert wrapped._span_name is None
+    assert wrapped._span_attributes is None
