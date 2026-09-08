@@ -373,6 +373,27 @@ def _assert_uninstrumented_rpc(
     assert wrapped._span_attributes is None
 
 
+_BASE_SPAN_ATTRIBUTES = {
+    "rpc.system": "grpc",
+    "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
+    "rpc.method": "ListSecrets",
+    "gcp.client.service": "SecretManagerService",
+}
+
+_DEFAULT_SPAN_ATTRIBUTES = {
+    **_BASE_SPAN_ATTRIBUTES,
+    "gcp.client.repo": "googleapis/google-cloud-python",
+}
+
+_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES = {
+    "rpc.system": "grpc",
+    "rpc.service": "google.test.AsyncService",
+    "rpc.method": "AsyncMethod",
+    "gcp.client.service": "AsyncService",
+    "gcp.client.repo": "googleapis/google-cloud-python",
+}
+
+
 @pytest.fixture
 def mock_otel(monkeypatch):
     """Provides a mocked OpenTelemetry environment with tracing enabled."""
@@ -473,13 +494,7 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name):
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
-        attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
-            "rpc.method": "ListSecrets",
-            "gcp.client.service": "SecretManagerService",
-            "gcp.client.repo": "googleapis/google-cloud-python",
-        },
+        attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
 
 
@@ -630,13 +645,7 @@ def test_wrap_method_async_otel_tracing(mock_otel):
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.test.AsyncService/AsyncMethod",
         kind="CLIENT",
-        attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.test.AsyncService",
-            "rpc.method": "AsyncMethod",
-            "gcp.client.service": "AsyncService",
-            "gcp.client.repo": "googleapis/google-cloud-python",
-        },
+        attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
     )
 
 
@@ -685,10 +694,7 @@ def test_wrap_method_otel_tracing_attributes_with_client_info(mock_otel):
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
-            "rpc.method": "ListSecrets",
-            "gcp.client.service": "SecretManagerService",
+            **_DEFAULT_SPAN_ATTRIBUTES,
             "gcp.client.repo": "googleapis/google-cloud-python-test",
             "gcp.client.version": "2.16.0",
             "gcp.client.artifact": "google-cloud-secretmanager",
@@ -716,11 +722,7 @@ def test_wrap_method_otel_tracing_attributes_fallback_gapic_version(mock_otel):
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
-            "rpc.method": "ListSecrets",
-            "gcp.client.service": "SecretManagerService",
-            "gcp.client.repo": "googleapis/google-cloud-python",
+            **_DEFAULT_SPAN_ATTRIBUTES,
             "gcp.client.version": "1.5.0",
         },
     )
@@ -741,12 +743,7 @@ def test_wrap_method_otel_tracing_attributes_no_client_info(mock_otel):
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
-        attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
-            "rpc.method": "ListSecrets",
-            "gcp.client.service": "SecretManagerService",
-        },
+        attributes=_BASE_SPAN_ATTRIBUTES,
     )
 
 
@@ -793,11 +790,7 @@ def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
         "google.test.AsyncService/AsyncMethod",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.test.AsyncService",
-            "rpc.method": "AsyncMethod",
-            "gcp.client.service": "AsyncService",
-            "gcp.client.repo": "googleapis/google-cloud-python",
+            **_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
             "gcp.client.version": "3.0.0",
         },
     )
