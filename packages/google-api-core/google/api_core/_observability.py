@@ -112,7 +112,7 @@ def _extract_endpoint_attributes(
     return attrs
 
 
-def _extract_t4_attributes(request: Any) -> dict[str, Any]:
+def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
     """Extracts Google Cloud T4 semantic and resource attributes from a gRPC request object.
 
     Args:
@@ -142,15 +142,15 @@ def _extract_t4_attributes(request: Any) -> dict[str, Any]:
     return attrs
 
 
-def _make_client_request_hook(
+def _make_grpc_client_request_hook(
     endpoint_attrs: dict[str, Any] | None = None,
 ) -> Callable[[Any, Any], None]:
-    """Creates an OpenTelemetry client request hook with optional endpoint attributes."""
+    """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes."""
 
     def client_request_hook(span: Any, request: Any) -> None:
         if span is None or not getattr(span, "is_recording", lambda: True)():
             return
-        attrs = _extract_t4_attributes(request)
+        attrs = _extract_grpc_request_attributes(request)
         if endpoint_attrs:
             attrs.update(endpoint_attrs)
         for key, value in attrs.items():
@@ -159,11 +159,11 @@ def _make_client_request_hook(
     return client_request_hook
 
 
-_client_request_hook = _make_client_request_hook()
+_grpc_client_request_hook = _make_grpc_client_request_hook()
 
 
-def _client_response_hook(span: Any, response: Any) -> None:
-    """OpenTelemetry client response hook to inject gRPC response status attributes into the span."""
+def _grpc_client_response_hook(span: Any, response: Any) -> None:
+    """OpenTelemetry gRPC client response hook to inject response status attributes into the span."""
     if span is None or not getattr(span, "is_recording", lambda: True)():
         return
 
@@ -230,15 +230,15 @@ def get_otel_interceptor(
 
     endpoint_attrs = _extract_endpoint_attributes(client_options)
     request_hook = (
-        _make_client_request_hook(endpoint_attrs)
+        _make_grpc_client_request_hook(endpoint_attrs)
         if endpoint_attrs
-        else _client_request_hook
+        else _grpc_client_request_hook
     )
 
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
-        response_hook=_client_response_hook,
+        response_hook=_grpc_client_response_hook,
     )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
@@ -268,13 +268,13 @@ def get_otel_async_interceptor(
 
     endpoint_attrs = _extract_endpoint_attributes(client_options)
     request_hook = (
-        _make_client_request_hook(endpoint_attrs)
+        _make_grpc_client_request_hook(endpoint_attrs)
         if endpoint_attrs
-        else _client_request_hook
+        else _grpc_client_request_hook
     )
 
     return otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
-        response_hook=_client_response_hook,
+        response_hook=_grpc_client_response_hook,
     )
