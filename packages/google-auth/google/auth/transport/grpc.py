@@ -20,8 +20,7 @@ import logging
 import warnings
 
 from google.auth import exceptions
-from google.auth.transport import _mtls_helper
-from google.auth.transport import mtls
+from google.auth.transport import _mtls_helper, mtls
 from google.oauth2 import service_account
 
 try:
@@ -129,7 +128,7 @@ def secure_authorized_channel(
     target,
     ssl_credentials=None,
     client_cert_callback=None,
-    **kwargs
+    **kwargs,
 ):
     """Creates a secure authorized gRPC channel.
 

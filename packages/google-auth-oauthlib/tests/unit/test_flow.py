@@ -14,17 +14,17 @@
 
 import concurrent.futures
 import datetime
-from functools import partial
 import json
 import logging
 import os
 import re
 import socket
 import time
-from unittest import mock
 import urllib
 import webbrowser
 import wsgiref.simple_server
+from functools import partial
+from unittest import mock
 
 import pytest
 import requests
@@ -566,9 +566,10 @@ class TestInstalledAppFlow(object):
 
 class TestExclusiveWSGIServer(object):
     def test_exclusive_wsgi_server_bind_windows(self):
-        with mock.patch("sys.platform", "win32"), mock.patch(
-            "google_auth_oauthlib.flow.socket"
-        ) as mock_socket:
+        with (
+            mock.patch("sys.platform", "win32"),
+            mock.patch("google_auth_oauthlib.flow.socket") as mock_socket,
+        ):
             mock_socket.SOL_SOCKET = socket.SOL_SOCKET
             mock_socket.SO_EXCLUSIVEADDRUSE = getattr(socket, "SO_EXCLUSIVEADDRUSE", 1)
 

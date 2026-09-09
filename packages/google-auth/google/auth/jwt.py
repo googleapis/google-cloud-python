@@ -50,13 +50,15 @@ import datetime
 import json
 import urllib
 
-from google.auth import _cache
-from google.auth import _helpers
-from google.auth import _regional_access_boundary_utils
-from google.auth import _service_account_info
-from google.auth import crypt
-from google.auth import exceptions
 import google.auth.credentials
+from google.auth import (
+    _cache,
+    _helpers,
+    _regional_access_boundary_utils,
+    _service_account_info,
+    crypt,
+    exceptions,
+)
 
 try:
     from google.auth.crypt import es

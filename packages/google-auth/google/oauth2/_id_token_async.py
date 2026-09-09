@@ -62,9 +62,7 @@ import http.client as http_client
 import json
 import os
 
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import jwt
+from google.auth import environment_vars, exceptions, jwt
 from google.auth.transport import requests
 from google.oauth2 import id_token as sync_id_token
 

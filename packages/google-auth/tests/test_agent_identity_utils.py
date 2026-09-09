@@ -16,11 +16,11 @@ import base64
 import hashlib
 import json
 import os
-from unittest import mock
 import urllib.parse
+from unittest import mock
 
-from cryptography import x509
 import pytest
+from cryptography import x509
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
 

@@ -23,12 +23,11 @@ import pytest  # type: ignore
 import requests
 import requests.adapters
 
-from google.auth import environment_vars
-from google.auth import exceptions
 import google.auth.credentials
 import google.auth.transport._custom_tls_signer
 import google.auth.transport._mtls_helper
 import google.auth.transport.requests
+from google.auth import environment_vars, exceptions
 from google.oauth2 import service_account
 from tests.transport import compliance
 
