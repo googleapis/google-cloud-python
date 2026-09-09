@@ -1177,37 +1177,31 @@ class TestAuthorizedSessionMTLSReauth:
     )
     @mock.patch("google.auth.transport.requests.requests.Session.request")
     def test_reauth_lock_acquired_on_unauthorized(self):
-    credentials = mock.Mock(spec=google.auth.credentials.Credentials)
-    session = requests.AuthorizedSession(credentials)
-    session._is_mtls = True
-
-    mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
-    mock_success_response = mock.Mock(status_code=http_client.OK)
-
-    lock_held_during_call = {"held": False}
-
-    def mock_configure_mtls_channel(callback):
-        # Verify the lock is held during channel reconfiguration
-        lock_held_during_call["held"] = session._mtls_reauth_lock.locked()
-
-    session.configure_mtls_channel = mock.Mock(side_effect=mock_configure_mtls_channel)
-
-    with mock.patch.object(
-        requests._mtls_helper,
-        "check_parameters_for_unauthorized_response",
-        return_value=(b"cert", b"key", "old_fp", "new_fp"),
-    ):
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        session = requests.AuthorizedSession(credentials)
+        session._is_mtls = True
+        mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
+        mock_success_response = mock.Mock(status_code=http_client.OK)
+        lock_held_during_call = {"held": False}
+        def mock_configure_mtls_channel(callback):
+            lock_held_during_call["held"] = session._mtls_reauth_lock.locked()
+        session.configure_mtls_channel = mock.Mock(
+            side_effect=mock_configure_mtls_channel
+        )
         with mock.patch.object(
-            super(requests.AuthorizedSession, session),
-            "request",
-            side_effect=[mock_response, mock_success_response],
+            requests._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            return_value=(b"cert", b"key", "old_fp", "new_fp"),
         ):
-            session.request("GET", "https://example.mtls.googleapis.com/")
-
-    session.configure_mtls_channel.assert_called_once()
-    assert lock_held_during_call["held"] is True
-    # Verify the lock is released after request finishes
-    assert not session._mtls_reauth_lock.locked()
+            with mock.patch.object(
+                super(requests.AuthorizedSession, session),
+                "request",
+                side_effect=[mock_response, mock_success_response],
+            ):
+                session.request("GET", "https://example.mtls.googleapis.com/")
+        session.configure_mtls_channel.assert_called_once()
+        assert lock_held_during_call["held"] is True
+        assert not session._mtls_reauth_lock.locked()
 
     @mock.patch(
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
