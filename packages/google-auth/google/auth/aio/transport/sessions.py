@@ -314,10 +314,7 @@ class AsyncAuthorizedSession:
         _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
         if self._mtls_init_task and not self._mtls_init_task.done():
             try:
-                await self._mtls_init_task
-            except asyncio.CancelledError:
-                if not self._mtls_init_task.cancelled():
-                    raise
+                await asyncio.shield(self._mtls_init_task)
             except Exception:
                 # Suppress all exceptions from the background mTLS initialization task,
                 # allowing the request to fail naturally elsewhere.
