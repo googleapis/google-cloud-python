@@ -125,6 +125,23 @@ class _BaseAudienceSegmentServiceRestTransport(AudienceSegmentServiceTransport):
             ]
             return http_options
 
+    class _BaseBatchCreateAudienceSegments:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=networks/*}/audienceSegments:batchCreate",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseBatchDeactivateAudienceSegments:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -172,6 +189,23 @@ class _BaseAudienceSegmentServiceRestTransport(AudienceSegmentServiceTransport):
                     "method": "post",
                     "uri": "/v1/{parent=networks/*}/audienceSegments:batchReject",
                     "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseCreateAudienceSegment:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=networks/*}/audienceSegments",
+                    "body": "audience_segment",
                 },
             ]
             return http_options

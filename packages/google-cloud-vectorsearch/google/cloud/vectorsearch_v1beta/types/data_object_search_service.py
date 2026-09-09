@@ -34,6 +34,11 @@ __protobuf__ = proto.module(
         "VectorSearch",
         "SemanticSearch",
         "TextSearch",
+        "StructuredQuery",
+        "TextQuery",
+        "QueryEnhancement",
+        "UnaryQuery",
+        "CombinedQuery",
         "SearchDataObjectsRequest",
         "SearchResult",
         "SearchResponseMetadata",
@@ -349,14 +354,20 @@ class SemanticSearch(proto.Message):
 
     Attributes:
         search_text (str):
-            Required. The query text, which is used to
+            Optional. The query text, which is used to
             generate an embedding according to the embedding
             model specified in the collection config.
+
+            Required when using the text search mode.
         search_field (str):
             Required. The vector field to search.
         task_type (google.cloud.vectorsearch_v1beta.types.EmbeddingTaskType):
-            Required. The task type of the query
-            embedding.
+            Optional. The task type of the query
+            embedding. Must be specified for text-only
+            embedding models, see
+            <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/task-types>
+            Not needed for multi modal embedding models, see
+            <https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-multimodal-embeddings#specify-task-instructions>
         output_fields (google.cloud.vectorsearch_v1beta.types.OutputFields):
             Optional. The fields to return in the search
             results.
@@ -435,6 +446,13 @@ class TextSearch(proto.Message):
             Optional. A JSON filter expression, e.g.
             ``{"genre": {"$eq": "sci-fi"}}``, represented as a
             ``google.protobuf.Struct``.
+        structured_query (google.cloud.vectorsearch_v1beta.types.StructuredQuery):
+            Optional. Structured query definition. When set,
+            ``search_text`` and ``data_field_names`` must be left empty;
+            otherwise the request will be rejected with an
+            ``INVALID_ARGUMENT`` error. Conversely, when
+            ``structured_query`` is unset, both ``search_text`` and
+            ``data_field_names`` are required.
     """
 
     search_text: str = proto.Field(
@@ -459,6 +477,232 @@ class TextSearch(proto.Message):
         proto.MESSAGE,
         number=5,
         message=struct_pb2.Struct,
+    )
+    structured_query: "StructuredQuery" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="StructuredQuery",
+    )
+
+
+class StructuredQuery(proto.Message):
+    r"""A structured query for text search. Allows expressing
+    field-targeted text queries combined via boolean operators, with
+    optional per-node boosting.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        text (google.cloud.vectorsearch_v1beta.types.TextQuery):
+            Optional. A leaf-level text query.
+
+            This field is a member of `oneof`_ ``query_type``.
+        unary (google.cloud.vectorsearch_v1beta.types.UnaryQuery):
+            Optional. A query that applies a unary
+            operator to a sub-query.
+
+            This field is a member of `oneof`_ ``query_type``.
+        combine (google.cloud.vectorsearch_v1beta.types.CombinedQuery):
+            Optional. A query that combines multiple
+            sub-queries with a boolean operator.
+
+            This field is a member of `oneof`_ ``query_type``.
+        boost (float):
+            Optional. Optional multiplier applied to this
+            query node's contribution to the final relevance
+            score. Must be non-negative; if unset or 0,
+            defaults to 1.0. Values greater than 1.0
+            increase its influence on ranking, values
+            between 0.0 and 1.0 decrease it.
+    """
+
+    text: "TextQuery" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="query_type",
+        message="TextQuery",
+    )
+    unary: "UnaryQuery" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="query_type",
+        message="UnaryQuery",
+    )
+    combine: "CombinedQuery" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="query_type",
+        message="CombinedQuery",
+    )
+    boost: float = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+
+
+class TextQuery(proto.Message):
+    r"""A leaf-level text query targeting one or more data fields.
+    When multiple fields are specified, this is equivalent to
+    combining per-field matches with an OR operator (i.e. the query
+    matches if the text is found in any of the listed fields).
+
+    Attributes:
+        text (str):
+            Required. The text to search for.
+        fields (MutableSequence[str]):
+            Required. The data fields to search against.
+        match_type (google.cloud.vectorsearch_v1beta.types.TextQuery.MatchType):
+            Optional. The matching strategy to apply for this query. If
+            unset, defaults to ``STANDARD``.
+        query_enhancement (google.cloud.vectorsearch_v1beta.types.QueryEnhancement):
+            Optional. The query enhancement settings to
+            apply for this query.
+    """
+
+    class MatchType(proto.Enum):
+        r"""The matching strategy to apply when comparing ``text`` against the
+        content of ``fields``.
+
+        Values:
+            MATCH_TYPE_UNSPECIFIED (0):
+                Defaults to ``STANDARD``.
+            TEXT (1):
+                Treats ``text`` as individual search terms combined with an
+                implicit AND: every term must appear in the field, in any
+                order and any position. Case-insensitive.
+            EXACT (2):
+                Matches only when the entire field value is exactly equal to
+                ``text``.
+        """
+
+        MATCH_TYPE_UNSPECIFIED = 0
+        TEXT = 1
+        EXACT = 2
+
+    text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fields: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    match_type: MatchType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=MatchType,
+    )
+    query_enhancement: "QueryEnhancement" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="QueryEnhancement",
+    )
+
+
+class QueryEnhancement(proto.Message):
+    r"""Query enhancement settings. When enabled, expands the search
+    terms with stemming, synonyms, and spelling corrections, and
+    removes stop words.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether query enhancement is
+            enabled.
+        language_code (str):
+            Optional. The IETF BCP 47 language tag, such as "en-US", for
+            query enhancement. If unset, the language is detected
+            automatically. See
+            https://en.wikipedia.org/wiki/IETF_language_tag.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UnaryQuery(proto.Message):
+    r"""A query that applies a unary operator to a sub-query.
+
+    Attributes:
+        op (google.cloud.vectorsearch_v1beta.types.UnaryQuery.Operator):
+            Required. The unary operator to apply.
+        sub_query (google.cloud.vectorsearch_v1beta.types.StructuredQuery):
+            Required. The sub-query the operator is
+            applied to.
+    """
+
+    class Operator(proto.Enum):
+        r"""Unary operators applicable to a sub-query.
+
+        Values:
+            OPERATOR_UNSPECIFIED (0):
+                Default value. This value is unused.
+            NOT (1):
+                Negates the sub-query.
+        """
+
+        OPERATOR_UNSPECIFIED = 0
+        NOT = 1
+
+    op: Operator = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Operator,
+    )
+    sub_query: "StructuredQuery" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="StructuredQuery",
+    )
+
+
+class CombinedQuery(proto.Message):
+    r"""A query that combines multiple sub-queries with a boolean
+    operator.
+
+    Attributes:
+        op (google.cloud.vectorsearch_v1beta.types.CombinedQuery.Operator):
+            Required. The boolean operator used to
+            combine the sub-queries.
+        sub_queries (MutableSequence[google.cloud.vectorsearch_v1beta.types.StructuredQuery]):
+            Required. The sub-queries to be combined.
+    """
+
+    class Operator(proto.Enum):
+        r"""Boolean operators used to combine sub-queries.
+
+        Values:
+            OPERATOR_UNSPECIFIED (0):
+                Default value. This value is unused.
+            AND (1):
+                All sub-queries must match.
+            OR (2):
+                At least one sub-query must match.
+        """
+
+        OPERATOR_UNSPECIFIED = 0
+        AND = 1
+        OR = 2
+
+    op: Operator = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Operator,
+    )
+    sub_queries: MutableSequence["StructuredQuery"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="StructuredQuery",
     )
 
 
@@ -905,7 +1149,7 @@ class ReciprocalRankFusion(proto.Message):
 class VertexRanker(proto.Message):
     r"""Defines a ranker using the Vertex AI ranking service.
     See
-    https://cloud.google.com/generative-ai-app-builder/docs/ranking
+    <https://cloud.google.com/generative-ai-app-builder/docs/ranking>
     for details.
 
 

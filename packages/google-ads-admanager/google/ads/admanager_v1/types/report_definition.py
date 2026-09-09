@@ -4213,6 +4213,22 @@ class ReportDefinition(proto.Message):
                 ``PARTNER_FINANCE``
 
                 Data format: ``STRING``
+            PAYMENT_PROFILE_ID (858):
+                The ID of the payment profile.
+
+                Corresponds to "Payment profile ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            PAYMENT_PROFILE_NAME (857):
+                The name of the payment profile.
+
+                Corresponds to "Payment profile" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             PLACEMENT_ID (113):
                 Placement ID
 
@@ -6957,6 +6973,8 @@ class ReportDefinition(proto.Message):
         PARTNER_MANAGEMENT_ASSIGNMENT_NAME = 658
         PARTNER_MANAGEMENT_PARTNER_ID = 655
         PARTNER_MANAGEMENT_PARTNER_NAME = 656
+        PAYMENT_PROFILE_ID = 858
+        PAYMENT_PROFILE_NAME = 857
         PLACEMENT_ID = 113
         PLACEMENT_ID_ALL = 144
         PLACEMENT_NAME = 114
@@ -8120,6 +8138,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``MONEY``
+            AD_EXCHANGE_RENDER_RATE (759):
+                The ratio of impressions to responses served in Ad Exchange.
+
+                Corresponds to "Ad Exchange render rate" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
             AD_EXCHANGE_RESPONSES_SERVED (42):
                 The total number of times that an Ad Exchange ad is
                 delivered.
@@ -12608,6 +12635,7 @@ class ReportDefinition(proto.Message):
         AD_EXCHANGE_PLUS_YIELD_GROUP_ECPM = 252
         AD_EXCHANGE_PLUS_YIELD_GROUP_IMPRESSIONS = 253
         AD_EXCHANGE_PLUS_YIELD_GROUP_REVENUE = 254
+        AD_EXCHANGE_RENDER_RATE = 759
         AD_EXCHANGE_RESPONSES_SERVED = 42
         AD_EXCHANGE_REVENUE = 17
         AD_EXCHANGE_REVENUE_PAID_THROUGH_MCM_AUTOPAYMENT = 212

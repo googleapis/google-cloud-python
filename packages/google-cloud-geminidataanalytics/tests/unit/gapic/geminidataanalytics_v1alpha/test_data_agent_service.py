@@ -8786,7 +8786,10 @@ def test_create_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -8822,19 +8825,22 @@ def test_create_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
-                        "agent_context_reference": {
-                            "context_set_id": "context_set_id_value"
-                        },
+                        "agent_context_reference": {},
                     },
                     "spanner_reference": {
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -8846,6 +8852,28 @@ def test_create_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "bigtable_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "instance_id": "instance_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "firestore_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "database_id": "database_id_value",
+                            "collection_ids": [
+                                "collection_ids_value1",
+                                "collection_ids_value2",
+                            ],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -9145,7 +9173,10 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9181,19 +9212,22 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
-                        "agent_context_reference": {
-                            "context_set_id": "context_set_id_value"
-                        },
+                        "agent_context_reference": {},
                     },
                     "spanner_reference": {
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9205,6 +9239,28 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "bigtable_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "instance_id": "instance_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "firestore_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "database_id": "database_id_value",
+                            "collection_ids": [
+                                "collection_ids_value1",
+                                "collection_ids_value2",
+                            ],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -9517,7 +9573,10 @@ def test_update_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9553,19 +9612,22 @@ def test_update_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
-                        "agent_context_reference": {
-                            "context_set_id": "context_set_id_value"
-                        },
+                        "agent_context_reference": {},
                     },
                     "spanner_reference": {
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9577,6 +9639,28 @@ def test_update_data_agent_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "bigtable_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "instance_id": "instance_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "firestore_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "database_id": "database_id_value",
+                            "collection_ids": [
+                                "collection_ids_value1",
+                                "collection_ids_value2",
+                            ],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
@@ -9880,7 +9964,10 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9916,19 +10003,22 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": [
+                                {"table_id": "table_id_value", "schema": {}}
+                            ],
                         },
-                        "agent_context_reference": {
-                            "context_set_id": "context_set_id_value"
-                        },
+                        "agent_context_reference": {},
                     },
                     "spanner_reference": {
                         "database_reference": {
                             "engine": 1,
                             "project_id": "project_id_value",
-                            "region": "region_value",
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                            "priority": "priority_value",
+                            "request_tag": "request_tag_value",
                         },
                         "agent_context_reference": {},
                     },
@@ -9940,6 +10030,28 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                             "instance_id": "instance_id_value",
                             "database_id": "database_id_value",
                             "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "bigtable_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "instance_id": "instance_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                            "database_table_references": {},
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "firestore_reference": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "database_id": "database_id_value",
+                            "collection_ids": [
+                                "collection_ids_value1",
+                                "collection_ids_value2",
+                            ],
+                            "database_table_references": {},
                         },
                         "agent_context_reference": {},
                     },
