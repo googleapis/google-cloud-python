@@ -22,7 +22,8 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
-  UV_PRERELEASE: "disallow"
+  # Prefer stable versions, falling back to pre-releases only when no stable version exists
+  UV_PRERELEASE: "if-necessary"
   # Note: PARALLEL_WORKERS must remain "1" for unit tests because running pytest concurrently
   # on the same runner VM can cause socket/IPC/process deadlocks across packages.
   PARALLEL_WORKERS: "1"
