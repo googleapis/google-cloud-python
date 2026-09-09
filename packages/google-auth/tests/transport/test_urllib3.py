@@ -22,7 +22,7 @@ import urllib3  # type: ignore
 from google.auth import environment_vars
 from google.auth import exceptions
 import google.auth.credentials
-from google.auth.tests.transport import compliance
+from tests.transport import compliance
 import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
 from google.oauth2 import service_account
