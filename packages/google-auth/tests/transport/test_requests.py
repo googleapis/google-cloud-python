@@ -16,6 +16,7 @@ import datetime
 import functools
 import http.client as http_client
 import os
+import threading
 from unittest import mock
 
 import freezegun
@@ -1080,6 +1081,28 @@ class TestAuthorizedSession(object):
             requests.adapters.HTTPAdapter,
         )
 
+    def test_unauthorized_cert_discovery_exception_proceeds_to_token_refresh(self):
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        session = requests.AuthorizedSession(credentials)
+        session._is_mtls = True
+        mock_response_unauth = mock.Mock(status_code=http_client.UNAUTHORIZED)
+        mock_response_ok = mock.Mock(status_code=http_client.OK)
+        # Simulate discovery failure (e.g. Enterprise cert provider error or file missing)
+        with mock.patch.object(
+            requests._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            side_effect=Exception("Certificate discovery failed"),
+        ):
+            with mock.patch.object(
+                super(requests.AuthorizedSession, session),
+                "request",
+                side_effect=[mock_response_unauth, mock_response_ok],
+            ):
+                session.request("GET", "https://example.mtls.googleapis.com/")
+        # Token refresh should still be called despite discovery failure
+        credentials.refresh.assert_called_once()
+        assert not session._mtls_reauth_lock.locked()
+
 
 class TestMutualTlsOffloadAdapter(object):
     @mock.patch.object(requests.adapters.HTTPAdapter, "init_poolmanager")
@@ -1146,3 +1169,64 @@ class TestMutualTlsOffloadAdapter(object):
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+
+class TestAuthorizedSessionMTLSReauth:
+    @mock.patch(
+        "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+    )
+    @mock.patch("google.auth.transport.requests.requests.Session.request")
+    def test_reauth_lock_acquired_on_unauthorized(self):
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        session = requests.AuthorizedSession(credentials)
+        session._is_mtls = True
+        mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
+        mock_success_response = mock.Mock(status_code=http_client.OK)
+        lock_held_during_call = {"held": False}
+        def mock_configure_mtls_channel(callback):
+            lock_held_during_call["held"] = session._mtls_reauth_lock.locked()
+        session.configure_mtls_channel = mock.Mock(
+            side_effect=mock_configure_mtls_channel
+        )
+        with mock.patch.object(
+            requests._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            return_value=(b"cert", b"key", "old_fp", "new_fp"),
+        ):
+            with mock.patch.object(
+                super(requests.AuthorizedSession, session),
+                "request",
+                side_effect=[mock_response, mock_success_response],
+            ):
+                session.request("GET", "https://example.mtls.googleapis.com/")
+        session.configure_mtls_channel.assert_called_once()
+        assert lock_held_during_call["held"] is True
+        assert not session._mtls_reauth_lock.locked()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+    )
+    @mock.patch("google.auth.transport.requests.requests.Session.request")
+    def test_reauth_skipped_when_cert_fingerprint_matches(
+        self, mock_session_request, mock_check_params
+    ):
+        credentials = mock.Mock()
+        session = google.auth.transport.requests.AuthorizedSession(credentials)
+        session._is_mtls = True
+        session._cached_cert = b"cert"
+
+        mock_session_request.side_effect = [
+            mock.Mock(status_code=http_client.UNAUTHORIZED),
+            mock.Mock(status_code=http_client.OK),
+        ]
+        mock_check_params.return_value = (
+            b"same_cert_bytes",
+            b"same_key_bytes",
+            "same_fingerprint",
+            "same_fingerprint",
+        )
+        session.configure_mtls_channel = mock.Mock()
+
+        session.request("GET", "https://example.mtls.googleapis.com/")
+
+        session.configure_mtls_channel.assert_not_called()
