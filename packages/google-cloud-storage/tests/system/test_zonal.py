@@ -386,7 +386,7 @@ def test_wrd_with_non_default_flush_interval(
 
     event_loop.run_until_complete(_run())
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write from blob for RCU not supported in SDK yet')
+
 def test_write_from_blob(
     storage_client,
     blobs_to_delete,
@@ -413,6 +413,8 @@ def test_write_from_blob(
         blob.content_encoding = content_encoding
         blob.content_language = content_language
         blob.custom_time = custom_time
+        if RCU_SYSTEM_TESTS:
+            blob.storage_class = "RAPID"
 
         # 2. Use from_blob to create the writer
         writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
@@ -480,35 +482,45 @@ def test_write_from_blob_with_kms_key(
     event_loop.run_until_complete(_run())
 
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write blob with contexts for RCU not supported in SDK yet')
-@pytest.mark.asyncio
-async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
-    async_client = await create_async_grpc_client()
-    blob_name = f"ObjectContextsGrpc-{uuid.uuid4().hex}"
-
-    bucket = storage_client.bucket(bucket_for_testing)
-    blob = bucket.blob(blob_name)
-    blob.contexts = ObjectContexts(
-        blob, custom={"foo": ObjectCustomContextPayload(value="bar")}
-    )
-    writer = AsyncAppendableObjectWriter.from_blob(async_client, blob)
-    await writer.open()
-    await writer.append(b"grpc-test")
-    await writer.close(finalize_on_close=True)
-
-    try:
-        blobs = list(
-            storage_client.list_blobs(bucket_for_testing, filter_='contexts."foo"="bar"')
+def test_write_blob_with_contexts(
+    event_loop, grpc_client_direct, storage_client, blobs_to_delete
+):
+    async def _run():
+        bucket = storage_client.bucket(bucket_for_testing)
+        blob_name = f"ObjectContextsGrpc-{uuid.uuid4().hex}"
+        blob = bucket.blob(blob_name)
+        blob.contexts = ObjectContexts(
+            blob, custom={"foo": ObjectCustomContextPayload(value="bar")}
         )
-        names = [b.name for b in blobs]
-        assert blob_name in names
+        if RCU_SYSTEM_TESTS:
+            blob.storage_class = "RAPID"
 
-        # Assert contexts via gRPC GetObject
-        obj_proto = await async_client.get_object(bucket_for_testing, blob_name)
-        assert "foo" in obj_proto.contexts.custom
-        assert obj_proto.contexts.custom["foo"].value == "bar"
-    finally:
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(blob_name))
+        writer = AsyncAppendableObjectWriter.from_blob(grpc_client_direct, blob)
+        await writer.open()
+        await writer.append(b"grpc-test")
+        await writer.close(finalize_on_close=True)
+
+        try:
+            blobs = list(
+                storage_client.list_blobs(
+                    bucket_for_testing, filter_='contexts."foo"="bar"'
+                )
+            )
+            names = [b.name for b in blobs]
+            assert blob_name in names
+
+            # Assert contexts via gRPC GetObject
+            obj_proto = await grpc_client_direct.get_object(
+                bucket_for_testing, blob_name
+            )
+            assert "foo" in obj_proto.contexts.custom
+            assert obj_proto.contexts.custom["foo"].value == "bar"
+        finally:
+            blobs_to_delete.append(
+                storage_client.bucket(bucket_for_testing).blob(blob_name)
+            )
+
+    event_loop.run_until_complete(_run())
 
 
 def test_read_unfinalized_appendable_object(

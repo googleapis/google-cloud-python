@@ -182,6 +182,7 @@ class TestAsyncAppendableObjectWriter:
         mock_blob.name = OBJECT
         mock_blob.bucket.name = BUCKET
         mock_blob.generation = GENERATION
+        mock_blob.storage_class = "RAPID"
 
         writer = AsyncAppendableObjectWriter.from_blob(
             mock_appendable_writer["mock_client"],
@@ -194,6 +195,56 @@ class TestAsyncAppendableObjectWriter:
         assert writer.generation == GENERATION
         assert writer.flush_interval == EIGHT_MIB
         assert writer.blob == mock_blob
+        assert writer.storage_class == "RAPID"
+
+    @pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID", None])
+    def test_from_blob_storage_class(self, mock_appendable_writer, storage_class):
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket.name = BUCKET
+        mock_blob.generation = GENERATION
+        mock_blob.storage_class = storage_class
+
+        writer = AsyncAppendableObjectWriter.from_blob(
+            mock_appendable_writer["mock_client"],
+            mock_blob,
+        )
+
+        assert writer.storage_class == storage_class
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID"])
+    async def test_from_blob_open_passes_storage_class(
+        self, mock_appendable_writer, storage_class
+    ):
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket.name = BUCKET
+        mock_blob.generation = GENERATION
+        mock_blob.storage_class = storage_class
+
+        writer = AsyncAppendableObjectWriter.from_blob(
+            mock_appendable_writer["mock_client"],
+            mock_blob,
+        )
+        mock_appendable_writer["mock_stream"].generation_number = 456
+        mock_appendable_writer["mock_stream"].write_handle = b"new-h"
+        mock_appendable_writer["mock_stream"].persisted_size = 0
+
+        await writer.open()
+
+        assert writer._is_stream_open
+        mock_stream_cls = mock_appendable_writer["mock_stream_cls"]
+        mock_stream_cls.assert_called_once_with(
+            client=mock_appendable_writer["mock_client"].grpc_client,
+            bucket_name=BUCKET,
+            object_name=OBJECT,
+            blob=mock_blob,
+            generation_number=GENERATION,
+            write_handle=None,
+            routing_token=None,
+            storage_class=storage_class,
+        )
 
     # -------------------------------------------------------------------------
     # Stream Lifecycle Tests
