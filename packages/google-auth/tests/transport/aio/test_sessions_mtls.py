@@ -1085,3 +1085,44 @@ class TestSessionsMtls:
             )
 
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_request_cancellation_propagates_and_leaves_mtls_init_running(self):
+        """Verifies that cancelling an in-flight request propagates CancelledError
+        to the caller while asyncio.shield preserves self._mtls_init_task running
+        in the background.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(mock_creds)
+        init_started = asyncio.Event()
+        init_can_finish = asyncio.Event()
+        async def slow_mtls_init():
+            init_started.set()
+            await init_can_finish.wait()
+            session._is_mtls = True
+        # Simulate an in-progress mTLS initialization task
+        mtls_task = asyncio.create_task(slow_mtls_init())
+        session._mtls_init_task = mtls_task
+        # Launch an in-flight request that awaits the shielded mTLS task
+        req_task = asyncio.create_task(
+            session.request("GET", "https://example.com")
+        )
+        # Ensure the mTLS task has started and the request is waiting on it
+        await init_started.wait()
+        # Yield to event loop to guarantee session.request has reached await asyncio.shield(...)
+        await asyncio.sleep(0)
+        # Cancel the in-flight request
+        req_task.cancel()
+        # 1. Verify asyncio.CancelledError is propagated to the request caller
+        with pytest.raises(asyncio.CancelledError):
+            await req_task
+        # 2. Verify self._mtls_init_task was NOT cancelled and is still running
+        assert not session._mtls_init_task.cancelled()
+        assert not session._mtls_init_task.done()
+        # 3. Allow self._mtls_init_task to complete and verify it finishes cleanly
+        init_can_finish.set()
+        await session._mtls_init_task
+        assert session._mtls_init_task.done()
+        assert not session._mtls_init_task.cancelled()
+        assert session._is_mtls is True
+        await session.close()
