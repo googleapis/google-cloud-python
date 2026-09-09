@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import importlib.metadata
+
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
 from google.cloud.spanner_v1 import (
@@ -20,6 +22,7 @@ from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
 )
+import sqlalchemy
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
@@ -35,7 +38,7 @@ class TestStaleReads(MockServerTestBase):
     def test_request_tag(self):
         from tests.mockserver_tests.tags_model import Singer
 
-        add_singer_query_result("SELECT singers.id, singers.name \n" + "FROM singers")
+        add_singer_query_result()
         engine = self.create_engine()
 
         with Session(engine.execution_options(read_only=True)) as session:
@@ -61,10 +64,8 @@ class TestStaleReads(MockServerTestBase):
     def test_transaction_tag(self):
         from tests.mockserver_tests.tags_model import Singer
 
-        add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
-        add_single_singer_query_result(
-            "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
-        )
+        add_singer_query_result()
+        add_single_singer_query_result()
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
         engine = self.create_engine()
 
@@ -129,7 +130,19 @@ def empty_singer_result_set():
     )
 
 
-def add_singer_query_result(sql: str):
+def is_sqlalchemy_21_or_higher() -> bool:
+    version = getattr(sqlalchemy, "__version__", None) or importlib.metadata.version(
+        "sqlalchemy"
+    )
+    return not version.startswith("2.0.") and not version.startswith("1.")
+
+
+def add_singer_query_result():
+    if is_sqlalchemy_21_or_higher():
+        sql = "SELECT singers.id, singers.name \nFROM singers"
+    else:
+        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name \nFROM singers"
+
     result = empty_singer_result_set()
     result.rows.extend(
         [
@@ -146,7 +159,12 @@ def add_singer_query_result(sql: str):
     add_result(sql, result)
 
 
-def add_single_singer_query_result(sql: str):
+def add_single_singer_query_result():
+    if is_sqlalchemy_21_or_higher():
+        sql = "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
+    else:
+        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name\nFROM singers\nWHERE singers.id = @a0"
+
     result = empty_singer_result_set()
     result.rows.extend(
         [
