@@ -164,8 +164,8 @@ def test_get_otel_interceptor_enabled(monkeypatch):
 
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
-        request_hook=_observability._client_request_hook,
-        response_hook=_observability._client_response_hook,
+        request_hook=_observability._grpc_client_request_hook,
+        response_hook=_observability._grpc_client_response_hook,
     )
 
     result = interceptor(mock_raw_channel)
@@ -255,8 +255,8 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     assert result is mock_async_interceptors
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
-        request_hook=_observability._client_request_hook,
-        response_hook=_observability._client_response_hook,
+        request_hook=_observability._grpc_client_request_hook,
+        response_hook=_observability._grpc_client_response_hook,
     )
 
 
@@ -331,27 +331,27 @@ def test_extract_endpoint_attributes():
         ),
     ],
 )
-def test_extract_t4_attributes(req, expected_attrs):
-    """Proves that _extract_t4_attributes extracts all T4 gRPC attributes."""
-    assert _observability._extract_t4_attributes(req) == expected_attrs
+def test_extract_grpc_request_attributes(req, expected_attrs):
+    """Proves that _extract_grpc_request_attributes extracts all T4 gRPC attributes."""
+    assert _observability._extract_grpc_request_attributes(req) == expected_attrs
 
 
-def test_client_request_hook():
-    """Proves that _client_request_hook attaches extracted T4 attributes to recording spans."""
+def test_grpc_client_request_hook():
+    """Proves that _grpc_client_request_hook attaches extracted T4 attributes to recording spans."""
     # Non-recording span should not set attributes
     mock_span_non_rec = mock.Mock()
     mock_span_non_rec.is_recording.return_value = False
-    _observability._client_request_hook(mock_span_non_rec, mock.Mock())
+    _observability._grpc_client_request_hook(mock_span_non_rec, mock.Mock())
     mock_span_non_rec.set_attribute.assert_not_called()
 
     # None span should safely return
-    _observability._client_request_hook(None, mock.Mock())
+    _observability._grpc_client_request_hook(None, mock.Mock())
 
     # Recording span with default hook
     mock_span_rec = mock.Mock()
     mock_span_rec.is_recording.return_value = True
     req = types.SimpleNamespace(name="projects/my-proj/secrets/s1", resend_count=1)
-    _observability._client_request_hook(mock_span_rec, req)
+    _observability._grpc_client_request_hook(mock_span_rec, req)
     mock_span_rec.set_attribute.assert_any_call("rpc.system.name", "grpc")
     mock_span_rec.set_attribute.assert_any_call(
         "gcp.resource.destination.id", "projects/my-proj/secrets/s1"
@@ -359,7 +359,7 @@ def test_client_request_hook():
     mock_span_rec.set_attribute.assert_any_call("gcp.grpc.resend_count", 1)
 
     # Custom hook with endpoint attributes
-    endpoint_hook = _observability._make_client_request_hook(
+    endpoint_hook = _observability._make_grpc_client_request_hook(
         {"server.address": "custom.api.com", "server.port": 443}
     )
     mock_span_custom = mock.Mock()
@@ -369,21 +369,21 @@ def test_client_request_hook():
     mock_span_custom.set_attribute.assert_any_call("server.port", 443)
 
 
-def test_client_response_hook():
-    """Proves that _client_response_hook sets rpc.response.status_code, error.type, and status.message."""
+def test_grpc_client_response_hook():
+    """Proves that _grpc_client_response_hook sets rpc.response.status_code, error.type, and status.message."""
     # Non-recording span should not set attributes
     mock_span_non_rec = mock.Mock()
     mock_span_non_rec.is_recording.return_value = False
-    _observability._client_response_hook(mock_span_non_rec, mock.Mock())
+    _observability._grpc_client_response_hook(mock_span_non_rec, mock.Mock())
     mock_span_non_rec.set_attribute.assert_not_called()
 
     # None span should safely return
-    _observability._client_response_hook(None, mock.Mock())
+    _observability._grpc_client_response_hook(None, mock.Mock())
 
     # Response with no code method defaults to OK
     mock_span_ok = mock.Mock()
     mock_span_ok.is_recording.return_value = True
-    _observability._client_response_hook(mock_span_ok, mock.Mock(spec=[]))
+    _observability._grpc_client_response_hook(mock_span_ok, mock.Mock(spec=[]))
     mock_span_ok.set_attribute.assert_called_once_with("rpc.response.status_code", "OK")
 
     # Response with StatusCode object having name (e.g. OK)
@@ -393,7 +393,7 @@ def test_client_response_hook():
     mock_code_ok = mock.Mock()
     mock_code_ok.name = "OK"
     mock_resp_ok.code.return_value = mock_code_ok
-    _observability._client_response_hook(mock_span_code_obj, mock_resp_ok)
+    _observability._grpc_client_response_hook(mock_span_code_obj, mock_resp_ok)
     mock_span_code_obj.set_attribute.assert_called_once_with(
         "rpc.response.status_code", "OK"
     )
@@ -404,7 +404,7 @@ def test_client_response_hook():
     mock_resp_err = mock.Mock()
     mock_resp_err.code.return_value = 14
     mock_resp_err.details.return_value = "Service temporarily unavailable"
-    _observability._client_response_hook(mock_span_err, mock_resp_err)
+    _observability._grpc_client_response_hook(mock_span_err, mock_resp_err)
     mock_span_err.set_attribute.assert_any_call(
         "rpc.response.status_code", "UNAVAILABLE"
     )
@@ -418,7 +418,7 @@ def test_client_response_hook():
     mock_span_exc.is_recording.return_value = True
     mock_resp_exc = mock.Mock()
     mock_resp_exc.code.side_effect = RuntimeError("Broken call")
-    _observability._client_response_hook(mock_span_exc, mock_resp_exc)
+    _observability._grpc_client_response_hook(mock_span_exc, mock_resp_exc)
     mock_span_exc.set_attribute.assert_called_once_with(
         "rpc.response.status_code", "OK"
     )
@@ -428,7 +428,7 @@ def test_client_response_hook():
     mock_span_no_det.is_recording.return_value = True
     mock_resp_no_det = mock.Mock(spec=["code"])
     mock_resp_no_det.code.return_value = 14
-    _observability._client_response_hook(mock_span_no_det, mock_resp_no_det)
+    _observability._grpc_client_response_hook(mock_span_no_det, mock_resp_no_det)
     mock_span_no_det.set_attribute.assert_any_call(
         "rpc.response.status_code", "UNAVAILABLE"
     )
@@ -440,7 +440,7 @@ def test_client_response_hook():
     mock_resp_empty_det = mock.Mock()
     mock_resp_empty_det.code.return_value = 14
     mock_resp_empty_det.details.return_value = ""
-    _observability._client_response_hook(mock_span_empty_det, mock_resp_empty_det)
+    _observability._grpc_client_response_hook(mock_span_empty_det, mock_resp_empty_det)
     mock_span_empty_det.set_attribute.assert_any_call(
         "rpc.response.status_code", "UNAVAILABLE"
     )
@@ -451,7 +451,7 @@ def test_client_response_hook():
     mock_resp_exc_det = mock.Mock()
     mock_resp_exc_det.code.return_value = 14
     mock_resp_exc_det.details.side_effect = RuntimeError("Details broken")
-    _observability._client_response_hook(mock_span_exc_det, mock_resp_exc_det)
+    _observability._grpc_client_response_hook(mock_span_exc_det, mock_resp_exc_det)
     mock_span_exc_det.set_attribute.assert_any_call(
         "rpc.response.status_code", "UNAVAILABLE"
     )
@@ -488,7 +488,7 @@ def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
     # Verify custom request hook was passed
     args, kwargs = mock_otel_grpc.client_interceptor.call_args
     req_hook = kwargs["request_hook"]
-    assert req_hook is not _observability._client_request_hook
+    assert req_hook is not _observability._grpc_client_request_hook
 
     # Test invoking the custom hook
     mock_span = mock.Mock()
@@ -520,7 +520,7 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
 
     args, kwargs = mock_otel_grpc.aio_client_interceptors.call_args
     req_hook = kwargs["request_hook"]
-    assert req_hook is not _observability._client_request_hook
+    assert req_hook is not _observability._grpc_client_request_hook
 
     mock_span = mock.Mock()
     mock_span.is_recording.return_value = True
