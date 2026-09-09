@@ -22,7 +22,8 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
-  UV_PRERELEASE: "allow"
+  # Prefer stable versions, falling back to pre-releases only when no stable version exists
+  UV_PRERELEASE: "if-necessary"
   # Note: PARALLEL_WORKERS must remain "1" for unit tests because running pytest concurrently
   # on the same runner VM can cause socket/IPC/process deadlocks across packages.
   PARALLEL_WORKERS: "1"
@@ -124,7 +125,7 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
         cache: 'pip'
-        allow-prereleases: true
+        allow-prereleases: ${{ matrix.python == '3.15' }}
     - name: Setup uv
       uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
       with:
@@ -198,7 +199,7 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
         cache: 'pip'
-        allow-prereleases: true
+        allow-prereleases: false
     - name: Install nox
       run: |
         pip install nox
