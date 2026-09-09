@@ -202,9 +202,6 @@
         }
       ]
     },
-    "packages/google-auth": {
-      "component": "google-auth"
-    },
     "packages/google-auth-httplib2": {
       "component": "google-auth-httplib2"
     },
