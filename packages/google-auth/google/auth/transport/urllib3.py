@@ -442,39 +442,45 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
 
                 if use_mtls:
                     with self._mtls_reauth_lock:
-                        (
-                            call_cert_bytes,
-                            call_key_bytes,
-                            cached_fingerprint,
-                            current_cert_fingerprint,
-                        ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                            self._cached_cert
-                        )
-                        if cached_fingerprint != current_cert_fingerprint:
+                        if getattr(self, "is_mtls", getattr(self, "_is_mtls", False)):
                             try:
-                                _LOGGER.info(
-                                    "Client certificate has changed, reconfiguring mTLS "
-                                    "channel."
+                                (
+                                    call_cert_bytes,
+                                    call_key_bytes,
+                                    cached_fingerprint,
+                                    current_cert_fingerprint,
+                                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                                    getattr(self, "_cached_cert", None)
                                 )
-                                self.configure_mtls_channel(
-                                    client_cert_callback=lambda: (
-                                        call_cert_bytes,
-                                        call_key_bytes,
+                                if cached_fingerprint != current_cert_fingerprint:
+                                    try:
+                                        _LOGGER.info(
+                                            "Client certificate has changed, reconfiguring mTLS "
+                                            "channel."
+                                        )
+                                        self.configure_mtls_channel(
+                                            client_cert_callback=lambda: (
+                                                call_cert_bytes,
+                                                call_key_bytes,
+                                            )
+                                        )
+                                    except Exception as e:
+                                        _LOGGER.error(
+                                            "Failed to reconfigure mTLS channel: %s", e
+                                        )
+                                        raise exceptions.MutualTLSChannelError(
+                                            "Failed to reconfigure mTLS channel"
+                                        ) from e
+                                else:
+                                    _LOGGER.info(
+                                        "Skipping reconfiguration of mTLS channel because the "
+                                        "client certificate has not changed."
                                     )
-                                )
                             except Exception as e:
-                                _LOGGER.error(
-                                    "Failed to reconfigure mTLS channel: %s", e
+                                _LOGGER.warning(
+                                    "Failed to check parameters or reconfigure mTLS channel: %s",
+                                    e,
                                 )
-                                raise exceptions.MutualTLSChannelError(
-                                    "Failed to reconfigure mTLS channel"
-                                ) from e
-                        else:
-                            _LOGGER.info(
-                                "Skipping reconfiguration of mTLS channel because the "
-                                "client certificate has not changed."
-                            )
-
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status,
