@@ -25,7 +25,7 @@ from google.api_core.client_options import ClientOptions
 
 if TYPE_CHECKING:
     # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
-    # The `# noqa: F401` comment avoids flake8 "imported but not used" errors.
+    # The 'noqa: F401' comment avoids flake8 "imported but not used" errors.
     import grpc  # noqa: F401
     import opentelemetry.trace  # noqa: F401
 
@@ -64,8 +64,56 @@ def is_otel_capabilities_enabled(
     return False
 
 
+_STATUS_CODE_NAMES = {
+    0: "OK",
+    1: "CANCELLED",
+    2: "UNKNOWN",
+    3: "INVALID_ARGUMENT",
+    4: "DEADLINE_EXCEEDED",
+    5: "NOT_FOUND",
+    6: "ALREADY_EXISTS",
+    7: "PERMISSION_DENIED",
+    8: "RESOURCE_EXHAUSTED",
+    9: "FAILED_PRECONDITION",
+    10: "ABORTED",
+    11: "OUT_OF_RANGE",
+    12: "UNIMPLEMENTED",
+    13: "INTERNAL",
+    14: "UNAVAILABLE",
+    15: "DATA_LOSS",
+    16: "UNAUTHENTICATED",
+}
+
+
+def _extract_endpoint_attributes(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Extracts server.address and server.port from client options if present."""
+    attrs: dict[str, Any] = {}
+    endpoint = None
+    if isinstance(client_options, dict):
+        endpoint = client_options.get("api_endpoint")
+    elif client_options is not None:
+        endpoint = getattr(client_options, "api_endpoint", None)
+
+    if endpoint and isinstance(endpoint, str):
+        clean = endpoint.replace("http://", "").replace("https://", "").strip("/")
+        if clean:
+            if ":" in clean:
+                host, port_str = clean.split(":", 1)
+                attrs["server.address"] = host
+                try:
+                    attrs["server.port"] = int(port_str)
+                except ValueError:
+                    attrs["server.port"] = 443
+            else:
+                attrs["server.address"] = clean
+                attrs["server.port"] = 443
+    return attrs
+
+
 def _extract_t4_attributes(request: Any) -> dict[str, Any]:
-    """Extracts Google Cloud semantic and resource attributes from a gRPC request object.
+    """Extracts Google Cloud T4 semantic and resource attributes from a gRPC request object.
 
     Args:
         request: The gRPC request object.
@@ -73,44 +121,74 @@ def _extract_t4_attributes(request: Any) -> dict[str, Any]:
     Returns:
         dict[str, Any]: A dictionary of semantic attributes.
     """
-    attrs: dict[str, Any] = {}
+    attrs: dict[str, Any] = {
+        "rpc.system.name": "grpc",
+    }
     if request is None:
         return attrs
 
-    name = getattr(request, "name", None)
-    if name and isinstance(name, str):
-        attrs["gcp.resource.name"] = name
-        if "projects/" in name:
-            parts = name.split("/")
-            try:
-                idx = parts.index("projects")
-                if idx + 1 < len(parts):
-                    attrs["gcp.project_id"] = parts[idx + 1]
-            except ValueError:
-                pass
+    resend_count = getattr(request, "resend_count", None)
+    if isinstance(resend_count, int) and resend_count > 0:
+        attrs["gcp.grpc.resend_count"] = resend_count
 
-    parent = getattr(request, "parent", None)
-    if parent and isinstance(parent, str):
-        attrs["gcp.resource.parent"] = parent
-        if "gcp.project_id" not in attrs and "projects/" in parent:
-            parts = parent.split("/")
-            try:
-                idx = parts.index("projects")
-                if idx + 1 < len(parts):
-                    attrs["gcp.project_id"] = parts[idx + 1]
-            except ValueError:
-                pass
+    name = getattr(request, "name", None)
+    if isinstance(name, str) and name:
+        attrs["gcp.resource.destination.id"] = name
+    else:
+        parent = getattr(request, "parent", None)
+        if isinstance(parent, str) and parent:
+            attrs["gcp.resource.destination.id"] = parent
 
     return attrs
 
 
-def _client_request_hook(span: Any, request: Any) -> None:
-    """OpenTelemetry client request hook to inject GCP resource attributes into the span."""
+def _make_client_request_hook(
+    endpoint_attrs: dict[str, Any] | None = None,
+) -> Callable[[Any, Any], None]:
+    """Creates an OpenTelemetry client request hook with optional endpoint attributes."""
+
+    def client_request_hook(span: Any, request: Any) -> None:
+        if span is None or not getattr(span, "is_recording", lambda: True)():
+            return
+        attrs = _extract_t4_attributes(request)
+        if endpoint_attrs:
+            attrs.update(endpoint_attrs)
+        for key, value in attrs.items():
+            span.set_attribute(key, value)
+
+    return client_request_hook
+
+
+_client_request_hook = _make_client_request_hook()
+
+
+def _client_response_hook(span: Any, response: Any) -> None:
+    """OpenTelemetry client response hook to inject gRPC response status attributes into the span."""
     if span is None or not getattr(span, "is_recording", lambda: True)():
         return
-    attrs = _extract_t4_attributes(request)
-    for key, value in attrs.items():
-        span.set_attribute(key, value)
+
+    status_str = "OK"
+    code_fn = getattr(response, "code", None)
+    if callable(code_fn):
+        try:
+            code_val = code_fn()
+            status_str = getattr(code_val, "name", None) or _STATUS_CODE_NAMES.get(
+                code_val, str(code_val)
+            )
+        except Exception:
+            pass
+
+    span.set_attribute("rpc.response.status_code", status_str)
+    if status_str != "OK":
+        span.set_attribute("error.type", status_str)
+        details_fn = getattr(response, "details", None)
+        if callable(details_fn):
+            try:
+                details = details_fn()
+                if details:
+                    span.set_attribute("status.message", str(details))
+            except Exception:
+                pass
 
 
 def _get_tracer_provider(
@@ -150,9 +228,17 @@ def get_otel_interceptor(
 
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
+    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    request_hook = (
+        _make_client_request_hook(endpoint_attrs)
+        if endpoint_attrs
+        else _client_request_hook
+    )
+
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
         tracer_provider=_get_tracer_provider(client_options),
-        request_hook=_client_request_hook,
+        request_hook=request_hook,
+        response_hook=_client_response_hook,
     )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
@@ -180,7 +266,15 @@ def get_otel_async_interceptor(
     # Ignored by mypy: Optional dependency only loaded if early-return is skipped
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
+    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    request_hook = (
+        _make_client_request_hook(endpoint_attrs)
+        if endpoint_attrs
+        else _client_request_hook
+    )
+
     return otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
-        request_hook=_client_request_hook,
+        request_hook=request_hook,
+        response_hook=_client_response_hook,
     )
