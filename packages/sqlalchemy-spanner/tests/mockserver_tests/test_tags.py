@@ -141,7 +141,10 @@ def add_singer_query_result():
     if is_sqlalchemy_21_or_higher():
         sql = "SELECT singers.id, singers.name\nFROM singers"
     else:
-        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name\nFROM singers"
+        sql = (
+            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
+            + "FROM singers"
+        )
 
     result = empty_singer_result_set()
     result.rows.extend(
@@ -163,7 +166,10 @@ def add_single_singer_query_result():
     if is_sqlalchemy_21_or_higher():
         sql = "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
     else:
-        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name\nFROM singers\nWHERE singers.id = @a0"
+        sql = (
+            "SELECT singers.id AS singers_id, singers.name AS singers_name"
+            + "\nFROM singers\nWHERE singers.id = @a0"
+        )
 
     result = empty_singer_result_set()
     result.rows.extend(
