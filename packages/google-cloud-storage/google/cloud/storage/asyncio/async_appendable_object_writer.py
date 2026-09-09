@@ -269,6 +269,7 @@ class AsyncAppendableObjectWriter:
             generation=blob.generation,
             write_handle=write_handle,
             writer_options=writer_options,
+            storage_class=blob.storage_class,
         )
         instance.blob = blob
         return instance
