@@ -328,7 +328,7 @@ def test_mds_mtls_adapter_send_no_fallback_strict_mode(
             adapter.send(request)
 
 @mock.patch("requests.adapters.HTTPAdapter.close")
-@mock.patch("ssl.create_default_context")
+@mock.patch("google.auth.compute_engine._mtls.ssl.create_default_context")
 def test_mds_mtls_adapter_close(
     mock_ssl_context, mock_super_close, mock_mds_mtls_config
 ):
