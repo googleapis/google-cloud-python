@@ -1037,10 +1037,8 @@ class TestSessionsMtls:
         await session.close()
 
     @pytest.mark.asyncio
-    async def test_no_cert_rotation_when_client_cert_does_not_exist(self, caplog):
-        """Verifies that if the client cert does not exist, reconfiguration is skipped and logged."""
-        import logging
-
+    async def test_no_cert_rotation_when_client_cert_does_not_exist(self):
+        """Verifies that if client certificate does not exist, reconfiguration is skipped with proper logging."""
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
         mock_creds.refresh = mock.AsyncMock(return_value=None)
@@ -1069,7 +1067,7 @@ class TestSessionsMtls:
             mock.patch.object(
                 session, "configure_mtls_channel", new_callable=mock.AsyncMock
             ) as mock_conf,
-            caplog.at_level(logging.INFO),
+            mock.patch.object(sessions._LOGGER, "info") as mock_logger_info,
         ):
             mock_check.return_value = (None, None, None, None)
 
@@ -1081,9 +1079,9 @@ class TestSessionsMtls:
             mock_check.assert_called_once()
             mock_conf.assert_not_called()
             mock_creds.refresh.assert_called_once()
-            assert (
-                "Skipping reconfiguration of mTLS channel because the client certificate does not exist."
-                in caplog.text
+            mock_logger_info.assert_any_call(
+                "Skipping reconfiguration of mTLS channel because the client"
+                " certificate does not exist."
             )
 
         await session.close()
