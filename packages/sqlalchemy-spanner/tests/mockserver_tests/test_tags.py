@@ -139,9 +139,9 @@ def is_sqlalchemy_21_or_higher() -> bool:
 
 def add_singer_query_result():
     if is_sqlalchemy_21_or_higher():
-        sql = "SELECT singers.id, singers.name \nFROM singers"
+        sql = "SELECT singers.id, singers.name\nFROM singers"
     else:
-        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name \nFROM singers"
+        sql = "SELECT singers.id AS singers_id, singers.name AS singers_name\nFROM singers"
 
     result = empty_singer_result_set()
     result.rows.extend(
