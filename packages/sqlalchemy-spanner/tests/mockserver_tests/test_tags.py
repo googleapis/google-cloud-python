@@ -137,13 +137,7 @@ def has_column_aliases() -> bool:
 
 
 def add_singer_query_result():
-    if has_column_aliases():
-        sql = (
-            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
-            + "FROM singers"
-        )
-    else:
-        sql = "SELECT singers.id, singers.name\nFROM singers"
+    sql = "SELECT singers.id, singers.name\nFROM singers"
 
     result = empty_singer_result_set()
     result.rows.extend(
