@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib.metadata
-
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
-import sqlalchemy
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
@@ -130,21 +127,23 @@ def empty_singer_result_set():
     )
 
 
-def is_sqlalchemy_21_or_higher() -> bool:
-    version = getattr(sqlalchemy, "__version__", None) or importlib.metadata.version(
-        "sqlalchemy"
-    )
-    return not version.startswith("2.0.") and not version.startswith("1.")
+def has_column_aliases() -> bool:
+    # Older SQLAlchemy 2.0.x versions compiled ORM column selections with explicit
+    # labels (e.g., 'singers.id AS singers_id'), whereas newer 2.0.x and 2.1+ releases
+    # omit redundant column aliases in unaliased single-table queries.
+    from tests.mockserver_tests.tags_model import Singer
+
+    return "AS singers_id" in str(select(Singer))
 
 
 def add_singer_query_result():
-    if is_sqlalchemy_21_or_higher():
-        sql = "SELECT singers.id, singers.name\nFROM singers"
-    else:
+    if has_column_aliases():
         sql = (
             "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
             + "FROM singers"
         )
+    else:
+        sql = "SELECT singers.id, singers.name\nFROM singers"
 
     result = empty_singer_result_set()
     result.rows.extend(
@@ -163,13 +162,13 @@ def add_singer_query_result():
 
 
 def add_single_singer_query_result():
-    if is_sqlalchemy_21_or_higher():
-        sql = "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
-    else:
+    if has_column_aliases():
         sql = (
             "SELECT singers.id AS singers_id, singers.name AS singers_name"
             + "\nFROM singers\nWHERE singers.id = @a0"
         )
+    else:
+        sql = "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
 
     result = empty_singer_result_set()
     result.rows.extend(
