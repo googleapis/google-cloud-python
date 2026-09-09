@@ -310,7 +310,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         # credentials.refresh).
         self._request = Request(self.http)
         self._is_mtls = False
-        self._reauth_lock = threading.Lock()
+        self._mtls_reauth_lock = threading.Lock()
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
@@ -320,6 +320,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
         super(AuthorizedHttp, self).__init__()
+
+    @property
+    def is_mtls(self):
+        """Indicates if the created SSL channel is mutual TLS."""
+        return self._is_mtls
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
@@ -433,10 +438,10 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
-                use_mtls = self._is_mtls and _mtls_helper.is_mtls_endpoint(url)
+                use_mtls = getattr(self, "_is_mtls", False) and _mtls_helper.is_mtls_endpoint(url)
 
                 if use_mtls:
-                    with self._reauth_lock:
+                    with self._mtls_reauth_lock:
                         (
                             call_cert_bytes,
                             call_key_bytes,
