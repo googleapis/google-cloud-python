@@ -1,3 +1,14 @@
+"""System tests for Rapid Buckets (formerly Zonal Buckets) and RCU.
+
+Usage:
+
+RUN_RCU_SYSTEM_TESTS=True RCU_BUCKET=<bucket_name> RUN_SYSTEM_TESTS_ON_PREPROD=True pytest packages/google-cloud-storage/tests/system/test_zonal.py
+
+and for Rapid Bucket (formerly Zonal Buckets):
+
+RUN_ZONAL_SYSTEM_TESTS=True ZONAL_BUCKET=<> CROSS_REGION_BUCKET=<> pytest packages/google-cloud-storage/tests/system/test_zonal.py
+"""
+
 # py standard imports
 import asyncio
 import datetime
