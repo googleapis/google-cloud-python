@@ -64,7 +64,8 @@ async def timeout_guard(timeout):
     timeout_guard is an asynchronous context manager to apply a timeout to an asynchronous block of code.
 
     Args:
-        timeout (float): The time in seconds before the context manager times out.
+        timeout (Optional[float]): The time in seconds before the context manager times out.
+            If None, no timeout is applied.
 
     Raises:
         google.auth.exceptions.TimeoutError: If the code within the context exceeds the provided timeout.
@@ -110,7 +111,7 @@ class AsyncAuthorizedSession:
     by the caller or otherwise default to `google.auth.aio.transport.aiohttp.Request` if the external aiohttp
     package is installed.
 
-    A Requests Session class with credentials.
+    A Requests Session class with credentials and mutual TLS (mTLS) support.
 
     This class is used to perform asynchronous requests to API endpoints that require
     authorization::
@@ -123,7 +124,9 @@ class AsyncAuthorizedSession:
                 'GET', 'https://www.googleapis.com/storage/v1/b')
 
     The underlying :meth:`request` implementation handles adding the
-    credentials' headers to the request and refreshing credentials as needed.
+    credentials' headers to the request, refreshing credentials as needed,
+    and automatically recovering from certificate rotation on mTLS endpoints
+    when 401 Unauthorized responses occur.
 
     Args:
         credentials (google.auth.aio.credentials.Credentials):
@@ -136,9 +139,9 @@ class AsyncAuthorizedSession:
             is created.
 
     Raises:
-        - google.auth.exceptions.TransportError: If `auth_request` is `None`
+        google.auth.exceptions.TransportError: If `auth_request` is `None`
             and the external package `aiohttp` is not installed.
-        - google.auth.exceptions.InvalidType: If the provided credentials are
+        google.auth.exceptions.InvalidType: If the provided credentials are
             not of type `google.auth.aio.credentials.Credentials`.
     """
 
@@ -169,65 +172,74 @@ class AsyncAuthorizedSession:
         self._refresh_counter = 0
 
     async def configure_mtls_channel(self, client_cert_callback=None):
-        """Configure the client certificate and key for SSL connection.
+        """Configure or reconfigure the client certificate and key for SSL connections.
 
         This method configures mTLS if client certificates are explicitly enabled
         (via GOOGLE_API_USE_CLIENT_CERTIFICATE=true) or auto-enabled (when the env
         variable is unset and workload certificates are discovered). In these cases,
-        the underlying transport will be reconfigured to use mTLS.
+        the underlying transport will be configured or rotated to use mTLS.
 
-        Note: This function does nothing if the `aiohttp` library is not
-        installed.
-        Important: Calling this method will close any ongoing API requests associated
-        with the current session. To ensure a smooth transition, it is recommended
-        to call this during session initialization.
+        Note: This function does nothing if the `aiohttp` library is not installed
+        or if custom non-aiohttp transports are used.
 
         Args:
-            client_cert_callback (Optional[Callable[[], (bytes, bytes)]]):
-                The optional callback returns the client certificate and private
-                key bytes both in PEM format.
-                If the callback is None, application default SSL credentials
-                will be used.
+            client_cert_callback (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                The optional callback returning the client certificate and private
+                key bytes in PEM format. If None, application default SSL credentials
+                or workload certificates will be discovered and used.
+
+        Returns:
+            bool: True if mTLS channel configuration succeeded and is enabled,
+                False otherwise.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
-                creation failed for any reason.
+                creation or client certificate discovery fails for any reason.
         """
-        if self._mtls_init_task is None:
+        if self._mtls_init_task is None or self._mtls_init_task.done():
             self._client_cert_callback = client_cert_callback
 
             async def _do_configure():
-                # Run the blocking check in an executor
-                use_client_cert = await mtls._run_in_executor(
-                    google.auth.transport._mtls_helper.check_use_client_cert
-                )
-                if not use_client_cert:
-                    return
-
                 try:
                     (
                         is_mtls,
-                        cert,
-                        key,
-                    ) = await mtls.get_client_cert_and_key(client_cert_callback)
+                        cert_bytes,
+                        key_bytes,
+                    ) = await mtls.get_client_cert_and_key(
+                        self._client_cert_callback
+                    )
+                except Exception as e:
+                    self._is_mtls = False
+                    self._cached_cert = None
+                    raise exceptions.MutualTLSChannelError(
+                        "Client certificate discovery failed"
+                    ) from e
 
-                    if is_mtls:
-                        # Re-create the auth request with the new SSL context
-                        if AIOHTTP_INSTALLED and isinstance(
-                            self._auth_request, AiohttpRequest
-                        ):
-                            ssl_context = await mtls._run_in_executor(
-                                mtls.make_client_cert_ssl_context, cert, key
+                if is_mtls:
+                    if AIOHTTP_INSTALLED and isinstance(
+                        self._auth_request, AiohttpRequest
+                    ):
+                        if cert_bytes and key_bytes:
+                            ssl_context = (
+                                mtls.make_client_cert_ssl_context(
+                                    cert_bytes, key_bytes
+                                )
                             )
-                            connector = aiohttp.TCPConnector(ssl=ssl_context)
-                            new_session = aiohttp.ClientSession(connector=connector)
+                            new_connector = aiohttp.TCPConnector(
+                                ssl=ssl_context
+                            )
+                            new_session = aiohttp.ClientSession(
+                                connector=new_connector
+                            )
 
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
+                            self._is_mtls = is_mtls
+                            self._cached_cert = cert_bytes
                             self._old_auth_requests.append(old_auth_request)
 
                             while len(self._old_auth_requests) > 2:
-                                oldest_auth_request = self._old_auth_requests[0]
+                                oldest_auth_request = self._old_auth_requests.pop(0)
                                 try:
                                     if hasattr(oldest_auth_request, "close"):
                                         res = oldest_auth_request.close()
@@ -235,35 +247,40 @@ class AsyncAuthorizedSession:
                                             await res
                                 except Exception:
                                     pass
-                                self._old_auth_requests.pop(0)
-
                         else:
                             is_mtls = False
+                            self._is_mtls = False
+                            self._cached_cert = None
                             warnings.warn(
-                                "Attempted to establish mTLS, but a custom async transport was provided. "
-                                "google-auth cannot automatically configure custom transports for mTLS. "
-                                "Falling back to standard TLS. If your custom transport is not manually "
-                                "configured for mTLS, you may encounter 401 Unauthorized errors when "
-                                "using Certificate-Bound Tokens.",
-                                UserWarning,
+                                "Attempted to establish mTLS, but client "
+                                "certificate or private key was not found."
                             )
-
-                    self._is_mtls = is_mtls
-                    if is_mtls:
-                        self._cached_cert = cert
                     else:
+                        is_mtls = False
+                        self._is_mtls = False
                         self._cached_cert = None
+                        warnings.warn(
+                            "Attempted to establish mTLS, but custom "
+                            "request transport cannot be configured "
+                            "for mTLS."
+                        )
+                else:
+                    self._is_mtls = False
+                    self._cached_cert = None
 
-                except Exception as caught_exc:
-                    new_exc = exceptions.MutualTLSChannelError(caught_exc)
-                    raise new_exc from caught_exc
+                return is_mtls
 
             self._mtls_init_task = asyncio.create_task(_do_configure())
 
         try:
-            return await self._mtls_init_task
+            return await asyncio.shield(self._mtls_init_task)
         except BaseException:
-            self._mtls_init_task = None
+            if (
+                self._mtls_init_task is not None
+                and self._mtls_init_task.done()
+                and self._mtls_init_task.exception()
+            ):
+                self._mtls_init_task = None
             raise
 
     async def request(
@@ -277,48 +294,36 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                method (str): The http method used to make the request.
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous HTTP request with automatic retry and mTLS rotation.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            method (str): The HTTP method used to make the request (e.g. "GET", "POST").
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): If the method runs longer than this, a
+                ``google.auth.exceptions.TimeoutError`` is raised. Applies to total execution time.
+            timeout (Union[float, aiohttp.ClientTimeout]): The timeout in seconds for each
+                individual HTTP request attempt.
+            total_attempts (Optional[int]): The maximum number of retry attempts for retryable errors.
+            **kwargs: Additional arguments passed to the underlying HTTP transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
-                google.auth.exceptions.MutualTLSChannelError: If mutual TLS
-                channel reconfiguration fails for any reason during certificate rotation.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
         if self._mtls_init_task and not self._mtls_init_task.done():
             try:
                 await asyncio.shield(self._mtls_init_task)
-            except Exception:
-                # Suppress all exceptions from the background mTLS initialization task,
-                # allowing the request to fail naturally elsewhere.
+            except (Exception, asyncio.CancelledError):
                 pass
+
         retries = _exponential_backoff.AsyncExponentialBackoff(
             total_attempts=total_attempts,
         )
@@ -326,29 +331,40 @@ class AsyncAuthorizedSession:
         start_time = time.monotonic()
         refresh_counter_at_error = self._refresh_counter
         check_counter_at_error = self._mtls_check_counter
-        async with timeout_guard(max_allowed_time) as with_timeout:
-            await with_timeout(
-                # Note: before_request will attempt to refresh credentials if expired.
-                self._credentials.before_request(
-                    self._auth_request, method, url, request_headers
-                )
-            )
-            actual_timeout: float = 0.0
-            if ClientTimeout is not None and isinstance(timeout, ClientTimeout):
-                actual_timeout = timeout.total if timeout.total is not None else 0.0
-            elif isinstance(timeout, (int, float)):
-                actual_timeout = float(timeout)
-            # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-            # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-            async for _ in retries:  # pragma: no branch
-                response = await with_timeout(
-                    self._auth_request(
-                        url, method, data, request_headers, actual_timeout, **kwargs
+        response = None
+
+        try:
+            async with timeout_guard(max_allowed_time) as with_timeout:
+                await with_timeout(
+                    self._credentials.before_request(
+                        self._auth_request, method, url, request_headers
                     )
                 )
+                actual_timeout: float = 0.0
+                if ClientTimeout is not None and isinstance(timeout, ClientTimeout):
+                    actual_timeout = timeout.total if timeout.total is not None else 0.0
+                elif isinstance(timeout, (int, float)):
+                    actual_timeout = float(timeout)
+                elif max_allowed_time is not None:
+                    actual_timeout = max_allowed_time
 
-                if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
-                    break
+                async for _ in retries:  # pragma: no branch
+                    response = await with_timeout(
+                        self._auth_request(
+                            url, method, data, request_headers, actual_timeout, **kwargs
+                        )
+                    )
+                    if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
+                        break
+        except BaseException:
+            if response is not None and hasattr(response, "close"):
+                try:
+                    res = response.close()
+                    if inspect.isawaitable(res):
+                        await res
+                except Exception:
+                    pass
+            raise
 
         if response.status_code == http_client.UNAUTHORIZED:
             if _auth_retry_count < 2:
@@ -372,6 +388,7 @@ class AsyncAuthorizedSession:
 
                     async def _recover_auth_state():
                         is_mtls_endpoint = False
+                        channel_reconfigured = False
                         if self._is_mtls:
                             hostname = urllib.parse.urlsplit(url).hostname
                             if hostname:
@@ -380,14 +397,10 @@ class AsyncAuthorizedSession:
                                     or hostname.endswith("." + prefix)
                                     for prefix in _MTLS_URL_PREFIXES
                                 )
-                            # Snapshot the stale certificate state BEFORE acquiring the lock.
-                            # This represents the cert that caused the 401 rejection.
                             if is_mtls_endpoint:
                                 if self._mtls_rotation_lock is None:
                                     self._mtls_rotation_lock = asyncio.Lock()
                                 async with self._mtls_rotation_lock:
-                                    # Check if another coroutine already reconfigured mTLS or
-                                    # ran the validation check.
                                     if (
                                         self._mtls_check_counter
                                         > check_counter_at_error
@@ -416,6 +429,7 @@ class AsyncAuthorizedSession:
                                                 e,
                                             )
                                         else:
+                                            self._mtls_check_counter += 1
                                             if (
                                                 current_cert_fingerprint is not None
                                                 and cached_fingerprint
@@ -429,21 +443,13 @@ class AsyncAuthorizedSession:
                                                         "Client certificate has changed, reconfiguring mTLS "
                                                         "channel."
                                                     )
-                                                    if self._mtls_init_task is not None:
-                                                        if (
-                                                            not self._mtls_init_task.done()
-                                                        ):
-                                                            try:
-                                                                await self._mtls_init_task
-                                                            except Exception:
-                                                                pass
-                                                        self._mtls_init_task = None
                                                     await self.configure_mtls_channel(
                                                         lambda: (
                                                             call_cert_bytes,
                                                             call_key_bytes,
                                                         )
                                                     )
+                                                    channel_reconfigured = True
                                                 except Exception as e:
                                                     _LOGGER.error(
                                                         "Failed to reconfigure mTLS channel: %s",
@@ -467,14 +473,12 @@ class AsyncAuthorizedSession:
                                                         "Skipping reconfiguration of mTLS channel because the client"
                                                         " certificate has not changed."
                                                     )
-                                        # Always increment so waiting tasks skip the check block
-                                        self._mtls_check_counter += 1
+
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
 
                         async with self._refresh_lock:
-                            # Check if another task already refreshed credentials while we were waiting
-                            if self._refresh_counter > refresh_counter_at_error:
+                            if not channel_reconfigured and self._refresh_counter > refresh_counter_at_error:
                                 _LOGGER.debug(
                                     "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
                                 )
@@ -500,7 +504,6 @@ class AsyncAuthorizedSession:
 
                         if is_streaming:
                             return response
-                        # Return None to explicitly signal successful recovery & trigger retry if needed
                         return None
 
                     async with timeout_guard(remaining_time) as auth_with_timeout:
@@ -516,7 +519,7 @@ class AsyncAuthorizedSession:
                         except Exception:
                             pass
                     raise
-                # If it returned a response (meaning streaming or error), bail out
+
                 if early_return_response is not None:
                     return early_return_response
                 if hasattr(response, "close"):
@@ -558,45 +561,34 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous GET request.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): Total execution timeout in seconds.
+            timeout (Union[float, aiohttp.ClientTimeout]): Individual request timeout in seconds.
+            total_attempts (Optional[int]): Maximum number of retry attempts.
+            **kwargs: Additional keyword arguments passed to the underlying request transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         return await self.request(
             "GET",
             url,
-            data,
-            headers,
-            max_allowed_time,
-            timeout,
-            total_attempts,
+            data=data,
+            headers=headers,
+            max_allowed_time=max_allowed_time,
+            timeout=timeout,
+            total_attempts=total_attempts,
             **kwargs,
         )
 
@@ -611,45 +603,34 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous POST request.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): Total execution timeout in seconds.
+            timeout (Union[float, aiohttp.ClientTimeout]): Individual request timeout in seconds.
+            total_attempts (Optional[int]): Maximum number of retry attempts.
+            **kwargs: Additional keyword arguments passed to the underlying request transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         return await self.request(
             "POST",
             url,
-            data,
-            headers,
-            max_allowed_time,
-            timeout,
-            total_attempts,
+            data=data,
+            headers=headers,
+            max_allowed_time=max_allowed_time,
+            timeout=timeout,
+            total_attempts=total_attempts,
             **kwargs,
         )
 
@@ -664,45 +645,34 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous PUT request.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): Total execution timeout in seconds.
+            timeout (Union[float, aiohttp.ClientTimeout]): Individual request timeout in seconds.
+            total_attempts (Optional[int]): Maximum number of retry attempts.
+            **kwargs: Additional keyword arguments passed to the underlying request transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         return await self.request(
             "PUT",
             url,
-            data,
-            headers,
-            max_allowed_time,
-            timeout,
-            total_attempts,
+            data=data,
+            headers=headers,
+            max_allowed_time=max_allowed_time,
+            timeout=timeout,
+            total_attempts=total_attempts,
             **kwargs,
         )
 
@@ -717,45 +687,34 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous PATCH request.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): Total execution timeout in seconds.
+            timeout (Union[float, aiohttp.ClientTimeout]): Individual request timeout in seconds.
+            total_attempts (Optional[int]): Maximum number of retry attempts.
+            **kwargs: Additional keyword arguments passed to the underlying request transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         return await self.request(
             "PATCH",
             url,
-            data,
-            headers,
-            max_allowed_time,
-            timeout,
-            total_attempts,
+            data=data,
+            headers=headers,
+            max_allowed_time=max_allowed_time,
+            timeout=timeout,
+            total_attempts=total_attempts,
             **kwargs,
         )
 
@@ -770,45 +729,34 @@ class AsyncAuthorizedSession:
         total_attempts: Optional[int] = transport.DEFAULT_MAX_RETRY_ATTEMPTS,
         **kwargs,
     ) -> transport.Response:
-        """
-        Args:
-                url (str): The URI to be requested.
-                data (Optional[bytes]): The payload or body in HTTP request.
-                headers (Optional[Mapping[str, str]]): Request headers.
-                max_allowed_time (float):
-                If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout`` parameter, this
-                value applies to the total method execution time, even if
-                multiple requests are made under the hood.
-                timeout (float, aiohttp.ClientTimeout):
-                The amount of time in seconds to wait for the server response
-                with each individual request.
-                total_attempts (int):
-                The total number of retry attempts.
+        """Make an authenticated asynchronous DELETE request.
 
-                Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time``. It might take longer, for example, if
-                an underlying request takes a lot of time, but the request
-                itself does not timeout, e.g. if a large file is being
-                transmitted. The timeout error will be raised after such
-                request completes.
+        Args:
+            url (str): The URI to be requested.
+            data (Optional[bytes]): The payload or body in the HTTP request.
+            headers (Optional[Mapping[str, str]]): Request headers.
+            max_allowed_time (float): Total execution timeout in seconds.
+            timeout (Union[float, aiohttp.ClientTimeout]): Individual request timeout in seconds.
+            total_attempts (Optional[int]): Maximum number of retry attempts.
+            **kwargs: Additional keyword arguments passed to the underlying request transport.
 
         Returns:
-                google.auth.aio.transport.Response: The HTTP response.
+            google.auth.aio.transport.Response: The HTTP response.
 
         Raises:
-                google.auth.exceptions.TimeoutError: If the method does not complete within
-                the configured `max_allowed_time` or the request exceeds the configured
-                `timeout`.
+            google.auth.exceptions.TimeoutError: If the operation exceeds `max_allowed_time`
+                or an individual request attempt exceeds `timeout`.
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
+                reconfiguration fails for any reason during certificate rotation.
         """
         return await self.request(
             "DELETE",
             url,
-            data,
-            headers,
-            max_allowed_time,
-            timeout,
-            total_attempts,
+            data=data,
+            headers=headers,
+            max_allowed_time=max_allowed_time,
+            timeout=timeout,
+            total_attempts=total_attempts,
             **kwargs,
         )
 
@@ -818,16 +766,14 @@ class AsyncAuthorizedSession:
         return self._is_mtls
 
     async def close(self) -> None:
-        """
-        Close the underlying auth request session.
-        """
-        if self._mtls_init_task and not self._mtls_init_task.done():
-            self._mtls_init_task.cancel()
-            try:
-                await self._mtls_init_task
-            except asyncio.CancelledError:
-                pass
+        """Close the underlying auth request session and drain any retained mTLS transports."""
         try:
+            if self._mtls_init_task and not self._mtls_init_task.done():
+                self._mtls_init_task.cancel()
+                try:
+                    await self._mtls_init_task
+                except (Exception, asyncio.CancelledError):
+                    pass
             if hasattr(self._auth_request, "close"):
                 res = self._auth_request.close()
                 if inspect.isawaitable(res):
