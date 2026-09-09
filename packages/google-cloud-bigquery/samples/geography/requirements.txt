@@ -32,7 +32,7 @@ pyparsing==3.2.5
 python-dateutil==2.9.0.post0
 pytz==2025.2
 PyYAML==6.0.3
-requests==2.32.5
+requests==2.33.0
 rsa==4.9.1
 Shapely==2.1.2
 six==1.17.0
