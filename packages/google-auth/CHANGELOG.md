@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.58.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.1...google-auth-v2.58.0) (2026-09-09)
+
+
+### Features
+
+* [aiohttp] Add mTLS reconfiguration logic when certificate mismatch ([906ace7](https://github.com/googleapis/google-cloud-python/commit/906ace77a2a4cfe57954b3da727232e2fd481c22))
+* **auth:** [aiohttp] Add mTLS reconfiguration logic when certificate mismatch for existing credentials & Agent Identity workloads  ([#18224](https://github.com/googleapis/google-cloud-python/issues/18224)) ([906ace7](https://github.com/googleapis/google-cloud-python/commit/906ace77a2a4cfe57954b3da727232e2fd481c22))
+
 ## [2.57.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.0...google-auth-v2.57.1) (2026-09-03)
 
 
