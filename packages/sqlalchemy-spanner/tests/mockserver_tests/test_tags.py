@@ -16,13 +16,13 @@ import importlib.metadata
 
 import google.cloud.spanner_v1.types.result_set as result_set
 import google.cloud.spanner_v1.types.type as spanner_type
+import sqlalchemy
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
 )
-import sqlalchemy
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
