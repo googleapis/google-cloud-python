@@ -11,6 +11,7 @@ from io import BytesIO
 import google_crc32c
 import pytest
 from google.api_core import exceptions
+from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
 # current library imports
@@ -27,7 +28,6 @@ from google.cloud.storage.blob import (
     ObjectContexts,
     ObjectCustomContextPayload,
 )
-from google.api_core.client_options import ClientOptions
 
 PREPROD_GRPC_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
 

@@ -30,13 +30,12 @@ except ImportError:
 
 import pytest  # noqa: E402
 from google.api_core import exceptions  # noqa: E402
-
+from google.api_core.client_options import ClientOptions  # noqa: E402
 from google.cloud import kms  # noqa: E402
 from google.cloud.storage._helpers import _base64_md5hash  # noqa: E402
 from google.cloud.storage.retry import DEFAULT_RETRY  # noqa: E402
 
 from . import _helpers  # noqa: E402
-from google.api_core.client_options import ClientOptions
 
 PREPROD_JSON_HOST = "https://storage-preprod-test-unified.googleusercontent.com"
 RUN_SYSTEM_TESTS_ON_PREPROD = os.getenv("RUN_SYSTEM_TESTS_ON_PREPROD") == "True"
