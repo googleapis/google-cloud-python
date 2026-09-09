@@ -30,6 +30,8 @@ tools:
       version: 5.11.0
     - name: nox
       version: 2025.11.12
+    - name: pypandoc-binary
+      version: 1.16.2
     - name: ruff
       version: 0.14.14
     - name: synthtool
