@@ -1096,17 +1096,17 @@ class TestSessionsMtls:
         session = sessions.AsyncAuthorizedSession(mock_creds)
         init_started = asyncio.Event()
         init_can_finish = asyncio.Event()
+
         async def slow_mtls_init():
             init_started.set()
             await init_can_finish.wait()
             session._is_mtls = True
+
         # Simulate an in-progress mTLS initialization task
         mtls_task = asyncio.create_task(slow_mtls_init())
         session._mtls_init_task = mtls_task
         # Launch an in-flight request that awaits the shielded mTLS task
-        req_task = asyncio.create_task(
-            session.request("GET", "https://example.com")
-        )
+        req_task = asyncio.create_task(session.request("GET", "https://example.com"))
         # Ensure the mTLS task has started and the request is waiting on it
         await init_started.wait()
         # Yield to event loop to guarantee session.request has reached await asyncio.shield(...)
