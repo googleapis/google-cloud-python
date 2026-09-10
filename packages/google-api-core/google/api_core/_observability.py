@@ -157,8 +157,10 @@ def _make_grpc_client_request_hook(
         # Remove duplicate legacy rpc.system attribute set by stock instrumentation
         # in favor of modern rpc.system.name ("grpc") per PRD changelog.
         span_attributes = getattr(span, "_attributes", None)
-        if hasattr(span_attributes, "pop"):
-            span_attributes.pop("rpc.system", None)
+        if span_attributes is not None:
+            pop_fn = getattr(span_attributes, "pop", None)
+            if callable(pop_fn):
+                pop_fn("rpc.system", None)
 
         attrs = _extract_grpc_request_attributes(request)
         if clean_method_name:
@@ -172,6 +174,29 @@ def _make_grpc_client_request_hook(
 
 
 _grpc_client_request_hook = _make_grpc_client_request_hook()
+
+# Mapping of standard gRPC integer status codes to their canonical status name strings.
+# Used when stock gRPC wire spans encounter errors, guaranteeing mapping even in environments
+# where the optional `grpc` package is not installed (e.g. REST-only environments).
+_GRPC_INT_STATUS_CODE_TO_NAME = {
+    0: "OK",
+    1: "CANCELLED",
+    2: "UNKNOWN",
+    3: "INVALID_ARGUMENT",
+    4: "DEADLINE_EXCEEDED",
+    5: "NOT_FOUND",
+    6: "ALREADY_EXISTS",
+    7: "PERMISSION_DENIED",
+    8: "RESOURCE_EXHAUSTED",
+    9: "FAILED_PRECONDITION",
+    10: "ABORTED",
+    11: "OUT_OF_RANGE",
+    12: "UNIMPLEMENTED",
+    13: "INTERNAL",
+    14: "UNAVAILABLE",
+    15: "DATA_LOSS",
+    16: "UNAUTHENTICATED",
+}
 
 
 def _grpc_client_response_hook(span: Any, response: Any) -> None:
@@ -199,12 +224,16 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
             if grpc_code is not None:
                 from google.api_core import exceptions
 
+                name = None
                 if grpc_code in exceptions._INT_TO_GRPC_CODE:
-                    span.set_attribute(
-                        "rpc.response.status_code",
-                        exceptions._INT_TO_GRPC_CODE[grpc_code].name,
-                    )
+                    name = exceptions._INT_TO_GRPC_CODE[grpc_code].name
+                elif grpc_code in _GRPC_INT_STATUS_CODE_TO_NAME:
+                    name = _GRPC_INT_STATUS_CODE_TO_NAME[grpc_code]
+                if name:
+                    span.set_attribute("rpc.response.status_code", name)
                     return
+            span.set_attribute("rpc.response.status_code", "ERROR")
+            return
     except Exception:
         pass
 
