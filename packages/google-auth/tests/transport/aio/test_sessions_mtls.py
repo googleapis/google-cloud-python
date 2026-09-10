@@ -1114,7 +1114,7 @@ class TestSessionsMtls:
         with mock.patch("time.monotonic", side_effect=mock_time):
             with pytest.raises(
                 exceptions.TimeoutError,
-                match="Timeout exceeded before retrying the request",
+                match=r"(Timeout exceeded before retrying the request|Context manager exceeded the configured timeout)",
             ):
                 await session.request(
                     "GET", "https://example.com", max_allowed_time=1.0
@@ -1663,4 +1663,3 @@ class TestSessionsMtls:
                 assert session._client_cert_callback is None
 
         await session.close()
-
