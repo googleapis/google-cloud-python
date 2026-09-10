@@ -42,6 +42,7 @@ class MetricsCapture:
             resource_info (dict): Optional dictionary containing project, instance and database info.
         """
         self._resource_info = resource_info
+        self._token = None
 
     def __enter__(self):
         """Enter the runtime context related to this object.
@@ -88,15 +89,16 @@ class MetricsCapture:
         Returns:
             bool: False to propagate the exception if any occurred.
         """
-        # Short circuit out if metrics are disable
-        if not SpannerMetricsTracerFactory().enabled:
+        token = self._token
+        if token is None:
             return False
 
-        tracer = SpannerMetricsTracerFactory.get_current_tracer()
-        if tracer:
-            tracer.record_operation_completion()
-
-        # Reset the context var using the token
-        if getattr(self, "_token", None):
-            SpannerMetricsTracerFactory.reset_current_tracer(self._token)
+        try:
+            tracer = SpannerMetricsTracerFactory.get_current_tracer()
+            if tracer:
+                tracer.record_operation_completion()
+        finally:
+            # Reset the context var using the token
+            SpannerMetricsTracerFactory.reset_current_tracer(token)
+            self._token = None
         return False  # Propagate the exception if any
