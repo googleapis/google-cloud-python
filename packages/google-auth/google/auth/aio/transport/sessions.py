@@ -435,6 +435,7 @@ class AsyncAuthorizedSession:
                                                         "Client certificate has changed, reconfiguring mTLS "
                                                         "channel."
                                                     )
+                                                    self._mtls_init_task = None
                                                     await self.configure_mtls_channel(
                                                         lambda: (
                                                             call_cert_bytes,
