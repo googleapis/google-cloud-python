@@ -274,7 +274,7 @@ class TestDatabaseSessionManager(TestCase):
         mock_lock.acquire.assert_not_called()
         mock_lock.__enter__.assert_not_called()
 
-    def test_maintain_multiplexed_session_swaps_before_deleting_old_session(self):
+    def test_maintain_multiplexed_session_rotates_session(self):
         import threading
         from weakref import ref
 
@@ -286,11 +286,6 @@ class TestDatabaseSessionManager(TestCase):
         old_session = Mock()
         new_session = Mock()
         manager._multiplexed_session = old_session
-
-        def verify_swap_on_delete():
-            self.assertIs(manager._multiplexed_session, new_session)
-
-        old_session.delete.side_effect = verify_swap_on_delete
 
         call_count = 0
 
@@ -310,7 +305,8 @@ class TestDatabaseSessionManager(TestCase):
             ) as mock_build:
                 DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
                 mock_build.assert_called_once()
-                old_session.delete.assert_called_once()
+                old_session.delete.assert_not_called()
+                new_session.delete.assert_not_called()
                 self.assertIs(manager._multiplexed_session, new_session)
 
     def test_close_branches(self):
@@ -330,7 +326,7 @@ class TestDatabaseSessionManager(TestCase):
         manager._multiplexed_session_terminate_event.set.assert_called_once()
         mock_thread.join.assert_called_once()
         self.assertIsNone(manager._multiplexed_session)
-        mock_session.delete.assert_called_once()
+        mock_session.delete.assert_not_called()
 
     def test_maintain_multiplexed_session_handles_build_failure(self):
         import threading
@@ -373,40 +369,6 @@ class TestDatabaseSessionManager(TestCase):
                     mock_event_wait.assert_called_once()
                     current_session.delete.assert_not_called()
                     self.assertIs(manager._multiplexed_session, current_session)
-
-    def test_maintain_multiplexed_session_handles_delete_failure(self):
-        import threading
-        from weakref import ref
-
-        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
-        manager._multiplexed_session_lock = threading.Lock()
-        manager._multiplexed_session_terminate_event = Mock()
-        manager._multiplexed_session_terminate_event.is_set.side_effect = [False, True]
-
-        old_session = Mock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = Mock()
-        manager._multiplexed_session = old_session
-
-        call_count = 0
-
-        def mock_time():
-            nonlocal call_count
-            call_count += 1
-            if call_count == 1:
-                return 0
-            return 1000000
-
-        with patch(
-            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
-            side_effect=mock_time,
-        ):
-            with patch.object(
-                manager, "_build_multiplexed_session", return_value=new_session
-            ):
-                DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
-                old_session.delete.assert_called_once()
-                self.assertIs(manager._multiplexed_session, new_session)
 
     def test_maintain_multiplexed_session_old_session_none(self):
         import threading
@@ -662,7 +624,8 @@ class TestDatabaseSessionManager(TestCase):
             result = manager._rotate_multiplexed_session()
             self.assertTrue(result)
             self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()
+            old_session.delete.assert_not_called()
+            new_session.delete.assert_not_called()
 
     def test_rotate_multiplexed_session_build_failure(self):
         import threading
@@ -681,24 +644,6 @@ class TestDatabaseSessionManager(TestCase):
             self.assertFalse(result)
             self.assertIs(manager._multiplexed_session, current_session)
             current_session.delete.assert_not_called()
-
-    def test_rotate_multiplexed_session_delete_failure(self):
-        import threading
-
-        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
-        manager._multiplexed_session_lock = threading.Lock()
-        old_session = Mock()
-        old_session.delete.side_effect = Exception("delete failed")
-        new_session = Mock()
-        manager._multiplexed_session = old_session
-
-        with patch.object(
-            manager, "_build_multiplexed_session", return_value=new_session
-        ):
-            result = manager._rotate_multiplexed_session()
-            self.assertTrue(result)
-            self.assertIs(manager._multiplexed_session, new_session)
-            old_session.delete.assert_called_once()
 
     def _assert_true_with_timeout(self, condition: Callable) -> None:
         """Asserts that the given condition is met within a timeout period.
