@@ -355,13 +355,9 @@ _BASE_SPAN_ATTRIBUTES = {
     "rpc.system": "grpc",
     "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
     "rpc.method": "ListSecrets",
-    "gcp.client.service": "SecretManagerService",
 }
 
-_DEFAULT_SPAN_ATTRIBUTES = {
-    **_BASE_SPAN_ATTRIBUTES,
-    "gcp.client.repo": "googleapis/google-cloud-python",
-}
+_DEFAULT_SPAN_ATTRIBUTES = _BASE_SPAN_ATTRIBUTES
 
 
 @pytest.mark.parametrize(
@@ -462,8 +458,6 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
             "rpc.system": "grpc",
             "rpc.service": "google.test.Service",
             "rpc.method": "TestMethod",
-            "gcp.client.service": "Service",
-            "gcp.client.repo": "googleapis/google-cloud-python",
         },
     )
 
@@ -561,12 +555,13 @@ def test_wrap_method_otel_tracing_start_span_error_bypasses_tracing(mock_otel):
     mock_otel.tracer.start_as_current_span.assert_called_once()
 
 
-def test_wrap_method_otel_tracing_attributes_with_client_info(mock_otel):
-    """Proves that client_info version, repo, and artifact attributes are included in the T3 span."""
+def test_wrap_method_otel_tracing_attributes_deferred_gcp_client_omitted(mock_otel):
+    """Proves that deferred gcp.client.* attributes are omitted even when client_info is provided."""
     mock_target = mock.Mock(return_value="success")
 
     info = client_info.ClientInfo(
         client_library_version="2.16.0",
+        gapic_version="1.5.0",
     )
     info.client_repo = "googleapis/google-cloud-python-test"
     info.client_artifact = "google-cloud-secretmanager"
@@ -582,62 +577,12 @@ def test_wrap_method_otel_tracing_attributes_with_client_info(mock_otel):
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
-        attributes={
-            **_DEFAULT_SPAN_ATTRIBUTES,
-            "gcp.client.repo": "googleapis/google-cloud-python-test",
-            "gcp.client.version": "2.16.0",
-            "gcp.client.artifact": "google-cloud-secretmanager",
-        },
-    )
-
-
-def test_wrap_method_otel_tracing_attributes_fallback_gapic_version(mock_otel):
-    """Proves that gapic_version is used when client_library_version is not set."""
-    mock_target = mock.Mock(return_value="success")
-
-    info = client_info.ClientInfo(
-        gapic_version="1.5.0",
-    )
-
-    wrapped = google.api_core.gapic_v1.method.wrap_method(
-        mock_target,
-        client_info=info,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-    )
-    result = wrapped()
-
-    assert result == "success"
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
-        attributes={
-            **_DEFAULT_SPAN_ATTRIBUTES,
-            "gcp.client.version": "1.5.0",
-        },
-    )
-
-
-def test_wrap_method_otel_tracing_attributes_no_client_info(mock_otel):
-    """Proves that when client_info is None, gcp.client repo, version, and artifact are omitted."""
-    mock_target = mock.Mock(return_value="success")
-
-    wrapped = google.api_core.gapic_v1.method.wrap_method(
-        mock_target,
-        client_info=None,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-    )
-    result = wrapped()
-
-    assert result == "success"
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
-        attributes=_BASE_SPAN_ATTRIBUTES,
+        attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
 
 
 def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
-    """Proves that when method_name has no service prefix, gcp.client.service is omitted."""
+    """Proves span attributes when method_name has no service prefix."""
     mock_target = mock.Mock(return_value="success")
 
     wrapped = google.api_core.gapic_v1.method.wrap_method(
