@@ -255,8 +255,6 @@ class AsyncAuthorizedSession:
                         self._cached_cert = None
 
                 except Exception as caught_exc:
-                    self._is_mtls = False
-                    self._cached_cert = None
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 
