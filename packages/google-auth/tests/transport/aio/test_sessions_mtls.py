@@ -1603,3 +1603,61 @@ class TestSessionsMtls:
                 mock_resp_401.close.assert_called_once()
 
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_mtls_consecutive_multi_rotation(self):
+        """Verifies that multiple consecutive rotations (v1 -> v2 -> v3) succeed."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        session = sessions.AsyncAuthorizedSession(mock_creds)
+        session._is_mtls = True
+        session._cached_cert = b"cert_v1"
+
+        # Rotation 1: v1 -> v2
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+            return_value=(b"cert_v2", b"key_v2", b"fp1", b"fp2"),
+        ):
+            with mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf:
+                mock_auth = mock.AsyncMock(
+                    side_effect=[
+                        mock.Mock(status_code=401, close=mock.AsyncMock()),
+                        mock.Mock(status_code=200, close=mock.AsyncMock()),
+                    ]
+                )
+                session._auth_request = mock_auth
+                await session.request("GET", "https://pubsub.mtls.googleapis.com/test")
+                mock_conf.assert_called_once()
+                assert session._client_cert_callback is None
+
+        session._cached_cert = b"cert_v2"
+
+        # Rotation 2: v2 -> v3 (Must still have client_cert_callback == None to read disk)
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+            return_value=(b"cert_v3", b"key_v3", b"fp2", b"fp3"),
+        ) as mock_check:
+            with mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf:
+                mock_auth = mock.AsyncMock(
+                    side_effect=[
+                        mock.Mock(status_code=401, close=mock.AsyncMock()),
+                        mock.Mock(status_code=200, close=mock.AsyncMock()),
+                    ]
+                )
+                session._auth_request = mock_auth
+                await session.request("GET", "https://pubsub.mtls.googleapis.com/test")
+                # Verify check was called with callback=None (allowing disk read)
+                mock_check.assert_called_with(b"cert_v2", None)
+                mock_conf.assert_called_once()
+                assert session._client_cert_callback is None
+
+        await session.close()
+
