@@ -255,6 +255,8 @@ class AsyncAuthorizedSession:
                         self._cached_cert = None
 
                 except Exception as caught_exc:
+                    self._is_mtls = False
+                    self._cached_cert = None
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 
@@ -413,10 +415,12 @@ class AsyncAuthorizedSession:
                                             exceptions.MutualTLSChannelError,
                                             OSError,
                                             ValueError,
+                                            TypeError,
                                             ImportError,
                                         ) as e:
                                             _LOGGER.warning(
-                                                "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                                "Failed to check client certificate parameters: %s. "
+                                                "Falling back to credential refresh and retry.",
                                                 e,
                                             )
                                         else:
@@ -433,13 +437,12 @@ class AsyncAuthorizedSession:
                                                         "Client certificate has changed, reconfiguring mTLS "
                                                         "channel."
                                                     )
-                                                    self._mtls_init_task = None
                                                     await self.configure_mtls_channel(
                                                         lambda: (
-                                                            call_cert_bytes,
-                                                            call_key_bytes,
-                                                        )
-                                                    )
+                                                             call_cert_bytes,
+                                                             call_key_bytes,
+                                                         )
+                                                     )
                                                     channel_reconfigured = True
                                                 except Exception as e:
                                                     _LOGGER.error(
@@ -485,7 +488,7 @@ class AsyncAuthorizedSession:
                                     return response
                                 except (
                                     exceptions.RefreshError,
-                                    getattr(exceptions, "InvalidOperation", Exception),
+                                    exceptions.InvalidOperation,
                                 ) as e:
                                     _LOGGER.debug(
                                         "Credential refresh failed, returning 401 response. Error: %s",

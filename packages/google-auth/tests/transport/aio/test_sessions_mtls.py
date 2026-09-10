@@ -1041,17 +1041,20 @@ class TestSessionsMtls:
         """
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_auth_request = mock.AsyncMock(spec=transport.Request)
-        mock_resp_401 = mock.Mock(spec=transport.Response)
-        mock_resp_401.close = mock.AsyncMock()
 
         status_access_count = 0
 
-        def get_status():
-            nonlocal status_access_count
-            status_access_count += 1
-            return 401
+        class _CustomResponse:
+            def __init__(self):
+                self.close = mock.AsyncMock()
 
-        type(mock_resp_401).status_code = property(lambda self: get_status())
+            @property
+            def status_code(self):
+                nonlocal status_access_count
+                status_access_count += 1
+                return 401
+
+        mock_resp_401 = _CustomResponse()
 
         async def fake_auth_request(*args, **kwargs):
             return mock_resp_401
@@ -1343,3 +1346,128 @@ class TestSessionsMtls:
                 assert session._auth_request is not first_auth_req
                 assert mock_creds.refresh.call_count == 1
             await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_cert_check_type_error_falls_back_to_refresh(self):
+        """Verifies that TypeError in cert check logs warning and falls back to refresh and retry."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+        mock_resp_200.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(side_effect=[mock_resp_401, mock_resp_200])
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"some_cert"
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+                new_callable=mock.AsyncMock,
+                side_effect=TypeError("Callback returned invalid type"),
+            ),
+            mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf,
+            mock.patch.object(sessions._LOGGER, "warning") as mock_warn,
+        ):
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+            assert resp == mock_resp_200
+            mock_conf.assert_not_called()
+            mock_creds.refresh.assert_called_once()
+            assert any(
+                "Falling back to credential refresh and retry." in str(call)
+                for call in mock_warn.call_args_list
+            )
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_cert_check_without_cached_cert_skips_reconfiguration(self):
+        """Verifies that when cached_cert is None, cert check produces equal fingerprints and skips reconfiguration."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+        mock_resp_200.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(side_effect=[mock_resp_401, mock_resp_200])
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = None
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                new_callable=mock.AsyncMock,
+                return_value=(True, b"cert_bytes", b"key_bytes"),
+            ),
+            mock.patch(
+                "google.auth._agent_identity_utils.parse_certificate"
+            ),
+            mock.patch(
+                "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
+                return_value="FINGERPRINT_1",
+            ),
+            mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf,
+            mock.patch.object(sessions._LOGGER, "info") as mock_info,
+        ):
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+            assert resp == mock_resp_200
+            mock_conf.assert_not_called()
+            mock_creds.refresh.assert_called_once()
+            assert any(
+                "certificate has not changed" in str(call)
+                for call in mock_info.call_args_list
+            )
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_401_refresh_raises_invalid_operation_returns_401(self):
+        """Verifies that exceptions.InvalidOperation during refresh is caught and returns the 401 response."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(
+            side_effect=exceptions.InvalidOperation("Invalid operation")
+        )
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+
+        resp = await session.request(
+            "GET", "https://example.com"
+        )
+        assert resp == mock_resp_401
+        mock_creds.refresh.assert_called_once()
+        await session.close()
