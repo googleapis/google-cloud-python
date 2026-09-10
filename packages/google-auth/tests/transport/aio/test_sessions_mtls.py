@@ -1553,3 +1553,55 @@ class TestSessionsMtls:
             assert session._cached_cert == b"cert_v1"
             assert session._auth_request is first_auth_req
             await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_credential_refresh_not_implemented_retries(self):
+        """Validate credentials that raise NotImplementedError on refresh()
+        still trigger a retry after mTLS reconfiguration, not return the 401."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+        mock_resp_200.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(side_effect=[mock_resp_401, mock_resp_200])
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+        ) as mock_check:
+            with mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf:
+                mock_check.return_value = (
+                    b"new_cert",
+                    b"new_key",
+                    b"old_fp",
+                    b"new_fp",
+                )
+
+                resp = await session.request(
+                    "GET", "https://pubsub.mtls.googleapis.com/test"
+                )
+
+                # Validate that the handler falls through to `return None`
+                # on NotImplementedError in order to signal retry.
+                assert resp == mock_resp_200
+                mock_conf.assert_called_once()
+                mock_creds.refresh.assert_called_once()
+                assert mock_auth_req.call_count == 2
+                mock_resp_401.close.assert_called_once()
+
+        await session.close()
