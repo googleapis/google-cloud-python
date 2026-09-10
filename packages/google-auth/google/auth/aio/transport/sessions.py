@@ -485,7 +485,6 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
-                                    return response
                                 except (
                                     exceptions.RefreshError,
                                     getattr(exceptions, "InvalidOperation", Exception),
