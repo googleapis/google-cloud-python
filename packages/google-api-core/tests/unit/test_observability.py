@@ -379,7 +379,9 @@ def test_extract_grpc_request_attributes(req, expected_attrs):
 
 
 def test_grpc_client_request_hook():
-    """Proves that _grpc_client_request_hook attaches extracted T4 attributes to recording spans."""
+    """Proves that _grpc_client_request_hook attaches extracted T4 attributes to recording spans,
+    normalizes span names, sets fully qualified rpc.method, and removes legacy rpc.system.
+    """
     # Non-recording span should not set attributes
     mock_span_non_rec = mock.Mock()
     mock_span_non_rec.is_recording.return_value = False
@@ -389,26 +391,45 @@ def test_grpc_client_request_hook():
     # None span should safely return
     _observability._grpc_client_request_hook(None, mock.Mock())
 
-    # Recording span with default hook
+    # Recording span with default hook, leading slash in span.name, and legacy rpc.system
     mock_span_rec = mock.Mock()
     mock_span_rec.is_recording.return_value = True
+    mock_span_rec.name = (
+        "/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+    mock_span_rec._attributes = {"rpc.system": "grpc"}
     req = types.SimpleNamespace(name="projects/my-proj/secrets/s1", resend_count=1)
+
     _observability._grpc_client_request_hook(mock_span_rec, req)
+
+    # Verify span name normalized and rpc.method set to fully qualified name
+    mock_span_rec.update_name.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+    mock_span_rec.set_attribute.assert_any_call(
+        "rpc.method", "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+
+    # Verify rpc.system.name set and legacy rpc.system popped
     mock_span_rec.set_attribute.assert_any_call("rpc.system.name", "grpc")
+    assert "rpc.system" not in mock_span_rec._attributes
+
     mock_span_rec.set_attribute.assert_any_call(
         "gcp.resource.destination.id", "projects/my-proj/secrets/s1"
     )
     mock_span_rec.set_attribute.assert_any_call("gcp.grpc.resend_count", 1)
 
-    # Custom hook with endpoint attributes
+    # Custom hook with endpoint attributes and already-clean span name
     endpoint_hook = _observability._make_grpc_client_request_hook(
         {"server.address": "custom.api.com", "server.port": 443}
     )
     mock_span_custom = mock.Mock()
     mock_span_custom.is_recording.return_value = True
+    mock_span_custom.name = "already_clean_name"
     endpoint_hook(mock_span_custom, req)
     mock_span_custom.set_attribute.assert_any_call("server.address", "custom.api.com")
     mock_span_custom.set_attribute.assert_any_call("server.port", 443)
+    mock_span_custom.update_name.assert_not_called()
 
 
 def test_extract_error_attributes_none():
