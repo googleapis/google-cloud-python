@@ -1151,27 +1151,25 @@ class TestSessionsMtls:
         session._is_mtls = True
         session._cached_cert = b"old_cert"
 
-        with (
-            mock.patch(
-                "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
-                new_callable=mock.AsyncMock,
-            ) as mock_check,
-            mock.patch.object(
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+        ) as mock_check:
+            with mock.patch.object(
                 session, "configure_mtls_channel", new_callable=mock.AsyncMock
-            ) as mock_conf,
-        ):
-            mock_check.return_value = (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+            ) as mock_conf:
+                mock_check.return_value = (b"new_cert", b"new_key", b"old_fp", b"new_fp")
 
-            resp = await session.request(
-                "GET", "https://pubsub.mtls.googleapis.com/test"
-            )
+                resp = await session.request(
+                    "GET", "https://pubsub.mtls.googleapis.com/test"
+                )
 
-            # Validate that the handler falls through to `return None`
-            # on NotImplementedError in order to signal retry.
-            assert resp == mock_resp_200
-            mock_conf.assert_called_once()
-            mock_creds.refresh.assert_called_once()
-            assert mock_auth_req.call_count == 2
-            mock_resp_401.close.assert_called_once()
+                # Validate that the handler falls through to `return None`
+                # on NotImplementedError in order to signal retry.
+                assert resp == mock_resp_200
+                mock_conf.assert_called_once()
+                mock_creds.refresh.assert_called_once()
+                assert mock_auth_req.call_count == 2
+                mock_resp_401.close.assert_called_once()
 
         await session.close()
