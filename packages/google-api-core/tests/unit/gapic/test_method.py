@@ -739,6 +739,14 @@ def test_extract_status_code_variations():
     exc8 = types.SimpleNamespace(code="unknown_code")
     assert _extract_status_code(exc8) == "SimpleNamespace"
 
+    # 9. None exception
+    assert _extract_status_code(None) == ""
+
+    # 10. __cause__ chaining fallback
+    inner_exc = types.SimpleNamespace(code=5)
+    outer_exc = types.SimpleNamespace(__cause__=inner_exc)
+    assert _extract_status_code(outer_exc) == "NOT_FOUND"
+
 
 def test_extract_error_attributes_variations():
     """Proves that _extract_error_attributes handles __cause__, gRPC error details parsing, and direct fallbacks."""
