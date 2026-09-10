@@ -187,22 +187,37 @@ def _extract_status_code(exc: Exception) -> str:
 
 
 def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
-    """Extracts gcp.errors.domain, gcp.errors.metadata.*, and error.type from an exception or ErrorInfo.
+    """Extract gcp.errors.* and error.type attributes from an exception.
+
+    Error details and ErrorInfo structures are found in a variety of locations
+    depending on the status of the operation:
+    * RetryError (unwrapped to root cause)
+    * GoogleAPICallError (_error_info or error_info attribute)
+    * Native gRPC exceptions (parsed from trailing_metadata)
+    * Direct exception attributes (domain, reason, metadata fallbacks)
 
     Args:
         exc (Exception): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
 
     Returns:
-        dict[str, Any]: Extracted error attributes.
+        dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
     """
     attrs: dict[str, Any] = {}
     if exc is None:
         return attrs
 
+    # 1. Unwrap Retry/Transport wrappers and chained exceptions
+    # api_core's RetryError wraps the root failure in .cause, and standard Python chaining uses .__cause__
     target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
+
+    # 2. Check GoogleAPICallError ErrorInfo attributes
+    # Subclasses of GoogleAPICallError store google.rpc.ErrorInfo under ._error_info or .error_info
     error_info = getattr(target_exc, "_error_info", None) or getattr(
         target_exc, "error_info", None
     )
+
+    # 3. Check native gRPC exceptions (parsed from trailing_metadata)
+    # Native gRPC errors or responses carry trailing_metadata containing binary google.rpc.Status details
     if error_info is None:
         rpc_call = (
             target_exc
@@ -217,6 +232,8 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
             except Exception:
                 pass
 
+    # 4. Extract attributes from ErrorInfo payload
+    # Extracts gcp.errors.domain, error.type (from reason), and gcp.errors.metadata.<key>
     if error_info is not None:
         domain = getattr(error_info, "domain", None)
         if domain and isinstance(domain, str):
@@ -228,6 +245,9 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
         if metadata and hasattr(metadata, "items"):
             for k, v in metadata.items():
                 attrs[f"gcp.errors.metadata.{k}"] = str(v)
+
+    # 5. Direct exception attribute fallback
+    # Some custom error classes or REST errors define domain, reason, or metadata directly on the exception
     else:
         domain = getattr(target_exc, "domain", None)
         if domain and isinstance(domain, str):
