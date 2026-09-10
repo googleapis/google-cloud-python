@@ -209,13 +209,10 @@ class _GapicCallable(object):
                 else:
                     self._tracer = trace.get_tracer("google.api_core")
 
-                self._span_name, self._rpc_service, self._rpc_method = (
-                    _extract_rpc_identity(method_name)
-                )
+                self._span_name, _, _ = _extract_rpc_identity(method_name)
                 self._span_attributes = {
-                    "rpc.system": "grpc",
-                    "rpc.service": self._rpc_service,
-                    "rpc.method": self._rpc_method,
+                    "rpc.system.name": "grpc",
+                    "rpc.method": self._span_name,
                 }
             except (ImportError, AttributeError, TypeError):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
