@@ -31,6 +31,7 @@ except ImportError:
 import pytest  # noqa: E402
 from google.api_core import exceptions  # noqa: E402
 from google.api_core.client_options import ClientOptions  # noqa: E402
+
 from google.cloud import kms  # noqa: E402
 from google.cloud.storage._helpers import _base64_md5hash  # noqa: E402
 from google.cloud.storage.retry import DEFAULT_RETRY  # noqa: E402
@@ -113,9 +114,11 @@ def _kms_key_name(client, bucket, key_name):
         key_name,
     )
 
+
 @pytest.fixture(scope="session")
 def run_system_tests_on_preprod():
     return os.getenv("RUN_SYSTEM_TESTS_ON_PREPROD") == "True"
+
 
 @pytest.fixture(scope="session")
 def storage_client(run_system_tests_on_preprod):

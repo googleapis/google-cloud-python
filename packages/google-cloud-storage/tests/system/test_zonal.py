@@ -61,6 +61,7 @@ RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
 _RCU_BUCKET = os.getenv("RCU_BUCKET")
 _BUCKET_UNDER_TEST = _RCU_BUCKET if RCU_SYSTEM_TESTS else _ZONAL_BUCKET
 
+
 async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
     """Initializes async client and gets the current event loop."""
     return AsyncGrpcClient(
@@ -169,7 +170,10 @@ def _get_equal_dist(a: int, b: int) -> tuple[int, int]:
     step = (b - a) // 3
     return a + step, a + 2 * step
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='X regions reads/writes for RCU not supported in SDK yet')
+
+@pytest.mark.skipif(
+    RCU_SYSTEM_TESTS, reason="X regions reads/writes for RCU not supported in SDK yet"
+)
 @pytest.mark.parametrize(
     "object_size",
     [
@@ -388,7 +392,10 @@ def test_wrd_with_non_default_flush_interval(
 
     event_loop.run_until_complete(_run())
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write from blob for RCU not supported in SDK yet')
+
+@pytest.mark.skipif(
+    RCU_SYSTEM_TESTS, reason="Write from blob for RCU not supported in SDK yet"
+)
 def test_write_from_blob(
     storage_client,
     blobs_to_delete,
@@ -441,7 +448,10 @@ def test_write_from_blob(
     event_loop.run_until_complete(_run())
 
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write from blob with KMS key for RCU not supported in SDK yet')
+@pytest.mark.skipif(
+    RCU_SYSTEM_TESTS,
+    reason="Write from blob with KMS key for RCU not supported in SDK yet",
+)
 def test_write_from_blob_with_kms_key(
     storage_client,
     blobs_to_delete,
@@ -482,7 +492,9 @@ def test_write_from_blob_with_kms_key(
     event_loop.run_until_complete(_run())
 
 
-@pytest.mark.skipif(RCU_SYSTEM_TESTS, reason='Write blob with contexts for RCU not supported in SDK yet')
+@pytest.mark.skipif(
+    RCU_SYSTEM_TESTS, reason="Write blob with contexts for RCU not supported in SDK yet"
+)
 @pytest.mark.asyncio
 async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
     async_client = await create_async_grpc_client()
