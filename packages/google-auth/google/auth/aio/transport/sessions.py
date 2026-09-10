@@ -278,7 +278,7 @@ class AsyncAuthorizedSession:
             if (
                 self._mtls_init_task is not None
                 and self._mtls_init_task.done()
-                and self._mtls_init_task.exception()
+                and (self._mtls_init_task.cancelled() or self._mtls_init_task.exception() is not None)
             ):
                 self._mtls_init_task = None
             raise
