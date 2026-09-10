@@ -696,3 +696,149 @@ def test_wrap_method_otel_tracing_records_gcp_error_attributes(mock_otel):
     mock_otel.span.set_attribute.assert_any_call(
         "gcp.errors.metadata.quota_limit", "100"
     )
+
+
+def test_extract_status_code_variations():
+    """Proves that _extract_status_code handles grpc status, callable/non-callable codes, ints, and exceptions."""
+    import types
+
+    from google.api_core.gapic_v1.method import _extract_status_code
+
+    # 1. grpc_status exists but has no name or name is None
+    exc1 = types.SimpleNamespace(grpc_status_code=types.SimpleNamespace(name=None))
+    assert _extract_status_code(exc1) == "SimpleNamespace"
+
+    # 2. callable code_fn returns object with name
+    exc2 = types.SimpleNamespace(code=lambda: types.SimpleNamespace(name="CANCELLED"))
+    assert _extract_status_code(exc2) == "CANCELLED"
+
+    # 3. callable code_fn returns object without name
+    exc3 = types.SimpleNamespace(code=lambda: types.SimpleNamespace(name=None))
+    assert _extract_status_code(exc3) == "SimpleNamespace"
+
+    # 4. callable code_fn raises Exception
+    def raising_code():
+        raise RuntimeError("boom")
+
+    exc4 = types.SimpleNamespace(code=raising_code)
+    assert _extract_status_code(exc4) == "SimpleNamespace"
+
+    # 5. non-callable code_fn with name
+    exc5 = types.SimpleNamespace(code=types.SimpleNamespace(name="DEADLINE_EXCEEDED"))
+    assert _extract_status_code(exc5) == "DEADLINE_EXCEEDED"
+
+    # 6. non-callable code_fn that is an int in _INT_TO_GRPC_CODE (5 -> NOT_FOUND)
+    exc6 = types.SimpleNamespace(code=5)
+    assert _extract_status_code(exc6) == "NOT_FOUND"
+
+    # 7. non-callable code_fn that is an int not in _INT_TO_GRPC_CODE (999)
+    exc7 = types.SimpleNamespace(code=999)
+    assert _extract_status_code(exc7) == "999"
+
+    # 8. non-callable code_fn that is not an int and has no name
+    exc8 = types.SimpleNamespace(code="unknown_code")
+    assert _extract_status_code(exc8) == "SimpleNamespace"
+
+
+def test_extract_error_attributes_variations():
+    """Proves that _extract_error_attributes handles __cause__, gRPC error details parsing, and direct fallbacks."""
+    import types
+
+    from google.api_core.gapic_v1.method import _extract_error_attributes
+
+    # 1. __cause__ attribute fallback
+    inner_err = types.SimpleNamespace(
+        error_info=types.SimpleNamespace(domain="d", reason="r", metadata={"k": "v"})
+    )
+    outer_err = types.SimpleNamespace(__cause__=inner_err)
+    assert _extract_error_attributes(outer_err) == {
+        "gcp.errors.domain": "d",
+        "error.type": "r",
+        "gcp.errors.metadata.k": "v",
+    }
+
+    # 2. rpc_call with trailing_metadata parsed via _parse_grpc_error_details
+    rpc_call = types.SimpleNamespace(trailing_metadata=[("meta", "val")])
+    exc_with_call = types.SimpleNamespace(trailing_metadata=rpc_call.trailing_metadata)
+    error_info = types.SimpleNamespace(
+        domain="parse_d", reason="parse_r", metadata={"foo": "bar"}
+    )
+    with mock.patch(
+        "google.api_core.exceptions._parse_grpc_error_details",
+        return_value=(None, error_info),
+    ):
+        assert _extract_error_attributes(exc_with_call) == {
+            "gcp.errors.domain": "parse_d",
+            "error.type": "parse_r",
+            "gcp.errors.metadata.foo": "bar",
+        }
+
+    # 3. rpc_call with response attribute holding trailing_metadata and _parse_grpc_error_details raising Exception
+    exc_with_resp = types.SimpleNamespace(
+        response=types.SimpleNamespace(trailing_metadata=[])
+    )
+    with mock.patch(
+        "google.api_core.exceptions._parse_grpc_error_details",
+        side_effect=ValueError("bad proto"),
+    ):
+        assert _extract_error_attributes(exc_with_resp) == {}
+
+    # 4. error_info with non-string domain, non-string reason, non-mapping metadata
+    error_info_invalid = types.SimpleNamespace(domain=123, reason=None, metadata=None)
+    exc_invalid = types.SimpleNamespace(error_info=error_info_invalid)
+    assert _extract_error_attributes(exc_invalid) == {}
+
+    # 5. else fallback where target_exc directly has domain, reason, and metadata
+    exc_fallback = types.SimpleNamespace(
+        domain="fallback_d",
+        reason="fallback_r",
+        metadata={"f_key": 42},
+    )
+    assert _extract_error_attributes(exc_fallback) == {
+        "gcp.errors.domain": "fallback_d",
+        "error.type": "fallback_r",
+        "gcp.errors.metadata.f_key": "42",
+    }
+
+    # 6. else fallback with invalid types (e.g. domain="", reason=123, metadata="not a dict")
+    exc_fallback_invalid = types.SimpleNamespace(
+        domain="",
+        reason=123,
+        metadata="string_without_items",
+    )
+    assert _extract_error_attributes(exc_fallback_invalid) == {}
+
+
+def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
+    """Proves handling when span lacks record_exception or set_attribute."""
+    # Test span without record_exception (has set_attribute)
+    mock_target = mock.Mock(side_effect=ValueError("boom"))
+    mock_span1 = mock.Mock(spec=["set_attribute"])
+    mock_otel.tracer.start_as_current_span.return_value.__enter__.return_value = (
+        mock_span1
+    )
+
+    wrapped1 = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        method_name="Service/Method",
+    )
+    with pytest.raises(ValueError):
+        wrapped1()
+    mock_span1.set_attribute.assert_called_with(
+        "rpc.response.status_code", "ValueError"
+    )
+
+    # Test span without set_attribute (has record_exception, set_status)
+    mock_span2 = mock.Mock(spec=["record_exception", "set_status"])
+    mock_otel.tracer.start_as_current_span.return_value.__enter__.return_value = (
+        mock_span2
+    )
+
+    wrapped2 = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        method_name="Service/Method",
+    )
+    with pytest.raises(ValueError):
+        wrapped2()
+    mock_span2.record_exception.assert_called_once()
+    mock_span2.set_status.assert_called_once()
