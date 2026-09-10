@@ -175,69 +175,19 @@ def _make_grpc_client_request_hook(
 
 _grpc_client_request_hook = _make_grpc_client_request_hook()
 
-# Mapping of standard gRPC integer status codes to their canonical status name strings.
-# Used when stock gRPC wire spans encounter errors, guaranteeing mapping even in environments
-# where the optional `grpc` package is not installed (e.g. REST-only environments).
-_GRPC_INT_STATUS_CODE_TO_NAME = {
-    0: "OK",
-    1: "CANCELLED",
-    2: "UNKNOWN",
-    3: "INVALID_ARGUMENT",
-    4: "DEADLINE_EXCEEDED",
-    5: "NOT_FOUND",
-    6: "ALREADY_EXISTS",
-    7: "PERMISSION_DENIED",
-    8: "RESOURCE_EXHAUSTED",
-    9: "FAILED_PRECONDITION",
-    10: "ABORTED",
-    11: "OUT_OF_RANGE",
-    12: "UNIMPLEMENTED",
-    13: "INTERNAL",
-    14: "UNAVAILABLE",
-    15: "DATA_LOSS",
-    16: "UNAUTHENTICATED",
-}
-
 
 def _grpc_client_response_hook(span: Any, response: Any) -> None:
     """OpenTelemetry gRPC client response hook to record response status code.
+
+    Note: Upstream OpenTelemetry gRPC instrumentation only invokes this response_hook
+    on successful RPC invocations. Failed RPCs raise an exception before this hook is reached.
 
     Args:
         span: The OpenTelemetry span.
         response: The gRPC response object or details.
     """
-    if span is None or not hasattr(span, "set_attribute"):
-        return
-
-    status = getattr(span, "status", None)
-    status_code = getattr(status, "status_code", None)
-    try:
-        from opentelemetry.trace.status import StatusCode
-
-        if status_code == StatusCode.ERROR:
-            span_attrs = (
-                getattr(span, "attributes", None)
-                or getattr(span, "_attributes", None)
-                or {}
-            )
-            grpc_code = span_attrs.get("rpc.grpc.status_code")
-            if grpc_code is not None:
-                from google.api_core import exceptions
-
-                name = None
-                if grpc_code in exceptions._INT_TO_GRPC_CODE:
-                    name = exceptions._INT_TO_GRPC_CODE[grpc_code].name
-                elif grpc_code in _GRPC_INT_STATUS_CODE_TO_NAME:
-                    name = _GRPC_INT_STATUS_CODE_TO_NAME[grpc_code]
-                if name:
-                    span.set_attribute("rpc.response.status_code", name)
-                    return
-            span.set_attribute("rpc.response.status_code", "ERROR")
-            return
-    except Exception:
-        pass
-
-    span.set_attribute("rpc.response.status_code", "OK")
+    if span is not None and hasattr(span, "set_attribute"):
+        span.set_attribute("rpc.response.status_code", "OK")
 
 
 def _get_tracer_provider(
