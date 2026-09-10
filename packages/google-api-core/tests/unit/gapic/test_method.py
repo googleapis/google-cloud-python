@@ -355,7 +355,6 @@ _DEFAULT_SPAN_ATTRIBUTES = {
     "rpc.system.name": "grpc",
     "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
 }
-_BASE_SPAN_ATTRIBUTES = _DEFAULT_SPAN_ATTRIBUTES
 
 
 @pytest.mark.parametrize(
@@ -473,19 +472,16 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
     wrapped = google.api_core.gapic_v1.method.wrap_method(
         mock_target,
         client_options=client_options,
-        method_name="google.test.Service/TestMethod",
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
     )
     result = wrapped()
 
     assert result == "success"
     mock_provider.get_tracer.assert_called_once_with("google.api_core")
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.test.Service/TestMethod",
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
-        attributes={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.test.Service/TestMethod",
-        },
+        attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
@@ -658,7 +654,7 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
         "ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system.name": "grpc",
+            **_DEFAULT_SPAN_ATTRIBUTES,
             "rpc.method": "ListSecrets",
         },
     )
