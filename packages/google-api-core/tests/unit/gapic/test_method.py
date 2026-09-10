@@ -375,8 +375,36 @@ _BASE_SPAN_ATTRIBUTES = _DEFAULT_SPAN_ATTRIBUTES
             },
             True,
         ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "rest",
+            },
+            True,
+        ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "rest_asyncio",
+            },
+            True,
+        ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "http",
+            },
+            True,
+        ),
     ],
-    ids=["disabled_by_flag", "omitted_method_name", "streaming_skipped"],
+    ids=[
+        "disabled_by_flag",
+        "omitted_method_name",
+        "streaming_skipped",
+        "rest_kind_skipped",
+        "rest_asyncio_kind_skipped",
+        "http_kind_skipped",
+    ],
 )
 def test_wrap_method_otel_tracing_skips_span(monkeypatch, kwargs, capabilities_enabled):
     """Proves that under various gating conditions, no Tier 3 span is created."""
@@ -412,7 +440,12 @@ def test_wrap_method_otel_tracing_skips_span(monkeypatch, kwargs, capabilities_e
     ],
     ids=["str_method", "bytes_method"],
 )
-def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name):
+@pytest.mark.parametrize(
+    "kind",
+    ["grpc", "grpc_asyncio"],
+    ids=["kind_grpc", "kind_grpc_asyncio"],
+)
+def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name, kind):
     """Proves that when OpenTelemetry tracing is enabled and method_name is passed (str or bytes), a T3 client span is started."""
     mock_target = mock.Mock(return_value="success")
 
@@ -420,6 +453,7 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name):
         mock_target,
         default_timeout=60,
         method_name=method_name,
+        kind=kind,
     )
     result = wrapped()
 

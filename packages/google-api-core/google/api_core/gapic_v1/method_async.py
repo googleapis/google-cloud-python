@@ -65,5 +65,6 @@ def wrap_method(
             method_name=method_name,
             is_streaming=is_streaming,
             client_info=client_info,
+            kind=kind,
         )
     )
