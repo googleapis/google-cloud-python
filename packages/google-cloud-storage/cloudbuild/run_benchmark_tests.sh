@@ -46,7 +46,8 @@ export DEFAULT_RAPID_ZONAL_BUCKET="${ZONAL_BUCKET}"
 export DEFAULT_STANDARD_BUCKET="${REGIONAL_BUCKET}"
 export USE_PRESEEDED_BENCHMARK_OBJECTS="1"
 
-# Determine repository root
+# Determine script directory and repository root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "${REPO_ROOT}/packages/google-cloud-storage" 2>/dev/null || cd "$(pwd)"
 
@@ -135,44 +136,11 @@ python3 -m pytest --benchmark-json="${OUTPUT_JSON_PATH}" \
   tests/perf/microbenchmarks/time_based/reads/test_reads.py
 
 if [ -s "${OUTPUT_JSON_PATH}" ]; then
-  python3 -c "
-import json, sys
-with open('${OUTPUT_JSON_PATH}') as f:
-    d = json.load(f)
-if not isinstance(d, dict):
-    print('ERROR: Invalid JSON structure in benchmark result file.', file=sys.stderr)
-    sys.exit(1)
-benchmarks = d.get('benchmarks', [])
-if not isinstance(benchmarks, list) or not benchmarks:
-    print('No benchmarks found in result file.')
-    sys.exit(0)
-print('\n' + '='*85)
-print('              GCS DIRECTPATH READ BENCHMARK PERFORMANCE RESULTS')
-print('='*85)
-header = f'| {\"Workload Pattern\":<36} | {\"Avg Throughput\":<17} | {\"Network Bandwidth\":<22} | {\"CPU Usage\":<9} |'
-print(header)
-print('|' + '-'*38 + '|' + '-'*19 + '|' + '-'*24 + '|' + '-'*11 + '|')
-for b in benchmarks:
-    if not isinstance(b, dict):
-        continue
-    name = b.get('name', '').replace('test_downloads_multi_proc_multi_coro[', '').replace(']', '')
-    extra = b.get('extra_info', {})
-    if not isinstance(extra, dict):
-        extra = {}
-    avg_mib = extra.get('avg_throughput_mib_s', 'N/A')
-    net_mb = extra.get('net_throughput_mb_s')
-    if net_mb:
-        try:
-            net_str = f'{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)'
-        except Exception:
-            net_str = str(net_mb)
-    else:
-        net_str = 'N/A'
-    cpu = extra.get('cpu_max_global', 'N/A')
-    row = f'| {name:<36} | {str(avg_mib) + \" MiB/s\":<17} | {net_str:<22} | {str(cpu):<9} |'
-    print(row)
-print('='*85 + '\n')
-"
+  DISPLAY_SCRIPT="${SCRIPT_DIR}/display_benchmark_results.py"
+  if [ ! -f "${DISPLAY_SCRIPT}" ]; then
+    DISPLAY_SCRIPT="cloudbuild/display_benchmark_results.py"
+  fi
+  python3 "${DISPLAY_SCRIPT}" "${OUTPUT_JSON_PATH}"
 
   if [ -n "${UPLOAD_GCS_PREFIX}" ]; then
     GCS_DEST="${UPLOAD_GCS_PREFIX}/test_result_$(hostname)_$(date +%s).json"

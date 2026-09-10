@@ -83,9 +83,10 @@ steps:
           exit 1
         fi
 
-        echo "Copying package archive and runner script to VM over internal IP..."
+        echo "Copying package archive and runner scripts to VM over internal IP..."
         gcloud compute scp /workspace/google-cloud-storage.tar.gz \
           packages/google-cloud-storage/cloudbuild/run_benchmark_tests.sh \
+          packages/google-cloud-storage/cloudbuild/display_benchmark_results.py \
           "${_VM_NAME}":~ --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
 
         echo "Executing benchmark test suite directly on VM via SSH..."
@@ -112,52 +113,8 @@ steps:
     id: "display-benchmark-results"
     entrypoint: "python3"
     args:
-      - "-c"
-      - |
-        import json, os, sys
-
-        result_path = "/workspace/report/bench_result.json"
-        if not os.path.exists(result_path):
-            print("ERROR: Benchmark result file not found at " + result_path, file=sys.stderr)
-            sys.exit(1)
-
-        with open(result_path) as f:
-            data = json.load(f)
-
-        if not isinstance(data, dict):
-            print("ERROR: Invalid JSON structure in benchmark result file.", file=sys.stderr)
-            sys.exit(1)
-
-        benchmarks = data.get("benchmarks", [])
-        if not isinstance(benchmarks, list) or not benchmarks:
-            print("No benchmarks found in result file.")
-            sys.exit(0)
-
-        print("\n" + "=" * 88)
-        print("                 GCS DIRECTPATH READ BENCHMARK PERFORMANCE RESULTS")
-        print("=" * 88)
-        header = f"| {'Workload Pattern':<36} | {'Avg Throughput':<17} | {'Network Bandwidth':<22} | {'CPU Usage':<9} |"
-        print(header)
-        print("|" + "-" * 38 + "|" + "-" * 19 + "|" + "-" * 24 + "|" + "-" * 11 + "|")
-        for b in benchmarks:
-            if not isinstance(b, dict):
-                continue
-            name = b.get("name", "").replace("test_downloads_multi_proc_multi_coro[", "").replace("]", "")
-            extra = b.get("extra_info", {})
-            if not isinstance(extra, dict):
-                extra = {}
-            avg_mib = extra.get("avg_throughput_mib_s", "N/A")
-            net_mb = extra.get("net_throughput_mb_s")
-            if net_mb:
-                try:
-                    net_str = f"{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)"
-                except Exception:
-                    net_str = str(net_mb)
-            else:
-                net_str = "N/A"
-            cpu = extra.get("cpu_max_global", "N/A")
-            print(f"| {name:<36} | {str(avg_mib) + ' MiB/s':<17} | {net_str:<22} | {str(cpu):<9} |")
-        print("=" * 88 + "\n")
+      - "packages/google-cloud-storage/cloudbuild/display_benchmark_results.py"
+      - "/workspace/report/bench_result.json"
     waitFor:
       - "run-benchmark-on-vm"
 
