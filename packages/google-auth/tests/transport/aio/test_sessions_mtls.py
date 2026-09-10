@@ -1158,7 +1158,12 @@ class TestSessionsMtls:
             with mock.patch.object(
                 session, "configure_mtls_channel", new_callable=mock.AsyncMock
             ) as mock_conf:
-                mock_check.return_value = (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+                mock_check.return_value = (
+                    b"new_cert",
+                    b"new_key",
+                    b"old_fp",
+                    b"new_fp",
+                )
 
                 resp = await session.request(
                     "GET", "https://pubsub.mtls.googleapis.com/test"
