@@ -351,13 +351,11 @@ def test__deduplicate_metadata_tokens(headers, expected):
     assert dedup(*headers) == expected
 
 
-_BASE_SPAN_ATTRIBUTES = {
-    "rpc.system": "grpc",
-    "rpc.service": "google.cloud.secretmanager.v1.SecretManagerService",
-    "rpc.method": "ListSecrets",
+_DEFAULT_SPAN_ATTRIBUTES = {
+    "rpc.system.name": "grpc",
+    "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
 }
-
-_DEFAULT_SPAN_ATTRIBUTES = _BASE_SPAN_ATTRIBUTES
+_BASE_SPAN_ATTRIBUTES = _DEFAULT_SPAN_ATTRIBUTES
 
 
 @pytest.mark.parametrize(
@@ -455,9 +453,8 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
         "google.test.Service/TestMethod",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "google.test.Service",
-            "rpc.method": "TestMethod",
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.test.Service/TestMethod",
         },
     )
 
@@ -597,8 +594,7 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
         "ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system": "grpc",
-            "rpc.service": "",
+            "rpc.system.name": "grpc",
             "rpc.method": "ListSecrets",
         },
     )

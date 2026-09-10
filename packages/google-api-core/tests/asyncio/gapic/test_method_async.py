@@ -282,9 +282,8 @@ async def test_wrap_method_without_wrap_errors():
 
 
 _ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES = {
-    "rpc.system": "grpc",
-    "rpc.service": "google.test.AsyncService",
-    "rpc.method": "AsyncMethod",
+    "rpc.system.name": "grpc",
+    "rpc.method": "google.test.AsyncService/AsyncMethod",
 }
 
 
