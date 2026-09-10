@@ -850,3 +850,12 @@ def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
         wrapped2()
     mock_span2.record_exception.assert_called_once()
     mock_span2.set_status.assert_called_once()
+
+
+def test_wrap_method_uninstrumented_exception():
+    """Proves that exceptions are re-raised cleanly when tracing is not enabled (span is None)."""
+    mock_target = mock.Mock(side_effect=RuntimeError("uninstrumented error"))
+    wrapped = google.api_core.gapic_v1.method.wrap_method(mock_target)
+
+    with pytest.raises(RuntimeError, match="uninstrumented error"):
+        wrapped()
