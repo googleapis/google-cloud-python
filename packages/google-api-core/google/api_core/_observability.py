@@ -18,6 +18,7 @@
 
 from __future__ import annotations
 
+import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
@@ -64,51 +65,43 @@ def is_otel_capabilities_enabled(
     return False
 
 
-_STATUS_CODE_NAMES = {
-    0: "OK",
-    1: "CANCELLED",
-    2: "UNKNOWN",
-    3: "INVALID_ARGUMENT",
-    4: "DEADLINE_EXCEEDED",
-    5: "NOT_FOUND",
-    6: "ALREADY_EXISTS",
-    7: "PERMISSION_DENIED",
-    8: "RESOURCE_EXHAUSTED",
-    9: "FAILED_PRECONDITION",
-    10: "ABORTED",
-    11: "OUT_OF_RANGE",
-    12: "UNIMPLEMENTED",
-    13: "INTERNAL",
-    14: "UNAVAILABLE",
-    15: "DATA_LOSS",
-    16: "UNAUTHENTICATED",
-}
-
-
 def _extract_endpoint_attributes(
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Extracts server.address and server.port from client options if present."""
+    """Extracts server.address, server.port (if non-default), and url.domain from client options if present.
+
+    Args:
+        client_options: The client options object or dictionary.
+
+    Returns:
+        dict[str, Any]: A dictionary containing url.domain and, if an api_endpoint is configured,
+            server.address and non-default server.port.
+    """
     attrs: dict[str, Any] = {}
     endpoint = None
+    universe_domain = None
+
     if isinstance(client_options, dict):
         endpoint = client_options.get("api_endpoint")
+        universe_domain = client_options.get("universe_domain")
     elif client_options is not None:
         endpoint = getattr(client_options, "api_endpoint", None)
+        universe_domain = getattr(client_options, "universe_domain", None)
+
+    attrs["url.domain"] = universe_domain or "googleapis.com"
 
     if endpoint and isinstance(endpoint, str):
-        clean = endpoint.replace("http://", "").replace("https://", "").strip("/")
-        if clean:
-            if ":" in clean:
-                host, port_str = clean.split(":", 1)
-                attrs["server.address"] = host
-                try:
-                    attrs["server.port"] = int(port_str)
-                except ValueError:
-                    attrs["server.port"] = 443
-            else:
-                attrs["server.address"] = clean
-                attrs["server.port"] = 443
+        target = endpoint if "//" in endpoint else f"//{endpoint}"
+        parsed = urllib.parse.urlsplit(target)
+        if parsed.hostname:
+            attrs["server.address"] = parsed.hostname
+        if parsed.port:
+            scheme = parsed.scheme.lower()
+            is_default_port = (parsed.port == 443 and scheme in ("https", "")) or (
+                parsed.port == 80 and scheme == "http"
+            )
+            if not is_default_port:
+                attrs["server.port"] = parsed.port
     return attrs
 
 
@@ -131,13 +124,46 @@ def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
     if isinstance(resend_count, int) and resend_count > 0:
         attrs["gcp.grpc.resend_count"] = resend_count
 
-    name = getattr(request, "name", None)
-    if isinstance(name, str) and name:
-        attrs["gcp.resource.destination.id"] = name
-    else:
-        parent = getattr(request, "parent", None)
-        if isinstance(parent, str) and parent:
-            attrs["gcp.resource.destination.id"] = parent
+    resource_id = getattr(request, "name", None) or getattr(request, "parent", None)
+    if isinstance(resource_id, str) and resource_id:
+        attrs["gcp.resource.destination.id"] = resource_id
+
+    return attrs
+
+
+def _extract_error_attributes(exc: Any) -> dict[str, Any]:
+    """Extracts gcp.errors.domain, gcp.errors.metadata.*, and error.type from an exception or ErrorInfo.
+
+    Args:
+        exc: An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+
+    Returns:
+        dict[str, Any]: Extracted error attributes.
+    """
+    attrs: dict[str, Any] = {}
+    if exc is None:
+        return attrs
+
+    error_info = getattr(exc, "error_info", None)
+    if error_info is None and hasattr(exc, "trailing_metadata"):
+        try:
+            from google.api_core import exceptions
+
+            _, error_info = exceptions._parse_grpc_error_details(exc)
+        except Exception:
+            pass
+
+    if error_info is not None:
+        domain = getattr(error_info, "domain", None)
+        if domain and isinstance(domain, str):
+            attrs["gcp.errors.domain"] = domain
+        reason = getattr(error_info, "reason", None)
+        if reason and isinstance(reason, str):
+            attrs["error.type"] = reason
+        metadata = getattr(error_info, "metadata", None)
+        if metadata and hasattr(metadata, "items"):
+            for k, v in metadata.items():
+                attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
     return attrs
 
@@ -145,14 +171,22 @@ def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
 def _make_grpc_client_request_hook(
     endpoint_attrs: dict[str, Any] | None = None,
 ) -> Callable[[Any, Any], None]:
-    """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes."""
+    """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes.
+
+    Args:
+        endpoint_attrs: Optional static endpoint attributes to attach to every span.
+
+    Returns:
+        Callable[[Any, Any], None]: The request hook callback.
+    """
+    static_attrs = dict(endpoint_attrs) if endpoint_attrs else {}
 
     def client_request_hook(span: Any, request: Any) -> None:
         if span is None or not getattr(span, "is_recording", lambda: True)():
             return
         attrs = _extract_grpc_request_attributes(request)
-        if endpoint_attrs:
-            attrs.update(endpoint_attrs)
+        if static_attrs:
+            attrs.update(static_attrs)
         for key, value in attrs.items():
             span.set_attribute(key, value)
 
@@ -160,35 +194,6 @@ def _make_grpc_client_request_hook(
 
 
 _grpc_client_request_hook = _make_grpc_client_request_hook()
-
-
-def _grpc_client_response_hook(span: Any, response: Any) -> None:
-    """OpenTelemetry gRPC client response hook to inject response status attributes into the span."""
-    if span is None or not getattr(span, "is_recording", lambda: True)():
-        return
-
-    status_str = "OK"
-    code_fn = getattr(response, "code", None)
-    if callable(code_fn):
-        try:
-            code_val = code_fn()
-            status_str = getattr(code_val, "name", None) or _STATUS_CODE_NAMES.get(
-                code_val, str(code_val)
-            )
-        except Exception:
-            pass
-
-    span.set_attribute("rpc.response.status_code", status_str)
-    if status_str != "OK":
-        span.set_attribute("error.type", status_str)
-        details_fn = getattr(response, "details", None)
-        if callable(details_fn):
-            try:
-                details = details_fn()
-                if details:
-                    span.set_attribute("status.message", str(details))
-            except Exception:
-                pass
 
 
 def _get_tracer_provider(
@@ -229,16 +234,11 @@ def get_otel_interceptor(
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     endpoint_attrs = _extract_endpoint_attributes(client_options)
-    request_hook = (
-        _make_grpc_client_request_hook(endpoint_attrs)
-        if endpoint_attrs
-        else _grpc_client_request_hook
-    )
+    request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
-        response_hook=_grpc_client_response_hook,
     )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
@@ -267,14 +267,9 @@ def get_otel_async_interceptor(
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     endpoint_attrs = _extract_endpoint_attributes(client_options)
-    request_hook = (
-        _make_grpc_client_request_hook(endpoint_attrs)
-        if endpoint_attrs
-        else _grpc_client_request_hook
-    )
+    request_hook = _make_grpc_client_request_hook(endpoint_attrs)
 
     return otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
-        response_hook=_grpc_client_response_hook,
     )
