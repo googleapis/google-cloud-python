@@ -169,15 +169,23 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
     if exc is None:
         return attrs
 
-    target_exc = getattr(exc, "cause", None) or exc
-    error_info = getattr(target_exc, "error_info", None)
-    if error_info is None and hasattr(target_exc, "trailing_metadata"):
-        try:
-            from google.api_core import exceptions
+    target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
+    error_info = getattr(target_exc, "_error_info", None) or getattr(
+        target_exc, "error_info", None
+    )
+    if error_info is None:
+        rpc_call = (
+            target_exc
+            if hasattr(target_exc, "trailing_metadata")
+            else getattr(target_exc, "response", None)
+        )
+        if rpc_call is not None and hasattr(rpc_call, "trailing_metadata"):
+            try:
+                from google.api_core import exceptions
 
-            _, error_info = exceptions._parse_grpc_error_details(target_exc)
-        except Exception:
-            pass
+                _, error_info = exceptions._parse_grpc_error_details(rpc_call)
+            except Exception:
+                pass
 
     if error_info is not None:
         domain = getattr(error_info, "domain", None)
@@ -189,6 +197,13 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
         metadata = getattr(error_info, "metadata", None)
         if metadata and hasattr(metadata, "items"):
             for k, v in metadata.items():
+                attrs[f"gcp.errors.metadata.{k}"] = str(v)
+    elif hasattr(target_exc, "domain") and getattr(target_exc, "domain", None):
+        attrs["gcp.errors.domain"] = target_exc.domain
+        if getattr(target_exc, "reason", None):
+            attrs["error.type"] = target_exc.reason
+        if getattr(target_exc, "metadata", None):
+            for k, v in target_exc.metadata.items():
                 attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
     return attrs
