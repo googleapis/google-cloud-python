@@ -331,6 +331,28 @@ async def test_wrap_method_async_otel_tracing_streaming_skips_span(mock_otel):
 
 
 @pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_rest_skips_span(mock_otel):
+    """Proves that method_async.wrap_method with kind='rest' skips span creation."""
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        method,
+        method_name="google.test.AsyncService/AsyncMethod",
+        kind="rest",
+    )
+    result = await wrapped(1, 2)
+
+    assert_uninstrumented_gapic_callable(
+        wrapped,
+        result,
+        method,
+        mock_trace=mock_otel.trace,
+        expected_result=42,
+    )
+
+
+@pytest.mark.asyncio
 async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
     """Proves that method_async.wrap_method forwards custom client_options tracer_provider."""
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)

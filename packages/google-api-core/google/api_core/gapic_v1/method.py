@@ -292,6 +292,8 @@ class _GapicCallable(object):
             Note: Streaming methods do not currently generate Tier 3 observability spans.
         client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
             Client information used for metadata headers. Defaults to None.
+        kind (str): The transport kind for the RPC method. Defaults to "grpc".
+            Allowed values for OpenTelemetry method tracing are "grpc" and "grpc_asyncio".
     """
 
     def __init__(
@@ -305,6 +307,7 @@ class _GapicCallable(object):
         method_name=None,
         is_streaming=False,
         client_info=None,
+        kind="grpc",
     ):
         self._target = target
         self._retry = retry
@@ -313,6 +316,7 @@ class _GapicCallable(object):
         self._client_options = client_options
         self._method_name = method_name
         self._is_streaming = is_streaming
+        self._kind = kind
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -326,12 +330,13 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
-        # For now, tracing is gated to non-streaming calls where an explicit method_name is provided.
+        # For now, tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
         self._tracer = None
         self._span_name = None
         self._span_attributes = None
         if (
             not is_streaming
+            and kind in ("grpc", "grpc_asyncio")
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -444,6 +449,7 @@ def wrap_method(
     client_options=None,
     method_name=None,
     is_streaming=False,
+    kind="grpc",
 ):
     """Wrap an RPC method with common behavior.
 
@@ -536,6 +542,9 @@ def wrap_method(
             Used to identify the RPC for observability.
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Streaming methods are currently gated and do not generate Tier 3 spans.
+        kind (str): The transport kind for the RPC method. Defaults to "grpc".
+            Non-gRPC transports (e.g. "rest") are currently gated and do not generate
+            Tier 3 method spans.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -567,5 +576,6 @@ def wrap_method(
             method_name=method_name,
             is_streaming=is_streaming,
             client_info=client_info,
+            kind=kind,
         )
     )
