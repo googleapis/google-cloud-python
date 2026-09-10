@@ -3,7 +3,8 @@
   "bump-patch-for-minor-pre-major": true,
   "packages": {
     "packages/google-auth": {
-      "component": "google-auth"
+      "component": "google-auth",
+      "extra-label": "auth"
     },
     "packages/google-cloud-apptopology": {
       "component": "google-cloud-apptopology",
