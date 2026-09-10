@@ -1101,12 +1101,15 @@ class TestSessionsMtls:
             mock_creds, auth_request=mock_auth_request
         )
 
-        time_calls = [0.0, 0.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 100.0]
+        after_refresh_count = 0
 
         def mock_time():
-            if time_calls:
-                return time_calls.pop(0)
-            return 100.0
+            nonlocal after_refresh_count
+            if mock_creds.refresh.called:
+                after_refresh_count += 1
+                if after_refresh_count >= 2:
+                    return 100.0
+            return 0.1
 
         with mock.patch("time.monotonic", side_effect=mock_time):
             with pytest.raises(
