@@ -193,7 +193,20 @@ class AsyncAuthorizedSession:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
-        if self._mtls_init_task is None or self._mtls_init_task.done():
+        is_explicit_reconfig = (
+            client_cert_callback is not None
+            and client_cert_callback != self._client_cert_callback
+        )
+        task_failed = (
+            self._mtls_init_task is not None
+            and self._mtls_init_task.done()
+            and (
+                self._mtls_init_task.cancelled()
+                or self._mtls_init_task.exception() is not None
+            )
+        )
+
+        if self._mtls_init_task is None or is_explicit_reconfig or task_failed:
             self._client_cert_callback = client_cert_callback
 
             async def _do_configure():
@@ -255,8 +268,6 @@ class AsyncAuthorizedSession:
                         self._cached_cert = None
 
                 except Exception as caught_exc:
-                    self._is_mtls = False
-                    self._cached_cert = None
                     new_exc = exceptions.MutualTLSChannelError(caught_exc)
                     raise new_exc from caught_exc
 

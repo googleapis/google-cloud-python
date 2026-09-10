@@ -183,7 +183,7 @@ class TestSessionsMtls:
             await session.close()
 
     @pytest.mark.asyncio
-    async def test_configure_mtls_channel_exception_resets_flag(self):
+    async def test_configure_mtls_channel_exception_preserves_flag(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         session = sessions.AsyncAuthorizedSession(mock_creds)
         session._is_mtls = True
@@ -199,9 +199,9 @@ class TestSessionsMtls:
             ),
             pytest.raises(exceptions.MutualTLSChannelError),
         ):
-            await session.configure_mtls_channel()
-        assert session.is_mtls is False
-        assert session._cached_cert == None
+            await session.configure_mtls_channel(lambda: (b"new_cert", b"new_key"))
+        assert session.is_mtls is True
+        assert session._cached_cert == b"old_cert"
         await session.close()
 
     @pytest.mark.asyncio
@@ -1471,3 +1471,82 @@ class TestSessionsMtls:
         assert resp == mock_resp_401
         mock_creds.refresh.assert_called_once()
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_idempotent_when_called_repeatedly(self):
+        """Tests that calling configure_mtls_channel repeatedly without a new callback reuses the existing task."""
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert_bytes", b"key_bytes"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+            await session.configure_mtls_channel()
+            assert session.is_mtls is True
+            first_auth_req = session._auth_request
+            first_task = session._mtls_init_task
+
+            # Call configure_mtls_channel again without new callback
+            await session.configure_mtls_channel()
+            assert session._auth_request is first_auth_req
+            assert session._mtls_init_task is first_task
+
+            # Call configure_mtls_channel with a new callback - should reconfigure
+            new_callback = lambda: (b"new_cert", b"new_key")
+            await session.configure_mtls_channel(new_callback)
+            assert session._auth_request is not first_auth_req
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_exception_preserves_existing_mtls_state(self):
+        """Tests that an exception during re-configuration does not clear existing is_mtls and cached_cert."""
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert_v1", b"key_v1"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+            await session.configure_mtls_channel()
+            assert session.is_mtls is True
+            assert session._cached_cert == b"cert_v1"
+            first_auth_req = session._auth_request
+
+            # Now attempt reconfiguring with a failing callback/context
+            with (
+                mock.patch(
+                    "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                    side_effect=RuntimeError("Reconfig failure"),
+                ),
+                pytest.raises(exceptions.MutualTLSChannelError),
+            ):
+                await session.configure_mtls_channel(lambda: (b"cert_v2", b"key_v2"))
+
+            # Session should still retain its previous mTLS state and active auth_request
+            assert session.is_mtls is True
+            assert session._cached_cert == b"cert_v1"
+            assert session._auth_request is first_auth_req
+            await session.close()
