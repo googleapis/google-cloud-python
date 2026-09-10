@@ -72,6 +72,17 @@ class TestAsyncWriteObjectStream:
         )
         assert stream.storage_class == storage_class
 
+    @pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID"])
+    def test_init_with_blob_storage_class(self, mock_client, storage_class):
+        mock_blob = mock.Mock(spec=Blob)
+        mock_blob.name = OBJECT
+        mock_blob.bucket = mock.Mock(spec=Bucket)
+        mock_blob.bucket.name = BUCKET
+        mock_blob.storage_class = storage_class
+
+        stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
+        assert stream.blob.storage_class == storage_class
+
     def test_init_raises_value_error(self, mock_client):
         with pytest.raises(ValueError, match="client must be provided"):
             _AsyncWriteObjectStream(None, BUCKET, OBJECT)
@@ -222,6 +233,7 @@ class TestAsyncWriteObjectStream:
         mock_blob.content_language = "content-language"
         mock_blob.temporary_hold = True
         mock_blob.event_based_hold = True
+        mock_blob.storage_class = "RAPID"
 
         custom_time = datetime.datetime(
             2025, 1, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
@@ -246,6 +258,7 @@ class TestAsyncWriteObjectStream:
         mock_blob.contexts = ObjectContexts(mock_blob, custom={"context-key": payload})
 
         stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, blob=mock_blob)
+        assert stream.blob.storage_class == "RAPID"
         await stream.open()
 
         # Verify initial request contains synced attributes from blob
@@ -261,6 +274,7 @@ class TestAsyncWriteObjectStream:
         assert resource.content_language == "content-language"
         assert resource.temporary_hold is True
         assert resource.event_based_hold is True
+        assert resource.storage_class == "RAPID"
 
         assert int(resource.custom_time.timestamp()) == int(custom_time.timestamp())
 
