@@ -211,13 +211,13 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     # 4. Unified attribute extraction: extract domain, reason, and metadata from ErrorInfo or exception attributes
     source = error_info or target_exc
     domain = getattr(source, "domain", None)
-    if domain and isinstance(domain, str):
+    if domain:
         attrs["gcp.errors.domain"] = domain
     reason = getattr(source, "reason", None)
-    if reason and isinstance(reason, str):
+    if reason:
         attrs["error.type"] = reason
     metadata = getattr(source, "metadata", None)
-    if metadata and hasattr(metadata, "items"):
+    if metadata:
         for k, v in metadata.items():
             attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
