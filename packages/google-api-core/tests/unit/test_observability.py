@@ -338,32 +338,16 @@ def test_extract_endpoint_attributes(client_options, expected_attrs):
         (types.SimpleNamespace(), {"rpc.system.name": "grpc"}),
         (
             types.SimpleNamespace(name="projects/p1/secrets/s1"),
-            {
-                "rpc.system.name": "grpc",
-                "gcp.resource.destination.id": "projects/p1/secrets/s1",
-            },
+            {"rpc.system.name": "grpc"},
         ),
         (
             types.SimpleNamespace(parent="projects/parent-p1"),
-            {
-                "rpc.system.name": "grpc",
-                "gcp.resource.destination.id": "projects/parent-p1",
-            },
-        ),
-        (
-            types.SimpleNamespace(
-                name="projects/p1/secrets/s1", parent="projects/parent-p1"
-            ),
-            {
-                "rpc.system.name": "grpc",
-                "gcp.resource.destination.id": "projects/p1/secrets/s1",
-            },
+            {"rpc.system.name": "grpc"},
         ),
         (
             types.SimpleNamespace(name="projects/p1/secrets/s1", resend_count=2),
             {
                 "rpc.system.name": "grpc",
-                "gcp.resource.destination.id": "projects/p1/secrets/s1",
                 "gcp.grpc.resend_count": 2,
             },
         ),
@@ -414,9 +398,6 @@ def test_grpc_client_request_hook():
     mock_span_rec.set_attribute.assert_any_call("rpc.system.name", "grpc")
     assert "rpc.system" not in mock_span_rec._attributes
 
-    mock_span_rec.set_attribute.assert_any_call(
-        "gcp.resource.destination.id", "projects/my-proj/secrets/s1"
-    )
     mock_span_rec.set_attribute.assert_any_call("gcp.grpc.resend_count", 1)
 
     # Custom hook with endpoint attributes and already-clean span name

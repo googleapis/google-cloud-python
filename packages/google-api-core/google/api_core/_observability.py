@@ -124,10 +124,6 @@ def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
     if isinstance(resend_count, int) and resend_count > 0:
         attrs["gcp.grpc.resend_count"] = resend_count
 
-    resource_id = getattr(request, "name", None) or getattr(request, "parent", None)
-    if isinstance(resource_id, str) and resource_id:
-        attrs["gcp.resource.destination.id"] = resource_id
-
     return attrs
 
 
