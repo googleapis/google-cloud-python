@@ -127,18 +127,37 @@ def _extract_rpc_identity(
 def _extract_status_code(exc: Exception) -> str:
     """Extract canonical status code name string from an exception.
 
+    Status code name strings are found in a variety of locations depending
+    on the status of the operation:
+    * RetryError (unwrapped to root cause)
+    * GoogleAPICallError (.grpc_status_code enum)
+    * Native gRPC exceptions (callable .code())
+    * Non-callable .code attributes (raw status code integers, stubs, mocks)
+    * Standard Python exceptions (fallback to class name)
+
     Args:
         exc (Exception): The exception to extract the status code name from.
 
     Returns:
         str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE").
     """
-    target_exc = getattr(exc, "cause", None) or exc
+    if exc is None:
+        return ""
+
+    # 1. Unwrap Retry/Transport wrappers and chained exceptions
+    # api_core's RetryError wraps the root failure in .cause, and standard Python chaining uses .__cause__
+    target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
+
+    # 2. Check GoogleAPICallError subclasses
+    # api_core exceptions (NotFound, InternalServerError, etc.) define a .grpc_status_code enum
     grpc_status = getattr(target_exc, "grpc_status_code", None)
     if grpc_status is not None:
         name = getattr(grpc_status, "name", None)
         if name is not None:
             return str(name)
+
+    # 3. Check native gRPC exceptions (grpc.RpcError / grpc.Call)
+    # Native gRPC error instances expose a callable .code() method returning a grpc.StatusCode enum
     code_fn = getattr(target_exc, "code", None)
     if callable(code_fn):
         try:
@@ -148,16 +167,22 @@ def _extract_status_code(exc: Exception) -> str:
                 return str(name)
         except Exception:
             pass
+
+    # 4. Check non-callable .code attributes (e.g. raw status code integers, stubs, mocks)
     elif code_fn is not None:
         name = getattr(code_fn, "name", None)
         if name is not None:
             return str(name)
+        # If code is an integer (e.g. HTTP status or gRPC integer), map to canonical enum name
         if isinstance(code_fn, int):
             from google.api_core import exceptions
 
             if code_fn in exceptions._INT_TO_GRPC_CODE:
                 return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
             return str(code_fn)
+
+    # 5. Standard Python exception fallback
+    # For ValueError, RuntimeError, etc., fall back to class name per OpenTelemetry conventions
     return target_exc.__class__.__name__
 
 
