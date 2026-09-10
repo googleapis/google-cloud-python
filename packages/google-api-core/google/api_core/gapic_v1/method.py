@@ -21,7 +21,7 @@ compression, pagination, and long-running operations to gRPC methods.
 import contextlib
 import enum
 import functools
-from typing import List, Tuple
+from typing import Any, List, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -154,6 +154,44 @@ def _extract_status_code(exc: Exception) -> str:
             return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
         return str(code_fn)
     return target_exc.__class__.__name__
+
+
+def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
+    """Extracts gcp.errors.domain, gcp.errors.metadata.*, and error.type from an exception or ErrorInfo.
+
+    Args:
+        exc (Exception): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+
+    Returns:
+        dict[str, Any]: Extracted error attributes.
+    """
+    attrs: dict[str, Any] = {}
+    if exc is None:
+        return attrs
+
+    target_exc = getattr(exc, "cause", None) or exc
+    error_info = getattr(target_exc, "error_info", None)
+    if error_info is None and hasattr(target_exc, "trailing_metadata"):
+        try:
+            from google.api_core import exceptions
+
+            _, error_info = exceptions._parse_grpc_error_details(target_exc)
+        except Exception:
+            pass
+
+    if error_info is not None:
+        domain = getattr(error_info, "domain", None)
+        if domain and isinstance(domain, str):
+            attrs["gcp.errors.domain"] = domain
+        reason = getattr(error_info, "reason", None)
+        if reason and isinstance(reason, str):
+            attrs["error.type"] = reason
+        metadata = getattr(error_info, "metadata", None)
+        if metadata and hasattr(metadata, "items"):
+            for k, v in metadata.items():
+                attrs[f"gcp.errors.metadata.{k}"] = str(v)
+
+    return attrs
 
 
 class _GapicCallable(object):
@@ -321,6 +359,8 @@ class _GapicCallable(object):
                         span.set_attribute(
                             "rpc.response.status_code", _extract_status_code(exc)
                         )
+                        for k, v in _extract_error_attributes(exc).items():
+                            span.set_attribute(k, v)
                 raise
 
 

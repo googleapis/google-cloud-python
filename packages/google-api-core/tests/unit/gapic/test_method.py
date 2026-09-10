@@ -635,3 +635,64 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
             "rpc.method": "ListSecrets",
         },
     )
+
+
+def test_extract_error_attributes_standard_exception():
+    """Proves that _extract_error_attributes returns empty dict for standard exceptions without ErrorInfo."""
+    assert (
+        google.api_core.gapic_v1.method._extract_error_attributes(ValueError("fail"))
+        == {}
+    )
+    assert google.api_core.gapic_v1.method._extract_error_attributes(None) == {}
+
+
+def test_extract_error_attributes_with_error_info():
+    """Proves that _extract_error_attributes extracts domain, error.type, and metadata from ErrorInfo."""
+    import types
+
+    error_info = types.SimpleNamespace(
+        domain="googleapis.com",
+        reason="SERVICE_DISABLED",
+        metadata={
+            "service": "secretmanager.googleapis.com",
+            "consumer": "projects/123",
+        },
+    )
+    exc = types.SimpleNamespace(error_info=error_info)
+    attrs = google.api_core.gapic_v1.method._extract_error_attributes(exc)
+    assert attrs == {
+        "gcp.errors.domain": "googleapis.com",
+        "error.type": "SERVICE_DISABLED",
+        "gcp.errors.metadata.service": "secretmanager.googleapis.com",
+        "gcp.errors.metadata.consumer": "projects/123",
+    }
+
+
+def test_wrap_method_otel_tracing_records_gcp_error_attributes(mock_otel):
+    """Proves that method spans record gcp.errors.* attributes when ErrorInfo is present."""
+    import types
+
+    error_info = types.SimpleNamespace(
+        domain="googleapis.com",
+        reason="RESOURCE_EXHAUSTED",
+        metadata={"quota_limit": "100"},
+    )
+    exc = exceptions.ResourceExhausted("quota exceeded")
+    exc.error_info = error_info
+    mock_target = mock.Mock(side_effect=exc)
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        method_name="google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    with pytest.raises(exceptions.ResourceExhausted):
+        wrapped()
+
+    mock_otel.span.set_attribute.assert_any_call(
+        "rpc.response.status_code", "RESOURCE_EXHAUSTED"
+    )
+    mock_otel.span.set_attribute.assert_any_call("gcp.errors.domain", "googleapis.com")
+    mock_otel.span.set_attribute.assert_any_call("error.type", "RESOURCE_EXHAUSTED")
+    mock_otel.span.set_attribute.assert_any_call(
+        "gcp.errors.metadata.quota_limit", "100"
+    )
