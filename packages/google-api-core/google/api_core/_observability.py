@@ -184,7 +184,26 @@ def _make_grpc_client_request_hook(
     def client_request_hook(span: Any, request: Any) -> None:
         if span is None or not getattr(span, "is_recording", lambda: True)():
             return
+
+        # Upstream opentelemetry-instrumentation-grpc names spans with a leading slash
+        # (e.g. "/package.Service/Method") and sets only the short name on rpc.method.
+        # Normalize span.name and rpc.method to the fully-qualified name without leading slash.
+        span_name = getattr(span, "name", None)
+        clean_method_name = None
+        if isinstance(span_name, str) and span_name.startswith("/"):
+            clean_method_name = span_name.lstrip("/")
+            if hasattr(span, "update_name"):
+                span.update_name(clean_method_name)
+
+        # Remove duplicate legacy rpc.system attribute set by stock instrumentation
+        # in favor of modern rpc.system.name ("grpc") per PRD changelog.
+        span_attributes = getattr(span, "_attributes", None)
+        if hasattr(span_attributes, "pop"):
+            span_attributes.pop("rpc.system", None)
+
         attrs = _extract_grpc_request_attributes(request)
+        if clean_method_name:
+            attrs["rpc.method"] = clean_method_name
         if static_attrs:
             attrs.update(static_attrs)
         for key, value in attrs.items():
