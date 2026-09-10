@@ -41,7 +41,7 @@ from google.cloud.storage.blob import (
 )
 
 PREPROD_GRPC_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
-
+# Run system test for either Rapid (formerly zonal) or RCU. But not both => XOR
 pytestmark = pytest.mark.skipif(
     not (
         (os.getenv("RUN_ZONAL_SYSTEM_TESTS") == "True")
@@ -59,9 +59,7 @@ _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
 RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
 _RCU_BUCKET = os.getenv("RCU_BUCKET")
-bucket_for_testing = (
-    _ZONAL_BUCKET if os.getenv("RUN_ZONAL_SYSTEM_TESTS") else _RCU_BUCKET
-)
+bucket_for_testing = _RCU_BUCKET if RCU_SYSTEM_TESTS else _ZONAL_BUCKET
 
 async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
     """Initializes async client and gets the current event loop."""
@@ -322,7 +320,9 @@ def test_basic_wrd_in_slices(
         assert mrd.persisted_size == object_size
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         del mrd
         gc.collect()
@@ -379,7 +379,9 @@ def test_wrd_with_non_default_flush_interval(
         assert mrd.persisted_size == object_size
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         del mrd
         gc.collect()
@@ -498,7 +500,9 @@ async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
 
     try:
         blobs = list(
-            storage_client.list_blobs(bucket_for_testing, filter_='contexts."foo"="bar"')
+            storage_client.list_blobs(
+                bucket_for_testing, filter_='contexts."foo"="bar"'
+            )
         )
         names = [b.name for b in blobs]
         assert blob_name in names
@@ -508,7 +512,9 @@ async def test_write_blob_with_contexts(storage_client, blobs_to_delete):
         assert "foo" in obj_proto.contexts.custom
         assert obj_proto.contexts.custom["foo"].value == "bar"
     finally:
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(blob_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(blob_name)
+        )
 
 
 def test_read_unfinalized_appendable_object(
@@ -538,7 +544,9 @@ def test_read_unfinalized_appendable_object(
         assert buffer.getvalue() == _BYTES_TO_UPLOAD
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         del mrd
         gc.collect()
@@ -561,7 +569,9 @@ def test_mrd_open_with_read_handle(event_loop, grpc_client_direct):
         await writer.append(_BYTES_TO_UPLOAD)
         await writer.close()
 
-        mrd = AsyncMultiRangeDownloader(grpc_client_direct, bucket_for_testing, object_name)
+        mrd = AsyncMultiRangeDownloader(
+            grpc_client_direct, bucket_for_testing, object_name
+        )
         await mrd.open()
         read_handle = mrd.read_handle
         await mrd.close()
@@ -659,7 +669,9 @@ def test_wrd_open_with_write_handle(
         await new_writer.close()
 
         # 4. Verify the data was written correctly by reading it back
-        mrd = AsyncMultiRangeDownloader(grpc_client_direct, bucket_for_testing, object_name)
+        mrd = AsyncMultiRangeDownloader(
+            grpc_client_direct, bucket_for_testing, object_name
+        )
         buffer = BytesIO()
         await mrd.open()
         await mrd.download_ranges([(0, 0, buffer)])
@@ -667,7 +679,9 @@ def test_wrd_open_with_write_handle(
         assert buffer.getvalue() == test_data
 
         # Clean up
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         del new_writer
         del mrd
@@ -729,7 +743,9 @@ def test_read_unfinalized_appendable_object_with_generation(
         mrd_2 = await _read_and_verify(_BYTES_TO_UPLOAD + _BYTES_TO_UPLOAD, generation)
 
         # Clean up
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         del writer_2
         del mrd
@@ -783,7 +799,9 @@ def test_open_with_generation_zero(
         del writer
         gc.collect()
 
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -828,7 +846,9 @@ def test_open_existing_object_with_gen_None_overrides_existing(
         del new_writer
         gc.collect()
 
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -943,7 +963,9 @@ def test_mrd_concurrent_download(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -1007,7 +1029,9 @@ def test_mrd_concurrent_download_cancellation(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -1059,7 +1083,9 @@ def test_mrd_concurrent_download_out_of_bounds(
 
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -1112,7 +1138,9 @@ def test_mrd_checksum_validation(
         # cleanup
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -1150,7 +1178,9 @@ def test_mrd_checksum_unfinalized_appendable_skipped(
         await writer.close()
         del writer
         gc.collect()
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
 
     event_loop.run_until_complete(_run())
 
@@ -1180,7 +1210,9 @@ def test_finalize_with_correct_checksum(
         assert int(object_metadata.checksums.crc32c) == object_checksum
 
         # clean up
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         gc.collect()
 
@@ -1219,7 +1251,9 @@ def test_finalize_with_incorrect_checksum_fails(
         )
 
         # clean up
-        blobs_to_delete.append(storage_client.bucket(bucket_for_testing).blob(object_name))
+        blobs_to_delete.append(
+            storage_client.bucket(bucket_for_testing).blob(object_name)
+        )
         del writer
         gc.collect()
 
