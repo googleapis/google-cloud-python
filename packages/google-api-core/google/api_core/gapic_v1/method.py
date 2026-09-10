@@ -135,24 +135,29 @@ def _extract_status_code(exc: Exception) -> str:
     """
     target_exc = getattr(exc, "cause", None) or exc
     grpc_status = getattr(target_exc, "grpc_status_code", None)
-    if hasattr(grpc_status, "name"):
-        return str(grpc_status.name)
+    if grpc_status is not None:
+        name = getattr(grpc_status, "name", None)
+        if name is not None:
+            return str(name)
     code_fn = getattr(target_exc, "code", None)
     if callable(code_fn):
         try:
             code_val = code_fn()
-            if hasattr(code_val, "name"):
-                return str(code_val.name)
+            name = getattr(code_val, "name", None)
+            if name is not None:
+                return str(name)
         except Exception:
             pass
-    elif hasattr(code_fn, "name"):
-        return str(code_fn.name)
-    elif isinstance(code_fn, int):
-        from google.api_core import exceptions
+    elif code_fn is not None:
+        name = getattr(code_fn, "name", None)
+        if name is not None:
+            return str(name)
+        if isinstance(code_fn, int):
+            from google.api_core import exceptions
 
-        if code_fn in exceptions._INT_TO_GRPC_CODE:
-            return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
-        return str(code_fn)
+            if code_fn in exceptions._INT_TO_GRPC_CODE:
+                return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
+            return str(code_fn)
     return target_exc.__class__.__name__
 
 
@@ -198,12 +203,16 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
         if metadata and hasattr(metadata, "items"):
             for k, v in metadata.items():
                 attrs[f"gcp.errors.metadata.{k}"] = str(v)
-    elif hasattr(target_exc, "domain") and getattr(target_exc, "domain", None):
-        attrs["gcp.errors.domain"] = target_exc.domain
-        if getattr(target_exc, "reason", None):
-            attrs["error.type"] = target_exc.reason
-        if getattr(target_exc, "metadata", None):
-            for k, v in target_exc.metadata.items():
+    else:
+        domain = getattr(target_exc, "domain", None)
+        if domain and isinstance(domain, str):
+            attrs["gcp.errors.domain"] = domain
+        reason = getattr(target_exc, "reason", None)
+        if reason and isinstance(reason, str):
+            attrs["error.type"] = reason
+        metadata = getattr(target_exc, "metadata", None)
+        if metadata and hasattr(metadata, "items"):
+            for k, v in metadata.items():
                 attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
     return attrs
