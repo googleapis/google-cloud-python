@@ -127,43 +127,6 @@ def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
     return attrs
 
 
-def _extract_error_attributes(exc: Any) -> dict[str, Any]:
-    """Extracts gcp.errors.domain, gcp.errors.metadata.*, and error.type from an exception or ErrorInfo.
-
-    Args:
-        exc: An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
-
-    Returns:
-        dict[str, Any]: Extracted error attributes.
-    """
-    attrs: dict[str, Any] = {}
-    if exc is None:
-        return attrs
-
-    error_info = getattr(exc, "error_info", None)
-    if error_info is None and hasattr(exc, "trailing_metadata"):
-        try:
-            from google.api_core import exceptions
-
-            _, error_info = exceptions._parse_grpc_error_details(exc)
-        except Exception:
-            pass
-
-    if error_info is not None:
-        domain = getattr(error_info, "domain", None)
-        if domain and isinstance(domain, str):
-            attrs["gcp.errors.domain"] = domain
-        reason = getattr(error_info, "reason", None)
-        if reason and isinstance(reason, str):
-            attrs["error.type"] = reason
-        metadata = getattr(error_info, "metadata", None)
-        if metadata and hasattr(metadata, "items"):
-            for k, v in metadata.items():
-                attrs[f"gcp.errors.metadata.{k}"] = str(v)
-
-    return attrs
-
-
 def _make_grpc_client_request_hook(
     endpoint_attrs: dict[str, Any] | None = None,
 ) -> Callable[[Any, Any], None]:
