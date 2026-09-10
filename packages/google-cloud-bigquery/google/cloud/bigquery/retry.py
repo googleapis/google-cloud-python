@@ -43,7 +43,14 @@ _DEFAULT_RETRY_DEADLINE = 10.0 * 60.0  # 10 minutes
 # Exceptions that are subclasses of types in _UNSTRUCTURED_RETRYABLE_TYPES
 # but should not be retried because they typically indicate persistent
 # configuration or security issues.
-_UNSTRUCTURED_NON_RETRYABLE_TYPES = (requests.exceptions.SSLError,)
+#
+# NOTE: requests.exceptions.SSLError is deliberately NOT listed here. It is a
+# subclass of requests.exceptions.ConnectionError, and transient TLS resets
+# (e.g. SSLEOFError during a pooled-connection handshake) are transport errors
+# that the client retried before #17489. That PR's carve-out belongs to the
+# streaming-insert path only (see INSERT_ROWS_DEFAULT_RETRY); making it
+# global broke jobs.get / result() polling on transient resets.
+_UNSTRUCTURED_NON_RETRYABLE_TYPES = ()
 
 # Ambiguous errors (e.g. internalError, backendError, rateLimitExceeded) retry
 # until the full `_DEFAULT_RETRY_DEADLINE`. This is because the
@@ -88,6 +95,26 @@ def _should_retry(exc):
 
 
 DEFAULT_RETRY = retry.Retry(predicate=_should_retry, deadline=_DEFAULT_RETRY_DEADLINE)
+
+
+def _should_retry_insert_rows(exc):
+    """Predicate for the streaming-insert (insertAll) path.
+
+    A connection-level SSLError there is usually the transport rejecting a
+    malformed payload (e.g. an invalid table schema), which does not resolve
+    on retry. Scope that carve-out here rather than globally: jobs.get and
+    result() polling must keep retrying transient TLS resets.
+    """
+    if isinstance(exc, requests.exceptions.SSLError):
+        return False
+    return _should_retry(exc)
+
+
+# Streaming inserts keep the SSLError carve-out from #17489, scoped to the
+# insertAll path only.
+INSERT_ROWS_DEFAULT_RETRY = retry.Retry(
+    predicate=_should_retry_insert_rows, deadline=_DEFAULT_RETRY_DEADLINE
+)
 """The default retry object.
 
 Any method with a ``retry`` parameter will be retried automatically,
