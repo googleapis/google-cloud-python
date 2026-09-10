@@ -1245,7 +1245,10 @@ class TestSessionsMtls:
         in the background.
         """
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
-        session = sessions.AsyncAuthorizedSession(mock_creds)
+        mock_auth_request = mock.AsyncMock(spec=transport.Request)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_request
+        )
         init_started = asyncio.Event()
         init_can_finish = asyncio.Event()
 
