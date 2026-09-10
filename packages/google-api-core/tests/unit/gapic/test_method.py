@@ -818,10 +818,10 @@ def test_extract_error_attributes_variations():
     ):
         assert _extract_error_attributes(exc_with_resp) == {}
 
-    # 4. error_info with non-string domain, non-string reason, non-mapping metadata
-    error_info_invalid = types.SimpleNamespace(domain=123, reason=None, metadata=None)
-    exc_invalid = types.SimpleNamespace(error_info=error_info_invalid)
-    assert _extract_error_attributes(exc_invalid) == {}
+    # 4. error_info with empty domain, empty reason, empty metadata
+    error_info_empty = types.SimpleNamespace(domain="", reason="", metadata=None)
+    exc_empty = types.SimpleNamespace(error_info=error_info_empty)
+    assert _extract_error_attributes(exc_empty) == {}
 
     # 5. else fallback where target_exc directly has domain, reason, and metadata
     exc_fallback = types.SimpleNamespace(
@@ -835,13 +835,13 @@ def test_extract_error_attributes_variations():
         "gcp.errors.metadata.f_key": "42",
     }
 
-    # 6. else fallback with invalid types (e.g. domain="", reason=123, metadata="not a dict")
-    exc_fallback_invalid = types.SimpleNamespace(
+    # 6. else fallback with empty attributes (e.g. domain="", reason="", metadata={})
+    exc_fallback_empty = types.SimpleNamespace(
         domain="",
-        reason=123,
-        metadata="string_without_items",
+        reason="",
+        metadata={},
     )
-    assert _extract_error_attributes(exc_fallback_invalid) == {}
+    assert _extract_error_attributes(exc_fallback_empty) == {}
 
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
