@@ -18,29 +18,25 @@ import sys
 import types
 from unittest import mock
 
+import pytest
+
 
 def test_docs_conf_executes_successfully():
     docs_dir = pathlib.Path(__file__).parent.parent.parent / "docs"
     conf_path = docs_dir / "conf.py"
-
     if not conf_path.exists():
-        import pytest
-
         pytest.skip("docs/conf.py not found")
 
     res = runpy.run_path(str(conf_path))
 
-    assert "project" in res
-    assert res["project"] == "google-cloud-bigquery"
+    assert res.get("project") == "google-cloud-bigquery"
 
 
-def test_docs_conf_patches_markdown_translator():
+@pytest.fixture
+def fake_translator_and_mock():
     docs_dir = pathlib.Path(__file__).parent.parent.parent / "docs"
     conf_path = docs_dir / "conf.py"
-
     if not conf_path.exists():
-        import pytest
-
         pytest.skip("docs/conf.py not found")
 
     mock_orig_depart = mock.MagicMock(return_value="original_output")
@@ -61,31 +57,41 @@ def test_docs_conf_patches_markdown_translator():
     ):
         runpy.run_path(str(conf_path))
 
-    assert FakeTranslator.depart_paragraph is not mock_orig_depart
-    assert FakeTranslator.depart_compact_paragraph is not mock_orig_depart
+    return FakeTranslator, mock_orig_depart
 
-    translator_in_table = FakeTranslator()
-    translator_in_table.table_entries = ["entry"]
-    assert (
-        FakeTranslator.depart_paragraph(translator_in_table, mock.MagicMock()) is None
-    )
-    assert (
-        FakeTranslator.depart_compact_paragraph(translator_in_table, mock.MagicMock())
-        is None
-    )
+
+def test_depart_paragraph_suppresses_newlines_inside_table_cells(
+    fake_translator_and_mock,
+):
+    FakeTranslator, mock_orig_depart = fake_translator_and_mock
+    translator = FakeTranslator()
+    translator.table_entries = ["cell"]
+    node = mock.MagicMock()
+
+    res_paragraph = FakeTranslator.depart_paragraph(translator, node)
+    res_compact = FakeTranslator.depart_compact_paragraph(translator, node)
+
+    assert res_paragraph is None
+    assert res_compact is None
     mock_orig_depart.assert_not_called()
 
-    translator_outside_table = FakeTranslator()
-    mock_node = mock.MagicMock()
-    assert (
-        FakeTranslator.depart_paragraph(translator_outside_table, mock_node)
-        == "original_output"
-    )
-    mock_orig_depart.assert_called_once_with(translator_outside_table, mock_node)
 
-    mock_orig_depart.reset_mock()
-    assert (
-        FakeTranslator.depart_compact_paragraph(translator_outside_table, mock_node)
-        == "original_output"
+def test_depart_paragraph_delegates_outside_table_cells(
+    fake_translator_and_mock,
+):
+    FakeTranslator, mock_orig_depart = fake_translator_and_mock
+    translator = FakeTranslator()
+    node = mock.MagicMock()
+
+    res_paragraph = FakeTranslator.depart_paragraph(translator, node)
+    res_compact = FakeTranslator.depart_compact_paragraph(translator, node)
+
+    assert res_paragraph == "original_output"
+    assert res_compact == "original_output"
+    assert mock_orig_depart.call_count == 2
+    mock_orig_depart.assert_has_calls(
+        [
+            mock.call(translator, node),
+            mock.call(translator, node),
+        ]
     )
-    mock_orig_depart.assert_called_once_with(translator_outside_table, mock_node)

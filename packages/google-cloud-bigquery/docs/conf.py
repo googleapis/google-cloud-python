@@ -37,10 +37,7 @@ sys.path.insert(0, os.path.abspath(".."))
 # See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
 sys.path.insert(0, os.path.abspath("."))
 
-# TODO(b/559711363): Apply this table formatting fix across all google-cloud-* libraries.
-# sphinx-markdown-builder unconditionally inserts trailing newlines into
-# table cell paragraphs, breaking DevSite table formatting. Suppressing
-# newlines while inside table cells preserves valid GFM tables.
+# TODO(b/559711363): Propagate table formatting fix across all google-cloud-* libraries.
 try:
     import sphinx_markdown_builder.markdown_writer as _smb_writer
 
