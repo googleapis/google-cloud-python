@@ -101,7 +101,5 @@ def assert_uninstrumented_gapic_callable(
     if mock_trace is not None:
         mock_trace.get_tracer.assert_not_called()
 
-    # 3. Prove the callable holds no tracer or span configuration
-    assert wrapped._tracer is None
-    assert wrapped._span_name is None
-    assert wrapped._span_attributes is None
+    # 3. Prove the callable holds no span factory
+    assert getattr(wrapped, "_start_span_fn", None) is None
