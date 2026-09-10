@@ -165,6 +165,7 @@ def test_get_otel_interceptor_enabled(monkeypatch):
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
         request_hook=mock.ANY,
+        response_hook=_observability._grpc_client_response_hook,
     )
     req_hook = mock_otel_grpc.client_interceptor.call_args[1]["request_hook"]
     mock_span = mock.Mock()
@@ -260,7 +261,9 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
         request_hook=mock.ANY,
+        response_hook=_observability._grpc_client_response_hook,
     )
+
     req_hook = mock_otel_grpc.aio_client_interceptors.call_args[1]["request_hook"]
     mock_span = mock.Mock()
     mock_span.is_recording.return_value = True
@@ -515,6 +518,7 @@ def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
     args, kwargs = mock_otel_grpc.client_interceptor.call_args
     req_hook = kwargs["request_hook"]
     assert req_hook is not _observability._grpc_client_request_hook
+    assert kwargs["response_hook"] is _observability._grpc_client_response_hook
 
     # Test invoking the custom hook
     mock_span = mock.Mock()
@@ -551,6 +555,7 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
     args, kwargs = mock_otel_grpc.aio_client_interceptors.call_args
     req_hook = kwargs["request_hook"]
     assert req_hook is not _observability._grpc_client_request_hook
+    assert kwargs["response_hook"] is _observability._grpc_client_response_hook
 
     mock_span = mock.Mock()
     mock_span.is_recording.return_value = True
@@ -560,3 +565,30 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
     )
     mock_span.set_attribute.assert_any_call("server.port", 8443)
     mock_span.set_attribute.assert_any_call("url.domain", "custom-domain.com")
+
+
+def test_grpc_client_response_hook_success():
+    """Proves that _grpc_client_response_hook sets rpc.response.status_code to 'OK' on success."""
+    mock_span = mock.Mock()
+    _observability._grpc_client_response_hook(mock_span, mock.Mock())
+    mock_span.set_attribute.assert_called_once_with("rpc.response.status_code", "OK")
+
+
+def test_grpc_client_response_hook_error_mapped():
+    """Proves that _grpc_client_response_hook maps status code when span has error status."""
+    from opentelemetry.trace.status import StatusCode
+
+    mock_span = mock.Mock()
+    mock_span.status.status_code = StatusCode.ERROR
+    mock_span.attributes = {"rpc.grpc.status_code": 5}
+
+    _observability._grpc_client_response_hook(mock_span, None)
+    mock_span.set_attribute.assert_called_once_with(
+        "rpc.response.status_code", "NOT_FOUND"
+    )
+
+
+def test_grpc_client_response_hook_none_or_missing_set_attribute():
+    """Proves that _grpc_client_response_hook handles None or invalid span gracefully."""
+    _observability._grpc_client_response_hook(None, mock.Mock())
+    _observability._grpc_client_response_hook(object(), mock.Mock())

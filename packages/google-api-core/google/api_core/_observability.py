@@ -211,6 +211,43 @@ def _make_grpc_client_request_hook(
 _grpc_client_request_hook = _make_grpc_client_request_hook()
 
 
+def _grpc_client_response_hook(span: Any, response: Any) -> None:
+    """OpenTelemetry gRPC client response hook to record response status code.
+
+    Args:
+        span: The OpenTelemetry span.
+        response: The gRPC response object or details.
+    """
+    if span is None or not hasattr(span, "set_attribute"):
+        return
+
+    status = getattr(span, "status", None)
+    status_code = getattr(status, "status_code", None)
+    try:
+        from opentelemetry.trace.status import StatusCode
+
+        if status_code == StatusCode.ERROR:
+            span_attrs = (
+                getattr(span, "attributes", None)
+                or getattr(span, "_attributes", None)
+                or {}
+            )
+            grpc_code = span_attrs.get("rpc.grpc.status_code")
+            if grpc_code is not None:
+                from google.api_core import exceptions
+
+                if grpc_code in exceptions._INT_TO_GRPC_CODE:
+                    span.set_attribute(
+                        "rpc.response.status_code",
+                        exceptions._INT_TO_GRPC_CODE[grpc_code].name,
+                    )
+                    return
+    except Exception:
+        pass
+
+    span.set_attribute("rpc.response.status_code", "OK")
+
+
 def _get_tracer_provider(
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> opentelemetry.trace.TracerProvider | None:
@@ -254,6 +291,7 @@ def get_otel_interceptor(
     interceptor: ClientInterceptor = otel_grpc.client_interceptor(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
+        response_hook=_grpc_client_response_hook,
     )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
@@ -287,4 +325,5 @@ def get_otel_async_interceptor(
     return otel_grpc.aio_client_interceptors(
         tracer_provider=_get_tracer_provider(client_options),
         request_hook=request_hook,
+        response_hook=_grpc_client_response_hook,
     )
