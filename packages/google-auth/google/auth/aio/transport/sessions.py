@@ -478,7 +478,7 @@ class AsyncAuthorizedSession:
                             self._refresh_lock = asyncio.Lock()
 
                         async with self._refresh_lock:
-                            if not channel_reconfigured and self._refresh_counter > refresh_counter_at_error:
+                            if self._refresh_counter > refresh_counter_at_error:
                                 _LOGGER.debug(
                                     "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
                                 )
