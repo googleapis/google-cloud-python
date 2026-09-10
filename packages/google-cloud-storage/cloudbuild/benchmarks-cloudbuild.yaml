@@ -6,7 +6,7 @@ substitutions:
   _COROS: "1"
   _FILE_SIZE_MIB: "10240"
   _CHUNK_SIZE_KIB: "102400"
-  _ROUNDS: "2"
+  _ROUNDS: "3"
   _BUCKET_TYPE: "zonal"
   _ZONAL_BUCKET: "gcs-read-bench-zb-us-west4-a"
   _REGIONAL_BUCKET: "gcs-read-bench-rb-us-west4"

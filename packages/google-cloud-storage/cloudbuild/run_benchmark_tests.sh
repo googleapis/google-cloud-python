@@ -12,7 +12,7 @@ PROCESSES="${PROCESSES:-48}"
 COROS="${COROS:-1}"
 FILE_SIZE_MIB="${FILE_SIZE_MIB:-10240}"      # 10 GiB files by default
 CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB:-102400}"   # ~100 MiB read chunks by default
-ROUNDS="${ROUNDS:-2}"                        # Run benchmark 2 rounds by default
+ROUNDS="${ROUNDS:-3}"                        # Run benchmark 3 rounds by default
 BUCKET_TYPE="${BUCKET_TYPE:-zonal}"          # "zonal" uses BidiReadObject gRPC DirectPath, "regional" uses REST/gRPC standard
 ZONAL_BUCKET="${ZONAL_BUCKET:-${DEFAULT_RAPID_ZONAL_BUCKET:-gcs-read-bench-zb-us-west4-a}}"
 REGIONAL_BUCKET="${REGIONAL_BUCKET:-${DEFAULT_STANDARD_BUCKET:-gcs-read-bench-rb-us-west4}}"
@@ -23,19 +23,21 @@ if [ -n "${TARGET_BUCKET:-}" ]; then
     ZONAL_BUCKET="${TARGET_BUCKET}"
   fi
 fi
-OUT_JSON="${OUT_JSON:-${HOME:-/tmp}/bench_result.json}"
+OUTPUT_JSON_PATH="${OUTPUT_JSON_PATH:-${OUT_JSON:-${HOME:-/tmp}/bench_result.json}}"
 UPLOAD_GCS_PREFIX="${UPLOAD_GCS_PREFIX:-}"
 
 echo "========================================================================"
 echo " GCS Read Microbenchmark Runner (gRPC BidiReadObject / REST)"
-echo " Processes:       ${PROCESSES}"
-echo " Coroutines/proc: ${COROS}"
-echo " File Size:       ${FILE_SIZE_MIB} MiB"
-echo " Chunk Size:      ${CHUNK_SIZE_KIB} KiB"
-echo " Rounds:          ${ROUNDS}"
-echo " Bucket Type:     ${BUCKET_TYPE}"
-echo " Zonal Bucket:    gs://${ZONAL_BUCKET}"
-echo " Regional Bucket: gs://${REGIONAL_BUCKET}"
+echo " Processes:        ${PROCESSES}"
+echo " Coroutines/proc:  ${COROS}"
+echo " File Size:        ${FILE_SIZE_MIB} MiB"
+echo " Chunk Size:       ${CHUNK_SIZE_KIB} KiB"
+echo " Rounds:           ${ROUNDS}"
+echo " Bucket Type:      ${BUCKET_TYPE}"
+echo " Zonal Bucket:     gs://${ZONAL_BUCKET}"
+echo " Regional Bucket:  gs://${REGIONAL_BUCKET}"
+echo " Output JSON Path: ${OUTPUT_JSON_PATH}"
+echo " Upload GCS Path:  ${UPLOAD_GCS_PREFIX:-None}"
 echo "========================================================================"
 
 # Ensure HOME is exported for gRPC / ALTS Application Default Credentials
@@ -68,11 +70,7 @@ if ! python3 -c "import pytest, psutil, yaml, google.cloud.storage" 2>/dev/null;
   echo "Installing dependencies into virtual environment..."
   pip install --upgrade pip
   pip install -e ".[grpc,testing]"
-  pip install google-cloud-kms
 fi
-
-# Ensure latest source code is linked
-pip install --no-deps -e .
 
 CONFIG_PATH="tests/perf/microbenchmarks/time_based/reads/config.yaml"
 if [ ! -f "${CONFIG_PATH}" ]; then
@@ -131,15 +129,15 @@ except Exception as e:
 "
 
 echo "--- 3. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
-rm -f "${OUT_JSON}" 2>/dev/null || true
-python3 -m pytest --benchmark-json="${OUT_JSON}" \
+rm -f "${OUTPUT_JSON_PATH}" 2>/dev/null || true
+python3 -m pytest --benchmark-json="${OUTPUT_JSON_PATH}" \
   -rA \
   tests/perf/microbenchmarks/time_based/reads/test_reads.py
 
-if [ -s "${OUT_JSON}" ]; then
+if [ -s "${OUTPUT_JSON_PATH}" ]; then
   python3 -c "
 import json, sys
-with open('${OUT_JSON}') as f:
+with open('${OUTPUT_JSON_PATH}') as f:
     d = json.load(f)
 if not isinstance(d, dict):
     print('ERROR: Invalid JSON structure in benchmark result file.', file=sys.stderr)
@@ -179,7 +177,7 @@ print('='*85 + '\n')
   if [ -n "${UPLOAD_GCS_PREFIX}" ]; then
     GCS_DEST="${UPLOAD_GCS_PREFIX}/test_result_$(hostname)_$(date +%s).json"
     echo "Uploading JSON report to ${GCS_DEST}..."
-    gcloud storage cp "${OUT_JSON}" "${GCS_DEST}"
+    gcloud storage cp "${OUTPUT_JSON_PATH}" "${GCS_DEST}"
   fi
 fi
 
