@@ -7,7 +7,9 @@ substitutions:
   _FILE_SIZE_MIB: "10240"
   _CHUNK_SIZE_KIB: "102400"
   _ROUNDS: "2"
+  _BUCKET_TYPE: "zonal"
   _ZONAL_BUCKET: "gcs-read-bench-zb-us-west4-a"
+  _REGIONAL_BUCKET: "gcs-read-bench-rb-us-west4"
   _PR_NUMBER: ""
   _REPO: "googleapis/google-cloud-python"
 
@@ -89,7 +91,7 @@ steps:
         echo "Executing benchmark test suite directly on VM via SSH..."
         set +e
         gcloud compute ssh "${_VM_NAME}" --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine \
-          --command="tar -xzf google-cloud-storage.tar.gz && cd google-cloud-storage && ulimit -n ${_ULIMIT}; PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} ROUNDS=${_ROUNDS} TARGET_BUCKET=${_ZONAL_BUCKET} bash cloudbuild/run_benchmark_tests.sh"
+          --command="tar -xzf google-cloud-storage.tar.gz && cd google-cloud-storage && ulimit -n ${_ULIMIT}; PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} ROUNDS=${_ROUNDS} BUCKET_TYPE=${_BUCKET_TYPE} ZONAL_BUCKET=${_ZONAL_BUCKET} REGIONAL_BUCKET=${_REGIONAL_BUCKET} bash cloudbuild/run_benchmark_tests.sh"
         TEST_EXIT_CODE=$?
         set -e
 
