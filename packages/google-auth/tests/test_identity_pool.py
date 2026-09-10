@@ -1123,9 +1123,7 @@ class TestCredentials(object):
         "_get_cert_bytes",
         side_effect=Exception("Read error"),
     )
-    def test_retrieve_subject_token_leaf_cert_callback_error(
-        self, mock_get_cert_bytes
-    ):
+    def test_retrieve_subject_token_leaf_cert_callback_error(self, mock_get_cert_bytes):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE
         )
@@ -1139,9 +1137,7 @@ class TestCredentials(object):
         "_get_cert_bytes",
         return_value=b"invalid-pem-data",
     )
-    def test_retrieve_subject_token_leaf_cert_parse_error(
-        self, mock_get_cert_bytes
-    ):
+    def test_retrieve_subject_token_leaf_cert_parse_error(self, mock_get_cert_bytes):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE
         )
