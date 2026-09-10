@@ -305,6 +305,7 @@ async def test_wrap_method_async_with_otel_tracing(mock_otel):
         kind="CLIENT",
         attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
     )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
 
 @pytest.mark.asyncio
@@ -353,6 +354,7 @@ async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
         kind="CLIENT",
         attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
     )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
 
 @pytest.mark.asyncio
@@ -376,3 +378,4 @@ async def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
         kind="CLIENT",
         attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
     )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")

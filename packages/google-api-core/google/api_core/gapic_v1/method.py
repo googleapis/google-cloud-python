@@ -124,6 +124,38 @@ def _extract_rpc_identity(
     return method_str, service, method
 
 
+def _extract_status_code(exc: Exception) -> str:
+    """Extract canonical status code name string from an exception.
+
+    Args:
+        exc (Exception): The exception to extract the status code name from.
+
+    Returns:
+        str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE").
+    """
+    target_exc = getattr(exc, "cause", None) or exc
+    grpc_status = getattr(target_exc, "grpc_status_code", None)
+    if hasattr(grpc_status, "name"):
+        return str(grpc_status.name)
+    code_fn = getattr(target_exc, "code", None)
+    if callable(code_fn):
+        try:
+            code_val = code_fn()
+            if hasattr(code_val, "name"):
+                return str(code_val.name)
+        except Exception:
+            pass
+    elif hasattr(code_fn, "name"):
+        return str(code_fn.name)
+    elif isinstance(code_fn, int):
+        from google.api_core import exceptions
+
+        if code_fn in exceptions._INT_TO_GRPC_CODE:
+            return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
+        return str(code_fn)
+    return target_exc.__class__.__name__
+
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -274,13 +306,21 @@ class _GapicCallable(object):
 
         with span_context_manager as span:
             try:
-                return wrapped_func(*args, **kwargs)
+                result = wrapped_func(*args, **kwargs)
+                if span is not None and hasattr(span, "set_attribute"):
+                    span.set_attribute("rpc.response.status_code", "OK")
+                return result
             except Exception as exc:
-                if span is not None and hasattr(span, "record_exception"):
-                    from opentelemetry import trace
+                if span is not None:
+                    if hasattr(span, "record_exception"):
+                        from opentelemetry import trace
 
-                    span.record_exception(exc)
-                    span.set_status(trace.StatusCode.ERROR, str(exc))
+                        span.record_exception(exc)
+                        span.set_status(trace.StatusCode.ERROR, str(exc))
+                    if hasattr(span, "set_attribute"):
+                        span.set_attribute(
+                            "rpc.response.status_code", _extract_status_code(exc)
+                        )
                 raise
 
 

@@ -429,6 +429,7 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name):
         kind="CLIENT",
         attributes=_DEFAULT_SPAN_ATTRIBUTES,
     )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
 
 def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
@@ -457,6 +458,7 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
             "rpc.method": "google.test.Service/TestMethod",
         },
     )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
 
 def test_wrap_method_otel_tracing_enabled_error(mock_otel):
@@ -474,6 +476,41 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
     mock_target.assert_called_once()
     mock_otel.span.record_exception.assert_called_once_with(err)
     mock_otel.span.set_status.assert_called_once_with("ERROR", str(err))
+    mock_otel.span.set_attribute.assert_called_with(
+        "rpc.response.status_code", "RuntimeError"
+    )
+
+
+@pytest.mark.parametrize(
+    "exc,expected_status",
+    [
+        (exceptions.NotFound("not found"), "NOT_FOUND"),
+        (exceptions.ServiceUnavailable("unavail"), "UNAVAILABLE"),
+        (
+            exceptions.RetryError(
+                "timeout", cause=exceptions.ServiceUnavailable("err")
+            ),
+            "UNAVAILABLE",
+        ),
+    ],
+    ids=["not_found", "unavailable", "retry_error_with_cause"],
+)
+def test_wrap_method_otel_tracing_error_status_code_mapping(
+    mock_otel, exc, expected_status
+):
+    """Proves that exceptions are cleanly mapped to canonical rpc.response.status_code names."""
+    mock_target = mock.Mock(side_effect=exc)
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    with pytest.raises(type(exc)):
+        wrapped()
+
+    mock_otel.span.set_attribute.assert_called_with(
+        "rpc.response.status_code", expected_status
+    )
 
 
 def test_wrap_method_otel_tracing_import_error(monkeypatch):
