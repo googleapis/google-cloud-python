@@ -416,6 +416,40 @@ def test_grpc_client_request_hook():
     mock_span_custom.update_name.assert_not_called()
 
 
+def test_grpc_client_request_hook_span_edge_cases():
+    """Proves that _grpc_client_request_hook handles spans lacking update_name,
+    spans with None _attributes, and spans with un-poppable _attributes gracefully.
+    """
+    # 1. Leading slash in span.name but span lacks update_name (exercises 154->159)
+    mock_span_no_update = mock.Mock(
+        spec=["is_recording", "name", "_attributes", "set_attribute"]
+    )
+    mock_span_no_update.is_recording.return_value = True
+    mock_span_no_update.name = "/package.Service/Method"
+    mock_span_no_update._attributes = {"rpc.system": "grpc"}
+    _observability._grpc_client_request_hook(mock_span_no_update, None)
+    mock_span_no_update.set_attribute.assert_any_call(
+        "rpc.method", "package.Service/Method"
+    )
+
+    # 2. Span with None _attributes (exercises 160->165)
+    mock_span_no_attrs = mock.Mock(spec=["is_recording", "name", "set_attribute"])
+    mock_span_no_attrs.is_recording.return_value = True
+    mock_span_no_attrs.name = "clean_name"
+    _observability._grpc_client_request_hook(mock_span_no_attrs, None)
+    mock_span_no_attrs.set_attribute.assert_any_call("rpc.system.name", "grpc")
+
+    # 3. Span with non-dict / un-poppable _attributes (exercises 162->165)
+    mock_span_unpoppable = mock.Mock(
+        spec=["is_recording", "name", "_attributes", "set_attribute"]
+    )
+    mock_span_unpoppable.is_recording.return_value = True
+    mock_span_unpoppable.name = "clean_name"
+    mock_span_unpoppable._attributes = object()
+    _observability._grpc_client_request_hook(mock_span_unpoppable, None)
+    mock_span_unpoppable.set_attribute.assert_any_call("rpc.system.name", "grpc")
+
+
 def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
     """Proves that get_otel_interceptor injects server.address, server.port, and url.domain when api_endpoint is set."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
