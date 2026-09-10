@@ -164,9 +164,13 @@ def test_get_otel_interceptor_enabled(monkeypatch):
 
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
-        request_hook=_observability._grpc_client_request_hook,
-        response_hook=_observability._grpc_client_response_hook,
+        request_hook=mock.ANY,
     )
+    req_hook = mock_otel_grpc.client_interceptor.call_args[1]["request_hook"]
+    mock_span = mock.Mock()
+    mock_span.is_recording.return_value = True
+    req_hook(mock_span, None)
+    mock_span.set_attribute.assert_any_call("url.domain", "googleapis.com")
 
     result = interceptor(mock_raw_channel)
     assert result is mock_wrapped_channel
@@ -255,38 +259,76 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     assert result is mock_async_interceptors
     mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider,
-        request_hook=_observability._grpc_client_request_hook,
-        response_hook=_observability._grpc_client_response_hook,
+        request_hook=mock.ANY,
     )
+    req_hook = mock_otel_grpc.aio_client_interceptors.call_args[1]["request_hook"]
+    mock_span = mock.Mock()
+    mock_span.is_recording.return_value = True
+    req_hook(mock_span, None)
+    mock_span.set_attribute.assert_any_call("url.domain", "googleapis.com")
 
 
-def test_extract_endpoint_attributes():
-    """Proves that _extract_endpoint_attributes correctly parses server.address and server.port."""
-    # None or empty options
-    assert _observability._extract_endpoint_attributes(None) == {}
-    assert _observability._extract_endpoint_attributes({}) == {}
-    assert (
-        _observability._extract_endpoint_attributes(ClientOptions(api_endpoint=None))
-        == {}
-    )
-
-    # Dict options with standard endpoint
-    dict_opts = {"api_endpoint": "secretmanager.googleapis.com"}
-    attrs = _observability._extract_endpoint_attributes(dict_opts)
-    assert attrs["server.address"] == "secretmanager.googleapis.com"
-    assert attrs["server.port"] == 443
-
-    # ClientOptions with custom port
-    custom_opts = ClientOptions(api_endpoint="https://my-custom-host.com:8443/")
-    attrs = _observability._extract_endpoint_attributes(custom_opts)
-    assert attrs["server.address"] == "my-custom-host.com"
-    assert attrs["server.port"] == 8443
-
-    # Invalid port string falls back to 443
-    invalid_port_opts = ClientOptions(api_endpoint="my-custom-host.com:invalid_port")
-    attrs = _observability._extract_endpoint_attributes(invalid_port_opts)
-    assert attrs["server.address"] == "my-custom-host.com"
-    assert attrs["server.port"] == 443
+@pytest.mark.parametrize(
+    "client_options,expected_attrs",
+    [
+        (None, {"url.domain": "googleapis.com"}),
+        ({}, {"url.domain": "googleapis.com"}),
+        (ClientOptions(api_endpoint=None), {"url.domain": "googleapis.com"}),
+        ({"universe_domain": "myuniverse.com"}, {"url.domain": "myuniverse.com"}),
+        (
+            ClientOptions(universe_domain="custom.domain"),
+            {"url.domain": "custom.domain"},
+        ),
+        (
+            {"api_endpoint": "secretmanager.googleapis.com"},
+            {
+                "server.address": "secretmanager.googleapis.com",
+                "url.domain": "googleapis.com",
+            },
+        ),
+        (
+            {"api_endpoint": "secretmanager.googleapis.com:443"},
+            {
+                "server.address": "secretmanager.googleapis.com",
+                "url.domain": "googleapis.com",
+            },
+        ),
+        (
+            {"api_endpoint": "https://secretmanager.googleapis.com:443"},
+            {
+                "server.address": "secretmanager.googleapis.com",
+                "url.domain": "googleapis.com",
+            },
+        ),
+        (
+            {"api_endpoint": "http://localhost:80"},
+            {"server.address": "localhost", "url.domain": "googleapis.com"},
+        ),
+        (
+            ClientOptions(api_endpoint="https://my-custom-host.com:8443/"),
+            {
+                "server.address": "my-custom-host.com",
+                "server.port": 8443,
+                "url.domain": "googleapis.com",
+            },
+        ),
+        (
+            ClientOptions(api_endpoint="http://[::1]:8080"),
+            {
+                "server.address": "::1",
+                "server.port": 8080,
+                "url.domain": "googleapis.com",
+            },
+        ),
+        (
+            ClientOptions(api_endpoint="http:///"),
+            {"url.domain": "googleapis.com"},
+        ),
+    ],
+)
+def test_extract_endpoint_attributes(client_options, expected_attrs):
+    """Proves that _extract_endpoint_attributes correctly parses server.address, non-default server.port, and url.domain."""
+    assert _observability._extract_endpoint_attributes(client_options) == expected_attrs
 
 
 @pytest.mark.parametrize(
@@ -369,108 +411,90 @@ def test_grpc_client_request_hook():
     mock_span_custom.set_attribute.assert_any_call("server.port", 443)
 
 
-def test_grpc_client_response_hook():
-    """Proves that _grpc_client_response_hook sets rpc.response.status_code, error.type, and status.message."""
-    # Non-recording span should not set attributes
-    mock_span_non_rec = mock.Mock()
-    mock_span_non_rec.is_recording.return_value = False
-    _observability._grpc_client_response_hook(mock_span_non_rec, mock.Mock())
-    mock_span_non_rec.set_attribute.assert_not_called()
-
-    # None span should safely return
-    _observability._grpc_client_response_hook(None, mock.Mock())
-
-    # Response with no code method defaults to OK
-    mock_span_ok = mock.Mock()
-    mock_span_ok.is_recording.return_value = True
-    _observability._grpc_client_response_hook(mock_span_ok, mock.Mock(spec=[]))
-    mock_span_ok.set_attribute.assert_called_once_with("rpc.response.status_code", "OK")
-
-    # Response with StatusCode object having name (e.g. OK)
-    mock_span_code_obj = mock.Mock()
-    mock_span_code_obj.is_recording.return_value = True
-    mock_resp_ok = mock.Mock()
-    mock_code_ok = mock.Mock()
-    mock_code_ok.name = "OK"
-    mock_resp_ok.code.return_value = mock_code_ok
-    _observability._grpc_client_response_hook(mock_span_code_obj, mock_resp_ok)
-    mock_span_code_obj.set_attribute.assert_called_once_with(
-        "rpc.response.status_code", "OK"
-    )
-
-    # Response with error status (e.g. integer 14 -> UNAVAILABLE) and details
-    mock_span_err = mock.Mock()
-    mock_span_err.is_recording.return_value = True
-    mock_resp_err = mock.Mock()
-    mock_resp_err.code.return_value = 14
-    mock_resp_err.details.return_value = "Service temporarily unavailable"
-    _observability._grpc_client_response_hook(mock_span_err, mock_resp_err)
-    mock_span_err.set_attribute.assert_any_call(
-        "rpc.response.status_code", "UNAVAILABLE"
-    )
-    mock_span_err.set_attribute.assert_any_call("error.type", "UNAVAILABLE")
-    mock_span_err.set_attribute.assert_any_call(
-        "status.message", "Service temporarily unavailable"
-    )
-
-    # Response where code() raises an exception is handled gracefully
-    mock_span_exc = mock.Mock()
-    mock_span_exc.is_recording.return_value = True
-    mock_resp_exc = mock.Mock()
-    mock_resp_exc.code.side_effect = RuntimeError("Broken call")
-    _observability._grpc_client_response_hook(mock_span_exc, mock_resp_exc)
-    mock_span_exc.set_attribute.assert_called_once_with(
-        "rpc.response.status_code", "OK"
-    )
-
-    # Response with error status but no details method
-    mock_span_no_det = mock.Mock()
-    mock_span_no_det.is_recording.return_value = True
-    mock_resp_no_det = mock.Mock(spec=["code"])
-    mock_resp_no_det.code.return_value = 14
-    _observability._grpc_client_response_hook(mock_span_no_det, mock_resp_no_det)
-    mock_span_no_det.set_attribute.assert_any_call(
-        "rpc.response.status_code", "UNAVAILABLE"
-    )
-    mock_span_no_det.set_attribute.assert_any_call("error.type", "UNAVAILABLE")
-
-    # Response with error status where details() returns empty/None
-    mock_span_empty_det = mock.Mock()
-    mock_span_empty_det.is_recording.return_value = True
-    mock_resp_empty_det = mock.Mock()
-    mock_resp_empty_det.code.return_value = 14
-    mock_resp_empty_det.details.return_value = ""
-    _observability._grpc_client_response_hook(mock_span_empty_det, mock_resp_empty_det)
-    mock_span_empty_det.set_attribute.assert_any_call(
-        "rpc.response.status_code", "UNAVAILABLE"
-    )
-
-    # Response with error status where details() raises an exception
-    mock_span_exc_det = mock.Mock()
-    mock_span_exc_det.is_recording.return_value = True
-    mock_resp_exc_det = mock.Mock()
-    mock_resp_exc_det.code.return_value = 14
-    mock_resp_exc_det.details.side_effect = RuntimeError("Details broken")
-    _observability._grpc_client_response_hook(mock_span_exc_det, mock_resp_exc_det)
-    mock_span_exc_det.set_attribute.assert_any_call(
-        "rpc.response.status_code", "UNAVAILABLE"
-    )
+def test_extract_error_attributes_none():
+    """Proves that _extract_error_attributes returns an empty dict when exception is None."""
+    assert _observability._extract_error_attributes(None) == {}
 
 
-def test_extract_endpoint_attributes_empty_clean():
-    """Proves that endpoint consisting only of slashes/protocol results in empty attrs."""
+def test_extract_error_attributes_standard_exception():
+    """Proves that _extract_error_attributes returns an empty dict for standard exceptions without ErrorInfo."""
     assert (
-        _observability._extract_endpoint_attributes(
-            ClientOptions(api_endpoint="http:///")
-        )
-        == {}
+        _observability._extract_error_attributes(ValueError("unexpected error")) == {}
     )
+
+
+def test_extract_error_attributes_with_error_info():
+    """Proves that _extract_error_attributes extracts domain, error.type, and metadata from ErrorInfo."""
+    error_info = types.SimpleNamespace(
+        domain="googleapis.com",
+        reason="SERVICE_DISABLED",
+        metadata={
+            "service": "secretmanager.googleapis.com",
+            "consumer": "projects/123",
+        },
+    )
+    exc = types.SimpleNamespace(error_info=error_info)
+    attrs = _observability._extract_error_attributes(exc)
+    assert attrs == {
+        "gcp.errors.domain": "googleapis.com",
+        "error.type": "SERVICE_DISABLED",
+        "gcp.errors.metadata.service": "secretmanager.googleapis.com",
+        "gcp.errors.metadata.consumer": "projects/123",
+    }
+
+
+def test_extract_error_attributes_from_grpc_trailing_metadata(monkeypatch):
+    """Proves that _extract_error_attributes parses error_info from gRPC trailing metadata."""
+    from google.api_core import exceptions
+
+    mock_exc = mock.Mock()
+    mock_exc.error_info = None
+    mock_exc.trailing_metadata = mock.Mock()
+
+    parsed_error_info = types.SimpleNamespace(
+        domain="googleapis.com",
+        reason="RESOURCE_EXHAUSTED",
+        metadata={"quota_limit": "100"},
+    )
+
+    monkeypatch.setattr(
+        exceptions,
+        "_parse_grpc_error_details",
+        mock.Mock(return_value=(None, parsed_error_info)),
+    )
+
+    attrs = _observability._extract_error_attributes(mock_exc)
+    assert attrs == {
+        "gcp.errors.domain": "googleapis.com",
+        "error.type": "RESOURCE_EXHAUSTED",
+        "gcp.errors.metadata.quota_limit": "100",
+    }
+
+
+def test_extract_error_attributes_trailing_metadata_failure(monkeypatch):
+    """Proves that _extract_error_attributes safely handles exceptions during trailing metadata parsing."""
+    from google.api_core import exceptions
+
+    mock_exc = mock.Mock()
+    mock_exc.error_info = None
+    mock_exc.trailing_metadata = mock.Mock()
+
+    monkeypatch.setattr(
+        exceptions,
+        "_parse_grpc_error_details",
+        mock.Mock(side_effect=RuntimeError("Parse failed")),
+    )
+
+    assert _observability._extract_error_attributes(mock_exc) == {}
 
 
 def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
-    """Proves that get_otel_interceptor injects server.address and server.port when api_endpoint is set."""
+    """Proves that get_otel_interceptor injects server.address, server.port, and url.domain when api_endpoint is set."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    options = ClientOptions(api_endpoint="secretmanager.googleapis.com:443")
+    options = ClientOptions(
+        api_endpoint="secretmanager.googleapis.com:8443",
+        universe_domain="custom-domain.com",
+    )
 
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
@@ -497,13 +521,17 @@ def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
     mock_span.set_attribute.assert_any_call(
         "server.address", "secretmanager.googleapis.com"
     )
-    mock_span.set_attribute.assert_any_call("server.port", 443)
+    mock_span.set_attribute.assert_any_call("server.port", 8443)
+    mock_span.set_attribute.assert_any_call("url.domain", "custom-domain.com")
 
 
 def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
-    """Proves that get_otel_async_interceptor injects server.address and server.port when api_endpoint is set."""
+    """Proves that get_otel_async_interceptor injects server.address, server.port, and url.domain when api_endpoint is set."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
-    options = ClientOptions(api_endpoint="secretmanager.googleapis.com:8443")
+    options = ClientOptions(
+        api_endpoint="secretmanager.googleapis.com:8443",
+        universe_domain="custom-domain.com",
+    )
 
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
@@ -529,3 +557,4 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
         "server.address", "secretmanager.googleapis.com"
     )
     mock_span.set_attribute.assert_any_call("server.port", 8443)
+    mock_span.set_attribute.assert_any_call("url.domain", "custom-domain.com")
