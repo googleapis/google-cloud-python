@@ -152,8 +152,7 @@ class _GapicCallable(object):
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Note: Streaming methods do not currently generate Tier 3 observability spans.
         client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
-            Client information used to extract client library metadata (e.g. version, repo)
-            for observability attributes. Defaults to None.
+            Client information used for metadata headers. Defaults to None.
     """
 
     def __init__(
@@ -218,23 +217,6 @@ class _GapicCallable(object):
                     "rpc.service": self._rpc_service,
                     "rpc.method": self._rpc_method,
                 }
-                if self._rpc_service:
-                    self._span_attributes["gcp.client.service"] = (
-                        self._rpc_service.rpartition(".")[-1]
-                    )
-                if client_info is not None:
-                    client_version = getattr(
-                        client_info, "client_library_version", None
-                    ) or getattr(client_info, "gapic_version", None)
-                    if client_version:
-                        self._span_attributes["gcp.client.version"] = client_version
-                    self._span_attributes["gcp.client.repo"] = (
-                        getattr(client_info, "client_repo", None)
-                        or "googleapis/google-cloud-python"
-                    )
-                    client_artifact = getattr(client_info, "client_artifact", None)
-                    if client_artifact:
-                        self._span_attributes["gcp.client.artifact"] = client_artifact
             except (ImportError, AttributeError, TypeError):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._tracer = None

@@ -285,8 +285,6 @@ _ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES = {
     "rpc.system": "grpc",
     "rpc.service": "google.test.AsyncService",
     "rpc.method": "AsyncMethod",
-    "gcp.client.service": "AsyncService",
-    "gcp.client.repo": "googleapis/google-cloud-python",
 }
 
 
@@ -360,7 +358,7 @@ async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
 
 @pytest.mark.asyncio
 async def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
-    """Proves that method_async.wrap_method passes client_info to _GapicCallable."""
+    """Proves that method_async.wrap_method omits deferred gcp.client.* attributes even with client_info."""
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
     method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
 
@@ -377,8 +375,5 @@ async def test_wrap_method_async_otel_tracing_with_client_info(mock_otel):
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.test.AsyncService/AsyncMethod",
         kind="CLIENT",
-        attributes={
-            **_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
-            "gcp.client.version": "3.0.0",
-        },
+        attributes=_ASYNC_SERVICE_DEFAULT_SPAN_ATTRIBUTES,
     )
