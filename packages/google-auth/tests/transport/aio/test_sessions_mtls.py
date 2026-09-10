@@ -179,7 +179,7 @@ class TestSessionsMtls:
         ):
             await session.configure_mtls_channel()
             assert session.is_mtls is False
-            assert session._cached_cert == None
+            assert session._cached_cert is None
             await session.close()
 
     @pytest.mark.asyncio
@@ -226,7 +226,7 @@ class TestSessionsMtls:
         ):
             await session.configure_mtls_channel()
         assert session.is_mtls is False
-        assert session._cached_cert == None
+        assert session._cached_cert is None
         await session.close()
 
     @pytest.mark.asyncio
@@ -1425,9 +1425,7 @@ class TestSessionsMtls:
                 new_callable=mock.AsyncMock,
                 return_value=(True, b"cert_bytes", b"key_bytes"),
             ),
-            mock.patch(
-                "google.auth._agent_identity_utils.parse_certificate"
-            ),
+            mock.patch("google.auth._agent_identity_utils.parse_certificate"),
             mock.patch(
                 "google.auth._agent_identity_utils.calculate_certificate_fingerprint",
                 return_value="FINGERPRINT_1",
@@ -1468,9 +1466,7 @@ class TestSessionsMtls:
             mock_creds, auth_request=mock_auth_req
         )
 
-        resp = await session.request(
-            "GET", "https://example.com"
-        )
+        resp = await session.request("GET", "https://example.com")
         assert resp == mock_resp_401
         mock_creds.refresh.assert_called_once()
         await session.close()
@@ -1507,7 +1503,9 @@ class TestSessionsMtls:
             assert session._mtls_init_task is first_task
 
             # Call configure_mtls_channel with a new callback - should reconfigure
-            new_callback = lambda: (b"new_cert", b"new_key")
+            def new_callback():
+                return b"new_cert", b"new_key"
+
             await session.configure_mtls_channel(new_callback)
             assert session._auth_request is not first_auth_req
             await session.close()

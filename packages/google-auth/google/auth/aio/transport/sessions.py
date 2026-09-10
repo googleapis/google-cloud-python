@@ -450,10 +450,10 @@ class AsyncAuthorizedSession:
                                                     )
                                                     await self.configure_mtls_channel(
                                                         lambda: (
-                                                             call_cert_bytes,
-                                                             call_key_bytes,
-                                                         )
-                                                     )
+                                                            call_cert_bytes,
+                                                            call_key_bytes,
+                                                        )
+                                                    )
                                                     channel_reconfigured = True
                                                 except Exception as e:
                                                     _LOGGER.error(
@@ -485,7 +485,10 @@ class AsyncAuthorizedSession:
 
                         async with self._refresh_lock:
                             # Check if another task already refreshed credentials while we were waiting
-                            if not channel_reconfigured and self._refresh_counter > refresh_counter_at_error:
+                            if (
+                                not channel_reconfigured
+                                and self._refresh_counter > refresh_counter_at_error
+                            ):
                                 _LOGGER.debug(
                                     "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
                                 )
