@@ -392,6 +392,13 @@ _BASE_SPAN_ATTRIBUTES = _DEFAULT_SPAN_ATTRIBUTES
         (
             {
                 "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "grpc_asyncio",
+            },
+            True,
+        ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
                 "kind": "http",
             },
             True,
@@ -403,6 +410,7 @@ _BASE_SPAN_ATTRIBUTES = _DEFAULT_SPAN_ATTRIBUTES
         "streaming_skipped",
         "rest_kind_skipped",
         "rest_asyncio_kind_skipped",
+        "grpc_asyncio_kind_skipped",
         "http_kind_skipped",
     ],
 )
@@ -432,28 +440,15 @@ def test_wrap_method_otel_tracing_skips_span(monkeypatch, kwargs, capabilities_e
     )
 
 
-@pytest.mark.parametrize(
-    "method_name",
-    [
-        "/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        b"/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-    ],
-    ids=["str_method", "bytes_method"],
-)
-@pytest.mark.parametrize(
-    "kind",
-    ["grpc", "grpc_asyncio"],
-    ids=["kind_grpc", "kind_grpc_asyncio"],
-)
-def test_wrap_method_otel_tracing_enabled_success(mock_otel, method_name, kind):
-    """Proves that when OpenTelemetry tracing is enabled and method_name is passed (str or bytes), a T3 client span is started."""
+def test_wrap_method_otel_tracing_enabled_success(mock_otel):
+    """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started."""
     mock_target = mock.Mock(return_value="success")
 
     wrapped = google.api_core.gapic_v1.method.wrap_method(
         mock_target,
         default_timeout=60,
-        method_name=method_name,
-        kind=kind,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="grpc",
     )
     result = wrapped()
 
@@ -496,7 +491,7 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
 
 
 def test_wrap_method_otel_tracing_enabled_error(mock_otel):
-    """Proves that when an RPC fails, the T3 client span records the exception and error status."""
+    """Proves that when an RPC fails, the T3 client span enriches the status code attribute."""
     err = RuntimeError("gRPC connection reset")
     mock_target = mock.Mock(side_effect=err)
 
@@ -508,8 +503,6 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
         wrapped()
 
     mock_target.assert_called_once()
-    mock_otel.span.record_exception.assert_called_once_with(err)
-    mock_otel.span.set_status.assert_called_once_with("ERROR", str(err))
     mock_otel.span.set_attribute.assert_called_with(
         "rpc.response.status_code", "RuntimeError"
     )
@@ -852,8 +845,8 @@ def test_extract_error_attributes_variations():
 
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
-    """Proves handling when span lacks record_exception or set_attribute."""
-    # Test span without record_exception (has set_attribute)
+    """Proves handling when span has or lacks set_attribute."""
+    # Test span with set_attribute
     mock_target = mock.Mock(side_effect=ValueError("boom"))
     mock_span1 = mock.Mock(spec=["set_attribute"])
     mock_otel.tracer.start_as_current_span.return_value.__enter__.return_value = (
@@ -870,8 +863,8 @@ def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
         "rpc.response.status_code", "ValueError"
     )
 
-    # Test span without set_attribute (has record_exception, set_status)
-    mock_span2 = mock.Mock(spec=["record_exception", "set_status"])
+    # Test span without set_attribute (e.g. mock or stub lacking set_attribute)
+    mock_span2 = mock.Mock(spec=[])
     mock_otel.tracer.start_as_current_span.return_value.__enter__.return_value = (
         mock_span2
     )
@@ -882,8 +875,6 @@ def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
     )
     with pytest.raises(ValueError):
         wrapped2()
-    mock_span2.record_exception.assert_called_once()
-    mock_span2.set_status.assert_called_once()
 
 
 def test_wrap_method_uninstrumented_exception():

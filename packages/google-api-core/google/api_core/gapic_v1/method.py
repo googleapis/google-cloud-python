@@ -21,7 +21,7 @@ compression, pagination, and long-running operations to gRPC methods.
 import contextlib
 import enum
 import functools
-from typing import Any, List, Tuple
+from typing import Any, List, Optional, Tuple
 
 from google.api_core import _observability, grpc_helpers
 from google.api_core.gapic_v1 import client_info
@@ -117,87 +117,66 @@ def _extract_rpc_identity(
     Returns:
         Tuple[str, str, str]: A 3-tuple of (full_rpc_name, service_name, rpc_method_name).
     """
-    if isinstance(method_name, bytes):
-        method_name = method_name.decode("utf-8")
     method_str = method_name.lstrip("/")
     service, _, method = method_str.rpartition("/")
     return method_str, service, method
 
 
-def _extract_status_code(exc: Exception) -> str:
+def _extract_status_code(exc: Optional[Exception]) -> str:
     """Extract canonical status code name string from an exception.
 
-    Status code name strings are found in a variety of locations depending
-    on the status of the operation:
-    * RetryError (unwrapped to root cause)
-    * GoogleAPICallError (.grpc_status_code enum)
-    * Native gRPC exceptions (callable .code())
-    * Non-callable .code attributes (raw status code integers, stubs, mocks)
-    * Standard Python exceptions (fallback to class name)
+    Status code name strings are resolved by inspecting the following locations:
+    * Chained exceptions: Unwraps RetryError or __cause__ to the root exception.
+    * Enum & code attributes: Inspects .grpc_status_code on GoogleAPICallError or .code on gRPC errors.
+    * Integer status codes: Maps raw gRPC integer status codes to canonical enum names.
+    * Fallback: Defaults to the exception class name for standard Python errors.
 
     Args:
-        exc (Exception): The exception to extract the status code name from.
+        exc (Optional[Exception]): The exception to extract the status code name from.
 
     Returns:
-        str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE").
+        str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE") or class name.
     """
     if exc is None:
         return ""
 
-    # 1. Unwrap Retry/Transport wrappers and chained exceptions
-    # api_core's RetryError wraps the root failure in .cause, and standard Python chaining uses .__cause__
-    target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
+    # 1. Unwrap chained exceptions: unwrap RetryError or __cause__ to the root failure
+    target = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
 
-    # 2. Check GoogleAPICallError subclasses
-    # api_core exceptions (NotFound, InternalServerError, etc.) define a .grpc_status_code enum
-    grpc_status = getattr(target_exc, "grpc_status_code", None)
-    if grpc_status is not None:
-        name = getattr(grpc_status, "name", None)
-        if name is not None:
-            return str(name)
-
-    # 3. Check native gRPC exceptions (grpc.RpcError / grpc.Call)
-    # Native gRPC error instances expose a callable .code() method returning a grpc.StatusCode enum
-    code_fn = getattr(target_exc, "code", None)
-    if callable(code_fn):
+    # 2. Check enum & code attributes: .grpc_status_code enum or callable/non-callable .code
+    status = getattr(target, "grpc_status_code", None)
+    if status is None and hasattr(target, "code"):
         try:
-            code_val = code_fn()
-            name = getattr(code_val, "name", None)
-            if name is not None:
-                return str(name)
+            status = target.code() if callable(target.code) else target.code
         except Exception:
-            pass
+            status = None
 
-    # 4. Check non-callable .code attributes (e.g. raw status code integers, stubs, mocks)
-    elif code_fn is not None:
-        name = getattr(code_fn, "name", None)
-        if name is not None:
-            return str(name)
-        # If code is an integer (e.g. HTTP status or gRPC integer), map to canonical enum name
-        if isinstance(code_fn, int):
-            from google.api_core import exceptions
+    name = getattr(status, "name", None)
+    if name:
+        return str(name)
 
-            if code_fn in exceptions._INT_TO_GRPC_CODE:
-                return str(exceptions._INT_TO_GRPC_CODE[code_fn].name)
-            return str(code_fn)
+    # 3. Check integer status codes: map raw gRPC integer status codes to canonical enum names
+    if isinstance(status, int):
+        from google.api_core import exceptions
 
-    # 5. Standard Python exception fallback
-    # For ValueError, RuntimeError, etc., fall back to class name per OpenTelemetry conventions
-    return target_exc.__class__.__name__
+        status = exceptions._INT_TO_GRPC_CODE.get(status, status)
+        return getattr(status, "name", str(status))
+
+    # 4. Fallback: default to the exception class name for standard Python errors
+    return target.__class__.__name__
 
 
-def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
+def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     """Extract gcp.errors.* and error.type attributes from an exception.
 
-    Error details and ErrorInfo structures are found in a variety of locations
-    depending on the status of the operation:
-    * RetryError (unwrapped to root cause)
-    * GoogleAPICallError (_error_info or error_info attribute)
-    * Native gRPC exceptions (parsed from trailing_metadata)
-    * Direct exception attributes (domain, reason, metadata fallbacks)
+    Error details and ErrorInfo structures are resolved by inspecting the following locations:
+    * Chained exceptions: Unwraps RetryError or __cause__ to the root exception.
+    * GoogleAPICallError attributes: Reads ErrorInfo from ._error_info or .error_info.
+    * Native gRPC trailing metadata: Parses google.rpc.Status binary details from trailing_metadata.
+    * Unified attribute extraction: Extracts domain, reason, and metadata from ErrorInfo or exception attributes.
 
     Args:
-        exc (Exception): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+        exc (Optional[Exception]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
 
     Returns:
         dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
@@ -206,18 +185,15 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
     if exc is None:
         return attrs
 
-    # 1. Unwrap Retry/Transport wrappers and chained exceptions
-    # api_core's RetryError wraps the root failure in .cause, and standard Python chaining uses .__cause__
+    # 1. Unwrap chained exceptions: unwrap RetryError or __cause__ to the root failure
     target_exc = getattr(exc, "cause", None) or getattr(exc, "__cause__", None) or exc
 
     # 2. Check GoogleAPICallError ErrorInfo attributes
-    # Subclasses of GoogleAPICallError store google.rpc.ErrorInfo under ._error_info or .error_info
     error_info = getattr(target_exc, "_error_info", None) or getattr(
         target_exc, "error_info", None
     )
 
-    # 3. Check native gRPC exceptions (parsed from trailing_metadata)
-    # Native gRPC errors or responses carry trailing_metadata containing binary google.rpc.Status details
+    # 3. Check native gRPC trailing metadata for binary google.rpc.Status details
     if error_info is None:
         rpc_call = (
             target_exc
@@ -232,33 +208,18 @@ def _extract_error_attributes(exc: Exception) -> dict[str, Any]:
             except Exception:
                 pass
 
-    # 4. Extract attributes from ErrorInfo payload
-    # Extracts gcp.errors.domain, error.type (from reason), and gcp.errors.metadata.<key>
-    if error_info is not None:
-        domain = getattr(error_info, "domain", None)
-        if domain and isinstance(domain, str):
-            attrs["gcp.errors.domain"] = domain
-        reason = getattr(error_info, "reason", None)
-        if reason and isinstance(reason, str):
-            attrs["error.type"] = reason
-        metadata = getattr(error_info, "metadata", None)
-        if metadata and hasattr(metadata, "items"):
-            for k, v in metadata.items():
-                attrs[f"gcp.errors.metadata.{k}"] = str(v)
-
-    # 5. Direct exception attribute fallback
-    # Some custom error classes or REST errors define domain, reason, or metadata directly on the exception
-    else:
-        domain = getattr(target_exc, "domain", None)
-        if domain and isinstance(domain, str):
-            attrs["gcp.errors.domain"] = domain
-        reason = getattr(target_exc, "reason", None)
-        if reason and isinstance(reason, str):
-            attrs["error.type"] = reason
-        metadata = getattr(target_exc, "metadata", None)
-        if metadata and hasattr(metadata, "items"):
-            for k, v in metadata.items():
-                attrs[f"gcp.errors.metadata.{k}"] = str(v)
+    # 4. Unified attribute extraction: extract domain, reason, and metadata from ErrorInfo or exception attributes
+    source = error_info or target_exc
+    domain = getattr(source, "domain", None)
+    if domain and isinstance(domain, str):
+        attrs["gcp.errors.domain"] = domain
+    reason = getattr(source, "reason", None)
+    if reason and isinstance(reason, str):
+        attrs["error.type"] = reason
+    metadata = getattr(source, "metadata", None)
+    if metadata and hasattr(metadata, "items"):
+        for k, v in metadata.items():
+            attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
     return attrs
 
@@ -313,10 +274,6 @@ class _GapicCallable(object):
         self._retry = retry
         self._timeout = timeout
         self._compression = compression
-        self._client_options = client_options
-        self._method_name = method_name
-        self._is_streaming = is_streaming
-        self._kind = kind
 
         # Pre-extract the x-goog-api-client header from the initialized metadata.
         self._x_goog_api_client, remaining = _extract_metrics_header(metadata)
@@ -329,14 +286,12 @@ class _GapicCallable(object):
         else:
             self._default_metadata = self._static_metadata
 
-        # Resolve and cache the OpenTelemetry tracer and attributes once at initialization.
-        # For now, tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
-        self._tracer = None
-        self._span_name = None
-        self._span_attributes = None
+        # Configure the OpenTelemetry span factory once at initialization.
+        # For now, method tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
+        self._start_span_fn = None
         if (
             not is_streaming
-            and kind in ("grpc", "grpc_asyncio")
+            and kind == "grpc"
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -349,20 +304,24 @@ class _GapicCallable(object):
                     else None
                 )
                 if tracer_provider is not None:
-                    self._tracer = tracer_provider.get_tracer("google.api_core")
+                    tracer = tracer_provider.get_tracer("google.api_core")
                 else:
-                    self._tracer = trace.get_tracer("google.api_core")
+                    tracer = trace.get_tracer("google.api_core")
 
-                self._span_name, _, _ = _extract_rpc_identity(method_name)
-                self._span_attributes = {
+                span_name, _, _ = _extract_rpc_identity(method_name)
+                span_attributes = {
                     "rpc.system.name": "grpc",
-                    "rpc.method": self._span_name,
+                    "rpc.method": span_name,
                 }
+                self._start_span_fn = functools.partial(
+                    tracer.start_as_current_span,
+                    span_name,
+                    kind=trace.SpanKind.CLIENT,
+                    attributes=span_attributes,
+                )
             except (ImportError, AttributeError, TypeError):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
-                self._tracer = None
-                self._span_name = None
-                self._span_attributes = None
+                self._start_span_fn = None
 
     def __call__(
         self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
@@ -402,39 +361,26 @@ class _GapicCallable(object):
         if self._compression is not None:
             kwargs["compression"] = compression
 
-        span_context_manager = contextlib.nullcontext()
-        if self._tracer is not None and self._span_name is not None:
+        span_cm = contextlib.nullcontext()
+        if self._start_span_fn is not None:
             try:
-                from opentelemetry import trace
-
-                span_context_manager = self._tracer.start_as_current_span(
-                    self._span_name,
-                    kind=trace.SpanKind.CLIENT,
-                    attributes=self._span_attributes,
-                )
+                span_cm = self._start_span_fn()
             except Exception:
-                # Purposefully and gracefully bypass OpenTelemetry errors to ensure RPC success.
-                span_context_manager = contextlib.nullcontext()
+                span_cm = contextlib.nullcontext()
 
-        with span_context_manager as span:
+        with span_cm as span:
             try:
                 result = wrapped_func(*args, **kwargs)
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute("rpc.response.status_code", "OK")
                 return result
             except Exception as exc:
-                if span is not None:
-                    if hasattr(span, "record_exception"):
-                        from opentelemetry import trace
-
-                        span.record_exception(exc)
-                        span.set_status(trace.StatusCode.ERROR, str(exc))
-                    if hasattr(span, "set_attribute"):
-                        span.set_attribute(
-                            "rpc.response.status_code", _extract_status_code(exc)
-                        )
-                        for k, v in _extract_error_attributes(exc).items():
-                            span.set_attribute(k, v)
+                if span is not None and hasattr(span, "set_attribute"):
+                    span.set_attribute(
+                        "rpc.response.status_code", _extract_status_code(exc)
+                    )
+                    for k, v in _extract_error_attributes(exc).items():
+                        span.set_attribute(k, v)
                 raise
 
 
