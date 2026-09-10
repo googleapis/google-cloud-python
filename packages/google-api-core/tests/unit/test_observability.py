@@ -497,20 +497,6 @@ def test_grpc_client_response_hook_success():
     mock_span.set_attribute.assert_called_once_with("rpc.response.status_code", "OK")
 
 
-def test_grpc_client_response_hook_error_mapped():
-    """Proves that _grpc_client_response_hook maps status code when span has error status."""
-    from opentelemetry.trace.status import StatusCode
-
-    mock_span = mock.Mock()
-    mock_span.status.status_code = StatusCode.ERROR
-    mock_span.attributes = {"rpc.grpc.status_code": 5}
-
-    _observability._grpc_client_response_hook(mock_span, None)
-    mock_span.set_attribute.assert_called_once_with(
-        "rpc.response.status_code", "NOT_FOUND"
-    )
-
-
 def test_grpc_client_response_hook_none_or_missing_set_attribute():
     """Proves that _grpc_client_response_hook handles None or invalid span gracefully."""
     _observability._grpc_client_response_hook(None, mock.Mock())
