@@ -49,7 +49,7 @@ A step-by-step guide may also be found in `Get Started with Client Libraries`_.
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
 3. `Enable the Google Cloud Storage API.`_
-4. `Set up Authentication.`_
+4. `Setup Authentication.`_
 
 .. _Get Started with Client Libraries: https://cloud.google.com/storage/docs/reference/libraries#client-libraries-install-python
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
