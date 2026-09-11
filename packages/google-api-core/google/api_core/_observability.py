@@ -92,43 +92,25 @@ def _extract_endpoint_attributes(
 
     if endpoint and isinstance(endpoint, str):
         target = endpoint if "//" in endpoint else f"//{endpoint}"
-        parsed = urllib.parse.urlsplit(target)
+        parsed = None
+        hostname = None
         port = None
         try:
-            if parsed.hostname:
-                attrs["server.address"] = parsed.hostname
+            parsed = urllib.parse.urlsplit(target)
+            hostname = parsed.hostname
             port = parsed.port
         except ValueError:
             pass
-        if port:
+
+        if hostname:
+            attrs["server.address"] = hostname
+        if port and parsed:
             scheme = parsed.scheme.lower()
             is_default_port = (port == 443 and scheme in ("https", "")) or (
                 port == 80 and scheme == "http"
             )
             if not is_default_port:
                 attrs["server.port"] = port
-    return attrs
-
-
-def _extract_grpc_request_attributes(request: Any) -> dict[str, Any]:
-    """Extracts Google Cloud T4 semantic and resource attributes from a gRPC request object.
-
-    Args:
-        request: The gRPC request object.
-
-    Returns:
-        dict[str, Any]: A dictionary of semantic attributes.
-    """
-    attrs: dict[str, Any] = {
-        "rpc.system.name": "grpc",
-    }
-    if request is None:
-        return attrs
-
-    resend_count = getattr(request, "resend_count", None)
-    if isinstance(resend_count, int) and resend_count > 0:
-        attrs["gcp.grpc.resend_count"] = resend_count
-
     return attrs
 
 
@@ -149,27 +131,19 @@ def _make_grpc_client_request_hook(
         if span is None or not getattr(span, "is_recording", lambda: True)():
             return
 
-        # Upstream opentelemetry-instrumentation-grpc names spans with a leading slash
-        # (e.g. "/package.Service/Method") and sets only the short name on rpc.method.
-        # Normalize span.name and rpc.method to the fully-qualified name without leading slash.
+        # Upstream opentelemetry-instrumentation-grpc may format span names with a
+        # leading slash (e.g. "/package.Service/Method"). Normalize the span name
+        # and ensure rpc.method is always captured as the clean, fully-qualified name.
         span_name = getattr(span, "name", None)
-        clean_method_name = None
-        if isinstance(span_name, str) and span_name.startswith("/"):
+        if isinstance(span_name, str) and span_name:
             clean_method_name = span_name.lstrip("/")
-            if hasattr(span, "update_name"):
+            if span_name.startswith("/") and hasattr(span, "update_name"):
                 span.update_name(clean_method_name)
+            span.set_attribute("rpc.method", clean_method_name)
 
-        # Remove duplicate legacy rpc.system attribute set by stock instrumentation
-        # in favor of modern rpc.system.name ("grpc") per PRD changelog.
-        span_attributes = getattr(span, "_attributes", None)
-        if span_attributes is not None:
-            pop_fn = getattr(span_attributes, "pop", None)
-            if callable(pop_fn):
-                pop_fn("rpc.system", None)
-
-        attrs = _extract_grpc_request_attributes(request)
-        if clean_method_name:
-            attrs["rpc.method"] = clean_method_name
+        attrs: dict[str, Any] = {
+            "rpc.system.name": "grpc",
+        }
         if static_attrs:
             attrs.update(static_attrs)
         for key, value in attrs.items():
@@ -182,7 +156,19 @@ _grpc_client_request_hook = _make_grpc_client_request_hook()
 
 
 def _grpc_client_response_hook(span: Any, response: Any) -> None:
-    """OpenTelemetry gRPC client response hook to record response status code.
+    """OpenTelemetry gRPC client response hook to record successful response status.
+
+    Upstream ``opentelemetry-instrumentation-grpc`` sets the integer status code
+    ``rpc.grpc.status_code`` (e.g. 0), but does not record the modern string status
+    ``rpc.response.status_code`` (e.g. "OK") required by Cloud Trace and current
+    OpenTelemetry semantic conventions.
+
+    This hook enriches successful RPC attempt spans with ``rpc.response.status_code = "OK"``.
+    Errors and non-OK statuses are handled at the Tier 3 method span layer or upstream.
+
+    Note:
+        If upstream ``opentelemetry-instrumentation-grpc`` adds native support for
+        modern ``rpc.response.status_code`` in future releases, this hook can be retired.
 
     Args:
         span: The OpenTelemetry span.
