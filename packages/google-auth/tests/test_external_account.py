@@ -834,6 +834,144 @@ class TestCredentials(object):
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
     )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_ecp_config",
+        return_value=True,
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/path/to/ecp_config.json",
+    )
+    @mock.patch("google.auth.transport.requests._MutualTlsOffloadAdapter")
+    def test_refresh_with_mtls_ecp_mounts_adapter(
+        self,
+        mock_adapter_cls,
+        mock_get_cert_config_path,
+        mock_is_ecp_config,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+        unused_utcnow,
+        mock_auth_lib_value,
+    ):
+        response = self.SUCCESS_RESPONSE.copy()
+        mock_request = self.make_mock_request(status=http_client.OK, data=response)
+        mock_session = mock.MagicMock()
+        old_adapter = mock.MagicMock()
+        old_adapter.max_retries = 3
+        mock_session.adapters = {"https://": old_adapter}
+        mock_request.session = mock_session
+
+        mock_adapter_instance = mock.MagicMock()
+        mock_adapter_cls.return_value = mock_adapter_instance
+
+        credentials = self.make_credentials()
+        credentials.refresh(mock_request)
+
+        mock_adapter_cls.assert_called_once_with(
+            "/path/to/ecp_config.json", max_retries=3
+        )
+        mock_session.mount.assert_called_once_with("https://", mock_adapter_instance)
+        old_adapter.close.assert_called_once()
+        assert credentials.valid
+
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_ecp_config",
+        return_value=True,
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/path/to/ecp_config.json",
+    )
+    @mock.patch("google.auth.transport.requests._MutualTlsOffloadAdapter")
+    def test_refresh_with_mtls_ecp_adapter_already_mounted(
+        self,
+        mock_adapter_cls,
+        mock_get_cert_config_path,
+        mock_is_ecp_config,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+        unused_utcnow,
+        mock_auth_lib_value,
+    ):
+        response = self.SUCCESS_RESPONSE.copy()
+        mock_request = self.make_mock_request(status=http_client.OK, data=response)
+        mock_session = mock.MagicMock()
+        existing_adapter = mock.MagicMock()
+        existing_adapter._is_mtls_offload_adapter = True
+        mock_session.adapters = {"https://": existing_adapter}
+        mock_request.session = mock_session
+
+        credentials = self.make_credentials()
+        credentials.refresh(mock_request)
+
+        mock_adapter_cls.assert_not_called()
+        mock_session.mount.assert_not_called()
+        assert credentials.valid
+
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper.is_ecp_config",
+        return_value=True,
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/path/to/ecp_config.json",
+    )
+    @mock.patch(
+        "google.auth.transport.requests._MutualTlsOffloadAdapter",
+        side_effect=exceptions.MutualTLSChannelError("Failed to init signer"),
+    )
+    def test_refresh_with_mtls_ecp_adapter_error(
+        self,
+        mock_adapter_cls,
+        mock_get_cert_config_path,
+        mock_is_ecp_config,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+    ):
+        mock_request = mock.MagicMock()
+        mock_session = mock.MagicMock()
+        mock_session.adapters = {}
+        mock_request.session = mock_session
+
+        credentials = self.make_credentials()
+        with pytest.raises(exceptions.RefreshError) as exc_info:
+            credentials.refresh(mock_request)
+
+        assert "Failed to configure mutual TLS offload adapter for STS" in str(
+            exc_info.value
+        )
+
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_workforce_without_client_auth_success(
         self, unused_utcnow, test_auth_lib_value
     ):
