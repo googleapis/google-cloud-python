@@ -961,6 +961,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_interceptors():
         ) as mock_apply_interceptors,
     ):
         transport = transports.{{ service.grpc_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
             interceptors=[mock_interceptor],
         )
 
