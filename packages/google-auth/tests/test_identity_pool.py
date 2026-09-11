@@ -1785,21 +1785,71 @@ class TestCredentials(object):
         )
 
     @mock.patch(
+        "google.auth.transport._mtls_helper.is_ecp_config",
+        return_value=False,
+    )
+    @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
         return_value=(None, None),
     )
-    def test_get_cert_bytes_none_raises_error(
-        self, mock_get_workload_cert_and_key_paths
+    def test_retrieve_subject_token_none_raises_error(
+        self, mock_get_workload_cert_and_key_paths, mock_is_ecp_config
     ):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
         )
 
-        with pytest.raises(exceptions.ClientCertError) as excinfo:
-            credentials._get_cert_bytes()
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.retrieve_subject_token(None)
+
+        assert excinfo.match("Failed to retrieve leaf certificate.")
+
+    @mock.patch(
+        "google.auth.transport._custom_tls_signer.get_cert_from_custom_tls_signer",
+        return_value=open(CERT_FILE, "rb").read(),
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/path/to/ecp_config.json",
+    )
+    @mock.patch("google.auth.transport._mtls_helper.is_ecp_config", return_value=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    def test_retrieve_subject_token_ecp_success(
+        self,
+        mock_get_workload_paths,
+        mock_is_ecp_config,
+        mock_get_cert_config_path,
+        mock_get_cert_from_ecp,
+    ):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+        subject_token = credentials.retrieve_subject_token(None)
+        assert subject_token == json.dumps([CERT_FILE_CONTENT])
+        mock_is_ecp_config.assert_called_once()
+        mock_get_cert_config_path.assert_called_once()
+        mock_get_cert_from_ecp.assert_called_once_with("/path/to/ecp_config.json")
+
+    @mock.patch.object(
+        identity_pool.Credentials,
+        "_get_cert_bytes",
+        side_effect=exceptions.MutualTLSChannelError("mock mtls error"),
+    )
+    def test_refresh_mutual_tls_channel_error_raises_refresh_error(
+        self, mock_get_cert_bytes
+    ):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
 
         assert excinfo.match(
-            "Workload certificate configuration could not be found or does not contain workload certificate paths."
+            "Failed to retrieve certificate bytes for external account credentials"
         )
 
     @mock.patch.object(
