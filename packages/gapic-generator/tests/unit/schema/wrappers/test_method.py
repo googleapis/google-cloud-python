@@ -18,6 +18,7 @@ import json
 import pytest
 from typing import Sequence
 
+from google.api import annotations_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import routing_pb2
@@ -127,6 +128,35 @@ def test_method_client_output_async_empty():
     empty = make_message(name="Empty", package="google.protobuf")
     method = make_method("Meh", output_message=empty)
     assert method.client_output_async == wrappers.PrimitiveType.build(None)
+
+
+def test_method_is_resumable_upload_missing_annotation():
+    opts = descriptor_pb2.MethodOptions()
+    http = opts.Extensions[annotations_pb2.http]
+    http.post = "/v1/upload"
+    method_pb = descriptor_pb2.MethodDescriptorProto(
+        name="Upload",
+        input_type=".foo.bar.v1.Input",
+        output_type=".foo.bar.v1.Output",
+        options=opts,
+    )
+    method = wrappers.Method(
+        method_pb=method_pb,
+        input=make_message("Input"),
+        output=make_message("Output"),
+        resumable_upload_prefix="resumable/upload",
+    )
+    assert method.is_resumable_upload is False
+
+
+def test_method_is_resumable_upload_without_prefix():
+    method = make_method("Upload")
+    assert method.is_resumable_upload is False
+
+
+def test_method_is_resumable_upload_default():
+    method_normal = make_method("GetFoo")
+    assert method_normal.is_resumable_upload is False
 
 
 def test_method_paged_result_field_not_first():
@@ -1118,3 +1148,24 @@ def test__validate_paged_field_size_type(field_type, pb_type, expected):
 
     actual = method._validate_paged_field_size_type(page_field_size=page_size)
     assert actual == expected
+
+
+def test_method_is_resumable_upload():
+    # Without resumable_upload_prefix, method is not resumable upload
+    method_no_prefix = make_method("UploadMedia")
+    assert not method_no_prefix.is_resumable_upload
+
+    # With resumable_upload_prefix and UploadMedia method name
+    method_with_prefix = dataclasses.replace(
+        make_method("UploadMedia"),
+        resumable_upload_prefix="resumable/upload",
+    )
+    assert method_with_prefix.is_resumable_upload
+
+    # Non-resumable method with prefix
+    method_other = dataclasses.replace(
+        make_method("OtherMethod"),
+        resumable_upload_prefix="resumable/upload",
+    )
+    assert not method_other.is_resumable_upload
+

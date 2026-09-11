@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import dataclasses
 import itertools
 import pytest
 import typing
@@ -749,3 +750,25 @@ def test_resource_messages_raises_on_malformed_typeless_resource():
     # 2. Trigger the property and expect it to fail fast with the AIP-123 URL
     with pytest.raises(ValueError, match="https://google.aip.dev/123"):
         _ = service.resource_messages
+
+
+def test_service_has_resumable_upload_methods():
+    m_upload = dataclasses.replace(
+        make_method("UploadMedia"),
+        resumable_upload_prefix="resumable/upload",
+    )
+    m_status = make_method("GetStatus")
+
+    service_with_resumable = make_service(
+        name="ResumableService",
+        methods=(m_upload, m_status),
+    )
+    assert service_with_resumable.has_resumable_upload_methods
+
+    m_other = make_method("DoThing")
+    service_without_resumable = make_service(
+        name="StandardService",
+        methods=(m_other,),
+    )
+    assert not service_without_resumable.has_resumable_upload_methods
+

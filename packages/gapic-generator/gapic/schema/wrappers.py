@@ -1499,6 +1499,7 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    resumable_upload_prefix: str = ""
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -1727,6 +1728,32 @@ class Method:
         # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
         # TODO(yon-mg): enums for http verbs?
         return answer
+
+    @property
+    def is_resumable_upload(self) -> bool:
+        """Return True if this method is a resumable upload method."""
+        if not self.resumable_upload_prefix:
+            return False
+
+        try:
+            if hasattr(self, "options") and self.options:
+                http = self.options.Extensions[annotations_pb2.http]
+                if getattr(http, "media_upload", None) and getattr(http.media_upload, "enabled", False):
+                    return True
+                for binding in getattr(http, "additional_bindings", ()):
+                    if getattr(binding, "media_upload", None) and getattr(binding.media_upload, "enabled", False):
+                        return True
+        except Exception:
+            pass
+
+        # TODO(cl/964122389): TEMPORARY - Remove this hardcoded fallback once
+        # the media_upload annotation is published in cl/964122389 and added to gapic-showcase proto.
+        pb_name = getattr(self.method_pb, "name", "")
+        method_name = getattr(self, "name", "")
+        if pb_name == "UploadMedia" or method_name == "upload_media":
+            return True
+
+        return False
 
     @property
     def path_params(self) -> Sequence[str]:
@@ -2207,6 +2234,11 @@ class Service:
     def has_pagers(self) -> bool:
         """Return whether the service has paged methods."""
         return any(m.paged_result_field for m in self.methods.values())
+
+    @property
+    def has_resumable_upload_methods(self) -> bool:
+        """Return whether the service has resumable upload methods."""
+        return any(m.is_resumable_upload for m in self.methods.values())
 
     @property
     def host(self) -> str:
