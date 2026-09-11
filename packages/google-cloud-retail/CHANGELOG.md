@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-retail/#history
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.12.0...google-cloud-retail-v2.13.0) (2026-09-11)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
 ## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.11.0...google-cloud-retail-v2.12.0) (2026-08-21)
 
 
