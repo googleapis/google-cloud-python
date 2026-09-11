@@ -1173,7 +1173,13 @@ class TestSessionsMtls:
                 # on NotImplementedError in order to signal retry.
                 assert resp == mock_resp_200
                 mock_conf.assert_called_once()
-                mock_creds.refresh.assert_called_once()
+                cb = (
+                    mock_conf.call_args.args[0]
+                    if mock_conf.call_args.args
+                    else mock_conf.call_args.kwargs["client_cert_callback"]
+                )
+                assert cb() == (b"new_cert", b"new_key")
+                mock_creds.refresh.assert_called_once_with(mock_auth_req)
                 assert mock_auth_req.call_count == 2
                 mock_resp_401.close.assert_called_once()
 
