@@ -1969,7 +1969,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.71.0
+    version: 3.71.1
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.71.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.71.0...google-cloud-spanner-v3.71.1) (2026-09-11)
+
+
+### Performance Improvements
+
+* **spanner:** add fast-path for multiplexed session acquisition ([#18317](https://github.com/googleapis/google-cloud-python/issues/18317)) ([9569b39](https://github.com/googleapis/google-cloud-python/commit/9569b3989e94de9808c9343039535c2492204a72))
+* **spanner:** optimize row popping in StreamedResultSet ([#18316](https://github.com/googleapis/google-cloud-python/issues/18316)) ([e66103d](https://github.com/googleapis/google-cloud-python/commit/e66103d450af97e8aa51319e1e814e075d3a89c7))
+
 ## [3.71.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.70.0...google-cloud-spanner-v3.71.0) (2026-09-03)
 
 
