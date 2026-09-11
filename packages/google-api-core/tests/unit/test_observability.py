@@ -327,6 +327,10 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
             ClientOptions(api_endpoint="http:///"),
             {"url.domain": "googleapis.com"},
         ),
+        (
+            ClientOptions(api_endpoint="example.com:not_a_port"),
+            {"server.address": "example.com", "url.domain": "googleapis.com"},
+        ),
     ],
 )
 def test_extract_endpoint_attributes(client_options, expected_attrs):
