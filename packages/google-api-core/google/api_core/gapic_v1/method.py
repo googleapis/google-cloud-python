@@ -298,11 +298,11 @@ class _GapicCallable(object):
             try:
                 from opentelemetry import trace
 
-                tracer_provider = (
-                    getattr(client_options, "tracer_provider", None)
-                    if client_options is not None
-                    else None
-                )
+                tracer_provider = None
+                if isinstance(client_options, dict):
+                    tracer_provider = client_options.get("tracer_provider")
+                elif client_options is not None:
+                    tracer_provider = getattr(client_options, "tracer_provider", None)
                 if tracer_provider is not None:
                     tracer = tracer_provider.get_tracer("google.api_core")
                 else:
