@@ -17,7 +17,7 @@ import json
 import logging as std_logging
 import pickle
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.auth  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
@@ -35,6 +35,20 @@ from google.protobuf.json_format import MessageToJson
 from google.cloud.secretmanager_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
+
+# NOTE: ClientInterceptor has been centralized in google.api_core.grpc_helpers
+# (merged in PR #18236). This local type definition is a prototype-only
+# convenience for google-cloud-secret-manager to allow CI and backwards-compatibility
+# test matrix runs against older released PyPI versions of google-api-core without
+# breaking on import. Once google-api-core is officially published to PyPI,
+# the GAPIC generator templates will generate the centralized import directly
+# (`from google.api_core.grpc_helpers import ClientInterceptor`).
+ClientInterceptor = Union[
+    grpc.UnaryUnaryClientInterceptor,
+    grpc.UnaryStreamClientInterceptor,
+    grpc.StreamUnaryClientInterceptor,
+    grpc.StreamStreamClientInterceptor,
+]
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -148,6 +162,14 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        interceptors: Optional[
+            Sequence[
+                Union[
+                    ClientInterceptor,
+                    Callable[[grpc.Channel], grpc.Channel],
+                ]
+            ]
+        ] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -198,6 +220,9 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
+                Additional interceptors (or callables that apply interceptors) to apply to the
+                gRPC channel.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -273,6 +298,10 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+
+        apply_interceptors = getattr(grpc_helpers, "apply_channel_interceptors", None)
+        if apply_interceptors is not None:
+            self._grpc_channel = apply_interceptors(self._grpc_channel, interceptors)
 
         self._interceptor = _LoggingClientInterceptor()
         self._logged_channel = grpc.intercept_channel(
