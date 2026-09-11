@@ -89,7 +89,7 @@ def create_bigquery_client(
     if project_id is None:
         project_id = default_project
 
-    client_info = google_client_info(user_agent=user_agent)
+    client_info = user_agent if user_agent is not None else google_client_info()
 
     return bigquery.Client(
         client_info=client_info,

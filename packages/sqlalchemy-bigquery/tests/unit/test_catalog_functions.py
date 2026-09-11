@@ -177,7 +177,7 @@ def test_get_table_comment(faux_conn):
         ("DATE", sqlalchemy.types.DATE(), ()),
         ("TIME", sqlalchemy.types.TIME(), ()),
         ("DATETIME", sqlalchemy.types.DATETIME(), ()),
-        ("THURSDAY", sqlalchemy.types.NullType, ()),
+        ("THURSDAY", sqlalchemy.types.NullType(), ()),
     ],
 )
 def test_get_table_columns(faux_conn, btype, atype, extra):
