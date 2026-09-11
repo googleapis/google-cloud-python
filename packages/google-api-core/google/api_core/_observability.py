@@ -184,15 +184,25 @@ _grpc_client_request_hook = _make_grpc_client_request_hook()
 def _grpc_client_response_hook(span: Any, response: Any) -> None:
     """OpenTelemetry gRPC client response hook to record response status code.
 
-    Note: Upstream OpenTelemetry gRPC instrumentation only invokes this response_hook
-    on successful RPC invocations. Failed RPCs raise an exception before this hook is reached.
-
     Args:
         span: The OpenTelemetry span.
         response: The gRPC response object or details.
     """
-    if span is not None and hasattr(span, "set_attribute"):
-        span.set_attribute("rpc.response.status_code", "OK")
+    if not span.is_recording():
+        return
+
+    # Verify the RPC succeeded before recording the OK response status.
+    # Upstream async instrumentation invokes this hook on both successes
+    # and failures, so check whether an error status was already recorded.
+    status = getattr(span, "status", None)
+    status_code = getattr(status, "status_code", None)
+    if (
+        getattr(status_code, "name", None) == "ERROR"
+        or getattr(status_code, "value", None) == 2
+    ):
+        return
+
+    span.set_attribute("rpc.response.status_code", "OK")
 
 
 def _get_tracer_provider(
