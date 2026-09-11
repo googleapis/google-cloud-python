@@ -224,7 +224,7 @@ case ${TEST_TYPE} in
             echo "Running twine_check for $(basename $(pwd))..."
             rm -rf dist
             # TODO(https://github.com/googleapis/google-cloud-python/issues/18339): Re-enable `--strict` once `long_description_content_type` is set in setup.py across all packages.
-            if python3 -m build --sdist --no-isolation --skip-dependency-check --outdir dist . && twine check dist/*; then
+            if python3 -m build --sdist --no-isolation --outdir dist . && twine check dist/*; then
                 retval=0
             else
                 retval=1
