@@ -378,6 +378,7 @@ class AsyncResumableUploadSession:
             DeadlineExceeded: If upload deadline is reached.
             GoogleAPICallError: If chunk upload encounters an unrecoverable error.
         """
+
         async def do_transmit():
             chunk_size = self._state.chunk_size
 

@@ -232,7 +232,9 @@ class ProtocolState(object):
             self._bytes_uploaded += chunk_bytes_sent
         elif status == common.Status.CANCELLED.value:
             self._invalid = True
-            raise exceptions.UploadCancelledError("Upload session was cancelled by server")
+            raise exceptions.UploadCancelledError(
+                "Upload session was cancelled by server"
+            )
 
     def build_query_request(self) -> Tuple[str, str, Dict[str, str], bytes]:
         """Formats the query request to discover server offset during recovery.
@@ -279,7 +281,9 @@ class ProtocolState(object):
             self._finished = True
         elif status == common.Status.CANCELLED.value:
             self._invalid = True
-            raise exceptions.UploadCancelledError("Upload session was cancelled by server")
+            raise exceptions.UploadCancelledError(
+                "Upload session was cancelled by server"
+            )
 
         return self._bytes_uploaded
 

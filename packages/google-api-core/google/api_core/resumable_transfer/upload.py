@@ -34,14 +34,14 @@ from typing import (
     Union,
 )
 
-import requests
-
-import google.api_core.retry
 import google.protobuf.message
 import proto
+import requests
+from google.protobuf import json_format
+
+import google.api_core.retry
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import common, upload_state
-from google.protobuf import json_format
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_START_TIMEOUT = 60.0  # seconds for initial start request
@@ -172,9 +172,7 @@ class ResumableUploadSession:
         """bool: Whether the upload has completed successfully."""
         return self._state.finished
 
-    def _get_transport(
-        self, transport: Optional[requests.Session]
-    ) -> requests.Session:
+    def _get_transport(self, transport: Optional[requests.Session]) -> requests.Session:
         """Resolves the requests.Session transport.
 
         Args:
@@ -283,6 +281,7 @@ class ResumableUploadSession:
         Returns:
             A callable accepting an exception and returning a boolean.
         """
+
         def should_retry(exc: Any) -> bool:
             if isinstance(
                 exc,
@@ -396,9 +395,7 @@ class ResumableUploadSession:
         else:
             self._stall_timeout_started = None
 
-    def _reposition_stream_offset(
-        self, stream: BinaryIO, received: int
-    ) -> int:
+    def _reposition_stream_offset(self, stream: BinaryIO, received: int) -> int:
         """Adjusts in-memory chunk buffer or seeks input stream to server offset.
 
         Args:
@@ -490,6 +487,7 @@ class ResumableUploadSession:
         Returns:
             The HTTP response for the transmitted chunk.
         """
+
         def do_transmit() -> requests.Response:
             chunk_size = self._state.chunk_size
 
@@ -904,4 +902,3 @@ def _format_response_payload(
         return response_type(content)
 
     return response
-

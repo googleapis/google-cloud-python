@@ -40,10 +40,9 @@ def check_async_rest_installed(request: pytest.FixtureRequest) -> None:
         pytest.skip("Skipped because google-api-core[async_rest] is not installed")
 
 
-from google.protobuf import empty_pb2
 import proto
+from google.protobuf import empty_pb2
 
-from tests.helpers import EchoResponse
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import (
     AsyncResumableUploadSession,
@@ -58,6 +57,7 @@ from google.api_core.resumable_transfer import (
     common,
     upload_async,
 )
+from tests.helpers import EchoResponse
 
 
 class DummyResponse:
@@ -123,9 +123,7 @@ class DummyAsyncResponse:
         """
         return self
 
-    async def __aexit__(
-        self, exc_type: Any, exc_val: Any, exc_tb: Any
-    ) -> None:
+    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         """Exits the asynchronous context manager.
 
         Args:
@@ -139,9 +137,7 @@ class DummyAsyncResponse:
 class DummyAsyncSession:
     """Mock asynchronous HTTP client session conforming to aiohttp.ClientSession interface."""
 
-    def __init__(
-        self, responses: Optional[List[DummyAsyncResponse]] = None
-    ) -> None:
+    def __init__(self, responses: Optional[List[DummyAsyncResponse]] = None) -> None:
         """Initializes a DummyAsyncSession.
 
         Args:
@@ -150,9 +146,7 @@ class DummyAsyncSession:
         self._responses: List[DummyAsyncResponse] = list(responses or [])
         self.requests: List[Tuple[str, str, Dict[str, Any]]] = []
 
-    def request(
-        self, method: str, url: str, **kwargs: Any
-    ) -> DummyAsyncResponse:
+    def request(self, method: str, url: str, **kwargs: Any) -> DummyAsyncResponse:
         """Records the request and yields the next canned response.
 
         Args:
@@ -253,9 +247,7 @@ async def test_async_upload_direct_execution() -> None:
         transport=async_transport,
     )
 
-    result = await session.upload(
-        stream=b"0123456789", request_body='{"name": "test"}'
-    )
+    result = await session.upload(stream=b"0123456789", request_body='{"name": "test"}')
 
     assert isinstance(result, DummyResponse)
     assert result.name == "async_file.txt"
@@ -311,10 +303,15 @@ async def test_async_upload_multi_chunk_operation_handle() -> None:
     # Start request
     assert async_transport.requests[0][2]["headers"]["X-Goog-Upload-Command"] == "start"
     # Chunk 1 request
-    assert async_transport.requests[1][2]["headers"]["X-Goog-Upload-Command"] == "upload"
+    assert (
+        async_transport.requests[1][2]["headers"]["X-Goog-Upload-Command"] == "upload"
+    )
     assert async_transport.requests[1][2]["headers"]["X-Goog-Upload-Offset"] == "0"
     # Chunk 2 request (last chunk concludes transfer)
-    assert async_transport.requests[2][2]["headers"]["X-Goog-Upload-Command"] == "upload, finalize"
+    assert (
+        async_transport.requests[2][2]["headers"]["X-Goog-Upload-Command"]
+        == "upload, finalize"
+    )
     assert async_transport.requests[2][2]["headers"]["X-Goog-Upload-Offset"] == "4"
 
 
@@ -591,7 +588,9 @@ async def test_async_cancel_success() -> None:
     )
     await session.cancel()
     assert session._state.invalid is True
-    assert async_transport.requests[0][2]["headers"]["X-Goog-Upload-Command"] == "cancel"
+    assert (
+        async_transport.requests[0][2]["headers"]["X-Goog-Upload-Command"] == "cancel"
+    )
 
 
 @pytest.mark.asyncio

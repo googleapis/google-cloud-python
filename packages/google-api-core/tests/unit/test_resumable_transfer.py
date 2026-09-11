@@ -16,12 +16,11 @@ import io
 from typing import Union
 from unittest import mock
 
+import proto
 import pytest
 import requests
 from google.protobuf import empty_pb2
-import proto
 
-from tests.helpers import EchoResponse
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import (
     DEFAULT_CHUNK_SIZE,
@@ -38,6 +37,7 @@ from google.api_core.resumable_transfer import (
     common,
     upload_state,
 )
+from tests.helpers import EchoResponse
 
 
 class DummyResponse:
@@ -726,5 +726,3 @@ def test_sync_response_type_raw_response():
     )
     resp = session.upload(stream=b"payload")
     assert resp is chunk_resp
-
-

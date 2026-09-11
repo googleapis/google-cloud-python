@@ -87,4 +87,3 @@ RETRYABLE_STATUS_CODES = (408, 429, 500, 502, 503, 504)
 
 # HTTP status codes indicating state consistency errors requiring recovery
 RECOVERABLE_STATUS_CODES = (400, 409, 412, 416)
-
