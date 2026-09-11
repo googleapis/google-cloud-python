@@ -531,11 +531,33 @@ def test_get_otel_async_interceptor_with_api_endpoint(monkeypatch):
 def test_grpc_client_response_hook_success():
     """Proves that _grpc_client_response_hook sets rpc.response.status_code to 'OK' on success."""
     mock_span = mock.Mock()
+    mock_span.is_recording.return_value = True
     _observability._grpc_client_response_hook(mock_span, mock.Mock())
     mock_span.set_attribute.assert_called_once_with("rpc.response.status_code", "OK")
 
 
-def test_grpc_client_response_hook_none_or_missing_set_attribute():
-    """Proves that _grpc_client_response_hook handles None or invalid span gracefully."""
-    _observability._grpc_client_response_hook(None, mock.Mock())
-    _observability._grpc_client_response_hook(object(), mock.Mock())
+def test_grpc_client_response_hook_not_recording():
+    """Proves that _grpc_client_response_hook skips non-recording spans."""
+    mock_span = mock.Mock()
+    mock_span.is_recording.return_value = False
+    _observability._grpc_client_response_hook(mock_span, mock.Mock())
+    mock_span.set_attribute.assert_not_called()
+
+
+def test_grpc_client_response_hook_error_status():
+    """Proves that _grpc_client_response_hook skips spans marked with ERROR status."""
+    mock_span = mock.Mock()
+    mock_span.is_recording.return_value = True
+    mock_span.status.status_code.name = "ERROR"
+    _observability._grpc_client_response_hook(mock_span, mock.Mock())
+    mock_span.set_attribute.assert_not_called()
+
+
+def test_grpc_client_response_hook_error_status_value():
+    """Proves that _grpc_client_response_hook skips spans with StatusCode.ERROR value (2)."""
+    mock_span = mock.Mock()
+    mock_span.is_recording.return_value = True
+    mock_span.status.status_code.name = "UNKNOWN"
+    mock_span.status.status_code.value = 2
+    _observability._grpc_client_response_hook(mock_span, mock.Mock())
+    mock_span.set_attribute.assert_not_called()
