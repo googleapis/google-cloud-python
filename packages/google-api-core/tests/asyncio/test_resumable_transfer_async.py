@@ -14,7 +14,6 @@
 
 """Asynchronous tests for Resumable Upload protocol implementation."""
 
-import asyncio
 import datetime
 import io
 import json
@@ -22,6 +21,22 @@ from typing import Any, AsyncIterator, Dict, List, Mapping, Optional, Tuple, Uni
 from unittest import mock
 
 import pytest
+from google.protobuf import empty_pb2
+
+from google.api_core import exceptions
+from google.api_core.resumable_transfer import (
+    AsyncResumableUploadSession,
+    AsyncUploadOperation,
+    ProgressState,
+    ResumableUploadConfig,
+    TransferStalledError,
+    UnseekableStreamError,
+    UploadCancelledError,
+    UploadProgress,
+    common,
+    upload_async,
+)
+from tests.helpers import EchoResponse
 
 try:
     import aiohttp  # noqa: F401
@@ -38,26 +53,6 @@ def check_async_rest_installed(request: pytest.FixtureRequest) -> None:
         return
     if not GOOGLE_AUTH_AIO_INSTALLED:
         pytest.skip("Skipped because google-api-core[async_rest] is not installed")
-
-
-import proto
-from google.protobuf import empty_pb2
-
-from google.api_core import exceptions
-from google.api_core.resumable_transfer import (
-    AsyncResumableUploadSession,
-    AsyncUploadOperation,
-    MissingStatusHeaderError,
-    ProgressState,
-    ResumableUploadConfig,
-    TransferStalledError,
-    UnseekableStreamError,
-    UploadCancelledError,
-    UploadProgress,
-    common,
-    upload_async,
-)
-from tests.helpers import EchoResponse
 
 
 class DummyResponse:

@@ -16,7 +16,6 @@ import io
 from typing import Union
 from unittest import mock
 
-import proto
 import pytest
 import requests
 from google.protobuf import empty_pb2
