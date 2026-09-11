@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.44.0...google-cloud-bigquery-v3.45.0) (2026-09-03)
+
+
+### Features
+
+* add user-agent delegation telemetry for pandas-gbq ([#18184](https://github.com/googleapis/google-cloud-python/issues/18184)) ([85ddfe5](https://github.com/googleapis/google-cloud-python/commit/85ddfe5f065ebc7138fae79cdf2bd1d968a37ff3))
+
 ## [3.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.43.0...google-cloud-bigquery-v3.44.0) (2026-08-21)
 
 

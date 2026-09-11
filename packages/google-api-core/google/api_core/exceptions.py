@@ -510,6 +510,8 @@ def format_http_response_error(
             :class:`GoogleAPICallError`, with the message and errors populated
             from the response.
     """
+    if isinstance(payload, list):
+        payload = next((item for item in payload if isinstance(item, dict)), {})
     payload = {} if not payload else payload
     error_message = payload.get("error", {}).get("message", "unknown error")
     errors = payload.get("error", {}).get("errors", ())

@@ -18,9 +18,15 @@ import pytest
 from google.cloud.bigtable import row_filters
 from google.cloud.bigtable.row_filters import (
     _BoolFilter as _BaseBoolFilter,
-    _RegexFilter as _BaseRegexFilter,
+)
+from google.cloud.bigtable.row_filters import (
     _CellCountFilter as _BaseCellCountFilter,
+)
+from google.cloud.bigtable.row_filters import (
     _FilterCombination as _BaseFilterCombination,
+)
+from google.cloud.bigtable.row_filters import (
+    _RegexFilter as _BaseRegexFilter,
 )
 
 
@@ -1228,6 +1234,7 @@ def test_all_row_filters_to_pb_backwards_compatibility(filter_instance):
 
 def test_timestamp_range_to_pb_backwards_compatibility():
     from datetime import datetime, timezone
+
     from google.cloud.bigtable.row_filters import TimestampRange
 
     start = datetime(2023, 1, 1, tzinfo=timezone.utc)

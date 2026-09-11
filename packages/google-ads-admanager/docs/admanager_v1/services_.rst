@@ -11,6 +11,7 @@ Services for Google Ads Admanager v1 API
     application_service
     audience_segment_service
     bandwidth_group_service
+    break_template_service
     browser_language_service
     browser_service
     cdn_config_service
@@ -43,6 +44,7 @@ Services for Google Ads Admanager v1 API
     mobile_carrier_service
     mobile_device_service
     mobile_device_submodel_service
+    native_style_service
     network_service
     operating_system_service
     operating_system_version_service

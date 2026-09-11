@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import company_messages, company_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -624,21 +625,18 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             """
 
             http_options = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_create_companies(
                 request, metadata
             )
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies,
+                    "_BaseBatchCreateCompanies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -777,21 +775,18 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             """
 
             http_options = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_companies(
                 request, metadata
             )
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies,
+                    "_BaseBatchUpdateCompanies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -931,19 +926,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseCreateCompany._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_company(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseCreateCompany,
+                    "_BaseCreateCompany__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1080,17 +1072,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseGetCompany._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_company(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetCompany._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseCompanyServiceRestTransport._BaseGetCompany._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseGetCompany,
+                    "_BaseGetCompany__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1230,15 +1221,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseListCompanies._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_companies(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseListCompanies._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseListCompanies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseListCompanies,
+                    "_BaseListCompanies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1377,19 +1369,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_company(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseUpdateCompany,
+                    "_BaseUpdateCompany__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1580,17 +1569,18 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             """
 
             http_options = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1697,15 +1687,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             http_options = (
                 _BaseCompanyServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseCompanyServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

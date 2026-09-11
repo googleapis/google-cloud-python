@@ -2253,7 +2253,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand subchannel value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEMAND_SUBCHANNEL_NAME (23):
@@ -2261,7 +2262,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Demand subchannel" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEVICE (226):
@@ -2561,6 +2563,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            HIGH_ENGAGEMENT_ADS_ALLOWED (838):
+                High engagement ads allowed.
+
+                Corresponds to "High engagement ads allowed" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``BOOLEAN``
             HOUR (100):
                 Breaks down reporting data by hour in one day.
 
@@ -4202,6 +4213,22 @@ class ReportDefinition(proto.Message):
                 ``PARTNER_FINANCE``
 
                 Data format: ``STRING``
+            PAYMENT_PROFILE_ID (858):
+                The ID of the payment profile.
+
+                Corresponds to "Payment profile ID" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``IDENTIFIER``
+            PAYMENT_PROFILE_NAME (857):
+                The name of the payment profile.
+
+                Corresponds to "Payment profile" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             PLACEMENT_ID (113):
                 Placement ID
 
@@ -5184,6 +5211,24 @@ class ReportDefinition(proto.Message):
                 Localized name of the video stitcher type.
 
                 Corresponds to "Video stitcher type" in the Ad Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
+            WEB_INTERSTITIAL_TRIGGER_TYPE (826):
+                Web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type value" in the
+                Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            WEB_INTERSTITIAL_TRIGGER_TYPE_NAME (827):
+                Localized name of the web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type" in the Ad
+                Manager UI.
 
                 Compatible with the following report types: ``HISTORICAL``
 
@@ -6761,6 +6806,7 @@ class ReportDefinition(proto.Message):
         HBT_YIELD_PARTNER_NAME = 660
         HEADER_BIDDER_INTEGRATION_TYPE = 718
         HEADER_BIDDER_INTEGRATION_TYPE_NAME = 719
+        HIGH_ENGAGEMENT_ADS_ALLOWED = 838
         HOUR = 100
         IMPRESSION_COUNTING_METHOD = 577
         IMPRESSION_COUNTING_METHOD_NAME = 578
@@ -6927,6 +6973,8 @@ class ReportDefinition(proto.Message):
         PARTNER_MANAGEMENT_ASSIGNMENT_NAME = 658
         PARTNER_MANAGEMENT_PARTNER_ID = 655
         PARTNER_MANAGEMENT_PARTNER_NAME = 656
+        PAYMENT_PROFILE_ID = 858
+        PAYMENT_PROFILE_NAME = 857
         PLACEMENT_ID = 113
         PLACEMENT_ID_ALL = 144
         PLACEMENT_NAME = 114
@@ -7032,6 +7080,8 @@ class ReportDefinition(proto.Message):
         VIDEO_SDK_VERSION_NAME = 441
         VIDEO_STITCHER_TYPE = 752
         VIDEO_STITCHER_TYPE_NAME = 753
+        WEB_INTERSTITIAL_TRIGGER_TYPE = 826
+        WEB_INTERSTITIAL_TRIGGER_TYPE_NAME = 827
         WEB_PROPERTY_CODE = 730
         WEEK = 5
         YIELD_GROUP_BUYER_NAME = 184
@@ -8088,6 +8138,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``MONEY``
+            AD_EXCHANGE_RENDER_RATE (759):
+                The ratio of impressions to responses served in Ad Exchange.
+
+                Corresponds to "Ad Exchange render rate" in the Ad Manager
+                UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``PERCENT``
             AD_EXCHANGE_RESPONSES_SERVED (42):
                 The total number of times that an Ad Exchange ad is
                 delivered.
@@ -12576,6 +12635,7 @@ class ReportDefinition(proto.Message):
         AD_EXCHANGE_PLUS_YIELD_GROUP_ECPM = 252
         AD_EXCHANGE_PLUS_YIELD_GROUP_IMPRESSIONS = 253
         AD_EXCHANGE_PLUS_YIELD_GROUP_REVENUE = 254
+        AD_EXCHANGE_RENDER_RATE = 759
         AD_EXCHANGE_RESPONSES_SERVED = 42
         AD_EXCHANGE_REVENUE = 17
         AD_EXCHANGE_REVENUE_PAID_THROUGH_MCM_AUTOPAYMENT = 212
@@ -13269,7 +13329,7 @@ class ReportDefinition(proto.Message):
                     The entire previous 6 calendar months
                     preceding the calendar month the report is run.
                 LAST_12_MONTHS (20):
-                    The entire previous 6 calendar months
+                    The entire previous 12 calendar months
                     preceding the calendar month the report is run.
                 ALL_AVAILABLE (21):
                     From 3 years before the report is run, to the

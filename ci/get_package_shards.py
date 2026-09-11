@@ -22,12 +22,31 @@ contiguous grouping. All directory variants of a package (e.g. packages/foo and
 preview-packages/foo) are kept aligned in the exact same shard.
 """
 
-import os
-import subprocess
+import collections
 import json
 import math
+import os
+import subprocess
 import sys
-import collections
+
+# CI infrastructure and workflow paths that affect test execution
+CI_INFRASTRUCTURE_DIRS = {
+    ".github",
+    "ci",
+}
+
+# Core dependency packages whose changes affect all downstream handwritten packages
+CORE_PACKAGES = {
+    "google-api-core",
+    "google-auth",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "google-cloud-core",
+    "googleapis-common-protos",
+    "grpc-google-iam-v1",
+    "proto-plus",
+    "google-crc32c",
+}
 
 
 def get_package_directories():
@@ -70,8 +89,10 @@ def get_package_weights():
     return weights
 
 
-def get_packages():
+def get_packages(handwritten_only=False):
     """Lists all package directory paths in the repository grouped by package name.
+
+    If handwritten_only is True, includes only non-GAPIC_AUTO libraries.
 
     Returns:
         dict: A dictionary mapping package_name -> list of relative directory paths.
@@ -83,8 +104,19 @@ def get_packages():
             continue
         for d in os.listdir(subdir):
             full_path = os.path.join(subdir, d) + '/'
-            if os.path.isdir(full_path):
-                packages_map[d].append(full_path)
+            if not os.path.isdir(full_path):
+                continue
+            if handwritten_only:
+                meta_file = os.path.join(full_path, ".repo-metadata.json")
+                if os.path.exists(meta_file):
+                    try:
+                        with open(meta_file) as f:
+                            data = json.load(f)
+                            if isinstance(data, dict) and data.get("library_type") == "GAPIC_AUTO":
+                                continue
+                    except Exception:
+                        pass
+            packages_map[d].append(full_path)
     return packages_map
 
 
@@ -123,14 +155,27 @@ def get_packages_to_test():
 
     package_dirs = set(get_package_directories())
     to_test_paths = collections.defaultdict(list)
+    has_ci_change = False
+
     for f in changed_files:
-        parts = f.split('/')
+        parts = os.path.normpath(f).split(os.sep)
+        if parts and parts[0] in CI_INFRASTRUCTURE_DIRS:
+            has_ci_change = True
         if len(parts) >= 2 and parts[0] in package_dirs:
             pkg_name = parts[1]
             full_path = f"{parts[0]}/{parts[1]}/"
             if pkg_name in all_packages and full_path in all_packages[pkg_name]:
                 if full_path not in to_test_paths[pkg_name]:
                     to_test_paths[pkg_name].append(full_path)
+
+    has_core_change = any(pkg in CORE_PACKAGES for pkg in to_test_paths)
+
+    # If CI infrastructure or a core dependency was touched, merge all handwritten packages
+    if has_ci_change or has_core_change:
+        for pkg, paths in get_packages(handwritten_only=True).items():
+            for path in paths:
+                if path not in to_test_paths[pkg]:
+                    to_test_paths[pkg].append(path)
 
     return dict(to_test_paths)
 
@@ -173,7 +218,7 @@ def group_packages(packages_map):
 
     # Pack packages alphabetically by package name.
     for name, paths, weight in pkg_items:
-        # If adding this package would exceed target weight AND we haven't reached the 
+        # If adding this package would exceed target weight AND we haven't reached the
         # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
         if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
             shards_list.append(current_shard_items)

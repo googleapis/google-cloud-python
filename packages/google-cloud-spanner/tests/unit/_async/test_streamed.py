@@ -1115,6 +1115,121 @@ class TestStreamedResultSet(IsolatedAsyncioTestCase):
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
 
+    @CrossSync.pytest
+    async def test___iter___large_batch(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        expected_rows = [[i, f"name_{i}"] for i in range(500)]
+        values = [self._make_value(cell) for row in expected_rows for cell in row]
+
+        result_set = self._make_partial_result_set(values, metadata=metadata)
+        iterator = _MockCancellableIterator(result_set)
+        streamed = self._make_one(iterator)
+        found = [row async for row in streamed]
+        self.assertEqual(found, expected_rows)
+        self.assertEqual([row async for row in streamed], [])
+
+    @CrossSync.pytest
+    async def test___iter___stepwise_consumption(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        expected_rows = [[i, f"name_{i}"] for i in range(20)]
+        values = [self._make_value(cell) for row in expected_rows for cell in row]
+
+        result_set = self._make_partial_result_set(values, metadata=metadata)
+        iterator = _MockCancellableIterator(result_set)
+        streamed = self._make_one(iterator)
+        stream_iter = streamed.__aiter__()
+        first_five = [await stream_iter.__anext__() for _ in range(5)]
+        self.assertEqual(first_five, expected_rows[:5])
+        remaining = [row async for row in stream_iter]
+        self.assertEqual(remaining, expected_rows[5:])
+
+    @CrossSync.pytest
+    async def test___iter___stepwise_across_chunks(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1_rows = [[i, f"name_{i}"] for i in range(10)]
+        chunk2_rows = [[i, f"name_{i}"] for i in range(10, 20)]
+        values1 = [self._make_value(cell) for row in chunk1_rows for cell in row]
+        values2 = [self._make_value(cell) for row in chunk2_rows for cell in row]
+
+        result_set1 = self._make_partial_result_set(values1, metadata=metadata)
+        result_set2 = self._make_partial_result_set(values2)
+        iterator = _MockCancellableIterator(result_set1, result_set2)
+        streamed = self._make_one(iterator)
+        stream_iter = streamed.__aiter__()
+        first_part = [await stream_iter.__anext__() for _ in range(5)]
+        self.assertEqual(first_part, chunk1_rows[:5])
+        middle_part = [await stream_iter.__anext__() for _ in range(10)]
+        self.assertEqual(middle_part, chunk1_rows[5:] + chunk2_rows[:5])
+        final_part = [row async for row in stream_iter]
+        self.assertEqual(final_part, chunk2_rows[5:])
+
+    @CrossSync.pytest
+    async def test___iter___early_break(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        expected_rows = [[i, f"name_{i}"] for i in range(10)]
+        values = [self._make_value(cell) for row in expected_rows for cell in row]
+
+        result_set = self._make_partial_result_set(values, metadata=metadata)
+        iterator = _MockCancellableIterator(result_set)
+        streamed = self._make_one(iterator)
+        consumed = []
+        async for row in streamed:
+            consumed.append(row)
+            if len(consumed) == 3:
+                break
+
+        self.assertEqual(consumed, expected_rows[:3])
+
+    @CrossSync.pytest
+    async def test___iter___mid_stream_error(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("id", TypeCode.INT64),
+            self._make_scalar_field("name", TypeCode.STRING),
+        ]
+        metadata = self._make_result_set_metadata(fields)
+        chunk1_rows = [[i, f"name_{i}"] for i in range(5)]
+        values1 = [self._make_value(cell) for row in chunk1_rows for cell in row]
+        result_set1 = self._make_partial_result_set(values1, metadata=metadata)
+
+        async def mock_iterator():
+            yield result_set1
+            raise RuntimeError("Stream error midway")
+
+        streamed = self._make_one(mock_iterator())
+        consumed = []
+        with self.assertRaises(RuntimeError) as context:
+            async for row in streamed:
+                consumed.append(row)
+
+        self.assertEqual(consumed, chunk1_rows)
+        self.assertIn("Stream error midway", str(context.exception))
+
 
 class _MockCancellableIterator(object):
     cancel_calls = 0

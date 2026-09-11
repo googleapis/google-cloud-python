@@ -509,9 +509,12 @@ __protobuf__ = proto.module(
         "GetGuestAttributesInstanceRequest",
         "GetHealthBackendServiceRequest",
         "GetHealthCheckRequest",
+        "GetHealthOperationMetadata",
+        "GetHealthOperationMetadataHealthInfo",
         "GetHealthRegionBackendServiceRequest",
         "GetHealthRegionCompositeHealthCheckRequest",
         "GetHealthRegionHealthSourceRequest",
+        "GetHealthReservationSlotRequest",
         "GetHealthTargetPoolRequest",
         "GetHostRequest",
         "GetIamPolicyBackendBucketRequest",
@@ -27212,6 +27215,8 @@ class ConfidentialInstanceConfig(proto.Message):
             UNDEFINED_CONFIDENTIAL_INSTANCE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            BMSAI (63328144):
+                Bare Metal Secure AI.
             CCA (66529):
                 Arm Confidential Compute Architecture.
             CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED (115021829):
@@ -27226,6 +27231,7 @@ class ConfidentialInstanceConfig(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_INSTANCE_TYPE = 0
+        BMSAI = 63328144
         CCA = 66529
         CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED = 115021829
         SEV = 81988
@@ -41150,6 +41156,8 @@ class FutureReservation(proto.Message):
             UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            CONFIDENTIAL_COMPUTE_TYPE_BMSAI (103738250):
+                Bare Metal Secure AI.
             CONFIDENTIAL_COMPUTE_TYPE_TDX (301241954):
                 Intel Trust Domain Extensions.
             CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED (42227601):
@@ -41157,6 +41165,7 @@ class FutureReservation(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE = 0
+        CONFIDENTIAL_COMPUTE_TYPE_BMSAI = 103738250
         CONFIDENTIAL_COMPUTE_TYPE_TDX = 301241954
         CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED = 42227601
 
@@ -44070,6 +44079,190 @@ class GetHealthCheckRequest(proto.Message):
     )
 
 
+class GetHealthOperationMetadata(proto.Message):
+    r"""Metadata for GetHealth operations.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        health_info (google.cloud.compute_v1.types.GetHealthOperationMetadataHealthInfo):
+            Output only. The health information.
+
+            This field is a member of `oneof`_ ``_health_info``.
+    """
+
+    health_info: "GetHealthOperationMetadataHealthInfo" = proto.Field(
+        proto.MESSAGE,
+        number=235287729,
+        optional=True,
+        message="GetHealthOperationMetadataHealthInfo",
+    )
+
+
+class GetHealthOperationMetadataHealthInfo(proto.Message):
+    r"""Health information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        availability_slo_status (str):
+            Output only. The availability SLO status.
+            Check the AvailabilitySloStatus enum for the
+            list of possible values.
+
+            This field is a member of `oneof`_ ``_availability_slo_status``.
+        health_status (str):
+            Output only. The health status.
+            Check the HealthStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_health_status``.
+        repair_category (str):
+            Output only. The repair category.
+            Check the RepairCategory enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_repair_category``.
+        unhealthy_reason (str):
+            Output only. The reason for unhealthy status.
+            Check the UnhealthyReason enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_unhealthy_reason``.
+        update_time (str):
+            Output only. The time when health info was
+            updated.
+
+            This field is a member of `oneof`_ ``_update_time``.
+    """
+
+    class AvailabilitySloStatus(proto.Enum):
+        r"""Output only. The availability SLO status.
+
+        Values:
+            UNDEFINED_AVAILABILITY_SLO_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            AVAILABILITY_SLO_STATUS_IN_SLO (142966428):
+                The slot availability is in SLO.
+            AVAILABILITY_SLO_STATUS_OUT_OF_SLO (112099455):
+                The slot availability is out of SLO.
+            AVAILABILITY_SLO_STATUS_SLO_UNKNOWN (280579681):
+                The slot availability is unknown.
+            AVAILABILITY_SLO_STATUS_UNSPECIFIED (481084279):
+                Unspecified availability SLO status.
+        """
+
+        UNDEFINED_AVAILABILITY_SLO_STATUS = 0
+        AVAILABILITY_SLO_STATUS_IN_SLO = 142966428
+        AVAILABILITY_SLO_STATUS_OUT_OF_SLO = 112099455
+        AVAILABILITY_SLO_STATUS_SLO_UNKNOWN = 280579681
+        AVAILABILITY_SLO_STATUS_UNSPECIFIED = 481084279
+
+    class HealthStatus(proto.Enum):
+        r"""Output only. The health status.
+
+        Values:
+            UNDEFINED_HEALTH_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            HEALTH_STATUS_HEALTHY (281715315):
+                The reservation slot is healthy.
+            HEALTH_STATUS_UNHEALTHY (476038202):
+                The reservation slot is unhealthy.
+            HEALTH_STATUS_UNSPECIFIED (482246925):
+                Unspecified health status.
+        """
+
+        UNDEFINED_HEALTH_STATUS = 0
+        HEALTH_STATUS_HEALTHY = 281715315
+        HEALTH_STATUS_UNHEALTHY = 476038202
+        HEALTH_STATUS_UNSPECIFIED = 482246925
+
+    class RepairCategory(proto.Enum):
+        r"""Output only. The repair category.
+
+        Values:
+            UNDEFINED_REPAIR_CATEGORY (0):
+                A value indicating that the enum field is not
+                set.
+            REPAIR_CATEGORY_CRITICAL_FAILURE (58241977):
+                The repair is because of critical failures,
+                that are scoped outside emergent maintenance
+            REPAIR_CATEGORY_EMERGENT_MAINTENANCE (400869148):
+                The repair is because of an emergent
+                maintenance
+            REPAIR_CATEGORY_PLANNED_MAINTENANCE (489286537):
+                The repair is because of a planned
+                maintenance
+            REPAIR_CATEGORY_UNSPECIFIED (287264456):
+                Unspecified repair category.
+            REPAIR_CATEGORY_USER_REPORTED_FAULT (227760443):
+                The repair is because of a user reported
+                fault
+        """
+
+        UNDEFINED_REPAIR_CATEGORY = 0
+        REPAIR_CATEGORY_CRITICAL_FAILURE = 58241977
+        REPAIR_CATEGORY_EMERGENT_MAINTENANCE = 400869148
+        REPAIR_CATEGORY_PLANNED_MAINTENANCE = 489286537
+        REPAIR_CATEGORY_UNSPECIFIED = 287264456
+        REPAIR_CATEGORY_USER_REPORTED_FAULT = 227760443
+
+    class UnhealthyReason(proto.Enum):
+        r"""Output only. The reason for unhealthy status.
+
+        Values:
+            UNDEFINED_UNHEALTHY_REASON (0):
+                A value indicating that the enum field is not
+                set.
+            UNHEALTHY_REASON_PENDING_USER_APPROVAL (315397455):
+                The slot is unhealthy because there is a
+                pending repair, waiting for customer approval
+            UNHEALTHY_REASON_REPAIRING (199320309):
+                The slot is unhealthy because repair is in
+                progress
+            UNHEALTHY_REASON_UNSCHEDULABLE (118083439):
+                The slot is unhealthy because a vm cannot be
+                scheduled on it, and no repairs are running on
+                the slot
+            UNHEALTHY_REASON_UNSPECIFIED (337725687):
+                Unspecified unhealthy reason.
+        """
+
+        UNDEFINED_UNHEALTHY_REASON = 0
+        UNHEALTHY_REASON_PENDING_USER_APPROVAL = 315397455
+        UNHEALTHY_REASON_REPAIRING = 199320309
+        UNHEALTHY_REASON_UNSCHEDULABLE = 118083439
+        UNHEALTHY_REASON_UNSPECIFIED = 337725687
+
+    availability_slo_status: str = proto.Field(
+        proto.STRING,
+        number=255971455,
+        optional=True,
+    )
+    health_status: str = proto.Field(
+        proto.STRING,
+        number=380545845,
+        optional=True,
+    )
+    repair_category: str = proto.Field(
+        proto.STRING,
+        number=113376624,
+        optional=True,
+    )
+    unhealthy_reason: str = proto.Field(
+        proto.STRING,
+        number=448838143,
+        optional=True,
+    )
+    update_time: str = proto.Field(
+        proto.STRING,
+        number=500295811,
+        optional=True,
+    )
+
+
 class GetHealthRegionBackendServiceRequest(proto.Message):
     r"""A request message for RegionBackendServices.GetHealth. See
     the method description for details.
@@ -44158,6 +44351,56 @@ class GetHealthRegionHealthSourceRequest(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
+    )
+
+
+class GetHealthReservationSlotRequest(proto.Message):
+    r"""A request message for ReservationSlots.GetHealth. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent_name (str):
+            The name of the parent reservation, parent block and parent
+            sub-block. In the format of
+            reservations/{reservation_name}/reservationBlocks/{reservation_block_name}/reservationSubBlocks/{reservation_sub_block_name}
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+
+            This field is a member of `oneof`_ ``_request_id``.
+        reservation_slot (str):
+            The name of the reservation slot.
+            Name should conform to RFC1035 or be a resource
+            ID.
+        zone (str):
+            Name of the zone for this request. Zone name
+            should conform to RFC1035.
+    """
+
+    parent_name: str = proto.Field(
+        proto.STRING,
+        number=478151936,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    reservation_slot: str = proto.Field(
+        proto.STRING,
+        number=277470865,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
     )
 
 
@@ -50507,6 +50750,7 @@ class GuestOsFeature(proto.Message):
                - IDPF
                - SNP_SVSM_CAPABLE
                - CCA_CAPABLE
+               - SUSPEND_SAFE_FPR
 
             For more information, see Enabling guest operating system
             features. Check the Type enum for the list of possible
@@ -50534,6 +50778,7 @@ class GuestOsFeature(proto.Message):
            - IDPF
            - SNP_SVSM_CAPABLE
            - CCA_CAPABLE
+           - SUSPEND_SAFE_FPR
 
         For more information, see Enabling guest operating system features.
 
@@ -50565,6 +50810,9 @@ class GuestOsFeature(proto.Message):
                 No description available.
             SNP_SVSM_CAPABLE (52921460):
                 No description available.
+            SUSPEND_SAFE_FPR (223956441):
+                Indicates the guest OS is safe for free page
+                reporting (FPR) during suspend.
             TDX_CAPABLE (240446133):
                 No description available.
             UEFI_COMPATIBLE (195865408):
@@ -50588,6 +50836,7 @@ class GuestOsFeature(proto.Message):
         SEV_LIVE_MIGRATABLE_V2 = 168551983
         SEV_SNP_CAPABLE = 426919
         SNP_SVSM_CAPABLE = 52921460
+        SUSPEND_SAFE_FPR = 223956441
         TDX_CAPABLE = 240446133
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
@@ -68712,6 +68961,11 @@ class Interconnect(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            Output only. Server-defined URL for this
+            resource with the resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
         state (str):
             Output only. [Output Only] The current state of Interconnect
             functionality, which can take one of the following values:
@@ -69083,6 +69337,11 @@ class Interconnect(proto.Message):
     self_link: str = proto.Field(
         proto.STRING,
         number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
         optional=True,
     )
     state: str = proto.Field(
@@ -73828,11 +74087,33 @@ class InterconnectLocationCrossSiteInterconnectInfo(proto.Message):
             InterconnectLocations.
 
             This field is a member of `oneof`_ ``_city``.
+        max_dynamic_path_bandwidth_gbps (int):
+            Output only. The maximum unmetered bandwidth
+            for dynamic paths allowable per WireGroup for
+            this metro.
+
+            This field is a member of `oneof`_ ``_max_dynamic_path_bandwidth_gbps``.
+        max_fixed_path_bandwidth_gbps (int):
+            Output only. The maximum unmetered bandwidth
+            for fixed paths allowable per WireGroup for this
+            metro.
+
+            This field is a member of `oneof`_ ``_max_fixed_path_bandwidth_gbps``.
     """
 
     city: str = proto.Field(
         proto.STRING,
         number=3053931,
+        optional=True,
+    )
+    max_dynamic_path_bandwidth_gbps: int = proto.Field(
+        proto.INT64,
+        number=378021355,
+        optional=True,
+    )
+    max_fixed_path_bandwidth_gbps: int = proto.Field(
+        proto.INT64,
+        number=346138080,
         optional=True,
     )
 
@@ -100732,6 +101013,15 @@ class ManagedInstance(proto.Message):
             programmed stop scheduled.
 
             This field is a member of `oneof`_ ``_shutdown_details``.
+        target_status (str):
+            Output only. The eventual status of the
+            instance. The instance group manager will not be
+            identified as stable till each managed instance
+            reaches its targetStatus.
+            Check the TargetStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_target_status``.
         version (google.cloud.compute_v1.types.ManagedInstanceVersion):
             Output only. [Output Only] Intended version of this
             instance.
@@ -100901,6 +101191,37 @@ class ManagedInstance(proto.Message):
         SUSPENDING = 514206246
         TERMINATED = 250018339
 
+    class TargetStatus(proto.Enum):
+        r"""Output only. The eventual status of the instance. The
+        instance group manager will not be identified as stable till
+        each managed instance reaches its targetStatus.
+        Additional supported values which may be not listed in the enum
+        directly due to technical reasons:
+
+        RUNNING
+        STOPPED
+        SUSPENDED
+
+        Values:
+            UNDEFINED_TARGET_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            ABANDONED (81797556):
+                The managed instance will eventually be
+                ABANDONED, i.e. dissociated from the managed
+                instance group.
+            DELETED (120962041):
+                The managed instance will eventually be
+                DELETED.
+            INVALID (530283991):
+                Only present to map the STATUS_INVALID value.
+        """
+
+        UNDEFINED_TARGET_STATUS = 0
+        ABANDONED = 81797556
+        DELETED = 120962041
+        INVALID = 530283991
+
     current_action: str = proto.Field(
         proto.STRING,
         number=178475964,
@@ -100968,6 +101289,11 @@ class ManagedInstance(proto.Message):
         number=15198553,
         optional=True,
         message="ManagedInstanceShutdownDetails",
+    )
+    target_status: str = proto.Field(
+        proto.STRING,
+        number=307799648,
+        optional=True,
     )
     version: "ManagedInstanceVersion" = proto.Field(
         proto.MESSAGE,
@@ -103264,6 +103590,11 @@ class NetworkEndpointGroup(proto.Message):
             GCE_VM_IP (401880793):
                 The network endpoint is represented by an IP
                 address.
+            GCE_VM_IP_DEDICATED_BACKEND (321618974):
+                The network endpoint for targeting a specific
+                network interface of a VM instance in
+                configurations with multiple network interfaces
+                on the same network.
             GCE_VM_IP_PORT (501838375):
                 The network endpoint is represented by IP
                 address and port pair.
@@ -103292,6 +103623,7 @@ class NetworkEndpointGroup(proto.Message):
 
         UNDEFINED_NETWORK_ENDPOINT_TYPE = 0
         GCE_VM_IP = 401880793
+        GCE_VM_IP_DEDICATED_BACKEND = 321618974
         GCE_VM_IP_PORT = 501838375
         GCE_VM_IP_PORTMAP = 22819253
         INTERNET_FQDN_PORT = 404154477
@@ -109301,6 +109633,11 @@ class Operation(proto.Message):
             the operation, this field will be populated.
 
             This field is a member of `oneof`_ ``_error``.
+        get_health_operation_metadata (google.cloud.compute_v1.types.GetHealthOperationMetadata):
+            Output only. Metadata for GetHealth
+            operations.
+
+            This field is a member of `oneof`_ ``_get_health_operation_metadata``.
         get_version_operation_metadata (google.cloud.compute_v1.types.GetVersionOperationMetadata):
 
             This field is a member of `oneof`_ ``_get_version_operation_metadata``.
@@ -109464,6 +109801,12 @@ class Operation(proto.Message):
         number=96784904,
         optional=True,
         message="Error",
+    )
+    get_health_operation_metadata: "GetHealthOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=303911457,
+        optional=True,
+        message="GetHealthOperationMetadata",
     )
     get_version_operation_metadata: "GetVersionOperationMetadata" = proto.Field(
         proto.MESSAGE,
@@ -122945,6 +123288,8 @@ class Reservation(proto.Message):
             UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE (0):
                 A value indicating that the enum field is not
                 set.
+            CONFIDENTIAL_COMPUTE_TYPE_BMSAI (103738250):
+                Bare Metal Secure AI.
             CONFIDENTIAL_COMPUTE_TYPE_TDX (301241954):
                 Intel Trust Domain Extensions.
             CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED (42227601):
@@ -122952,6 +123297,7 @@ class Reservation(proto.Message):
         """
 
         UNDEFINED_CONFIDENTIAL_COMPUTE_TYPE = 0
+        CONFIDENTIAL_COMPUTE_TYPE_BMSAI = 103738250
         CONFIDENTIAL_COMPUTE_TYPE_TDX = 301241954
         CONFIDENTIAL_COMPUTE_TYPE_UNSPECIFIED = 42227601
 
@@ -147785,6 +148131,17 @@ class Subnetwork(proto.Message):
             ARP_ALL_RANGES (445655380):
                 All ranges assigned to the VM NIC will
                 respond to ARP.
+            ARP_BROADCAST_PRIMARY_RANGE (123887458):
+                VMs will receive an ARP response from a VM
+                instance owning the target IP address within the
+                subnetwork's primary CIDR range, if such a VM
+                instance exists and is running.
+            ARP_BROADCAST_PRIMARY_RANGE_WITH_LEARNING (425592922):
+                Combines ARP_BROADCAST_PRIMARY_RANGE with MAC learning.
+                Enables cache mapping between IP addresses and custom MAC
+                addresses of instances and use of it to set the correct
+                destination MAC address. If this option is chosen, the
+                subnetwork must have /24 or a smaller CIDR range.
             ARP_PRIMARY_RANGE (120210048):
                 Only the primary range of the VM NIC will
                 respond to ARP.
@@ -147792,6 +148149,8 @@ class Subnetwork(proto.Message):
 
         UNDEFINED_RESOLVE_SUBNET_MASK = 0
         ARP_ALL_RANGES = 445655380
+        ARP_BROADCAST_PRIMARY_RANGE = 123887458
+        ARP_BROADCAST_PRIMARY_RANGE_WITH_LEARNING = 425592922
         ARP_PRIMARY_RANGE = 120210048
 
     class Role(proto.Enum):

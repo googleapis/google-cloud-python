@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.datamanager_v1._compat import transcode_request
 from google.ads.datamanager_v1.types import ingestion_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -586,21 +587,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             """
 
             http_options = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_http_options()
-
             request, metadata = self._interceptor.pre_ingest_ad_events(
                 request, metadata
             )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseIngestAdEvents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseIngestAdEvents,
+                    "_BaseIngestAdEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -743,21 +741,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             """
 
             http_options = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_http_options()
-
             request, metadata = self._interceptor.pre_ingest_audience_members(
                 request, metadata
             )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers,
+                    "_BaseIngestAudienceMembers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -905,19 +900,16 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             http_options = (
                 _BaseIngestionServiceRestTransport._BaseIngestEvents._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_ingest_events(request, metadata)
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseIngestEvents,
+                    "_BaseIngestEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1061,21 +1053,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             """
 
             http_options = _BaseIngestionServiceRestTransport._BaseRemoveAllAudienceMembers._get_http_options()
-
             request, metadata = self._interceptor.pre_remove_all_audience_members(
                 request, metadata
             )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseRemoveAllAudienceMembers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIngestionServiceRestTransport._BaseRemoveAllAudienceMembers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseRemoveAllAudienceMembers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseRemoveAllAudienceMembers,
+                    "_BaseRemoveAllAudienceMembers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1222,21 +1211,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             """
 
             http_options = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_http_options()
-
             request, metadata = self._interceptor.pre_remove_audience_members(
                 request, metadata
             )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers,
+                    "_BaseRemoveAudienceMembers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1382,17 +1368,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             """
 
             http_options = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_http_options()
-
             request, metadata = self._interceptor.pre_retrieve_request_status(
                 request, metadata
             )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus,
+                    "_BaseRetrieveRequestStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

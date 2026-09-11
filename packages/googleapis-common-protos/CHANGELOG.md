@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.75.3](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.2...googleapis-common-protos-v1.75.3) (2026-09-03)
+
+
+### Bug Fixes
+
+* **googleapis-common-protos:** remove deprecated license classifier ([#18242](https://github.com/googleapis/google-cloud-python/issues/18242)) ([6f0216a](https://github.com/googleapis/google-cloud-python/commit/6f0216a2dc492236c80822de4439c8ab2c6bd9be)), refs [#18235](https://github.com/googleapis/google-cloud-python/issues/18235)
+
 ## [1.75.2](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.1...googleapis-common-protos-v1.75.2) (2026-08-21)
 
 

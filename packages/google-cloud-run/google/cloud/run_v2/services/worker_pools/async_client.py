@@ -451,7 +451,7 @@ class WorkerPoolsAsyncClient:
             self._client._transport.create_worker_pool
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)$"
@@ -587,7 +587,7 @@ class WorkerPoolsAsyncClient:
             self._client._transport.get_worker_pool
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
@@ -714,7 +714,7 @@ class WorkerPoolsAsyncClient:
             self._client._transport.list_worker_pools
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)$"
@@ -864,7 +864,7 @@ class WorkerPoolsAsyncClient:
             self._client._transport.update_worker_pool
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
@@ -1003,7 +1003,7 @@ class WorkerPoolsAsyncClient:
             self._client._transport.delete_worker_pool
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
