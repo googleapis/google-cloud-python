@@ -219,6 +219,22 @@ case ${TEST_TYPE} in
             retval=0
         fi
         ;;
+    twine_check)
+        if [ -f setup.py ] || [ -f pyproject.toml ]; then
+            echo "Running twine_check for $(basename $(pwd))..."
+            rm -rf dist
+            # TODO(https://github.com/googleapis/google-cloud-python/issues/18339): Re-enable `--strict` once `long_description_content_type` is set in setup.py across all packages.
+            if python3 -m build --sdist --no-isolation --outdir dist . && twine check dist/*; then
+                retval=0
+            else
+                retval=1
+            fi
+            rm -rf dist
+        else
+            echo "Skipping twine_check as this does not appear to be a Python package (no setup.py or pyproject.toml)."
+            retval=0
+        fi
+        ;;
     *)
         nox --stop-on-first-error -s ${TEST_TYPE}
         retval=$?
