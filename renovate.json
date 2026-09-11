@@ -1,8 +1,7 @@
 {
   "extends": [
-    "config:base",
-    "group:all",
-    "schedule:weekly"
+    "config:recommended",
+    "group:all"
   ],
   "ignorePaths": [
     ".github/workflows/unittest.yml",
