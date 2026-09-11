@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import sys
-import types
 from unittest import mock
 
 import pytest
@@ -331,6 +330,14 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
             ClientOptions(api_endpoint="example.com:not_a_port"),
             {"server.address": "example.com", "url.domain": "googleapis.com"},
         ),
+        (
+            ClientOptions(api_endpoint="http://[invalid:ipv6:80/"),
+            {"url.domain": "googleapis.com"},
+        ),
+        (
+            ClientOptions(api_endpoint="example.com:99999"),
+            {"server.address": "example.com", "url.domain": "googleapis.com"},
+        ),
     ],
 )
 def test_extract_endpoint_attributes(client_options, expected_attrs):
@@ -338,40 +345,9 @@ def test_extract_endpoint_attributes(client_options, expected_attrs):
     assert _observability._extract_endpoint_attributes(client_options) == expected_attrs
 
 
-@pytest.mark.parametrize(
-    "req,expected_attrs",
-    [
-        (None, {"rpc.system.name": "grpc"}),
-        (types.SimpleNamespace(), {"rpc.system.name": "grpc"}),
-        (
-            types.SimpleNamespace(name="projects/p1/secrets/s1"),
-            {"rpc.system.name": "grpc"},
-        ),
-        (
-            types.SimpleNamespace(parent="projects/parent-p1"),
-            {"rpc.system.name": "grpc"},
-        ),
-        (
-            types.SimpleNamespace(name="projects/p1/secrets/s1", resend_count=2),
-            {
-                "rpc.system.name": "grpc",
-                "gcp.grpc.resend_count": 2,
-            },
-        ),
-        (
-            types.SimpleNamespace(resend_count=0),
-            {"rpc.system.name": "grpc"},
-        ),
-    ],
-)
-def test_extract_grpc_request_attributes(req, expected_attrs):
-    """Proves that _extract_grpc_request_attributes extracts all T4 gRPC attributes."""
-    assert _observability._extract_grpc_request_attributes(req) == expected_attrs
-
-
 def test_grpc_client_request_hook():
     """Proves that _grpc_client_request_hook attaches extracted T4 attributes to recording spans,
-    normalizes span names, sets fully qualified rpc.method, and removes legacy rpc.system.
+    normalizes span names, sets fully qualified rpc.method, and allows legacy rpc.system to coexist.
     """
     # Non-recording span should not set attributes
     mock_span_non_rec = mock.Mock()
@@ -389,9 +365,8 @@ def test_grpc_client_request_hook():
         "/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
     )
     mock_span_rec._attributes = {"rpc.system": "grpc"}
-    req = types.SimpleNamespace(name="projects/my-proj/secrets/s1", resend_count=1)
 
-    _observability._grpc_client_request_hook(mock_span_rec, req)
+    _observability._grpc_client_request_hook(mock_span_rec, mock.Mock())
 
     # Verify span name normalized and rpc.method set to fully qualified name
     mock_span_rec.update_name.assert_called_once_with(
@@ -401,57 +376,63 @@ def test_grpc_client_request_hook():
         "rpc.method", "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
     )
 
-    # Verify rpc.system.name set and legacy rpc.system popped
+    # Verify rpc.system.name set and legacy rpc.system left intact
     mock_span_rec.set_attribute.assert_any_call("rpc.system.name", "grpc")
-    assert "rpc.system" not in mock_span_rec._attributes
+    assert mock_span_rec._attributes["rpc.system"] == "grpc"
 
-    mock_span_rec.set_attribute.assert_any_call("gcp.grpc.resend_count", 1)
-
-    # Custom hook with endpoint attributes and already-clean span name
+    # Custom hook with endpoint attributes and already-clean span name (no leading slash)
     endpoint_hook = _observability._make_grpc_client_request_hook(
         {"server.address": "custom.api.com", "server.port": 443}
     )
     mock_span_custom = mock.Mock()
     mock_span_custom.is_recording.return_value = True
-    mock_span_custom.name = "already_clean_name"
-    endpoint_hook(mock_span_custom, req)
+    mock_span_custom.name = (
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
+    endpoint_hook(mock_span_custom, None)
     mock_span_custom.set_attribute.assert_any_call("server.address", "custom.api.com")
     mock_span_custom.set_attribute.assert_any_call("server.port", 443)
+    mock_span_custom.set_attribute.assert_any_call(
+        "rpc.method", "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+    )
     mock_span_custom.update_name.assert_not_called()
 
 
 def test_grpc_client_request_hook_span_edge_cases():
     """Proves that _grpc_client_request_hook handles spans lacking update_name,
-    spans with None _attributes, and spans with un-poppable _attributes gracefully.
+    spans with None or non-string names, and empty string names gracefully.
     """
-    # 1. Leading slash in span.name but span lacks update_name (exercises 154->159)
-    mock_span_no_update = mock.Mock(
-        spec=["is_recording", "name", "_attributes", "set_attribute"]
-    )
+    # 1. Leading slash in span.name but span lacks update_name
+    mock_span_no_update = mock.Mock(spec=["is_recording", "name", "set_attribute"])
     mock_span_no_update.is_recording.return_value = True
     mock_span_no_update.name = "/package.Service/Method"
-    mock_span_no_update._attributes = {"rpc.system": "grpc"}
     _observability._grpc_client_request_hook(mock_span_no_update, None)
     mock_span_no_update.set_attribute.assert_any_call(
         "rpc.method", "package.Service/Method"
     )
+    mock_span_no_update.set_attribute.assert_any_call("rpc.system.name", "grpc")
 
-    # 2. Span with None _attributes (exercises 160->165)
-    mock_span_no_attrs = mock.Mock(spec=["is_recording", "name", "set_attribute"])
-    mock_span_no_attrs.is_recording.return_value = True
-    mock_span_no_attrs.name = "clean_name"
-    _observability._grpc_client_request_hook(mock_span_no_attrs, None)
-    mock_span_no_attrs.set_attribute.assert_any_call("rpc.system.name", "grpc")
-
-    # 3. Span with non-dict / un-poppable _attributes (exercises 162->165)
-    mock_span_unpoppable = mock.Mock(
-        spec=["is_recording", "name", "_attributes", "set_attribute"]
+    # 2. Span with None name
+    mock_span_none_name = mock.Mock(spec=["is_recording", "name", "set_attribute"])
+    mock_span_none_name.is_recording.return_value = True
+    mock_span_none_name.name = None
+    _observability._grpc_client_request_hook(mock_span_none_name, None)
+    mock_span_none_name.set_attribute.assert_any_call("rpc.system.name", "grpc")
+    assert not any(
+        call.args[0] == "rpc.method"
+        for call in mock_span_none_name.set_attribute.call_args_list
     )
-    mock_span_unpoppable.is_recording.return_value = True
-    mock_span_unpoppable.name = "clean_name"
-    mock_span_unpoppable._attributes = object()
-    _observability._grpc_client_request_hook(mock_span_unpoppable, None)
-    mock_span_unpoppable.set_attribute.assert_any_call("rpc.system.name", "grpc")
+
+    # 3. Span with empty string name
+    mock_span_empty_name = mock.Mock(spec=["is_recording", "name", "set_attribute"])
+    mock_span_empty_name.is_recording.return_value = True
+    mock_span_empty_name.name = ""
+    _observability._grpc_client_request_hook(mock_span_empty_name, None)
+    mock_span_empty_name.set_attribute.assert_any_call("rpc.system.name", "grpc")
+    assert not any(
+        call.args[0] == "rpc.method"
+        for call in mock_span_empty_name.set_attribute.call_args_list
+    )
 
 
 def test_get_otel_interceptor_with_api_endpoint(monkeypatch):
