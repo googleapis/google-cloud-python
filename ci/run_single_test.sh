@@ -222,9 +222,12 @@ case ${TEST_TYPE} in
     twine_check)
         if [ -f setup.py ] || [ -f pyproject.toml ]; then
             echo "Running twine_check for $(basename $(pwd))..."
-            python3 -m build --sdist --no-isolation --outdir dist .
-            twine check --strict dist/*
-            retval=$?
+            rm -rf dist
+            if python3 -m build --sdist --no-isolation --outdir dist . && twine check --strict dist/*; then
+                retval=0
+            else
+                retval=1
+            fi
             rm -rf dist
         else
             echo "Skipping twine_check as this does not appear to be a Python package (no setup.py or pyproject.toml)."
