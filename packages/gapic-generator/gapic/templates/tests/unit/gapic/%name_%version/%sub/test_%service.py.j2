@@ -957,6 +957,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_interceptors():
             grpc_helpers,
             "apply_channel_interceptors",
             return_value=mock_channel,
+            create=True,
         ) as mock_apply_interceptors,
     ):
         transport = transports.{{ service.grpc_transport_name }}(
@@ -977,6 +978,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_custom_channel_interceptor
         grpc_helpers,
         "apply_channel_interceptors",
         return_value=mock_custom_channel,
+        create=True,
     ) as mock_apply_interceptors:
         transport = transports.{{ service.grpc_transport_name }}(
             channel=mock_custom_channel,
