@@ -56,13 +56,41 @@ class CrossSyncOutputFile:
         """
         full_str = self.header + ast.unparse(self.tree)
         if with_formatter:
-            import black  # type: ignore
-            import autoflake  # type: ignore
+            import subprocess
 
-            full_str = black.format_str(
-                autoflake.fix_code(full_str, remove_all_unused_imports=True),
-                mode=black.FileMode(),
-            )
+            try:
+                result = subprocess.run(
+                    [
+                        "ruff",
+                        "check",
+                        "--select",
+                        "I,F401",
+                        "--fix",
+                        "--line-length=88",
+                        "-",
+                    ],
+                    input=full_str,
+                    text=True,
+                    capture_output=True,
+                    check=True,
+                )
+                full_str = result.stdout
+
+                result = subprocess.run(
+                    [
+                        "ruff",
+                        "format",
+                        "--line-length=88",
+                        "-",
+                    ],
+                    input=full_str,
+                    text=True,
+                    capture_output=True,
+                    check=True,
+                )
+                full_str = result.stdout
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                pass
         if save_to_disk:
             import os
             os.makedirs(os.path.dirname(self.output_path), exist_ok=True)

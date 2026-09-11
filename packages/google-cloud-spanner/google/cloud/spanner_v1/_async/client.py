@@ -29,7 +29,7 @@ import logging
 import os
 import threading
 import warnings
-from typing import Optional
+from typing import Optional, Union
 
 import google.api_core.client_options
 import grpc
@@ -69,6 +69,7 @@ else:
     )
 
 
+from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
 from google.cloud.spanner_v1._async.instance import Instance
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
@@ -302,8 +303,23 @@ class Client(ClientWithProject):
         client_certificate=None,
         client_key=None,
         instance_type=None,
+        channel_pool_options: Optional[Union[ChannelPoolOptions, dict]] = None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
+        if channel_pool_options is None:
+            enable_env = os.getenv("SPANNER_ENABLE_CHANNEL_POOL", "").lower()
+            if enable_env in ("true", "1", "yes"):
+                channel_pool_options = ChannelPoolOptions()
+        if channel_pool_options is not None:
+            if isinstance(channel_pool_options, dict):
+                channel_pool_options = ChannelPoolOptions(**channel_pool_options)
+            elif isinstance(channel_pool_options, ChannelPoolOptions):
+                channel_pool_options.validate()
+            else:
+                raise TypeError(
+                    f"channel_pool_options must be a ChannelPoolOptions or dict, got {type(channel_pool_options).__name__}"
+                )
+        self._channel_pool_options = channel_pool_options
         self._use_plain_text = use_plain_text
         self._ca_certificate = ca_certificate
         self._client_certificate = client_certificate
@@ -439,6 +455,15 @@ class Client(ClientWithProject):
     @property
     def _next_nth_request(self):
         return self._nth_request.increment()
+
+    @property
+    def channel_pool_options(self) -> Optional[ChannelPoolOptions]:
+        """Getter for client's channel_pool_options.
+
+        :rtype: :class:`~google.cloud.spanner_v1.channel_pool.ChannelPoolOptions` or None
+        :returns: The channel pool options configured on the client.
+        """
+        return self._channel_pool_options
 
     @property
     def credentials(self):

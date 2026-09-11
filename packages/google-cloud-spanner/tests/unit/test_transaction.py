@@ -1336,6 +1336,137 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(len(transaction._mutations), 1)
         self.assertEqual(api._committed, None)
 
+    def test_lazy_stream_execute_sql_followed_by_execute_update_no_deadlock(self):
+        from google.cloud.spanner_v1 import (
+            ResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+
+        database = _Database()
+        api = database.spanner_api = self._make_spanner_api()
+        metadata_pb = ResultSetMetadata(
+            transaction=build_transaction_pb(id=TRANSACTION_ID)
+        )
+        api.execute_sql.return_value = ResultSet(
+            stats=ResultSetStats(row_count_exact=1),
+            metadata=metadata_pb,
+            precommit_token=None,
+        )
+        session = _Session(database)
+        transaction = self._make_one(session)
+
+        result_set = transaction.execute_sql("SELECT 1")
+        self.assertIsNotNone(result_set)
+        self.assertIsNone(transaction._transaction_id)
+
+        row_count = transaction.execute_update("UPDATE table SET x = 1")
+        self.assertEqual(row_count, 1)
+        self.assertEqual(transaction._transaction_id, TRANSACTION_ID)
+
+    def test_reset_and_begin_resets_affinity(self):
+        from google.cloud.spanner_v1 import Transaction as TransactionPB
+
+        database = _Database()
+        database.channel_pool_enabled = True
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        api = database.spanner_api = self._make_spanner_api()
+        api.begin_transaction.return_value = transaction_pb
+        session = _Session(database)
+        transaction = self._make_one(session)
+        self.assertIsNotNone(transaction._affinity)
+        initial_affinity = transaction._affinity
+
+        transaction._reset_and_begin()
+        self.assertIsNotNone(transaction._affinity)
+        self.assertIsNot(transaction._affinity, initial_affinity)
+        self.assertEqual(transaction._transaction_id, TRANSACTION_ID)
+
+    def test_transaction_affinity_attached_to_statements(self):
+        from google.cloud.spanner_v1 import (
+            ResultSet,
+            ResultSetMetadata,
+            ResultSetStats,
+        )
+        from google.cloud.spanner_v1.types.spanner import (
+            ExecuteBatchDmlResponse,
+        )
+
+        database = _Database()
+        database.channel_pool_enabled = True
+        api = database.spanner_api = self._make_spanner_api()
+        metadata_pb = ResultSetMetadata(
+            transaction=build_transaction_pb(id=TRANSACTION_ID)
+        )
+        api.execute_sql.return_value = ResultSet(
+            stats=ResultSetStats(row_count_exact=1),
+            metadata=metadata_pb,
+        )
+        api.execute_batch_dml.return_value = ExecuteBatchDmlResponse(
+            result_sets=[
+                ResultSet(
+                    stats=ResultSetStats(row_count_exact=1),
+                    metadata=metadata_pb,
+                )
+            ]
+        )
+
+        session = _Session(database)
+        transaction = self._make_one(session)
+        affinity = transaction._affinity
+        self.assertIsNotNone(affinity)
+
+        # 1. execute_update
+        transaction.execute_update("UPDATE table SET x = 1")
+        sql_metadata = dict(api.execute_sql.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", sql_metadata)
+        self.assertIs(sql_metadata["x-goog-spanner-affinity"], affinity)
+
+        # 2. batch_update
+        transaction.batch_update(statements=["UPDATE table SET x = 2"])
+        batch_metadata = dict(api.execute_batch_dml.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", batch_metadata)
+        self.assertIs(batch_metadata["x-goog-spanner-affinity"], affinity)
+
+    def test_transaction_commit_and_rollback_affinity_lifecycle(self):
+        from google.cloud.spanner_v1.types import CommitResponse
+
+        database = _Database()
+        database.channel_pool_enabled = True
+        api = database.spanner_api = self._make_spanner_api()
+        api.commit.return_value = CommitResponse()
+        session = _Session(database)
+
+        # 1. Test commit lifecycle
+        transaction = self._make_one(session)
+        transaction._transaction_id = TRANSACTION_ID
+        affinity = transaction._affinity
+        self.assertIsNotNone(affinity)
+        with mock.patch.object(
+            type(affinity), "reset", wraps=affinity.reset
+        ) as reset_spy:
+            transaction.commit()
+            commit_metadata = dict(api.commit.call_args.kwargs["metadata"])
+            self.assertIn("x-goog-spanner-affinity", commit_metadata)
+            self.assertIs(commit_metadata["x-goog-spanner-affinity"], affinity)
+            reset_spy.assert_called_once()
+
+        # 2. Test rollback lifecycle
+        transaction_rollback = self._make_one(session)
+        transaction_rollback._transaction_id = TRANSACTION_ID
+        rollback_affinity = transaction_rollback._affinity
+        self.assertIsNotNone(rollback_affinity)
+        with mock.patch.object(
+            type(rollback_affinity), "reset", wraps=rollback_affinity.reset
+        ) as rollback_reset_spy:
+            transaction_rollback.rollback()
+            rollback_metadata = dict(api.rollback.call_args.kwargs["metadata"])
+            self.assertIn("x-goog-spanner-affinity", rollback_metadata)
+            self.assertIs(
+                rollback_metadata["x-goog-spanner-affinity"], rollback_affinity
+            )
+            rollback_reset_spy.assert_called_once()
+
     @staticmethod
     def _build_span_attributes(
         database: Database, **extra_attributes

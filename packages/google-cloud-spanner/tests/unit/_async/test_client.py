@@ -936,3 +936,54 @@ class TestClient(IsolatedAsyncioTestCase):
             "instance_type must be one of 'cloud' or 'omni'",
             str(ctx.exception),
         )
+
+    def test_constructor_w_channel_pool_options(self):
+        from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
+
+        options = ChannelPoolOptions(min_channels=2, max_channels=6)
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=build_scoped_credentials(),
+            channel_pool_options=options,
+        )
+        self.assertIs(client.channel_pool_options, options)
+
+    def test_constructor_w_channel_pool_options_dict(self):
+        from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
+
+        options_dict = {"min_channels": 3, "max_channels": 7}
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=build_scoped_credentials(),
+            channel_pool_options=options_dict,
+        )
+        self.assertIsInstance(client.channel_pool_options, ChannelPoolOptions)
+        self.assertEqual(client.channel_pool_options.min_channels, 3)
+        self.assertEqual(client.channel_pool_options.max_channels, 7)
+
+    def test_constructor_w_channel_pool_options_env_var(self):
+        from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
+
+        for value in ("true", "1", "yes", "TRUE", "True", "YES"):
+            with mock.patch.dict(os.environ, {"SPANNER_ENABLE_CHANNEL_POOL": value}):
+                client = self._make_one(
+                    project=self.PROJECT,
+                    credentials=build_scoped_credentials(),
+                )
+                self.assertIsInstance(client.channel_pool_options, ChannelPoolOptions)
+
+        for value in ("false", "0", "no", ""):
+            with mock.patch.dict(os.environ, {"SPANNER_ENABLE_CHANNEL_POOL": value}):
+                client = self._make_one(
+                    project=self.PROJECT,
+                    credentials=build_scoped_credentials(),
+                )
+                self.assertIsNone(client.channel_pool_options)
+
+    def test_constructor_w_channel_pool_options_invalid_type(self):
+        with self.assertRaises(TypeError):
+            self._make_one(
+                project=self.PROJECT,
+                credentials=build_scoped_credentials(),
+                channel_pool_options="invalid_type",
+            )

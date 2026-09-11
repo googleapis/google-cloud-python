@@ -39,6 +39,10 @@ from google.cloud.spanner_v1._helpers import (
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
 from google.cloud.spanner_v1.batch import _BatchBase
+from google.cloud.spanner_v1.channel_pool import (
+    TransactionAffinity,
+    is_channel_pool_enabled,
+)
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.types.commit_response import CommitResponse
@@ -60,8 +64,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
 
-    :raises ValueError: if session has an existing transaction
-    """
+    :raises ValueError: if session has an existing transaction"""
 
     exclude_txn_from_change_streams: bool = False
     isolation_level: TransactionOptions.IsolationLevel = (
@@ -73,9 +76,26 @@ class Transaction(_SnapshotBase, _BatchBase):
     _multi_use: bool = True
     _read_only: bool = False
 
-    def __init__(self, session, client_context=None):
+    def __init__(
+        self,
+        session,
+        client_context=None,
+        affinity: Optional[TransactionAffinity] = None,
+    ):
         super(Transaction, self).__init__(session, client_context=client_context)
         self.rolled_back: bool = False
+        if affinity is not None:
+            self._affinity: Optional[TransactionAffinity] = affinity
+            self._owns_affinity: bool = False
+        else:
+            database = getattr(getattr(self, "_session", None), "_database", None)
+            if is_channel_pool_enabled(database):
+                self._affinity: Optional[TransactionAffinity] = (
+                    TransactionAffinity.new_read_write()
+                )
+            else:
+                self._affinity = None
+            self._owns_affinity: bool = True
         self._multiplexed_session_previous_transaction_id: Optional[bytes] = None
 
     def _build_transaction_options_pb(self) -> TransactionOptions:
@@ -116,6 +136,8 @@ class Transaction(_SnapshotBase, _BatchBase):
         session = self._session
         transaction = self._build_transaction_selector_pb()
         request.transaction = transaction
+        if self._affinity is not None:
+            metadata.append(("x-goog-spanner-affinity", self._affinity))
         with (
             trace_call(
                 trace_name,
@@ -143,54 +165,72 @@ class Transaction(_SnapshotBase, _BatchBase):
             raise ValueError("Transaction already committed.")
         if self.rolled_back:
             raise ValueError("Transaction already rolled back.")
-        if self._transaction_id is not None:
-            session = self._session
-            database = session._database
-            api = database.spanner_api
-            metadata = _metadata_with_prefix(database.name)
-            if database._route_to_leader_enabled:
-                metadata.append(
-                    _metadata_with_leader_aware_routing(
-                        database._route_to_leader_enabled
+        try:
+            if self._transaction_id is not None:
+                session = self._session
+                database = session._database
+                api = database.spanner_api
+                metadata = _metadata_with_prefix(database.name)
+                if database._route_to_leader_enabled:
+                    metadata.append(
+                        _metadata_with_leader_aware_routing(
+                            database._route_to_leader_enabled
+                        )
                     )
-                )
-            observability_options = getattr(database, "observability_options", None)
-            with (
-                trace_call(
-                    f"CloudSpanner.{type(self).__name__}.rollback",
-                    session,
-                    observability_options=observability_options,
-                    metadata=metadata,
-                ) as span,
-                MetricsCapture(self._resource_info),
-            ):
-                attempt = AtomicCounter(0)
-                nth_request = database._next_nth_request
+                if self._affinity is not None:
+                    metadata.append(("x-goog-spanner-affinity", self._affinity))
+                observability_options = getattr(database, "observability_options", None)
+                with (
+                    trace_call(
+                        f"CloudSpanner.{type(self).__name__}.rollback",
+                        session,
+                        observability_options=observability_options,
+                        metadata=metadata,
+                    ) as span,
+                    MetricsCapture(self._resource_info),
+                ):
+                    attempt = AtomicCounter(0)
+                    nth_request = database._next_nth_request
 
-                def wrapped_method(*args, **kwargs):
-                    attempt.increment()
-                    call_metadata, error_augmenter = database.with_error_augmentation(
-                        nth_request, attempt.value, metadata, span
-                    )
-                    rollback_method = functools.partial(
-                        api.rollback,
-                        session=session.name,
-                        transaction_id=self._transaction_id,
-                        metadata=call_metadata,
-                    )
-                    with error_augmenter:
-                        return rollback_method(*args, **kwargs)
+                    def wrapped_method(*args, **kwargs):
+                        attempt.increment()
+                        call_metadata, error_augmenter = (
+                            database.with_error_augmentation(
+                                nth_request, attempt.value, metadata, span
+                            )
+                        )
+                        rollback_method = functools.partial(
+                            api.rollback,
+                            session=session.name,
+                            transaction_id=self._transaction_id,
+                            metadata=call_metadata,
+                        )
+                        with error_augmenter:
+                            return rollback_method(*args, **kwargs)
 
-                _retry(
-                    wrapped_method,
-                    allowed_exceptions={InternalServerError: _check_rst_stream_error},
-                )
-        self.rolled_back = True
+                    _retry(
+                        wrapped_method,
+                        allowed_exceptions={
+                            InternalServerError: _check_rst_stream_error
+                        },
+                    )
+            self.rolled_back = True
+        finally:
+            if getattr(self, "_owns_affinity", True) and self._affinity is not None:
+                self._affinity.reset()
 
     def _reset_and_begin(self):
         """This function can be used to reset the transaction and execute an explicit BeginTransaction RPC if the first statement in the transaction failed, and that statement included an inlined BeginTransaction option."""
         self._read_request_count = 0
         self._execute_sql_request_count = 0
+        if getattr(self, "_owns_affinity", True) and self._affinity is not None:
+            self._affinity.reset()
+        database = getattr(getattr(self, "_session", None), "_database", None)
+        if is_channel_pool_enabled(database):
+            self._affinity = TransactionAffinity.new_read_write()
+        else:
+            self._affinity = None
+        self._owns_affinity = True
         self.begin()
 
     def commit(
@@ -229,103 +269,113 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        with (
-            trace_call(
-                name=f"CloudSpanner.{type(self).__name__}.commit",
-                session=session,
-                extra_attributes={"num_mutations": num_mutations},
-                observability_options=getattr(database, "observability_options", None),
-                metadata=metadata,
-            ) as span,
-            MetricsCapture(self._resource_info),
-        ):
-            if self.committed is not None:
-                raise ValueError("Transaction already committed.")
-            if self.rolled_back:
-                raise ValueError("Transaction already rolled back.")
-            if self._transaction_id is None:
-                if num_mutations > 0:
-                    self._begin_mutations_only_transaction()
-                else:
-                    raise ValueError("Transaction has not begun.")
-            client_context = _merge_client_context(
-                database._instance._client._client_context, self._client_context
-            )
-            request_options = _merge_request_options(request_options, client_context)
-            if request_options is None:
-                request_options = RequestOptions()
-            elif type(request_options) is dict:
-                request_options = RequestOptions(request_options)
-            if self.transaction_tag is not None:
-                request_options.transaction_tag = self.transaction_tag
-            request_options.request_tag = None
-            common_commit_request_args = {
-                "session": session.name,
-                "transaction_id": self._transaction_id,
-                "return_commit_stats": return_commit_stats,
-                "max_commit_delay": max_commit_delay,
-                "request_options": request_options,
-            }
-            add_span_event(span, "Starting Commit")
-            attempt = AtomicCounter(0)
-            nth_request = database._next_nth_request
-
-            def wrapped_method(*args, **kwargs):
-                attempt.increment()
-                commit_request_args = {
-                    "mutations": mutations,
-                    **common_commit_request_args,
+        if self._affinity is not None:
+            metadata.append(("x-goog-spanner-affinity", self._affinity))
+        try:
+            with (
+                trace_call(
+                    name=f"CloudSpanner.{type(self).__name__}.commit",
+                    session=session,
+                    extra_attributes={"num_mutations": num_mutations},
+                    observability_options=getattr(
+                        database, "observability_options", None
+                    ),
+                    metadata=metadata,
+                ) as span,
+                MetricsCapture(self._resource_info),
+            ):
+                if self.committed is not None:
+                    raise ValueError("Transaction already committed.")
+                if self.rolled_back:
+                    raise ValueError("Transaction already rolled back.")
+                if self._transaction_id is None:
+                    if num_mutations > 0:
+                        self._begin_mutations_only_transaction()
+                    else:
+                        raise ValueError("Transaction has not begun.")
+                client_context = _merge_client_context(
+                    database._instance._client._client_context, self._client_context
+                )
+                request_options = _merge_request_options(
+                    request_options, client_context
+                )
+                if request_options is None:
+                    request_options = RequestOptions()
+                elif type(request_options) is dict:
+                    request_options = RequestOptions(request_options)
+                if self.transaction_tag is not None:
+                    request_options.transaction_tag = self.transaction_tag
+                request_options.request_tag = None
+                common_commit_request_args = {
+                    "session": session.name,
+                    "transaction_id": self._transaction_id,
+                    "return_commit_stats": return_commit_stats,
+                    "max_commit_delay": max_commit_delay,
+                    "request_options": request_options,
                 }
-                is_multiplexed = getattr(self._session, "is_multiplexed", False)
-                if is_multiplexed and self._precommit_token is not None:
-                    commit_request_args["precommit_token"] = self._precommit_token
-                call_metadata, error_augmenter = database.with_error_augmentation(
-                    nth_request, attempt.value, metadata, span
-                )
-                commit_method = functools.partial(
-                    api.commit,
-                    request=CommitRequest(**commit_request_args),
-                    metadata=call_metadata,
-                )
-                with error_augmenter:
-                    return commit_method(*args, **kwargs)
-
-            commit_retry_event_name = "Transaction Commit Attempt Failed. Retrying"
-
-            def before_next_retry(nth_retry, delay_in_seconds):
-                add_span_event(
-                    span=span,
-                    event_name=commit_retry_event_name,
-                    event_attributes={
-                        "attempt": nth_retry,
-                        "sleep_seconds": delay_in_seconds,
-                    },
-                )
-
-            commit_response_pb: CommitResponse = _retry(
-                wrapped_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
-                before_next_retry=before_next_retry,
-            )
-            if commit_response_pb._pb.HasField("precommit_token"):
-                add_span_event(span, commit_retry_event_name)
+                add_span_event(span, "Starting Commit")
+                attempt = AtomicCounter(0)
                 nth_request = database._next_nth_request
-                call_metadata, error_augmenter = database.with_error_augmentation(
-                    nth_request, 1, metadata, span
-                )
-                with error_augmenter:
-                    commit_response_pb = api.commit(
-                        request=CommitRequest(
-                            precommit_token=commit_response_pb.precommit_token,
-                            **common_commit_request_args,
-                        ),
+
+                def wrapped_method(*args, **kwargs):
+                    attempt.increment()
+                    commit_request_args = {
+                        "mutations": mutations,
+                        **common_commit_request_args,
+                    }
+                    is_multiplexed = getattr(self._session, "is_multiplexed", False)
+                    if is_multiplexed and self._precommit_token is not None:
+                        commit_request_args["precommit_token"] = self._precommit_token
+                    call_metadata, error_augmenter = database.with_error_augmentation(
+                        nth_request, attempt.value, metadata, span
+                    )
+                    commit_method = functools.partial(
+                        api.commit,
+                        request=CommitRequest(**commit_request_args),
                         metadata=call_metadata,
                     )
-            add_span_event(span, "Commit Done")
-        self.committed = commit_response_pb.commit_timestamp
-        if return_commit_stats:
-            self.commit_stats = commit_response_pb.commit_stats
-        return self.committed
+                    with error_augmenter:
+                        return commit_method(*args, **kwargs)
+
+                commit_retry_event_name = "Transaction Commit Attempt Failed. Retrying"
+
+                def before_next_retry(nth_retry, delay_in_seconds):
+                    add_span_event(
+                        span=span,
+                        event_name=commit_retry_event_name,
+                        event_attributes={
+                            "attempt": nth_retry,
+                            "sleep_seconds": delay_in_seconds,
+                        },
+                    )
+
+                commit_response_pb: CommitResponse = _retry(
+                    wrapped_method,
+                    allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                    before_next_retry=before_next_retry,
+                )
+                if commit_response_pb._pb.HasField("precommit_token"):
+                    add_span_event(span, commit_retry_event_name)
+                    nth_request = database._next_nth_request
+                    call_metadata, error_augmenter = database.with_error_augmentation(
+                        nth_request, 1, metadata, span
+                    )
+                    with error_augmenter:
+                        commit_response_pb = api.commit(
+                            request=CommitRequest(
+                                precommit_token=commit_response_pb.precommit_token,
+                                **common_commit_request_args,
+                            ),
+                            metadata=call_metadata,
+                        )
+                add_span_event(span, "Commit Done")
+            self.committed = commit_response_pb.commit_timestamp
+            if return_commit_stats:
+                self.commit_stats = commit_response_pb.commit_stats
+            return self.committed
+        finally:
+            if getattr(self, "_owns_affinity", True) and self._affinity is not None:
+                self._affinity.reset()
 
     @staticmethod
     def _make_params_pb(params, param_types):
@@ -427,6 +477,8 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
+        if self._affinity is not None:
+            metadata.append(("x-goog-spanner-affinity", self._affinity))
         seqno, self._execute_sql_request_count = (
             self._execute_sql_request_count,
             self._execute_sql_request_count + 1,
@@ -447,46 +499,48 @@ class Transaction(_SnapshotBase, _BatchBase):
         if self._transaction_id is None:
             is_inline_begin = True
             self._lock.acquire()
-        execute_sql_request = ExecuteSqlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            sql=dml,
-            params=params_pb,
-            param_types=param_types,
-            query_mode=query_mode,
-            query_options=query_options,
-            seqno=seqno,
-            request_options=request_options,
-            last_statement=last_statement,
-        )
-        nth_request = database._next_nth_request
-        attempt = AtomicCounter(0)
-
-        def wrapped_method(*args, **kwargs):
-            attempt.increment()
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt.value, metadata
+        try:
+            execute_sql_request = ExecuteSqlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                sql=dml,
+                params=params_pb,
+                param_types=param_types,
+                query_mode=query_mode,
+                query_options=query_options,
+                seqno=seqno,
+                request_options=request_options,
+                last_statement=last_statement,
             )
-            execute_sql_method = functools.partial(
-                api.execute_sql,
-                request=execute_sql_request,
-                metadata=call_metadata,
-                retry=retry,
-                timeout=timeout,
-            )
-            with error_augmenter:
-                return execute_sql_method(*args, **kwargs)
+            nth_request = database._next_nth_request
+            attempt = AtomicCounter(0)
 
-        result_set_pb: ResultSet = self._execute_request(
-            wrapped_method,
-            execute_sql_request,
-            metadata,
-            f"CloudSpanner.{type(self).__name__}.execute_update",
-            trace_attributes,
-        )
-        self._update_for_result_set_pb(result_set_pb)
-        if is_inline_begin:
-            self._lock.release()
+            def wrapped_method(*args, **kwargs):
+                attempt.increment()
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt.value, metadata
+                )
+                execute_sql_method = functools.partial(
+                    api.execute_sql,
+                    request=execute_sql_request,
+                    metadata=call_metadata,
+                    retry=retry,
+                    timeout=timeout,
+                )
+                with error_augmenter:
+                    return execute_sql_method(*args, **kwargs)
+
+            result_set_pb: ResultSet = self._execute_request(
+                wrapped_method,
+                execute_sql_request,
+                metadata,
+                f"CloudSpanner.{type(self).__name__}.execute_update",
+                trace_attributes,
+            )
+            self._update_for_result_set_pb(result_set_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
         if result_set_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb(result_set_pb.precommit_token)
         return result_set_pb.stats.row_count_exact
@@ -566,6 +620,8 @@ class Transaction(_SnapshotBase, _BatchBase):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
+        if self._affinity is not None:
+            metadata.append(("x-goog-spanner-affinity", self._affinity))
         seqno, self._execute_sql_request_count = (
             self._execute_sql_request_count,
             self._execute_sql_request_count + 1,
@@ -587,42 +643,44 @@ class Transaction(_SnapshotBase, _BatchBase):
         if self._transaction_id is None:
             is_inline_begin = True
             self._lock.acquire()
-        execute_batch_dml_request = ExecuteBatchDmlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            statements=parsed,
-            seqno=seqno,
-            request_options=request_options,
-            last_statements=last_statement,
-        )
-        nth_request = database._next_nth_request
-        attempt = AtomicCounter(0)
-
-        def wrapped_method(*args, **kwargs):
-            attempt.increment()
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt.value, metadata
+        try:
+            execute_batch_dml_request = ExecuteBatchDmlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                statements=parsed,
+                seqno=seqno,
+                request_options=request_options,
+                last_statements=last_statement,
             )
-            execute_batch_dml_method = functools.partial(
-                api.execute_batch_dml,
-                request=execute_batch_dml_request,
-                metadata=call_metadata,
-                retry=retry,
-                timeout=timeout,
-            )
-            with error_augmenter:
-                return execute_batch_dml_method(*args, **kwargs)
+            nth_request = database._next_nth_request
+            attempt = AtomicCounter(0)
 
-        response_pb: ExecuteBatchDmlResponse = self._execute_request(
-            wrapped_method,
-            execute_batch_dml_request,
-            metadata,
-            "CloudSpanner.DMLTransaction",
-            trace_attributes,
-        )
-        self._update_for_execute_batch_dml_response_pb(response_pb)
-        if is_inline_begin:
-            self._lock.release()
+            def wrapped_method(*args, **kwargs):
+                attempt.increment()
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt.value, metadata
+                )
+                execute_batch_dml_method = functools.partial(
+                    api.execute_batch_dml,
+                    request=execute_batch_dml_request,
+                    metadata=call_metadata,
+                    retry=retry,
+                    timeout=timeout,
+                )
+                with error_augmenter:
+                    return execute_batch_dml_method(*args, **kwargs)
+
+            response_pb: ExecuteBatchDmlResponse = self._execute_request(
+                wrapped_method,
+                execute_batch_dml_request,
+                metadata,
+                "CloudSpanner.DMLTransaction",
+                trace_attributes,
+            )
+            self._update_for_execute_batch_dml_response_pb(response_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
         if (
             len(response_pb.result_sets) > 0
             and response_pb.result_sets[0].precommit_token
@@ -686,8 +744,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         """Update the transaction for the given execute batch DML response.
 
         :type response_pb: :class:`~google.cloud.spanner_v1.types.ExecuteBatchDmlResponse`
-        :param response_pb: The execute batch DML response to update the transaction with.
-        """
+        :param response_pb: The execute batch DML response to update the transaction with."""
         if len(response_pb.result_sets) > 0:
             self._update_for_result_set_pb(response_pb.result_sets[0])
 

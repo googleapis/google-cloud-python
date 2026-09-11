@@ -996,7 +996,8 @@ def _augment_errors_with_request_id(request_id):
     try:
         yield
     except Exception as exc:
-        augmented = _augment_error_with_request_id(exc, request_id)
+        actual_request_id = getattr(exc, "_spanner_request_id", None) or request_id
+        augmented = _augment_error_with_request_id(exc, actual_request_id)
         # Use exception chaining to preserve the original exception
         raise augmented from exc
 

@@ -229,6 +229,52 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(i, item)
         self.assertEqual(method.call_count, 2)
 
+    async def test_restart_on_unavailable_cancels_abandoned_iterator(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        class MockFailingIterator:
+            def __init__(self):
+                self.cancelled = False
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                raise ServiceUnavailable("stream interrupted")
+
+            def cancel(self):
+                self.cancelled = True
+
+        first_iter = MockFailingIterator()
+        item = PartialResultSet()
+        second_iter = _MockIterator(item)
+
+        method = mock.AsyncMock(side_effect=[first_iter, second_iter])
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+        request_id_manager = mock.Mock()
+        request_id_manager.metadata_and_request_id.return_value = (None, None)
+
+        result = _restart_on_unavailable(
+            method,
+            request,
+            None,
+            None,
+            None,
+            None,
+            snapshot,
+            None,
+            None,
+            request_id_manager,
+        )
+        async for i in result:
+            self.assertEqual(i, item)
+        self.assertTrue(first_iter.cancelled)
+
     async def test_restart_on_unavailable_internal_error_rst_stream(self):
         from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
         from google.cloud.spanner_v1.types.result_set import PartialResultSet
@@ -261,6 +307,100 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         async for i in result:
             self.assertEqual(i, item)
         self.assertEqual(method.call_count, 2)
+
+    async def test_restart_on_unavailable_internal_error_cancels_iterator(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        class MockFailingIterator:
+            def __init__(self):
+                self.cancelled = False
+
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                raise InternalServerError(
+                    "Received unexpected EOS on DATA frame from server"
+                )
+
+            def cancel(self):
+                self.cancelled = True
+
+        first_iter = MockFailingIterator()
+        item = PartialResultSet()
+        second_iter = _MockIterator(item)
+
+        method = mock.AsyncMock(side_effect=[first_iter, second_iter])
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+        request_id_manager = mock.Mock()
+        request_id_manager.metadata_and_request_id.return_value = (None, None)
+
+        result = _restart_on_unavailable(
+            method,
+            request,
+            None,
+            None,
+            None,
+            None,
+            snapshot,
+            None,
+            None,
+            request_id_manager,
+        )
+        async for i in result:
+            self.assertEqual(i, item)
+        self.assertTrue(first_iter.cancelled)
+
+    async def test_restart_on_unavailable_cancel_failure_logged(self):
+        from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+        class MockFailingIterator:
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                raise ServiceUnavailable("Service unavailable")
+
+            def cancel(self):
+                raise RuntimeError("cancel boom")
+
+        first_iter = MockFailingIterator()
+        item = PartialResultSet()
+        second_iter = _MockIterator(item)
+
+        method = mock.AsyncMock(side_effect=[first_iter, second_iter])
+        request = mock.Mock()
+        request.transaction = None
+        request.resume_token = b""
+        session = _Session()
+        snapshot = self._make_snapshot(session)
+        request_id_manager = mock.Mock()
+        request_id_manager.metadata_and_request_id.return_value = (None, None)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.snapshot._LOGGER.debug"
+        ) as mock_debug:
+            result = _restart_on_unavailable(
+                method,
+                request,
+                None,
+                None,
+                None,
+                None,
+                snapshot,
+                None,
+                None,
+                request_id_manager,
+            )
+            async for i in result:
+                self.assertEqual(i, item)
+            mock_debug.assert_called_once()
 
     async def test_execute_sql_w_multi_use_options(self):
         database = _Database()
@@ -1068,6 +1208,87 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             ),
             f"Expected {leader_header} in {metadata}",
         )
+
+    async def test_snapshot_channel_pool_affinity_lifecycle(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPoolOptions,
+            TransactionAffinity,
+        )
+
+        database = _Database()
+        database._channel_pool_options = ChannelPoolOptions(
+            min_channels=2, max_channels=4
+        )
+        session = _Session(database)
+
+        # 1. Single-use snapshot has no affinity
+        single_snapshot = Snapshot(session, multi_use=False)
+        self.assertIsNone(single_snapshot._affinity)
+
+        # 2. Multi-use snapshot has read-only affinity
+        multi_snapshot = Snapshot(session, multi_use=True)
+        self.assertIsNotNone(multi_snapshot._affinity)
+        self.assertIsInstance(multi_snapshot._affinity, TransactionAffinity)
+        self.assertFalse(multi_snapshot._affinity.is_read_write())
+
+        # 3. close() resets affinity
+        multi_snapshot.close()
+        self.assertIsNone(multi_snapshot._affinity.pinned_entry_id)
+
+    async def test_snapshot_affinity_propagation(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPoolOptions,
+        )
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        database = _Database()
+        database._channel_pool_options = ChannelPoolOptions(
+            min_channels=2, max_channels=4
+        )
+        session = _Session(database)
+        snapshot = Snapshot(session, multi_use=True)
+        snapshot._transaction_id = TXN_ID
+        affinity = snapshot._affinity
+        self.assertIsNotNone(affinity)
+
+        # 1. execute_sql propagates affinity
+        database.spanner_api.execute_streaming_sql.return_value = _MockIterator(
+            PartialResultSet()
+        )
+        result_set = await snapshot.execute_sql(SQL_QUERY)
+        async for _ in result_set:
+            pass
+        sql_metadata = dict(
+            database.spanner_api.execute_streaming_sql.call_args.kwargs["metadata"]
+        )
+        self.assertIn("x-goog-spanner-affinity", sql_metadata)
+        self.assertIs(sql_metadata["x-goog-spanner-affinity"], affinity)
+
+        # 2. read propagates affinity
+        database.spanner_api.streaming_read.return_value = _MockIterator(
+            PartialResultSet()
+        )
+        result_set = await snapshot.read(TABLE_NAME, COLUMNS, KeySet(all_=True))
+        async for _ in result_set:
+            pass
+        read_metadata = dict(
+            database.spanner_api.streaming_read.call_args.kwargs["metadata"]
+        )
+        self.assertIn("x-goog-spanner-affinity", read_metadata)
+        self.assertIs(read_metadata["x-goog-spanner-affinity"], affinity)
+
+        # 3. partition_query propagates affinity
+        response = PartitionResponse(
+            partitions=[Partition(partition_token=b"token")],
+            transaction=TransactionPB(id=TXN_ID),
+        )
+        database.spanner_api.partition_query = mock.AsyncMock(return_value=response)
+        await snapshot.partition_query(SQL_QUERY)
+        part_metadata = dict(
+            database.spanner_api.partition_query.call_args.kwargs["metadata"]
+        )
+        self.assertIn("x-goog-spanner-affinity", part_metadata)
+        self.assertIs(part_metadata["x-goog-spanner-affinity"], affinity)
 
 
 class _Database(object):

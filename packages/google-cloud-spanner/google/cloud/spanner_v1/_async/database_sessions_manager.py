@@ -27,6 +27,7 @@ from typing import Optional
 from weakref import ref
 
 from google.cloud.aio._cross_sync import CrossSync
+from google.cloud.spanner_v1._async.channel_pool import ChannelPool
 from google.cloud.spanner_v1._async.session import Session
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
@@ -161,6 +162,9 @@ class DatabaseSessionsManager(object):
             is_multiplexed=True,
         )
         await session.create()
+        channel_pool = getattr(self._database, "channel_pool", None)
+        if isinstance(channel_pool, ChannelPool):
+            await channel_pool.set_prime_session(session.name)
         return session
 
     def _build_maintenance_thread(
