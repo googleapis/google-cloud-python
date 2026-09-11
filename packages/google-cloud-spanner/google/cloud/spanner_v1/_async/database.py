@@ -45,6 +45,12 @@ from google.cloud.spanner_admin_database_v1 import (
 )
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
 from google.cloud.spanner_v1._async.batch import Batch, MutationGroups
+from google.cloud.spanner_v1._async.channel_pool import (
+    ChannelPool,
+    ChannelPoolOptions,
+    TransactionAffinity,
+    is_channel_pool_enabled,
+)
 from google.cloud.spanner_v1._async.database_sessions_manager import (
     DatabaseSessionsManager,
     TransactionType,
@@ -193,6 +199,7 @@ class Database(object):
         database_role=None,
         enable_drop_protection=False,
         proto_descriptors=None,
+        channel_pool_options=None,
     ):
         self.database_id = database_id
         self._instance = instance
@@ -229,6 +236,27 @@ class Database(object):
         self._proto_descriptors = proto_descriptors
         self._channel_id = 0  # It'll be created when _spanner_api is created.
 
+        if channel_pool_options is not None:
+            if isinstance(channel_pool_options, dict):
+                channel_pool_options = ChannelPoolOptions.from_dict(
+                    channel_pool_options
+                )
+            elif isinstance(channel_pool_options, ChannelPoolOptions):
+                channel_pool_options.validate()
+            else:
+                raise TypeError(
+                    f"channel_pool_options must be a ChannelPoolOptions or dict, got {type(channel_pool_options).__name__}"
+                )
+        elif self._instance and self._instance._client:
+            inherited = getattr(self._instance._client, "channel_pool_options", None)
+            if isinstance(inherited, ChannelPoolOptions):
+                channel_pool_options = inherited
+        self._channel_pool_options = channel_pool_options
+        self._channel_pool: Optional[ChannelPool] = None
+        self._channel_pool_enabled: bool = isinstance(
+            channel_pool_options, ChannelPoolOptions
+        )
+
         if pool is None:
             pool = BurstyPool(database_role=database_role)
 
@@ -236,6 +264,21 @@ class Database(object):
         # Note: self._pool.bind(self) should be called via Instance.database()
         # factory method to ensure proper async initialization.
         self._sessions_manager = DatabaseSessionsManager(self, pool)
+
+    @property
+    def channel_pool(self) -> Optional[ChannelPool]:
+        """The channel pool associated with this database, if enabled."""
+        return self._channel_pool
+
+    @property
+    def channel_pool_options(self) -> Optional[ChannelPoolOptions]:
+        """The channel pool options configured for this database."""
+        return self._channel_pool_options
+
+    @property
+    def channel_pool_enabled(self) -> bool:
+        """Returns True if dynamic or static channel pooling is enabled on this database."""
+        return self._channel_pool_enabled or isinstance(self._channel_pool, ChannelPool)
 
     @property
     def _resource_info(self):
@@ -483,62 +526,193 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
-            client_info = self._instance._client._client_info
-            client_options = self._instance._client._client_options
-            if self._instance.emulator_host is not None:
-                if CrossSync.is_async:
-                    channel = grpc.aio.insecure_channel(self._instance.emulator_host)
-                else:
-                    channel = grpc.insecure_channel(self._instance.emulator_host)
-                transport = SpannerGrpcTransport(channel=channel)
-                self._spanner_api = SpannerClient(
-                    client_info=client_info, transport=transport
-                )
+            with self.__transport_lock:
+                if self._spanner_api is not None:
+                    return self._spanner_api
+                client_info = self._instance._client._client_info
+                client_options = self._instance._client._client_options
+                if self._channel_pool_options is not None:
+                    if self._instance.emulator_host is not None:
+                        host = self._instance.emulator_host
 
-                return self._spanner_api
-            client = getattr(self._instance, "_client", None)
-            if getattr(client, "instance_type", None) == "omni":
-                from google.cloud.spanner_v1._async._helpers import (
-                    _create_spanner_omni_transport as _create_spanner_omni_transport_async,
-                )
-                from google.cloud.spanner_v1._helpers import (
-                    _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
-                )
+                        def channel_factory():
+                            if CrossSync.is_async:
+                                return grpc.aio.insecure_channel(
+                                    self._instance.emulator_host
+                                )
+                            else:
+                                return grpc.insecure_channel(
+                                    self._instance.emulator_host
+                                )
 
-                if CrossSync.is_async:
-                    transport = _create_spanner_omni_transport_async(
-                        SpannerGrpcTransport,
-                        client._host,
-                        client._use_plain_text,
-                        client._ca_certificate,
-                        client._client_certificate,
-                        client._client_key,
+                    else:
+                        client = getattr(self._instance, "_client", None)
+                        use_plain_text = getattr(client, "_use_plain_text", False)
+                        ca_certificate = getattr(client, "_ca_certificate", None)
+                        client_certificate = getattr(
+                            client, "_client_certificate", None
+                        )
+                        client_key = getattr(client, "_client_key", None)
+
+                        credentials = self._instance._client.credentials
+                        if isinstance(credentials, google.auth.credentials.Scoped):
+                            credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
+
+                        default_host = (
+                            getattr(client, "_host", None)
+                            or SpannerGrpcTransport.DEFAULT_HOST
+                        )
+                        ssl_credentials = None
+                        if isinstance(client_options, dict):
+                            host = client_options.get("api_endpoint") or default_host
+                            quota_project_id = client_options.get("quota_project_id")
+                            ssl_credentials = client_options.get(
+                                "ssl_channel_credentials"
+                            )
+                            client_cert_source = client_options.get(
+                                "client_cert_source_for_mtls"
+                            )
+                            if client_cert_source and not ssl_credentials:
+                                cert, key = client_cert_source()
+                                ssl_credentials = grpc.ssl_channel_credentials(
+                                    certificate_chain=cert, private_key=key
+                                )
+                        elif client_options is not None:
+                            host = (
+                                getattr(client_options, "api_endpoint", None)
+                                or default_host
+                            )
+                            quota_project_id = getattr(
+                                client_options, "quota_project_id", None
+                            )
+                            ssl_credentials = getattr(
+                                client_options, "ssl_channel_credentials", None
+                            )
+                            client_cert_source = getattr(
+                                client_options, "client_cert_source_for_mtls", None
+                            )
+                            if client_cert_source and not ssl_credentials:
+                                cert, key = client_cert_source()
+                                ssl_credentials = grpc.ssl_channel_credentials(
+                                    certificate_chain=cert, private_key=key
+                                )
+                        else:
+                            host = default_host
+                            quota_project_id = None
+
+                        if use_plain_text:
+
+                            def channel_factory():
+                                if CrossSync.is_async:
+                                    return grpc.aio.insecure_channel(host)
+                                else:
+                                    return grpc.insecure_channel(host)
+
+                        else:
+                            if ca_certificate:
+                                with open(ca_certificate, "rb") as cert_file:
+                                    ca_cert = cert_file.read()
+                                if client_certificate and client_key:
+                                    with open(client_certificate, "rb") as cert_file:
+                                        client_cert = cert_file.read()
+                                    with open(client_key, "rb") as key_file:
+                                        private_key = key_file.read()
+                                    ssl_credentials = grpc.ssl_channel_credentials(
+                                        root_certificates=ca_cert,
+                                        private_key=private_key,
+                                        certificate_chain=client_cert,
+                                    )
+                                else:
+                                    ssl_credentials = grpc.ssl_channel_credentials(
+                                        root_certificates=ca_cert
+                                    )
+
+                            def channel_factory():
+                                return SpannerGrpcTransport.create_channel(
+                                    host=host,
+                                    credentials=credentials,
+                                    scopes=(SPANNER_DATA_SCOPE,),
+                                    ssl_credentials=ssl_credentials,
+                                    quota_project_id=quota_project_id,
+                                    options=[
+                                        ("grpc.max_send_message_length", -1),
+                                        ("grpc.max_receive_message_length", -1),
+                                        ("grpc.keepalive_time_ms", 120000),
+                                    ],
+                                )
+
+                    self._channel_pool = ChannelPool(
+                        channel_factory=channel_factory,
+                        options=self._channel_pool_options,
                     )
-                else:
-                    transport = _create_spanner_omni_transport_sync(
-                        SpannerGrpcTransport,
-                        client._host,
-                        client._use_plain_text,
-                        client._ca_certificate,
-                        client._client_certificate,
-                        client._client_key,
+                    transport = SpannerGrpcTransport(
+                        host=host,
+                        channel=self._channel_pool,
+                        client_info=client_info,
                     )
+                    self._spanner_api = SpannerClient(
+                        transport=transport,
+                        client_info=client_info,
+                        client_options=client_options,
+                    )
+                    self._channel_id = 1
+                    return self._spanner_api
+
+                if self._instance.emulator_host is not None:
+                    if CrossSync.is_async:
+                        channel = grpc.aio.insecure_channel(
+                            self._instance.emulator_host
+                        )
+                    else:
+                        channel = grpc.insecure_channel(self._instance.emulator_host)
+                    transport = SpannerGrpcTransport(channel=channel)
+                    self._spanner_api = SpannerClient(
+                        client_info=client_info, transport=transport
+                    )
+
+                    return self._spanner_api
+                client = getattr(self._instance, "_client", None)
+                if getattr(client, "instance_type", None) == "omni":
+                    from google.cloud.spanner_v1._async._helpers import (
+                        _create_spanner_omni_transport as _create_spanner_omni_transport_async,
+                    )
+                    from google.cloud.spanner_v1._helpers import (
+                        _create_spanner_omni_transport as _create_spanner_omni_transport_sync,
+                    )
+
+                    if CrossSync.is_async:
+                        transport = _create_spanner_omni_transport_async(
+                            SpannerGrpcTransport,
+                            client._host,
+                            client._use_plain_text,
+                            client._ca_certificate,
+                            client._client_certificate,
+                            client._client_key,
+                        )
+                    else:
+                        transport = _create_spanner_omni_transport_sync(
+                            SpannerGrpcTransport,
+                            client._host,
+                            client._use_plain_text,
+                            client._ca_certificate,
+                            client._client_certificate,
+                            client._client_key,
+                        )
+                    self._spanner_api = SpannerClient(
+                        client_info=client_info,
+                        transport=transport,
+                        client_options=client_options,
+                    )
+                    return self._spanner_api
+                credentials = self._instance._client.credentials
+                if isinstance(credentials, google.auth.credentials.Scoped):
+                    credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
                 self._spanner_api = SpannerClient(
+                    credentials=credentials,
                     client_info=client_info,
-                    transport=transport,
                     client_options=client_options,
                 )
-                return self._spanner_api
-            credentials = self._instance._client.credentials
-            if isinstance(credentials, google.auth.credentials.Scoped):
-                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
-            self._spanner_api = SpannerClient(
-                credentials=credentials,
-                client_info=client_info,
-                client_options=client_options,
-            )
 
-            with self.__transport_lock:
                 transport = self._spanner_api.transport
                 channel_id = self.__transports_to_channel_id.get(transport, None)
                 if channel_id is None:
@@ -908,6 +1082,14 @@ class Database(object):
             )
 
         async def execute_pdml():
+            affinity = (
+                TransactionAffinity.new_read_write()
+                if is_channel_pool_enabled(self)
+                else None
+            )
+            pdml_metadata = list(metadata)
+            if affinity is not None:
+                pdml_metadata.append(("x-goog-spanner-affinity", affinity))
             with (
                 trace_call(
                     "CloudSpanner.Database.execute_partitioned_pdml",
@@ -923,7 +1105,7 @@ class Database(object):
                     call_metadata, error_augmenter = self.with_error_augmentation(
                         self._next_nth_request,
                         1,
-                        metadata,
+                        pdml_metadata,
                         span,
                     )
                     with error_augmenter:
@@ -946,7 +1128,7 @@ class Database(object):
 
                     method = functools.partial(
                         api.execute_streaming_sql,
-                        metadata=metadata,
+                        metadata=pdml_metadata,
                     )
 
                     iterator = _restart_on_unavailable(
@@ -954,7 +1136,7 @@ class Database(object):
                         request=request,
                         trace_name="CloudSpanner.ExecuteStreamingSql",
                         session=session,
-                        metadata=metadata,
+                        metadata=pdml_metadata,
                         transaction_selector=txn_selector,
                         observability_options=self.observability_options,
                         request_id_manager=self,
@@ -966,6 +1148,8 @@ class Database(object):
 
                     return result_set.stats.row_count_lower_bound
                 finally:
+                    if affinity is not None:
+                        affinity.reset()
                     await self._sessions_manager.put_session(session)
 
         return await _retry_on_aborted(execute_pdml, DEFAULT_RETRY_BACKOFF)()
@@ -1460,6 +1644,8 @@ class Database(object):
     async def close(self):
         """Clean up underlying session manager and background tasks."""
         await self._sessions_manager.close()
+        if self._channel_pool is not None:
+            await self._channel_pool.close()
 
 
 class BatchCheckout(object):
@@ -1637,6 +1823,7 @@ class SnapshotCheckout(object):
     def __init__(self, database, **kw):
         self._database: Database = database
         self._session: Optional[Session] = None
+        self._snapshot: Optional[Snapshot] = None
         self._kw: dict = kw
 
     @property
@@ -1652,11 +1839,14 @@ class SnapshotCheckout(object):
             transaction_type
         )
 
-        return Snapshot(session=self._session, **self._kw)
+        self._snapshot = Snapshot(session=self._session, **self._kw)
+        return self._snapshot
 
     @CrossSync.convert(sync_name="__exit__")
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
+        if self._snapshot is not None:
+            self._snapshot.close()
         if isinstance(exc_val, NotFound):
             # If NotFound exception occurs inside the with block
             # then we validate if the session still exists.

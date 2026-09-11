@@ -26,6 +26,10 @@ from google.api_core.gapic_v1 import method
 from google.cloud.aio._cross_sync import CrossSync
 from google.cloud.spanner_v1._async._helpers import _delay_until_retry
 from google.cloud.spanner_v1._async.batch import Batch
+from google.cloud.spanner_v1._async.channel_pool import (
+    TransactionAffinity,
+    is_channel_pool_enabled,
+)
 from google.cloud.spanner_v1._async.snapshot import Snapshot
 from google.cloud.spanner_v1._async.transaction import Transaction
 from google.cloud.spanner_v1._helpers import (
@@ -505,7 +509,9 @@ class Session(object):
 
         return Batch(self)
 
-    def transaction(self, client_context=None) -> Transaction:
+    def transaction(
+        self, client_context=None, affinity: Optional[TransactionAffinity] = None
+    ) -> Transaction:
         """Create a transaction to perform a set of reads with shared staleness.
 
         :rtype: :class:`~google.cloud.spanner_v1.transaction.Transaction`
@@ -516,7 +522,7 @@ class Session(object):
         if self._session_id is None:
             raise ValueError("Session has not been created.")
 
-        return Transaction(self, client_context=client_context)
+        return Transaction(self, client_context=client_context, affinity=affinity)
 
     @CrossSync.convert
     async def run_in_transaction(self, func, *args, **kw):
@@ -591,103 +597,125 @@ class Session(object):
             # See :attr:`~google.cloud.spanner_v1.types.TransactionOptions.ReadWrite.multiplexed_session_previous_transaction_id`
             previous_transaction_id: Optional[bytes] = None
 
-            while True:
-                txn = self.transaction(client_context=client_context)
-                txn.transaction_tag = transaction_tag
-                txn.exclude_txn_from_change_streams = exclude_txn_from_change_streams
-                txn.isolation_level = isolation_level
-                txn.read_lock_mode = read_lock_mode
+            # Create a single transaction affinity handle across all retry attempts.
+            # Preserving the pinned channel across Aborted retries ensures the retry executes
+            # against the same SpanFE coordinator and preserves lock ordering (matching Rust
+            # reference client transaction_runner.rs:558-566).
+            affinity: Optional[TransactionAffinity] = (
+                TransactionAffinity.new_read_write()
+                if is_channel_pool_enabled(database)
+                else None
+            )
 
-                if self.is_multiplexed:
-                    txn._multiplexed_session_previous_transaction_id = (
-                        previous_transaction_id
+            try:
+                while True:
+                    txn = self.transaction(
+                        client_context=client_context, affinity=affinity
                     )
+                    txn.transaction_tag = transaction_tag
+                    txn.exclude_txn_from_change_streams = (
+                        exclude_txn_from_change_streams
+                    )
+                    txn.isolation_level = isolation_level
+                    txn.read_lock_mode = read_lock_mode
 
-                attempts += 1
-                span_attributes = dict(attempt=attempts)
-
-                try:
-                    return_value = await CrossSync.run_if_async(func, txn, *args, **kw)
-
-                except Aborted as exc:
-                    previous_transaction_id = txn._transaction_id
-                    delay_seconds = _get_retry_delay(
-                        exc.errors[0],
-                        attempts,
-                        default_retry_delay=default_retry_delay,
-                    )
-                    attributes = dict(delay_seconds=delay_seconds, cause=str(exc))
-                    attributes.update(span_attributes)
-                    add_span_event(
-                        span,
-                        "Transaction was aborted in user operation, retrying",
-                        attributes,
-                    )
-                    await _delay_until_retry(
-                        exc,
-                        deadline,
-                        attempts,
-                        default_retry_delay=default_retry_delay,
-                    )
-                    continue
-
-                except GoogleAPICallError:
-                    add_span_event(
-                        span,
-                        "User operation failed due to GoogleAPICallError, not retrying",
-                        span_attributes,
-                    )
-                    raise
-
-                except Exception:
-                    add_span_event(
-                        span,
-                        "User operation failed. Invoking Transaction.rollback(), not retrying",
-                        span_attributes,
-                    )
-                    await txn.rollback()
-                    raise
-
-                try:
-                    await txn.commit(
-                        return_commit_stats=log_commit_stats,
-                        request_options=commit_request_options,
-                        max_commit_delay=max_commit_delay,
-                    )
-
-                except Aborted as exc:
-                    previous_transaction_id = txn._transaction_id
-                    delay_seconds = _get_retry_delay(
-                        exc.errors[0],
-                        attempts,
-                        default_retry_delay=default_retry_delay,
-                    )
-                    attributes = dict(delay_seconds=delay_seconds)
-                    attributes.update(span_attributes)
-                    add_span_event(
-                        span,
-                        "Transaction was aborted during commit, retrying",
-                        attributes,
-                    )
-                    await _delay_until_retry(
-                        exc,
-                        deadline,
-                        attempts,
-                        default_retry_delay=default_retry_delay,
-                    )
-
-                except GoogleAPICallError:
-                    add_span_event(
-                        span,
-                        "Transaction.commit failed due to GoogleAPICallError, not retrying",
-                        span_attributes,
-                    )
-                    raise
-
-                else:
-                    if log_commit_stats and txn.commit_stats:
-                        database.logger.info(
-                            "CommitStats: {}".format(txn.commit_stats),
-                            extra={"commit_stats": txn.commit_stats},
+                    if self.is_multiplexed:
+                        txn._multiplexed_session_previous_transaction_id = (
+                            previous_transaction_id
                         )
-                    return return_value
+
+                    attempts += 1
+                    span_attributes = dict(attempt=attempts)
+
+                    try:
+                        return_value = await CrossSync.run_if_async(
+                            func, txn, *args, **kw
+                        )
+
+                    except Aborted as exc:
+                        # Do NOT reset affinity here: preserve channel pin across aborted retries.
+                        previous_transaction_id = txn._transaction_id
+                        delay_seconds = _get_retry_delay(
+                            exc.errors[0],
+                            attempts,
+                            default_retry_delay=default_retry_delay,
+                        )
+                        attributes = dict(delay_seconds=delay_seconds, cause=str(exc))
+                        attributes.update(span_attributes)
+                        add_span_event(
+                            span,
+                            "Transaction was aborted in user operation, retrying",
+                            attributes,
+                        )
+                        await _delay_until_retry(
+                            exc,
+                            deadline,
+                            attempts,
+                            default_retry_delay=default_retry_delay,
+                        )
+                        continue
+
+                    except GoogleAPICallError:
+                        add_span_event(
+                            span,
+                            "User operation failed due to GoogleAPICallError, not retrying",
+                            span_attributes,
+                        )
+                        raise
+
+                    except Exception:
+                        add_span_event(
+                            span,
+                            "User operation failed. Invoking Transaction.rollback(), not retrying",
+                            span_attributes,
+                        )
+                        await txn.rollback()
+                        raise
+
+                    try:
+                        await txn.commit(
+                            return_commit_stats=log_commit_stats,
+                            request_options=commit_request_options,
+                            max_commit_delay=max_commit_delay,
+                        )
+
+                    except Aborted as exc:
+                        # Do NOT reset affinity here: preserve channel pin across aborted retries.
+                        previous_transaction_id = txn._transaction_id
+                        delay_seconds = _get_retry_delay(
+                            exc.errors[0],
+                            attempts,
+                            default_retry_delay=default_retry_delay,
+                        )
+                        attributes = dict(delay_seconds=delay_seconds)
+                        attributes.update(span_attributes)
+                        add_span_event(
+                            span,
+                            "Transaction was aborted during commit, retrying",
+                            attributes,
+                        )
+                        await _delay_until_retry(
+                            exc,
+                            deadline,
+                            attempts,
+                            default_retry_delay=default_retry_delay,
+                        )
+
+                    except GoogleAPICallError:
+                        add_span_event(
+                            span,
+                            "Transaction.commit failed due to GoogleAPICallError, not retrying",
+                            span_attributes,
+                        )
+                        raise
+
+                    else:
+                        if log_commit_stats and txn.commit_stats:
+                            database.logger.info(
+                                "CommitStats: {}".format(txn.commit_stats),
+                                extra={"commit_stats": txn.commit_stats},
+                            )
+                        return return_value
+            finally:
+                if affinity is not None:
+                    affinity.reset()

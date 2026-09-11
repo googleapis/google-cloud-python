@@ -15,12 +15,14 @@
 import random
 import threading
 
+import grpc
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
     BeginTransactionRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
 )
+from google.cloud.spanner_v1.channel_pool import ChannelPoolOptions
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
@@ -289,6 +291,50 @@ class TestRequestIDHeader(MockServerTestBase):
             TransactionType.READ_ONLY,
             allow_multiple_batch_create=True,
         )
+
+    def test_channel_pool_request_id_header_and_stream_status(self):
+        add_select1_result()
+        channel_pool_options = ChannelPoolOptions(min_channels=2, max_channels=4)
+        database = self.instance.database(
+            "test-database-channel-pool",
+            channel_pool_options=channel_pool_options,
+        )
+        _ = database.spanner_api
+        self.addCleanup(database._channel_pool.close)
+
+        with database.snapshot() as snapshot:
+            results = snapshot.execute_sql("select 1")
+            first_row = next(iter(results))
+            self.assertEqual(1, first_row[0])
+
+            streaming_response_iterator = (
+                results._response_iterator.gi_frame.f_locals.get("iterator")
+            )
+            stream_wrapper = getattr(streaming_response_iterator, "_wrapped", None)
+
+            result_list = list(results)
+            self.assertEqual(0, len(result_list))
+
+            self.assertIsNotNone(stream_wrapper)
+            self.assertEqual(stream_wrapper.code(), grpc.StatusCode.OK)
+            self.assertTrue(stream_wrapper._closed)
+            self.assertTrue(stream_wrapper._lease._released)
+            self.assertEqual(stream_wrapper._lease.entry.in_flight_rpcs, 0)
+
+        self.assertTrue(len(self.spanner_service.requests_metadata) >= 1)
+        wire_metadata = self.spanner_service.requests_metadata[0]
+        request_id_header = wire_metadata.get("x-goog-spanner-request-id")
+        self.assertIsNotNone(request_id_header)
+
+        request_id_parts = request_id_header.split(".")
+        self.assertGreaterEqual(len(request_id_parts), 4)
+        channel_slot = request_id_parts[3]
+
+        active_channel_ids = {
+            str(entry.id) for entry in database._channel_pool._active_entries
+        }
+        self.assertIn(channel_slot, active_channel_ids)
+        self.assertEqual(channel_slot, str(stream_wrapper._lease.entry.id))
 
     def canonicalize_request_id_headers(self):
         src = self.database._x_goog_request_id_interceptor

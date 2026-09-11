@@ -3,6 +3,7 @@ import datetime
 from datetime import timezone
 from unittest import IsolatedAsyncioTestCase
 
+import grpc
 import mock
 import pytest
 from google.api_core import gapic_v1
@@ -149,6 +150,18 @@ class TestDatabase(_BaseTest):
         api = mock.create_autospec(SpannerClient, instance=True)
         api._transport = "transport"
         return api
+
+    @CrossSync.pytest
+    async def test_database_invalid_channel_pool_options_raises_type_error(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        with pytest.raises(TypeError) as exc_info:
+            self._get_target_class()(
+                self.DATABASE_ID, instance, channel_pool_options="invalid"
+            )
+        self.assertIn(
+            "channel_pool_options must be a ChannelPoolOptions or dict",
+            str(exc_info.value),
+        )
 
     @CrossSync.pytest
     async def test_close(self):
@@ -601,6 +614,584 @@ class TestDatabase(_BaseTest):
         called_args, called_kw = spanner_client.call_args
         self.assertEqual(called_args, ())
         self.assertIsNotNone(called_kw["transport"])
+        await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_options(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        client._client_options = {
+            "api_endpoint": "custom.endpoint:443",
+            "quota_project_id": "test-quota",
+        }
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=2, max_channels=4)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async.database.SpannerClient"
+        ) as spanner_client:
+            with mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport:
+                api = database.spanner_api
+                self.assertIs(api, spanner_client.return_value)
+                self.assertIsInstance(database.channel_pool, ChannelPool)
+                self.assertEqual(len(spanner_transport.call_args_list), 1)
+                self.assertIs(
+                    spanner_transport.call_args[1]["channel"], database.channel_pool
+                )
+                await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_emulator(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        instance = _Instance(
+            self.INSTANCE_NAME, client=client, emulator_host="localhost:9010"
+        )
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        mock_insecure = mock.MagicMock()
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerGrpcTransport"),
+            mock.patch(insecure_target, mock_insecure),
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            mock_insecure.assert_called_with("localhost:9010")
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_real_transport_instantiation(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        instance = _Instance(
+            self.INSTANCE_NAME, client=client, emulator_host="localhost:9010"
+        )
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        mock_insecure = mock.MagicMock()
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with mock.patch(insecure_target, mock_insecure):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            self.assertEqual(api.transport.host, "localhost:9010")
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_real_transport_with_client_options(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        client._use_plain_text = True
+        client._client_options = {
+            "api_endpoint": "custom.endpoint:443",
+            "quota_project_id": "test-quota",
+        }
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        mock_insecure = mock.MagicMock()
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with mock.patch(insecure_target, mock_insecure):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            self.assertEqual(api.transport.host, "custom.endpoint:443")
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_executes_unary_and_streaming_rpc(
+        self,
+    ):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+        from google.cloud.spanner_v1.types import CommitResponse, PartialResultSet
+
+        class MockAsyncChannelWithRpcSupport:
+            def unary_unary(
+                self,
+                method,
+                request_serializer=None,
+                response_deserializer=None,
+            ):
+                class MockUnaryCall(grpc.aio.UnaryUnaryCall):
+                    def __init__(self, resp):
+                        self._resp = resp
+
+                    def __await__(self):
+                        async def _get():
+                            return self._resp
+
+                        return _get().__await__()
+
+                    async def initial_metadata(self):
+                        return ()
+
+                    async def trailing_metadata(self):
+                        return ()
+
+                    async def code(self):
+                        return grpc.StatusCode.OK
+
+                    async def details(self):
+                        return ""
+
+                    def cancelled(self):
+                        return False
+
+                    def done(self):
+                        return True
+
+                    def cancel(self):
+                        return False
+
+                    def time_remaining(self):
+                        return None
+
+                    def add_done_callback(self, cb):
+                        pass
+
+                    async def wait_for_connection(self):
+                        pass
+
+                def invoker(request, *args, **kwargs):
+                    return MockUnaryCall(CommitResponse())
+
+                return invoker
+
+            def unary_stream(
+                self,
+                method,
+                request_serializer=None,
+                response_deserializer=None,
+            ):
+                class MockStreamCall(grpc.aio.UnaryStreamCall):
+                    def __init__(self):
+                        self.items = [PartialResultSet()]
+
+                    def __aiter__(self):
+                        return self
+
+                    async def __anext__(self):
+                        if not self.items:
+                            raise StopAsyncIteration
+                        return self.items.pop(0)
+
+                    async def read(self):
+                        if not self.items:
+                            return grpc.aio.EOF
+                        return self.items.pop(0)
+
+                    def cancel(self):
+                        return True
+
+                    async def initial_metadata(self):
+                        return ()
+
+                    async def trailing_metadata(self):
+                        return ()
+
+                    async def code(self):
+                        return grpc.StatusCode.OK
+
+                    async def details(self):
+                        return ""
+
+                    def cancelled(self):
+                        return False
+
+                    def done(self):
+                        return True
+
+                    def time_remaining(self):
+                        return None
+
+                    def add_done_callback(self, cb):
+                        pass
+
+                    async def wait_for_connection(self):
+                        pass
+
+                def invoker(request, *args, **kwargs):
+                    return MockStreamCall()
+
+                return invoker
+
+            async def close(self):
+                pass
+
+        client = _Client()
+        client._use_plain_text = True
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=1)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with mock.patch(
+            insecure_target,
+            return_value=MockAsyncChannelWithRpcSupport(),
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+
+            # Test unary call through database.spanner_api
+            commit_resp = await api.commit(
+                request={"session": f"{database.name}/sessions/s1"}
+            )
+            self.assertIsInstance(commit_resp, CommitResponse)
+
+            # Test streaming call through database.spanner_api
+            stream = await api.execute_streaming_sql(
+                request={
+                    "session": f"{database.name}/sessions/s1",
+                    "sql": "SELECT 1",
+                }
+            )
+            items = []
+            async for item in stream:
+                items.append(item)
+            self.assertEqual(len(items), 1)
+            self.assertIsInstance(items[0], PartialResultSet)
+
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_concurrent_threads_double_checked_locking(self):
+        from concurrent.futures import ThreadPoolExecutor
+
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        instance = _Instance(
+            self.INSTANCE_NAME, client=client, emulator_host="localhost:9010"
+        )
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        mock_insecure = mock.MagicMock()
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with mock.patch(insecure_target, mock_insecure):
+
+            def get_api():
+                return database.spanner_api
+
+            with ThreadPoolExecutor(max_workers=8) as executor:
+                futures = [executor.submit(get_api) for _ in range(8)]
+                apis = [f.result() for f in futures]
+
+            first_api = apis[0]
+            for api in apis:
+                self.assertIs(api, first_api)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_use_plain_text(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        client._use_plain_text = True
+        client._client_options = {"api_endpoint": "custom.plain.text:80"}
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        mock_insecure = mock.MagicMock()
+        insecure_target = (
+            "google.cloud.spanner_v1._async.database.grpc.aio.insecure_channel"
+            if CrossSync.is_async
+            else "google.cloud.spanner_v1._async.database.grpc.insecure_channel"
+        )
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerGrpcTransport"),
+            mock.patch(insecure_target, mock_insecure),
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            mock_insecure.assert_called_with("custom.plain.text:80")
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_ca_and_client_cert(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        client._ca_certificate = "/path/to/ca.pem"
+        client._client_certificate = "/path/to/cert.pem"
+        client._client_key = "/path/to/key.pem"
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport,
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.open",
+                mock.mock_open(read_data=b"mock-cert-data"),
+                create=True,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.grpc.ssl_channel_credentials"
+            ) as mock_ssl_credentials,
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            mock_ssl_credentials.assert_called_once_with(
+                root_certificates=b"mock-cert-data",
+                private_key=b"mock-cert-data",
+                certificate_chain=b"mock-cert-data",
+            )
+            self.assertTrue(spanner_transport.create_channel.called)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_ca_only(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        client = _Client()
+        client._ca_certificate = "/path/to/ca.pem"
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport,
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.open",
+                mock.mock_open(read_data=b"mock-ca-data"),
+                create=True,
+            ),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.grpc.ssl_channel_credentials"
+            ) as mock_ssl_credentials,
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            mock_ssl_credentials.assert_called_once_with(
+                root_certificates=b"mock-ca-data"
+            )
+            self.assertTrue(spanner_transport.create_channel.called)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_client_cert_source_dict(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        mock_source = mock.MagicMock(return_value=(b"cert-data", b"key-data"))
+        client = _Client()
+        client._client_options = {"client_cert_source_for_mtls": mock_source}
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport,
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.grpc.ssl_channel_credentials"
+            ) as mock_ssl_credentials,
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            mock_source.assert_called_once()
+            mock_ssl_credentials.assert_called_once_with(
+                certificate_chain=b"cert-data", private_key=b"key-data"
+            )
+            self.assertTrue(spanner_transport.create_channel.called)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_client_options_object(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+
+        class _CustomOptions:
+            api_endpoint = "custom.obj.endpoint:443"
+            quota_project_id = "quota-proj"
+            ssl_channel_credentials = None
+            client_cert_source_for_mtls = mock.MagicMock(
+                return_value=(b"cert-bytes", b"key-bytes")
+            )
+
+        client = _Client()
+        client._client_options = _CustomOptions()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport,
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.grpc.ssl_channel_credentials"
+            ) as mock_ssl_credentials,
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            client._client_options.client_cert_source_for_mtls.assert_called_once()
+            mock_ssl_credentials.assert_called_once_with(
+                certificate_chain=b"cert-bytes", private_key=b"key-bytes"
+            )
+            self.assertTrue(spanner_transport.create_channel.called)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_spanner_api_w_channel_pool_scoped_credentials_and_no_client_options(
+        self,
+    ):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPool,
+            ChannelPoolOptions,
+        )
+        from tests._builders import build_scoped_credentials
+
+        scoped_credentials = build_scoped_credentials()
+        client = _Client()
+        client.credentials = scoped_credentials
+        client._client_options = None
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        options = ChannelPoolOptions(min_channels=1, max_channels=2)
+        database = await self._make_one(
+            self.DATABASE_ID, instance, channel_pool_options=options
+        )
+
+        with (
+            mock.patch("google.cloud.spanner_v1._async.database.SpannerClient"),
+            mock.patch(
+                "google.cloud.spanner_v1._async.database.SpannerGrpcTransport"
+            ) as spanner_transport,
+        ):
+            api = database.spanner_api
+            self.assertIsNotNone(api)
+            self.assertIsInstance(database.channel_pool, ChannelPool)
+            scoped_credentials.with_scopes.assert_called_once()
+            self.assertTrue(spanner_transport.create_channel.called)
+            await database.close()
+
+    @CrossSync.pytest
+    async def test_database_constructor_channel_pool_options_dict(self):
+        from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
+
+        instance = _Instance(self.INSTANCE_NAME)
+        database = await self._make_one(
+            self.DATABASE_ID,
+            instance,
+            channel_pool_options={"min_channels": 3, "max_channels": 8},
+        )
+        self.assertIsInstance(database.channel_pool_options, ChannelPoolOptions)
+        self.assertEqual(database.channel_pool_options.min_channels, 3)
+        self.assertEqual(database.channel_pool_options.max_channels, 8)
+
+    @CrossSync.pytest
+    async def test_database_constructor_channel_pool_options_inherit_client(self):
+        from google.cloud.spanner_v1._async.channel_pool import ChannelPoolOptions
+
+        client = _Client()
+        client_options = ChannelPoolOptions(min_channels=2, max_channels=5)
+        client.channel_pool_options = client_options
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        database = await self._make_one(self.DATABASE_ID, instance)
+        self.assertIs(database.channel_pool_options, client_options)
 
     @CrossSync.pytest
     async def test___eq__(self):
@@ -2558,6 +3149,53 @@ class TestDatabase(_BaseTest):
         call_args = api.begin_transaction.call_args
         metadata = dict(call_args.kwargs["metadata"])
         self.assertIn("x-goog-spanner-route-to-leader", metadata)
+
+    @CrossSync.pytest
+    async def test_execute_partitioned_dml_with_channel_pool_affinity(self):
+        from google.cloud.spanner_v1._async.channel_pool import (
+            ChannelPoolOptions,
+            TransactionAffinity,
+        )
+        from google.cloud.spanner_v1.types import Transaction as TransactionPB
+
+        api = build_spanner_api()
+        instance = _Instance(self.INSTANCE_NAME)
+        database = await self._make_one(
+            self.DATABASE_ID,
+            instance,
+            channel_pool_options=ChannelPoolOptions(min_channels=2, max_channels=4),
+        )
+        database._spanner_api = api
+
+        session = Session(database)
+        session._session_id = "session-id"
+        database._sessions_manager.get_session = mock.AsyncMock(return_value=session)
+
+        api.begin_transaction = mock.AsyncMock(
+            return_value=TransactionPB(id=self.TRANSACTION_ID)
+        )
+        api.execute_streaming_sql = mock.Mock(
+            return_value=_MockIterator(
+                PartialResultSet(stats={"row_count_lower_bound": 42})
+            )
+        )
+
+        row_count = await database.execute_partitioned_dml(DML_WO_PARAM)
+        self.assertEqual(row_count, 42)
+
+        begin_metadata = dict(api.begin_transaction.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", begin_metadata)
+        affinity = begin_metadata["x-goog-spanner-affinity"]
+        self.assertIsInstance(affinity, TransactionAffinity)
+        self.assertTrue(affinity.is_read_write())
+
+        streaming_metadata = dict(
+            api.execute_streaming_sql.call_args.kwargs["metadata"]
+        )
+        self.assertIn("x-goog-spanner-affinity", streaming_metadata)
+        self.assertIs(streaming_metadata["x-goog-spanner-affinity"], affinity)
+
+        self.assertIsNone(affinity.pinned_entry_id)
 
 
 class TestBatchSnapshot(_BaseTest):

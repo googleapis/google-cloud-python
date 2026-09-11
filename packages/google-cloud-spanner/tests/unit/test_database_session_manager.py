@@ -509,6 +509,41 @@ class TestDatabaseSessionManager(TestCase):
                     manager._get_multiplexed_session()
                 self.assertIsNone(manager._multiplexed_session)
 
+    def test_build_multiplexed_session(self):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        with patch(
+            "google.cloud.spanner_v1.database_sessions_manager.Session"
+        ) as mock_session_class:
+            mock_session_instance = Mock()
+            mock_session_class.return_value = mock_session_instance
+            session = manager._build_multiplexed_session()
+            self.assertIs(session, mock_session_instance)
+            mock_session_instance.create.assert_called_once()
+
+    def test_build_multiplexed_session_primes_channel_pool(self):
+        from google.cloud.spanner_v1.channel_pool import ChannelPool
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        mock_pool = Mock(spec=ChannelPool)
+        self._manager._database._channel_pool = mock_pool
+        try:
+            with patch(
+                "google.cloud.spanner_v1.database_sessions_manager.Session"
+            ) as mock_session_class:
+                mock_session_instance = Mock()
+                mock_session_instance.name = (
+                    "projects/p/instances/i/databases/d/sessions/s1"
+                )
+                mock_session_class.return_value = mock_session_instance
+                session = manager._build_multiplexed_session()
+                self.assertIs(session, mock_session_instance)
+                mock_session_instance.create.assert_called_once()
+                mock_pool.set_prime_session.assert_called_once_with(
+                    "projects/p/instances/i/databases/d/sessions/s1"
+                )
+        finally:
+            self._manager._database._channel_pool = None
+
     def test_build_maintenance_thread(self):
         manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
         mock_session = Mock()

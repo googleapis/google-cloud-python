@@ -20,6 +20,15 @@ from google.cloud.spanner_v1 import gapic_version as package_version
 __version__: str = package_version.__version__
 
 from google.cloud.spanner_v1 import param_types
+from google.cloud.spanner_v1._async.channel_pool import (
+    ChannelPool as AsyncChannelPool,
+)
+from google.cloud.spanner_v1._async.channel_pool import (
+    ChannelPoolOptions as AsyncChannelPoolOptions,
+)
+from google.cloud.spanner_v1._async.channel_pool import (
+    TransactionAffinity as AsyncTransactionAffinity,
+)
 from google.cloud.spanner_v1._async.client import Client as AsyncClient
 from google.cloud.spanner_v1._async.pool import (
     AbstractSessionPool as AsyncAbstractSessionPool,
@@ -29,6 +38,11 @@ from google.cloud.spanner_v1._async.pool import FixedSizePool as AsyncFixedSizeP
 from google.cloud.spanner_v1._async.pool import PingingPool as AsyncPingingPool
 from google.cloud.spanner_v1._async.pool import (
     TransactionPingingPool as AsyncTransactionPingingPool,
+)
+from google.cloud.spanner_v1.channel_pool import (
+    ChannelPool,
+    ChannelPoolOptions,
+    TransactionAffinity,
 )
 from google.cloud.spanner_v1.client import Client
 from google.cloud.spanner_v1.keyset import KeyRange, KeySet
@@ -113,6 +127,13 @@ __all__ = (
     "AsyncFixedSizePool",
     "AsyncPingingPool",
     "AsyncTransactionPingingPool",
+    # google.cloud.spanner_v1.channel_pool
+    "ChannelPool",
+    "AsyncChannelPool",
+    "ChannelPoolOptions",
+    "AsyncChannelPoolOptions",
+    "TransactionAffinity",
+    "AsyncTransactionAffinity",
     # local
     "COMMIT_TIMESTAMP",
     # google.cloud.spanner_v1.types

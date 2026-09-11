@@ -68,6 +68,7 @@ class TestDatabase(Database):
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
         enable_drop_protection=False,
+        channel_pool_options=None,
     ):
         super().__init__(
             database_id,
@@ -79,6 +80,7 @@ class TestDatabase(Database):
             database_dialect,
             database_role,
             enable_drop_protection,
+            channel_pool_options=channel_pool_options,
         )
 
         self._method_count_interceptor = MethodCountInterceptor()

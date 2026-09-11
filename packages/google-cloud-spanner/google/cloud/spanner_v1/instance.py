@@ -114,8 +114,7 @@ class Instance(object):
     :param labels: (Optional) User-assigned labels for this instance.
 
     :type experimental_host: str
-    :param experimental_host: (Deprecated) The instance type and host are now managed by the Client.
-    """
+    :param experimental_host: (Deprecated) The instance type and host are now managed by the Client."""
 
     def __init__(
         self,
@@ -418,6 +417,7 @@ class Instance(object):
         enable_drop_protection=False,
         enable_interceptors_in_tests=False,
         proto_descriptors=None,
+        channel_pool_options=None,
     ):
         """Factory to create a database within this instance.
 
@@ -465,6 +465,11 @@ class Instance(object):
         :param proto_descriptors: (Optional) Proto descriptors used by CREATE/ALTER PROTO BUNDLE
                                   statements in 'ddl_statements' above.
 
+        :type channel_pool_options:
+            :class:`~google.cloud.spanner_v1.channel_pool.ChannelPoolOptions` or dict
+        :param channel_pool_options: (Optional) Configuration options for dynamic gRPC
+                                     channel pooling.
+
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance."""
         if not enable_interceptors_in_tests:
@@ -479,6 +484,7 @@ class Instance(object):
                 database_role=database_role,
                 enable_drop_protection=enable_drop_protection,
                 proto_descriptors=proto_descriptors,
+                channel_pool_options=channel_pool_options,
             )
         else:
             db = TestDatabase(
@@ -491,6 +497,7 @@ class Instance(object):
                 database_dialect=database_dialect,
                 database_role=database_role,
                 enable_drop_protection=enable_drop_protection,
+                channel_pool_options=channel_pool_options,
             )
         res = db._pool.bind(db)
         if res is not None:

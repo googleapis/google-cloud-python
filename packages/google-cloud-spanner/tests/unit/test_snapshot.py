@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import unittest
 from datetime import datetime, timedelta
 from threading import Lock
 from typing import Mapping
@@ -260,6 +261,63 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, b"")
         self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_unavailable_cancels_iterator(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        ITEMS = (self._make_item(0),)
+        before = _MockIterator(fail_after=True, error=ServiceUnavailable("testing"))
+        before.cancel = mock.Mock()
+        after = _MockIterator(*ITEMS)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        self.assertEqual(list(resumable), list(ITEMS))
+        before.cancel.assert_called_once()
+
+    def test_iteration_w_raw_raising_retryable_internal_error_cancels_iterator(self):
+        from google.api_core.exceptions import InternalServerError
+
+        items = (self._make_item(0),)
+        before = _MockIterator(
+            fail_after=True,
+            error=InternalServerError(
+                "Received unexpected EOS on DATA frame from server"
+            ),
+        )
+        before.cancel = mock.Mock()
+        after = _MockIterator(*items)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        self.assertEqual(list(resumable), list(items))
+        before.cancel.assert_called_once()
+
+    def test_iteration_w_raw_raising_unavailable_cancel_logs_debug_on_error(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        items = (self._make_item(0),)
+        before = _MockIterator(fail_after=True, error=ServiceUnavailable("testing"))
+        before.cancel = mock.Mock(side_effect=RuntimeError("cancel failed"))
+        after = _MockIterator(*items)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        with mock.patch("google.cloud.spanner_v1.snapshot._LOGGER.debug") as mock_debug:
+            resumable = self._call_fut(derived, restart, request, session=session)
+            self.assertEqual(list(resumable), list(items))
+            mock_debug.assert_called_once()
 
     def test_iteration_w_raw_raising_retryable_internal_error_no_token(self):
         ITEMS = (
@@ -2110,6 +2168,81 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertTrue(snapshot._multi_use)
         self.assertEqual(snapshot._exact_staleness, DURATION)
 
+    def test_snapshot_channel_pool_affinity_lifecycle(self):
+        from google.cloud.spanner_v1.channel_pool import (
+            ChannelPoolOptions,
+            TransactionAffinity,
+        )
+
+        session = build_session()
+        session._database._channel_pool_options = ChannelPoolOptions(
+            min_channels=2, max_channels=4
+        )
+
+        # 1. Single-use snapshot has no affinity
+        single_snapshot = build_snapshot(session=session, multi_use=False)
+        self.assertIsNone(single_snapshot._affinity)
+
+        # 2. Multi-use snapshot has read-only affinity
+        multi_snapshot = build_snapshot(session=session, multi_use=True)
+        self.assertIsNotNone(multi_snapshot._affinity)
+        self.assertIsInstance(multi_snapshot._affinity, TransactionAffinity)
+        self.assertFalse(multi_snapshot._affinity.is_read_write())
+
+        # 3. close() resets affinity
+        multi_snapshot.close()
+        self.assertIsNone(multi_snapshot._affinity.pinned_entry_id)
+
+    def test_snapshot_affinity_propagation(self):
+        from google.cloud.spanner_v1.channel_pool import (
+            ChannelPoolOptions,
+        )
+        from google.cloud.spanner_v1.keyset import KeySet
+        from google.cloud.spanner_v1.types.result_set import PartialResultSet
+        from google.cloud.spanner_v1.types.spanner import (
+            Partition,
+            PartitionResponse,
+        )
+        from google.cloud.spanner_v1.types.transaction import (
+            Transaction as TransactionPB,
+        )
+
+        session = build_session()
+        session._database._channel_pool_options = ChannelPoolOptions(
+            min_channels=2, max_channels=4
+        )
+        snapshot = build_snapshot(session=session, multi_use=True)
+        snapshot._transaction_id = TXN_ID
+        affinity = snapshot._affinity
+        self.assertIsNotNone(affinity)
+
+        api = session._database.spanner_api
+
+        # 1. execute_sql propagates affinity
+        api.execute_streaming_sql.return_value = _MockIterator(PartialResultSet())
+        list(snapshot.execute_sql(SQL_QUERY))
+        sql_metadata = dict(api.execute_streaming_sql.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", sql_metadata)
+        self.assertIs(sql_metadata["x-goog-spanner-affinity"], affinity)
+
+        # 2. read propagates affinity
+        api.streaming_read.return_value = _MockIterator(PartialResultSet())
+        list(snapshot.read(TABLE_NAME, COLUMNS, KeySet(all_=True)))
+        read_metadata = dict(api.streaming_read.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", read_metadata)
+        self.assertIs(read_metadata["x-goog-spanner-affinity"], affinity)
+
+        # 3. partition_query propagates affinity
+        response = PartitionResponse(
+            partitions=[Partition(partition_token=b"token")],
+            transaction=TransactionPB(id=TXN_ID),
+        )
+        api.partition_query.return_value = response
+        snapshot.partition_query(SQL_QUERY)
+        part_metadata = dict(api.partition_query.call_args.kwargs["metadata"])
+        self.assertIn("x-goog-spanner-affinity", part_metadata)
+        self.assertIs(part_metadata["x-goog-spanner-affinity"], affinity)
+
     def test__build_transaction_options_strong(self):
         snapshot = build_snapshot()
         options = snapshot._build_transaction_options_pb()
@@ -2341,3 +2474,76 @@ def _build_request_id(database: Database, attempt: int) -> str:
         nth_request=client._nth_request.value,
         attempt=attempt,
     )
+
+
+class TestSnapshotConcurrencyCoordination(unittest.TestCase):
+    def test_snapshot_begin_failure_unblocks_waiters(self):
+        import threading
+        from concurrent.futures import ThreadPoolExecutor
+
+        from google.cloud.spanner_v1.snapshot import Snapshot
+
+        session = mock.MagicMock()
+        database = mock.MagicMock()
+        session._database = database
+        snapshot = Snapshot(session=session, multi_use=True)
+
+        snapshot._begin_request_sent = True
+        snapshot._begin_request_thread = "other-thread"
+
+        waiting_started_event = threading.Event()
+        original_wait = snapshot._transaction_begin_event.wait
+
+        def wait_hook(timeout=None):
+            waiting_started_event.set()
+            return original_wait(timeout)
+
+        snapshot._transaction_begin_event.wait = wait_hook
+
+        test_error = ValueError("Table not found")
+
+        def fail_later():
+            waiting_started_event.wait(timeout=5.0)
+            snapshot._handle_begin_failure(test_error)
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            executor.submit(fail_later)
+            with self.assertRaises(RuntimeError) as ctx:
+                snapshot.execute_sql("SELECT 1")
+
+        self.assertIn("Transaction failed to begin", str(ctx.exception))
+        self.assertIs(ctx.exception.__cause__, test_error)
+
+    def test_snapshot_close_unblocks_waiters(self):
+        import threading
+        from concurrent.futures import ThreadPoolExecutor
+
+        from google.cloud.spanner_v1.snapshot import Snapshot
+
+        session = mock.MagicMock()
+        database = mock.MagicMock()
+        session._database = database
+        snapshot = Snapshot(session=session, multi_use=True)
+
+        snapshot._begin_request_sent = True
+        snapshot._begin_request_thread = "other-thread"
+
+        waiting_started_event = threading.Event()
+        original_wait = snapshot._transaction_begin_event.wait
+
+        def wait_hook(timeout=None):
+            waiting_started_event.set()
+            return original_wait(timeout)
+
+        snapshot._transaction_begin_event.wait = wait_hook
+
+        def close_later():
+            waiting_started_event.wait(timeout=5.0)
+            snapshot.close()
+
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            executor.submit(close_later)
+            with self.assertRaises(ValueError) as ctx:
+                snapshot.execute_sql("SELECT 1")
+
+        self.assertIn("Transaction has not begun", str(ctx.exception))

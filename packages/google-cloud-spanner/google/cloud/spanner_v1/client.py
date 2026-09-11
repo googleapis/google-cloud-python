@@ -31,7 +31,7 @@ import logging
 import os
 import threading
 import warnings
-from typing import Optional
+from typing import Optional, Union
 
 import google.api_core.client_options
 import grpc
@@ -61,6 +61,7 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_prefix,
     _validate_client_context,
 )
+from google.cloud.spanner_v1.channel_pool import ChannelPoolOptions
 from google.cloud.spanner_v1.gapic_version import __version__
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.metrics.constants import METRIC_EXPORT_INTERVAL_MS
@@ -267,8 +268,23 @@ class Client(ClientWithProject):
         client_certificate=None,
         client_key=None,
         instance_type=None,
+        channel_pool_options: Optional[Union[ChannelPoolOptions, dict]] = None,
     ):
         self._emulator_host = _get_spanner_emulator_host()
+        if channel_pool_options is None:
+            enable_env = os.getenv("SPANNER_ENABLE_CHANNEL_POOL", "").lower()
+            if enable_env in ("true", "1", "yes"):
+                channel_pool_options = ChannelPoolOptions()
+        if channel_pool_options is not None:
+            if isinstance(channel_pool_options, dict):
+                channel_pool_options = ChannelPoolOptions(**channel_pool_options)
+            elif isinstance(channel_pool_options, ChannelPoolOptions):
+                channel_pool_options.validate()
+            else:
+                raise TypeError(
+                    f"channel_pool_options must be a ChannelPoolOptions or dict, got {type(channel_pool_options).__name__}"
+                )
+        self._channel_pool_options = channel_pool_options
         self._use_plain_text = use_plain_text
         self._ca_certificate = ca_certificate
         self._client_certificate = client_certificate
@@ -279,7 +295,6 @@ class Client(ClientWithProject):
             )
         else:
             self._client_options = client_options
-
         host_endpoint = None
         if experimental_host is not None:
             warnings.warn(
@@ -289,13 +304,11 @@ class Client(ClientWithProject):
             )
             instance_type = "omni"
             host_endpoint = experimental_host
-
         if instance_type is not None:
             instance_type = instance_type.lower()
             if instance_type not in ("cloud", "omni"):
                 raise ValueError("instance_type must be one of 'cloud' or 'omni'")
         self._instance_type = instance_type
-
         if self._emulator_host:
             credentials = AnonymousCredentials()
         elif self._instance_type == "omni":
@@ -305,12 +318,10 @@ class Client(ClientWithProject):
                         host_endpoint = self._client_options.api_endpoint
                     elif isinstance(self._client_options, dict):
                         host_endpoint = self._client_options.get("api_endpoint")
-
             if not host_endpoint:
                 raise ValueError(
                     "Host must be set for connecting to Spanner Omni instances"
                 )
-
             project = "default"
             self._use_plain_text = use_plain_text
             self._ca_certificate = ca_certificate
@@ -383,6 +394,14 @@ class Client(ClientWithProject):
     @property
     def _next_nth_request(self):
         return self._nth_request.increment()
+
+    @property
+    def channel_pool_options(self) -> Optional[ChannelPoolOptions]:
+        """Getter for client's channel_pool_options.
+
+        :rtype: :class:`~google.cloud.spanner_v1.channel_pool.ChannelPoolOptions` or None
+        :returns: The channel pool options configured on the client."""
+        return self._channel_pool_options
 
     @property
     def credentials(self):
@@ -518,8 +537,7 @@ class Client(ClientWithProject):
         :rtype:
             :class:`~google.cloud.spanner_v1.DefaultTransactionOptions`
             or :class:`dict`
-        :returns: The default transaction options that are used by this client for all transactions.
-        """
+        :returns: The default transaction options that are used by this client for all transactions."""
         return self._default_transaction_options
 
     @property

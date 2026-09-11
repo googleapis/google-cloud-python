@@ -133,6 +133,7 @@ class BatchDmlResponseConfig:
 class SpannerServicer(spanner_grpc.SpannerServicer):
     def __init__(self):
         self._requests = []
+        self._requests_metadata = []
         self.session_counter = 0
         self.sessions = {}
         self.transaction_counter = 0
@@ -148,8 +149,14 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def requests(self):
         return self._requests
 
+    @property
+    def requests_metadata(self):
+        """Returns the list of invocation metadata dicts captured parallel to self.requests."""
+        return self._requests_metadata
+
     def clear_requests(self):
         self._requests = []
+        self._requests_metadata = []
 
     def add_batch_dml_response_status(self, status, include_transaction_id=True):
         if not hasattr(self, "_batch_dml_response_configs"):
@@ -163,12 +170,19 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def clear_results(self):
         self.mock_spanner.clear_results()
 
-    def CreateSession(self, request, context):
+    def _record_request(self, request, context=None):
         self._requests.append(request)
+        if context is not None and hasattr(context, "invocation_metadata"):
+            self._requests_metadata.append(dict(context.invocation_metadata()))
+        else:
+            self._requests_metadata.append({})
+
+    def CreateSession(self, request, context):
+        self._record_request(request, context)
         return self.__create_session(request.database, request.session)
 
     def BatchCreateSessions(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         self.mock_spanner.pop_error(context)
         sessions = []
         for i in range(request.session_count):
@@ -188,19 +202,19 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         return session
 
     def GetSession(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return spanner.Session()
 
     def ListSessions(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return [spanner.Session()]
 
     def DeleteSession(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return empty_pb2.Empty()
 
     def ExecuteSql(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         self.mock_spanner.pop_error(context)
         started_transaction = self.__maybe_create_transaction(request)
         result: result_set.ResultSet = self.mock_spanner.get_result(request.sql)
@@ -210,7 +224,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         return result
 
     def ExecuteStreamingSql(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         self.mock_spanner.pop_error(context)
         started_transaction = self.__maybe_create_transaction(request)
         partials = self.mock_spanner.get_execute_streaming_sql_results(
@@ -220,7 +234,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
             yield result
 
     def ExecuteBatchDml(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         self.mock_spanner.pop_error(context)
         response = spanner.ExecuteBatchDmlResponse()
         started_transaction = self.__maybe_create_transaction(request)
@@ -253,16 +267,16 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         return response
 
     def Read(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return result_set.ResultSet()
 
     def StreamingRead(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         for result in [result_set.PartialResultSet(), result_set.PartialResultSet()]:
             yield result
 
     def BeginTransaction(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return self.__create_transaction(request.session, request.options)
 
     def __maybe_create_transaction(self, request):
@@ -288,7 +302,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         return transaction.Transaction(dict(id=transaction_id))
 
     def Commit(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         self.mock_spanner.pop_error(context)
         if not request.transaction_id == b"":
             tx = self.transactions[request.transaction_id]
@@ -306,20 +320,20 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         return commit.CommitResponse()
 
     def Rollback(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return empty_pb2.Empty()
 
     def PartitionQuery(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         return self.mock_spanner.get_partition_result(request.sql)
 
     def PartitionRead(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         # For reads, look up by target table name
         return self.mock_spanner.get_partition_result(request.table)
 
     def BatchWrite(self, request, context):
-        self._requests.append(request)
+        self._record_request(request, context)
         for result in [spanner.BatchWriteResponse(), spanner.BatchWriteResponse()]:
             yield result
 

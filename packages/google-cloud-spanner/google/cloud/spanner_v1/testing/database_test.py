@@ -52,6 +52,7 @@ class TestDatabase(Database):
         database_dialect=DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED,
         database_role=None,
         enable_drop_protection=False,
+        channel_pool_options=None,
     ):
         super().__init__(
             database_id,
@@ -63,6 +64,7 @@ class TestDatabase(Database):
             database_dialect,
             database_role,
             enable_drop_protection,
+            channel_pool_options=channel_pool_options,
         )
         self._method_count_interceptor = MethodCountInterceptor()
         self._method_abort_interceptor = MethodAbortInterceptor()
@@ -119,10 +121,9 @@ class TestDatabase(Database):
         return self._spanner_api
 
     def _create_spanner_client_for_tests(self, client_options, credentials):
-        (
-            api_endpoint,
-            client_cert_source_func,
-        ) = SpannerClient.get_mtls_endpoint_and_cert_source(client_options)
+        api_endpoint, client_cert_source_func = (
+            SpannerClient.get_mtls_endpoint_and_cert_source(client_options)
+        )
         channel = grpc_helpers.create_channel(
             api_endpoint,
             credentials=credentials,

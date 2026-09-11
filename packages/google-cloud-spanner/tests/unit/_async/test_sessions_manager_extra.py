@@ -16,6 +16,7 @@ import asyncio
 import unittest
 from unittest import mock
 
+from google.cloud.spanner_v1._async.channel_pool import ChannelPool
 from google.cloud.spanner_v1._async.database_sessions_manager import (
     DatabaseSessionsManager,
     TransactionType,
@@ -514,6 +515,29 @@ class TestSessionsManagerExtra(unittest.IsolatedAsyncioTestCase):
             session = await manager._build_multiplexed_session()
             self.assertIs(session, mock_session_instance)
             mock_session_instance.create.assert_called_once()
+
+    async def test_build_multiplexed_session_primes_channel_pool(self):
+        manager = DatabaseSessionsManager(self.database, self.pool)
+        mock_pool = mock.create_autospec(ChannelPool, instance=True)
+        mock_pool.set_prime_session = mock.AsyncMock()
+        self.database.channel_pool = mock_pool
+        try:
+            with mock.patch(
+                "google.cloud.spanner_v1._async.database_sessions_manager.Session"
+            ) as mock_session_class:
+                mock_session_instance = mock.AsyncMock()
+                mock_session_instance.name = (
+                    "projects/p/instances/i/databases/d/sessions/s1"
+                )
+                mock_session_class.return_value = mock_session_instance
+                session = await manager._build_multiplexed_session()
+                self.assertIs(session, mock_session_instance)
+                mock_session_instance.create.assert_called_once()
+                mock_pool.set_prime_session.assert_awaited_once_with(
+                    "projects/p/instances/i/databases/d/sessions/s1"
+                )
+        finally:
+            delattr(self.database, "channel_pool")
 
     async def test_put_session_multiplexed_and_regular(self):
         manager = DatabaseSessionsManager(self.database, self.pool)
