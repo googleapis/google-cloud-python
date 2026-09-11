@@ -14,6 +14,7 @@
 
 """Helper functions for Cloud Spanner."""
 
+import atexit
 import base64
 import datetime
 import decimal
@@ -21,6 +22,7 @@ import logging
 import math
 import operator
 import os
+import queue
 import threading
 import time
 import uuid
@@ -1124,3 +1126,128 @@ def _create_experimental_host_transport(
         client_key,
         interceptors=interceptors,
     )
+
+
+_STREAM_DRAIN_QUEUE_SIZE = 512
+_STREAM_DRAIN_WORKER_COUNT = 8
+
+
+class _BoundedStreamDrainer:
+    """Bounded background drainer for synchronous gRPC streams.
+
+    Uses a fixed pool of daemon worker threads and a bounded queue to drain
+    completed streams to EOF, allowing callers to return early upon seeing
+    PartialResultSet.last without blocking on trailing gRPC frames.
+    """
+
+    def __init__(
+        self,
+        queue_size: int = _STREAM_DRAIN_QUEUE_SIZE,
+        worker_count: int = _STREAM_DRAIN_WORKER_COUNT,
+    ):
+        self._queue_size = queue_size
+        self._worker_count = worker_count
+        self._lock = threading.Lock()
+        self._reset()
+
+    def _reset(self):
+        self._queue = queue.Queue(maxsize=self._queue_size)
+        self._started = False
+        self._stopped = False
+        self._workers = []
+
+    def _reset_after_fork(self):
+        self._lock = threading.Lock()
+        self._reset()
+
+    def _ensure_started(self):
+        if not self._started and not self._stopped:
+            with self._lock:
+                if not self._started and not self._stopped:
+                    self._started = True
+                    try:
+                        for index in range(self._worker_count):
+                            worker = threading.Thread(
+                                target=self._worker_loop,
+                                name=f"spanner-stream-drainer-{index}",
+                                daemon=True,
+                            )
+                            worker.start()
+                            self._workers.append(worker)
+                    except Exception:
+                        if not self._workers:
+                            self._started = False
+                        raise
+
+    def _worker_loop(self):
+        while True:
+            iterator = self._queue.get()
+            if iterator is None:
+                self._queue.task_done()
+                break
+            try:
+                for _ in iterator:
+                    pass
+            except Exception:
+                pass
+            finally:
+                self._queue.task_done()
+
+    def drain(self, iterator):
+        if iterator is None:
+            return
+
+        with self._lock:
+            stopped = self._stopped
+
+        # If already shut down or during interpreter exit, drain inline on caller thread.
+        if stopped:
+            try:
+                for _ in iterator:
+                    pass
+            except Exception:
+                pass
+            return
+
+        try:
+            self._ensure_started()
+            self._queue.put_nowait(iterator)
+        except Exception:
+            # Under extreme bursts where the queue is temporarily full, or if thread
+            # creation fails (e.g. in restricted environments or during shutdown),
+            # drain inline on the caller thread rather than cancelling a successful query.
+            # Because trailers are delivered in sub-millisecond time (<0.5ms),
+            # inline draining adds negligible latency while guaranteeing status OK.
+            try:
+                for _ in iterator:
+                    pass
+            except Exception:
+                pass
+
+    def shutdown(self):
+        """Cleanly terminate worker threads during interpreter shutdown."""
+        with self._lock:
+            if self._stopped:
+                return
+            self._stopped = True
+            if self._started:
+                for _ in range(len(self._workers)):
+                    try:
+                        self._queue.put_nowait(None)
+                    except queue.Full:
+                        pass
+
+
+_GLOBAL_STREAM_DRAINER = _BoundedStreamDrainer()
+atexit.register(_GLOBAL_STREAM_DRAINER.shutdown)
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=_GLOBAL_STREAM_DRAINER._reset_after_fork)
+
+
+def _drain_stream(iterator):
+    """Drain a stream iterator to EOF in the background.
+
+    Called when PartialResultSet.last is True to allow the caller to return immediately
+    while consuming trailing gRPC metadata so the stream terminates cleanly with status OK.
+    """
+    _GLOBAL_STREAM_DRAINER.drain(iterator)

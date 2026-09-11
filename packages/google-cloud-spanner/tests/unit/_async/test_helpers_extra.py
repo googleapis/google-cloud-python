@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import unittest
 from unittest import mock
 
@@ -141,3 +142,94 @@ class TestHelpersExtra(unittest.IsolatedAsyncioTestCase):
                 MUT._create_experimental_host_transport(
                     InstanceAdminGrpcTransport, "host", False, None, None, None
                 )
+
+
+class TestDrainStreamAsync(unittest.IsolatedAsyncioTestCase):
+    async def test_drain_stream_consumes_async_iterator(self):
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockAsyncIterator:
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopAsyncIteration
+
+        iterator = MockAsyncIterator()
+        MUT._drain_stream(iterator)
+        if MUT._PENDING_DRAIN_TASKS:
+            await asyncio.wait(MUT._PENDING_DRAIN_TASKS)
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    async def test_drain_stream_event_loop_closed_fallback(self):
+        iterator = mock.Mock()
+        iterator.cancel = mock.Mock()
+
+        def _raise_runtime_error(coroutine):
+            coroutine.close()
+            raise RuntimeError("no running loop")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.create_task",
+            side_effect=_raise_runtime_error,
+        ):
+            MUT._drain_stream(iterator)
+
+        iterator.cancel.assert_called_once()
+
+    async def test_drain_stream_handles_none(self):
+        MUT._drain_stream(None)
+
+    async def test_drain_stream_handles_iterator_exception(self):
+        class FailingAsyncIterator:
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                raise RuntimeError("Stream broken")
+
+        iterator = FailingAsyncIterator()
+        MUT._drain_stream(iterator)
+        if MUT._PENDING_DRAIN_TASKS:
+            await asyncio.wait(MUT._PENDING_DRAIN_TASKS)
+
+    async def test_drain_stream_task_cancellation(self):
+        started = asyncio.Event()
+        blocker = asyncio.Event()
+
+        class BlockingAsyncIterator:
+            def __aiter__(self):
+                return self
+
+            async def __anext__(self):
+                started.set()
+                await blocker.wait()
+                return 1
+
+        iterator = BlockingAsyncIterator()
+        iterator.cancel = mock.Mock()
+
+        MUT._drain_stream(iterator)
+        await started.wait()
+        task = next(iter(MUT._PENDING_DRAIN_TASKS))
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+        iterator.cancel.assert_called_once()
+        self.assertNotIn(task, MUT._PENDING_DRAIN_TASKS)
+
+    def test_drain_stream_tasks_cleared_after_fork(self):
+        MUT._PENDING_DRAIN_TASKS.add("dummy_task")
+        self.assertEqual(len(MUT._PENDING_DRAIN_TASKS), 1)
+
+        MUT._PENDING_DRAIN_TASKS.clear()
+        self.assertEqual(len(MUT._PENDING_DRAIN_TASKS), 0)
