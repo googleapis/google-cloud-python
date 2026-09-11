@@ -93,15 +93,20 @@ def _extract_endpoint_attributes(
     if endpoint and isinstance(endpoint, str):
         target = endpoint if "//" in endpoint else f"//{endpoint}"
         parsed = urllib.parse.urlsplit(target)
-        if parsed.hostname:
-            attrs["server.address"] = parsed.hostname
-        if parsed.port:
+        port = None
+        try:
+            if parsed.hostname:
+                attrs["server.address"] = parsed.hostname
+            port = parsed.port
+        except ValueError:
+            pass
+        if port:
             scheme = parsed.scheme.lower()
-            is_default_port = (parsed.port == 443 and scheme in ("https", "")) or (
-                parsed.port == 80 and scheme == "http"
+            is_default_port = (port == 443 and scheme in ("https", "")) or (
+                port == 80 and scheme == "http"
             )
             if not is_default_port:
-                attrs["server.port"] = parsed.port
+                attrs["server.port"] = port
     return attrs
 
 
