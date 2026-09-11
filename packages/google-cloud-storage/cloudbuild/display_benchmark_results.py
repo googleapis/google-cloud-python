@@ -22,14 +22,18 @@ import sys
 def display_results(result_path: str) -> None:
     """Reads benchmark JSON result and prints a formatted summary table."""
     if not os.path.exists(result_path):
-        print(f"ERROR: Benchmark result file not found at {result_path}", file=sys.stderr)
+        print(
+            f"ERROR: Benchmark result file not found at {result_path}", file=sys.stderr
+        )
         sys.exit(1)
 
     with open(result_path) as f:
         data = json.load(f)
 
     if not isinstance(data, dict):
-        print("ERROR: Invalid JSON structure in benchmark result file.", file=sys.stderr)
+        print(
+            "ERROR: Invalid JSON structure in benchmark result file.", file=sys.stderr
+        )
         sys.exit(1)
 
     benchmarks = data.get("benchmarks", [])
@@ -46,7 +50,11 @@ def display_results(result_path: str) -> None:
     for b in benchmarks:
         if not isinstance(b, dict):
             continue
-        name = b.get("name", "").replace("test_downloads_multi_proc_multi_coro[", "").replace("]", "")
+        name = (
+            b.get("name", "")
+            .replace("test_downloads_multi_proc_multi_coro[", "")
+            .replace("]", "")
+        )
         extra = b.get("extra_info", {})
         if not isinstance(extra, dict):
             extra = {}
@@ -54,13 +62,17 @@ def display_results(result_path: str) -> None:
         net_mb = extra.get("net_throughput_mb_s")
         if net_mb:
             try:
-                net_str = f"{float(net_mb):,.1f} MB/s ({float(net_mb)*0.008:.1f} Gbps)"
+                net_str = (
+                    f"{float(net_mb):,.1f} MB/s ({float(net_mb) * 0.008:.1f} Gbps)"
+                )
             except Exception:
                 net_str = str(net_mb)
         else:
             net_str = "N/A"
         cpu = extra.get("cpu_max_global", "N/A")
-        print(f"| {name:<36} | {str(avg_mib) + ' MiB/s':<17} | {net_str:<22} | {str(cpu):<9} |")
+        print(
+            f"| {name:<36} | {str(avg_mib) + ' MiB/s':<17} | {net_str:<22} | {str(cpu):<9} |"
+        )
     print("=" * 88 + "\n")
 
 

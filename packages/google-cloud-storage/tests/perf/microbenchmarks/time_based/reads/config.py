@@ -54,9 +54,7 @@ def _get_params() -> Dict[str, List[TimeBasedReadParameters]]:
         else common_params["num_ranges"]
     )
     rounds = (
-        int(os.environ["ROUNDS"])
-        if "ROUNDS" in os.environ
-        else common_params["rounds"]
+        int(os.environ["ROUNDS"]) if "ROUNDS" in os.environ else common_params["rounds"]
     )
     duration = (
         int(os.environ["DURATION"])
