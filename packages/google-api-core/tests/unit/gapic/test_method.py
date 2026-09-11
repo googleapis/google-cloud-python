@@ -486,6 +486,32 @@ def test_wrap_method_otel_tracing_custom_client_options(mock_otel):
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 
 
+def test_wrap_method_otel_tracing_dict_client_options(mock_otel):
+    """Proves that providing client_options as a dict with tracer_provider uses that provider."""
+    mock_target = mock.Mock(return_value="success")
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_otel.tracer
+
+    client_options = {"tracer_provider": mock_provider}
+
+    wrapped = google.api_core.gapic_v1.method.wrap_method(
+        mock_target,
+        client_options=client_options,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = wrapped()
+
+    assert result == "success"
+    mock_provider.get_tracer.assert_called_once_with("google.api_core")
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes=_DEFAULT_SPAN_ATTRIBUTES,
+    )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
+
+
 def test_wrap_method_otel_tracing_enabled_error(mock_otel):
     """Proves that when an RPC fails, the T3 client span enriches the status code attribute."""
     err = RuntimeError("gRPC connection reset")
