@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-compute-v1beta/#history
 
+## [0.12.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.4...google-cloud-compute-v1beta-v0.12.5) (2026-09-11)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
 ## [0.12.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1beta-v0.12.3...google-cloud-compute-v1beta-v0.12.4) (2026-09-03)
 
 

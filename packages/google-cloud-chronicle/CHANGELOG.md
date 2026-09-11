@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-chronicle/#history
 
+## [0.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-chronicle-v0.6.2...google-cloud-chronicle-v0.6.3) (2026-09-11)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
 ## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-chronicle-v0.6.1...google-cloud-chronicle-v0.6.2) (2026-07-07)
 
 

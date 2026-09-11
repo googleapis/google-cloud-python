@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.36.0...google-api-core-v2.37.0) (2026-09-11)
+
+
+### Features
+
+* **gapic:** add OpenTelemetry T3 client method span wrapping in gapic_v1.method (D) ([#18274](https://github.com/googleapis/google-cloud-python/issues/18274)) ([156e319](https://github.com/googleapis/google-cloud-python/commit/156e31941b4bf6257a4d719b9630c388435660e8))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.35.0...google-api-core-v2.36.0) (2026-09-03)
 
 

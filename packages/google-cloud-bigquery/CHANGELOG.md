@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.45.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.0...google-cloud-bigquery-v3.45.1) (2026-09-11)
+
+
+### Bug Fixes
+
+* bump idna from 3.10 to 3.15 in /packages/google-cloud-bigquery/samples/geography ([#18309](https://github.com/googleapis/google-cloud-python/issues/18309)) ([b6fe689](https://github.com/googleapis/google-cloud-python/commit/b6fe6890582acf73e4163fe83af7024b7782b1a8))
+* bump pyarrow from 21.0.0 to 23.0.1 in /packages/google-cloud-bigquery/samples/geography ([#18313](https://github.com/googleapis/google-cloud-python/issues/18313)) ([282ab70](https://github.com/googleapis/google-cloud-python/commit/282ab7039a423fb4e2b781c87cc4b0bca2d9538f))
+* bump pyasn1 from 0.6.2 to 0.6.4 in /packages/google-cloud-bigquery/samples/geography ([#18310](https://github.com/googleapis/google-cloud-python/issues/18310)) ([1d79696](https://github.com/googleapis/google-cloud-python/commit/1d796961baf475b4a77edfda06760e07014095b3))
+* bump pytest from 8.4.2 to 9.0.3 in /packages/google-cloud-bigquery/samples/desktopapp ([#18322](https://github.com/googleapis/google-cloud-python/issues/18322)) ([f55462d](https://github.com/googleapis/google-cloud-python/commit/f55462de2ea192806282065c44133bd768ad80ed))
+* bump pytest from 8.4.2 to 9.0.3 in /packages/google-cloud-bigquery/samples/magics ([#18312](https://github.com/googleapis/google-cloud-python/issues/18312)) ([d0045d4](https://github.com/googleapis/google-cloud-python/commit/d0045d4da87c7bc606734295b726a4707faa53d3))
+* bump requests from 2.32.5 to 2.33.0 in /packages/google-cloud-bigquery/samples/geography ([#18323](https://github.com/googleapis/google-cloud-python/issues/18323)) ([4cc95cb](https://github.com/googleapis/google-cloud-python/commit/4cc95cb821d220cc5c2498947efc9b263d93f1c6))
+* bump urllib3 from 2.6.3 to 2.7.0 in /packages/google-cloud-bigquery/samples/geography ([#18311](https://github.com/googleapis/google-cloud-python/issues/18311)) ([f18eb1e](https://github.com/googleapis/google-cloud-python/commit/f18eb1ec78469e6bf1525c6e3b774e394e834e60))
+
+
+### Documentation
+
+* **bigquery:** fix table rendering in markdown docs ([#18294](https://github.com/googleapis/google-cloud-python/issues/18294)) ([1abfcdd](https://github.com/googleapis/google-cloud-python/commit/1abfcdde234aaacbd58430d7917568c043c8e851))
+* migrate code from googleapis/python-bigquery ([#18303](https://github.com/googleapis/google-cloud-python/issues/18303)) ([23f9a74](https://github.com/googleapis/google-cloud-python/commit/23f9a742ad842a7c133bd167676e195b6cb78f95))
+
 ## [3.45.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.44.0...google-cloud-bigquery-v3.45.0) (2026-09-03)
 
 
