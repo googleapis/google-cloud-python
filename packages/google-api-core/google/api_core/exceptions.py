@@ -446,6 +446,30 @@ class AsyncRestUnsupportedParameterError(NotImplementedError):
     pass
 
 
+class TransferStalledError(GoogleAPICallError):
+    """Raised when upload throughput stays below minimum rate past stall timeout."""
+
+    pass
+
+
+class UnseekableStreamError(GoogleAPICallError):
+    """Raised when server recovery requires rewinding a non-seekable stream."""
+
+    pass
+
+
+class UploadCancelledError(GoogleAPICallError):
+    """Raised when the upload is cancelled by the client or server."""
+
+    pass
+
+
+class MissingStatusHeaderError(GoogleAPICallError):
+    """Raised when server response lacks the required X-Goog-Upload-Status header."""
+
+    pass
+
+
 def exception_class_for_http_status(status_code):
     """Return the exception class for a specific HTTP status code.
 
