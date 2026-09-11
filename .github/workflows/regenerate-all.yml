@@ -13,7 +13,6 @@ jobs:
   regenerate:
     runs-on: ubuntu-latest
     env:
-      PANDOC_VERSION: 3.8.2
       SYNTHTOOL_TEMPLATES: /home/runner/synthtool/synthtool/gcp/templates
 
     steps:
@@ -27,13 +26,6 @@ jobs:
           protoc-version: "33.5"
           protoc-checksum: "eb842a2259a90a402207cae3a9261dc9501f43a535b3b3d786ecc496e117f499cf373fe41181fd9047035f7ed6c2dee9a55f7f0a7afa1c5d7cb5be3e672bf527"
 
-      - name: Install pandoc
-        run: |
-          mkdir /tmp/pandoc
-          curl -fsSL --retry 5 --retry-delay 15 -o /tmp/pandoc.tar.gz \
-            https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
-          tar -xvf /tmp/pandoc.tar.gz -C /tmp/pandoc --strip-components=1
-
       - name: Install Python packages for Librarian
         run: librarian install
 
@@ -42,9 +34,7 @@ jobs:
           git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
 
       - name: Regenerate
-        run: |
-          PATH=$PATH:/tmp/pandoc/bin
-          librarian generate -all -v
+        run: librarian generate -all -v
 
       - name: Check for generated code changes
         run: |
