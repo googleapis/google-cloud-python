@@ -19,7 +19,20 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+import grpc  # type: ignore
 from google.api_core import grpc_helpers
+
+# Optional: OpenTelemetry tracing capabilities for grpc channel injection
+# Note: ClientInterceptor was added in google-api-core 2.25.0+; fallback for older versions
+try:
+    from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    ClientInterceptor = Union[  # type: ignore[misc,assignment]
+        grpc.UnaryUnaryClientInterceptor,
+        grpc.UnaryStreamClientInterceptor,
+        grpc.StreamUnaryClientInterceptor,
+        grpc.StreamStreamClientInterceptor,
+    ]
 from google.api_core import gapic_v1
 import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -27,7 +40,6 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
-import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.logging_v2.types import logging_metrics
@@ -131,6 +143,14 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            interceptors: Optional[
+                Sequence[
+                    Union[
+                        ClientInterceptor,
+                        Callable[[grpc.Channel], grpc.Channel],
+                    ]
+                ]
+            ] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -181,6 +201,9 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
+                Additional interceptors (or callables that apply interceptors) to apply to the
+                gRPC channel.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -256,6 +279,13 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+
+        apply_interceptors = getattr(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            lambda channel, interceptors: channel,
+        )
+        self._grpc_channel = apply_interceptors(self._grpc_channel, interceptors)
 
         self._interceptor = _LoggingClientInterceptor()
         self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
