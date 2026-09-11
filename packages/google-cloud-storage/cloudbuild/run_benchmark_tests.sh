@@ -44,6 +44,12 @@ echo "========================================================================"
 export HOME="${HOME:-/root}"
 export DEFAULT_RAPID_ZONAL_BUCKET="${ZONAL_BUCKET}"
 export DEFAULT_STANDARD_BUCKET="${REGIONAL_BUCKET}"
+export PROCESSES="${PROCESSES}"
+export COROS="${COROS}"
+export FILE_SIZE_MIB="${FILE_SIZE_MIB}"
+export CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB}"
+export ROUNDS="${ROUNDS}"
+export BUCKET_TYPE="${BUCKET_TYPE}"
 export USE_PRESEEDED_BENCHMARK_OBJECTS="1"
 
 # Determine script directory and repository root
@@ -73,63 +79,7 @@ if ! python3 -c "import pytest, psutil, yaml, google.cloud.storage" 2>/dev/null;
   pip install -e ".[grpc,testing]"
 fi
 
-CONFIG_PATH="tests/perf/microbenchmarks/time_based/reads/config.yaml"
-if [ ! -f "${CONFIG_PATH}" ]; then
-  echo "ERROR: Could not find ${CONFIG_PATH}. Please run from google-cloud-storage root."
-  exit 1
-fi
-
-echo "--- 2. Updating ${CONFIG_PATH} parameters (rounds=${ROUNDS}) ---"
-python3 -c "
-import yaml
-path = '${CONFIG_PATH}'
-with open(path) as f:
-    d = yaml.safe_load(f)
-if isinstance(d, dict):
-    defaults = d.get('defaults')
-    if isinstance(defaults, dict):
-        defaults['DEFAULT_RAPID_ZONAL_BUCKET'] = '${ZONAL_BUCKET}'
-        defaults['DEFAULT_STANDARD_BUCKET'] = '${REGIONAL_BUCKET}'
-    common = d.get('common')
-    if isinstance(common, dict):
-        common['file_sizes_mib'] = [${FILE_SIZE_MIB}]
-        common['chunk_sizes_kib'] = [${CHUNK_SIZE_KIB}]
-        b_types = [b.strip() for b in '${BUCKET_TYPE}'.split(',') if b.strip()]
-        common['bucket_types'] = b_types if b_types else ['zonal']
-        common['rounds'] = int('${ROUNDS}')
-    workloads = d.get('workload')
-    if isinstance(workloads, list):
-        for w in workloads:
-            if isinstance(w, dict):
-                w['processes'] = [${PROCESSES}]
-                w['coros'] = [${COROS}]
-with open(path, 'w') as f:
-    yaml.dump(d, f)
-"
-
-# Patch config.py so 1-to-1 process-to-file indexing prevents 404 on multi-coroutine runs
-sed -i 's/num_files = num_processes \* num_coros/num_files = num_processes/g' tests/perf/microbenchmarks/time_based/reads/config.py || true
-sed -i 's/num_files = num_processes \* num_coros/num_files = num_processes/g' tests/perf/microbenchmarks/reads/config.py || true
-
-# Patch conftest.py at runtime on VM to use pre-seeded test objects and bypass 480GB re-upload
-python3 -c "
-path = 'tests/perf/microbenchmarks/conftest.py'
-try:
-    with open(path) as f:
-        s = f.read()
-    if '_create_files(' in s:
-        target = 'files_names = _create_files(\n            params.num_files,\n            params.bucket_name,\n            params.bucket_type,\n            params.file_size_bytes,\n)'
-        replacement = 'files_names = [f\"fio-go_storage_fio.0.{i}\" for i in range(params.num_files)]'
-        if target not in s:
-            raise ValueError('Exact _create_files call signature not found in conftest.py')
-        s = s.replace(target, replacement)
-        with open(path, 'w') as f:
-            f.write(s)
-except Exception as e:
-    print(f'Warning patching conftest.py: {e}')
-"
-
-echo "--- 3. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
+echo "--- 2. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
 rm -f "${OUTPUT_JSON_PATH}" 2>/dev/null || true
 python3 -m pytest --benchmark-json="${OUTPUT_JSON_PATH}" \
   -rA \
