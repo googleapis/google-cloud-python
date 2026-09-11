@@ -736,6 +736,94 @@ def test_base_config_service_v2_client_client_options_from_dict():
         )
 
 
+def test_base_config_service_v2_client_otel_channel_injection_enabled():
+    mock_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_interceptor
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = BaseConfigServiceV2Client(transport="grpc")
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert called_kwargs.get("interceptors") == [mock_interceptor]
+
+
+def test_base_config_service_v2_client_otel_channel_injection_disabled():
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = None
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = BaseConfigServiceV2Client(transport="grpc")
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert not called_kwargs.get("interceptors", [])
+
+
+def test_config_service_v2_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.ConfigServiceV2GrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_config_service_v2_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.ConfigServiceV2GrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (BaseConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc", grpc_helpers),
     (BaseConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),

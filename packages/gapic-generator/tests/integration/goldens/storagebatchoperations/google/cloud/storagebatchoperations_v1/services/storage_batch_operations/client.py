@@ -49,6 +49,13 @@ try:
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
+# Optional: OpenTelemetry tracing capabilities for grpc channel injection
+# Note: _observability was added in google-api-core 2.35.0; guard for older versions
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.cloud.location import locations_pb2 # type: ignore
@@ -506,18 +513,35 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., StorageBatchOperationsTransport], transport)
             )
+            # When OpenTelemetry tracing is enabled, obtain the channel interceptor
+            # and pass it to the transport.
+            interceptors = []
+            if (
+                transport_init is StorageBatchOperationsGrpcTransport
+                and _observability is not None
+                and (
+                    otel_interceptor := _observability.get_otel_interceptor(
+                        self._client_options
+                    )
+                )
+                is not None
+            ):
+                interceptors.append(otel_interceptor)
+
             # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "credentials_file": self._client_options.credentials_file,
+                "host": self._api_endpoint,
+                "scopes": self._client_options.scopes,
+                "client_cert_source_for_mtls": self._client_cert_source,
+                "quota_project_id": self._client_options.quota_project_id,
+                "client_info": client_info,
+                "always_use_jwt_access": True,
+                "api_audience": self._client_options.api_audience,
+                **({"interceptors": interceptors} if interceptors else {}),
+            }
+            self._transport = transport_init(**transport_kwargs)
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
