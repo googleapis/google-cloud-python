@@ -44,7 +44,7 @@ def test_insert_rows_json_ssl_error_no_retry(bigquery_client, dataset_id, projec
             bigquery_client._connection, "api_request", side_effect=mock_api_request
         ):
             # Use a reasonably short deadline for the test, although it should fail on the first attempt anyway.
-            retry = bigquery.DEFAULT_RETRY.with_deadline(5.0)
+            retry = bigquery.DEFAULT_INSERT_ROWS_RETRY.with_deadline(5.0)
 
             start_time = time.time()
             with pytest.raises(requests.exceptions.SSLError) as excinfo:
