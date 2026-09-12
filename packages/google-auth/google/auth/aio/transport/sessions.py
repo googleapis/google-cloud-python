@@ -336,7 +336,7 @@ class AsyncAuthorizedSession:
                 # allowing the request to fail naturally elsewhere.
                 pass
             except asyncio.CancelledError:
-                if self._mtls_init_task.cancelled():
+                if self._mtls_init_task and self._mtls_init_task.cancelled():
                     pass
                 else:
                     raise
