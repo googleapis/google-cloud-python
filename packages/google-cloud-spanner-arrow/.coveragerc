@@ -1,0 +1,13 @@
+[run]
+branch = True
+source =
+    google_cloud_spanner_arrow
+
+[report]
+show_missing = True
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:

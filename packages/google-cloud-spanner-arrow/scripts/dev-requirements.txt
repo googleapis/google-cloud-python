@@ -1,0 +1,6 @@
+auditwheel
+delocate
+pytest
+setuptools >= 64.0.0
+wheel
+pyarrow >= 14.0.0
