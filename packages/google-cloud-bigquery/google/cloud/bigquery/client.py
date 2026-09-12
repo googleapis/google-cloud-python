@@ -641,9 +641,9 @@ class Client(ClientWithProject):
             pandas_gbq = None  # type: ignore
 
         if pandas_gbq is None:
-            user_agent = "pandas-gbq/0.0.0"
+            user_agent = "pandas-gbq/0.0.0 legacy-gcb"
         else:
-            user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+            user_agent = f"pandas-gbq/{pandas_gbq.__version__} legacy-gcb"
 
         if client_info is None:
             amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(
