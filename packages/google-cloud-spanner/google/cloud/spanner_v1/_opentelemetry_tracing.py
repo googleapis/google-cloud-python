@@ -15,6 +15,7 @@
 """Manages OpenTelemetry trace creation and handling"""
 
 import os
+from collections.abc import Mapping
 from contextlib import contextmanager
 from datetime import datetime
 
@@ -40,6 +41,16 @@ end_to_end_tracing_globally_enabled = (
 )
 
 
+def _is_tracer_noop(tracer: trace.Tracer) -> bool:
+    """Check if a tracer is a no-op tracer or an uninitialized proxy tracer."""
+    if tracer is None or isinstance(tracer, trace.NoOpTracer):
+        return True
+    if isinstance(tracer, trace.ProxyTracer):
+        underlying = getattr(tracer, "_tracer", None)
+        return isinstance(underlying, trace.NoOpTracer)
+    return False
+
+
 def get_tracer(tracer_provider=None):
     """
     get_tracer is a utility to unify and simplify retrieval of the tracer, without
@@ -62,32 +73,52 @@ def trace_call(
     if session:
         session._last_use_time = datetime.now()
 
+    enable_end_to_end_tracing = False
     tracer_provider = None
 
-    # By default enable_extended_tracing=True because in a bid to minimize
-    # breaking changes and preserve legacy behavior, we are keeping it turned
-    # on by default.
+    if isinstance(observability_options, (dict, Mapping)):  # Avoid false positives with mock.Mock
+        tracer_provider = observability_options.get("tracer_provider", None)
+        enable_end_to_end_tracing = observability_options.get(
+            "enable_end_to_end_tracing", False
+        )
+
+    if end_to_end_tracing_globally_enabled:
+        enable_end_to_end_tracing = True
+
+    tracer = get_tracer(tracer_provider)
+
+    # Fast path: when no TracerProvider is registered or a no-op tracer is active,
+    # skip attribute dictionary construction and span creation entirely.
+    if _is_tracer_noop(tracer):
+        current_span = trace.get_current_span()
+        if current_span is not trace.INVALID_SPAN:
+            with tracer.start_as_current_span(name, kind=trace.SpanKind.CLIENT) as span:
+                with MetricsCapture():
+                    if enable_end_to_end_tracing:
+                        _metadata_with_span_context(metadata)
+                    yield span
+            return
+
+        with MetricsCapture():
+            if enable_end_to_end_tracing:
+                _metadata_with_span_context(metadata)
+            yield trace.INVALID_SPAN
+        return
+
+    # Slow path: resolve attributes and configure span when tracing is active.
     enable_extended_tracing = True
-
-    enable_end_to_end_tracing = False
-
     db_name = ""
-    cloud_region = None
+
     if session and getattr(session, "_database", None):
         db_name = session._database.name
 
-    if isinstance(observability_options, dict):  # Avoid false positives with mock.Mock
-        tracer_provider = observability_options.get("tracer_provider", None)
+    if isinstance(observability_options, (dict, Mapping)):
         enable_extended_tracing = observability_options.get(
             "enable_extended_tracing", enable_extended_tracing
-        )
-        enable_end_to_end_tracing = observability_options.get(
-            "enable_end_to_end_tracing", enable_end_to_end_tracing
         )
         db_name = observability_options.get("db_name", db_name)
 
     cloud_region = _get_cloud_region()
-    tracer = get_tracer(tracer_provider)
 
     # Set base attributes that we know for every trace created
     attributes = {
@@ -118,9 +149,6 @@ def trace_call(
 
     if not enable_extended_tracing:
         attributes.pop("db.statement", False)
-
-    if end_to_end_tracing_globally_enabled:
-        enable_end_to_end_tracing = True
 
     with tracer.start_as_current_span(
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
