@@ -210,9 +210,10 @@ class AsyncAuthorizedSession:
 
         if self._mtls_init_task is None or is_explicit_reconfig or task_failed or force:
             if self._mtls_init_task is not None and not self._mtls_init_task.done():
+                self._mtls_init_task.cancel()
                 try:
                     await self._mtls_init_task
-                except Exception:
+                except (Exception, asyncio.CancelledError):
                     pass
             self._client_cert_callback = client_cert_callback
 
