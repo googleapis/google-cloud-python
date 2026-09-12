@@ -211,7 +211,7 @@ async def check_parameters_for_unauthorized_response(
                 cached_cert
             )
         else:
-            cached_fingerprint = None
+            cached_fingerprint = current_fingerprint
         return cached_fingerprint, current_fingerprint
 
     cached_fingerprint, current_cert_fingerprint = await _run_in_executor(
