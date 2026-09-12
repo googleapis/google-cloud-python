@@ -168,7 +168,9 @@ class AsyncAuthorizedSession:
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
 
-    async def configure_mtls_channel(self, client_cert_callback=None):
+    async def configure_mtls_channel(
+        self, client_cert_callback=None, force: bool = False
+    ):
         """Configure the client certificate and key for SSL connection.
 
         This method configures mTLS if client certificates are explicitly enabled
@@ -188,15 +190,15 @@ class AsyncAuthorizedSession:
                 key bytes both in PEM format.
                 If the callback is None, application default SSL credentials
                 will be used.
+            force (bool):
+                Whether to force reconfiguration even if the channel is already configured
+                with the same callback.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
         """
-        is_explicit_reconfig = (
-            client_cert_callback is not None
-            and client_cert_callback != self._client_cert_callback
-        )
+        is_explicit_reconfig = client_cert_callback != self._client_cert_callback
         task_failed = (
             self._mtls_init_task is not None
             and self._mtls_init_task.done()
@@ -206,7 +208,12 @@ class AsyncAuthorizedSession:
             )
         )
 
-        if self._mtls_init_task is None or is_explicit_reconfig or task_failed:
+        if self._mtls_init_task is None or is_explicit_reconfig or task_failed or force:
+            if self._mtls_init_task is not None and not self._mtls_init_task.done():
+                try:
+                    await self._mtls_init_task
+                except Exception:
+                    pass
             self._client_cert_callback = client_cert_callback
 
             async def _do_configure():
@@ -409,7 +416,6 @@ class AsyncAuthorizedSession:
                                     ):
                                         pass
                                     else:
-                                        check_passed = False
                                         try:
                                             (
                                                 call_cert_bytes,
@@ -420,7 +426,6 @@ class AsyncAuthorizedSession:
                                                 self._cached_cert,
                                                 self._client_cert_callback,
                                             )
-                                            check_passed = True
                                         except (
                                             exceptions.ClientCertError,
                                             exceptions.MutualTLSChannelError,
@@ -478,8 +483,8 @@ class AsyncAuthorizedSession:
                                                         "Skipping reconfiguration of mTLS channel because the client"
                                                         " certificate has not changed."
                                                     )
-                                        if check_passed:
-                                            self._mtls_check_counter += 1
+                                        # Always increment so waiting tasks skip the check block
+                                        self._mtls_check_counter += 1
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
 
@@ -499,10 +504,16 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
-                                except (
-                                    exceptions.RefreshError,
-                                    exceptions.InvalidOperation,
-                                ) as e:
+                                    if not channel_reconfigured:
+                                        return response
+                                except exceptions.InvalidOperation as e:
+                                    _LOGGER.debug(
+                                        "Credentials cannot be refreshed: %s",
+                                        e,
+                                    )
+                                    if not channel_reconfigured:
+                                        return response
+                                except exceptions.RefreshError as e:
                                     _LOGGER.debug(
                                         "Credential refresh failed, returning 401 response. Error: %s",
                                         e,

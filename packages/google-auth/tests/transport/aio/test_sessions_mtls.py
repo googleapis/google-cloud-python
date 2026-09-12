@@ -1181,8 +1181,8 @@ class TestSessionsMtls:
             )
 
             assert results == [mock_resp_200_1, mock_resp_200_2]
-            assert mock_check.call_count == 2
-            assert session._mtls_check_counter == 0
+            assert mock_check.call_count == 1
+            assert session._mtls_check_counter == 1
             assert mock_conf.call_count == 0
             assert mock_creds.refresh.call_count == 1
 
@@ -1663,3 +1663,139 @@ class TestSessionsMtls:
                 assert session._client_cert_callback is None
 
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_non_mtls_not_implemented_refresh_returns_401_without_retry(self):
+        """Verifies that non-mTLS 401s on credentials that raise NotImplementedError
+        return the 401 immediately without retrying."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+
+        resp = await session.request("GET", "https://example.com")
+        assert resp == mock_resp_401
+        assert mock_auth_req.call_count == 1
+        mock_creds.refresh.assert_called_once()
+        mock_resp_401.close.assert_not_called()
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_credential_refresh_invalid_operation_retries(self):
+        """Verifies that when mTLS is reconfigured, credentials raising InvalidOperation
+        (e.g., StaticCredentials) still retry on the reconfigured mTLS channel."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(
+            side_effect=exceptions.InvalidOperation("Static credentials")
+        )
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_resp_200 = mock.Mock()
+        mock_resp_200.status_code = http_client.OK
+        mock_resp_200.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(side_effect=[mock_resp_401, mock_resp_200])
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+                new_callable=mock.AsyncMock,
+                return_value=(b"new_cert", b"new_key", b"old_fp", b"new_fp"),
+            ),
+            mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf,
+        ):
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+            assert resp == mock_resp_200
+            mock_conf.assert_called_once()
+            mock_creds.refresh.assert_called_once()
+            assert mock_auth_req.call_count == 2
+            mock_resp_401.close.assert_called_once()
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_reverts_to_default_when_callback_none(self):
+        """Tests that passing callback=None when a callback was previously set reconfigures back to ADC."""
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert", b"key"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            def custom_cb():
+                return b"c", b"k"
+
+            await session.configure_mtls_channel(custom_cb)
+            assert session._client_cert_callback is custom_cb
+            task1 = session._mtls_init_task
+
+            # Revert to default
+            await session.configure_mtls_channel(None)
+            assert session._client_cert_callback is None
+            assert session._mtls_init_task is not task1
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_force_reconfigures_same_callback(self):
+        """Tests that force=True reconfigures even if callback is identical."""
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert", b"key"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            await session.configure_mtls_channel()
+            task1 = session._mtls_init_task
+
+            # Same callback with force=True
+            await session.configure_mtls_channel(force=True)
+            assert session._mtls_init_task is not task1
+            await session.close()
