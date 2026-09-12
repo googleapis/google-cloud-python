@@ -1862,3 +1862,190 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.months, case["expected_months"])
                     self.assertEqual(result.days, case["expected_days"])
                     self.assertEqual(result.nanos, case["expected_nanos"])
+
+
+class TestCreateSpannerOmniTransport(unittest.TestCase):
+    def test_create_spanner_omni_transport_plaintext_with_auth_interceptor(self):
+        import grpc
+
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        mock_creds = mock.MagicMock()
+        mock_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds.create_auth_interceptor.return_value = mock_interceptor
+
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    credentials=mock_creds,
+                )
+                mock_insecure.assert_called_once_with(target="localhost:9010")
+                mock_intercept.assert_called_once_with(
+                    mock_insecure.return_value, mock_interceptor
+                )
+                mock_factory.assert_called_once_with(
+                    channel=mock_intercept.return_value, credentials=mock_creds
+                )
+
+    def test_create_spanner_omni_transport_tls_and_mtls(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds:
+                with mock.patch("grpc.secure_channel") as mock_secure:
+                    # TLS only
+                    _helpers._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate=None,
+                        client_key=None,
+                    )
+                    mock_ssl_creds.assert_called_with(root_certificates=b"cert_data")
+                    mock_secure.assert_called_with(
+                        "omni-host:15000", mock_ssl_creds.return_value
+                    )
+
+                    # mTLS
+                    _helpers._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate="client.pem",
+                        client_key="key.pem",
+                    )
+                    mock_ssl_creds.assert_called_with(
+                        root_certificates=b"cert_data",
+                        private_key=b"cert_data",
+                        certificate_chain=b"cert_data",
+                    )
+
+    def test_create_spanner_omni_transport_validation_errors(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        # Missing ca_certificate
+        with self.assertRaises(ValueError) as cm:
+            _helpers._create_spanner_omni_transport(
+                mock_factory,
+                "omni-host:15000",
+                use_plain_text=False,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+            )
+        self.assertIn("TLS/mTLS connection requires ca_certificate", str(cm.exception))
+
+        # Missing client_key when client_certificate provided
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with self.assertRaises(ValueError) as cm:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate="client.pem",
+                    client_key=None,
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )
+
+        # Missing client_certificate when client_key provided
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with self.assertRaises(ValueError) as cm:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate=None,
+                    client_key="key.pem",
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )
+
+    def test_create_spanner_omni_transport_interceptors_and_credentials_fallback(self):
+        import grpc
+        from google.auth.credentials import AnonymousCredentials
+
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        existing_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds = mock.MagicMock(spec=["create_auth_interceptor"])
+        auth_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds.create_auth_interceptor.return_value = auth_interceptor
+
+        # Case 1: credentials with interceptor and existing interceptors
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=[existing_interceptor],
+                    credentials=mock_creds,
+                )
+                mock_intercept.assert_called_once_with(
+                    mock_insecure.return_value, existing_interceptor, auth_interceptor
+                )
+                mock_factory.assert_called_once_with(
+                    channel=mock_intercept.return_value, credentials=mock_creds
+                )
+
+        # Case 2: credentials without create_auth_interceptor, no interceptors
+        mock_plain_creds = mock.MagicMock(spec=[])
+        mock_factory.reset_mock()
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=None,
+                    credentials=mock_plain_creds,
+                )
+                mock_intercept.assert_not_called()
+                mock_factory.assert_called_once_with(
+                    channel=mock_insecure.return_value, credentials=mock_plain_creds
+                )
+
+        # Case 3: credentials is None -> uses AnonymousCredentials
+        mock_factory.reset_mock()
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=None,
+                    credentials=None,
+                )
+                mock_intercept.assert_not_called()
+                self.assertEqual(mock_factory.call_count, 1)
+                self.assertIsInstance(
+                    mock_factory.call_args[1]["credentials"], AnonymousCredentials
+                )

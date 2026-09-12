@@ -1044,6 +1044,7 @@ def _create_spanner_omni_transport(
     client_certificate,
     client_key,
     interceptors=None,
+    credentials=None,
 ):
     """Creates a Spanner Omni transport.
 
@@ -1056,6 +1057,8 @@ def _create_spanner_omni_transport(
         client_certificate (str): Path to the client certificate file for mTLS.
         client_key (str): Path to the client key file for mTLS.
         interceptors (list): Optional list of interceptors to add to the channel.
+        credentials (google.auth.credentials.Credentials, optional): Credentials
+            to use for authentication (e.g. `SpannerOmniCredentials`).
 
     Returns:
         object: An instance of the transport class created by `transport_factory`.
@@ -1067,6 +1070,10 @@ def _create_spanner_omni_transport(
     from google.auth.credentials import AnonymousCredentials
 
     channel = None
+    all_interceptors = list(interceptors) if interceptors is not None else []
+    if credentials is not None and hasattr(credentials, "create_auth_interceptor"):
+        all_interceptors.append(credentials.create_auth_interceptor())
+
     if use_plain_text:
         channel = grpc.insecure_channel(target=host)
     elif ca_certificate:
@@ -1093,9 +1100,12 @@ def _create_spanner_omni_transport(
         raise ValueError(
             "TLS/mTLS connection requires ca_certificate to be set for Spanner Omni"
         )
-    if interceptors is not None:
-        channel = grpc.intercept_channel(channel, *interceptors)
-    return transport_factory(channel=channel, credentials=AnonymousCredentials())
+    if all_interceptors:
+        channel = grpc.intercept_channel(channel, *all_interceptors)
+    actual_credentials = (
+        credentials if credentials is not None else AnonymousCredentials()
+    )
+    return transport_factory(channel=channel, credentials=actual_credentials)
 
 
 def _create_experimental_host_transport(
