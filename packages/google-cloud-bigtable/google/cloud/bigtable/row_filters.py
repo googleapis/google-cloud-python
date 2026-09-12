@@ -50,6 +50,7 @@ from google.cloud.bigtable.data.row_filters import (
 from google.cloud.bigtable.data.row_filters import (
     TimestampRangeFilter as BaseTimestampRangeFilter,
 )
+from google.cloud.bigtable.helpers import _MappableAttributesMixin
 
 _PACK_I64 = struct.Struct(">q").pack
 
@@ -70,35 +71,6 @@ def _deprecated_to_pb(self):
 # Provide to_pb alias with DeprecationWarning for backwards compatibility with legacy client code
 RowFilter.to_pb = _deprecated_to_pb  # type: ignore[attr-defined]
 TimestampRange.to_pb = _deprecated_to_pb  # type: ignore[attr-defined]
-
-
-class _MappableAttributesMixin:
-    """
-    Mixin for classes that need some of their attribute names remapped.
-
-    This is for taking some of the classes from the data client row filters
-    that are 1:1 with their legacy client counterparts but with some of their
-    attributes renamed. To use in a class, override the base class with this mixin
-    class and define a map _attribute_map from legacy client attributes to data client
-    attributes.
-
-    Attributes are remapped and redefined in __init__ as well as getattr/setattr.
-    """
-
-    def __init__(self, *args, **kwargs):
-        new_kwargs = {self._attribute_map.get(k, k): v for (k, v) in kwargs.items()}
-        super(_MappableAttributesMixin, self).__init__(*args, **new_kwargs)
-
-    def __getattr__(self, name):
-        if name not in self._attribute_map:
-            raise AttributeError
-        return getattr(self, self._attribute_map[name])
-
-    def __setattr__(self, name, value):
-        attribute = self._attribute_map.get(name, name)
-        super(_MappableAttributesMixin, self).__setattr__(attribute, value)
-
-
 # The classes defined below are to provide constructors and members
 # that have an interface that does not match the one used by the data
 # client, for backwards compatibility purposes.

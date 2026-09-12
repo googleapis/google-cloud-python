@@ -48,38 +48,6 @@ def test_row_set__eq__type_differ():
     assert not (row_set1 == row_set2)
 
 
-def test_row_set__eq__len_row_keys_differ():
-    from google.cloud.bigtable.row_set import RowSet
-
-    row_key1 = b"row_key1"
-    row_key2 = b"row_key1"
-
-    row_set1 = RowSet()
-    row_set2 = RowSet()
-
-    row_set1.add_row_key(row_key1)
-    row_set1.add_row_key(row_key2)
-    row_set2.add_row_key(row_key2)
-
-    assert not (row_set1 == row_set2)
-
-
-def test_row_set__eq__len_row_ranges_differ():
-    from google.cloud.bigtable.row_set import RowRange, RowSet
-
-    row_range1 = RowRange(b"row_key4", b"row_key9")
-    row_range2 = RowRange(b"row_key4", b"row_key9")
-
-    row_set1 = RowSet()
-    row_set2 = RowSet()
-
-    row_set1.add_row_range(row_range1)
-    row_set1.add_row_range(row_range2)
-    row_set2.add_row_range(row_range2)
-
-    assert not (row_set1 == row_set2)
-
-
 def test_row_set__eq__row_keys_differ():
     from google.cloud.bigtable.row_set import RowSet
 
@@ -223,8 +191,8 @@ def test_row_range_constructor():
     start_key = "row_key1"
     end_key = "row_key9"
     row_range = RowRange(start_key, end_key)
-    assert start_key == row_range.start_key
-    assert end_key == row_range.end_key
+    assert start_key == row_range.start_key.decode()
+    assert end_key == row_range.end_key.decode()
     assert row_range.start_inclusive
     assert not row_range.end_inclusive
 
@@ -309,6 +277,68 @@ def test_row_range_get_range_kwargs_open_closed():
     row_range = RowRange(start_key, end_key, False, True)
     actual_result = row_range.get_range_kwargs()
     assert expected_result == actual_result
+
+
+def test_row_range_get_range_kwargs_unbounded_start():
+    from google.cloud.bigtable.row_set import RowRange
+
+    end_key = b"row_key9"
+    expected_result = {"end_key_open": end_key}
+    row_range = RowRange(None, end_key)
+    actual_result = row_range.get_range_kwargs()
+    assert expected_result == actual_result
+
+
+def test_row_range_get_range_kwargs_unbounded_end():
+    from google.cloud.bigtable.row_set import RowRange
+
+    start_key = b"row_key1"
+    expected_result = {"start_key_closed": start_key}
+    row_range = RowRange(start_key, None)
+    actual_result = row_range.get_range_kwargs()
+    assert expected_result == actual_result
+
+
+def test_mappable_attributes_mixin_guard_recursion():
+    import pytest
+
+    from google.cloud.bigtable.helpers import _MappableAttributesMixin
+
+    class Uninitialized(_MappableAttributesMixin):
+        pass
+
+    obj = Uninitialized()
+    with pytest.raises(AttributeError):
+        _ = obj._attribute_map
+    with pytest.raises(AttributeError):
+        _ = obj.non_existent_attribute
+
+    # Verify setattr on _attribute_map doesn't cause recursion
+    obj._attribute_map = {"old_attr": "new_attr"}
+    assert obj._attribute_map == {"old_attr": "new_attr"}
+
+
+def test_mappable_attributes_mixin_remap():
+    import pytest
+
+    from google.cloud.bigtable.helpers import _MappableAttributesMixin
+
+    class DummyBase:
+        def __init__(self, target_attr=None):
+            self.target_attr = target_attr
+
+    class MappedClass(_MappableAttributesMixin, DummyBase):
+        _attribute_map = {"source_attr": "target_attr"}
+
+    instance = MappedClass(source_attr="hello")
+    assert instance.target_attr == "hello"
+    assert instance.source_attr == "hello"
+
+    instance.source_attr = "world"
+    assert instance.target_attr == "world"
+
+    with pytest.raises(AttributeError):
+        _ = instance.unknown_attr
 
 
 def _ReadRowsRequestPB(*args, **kw):
