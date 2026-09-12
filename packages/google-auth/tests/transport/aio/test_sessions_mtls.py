@@ -1069,7 +1069,9 @@ class TestSessionsMtls:
                 return 100.0
             return 0.1
 
-        with mock.patch("google.auth.aio.transport.sessions.time.monotonic", side_effect=mock_time):
+        with mock.patch(
+            "google.auth.aio.transport.sessions.time.monotonic", side_effect=mock_time
+        ):
             with pytest.raises(
                 exceptions.TimeoutError,
                 match="Timeout exceeded before credential refresh could begin",
@@ -1111,7 +1113,9 @@ class TestSessionsMtls:
                     return 100.0
             return 0.1
 
-        with mock.patch("google.auth.aio.transport.sessions.time.monotonic", side_effect=mock_time):
+        with mock.patch(
+            "google.auth.aio.transport.sessions.time.monotonic", side_effect=mock_time
+        ):
             with pytest.raises(
                 exceptions.TimeoutError,
                 match=r"(Timeout exceeded before retrying the request|Context manager exceeded the configured timeout)",
