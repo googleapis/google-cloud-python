@@ -154,7 +154,7 @@ class AsyncAuthorizedSession:
         if not _auth_request and AIOHTTP_INSTALLED:
             _auth_request = AiohttpRequest()
         self._is_mtls = False
-        self._mtls_init_task = None
+        self._mtls_init_task: Optional[asyncio.Task] = None
         self._cached_cert = None
         self._client_cert_callback = None
         self._old_auth_requests: list[transport.Request] = []
@@ -281,6 +281,7 @@ class AsyncAuthorizedSession:
 
             self._mtls_init_task = asyncio.create_task(_do_configure())
 
+        assert self._mtls_init_task is not None
         return await asyncio.shield(self._mtls_init_task)
 
     async def request(
