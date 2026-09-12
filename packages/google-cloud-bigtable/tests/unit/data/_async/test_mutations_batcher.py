@@ -973,7 +973,7 @@ class TestMutationsBatcherAsync:
             table.default_mutate_rows_attempt_timeout = 13
             table.default_mutate_rows_retryable_errors = ()
             async with self._make_one(table) as instance:
-                batch = [self._make_mutation()]
+                batch = [self._make_mutation(), self._make_mutation()]
                 result = await instance._execute_mutate_rows(batch, mock.Mock())
                 assert len(result) == 2
                 assert result[0] == err1
@@ -981,6 +981,99 @@ class TestMutationsBatcherAsync:
                 # indices should be set to None
                 assert result[0].index is None
                 assert result[1].index is None
+
+    @CrossSync.pytest
+    async def test__execute_mutate_rows_batch_completed_callback(self):
+        from google.rpc import code_pb2, status_pb2
+
+        with mock.patch.object(CrossSync, "_MutateRowsOperation") as mutate_rows:
+            mutate_rows.return_value = CrossSync.Mock()
+            start_operation = mutate_rows().start
+            table = mock.Mock()
+            table.table_name = "test-table"
+            table.app_profile_id = "test-app-profile"
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock()
+            async with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [self._make_mutation()]
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
+                assert start_operation.call_count == 1
+                args, kwargs = mutate_rows.call_args
+                assert args[0] == table.client._gapic_client
+                assert args[1] == table
+                assert args[2] == batch
+                assert kwargs["operation_timeout"] == 17
+                assert kwargs["attempt_timeout"] == 13
+                assert result == []
+
+    @CrossSync.pytest
+    async def test__execute_mutate_rows_batch_completed_callback_errors(self):
+        from google.api_core import exceptions
+        from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
+
+        with mock.patch.object(CrossSync._MutateRowsOperation, "start") as mutate_rows:
+            err1 = FailedMutationEntryError(
+                1, mock.Mock(), exceptions.DataLoss("test error")
+            )
+            err2 = FailedMutationEntryError(
+                2, mock.Mock(), exceptions.DataLoss("test error")
+            )
+            mutate_rows.side_effect = MutationsExceptionGroup([err1, err2], 10)
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock()
+            async with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [
+                    self._make_mutation(),
+                    self._make_mutation(),
+                    self._make_mutation(),
+                ]
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once_with(
+                    [
+                        status_pb2.Status(code=code_pb2.OK),
+                        status_pb2.Status(
+                            code=code_pb2.DATA_LOSS, message="test error"
+                        ),
+                        status_pb2.Status(
+                            code=code_pb2.DATA_LOSS, message="test error"
+                        ),
+                    ]
+                )
+                assert len(result) == 2
+                assert result[0] == err1
+                assert result[1] == err2
+                # indices should be set to None
+                assert result[0].index is None
+                assert result[1].index is None
+
+    @CrossSync.pytest
+    async def test__execute_mutate_rows_batch_completed_callback_exception(self):
+        with mock.patch.object(CrossSync, "_MutateRowsOperation") as mutate_rows:
+            mutate_rows.return_value = CrossSync.Mock()
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            callback = mock.Mock(side_effect=RuntimeError("callback failed"))
+            async with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = callback
+                batch = [self._make_mutation()]
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
+                callback.assert_called_once()
+                assert result == []
 
     @CrossSync.pytest
     async def test__raise_exceptions(self):
