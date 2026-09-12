@@ -1009,6 +1009,16 @@ class PartialRowData(object):
         self._row_key = row_key
         self._cells = {}
 
+    @classmethod
+    def _from_data_client_row(cls, row):
+        partial_row_data = cls(row.row_key)
+        for column_family in row._index:
+            columns = {}
+            for column, items in row._index[column_family].items():
+                columns[column] = [Cell._from_data_client_cell(item) for item in items]
+            partial_row_data._cells[column_family] = columns
+        return partial_row_data
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
@@ -1211,6 +1221,14 @@ class Cell(object):
             return cls(cell_pb.value, cell_pb.timestamp_micros, labels=cell_pb.labels)
         else:
             return cls(cell_pb.value, cell_pb.timestamp_micros)
+
+    @classmethod
+    def _from_data_client_cell(cls, cell):
+        return cls(
+            cell.value,
+            cell.timestamp_micros,
+            cell.labels,
+        )
 
     @property
     def timestamp(self):
