@@ -2682,3 +2682,113 @@ class TestSession(OpenTelemetryBase):
 
                     _delay_until_retry(exc_mock, 6, 1)
                     sleep_mock.assert_not_called()
+
+    def test_run_in_transaction_tracing_events_attached_to_parent_span(self):
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+        from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+        tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+        trace_exporter = InMemorySpanExporter()
+        tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+        tracer = tracer_provider.get_tracer("test")
+
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        aborted = _make_rpc_error(Aborted, trailing_metadata=[])
+        response = CommitResponse(commit_timestamp=now_pb)
+        gax_api = self._make_spanner_api()
+        gax_api.begin_transaction.return_value = transaction_pb
+        gax_api.commit.side_effect = [aborted, response]
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(transaction, *args, **kwargs):
+            transaction.insert(TABLE_NAME, COLUMNS, VALUES)
+            return "answer"
+
+        with tracer.start_as_current_span("ParentSpan"):
+            return_value = session.run_in_transaction(
+                unit_of_work,
+                transaction_tag="test-tag",
+                default_retry_delay=0,
+            )
+
+        self.assertEqual(return_value, "answer")
+        finished_spans = trace_exporter.get_finished_spans()
+        self.assertEqual(len(finished_spans), 1)
+        parent_span = finished_spans[0]
+        self.assertEqual(parent_span.name, "ParentSpan")
+        self.assertIsNone(parent_span.attributes.get("transaction.tag"))
+        event_names = [event.name for event in parent_span.events]
+        self.assertIn(
+            "Transaction was aborted during commit, retrying",
+            event_names,
+        )
+        retry_event = next(
+            event
+            for event in parent_span.events
+            if event.name == "Transaction was aborted during commit, retrying"
+        )
+        self.assertEqual(retry_event.attributes.get("attempt"), 1)
+
+    def test_run_in_transaction_tracing_events_aborted_without_inner_errors(
+        self,
+    ):
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+        from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+        tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+        trace_exporter = InMemorySpanExporter()
+        tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+        tracer = tracer_provider.get_tracer("test")
+
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        now = datetime.datetime.now(timezone.utc).replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        # Aborted raised without inner errors (defaults to empty tuple in GoogleAPICallError)
+        aborted = Aborted("aborted without inner errors")
+        response = CommitResponse(commit_timestamp=now_pb)
+        gax_api = self._make_spanner_api()
+        gax_api.begin_transaction.return_value = transaction_pb
+        gax_api.commit.side_effect = [aborted, response]
+        database = self._make_database()
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        def unit_of_work(transaction, *args, **kwargs):
+            transaction.insert(TABLE_NAME, COLUMNS, VALUES)
+            return "answer"
+
+        with tracer.start_as_current_span("ParentSpan"):
+            return_value = session.run_in_transaction(
+                unit_of_work,
+                default_retry_delay=0,
+            )
+
+        self.assertEqual(return_value, "answer")
+        finished_spans = trace_exporter.get_finished_spans()
+        self.assertEqual(len(finished_spans), 1)
+        parent_span = finished_spans[0]
+        event_names = [event.name for event in parent_span.events]
+        self.assertIn(
+            "Transaction was aborted during commit, retrying",
+            event_names,
+        )
+        retry_event = next(
+            event
+            for event in parent_span.events
+            if event.name == "Transaction was aborted during commit, retrying"
+        )
+        self.assertEqual(retry_event.attributes.get("attempt"), 1)
