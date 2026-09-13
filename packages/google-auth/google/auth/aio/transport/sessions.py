@@ -639,13 +639,22 @@ class AsyncAuthorizedSession:
                                                     )
                                         # Always increment so waiting tasks skip the check block
                                         self._mtls_check_counter += 1
+
                         # Derived from session state rather than a local flag:
                         # a concurrent request may have performed the rotation
                         # on our behalf (we then skipped the check block), and
                         # that request still needs to retry on the new channel.
-                        channel_reconfigured = (
-                            self._mtls_reconfig_counter > reconfig_counter_at_error
-                        )
+                        #
+                        # Evaluated at each use rather than snapshotted here: a
+                        # concurrent request can rotate the channel while this
+                        # coroutine is queued on `_refresh_lock` or waiting for
+                        # its own refresh to fail. A value captured at this
+                        # point would miss that rotation and drop a retry that
+                        # would have succeeded on the new channel.
+                        def channel_reconfigured() -> bool:
+                            return (
+                                self._mtls_reconfig_counter > reconfig_counter_at_error
+                            )
 
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
@@ -678,14 +687,14 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
-                                    if not channel_reconfigured:
+                                    if not channel_reconfigured():
                                         return response
                                 except exceptions.InvalidOperation as e:
                                     _LOGGER.debug(
                                         "Credentials cannot be refreshed: %s",
                                         e,
                                     )
-                                    if not channel_reconfigured:
+                                    if not channel_reconfigured():
                                         return response
                                 except exceptions.RefreshError as e:
                                     _LOGGER.debug(

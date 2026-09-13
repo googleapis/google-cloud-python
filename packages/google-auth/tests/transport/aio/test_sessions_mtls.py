@@ -2352,3 +2352,87 @@ class TestSessionsMtls:
                 await session.configure_mtls_channel()
 
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_rotation_landing_during_refresh_still_triggers_retry(self):
+        """A rotation that lands while we await refresh must not be missed.
+
+        Whether the channel moved since this request's 401 has to be read at
+        the point the decision is made, not snapshotted before acquiring
+        `_refresh_lock`. A coroutine whose credentials cannot be refreshed
+        would otherwise return its stale 401 even though a concurrent
+        coroutine rotated the channel in the meantime.
+        """
+        a_in_refresh = asyncio.Event()
+        b_rotated = asyncio.Event()
+
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+
+        first_refresh = {"done": False}
+
+        async def refresh_side_effect(*args, **kwargs):
+            if not first_refresh["done"]:
+                first_refresh["done"] = True
+                a_in_refresh.set()
+                await b_rotated.wait()
+            raise exceptions.InvalidOperation("static cert-bound token")
+
+        mock_creds.refresh = mock.AsyncMock(side_effect=refresh_side_effect)
+
+        seen = set()
+
+        async def auth_request(url, method, data, headers, timeout, **kwargs):
+            if url not in seen:
+                seen.add(url)
+                return mock.Mock(
+                    status_code=http_client.UNAUTHORIZED, close=mock.AsyncMock()
+                )
+            return mock.Mock(status_code=http_client.OK, close=mock.AsyncMock())
+
+        mock_auth_req = mock.AsyncMock(side_effect=auth_request)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        checks = {"n": 0}
+
+        async def check_side_effect(cached_cert, callback):
+            checks["n"] += 1
+            if checks["n"] == 1:
+                # The first coroutine sees an unchanged certificate.
+                return (b"old_cert", b"old_key", b"same_fp", b"same_fp")
+            return (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+
+        async def fake_configure(*args, **kwargs):
+            b_rotated.set()
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls."
+                "check_parameters_for_unauthorized_response",
+                side_effect=check_side_effect,
+            ),
+            mock.patch.object(
+                session, "configure_mtls_channel", side_effect=fake_configure
+            ),
+        ):
+            task_a = asyncio.create_task(
+                session.request("GET", "https://pubsub.mtls.googleapis.com/a")
+            )
+            await asyncio.wait_for(a_in_refresh.wait(), 5)
+            task_b = asyncio.create_task(
+                session.request("GET", "https://pubsub.mtls.googleapis.com/b")
+            )
+            resp_a, resp_b = await asyncio.wait_for(asyncio.gather(task_a, task_b), 5)
+
+        assert session._mtls_reconfig_counter == 1
+        # The rotating coroutine retries, and so must the one that only
+        # learned about the rotation after its own refresh failed.
+        assert resp_b.status_code == http_client.OK
+        assert resp_a.status_code == http_client.OK
+
+        await session.close()
