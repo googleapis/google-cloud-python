@@ -152,3 +152,31 @@ class TestSpannerDialect(fixtures.TestBase):
         )
         ddl = str(CreateTable(table).compile(dialect=SpannerDialect()))
         assert "INTERLEAVE IN PARENT `from`" in ddl
+
+    def test_interleave_in_parent_table_object_keeps_schema(self):
+        """A Table interleave parent with a schema is emitted as schema.name."""
+        parent = Table(
+            "from",
+            MetaData(),
+            Column("id", Integer, primary_key=True),
+            schema="sch",
+        )
+        table = Table(
+            "child",
+            MetaData(),
+            Column("id", Integer, primary_key=True),
+            spanner_interleave_in=parent,
+        )
+        ddl = str(CreateTable(table).compile(dialect=SpannerDialect()))
+        assert "INTERLEAVE IN PARENT sch.`from`" in ddl
+
+    def test_interleave_in_parent_dotted_string_quotes_each_part(self):
+        """A schema-qualified string parent quotes the schema and name separately."""
+        table = Table(
+            "child",
+            MetaData(),
+            Column("id", Integer, primary_key=True),
+            spanner_interleave_in="sch.from",
+        )
+        ddl = str(CreateTable(table).compile(dialect=SpannerDialect()))
+        assert "INTERLEAVE IN PARENT sch.`from`" in ddl

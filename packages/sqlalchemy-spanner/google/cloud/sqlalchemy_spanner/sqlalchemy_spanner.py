@@ -714,12 +714,16 @@ class SpannerDDLCompiler(DDLCompiler):
             raise NotImplementedError("Temporary tables are not supported.")
 
         parent = table.kwargs.get("spanner_interleave_in")
-        if parent is not None and hasattr(parent, "name"):
-            parent = parent.name
-        if parent:
-            post_cmds += ",\nINTERLEAVE IN PARENT {}".format(
-                self.preparer.quote(parent)
-            )
+        if parent is not None:
+            if hasattr(parent, "name"):
+                parent_str = self.preparer.format_table(parent)
+            elif "." in parent:
+                parent_str = ".".join(
+                    self.preparer.quote(part) for part in parent.split(".")
+                )
+            else:
+                parent_str = self.preparer.quote(parent)
+            post_cmds += ",\nINTERLEAVE IN PARENT {}".format(parent_str)
 
             if table.kwargs.get("spanner_interleave_on_delete_cascade"):
                 post_cmds += " ON DELETE CASCADE"
