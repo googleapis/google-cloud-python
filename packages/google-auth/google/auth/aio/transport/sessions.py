@@ -982,10 +982,10 @@ class AsyncAuthorizedSession:
         try:
             if self._mtls_init_task and not self._mtls_init_task.done():
                 self._mtls_init_task.cancel()
-                try:
-                    await self._mtls_init_task
-                except (Exception, asyncio.CancelledError):
-                    pass
+                # Same rationale as `configure_mtls_channel`: `asyncio.wait`
+                # lets the cancelled initialization task unwind without
+                # absorbing a cancellation aimed at this `close()` call.
+                await asyncio.wait({self._mtls_init_task})
         finally:
             while self._old_auth_requests:
                 old_request = self._old_auth_requests.pop(0)
