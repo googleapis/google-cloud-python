@@ -35,17 +35,24 @@ To sign messages use :class:`RSASigner` with a private key::
 The code above also works for :class:`ES256Signer` and :class:`ES256Verifier`.
 Note that these two classes are only available if your `cryptography` dependency
 version is at least 1.4.0.
+
+Post-quantum ML-DSA signing and verification is available via :class:`PqcSigner`
+and :class:`PqcVerifier` when `cryptography` version is at least 47.0.0.
 """
 
 from google.auth.crypt import base
 from google.auth.crypt import es
 from google.auth.crypt import es256
+from google.auth.crypt import pqc
 from google.auth.crypt import rsa
 
 EsSigner = es.EsSigner
 EsVerifier = es.EsVerifier
 ES256Signer = es256.ES256Signer
 ES256Verifier = es256.ES256Verifier
+PqcSigner = pqc.PqcSigner
+PqcVerifier = pqc.PqcVerifier
+is_mldsa_key = pqc.is_mldsa_key
 
 
 # Aliases to maintain the v1.0.0 interface, as the crypt module was split
@@ -57,7 +64,7 @@ RSAVerifier = rsa.RSAVerifier
 
 
 def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
-    """Verify an RSA or ECDSA cryptographic signature.
+    """Verify an RSA, ECDSA, or ML-DSA cryptographic signature.
 
     Checks that the provided ``signature`` was generated from ``bytes`` using
     the private key associated with the ``cert``.
@@ -69,7 +76,7 @@ def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
             to use to check the signature.
         verifier_cls (Optional[~google.auth.crypt.base.Signer]): Which verifier
             class to use for verification. This can be used to select different
-            algorithms, such as RSA or ECDSA. Default value is :class:`RSAVerifier`.
+            algorithms, such as RSA, ECDSA, or ML-DSA. Default value is :class:`RSAVerifier`.
 
     Returns:
         bool: True if the signature is valid, otherwise False.
@@ -89,8 +96,11 @@ __all__ = [
     "EsVerifier",
     "ES256Signer",
     "ES256Verifier",
+    "PqcSigner",
+    "PqcVerifier",
     "RSASigner",
     "RSAVerifier",
     "Signer",
     "Verifier",
+    "is_mldsa_key",
 ]
