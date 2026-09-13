@@ -462,12 +462,14 @@ class TestSessionsMtls:
 
             assert resp == mock_resp_200
             mock_conf.assert_called_once()
-            cb = (
-                mock_conf.call_args.args[0]
-                if mock_conf.call_args.args
-                else mock_conf.call_args.kwargs["client_cert_callback"]
+            # The rotation path passes the rotated cert/key explicitly rather
+            # than temporarily swapping the shared `_client_cert_callback`,
+            # which must therefore be left untouched.
+            assert mock_conf.call_args.kwargs["_cert_key_override"] == (
+                new_cert,
+                new_key,
             )
-            assert cb() == (new_cert, new_key)
+            assert session._client_cert_callback is None
             mock_creds.refresh.assert_called_once()
             assert mock_auth_req.call_count == 2
             mock_resp_401.close.assert_called_once()
@@ -642,12 +644,14 @@ class TestSessionsMtls:
             assert resp == mock_resp_200
             mock_check.assert_called_once()
             mock_conf.assert_called_once()
-            cb = (
-                mock_conf.call_args.args[0]
-                if mock_conf.call_args.args
-                else mock_conf.call_args.kwargs["client_cert_callback"]
+            # The rotation path passes the rotated cert/key explicitly rather
+            # than temporarily swapping the shared `_client_cert_callback`,
+            # which must therefore be left untouched.
+            assert mock_conf.call_args.kwargs["_cert_key_override"] == (
+                new_cert,
+                new_key,
             )
-            assert cb() == (new_cert, new_key)
+            assert session._client_cert_callback is None
 
         await session.close()
 
@@ -1008,7 +1012,7 @@ class TestSessionsMtls:
         new_cert = b"new_cert"
         new_key = b"new_key"
 
-        async def fake_configure(cb=None):
+        async def fake_configure(cb=None, **kwargs):
             session._mtls_init_task = asyncio.create_task(dummy_completed())
 
         with (
@@ -1613,60 +1617,81 @@ class TestSessionsMtls:
 
     @pytest.mark.asyncio
     async def test_401_mtls_consecutive_multi_rotation(self):
-        """Verifies that multiple consecutive rotations (v1 -> v2 -> v3) succeed."""
+        """Verifies that consecutive rotations (v1 -> v2 -> v3) succeed.
+
+        `configure_mtls_channel` is deliberately NOT mocked here. The
+        low-level helpers are patched instead so the real reconfiguration path
+        executes; otherwise this test would still pass even if rotation
+        stopped swapping the transport or started clobbering the shared
+        `_client_cert_callback`.
+        """
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
         mock_creds.refresh = mock.AsyncMock(return_value=None)
 
-        session = sessions.AsyncAuthorizedSession(mock_creds)
-        session._is_mtls = True
-        session._cached_cert = b"cert_v1"
-
-        # Rotation 1: v1 -> v2
-        with mock.patch(
-            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
-            new_callable=mock.AsyncMock,
-            return_value=(b"cert_v2", b"key_v2", b"fp1", b"fp2"),
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert_v1", b"key_v1"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
         ):
-            with mock.patch.object(
-                session, "configure_mtls_channel", new_callable=mock.AsyncMock
-            ) as mock_conf:
-                mock_auth = mock.AsyncMock(
-                    side_effect=[
-                        mock.Mock(status_code=401, close=mock.AsyncMock()),
-                        mock.Mock(status_code=200, close=mock.AsyncMock()),
-                    ]
-                )
-                session._auth_request = mock_auth
-                await session.request("GET", "https://pubsub.mtls.googleapis.com/test")
-                mock_conf.assert_called_once()
-                assert session._client_cert_callback is None
 
-        session._cached_cert = b"cert_v2"
+            def user_cb():
+                return (b"cert_v1", b"key_v1")
 
-        # Rotation 2: v2 -> v3 (Must still have client_cert_callback == None to read disk)
-        with mock.patch(
-            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
-            new_callable=mock.AsyncMock,
-            return_value=(b"cert_v3", b"key_v3", b"fp2", b"fp3"),
-        ) as mock_check:
-            with mock.patch.object(
-                session, "configure_mtls_channel", new_callable=mock.AsyncMock
-            ) as mock_conf:
-                mock_auth = mock.AsyncMock(
-                    side_effect=[
-                        mock.Mock(status_code=401, close=mock.AsyncMock()),
-                        mock.Mock(status_code=200, close=mock.AsyncMock()),
-                    ]
-                )
-                session._auth_request = mock_auth
-                await session.request("GET", "https://pubsub.mtls.googleapis.com/test")
-                # Verify check was called with callback=None (allowing disk read)
-                mock_check.assert_called_with(b"cert_v2", None)
-                mock_conf.assert_called_once()
-                assert session._client_cert_callback is None
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+            # Configure with an explicit, non-None user callback. A rotation
+            # that clobbers this shared attribute is then observable; with a
+            # default of None the overwrite would be a silent no-op.
+            await session.configure_mtls_channel(user_cb)
+            assert session._cached_cert == b"cert_v1"
+            assert session._client_cert_callback is user_cb
 
-        await session.close()
+            rotations = ((b"cert_v1", b"cert_v2"), (b"cert_v2", b"cert_v3"))
+            for old_cert, new_cert in rotations:
+                prev_auth_request = session._auth_request
+                with (
+                    mock.patch(
+                        "google.auth.aio.transport.mtls."
+                        "check_parameters_for_unauthorized_response",
+                        new_callable=mock.AsyncMock,
+                        return_value=(new_cert, b"key", b"fp_old", b"fp_new"),
+                    ) as mock_check,
+                    mock.patch.object(
+                        sessions.AiohttpRequest,
+                        "__call__",
+                        side_effect=[
+                            mock.Mock(status_code=401, close=mock.AsyncMock()),
+                            mock.Mock(status_code=200, close=mock.AsyncMock()),
+                        ],
+                    ),
+                ):
+                    resp = await session.request(
+                        "GET", "https://pubsub.mtls.googleapis.com/test"
+                    )
+
+                assert resp.status_code == 200
+                # The check is driven by the previously cached cert and the
+                # user's callback (None), so the on-disk cert can be read.
+                mock_check.assert_called_once_with(old_cert, user_cb)
+                # Real reconfiguration ran: cert cached and transport swapped.
+                assert session._cached_cert == new_cert
+                assert session._auth_request is not prev_auth_request
+                assert session.is_mtls is True
+                # Shared callback state must survive rotation untouched.
+                assert session._client_cert_callback is user_cb
+
+            await session.close()
 
     @pytest.mark.asyncio
     async def test_non_mtls_not_implemented_refresh_returns_401_without_retry(self):
@@ -1803,3 +1828,214 @@ class TestSessionsMtls:
             await session.configure_mtls_channel(force=True)
             assert session._mtls_init_task is not task1
             await session.close()
+
+    @pytest.mark.asyncio
+    async def test_concurrent_rotation_retries_for_non_refreshable_credentials(self):
+        """Concurrent 401s with non-refreshable credentials must both retry.
+
+        Only one coroutine performs the rotation; the other skips the check
+        block via the dedupe counter. The skipping coroutine must still observe
+        that the channel was reconfigured since its own 401 and retry, rather
+        than returning the stale 401 to the caller.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        def _resp(status):
+            return mock.Mock(status_code=status, close=mock.AsyncMock())
+
+        mock_resp_401_1 = _resp(http_client.UNAUTHORIZED)
+        mock_resp_401_2 = _resp(http_client.UNAUTHORIZED)
+        mock_resp_200_1 = _resp(http_client.OK)
+        mock_resp_200_2 = _resp(http_client.OK)
+
+        mock_auth_req = mock.AsyncMock(
+            side_effect=[
+                mock_resp_401_1,
+                mock_resp_401_2,
+                mock_resp_200_1,
+                mock_resp_200_2,
+            ]
+        )
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        async def slow_check(*args, **kwargs):
+            # Hold the rotation lock long enough that the second coroutine
+            # queues behind it and then takes the dedupe path.
+            await asyncio.sleep(0.05)
+            return (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls."
+                "check_parameters_for_unauthorized_response",
+                side_effect=slow_check,
+            ) as mock_check,
+            mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf,
+        ):
+            results = await asyncio.gather(
+                session.request("GET", "https://pubsub.mtls.googleapis.com/t1"),
+                session.request("GET", "https://pubsub.mtls.googleapis.com/t2"),
+            )
+
+        # Exactly one coroutine ran the check and the rotation.
+        assert mock_check.call_count == 1
+        assert mock_conf.call_count == 1
+        # Both requests must have been retried on the rotated channel.
+        assert results == [mock_resp_200_1, mock_resp_200_2]
+        assert mock_auth_req.call_count == 4
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_reconfigure_to_non_mtls_replaces_stale_mtls_transport(self):
+        """A session leaving mTLS must not keep serving the old client cert."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            with mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert", b"key"),
+            ):
+                session = sessions.AsyncAuthorizedSession(mock_creds)
+                await session.configure_mtls_channel()
+
+            assert session.is_mtls is True
+            mtls_transport = session._auth_request
+
+            # The workload stops providing a client certificate.
+            with mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(False, None, None),
+            ):
+                await session.configure_mtls_channel(force=True)
+
+            assert session.is_mtls is False
+            assert session._cached_cert is None
+            # The stale mTLS transport must be retired, not silently reused.
+            assert session._auth_request is not mtls_transport
+            assert mtls_transport in session._old_auth_requests
+
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_propagates_caller_cancellation(self):
+        """Cancelling the caller must raise, not be swallowed by cleanup."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+
+        async def slow_get_cert(cb=None):
+            await asyncio.sleep(10)
+            return (True, b"cert", b"key")
+
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                side_effect=slow_get_cert,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+            caller = asyncio.create_task(session.configure_mtls_channel())
+            await asyncio.sleep(0.02)
+
+            caller.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await caller
+
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_follows_replacement_task(self):
+        """A caller awaiting a task that gets replaced follows the new one."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+
+        release = asyncio.Event()
+
+        async def gated_get_cert(cb=None):
+            await release.wait()
+            return (True, b"cert", b"key")
+
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                side_effect=gated_get_cert,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession"),
+        ):
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            # First caller starts and blocks on the gated configuration.
+            waiter = asyncio.create_task(session.configure_mtls_channel())
+            await asyncio.sleep(0.02)
+            first_task = session._mtls_init_task
+            assert first_task is not None
+
+            # A forced reconfiguration cancels and replaces that task.
+            release.set()
+            await session.configure_mtls_channel(force=True)
+            assert session._mtls_init_task is not first_task
+
+            # The original caller must not surface a cancellation it never
+            # requested; it follows the replacement task instead.
+            await waiter
+            assert session.is_mtls is True
+
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_retrieve_task_exception_helper(self):
+        """The done-callback marks failures retrieved and tolerates cancels."""
+
+        async def boom():
+            raise RuntimeError("boom")
+
+        task = asyncio.create_task(boom())
+        task.add_done_callback(sessions._retrieve_task_exception)
+        with pytest.raises(RuntimeError):
+            await task
+
+        async def sleeper():
+            await asyncio.sleep(10)
+
+        cancelled = asyncio.create_task(sleeper())
+        cancelled.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await cancelled
+        # Must not raise CancelledError/InvalidStateError when inspected.
+        sessions._retrieve_task_exception(cancelled)
