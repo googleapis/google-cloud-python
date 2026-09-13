@@ -2039,3 +2039,316 @@ class TestSessionsMtls:
             await cancelled
         # Must not raise CancelledError/InvalidStateError when inspected.
         sessions._retrieve_task_exception(cancelled)
+
+    @pytest.mark.asyncio
+    async def test_reconfigure_cancellation_while_retiring_old_task_propagates(self):
+        """A cancellation aimed at the reconfiguring coroutine must not be eaten.
+
+        `configure_mtls_channel` cancels the task it is replacing and waits for
+        it to unwind. That wait has to absorb only the *retired task's*
+        cancellation; a cancellation targeting the caller still has to
+        propagate.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        calls = {"n": 0}
+
+        async def run_in_executor(*args, **kwargs):
+            calls["n"] += 1
+            if calls["n"] == 1:
+                # Take a measurable amount of time to unwind so the replacing
+                # coroutine is still parked in the wait when we cancel it.
+                try:
+                    await asyncio.sleep(10)
+                except asyncio.CancelledError:
+                    await asyncio.sleep(0.05)
+                    raise
+            # Any replacement task finishes immediately.
+            return False
+
+        with mock.patch.object(sessions.mtls, "_run_in_executor", new=run_in_executor):
+            first = asyncio.create_task(session.configure_mtls_channel())
+            await asyncio.sleep(0.01)
+            assert session._mtls_init_task is not None
+
+            replacer = asyncio.create_task(session.configure_mtls_channel(force=True))
+            await asyncio.sleep(0.01)  # parked waiting on the retired task
+
+            replacer.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await replacer
+
+            first.cancel()
+            try:
+                await first
+            except (asyncio.CancelledError, exceptions.MutualTLSChannelError):
+                pass
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_close_cancels_in_flight_mtls_init(self):
+        """`close()` must actually cancel a still-running initialization task."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        async def never(*args, **kwargs):
+            await asyncio.sleep(10)
+
+        with mock.patch.object(sessions.mtls, "_run_in_executor", new=never):
+            waiter = asyncio.create_task(session.configure_mtls_channel())
+            await asyncio.sleep(0.01)
+            init_task = session._mtls_init_task
+            assert init_task is not None
+            assert not init_task.done()
+
+            await session.close()
+
+            assert init_task.done()
+            assert init_task.cancelled()
+
+            with pytest.raises(asyncio.CancelledError):
+                await waiter
+
+    @pytest.mark.asyncio
+    async def test_close_propagates_its_own_cancellation(self):
+        """A cancellation aimed at `close()` must not be absorbed."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        async def stubborn(*args, **kwargs):
+            try:
+                await asyncio.sleep(10)
+            except asyncio.CancelledError:
+                # Unwind slowly so `close()` is parked in the wait.
+                await asyncio.sleep(0.05)
+                raise
+
+        with mock.patch.object(sessions.mtls, "_run_in_executor", new=stubborn):
+            waiter = asyncio.create_task(session.configure_mtls_channel())
+            await asyncio.sleep(0.01)
+
+            closing = asyncio.create_task(session.close())
+            await asyncio.sleep(0.01)
+            closing.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await closing
+
+            waiter.cancel()
+            try:
+                await waiter
+            except (asyncio.CancelledError, exceptions.MutualTLSChannelError):
+                pass
+
+    @pytest.mark.asyncio
+    async def test_failed_mtls_init_without_awaiter_is_marked_retrieved(self):
+        """A background init failure nobody awaits must not warn at GC time."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        async def slow_boom(*args, **kwargs):
+            await asyncio.sleep(0.05)
+            raise RuntimeError("cert check exploded")
+
+        with mock.patch.object(sessions.mtls, "_run_in_executor", new=slow_boom):
+            # The only caller gives up before the task fails.
+            with pytest.raises(asyncio.TimeoutError):
+                await asyncio.wait_for(session.configure_mtls_channel(), 0.01)
+            task = session._mtls_init_task
+            assert task is not None
+            await asyncio.wait({task})
+
+        assert task.done()
+        assert not task.cancelled()
+        # The done-callback must have consumed the exception already. Without
+        # it, CPython would still have the task flagged for the
+        # "Task exception was never retrieved" report at collection time.
+        #
+        # This has to be checked BEFORE calling `task.exception()` below, since
+        # retrieving the exception here would clear the flag by itself and make
+        # the assertion vacuous.
+        assert task._log_traceback is False
+        assert isinstance(task.exception(), exceptions.MutualTLSChannelError)
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_rotation_forces_refresh_when_earlier_refresh_lands_late(self):
+        """A refresh straddling a rotation must not satisfy the post-rotation one.
+
+        A refresh that starts before the channel is rotated mints its token
+        over the old transport. Even though it completes after the rotation,
+        the rotating coroutine still has to perform its own refresh, otherwise
+        it retries carrying a token the new channel will reject.
+        """
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+
+        async def slow_refresh(_transport):
+            await asyncio.sleep(0.10)
+
+        mock_creds.refresh = mock.AsyncMock(side_effect=slow_refresh)
+
+        seen = {}
+
+        async def auth_req(url, *args, **kwargs):
+            seen[url] = seen.get(url, 0) + 1
+            status = http_client.UNAUTHORIZED if seen[url] == 1 else http_client.OK
+            return mock.Mock(status_code=status, close=mock.AsyncMock())
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock(side_effect=auth_req)
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        async def fast_check(*args, **kwargs):
+            await asyncio.sleep(0.01)
+            return (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+
+        with (
+            mock.patch(
+                "google.auth.aio.transport.mtls."
+                "check_parameters_for_unauthorized_response",
+                side_effect=fast_check,
+            ),
+            mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ) as mock_conf,
+        ):
+            # The non-mTLS request takes `_refresh_lock` before the rotation
+            # begins and releases it only after the rotation has finished.
+            plain = asyncio.create_task(
+                session.request("GET", "https://example.com/plain")
+            )
+            await asyncio.sleep(0)
+            rotating = asyncio.create_task(
+                session.request("GET", "https://pubsub.mtls.googleapis.com/x")
+            )
+            await asyncio.gather(plain, rotating)
+
+        assert mock_conf.call_count == 1
+        # One refresh from the plain request (old channel) plus one forced by
+        # the rotation. Counting completions alone would wrongly treat the
+        # first as satisfying the second.
+        assert mock_creds.refresh.call_count == 2
+        assert session._last_refresh_reconfig_gen == session._mtls_reconfig_counter
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_rejects_a_closed_session(self):
+        """A closed session must refuse to build new mTLS state."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+        await session.close()
+
+        with pytest.raises(exceptions.InvalidOperation):
+            await session.configure_mtls_channel()
+        assert session._mtls_init_task is None
+
+    @pytest.mark.asyncio
+    async def test_rotation_racing_close_does_not_leak_a_transport(self):
+        """An in-flight rotation must not install a transport after `close()`.
+
+        Otherwise `close()` returns, the rotation then builds a fresh
+        `aiohttp.ClientSession` and installs it on the dead session, and
+        nothing ever closes it.
+        """
+        created = []
+
+        class _FakeClientSession:
+            def __init__(self, *args, **kwargs):
+                self.closed = False
+                created.append(self)
+
+            async def close(self):
+                self.closed = True
+
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        seen = {}
+
+        async def auth_req(url, *args, **kwargs):
+            seen[url] = seen.get(url, 0) + 1
+            status = http_client.UNAUTHORIZED if seen[url] == 1 else http_client.OK
+            return mock.Mock(status_code=status, close=mock.AsyncMock())
+
+        gate = asyncio.Event()
+
+        async def blocking_check(*args, **kwargs):
+            await gate.wait()
+            return (b"new_cert", b"new_key", b"old_fp", b"new_fp")
+
+        with (
+            mock.patch(
+                "google.auth.transport._mtls_helper.check_use_client_cert",
+                return_value=True,
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls.make_client_cert_ssl_context",
+                return_value=mock.Mock(spec=ssl.SSLContext),
+            ),
+            mock.patch("aiohttp.TCPConnector"),
+            mock.patch("aiohttp.ClientSession", _FakeClientSession),
+            mock.patch(
+                "google.auth.aio.transport.mtls.get_client_cert_and_key",
+                return_value=(True, b"cert", b"key"),
+            ),
+            mock.patch(
+                "google.auth.aio.transport.mtls."
+                "check_parameters_for_unauthorized_response",
+                side_effect=blocking_check,
+            ),
+            mock.patch.object(
+                sessions.AiohttpRequest, "__call__", side_effect=auth_req
+            ),
+        ):
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+            await session.configure_mtls_channel()
+            assert len(created) == 1
+
+            pending = asyncio.create_task(
+                session.request("GET", "https://pubsub.mtls.googleapis.com/x")
+            )
+            await asyncio.sleep(0.02)  # park inside the rotation
+
+            await session.close()
+
+            gate.set()
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await pending
+
+        # No second transport was built, and the original one was closed.
+        assert len(created) == 1
+        assert created[0].closed is True
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_wraps_use_client_cert_failure(self):
+        """A failure reading the cert config must surface as MutualTLSChannelError."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_use_client_cert",
+            side_effect=UnicodeDecodeError("utf-8", b"\xff", 0, 1, "bad byte"),
+        ):
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()
+
+        await session.close()

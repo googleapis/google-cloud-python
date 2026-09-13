@@ -183,17 +183,23 @@ class AsyncAuthorizedSession:
         # rotation check (because a concurrent request already performed it)
         # still observe that the channel changed since its own 401.
         self._mtls_reconfig_counter = 0
-        # Value of `_refresh_counter` at the moment of the most recent
-        # reconfiguration. A credential refresh is only considered redundant
-        # if it happened *after* the latest channel change, since a
-        # certificate-bound token minted on the old channel is not valid on
-        # the new one.
-        self._refresh_counter_at_last_reconfig = 0
+        # Value of `_mtls_reconfig_counter` observed when the most recently
+        # completed credential refresh *started*. Counting refresh completions
+        # is not sufficient to decide whether a token is usable on the current
+        # channel: a refresh that began before a rotation and finished after it
+        # was still minted over the old transport, and a certificate-bound
+        # token from the old channel is rejected by the new one. Recording the
+        # generation a refresh started in lets us tell the two apart.
+        self._last_refresh_reconfig_gen = -1
         # Serializes the decision to create a new mTLS initialization task so
         # that two concurrent callers cannot both spawn `_do_configure()`.
         self._mtls_init_lock: Optional[asyncio.Lock] = None
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
+        # Set by `close()`. Guarded by `_mtls_init_lock` so that an in-flight
+        # certificate rotation cannot install a new transport on a session that
+        # has already been torn down.
+        self._closed = False
 
     async def _trim_old_auth_requests(self) -> None:
         """Close retired transports, keeping at most the two most recent."""
@@ -204,8 +210,10 @@ class AsyncAuthorizedSession:
                     res = oldest_auth_request.close()
                     if inspect.isawaitable(res):
                         await res
-            except Exception:
-                pass
+            except Exception as caught_exc:
+                _LOGGER.debug(
+                    "Failed to close a retired auth transport: %s", caught_exc
+                )
 
     async def _reset_non_mtls_state(self) -> None:
         """Clear mTLS state, retiring a library-owned mTLS transport.
@@ -268,6 +276,8 @@ class AsyncAuthorizedSession:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
+            google.auth.exceptions.InvalidOperation: If the session has already
+                been closed.
         """
         if self._mtls_init_lock is None:
             self._mtls_init_lock = asyncio.Lock()
@@ -277,6 +287,19 @@ class AsyncAuthorizedSession:
         # both spawn `_do_configure()`. The lock is released before awaiting the
         # task itself, so a slow configuration does not block unrelated callers.
         async with init_lock:
+            if self._closed:
+                # Without this, a rotation triggered by an in-flight request
+                # could build and install a brand new transport after `close()`
+                # has already drained everything, leaking it permanently.
+                #
+                # A task that was *already* running when `close()` landed needs
+                # no separate check: `close()` sets `_closed` and cancels the
+                # task without yielding in between, so a running
+                # `_do_configure` is always interrupted at one of its awaits
+                # before it reaches the point where it installs a transport.
+                raise exceptions.InvalidOperation(
+                    "Cannot configure the mTLS channel on a closed session."
+                )
             if _cert_key_override is not None:
                 needs_reconfig = True
             else:
@@ -315,10 +338,17 @@ class AsyncAuthorizedSession:
                     self._client_cert_callback = client_cert_callback
 
                 async def _do_configure():
-                    # Run the blocking check in an executor
-                    use_client_cert = await mtls._run_in_executor(
-                        google.auth.transport._mtls_helper.check_use_client_cert
-                    )
+                    # Run the blocking check in an executor. It reads and parses
+                    # a config file, so it can fail in ways the caller is
+                    # promised to see as `MutualTLSChannelError`.
+                    try:
+                        use_client_cert = await mtls._run_in_executor(
+                            google.auth.transport._mtls_helper.check_use_client_cert
+                        )
+                    except Exception as caught_exc:
+                        raise exceptions.MutualTLSChannelError(
+                            caught_exc
+                        ) from caught_exc
                     if not use_client_cert:
                         return
 
@@ -580,11 +610,15 @@ class AsyncAuthorizedSession:
                                                             call_key_bytes,
                                                         )
                                                     )
-                                                    self._refresh_counter_at_last_reconfig = (
-                                                        self._refresh_counter
-                                                    )
                                                     self._mtls_reconfig_counter += 1
                                                 except Exception as e:
+                                                    # NOTE: `_mtls_check_counter`
+                                                    # is deliberately left
+                                                    # un-incremented below, so a
+                                                    # queued coroutine retries
+                                                    # the reconfiguration rather
+                                                    # than inheriting this
+                                                    # failure.
                                                     _LOGGER.error(
                                                         "Failed to reconfigure mTLS channel: %s",
                                                         e,
@@ -617,21 +651,27 @@ class AsyncAuthorizedSession:
                             self._refresh_lock = asyncio.Lock()
 
                         async with self._refresh_lock:
-                            # A refresh is redundant only if it happened after
-                            # both this request's 401 and the most recent
-                            # channel reconfiguration. Using the later of the
-                            # two keeps concurrent requests de-duplicated while
-                            # still guaranteeing at least one refresh against a
-                            # freshly rotated channel.
-                            refresh_baseline = max(
-                                refresh_counter_at_error,
-                                self._refresh_counter_at_last_reconfig,
+                            # A concurrent refresh only makes this one redundant
+                            # if it completed after this request's 401 *and* it
+                            # was started on the channel we are about to retry
+                            # on. Completion order alone is not enough: a
+                            # refresh that began before a rotation and finished
+                            # after it minted its token over the old transport,
+                            # and the rotated channel will reject it.
+                            already_refreshed = (
+                                self._refresh_counter > refresh_counter_at_error
+                                and self._last_refresh_reconfig_gen
+                                >= self._mtls_reconfig_counter
                             )
-                            if self._refresh_counter > refresh_baseline:
+                            if already_refreshed:
                                 _LOGGER.debug(
                                     "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
                                 )
                             else:
+                                # Snapshot the generation *before* awaiting so a
+                                # rotation that lands mid-refresh is not
+                                # credited to the token we are about to mint.
+                                reconfig_gen = self._mtls_reconfig_counter
                                 try:
                                     await self._credentials.refresh(self._auth_request)
                                 except NotImplementedError:
@@ -655,6 +695,7 @@ class AsyncAuthorizedSession:
                                     return response
                                 else:
                                     self._refresh_counter += 1
+                                    self._last_refresh_reconfig_gen = reconfig_gen
 
                         if is_streaming:
                             return response
@@ -671,8 +712,10 @@ class AsyncAuthorizedSession:
                             res = response.close()
                             if inspect.isawaitable(res):
                                 await res
-                        except Exception:
-                            pass
+                        except Exception as close_exc:
+                            _LOGGER.debug(
+                                "Failed to close the 401 response: %s", close_exc
+                            )
                     raise
                 # If it returned a response (meaning streaming or error), bail out
                 if early_return_response is not None:
@@ -682,8 +725,8 @@ class AsyncAuthorizedSession:
                         res = response.close()
                         if inspect.isawaitable(res):
                             await res
-                    except Exception:
-                        pass
+                    except Exception as close_exc:
+                        _LOGGER.debug("Failed to close the 401 response: %s", close_exc)
                 if max_allowed_time is not None:
                     remaining_time = max(
                         0.0, max_allowed_time - (time.monotonic() - start_time)
@@ -978,14 +1021,25 @@ class AsyncAuthorizedSession:
     async def close(self) -> None:
         """
         Close the underlying auth request session.
+
+        Once closed, the session refuses further mTLS (re)configuration, so an
+        in-flight certificate rotation cannot resurrect it with a freshly built
+        transport that nothing would ever close.
         """
+        if self._mtls_init_lock is None:
+            self._mtls_init_lock = asyncio.Lock()
+        # Flip the flag under the same lock `configure_mtls_channel` uses to
+        # decide whether to spawn a task, so the two cannot interleave.
+        async with self._mtls_init_lock:
+            self._closed = True
+            init_task = self._mtls_init_task
         try:
-            if self._mtls_init_task and not self._mtls_init_task.done():
-                self._mtls_init_task.cancel()
+            if init_task and not init_task.done():
+                init_task.cancel()
                 # Same rationale as `configure_mtls_channel`: `asyncio.wait`
                 # lets the cancelled initialization task unwind without
                 # absorbing a cancellation aimed at this `close()` call.
-                await asyncio.wait({self._mtls_init_task})
+                await asyncio.wait({init_task})
         finally:
             while self._old_auth_requests:
                 old_request = self._old_auth_requests.pop(0)
@@ -994,12 +1048,16 @@ class AsyncAuthorizedSession:
                         res = old_request.close()
                         if inspect.isawaitable(res):
                             await res
-                except Exception:
-                    pass
+                except Exception as caught_exc:
+                    _LOGGER.debug(
+                        "Failed to close a retired auth transport: %s", caught_exc
+                    )
             try:
                 if hasattr(self._auth_request, "close"):
                     res = self._auth_request.close()
                     if inspect.isawaitable(res):
                         await res
-            except Exception:
-                pass
+            except Exception as caught_exc:
+                _LOGGER.debug(
+                    "Failed to close the active auth transport: %s", caught_exc
+                )
