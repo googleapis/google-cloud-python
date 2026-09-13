@@ -14,6 +14,7 @@
 
 """Helper functions for loading data from a Google service account file."""
 
+from collections.abc import Mapping
 import io
 import json
 
@@ -53,6 +54,13 @@ def from_dict(data, require=None, use_rsa_signer=True):
         )
 
     # Create a signer.
+    if (
+        isinstance(data, Mapping)
+        and isinstance(data.get("private_key"), (str, bytes))
+        and crypt.is_mldsa_key(data["private_key"])
+    ):
+        return crypt.PqcSigner.from_service_account_info(data)
+
     if use_rsa_signer:
         signer = crypt.RSASigner.from_service_account_info(data)
     else:
