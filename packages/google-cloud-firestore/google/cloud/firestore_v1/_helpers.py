@@ -44,6 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
+from google.cloud.firestore_v1.bson import BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -181,6 +182,9 @@ def encode_value(value) -> types.document.Value:
     """
     if value is None:
         return document.Value(null_value=struct_pb2.NULL_VALUE)
+
+    if isinstance(value, BSONType):
+        return encode_value(value.to_map_value())
 
     # Must come before int since ``bool`` is an integer subtype.
     if isinstance(value, bool):
