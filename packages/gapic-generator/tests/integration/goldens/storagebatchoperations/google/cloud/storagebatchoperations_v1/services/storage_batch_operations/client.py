@@ -50,7 +50,7 @@ except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 # Optional: OpenTelemetry tracing capabilities for grpc channel injection
-# Note: _observability was added in google-api-core 2.35.0; guard for older versions
+# Note: _observability was added in google-api-core 2.36.0+; guard for older versions
 try:
     from google.api_core import _observability  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
@@ -517,7 +517,8 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
             # and pass it to the transport.
             interceptors = []
             if (
-                transport_init is StorageBatchOperationsGrpcTransport
+                isinstance(transport_init, type)
+                and issubclass(transport_init, StorageBatchOperationsGrpcTransport)
                 and _observability is not None
                 and (
                     otel_interceptor := _observability.get_otel_interceptor(

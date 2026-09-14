@@ -15,6 +15,7 @@
 import os
 from unittest import mock
 
+import grpc
 import pytest
 
 try:
@@ -138,14 +139,30 @@ def test_unary_retries_tracing(span_exporter, use_mtls):
 
 
 def test_tracing_disabled_default(use_mtls):
-    """Verifies that default client options emit zero spans (zero overhead guarantee)."""
+    """Verifies that default client options emit zero spans (zero overhead guarantee).
+
+    Ensures that configuring a `TracerProvider` in `ClientOptions` without explicitly
+    enabling tracing (via `tracing_enabled=True` or the environment variable
+    `GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED`) records zero spans and incurs
+    no tracing overhead.
+
+    An active `TracerProvider` with an in-memory exporter is passed to the client.
+    The test executes an actual unary RPC and asserts that no finished spans are
+    recorded.
+    """
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
     provider.add_span_processor(SimpleSpanProcessor(exporter))
 
+    # Provide the provider, but leave tracing_enabled=False / unset
+    options = ClientOptions(
+        tracing_enabled=False,
+        tracer_provider=provider,
+    )
     client = construct_client(
         EchoClient,
         use_mtls,
+        client_options=options,
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -157,31 +174,85 @@ def test_tracing_disabled_default(use_mtls):
 
 
 def test_custom_tracer_provider(use_mtls):
-    """Verifies that spans are emitted exclusively to the injected custom TracerProvider."""
+    """Verifies that spans are emitted exclusively to the injected custom TracerProvider.
+
+    Ensures strict isolation of trace data: when a client is configured with a
+    custom `TracerProvider`, generated RPC spans must be routed solely to that
+    provider's exporters and never leak into the ambient/global `TracerProvider`.
+
+    Configures an ambient global `TracerProvider` with `global_exporter`, while
+    configuring the client with `custom_provider` and `custom_exporter`. After
+    executing an RPC, the test asserts that `custom_exporter` captured the span
+    while `global_exporter` recorded zero spans.
+    """
     custom_exporter = InMemorySpanExporter()
     custom_provider = TracerProvider()
     custom_provider.add_span_processor(SimpleSpanProcessor(custom_exporter))
 
-    other_exporter = InMemorySpanExporter()
-    other_provider = TracerProvider()
-    other_provider.add_span_processor(SimpleSpanProcessor(other_exporter))
+    global_exporter = InMemorySpanExporter()
+    global_provider = TracerProvider()
+    global_provider.add_span_processor(SimpleSpanProcessor(global_exporter))
 
+    # Temporarily set the ambient global tracer provider
+    original_provider = trace.get_tracer_provider()
+    trace.set_tracer_provider(global_provider)
+    try:
+        options = ClientOptions(
+            tracing_enabled=True,
+            tracer_provider=custom_provider,
+        )
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        response = client.echo(showcase.EchoRequest(content="isolated trace"))
+        assert response.content == "isolated trace"
+
+        assert len(custom_exporter.get_finished_spans()) == 1
+        assert len(global_exporter.get_finished_spans()) == 0
+    finally:
+        trace.set_tracer_provider(original_provider)
+
+
+def test_direct_client_initialization_tracing(span_exporter):
+    """Verifies end-to-end trace injection via direct EchoClient instantiation.
+
+    Validates the template wiring in `client.py.j2` directly. In system test
+    harnesses, `construct_client` often creates the transport instance manually,
+    which bypasses `client.py`'s `if not transport_provided:` branch. This test
+    instantiates `EchoClient(client_options=...)` directly to prove that the client
+    resolves `_observability.get_otel_interceptor` and passes it to `EchoGrpcTransport`.
+
+    Constructs `EchoClient` without a pre-instantiated transport. Patches
+    `EchoGrpcTransport.create_channel` solely to target the local insecure Showcase
+    endpoint (`localhost:7469`). Executes `client.echo()` and asserts span generation.
+    """
+    exporter, provider = span_exporter
     options = ClientOptions(
         tracing_enabled=True,
-        tracer_provider=custom_provider,
-    )
-    client = construct_client(
-        EchoClient,
-        use_mtls,
-        client_options=options,
-        credentials=ga_credentials.AnonymousCredentials(),
+        tracer_provider=provider,
     )
 
-    response = client.echo(showcase.EchoRequest(content="isolated trace"))
-    assert response.content == "isolated trace"
+    with mock.patch.object(
+        EchoClient.get_transport_class("grpc"),
+        "create_channel",
+        side_effect=lambda host, **kwargs: grpc.insecure_channel("localhost:7469"),
+    ):
+        # Client constructs the transport and wires interceptors itself
+        client = EchoClient(
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        response = client.echo(showcase.EchoRequest(content="direct client wiring"))
+        assert response.content == "direct client wiring"
 
-    assert len(custom_exporter.get_finished_spans()) == 1
-    assert len(other_exporter.get_finished_spans()) == 0
+        spans = exporter.get_finished_spans()
+        assert len(spans) == 1
+        assert spans[0].name == "google.showcase.v1beta1.Echo/Echo"
+        assert spans[0].attributes.get("rpc.system.name") == "grpc"
 
 
 def test_env_var_opt_in(span_exporter, use_mtls):

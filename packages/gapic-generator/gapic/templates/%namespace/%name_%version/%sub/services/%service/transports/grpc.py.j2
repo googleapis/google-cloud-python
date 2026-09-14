@@ -14,7 +14,7 @@ import grpc  # type: ignore
 from google.api_core import grpc_helpers
 
 # Optional: OpenTelemetry tracing capabilities for grpc channel injection
-# Note: ClientInterceptor was added in google-api-core 2.25.0+; fallback for older versions
+# Note: ClientInterceptor was added in google-api-core 2.36.0+; fallback for older versions
 try:
     from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
