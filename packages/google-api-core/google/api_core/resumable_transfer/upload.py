@@ -301,12 +301,9 @@ class ResumableUploadSession:
                     (
                         requests.exceptions.ConnectionError,
                         requests.exceptions.ChunkedEncodingError,
+                        requests.exceptions.Timeout,
                     ),
                 ):
-                    return True
-                if isinstance(exc, requests.exceptions.Timeout):
-                    if self._config.stall_minimum_rate and self._config.stall_timeout:
-                        return False
                     return True
             if isinstance(exc, exceptions.GoogleAPICallError):
                 return exc.code in common.RETRYABLE_STATUS_CODES
@@ -517,13 +514,27 @@ class ResumableUploadSession:
 
             def do_http() -> requests.Response:
                 per_attempt_timeout = self._compute_chunk_timeout(data_len)
-                resp = transport.request(
-                    method,
-                    url,
-                    data=payload,
-                    headers=headers,
-                    timeout=per_attempt_timeout,
-                )
+                try:
+                    resp = transport.request(
+                        method,
+                        url,
+                        data=payload,
+                        headers=headers,
+                        timeout=per_attempt_timeout,
+                    )
+                except requests.exceptions.Timeout as exc:
+                    if self._config.stall_minimum_rate and self._config.stall_timeout:
+                        remaining = self._get_deadline_remaining()
+                        if remaining is not None and remaining <= 0:
+                            raise exceptions.DeadlineExceeded(
+                                f"Resumable upload deadline {self._config.deadline} exceeded."
+                            ) from exc
+                        raise exceptions.TransferStalledError(
+                            f"Upload stalled: chunk transfer timed out ({exc}).",
+                            upload_url=self.upload_url,
+                            chunk_size=self.chunk_size,
+                        ) from exc
+                    raise
                 if not resp.ok:
                     raise exceptions.from_http_response(resp)
                 return resp

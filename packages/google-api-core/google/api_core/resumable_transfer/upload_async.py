@@ -432,16 +432,30 @@ class AsyncResumableUploadSession:
                     per_attempt_timeout = min(per_attempt_timeout, remaining)
 
                 client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
-                async with transport.request(
-                    method, url, data=payload, headers=headers, timeout=client_timeout
-                ) as resp:
-                    resp_headers = dict(resp.headers)
-                    resp_body = await resp.read()
-                    if resp.status not in (200, 201):
-                        raise exceptions.from_http_status(
-                            resp.status, resp_body.decode("utf-8", errors="replace")
-                        )
-                    return resp.status, resp_headers, resp_body
+                try:
+                    async with transport.request(
+                        method, url, data=payload, headers=headers, timeout=client_timeout
+                    ) as resp:
+                        resp_headers = dict(resp.headers)
+                        resp_body = await resp.read()
+                        if resp.status not in (200, 201):
+                            raise exceptions.from_http_status(
+                                resp.status, resp_body.decode("utf-8", errors="replace")
+                            )
+                        return resp.status, resp_headers, resp_body
+                except asyncio.TimeoutError as exc:
+                    if self._config.stall_minimum_rate and self._config.stall_timeout:
+                        remaining = self._get_deadline_remaining()
+                        if remaining is not None and remaining <= 0:
+                            raise exceptions.DeadlineExceeded(
+                                f"Resumable upload deadline {self._config.deadline} exceeded."
+                            ) from exc
+                        raise exceptions.TransferStalledError(
+                            f"Upload stalled: chunk transfer timed out ({exc}).",
+                            upload_url=self.upload_url,
+                            chunk_size=self.chunk_size,
+                        ) from exc
+                    raise
 
             try:
                 t_start = _monotonic_clock()
