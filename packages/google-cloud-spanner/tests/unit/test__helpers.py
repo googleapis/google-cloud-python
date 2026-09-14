@@ -22,7 +22,42 @@ import mock
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.semconv.resource import ResourceAttributes
 
-from google.cloud.spanner_v1 import TransactionOptions, _helpers
+from google.cloud.spanner_v1 import ExecuteSqlRequest, TransactionOptions, _helpers
+
+
+class Test_to_query_options(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _to_query_options
+
+        return _to_query_options(*args, **kw)
+
+    def test_none(self):
+        self.assertIsNone(self._callFUT(None))
+
+    def test_empty_dict(self):
+        self.assertIsNone(self._callFUT({}))
+
+    def test_dict_with_empty_values(self):
+        self.assertIsNone(self._callFUT({"optimizer_version": ""}))
+
+    def test_valid_dict(self):
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({"optimizer_version": "1"})
+        self.assertEqual(result, expected)
+
+    def test_empty_proto_object(self):
+        self.assertIsNone(self._callFUT(ExecuteSqlRequest.QueryOptions()))
+
+    def test_populated_proto_object(self):
+        options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(options)
+        self.assertEqual(result, options)
+
+    def test_invalid_type(self):
+        with self.assertRaises(TypeError):
+            self._callFUT("invalid")
+        with self.assertRaises(TypeError):
+            self._callFUT(123)
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -37,8 +72,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_base_dict_and_merge_none(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = {
             "optimizer_version": "2",
             "optimizer_statistics_package": "auto_20191128_14_47_22UTC",
@@ -52,16 +85,12 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_empty_and_merge_empty(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions()
         merge = ExecuteSqlRequest.QueryOptions()
         result = self._callFUT(base, merge)
         self.assertIsNone(result)
 
     def test_base_none_merge_object(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = ExecuteSqlRequest.QueryOptions(
             optimizer_version="3",
@@ -71,8 +100,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, merge)
 
     def test_base_none_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = {"optimizer_version": "3"}
         expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
@@ -80,8 +107,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_object_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions(
             optimizer_version="1",
             optimizer_statistics_package="auto_20191128_14_47_22UTC",
@@ -93,6 +118,106 @@ class Test_merge_query_options(unittest.TestCase):
         )
         result = self._callFUT(base, merge)
         self.assertEqual(result, expected)
+
+    def test_base_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, None)
+        self.assertEqual(result, base)
+
+    def test_base_empty_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(base, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_empty_object(self):
+        merge = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(None, merge)
+        self.assertIsNone(result)
+
+    def test_base_object_not_mutated_on_merge(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        merge = {"optimizer_version": "3"}
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="3",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+
+    def test_base_dict_merge_dict(self):
+        base = {"optimizer_version": "1"}
+        merge = {"optimizer_statistics_package": "auto_20191128_14_47_22UTC"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_override_dict(self):
+        base = {
+            "optimizer_version": "1",
+            "optimizer_statistics_package": "pkg1",
+        }
+        merge = {"optimizer_version": "2"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_empty_merge_none(self):
+        result = self._callFUT({}, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_dict_empty(self):
+        result = self._callFUT(None, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_empty_dict(self):
+        result = self._callFUT({}, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_object(self):
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({}, merge)
+        self.assertEqual(result, merge)
+
+    def test_base_object_merge_empty_dict(self):
+        base = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(base, {})
+        self.assertEqual(result, base)
+
+    def test_base_object_merge_object(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="pkg1",
+        )
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+        self.assertEqual(base.optimizer_statistics_package, "pkg1")
+        self.assertEqual(merge.optimizer_version, "2")
+        self.assertEqual(merge.optimizer_statistics_package, "")
+
+    def test_invalid_type_raises_error(self):
+        with self.assertRaises(TypeError):
+            self._callFUT("invalid", None)
+        with self.assertRaises(TypeError):
+            self._callFUT(None, 123)
 
 
 class Test_get_cloud_region(unittest.TestCase):

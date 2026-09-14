@@ -160,6 +160,36 @@ def _try_to_coerce_bytes(bytestring):
         )
 
 
+def _to_query_options(options):
+    """Normalize dict or QueryOptions to a non-empty QueryOptions, or None.
+
+    :type options:
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
+        or :class:`dict` or None
+    :param options: Query options to normalize.
+
+    :rtype:
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
+        or None
+    :returns:
+        A non-empty QueryOptions instance, or None if options is empty or None.
+
+    :raises TypeError:
+        If options is not a QueryOptions, dict, or None.
+    """
+    if options is None:
+        return None
+    if isinstance(options, dict):
+        if not any(options.values()):
+            return None
+        options = ExecuteSqlRequest.QueryOptions(options)
+    elif not isinstance(options, ExecuteSqlRequest.QueryOptions):
+        raise TypeError(
+            f"query_options must be a QueryOptions or dict, got {type(options).__name__}"
+        )
+    return options if type(options).pb(options).ByteSize() > 0 else None
+
+
 def _merge_query_options(base, merge):
     """Merge higher precedence QueryOptions with current QueryOptions.
 
@@ -182,23 +212,20 @@ def _merge_query_options(base, merge):
         QueryOptions object formed by merging the two given QueryOptions.
         If the resultant object only has empty fields, returns None.
     """
-    combined = base or ExecuteSqlRequest.QueryOptions()
-    if isinstance(combined, dict):
-        combined = ExecuteSqlRequest.QueryOptions(
-            optimizer_version=combined.get("optimizer_version", ""),
-            optimizer_statistics_package=combined.get(
-                "optimizer_statistics_package", ""
-            ),
-        )
-    merge = merge or ExecuteSqlRequest.QueryOptions()
-    if isinstance(merge, dict):
-        merge = ExecuteSqlRequest.QueryOptions(
-            optimizer_version=merge.get("optimizer_version", ""),
-            optimizer_statistics_package=merge.get("optimizer_statistics_package", ""),
-        )
-    type(combined).pb(combined).MergeFrom(type(merge).pb(merge))
-    if not combined.optimizer_version and not combined.optimizer_statistics_package:
+    if base is None and merge is None:
         return None
+
+    base = _to_query_options(base)
+    merge = _to_query_options(merge)
+    if base is None:
+        return merge
+    if merge is None:
+        return base
+
+    combined = ExecuteSqlRequest.QueryOptions()
+    combined_pb = type(combined).pb(combined)
+    combined_pb.CopyFrom(type(base).pb(base))
+    combined_pb.MergeFrom(type(merge).pb(merge))
     return combined
 
 
