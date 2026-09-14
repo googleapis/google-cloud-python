@@ -161,10 +161,21 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
     Upstream ``opentelemetry-instrumentation-grpc`` sets the integer status code
     ``rpc.grpc.status_code`` (e.g. 0), but does not record the modern string status
     ``rpc.response.status_code`` (e.g. "OK") required by Cloud Trace and current
-    OpenTelemetry semantic conventions.
+    OpenTelemetry semantic conventions (v1.27.0+).
 
     This hook enriches successful RPC attempt spans with ``rpc.response.status_code = "OK"``.
     Errors and non-OK statuses are handled at the Tier 3 method span layer or upstream.
+
+    Upstream handles synchronous and asynchronous invocations differently:
+    - **Synchronous gRPC**: Upstream only invokes the response hook when an RPC call
+      succeeds. On failure, the hook is bypassed entirely.
+    - **Asynchronous gRPC**: Upstream invokes the response hook unconditionally for
+      both successes and failures (passing exception details on error). However, it
+      always marks ``span.status`` with an error status before calling the hook.
+
+    Because of this disparity, this hook checks ``span.status`` to guard against
+    async failure callbacks while allowing synchronous and successful asynchronous
+    calls to be marked "OK".
 
     Note:
         If upstream ``opentelemetry-instrumentation-grpc`` adds native support for
@@ -177,9 +188,7 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
     if not span.is_recording():
         return
 
-    # Verify the RPC succeeded before recording the OK response status.
-    # Upstream async instrumentation invokes this hook on both successes
-    # and failures, so check whether an error status was already recorded.
+    # Guard against upstream async calls that invoke this hook on failures.
     status = getattr(span, "status", None)
     status_code = getattr(status, "status_code", None)
     if (
