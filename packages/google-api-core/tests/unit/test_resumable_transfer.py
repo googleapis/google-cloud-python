@@ -737,7 +737,6 @@ def test_sync_retry_predicate_allows_timeout_with_stall_control():
     assert predicate(requests.exceptions.Timeout("Read timed out")) is True
 
 
-
 @pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
 def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
     session_transport = mock.create_autospec(requests.Session, instance=True)
@@ -747,5 +746,3 @@ def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
     )
     with pytest.raises(TypeError, match="Unsupported stream type"):
         session.upload(stream=invalid_stream)
-
-

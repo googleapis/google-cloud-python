@@ -1010,4 +1010,3 @@ def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
             upload_url="https://upload.example.com/resumable-async",
             stream=invalid_stream,
         )
-

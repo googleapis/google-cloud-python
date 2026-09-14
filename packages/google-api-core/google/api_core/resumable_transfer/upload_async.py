@@ -434,7 +434,11 @@ class AsyncResumableUploadSession:
                 client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
                 try:
                     async with transport.request(
-                        method, url, data=payload, headers=headers, timeout=client_timeout
+                        method,
+                        url,
+                        data=payload,
+                        headers=headers,
+                        timeout=client_timeout,
                     ) as resp:
                         resp_headers = dict(resp.headers)
                         resp_body = await resp.read()
@@ -651,9 +655,7 @@ class AsyncResumableUploadSession:
             raise ValueError("An aiohttp.ClientSession transport must be provided.")
 
         progress_queue: asyncio.Queue = asyncio.Queue()
-        reader_fn, computed_size, stream_obj = self._prepare_async_reader(
-            stream, size
-        )
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
 
         async def _run():
             try:
@@ -722,9 +724,7 @@ class AsyncResumableUploadSession:
 
         self._state._resumable_url = upload_url
         progress_queue: asyncio.Queue = asyncio.Queue()
-        reader_fn, computed_size, stream_obj = self._prepare_async_reader(
-            stream, size
-        )
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
 
         async def _run():
             try:
