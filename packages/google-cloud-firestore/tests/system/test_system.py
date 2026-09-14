@@ -3880,6 +3880,9 @@ def test_large_document_pipeline(client, cleanup, database, method):
     pipeline = client.pipeline().collection(collection_id)
     method_under_test = getattr(pipeline, method)
 
+    results = list(method_under_test())
+    assert [doc.data() for doc in results] == [{"payload": large_payload}]
+
 #@pytest.mark.skip(reason="Temporarily skipped. Requires backend BSON / MongoDB feature flag.")
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 def test_bson_document_writes_and_reads(client, cleanup, database):

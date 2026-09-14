@@ -8,6 +8,7 @@ import uuid
 from base64 import b64encode
 from datetime import timedelta
 from decimal import Decimal
+from unittest import mock
 
 from django.conf import settings
 from django.core.management.color import no_style
@@ -266,3 +267,83 @@ class TestOperations(SpannerSimpleTestClass):
             ),
             "%s",
         )
+
+    def test_returning_columns(self):
+        field1 = mock.MagicMock(column="id")
+        field2 = mock.MagicMock(column="name")
+        sql, params = self.db_operations.returning_columns([field1, field2])
+        self.assertEqual(sql, "THEN RETURN id, name")
+        self.assertEqual(params, ())
+
+    def test_returning_columns_with_strings(self):
+        sql, params = self.db_operations.returning_columns(["id", "created_at"])
+        self.assertEqual(sql, "THEN RETURN id, created_at")
+        self.assertEqual(params, ())
+
+    def test_returning_columns_empty(self):
+        sql, params = self.db_operations.returning_columns([])
+        self.assertEqual(sql, "")
+        self.assertEqual(params, ())
+
+    def test_return_insert_columns_alias(self):
+        field = mock.MagicMock(column="id")
+        sql, params = self.db_operations.return_insert_columns([field])
+        self.assertEqual(sql, "THEN RETURN id")
+        self.assertEqual(params, ())
+
+    def test_savepoint_sql(self):
+        self.assertEqual(self.db_operations.savepoint_create_sql("sp1"), "SELECT 1")
+        self.assertEqual(self.db_operations.savepoint_commit_sql("sp1"), "SELECT 1")
+        self.assertEqual(self.db_operations.savepoint_rollback_sql("sp1"), "SELECT 1")
+
+    def test_no_limit_value(self):
+        self.assertEqual(self.db_operations.no_limit_value(), 9223372036854775807)
+
+    def test_get_limit_offset_params(self):
+        limit, offset = self.db_operations._get_limit_offset_params(10, None)
+        self.assertEqual(limit, 9223372036854775807 - 10)
+        self.assertEqual(offset, 10)
+
+        limit, offset = self.db_operations._get_limit_offset_params(0, 5)
+        self.assertEqual(limit, 5)
+        self.assertEqual(offset, 0)
+
+    def test_prep_for_like_and_iexact_query(self):
+        self.assertEqual(
+            self.db_operations.prep_for_like_query("test.val*"), r"test\.val\*"
+        )
+        self.assertEqual(
+            self.db_operations.prep_for_iexact_query("test.val*"), r"test\.val\*"
+        )
+
+    def test_bulk_insert_sql(self):
+        fields = [mock.MagicMock(column="col1"), mock.MagicMock(column="col2")]
+        sql = self.db_operations.bulk_insert_sql(fields, [["%s", "%s"], ["%s", "%s"]])
+        self.assertEqual(sql, "VALUES (%s, %s), (%s, %s)")
+
+    def test_date_and_time_trunc_sql(self):
+        sql, params = self.db_operations.date_trunc_sql("year", "field", None)
+        self.assertEqual(sql, "DATE_TRUNC(CAST(field AS DATE), year)")
+        self.assertIsNone(params)
+
+        sql, params = self.db_operations.time_trunc_sql("hour", "field", None)
+        self.assertEqual(sql, 'TIMESTAMP_TRUNC(field, hour, "UTC")')
+        self.assertIsNone(params)
+
+        sql, params = self.db_operations.datetime_trunc_sql(
+            "day", "field", None, tzname="UTC"
+        )
+        self.assertEqual(sql, 'TIMESTAMP_TRUNC(field, day, "UTC")')
+        self.assertIsNone(params)
+
+    def test_datetime_cast_sql(self):
+        sql, params = self.db_operations.datetime_cast_date_sql("field", None, "UTC")
+        self.assertEqual(sql, 'DATE(field, "UTC")')
+        self.assertIsNone(params)
+
+        sql, params = self.db_operations.datetime_cast_time_sql("field", None, "UTC")
+        self.assertEqual(
+            sql,
+            "TIMESTAMP(FORMAT_TIMESTAMP('%Y-%m-%d %R:%E9S %Z', field, 'UTC'))",
+        )
+        self.assertIsNone(params)

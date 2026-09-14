@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.auditmanager_v1._compat import transcode_request
 from google.cloud.auditmanager_v1.types import auditmanager
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -911,19 +912,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseEnrollResource._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_enroll_resource(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseEnrollResource._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseEnrollResource._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseEnrollResource._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseEnrollResource,
+                    "_BaseEnrollResource__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1063,21 +1061,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_audit_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGenerateAuditReport,
+                    "_BaseGenerateAuditReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1214,21 +1209,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_http_options()
-
             request, metadata = self._interceptor.pre_generate_audit_scope_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport,
+                    "_BaseGenerateAuditScopeReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1368,17 +1360,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetAuditReport._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_audit_report(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetAuditReport._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGetAuditReport._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetAuditReport,
+                    "_BaseGetAuditReport__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1517,17 +1510,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_http_options()
-
             request, metadata = self._interceptor.pre_get_resource_enrollment_status(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus,
+                    "_BaseGetResourceEnrollmentStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1672,17 +1666,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListAuditReports._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_audit_reports(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListAuditReports._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListAuditReports._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListAuditReports,
+                    "_BaseListAuditReports__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1823,17 +1818,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListControls._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_controls(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListControls._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseListControls._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListControls,
+                    "_BaseListControls__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1974,17 +1968,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_http_options()
-
             request, metadata = self._interceptor.pre_list_resource_enrollment_statuses(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses,
+                    "_BaseListResourceEnrollmentStatuses__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2213,19 +2208,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAuditManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2357,15 +2349,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2495,21 +2488,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseAuditManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2614,17 +2604,18 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseAuditManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2731,17 +2722,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseAuditManagerRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2873,15 +2863,16 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             http_options = (
                 _BaseAuditManagerRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAuditManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseAuditManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseAuditManagerRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

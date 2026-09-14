@@ -168,9 +168,9 @@ class StreamedResultSet(object):
 
     def __iter__(self):
         while True:
-            iter_rows, self._rows[:] = (self._rows[:], ())
-            while iter_rows:
-                yield iter_rows.pop(0)
+            iter_rows, self._rows = (self._rows, [])
+            for row in iter_rows:
+                yield row
             if self._done:
                 return
             try:

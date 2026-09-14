@@ -17,7 +17,17 @@
 import collections
 import functools
 import warnings
-from typing import Generic, Iterator, Optional, TypeVar
+from typing import (
+    Callable,
+    Generic,
+    Iterator,
+    Optional,
+    Sequence,
+    TypeAlias,
+    TypeVar,
+    cast,
+    get_args,
+)
 
 import google.auth
 import google.auth.credentials
@@ -33,6 +43,17 @@ _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCal
 
 # denotes the proto response type for grpc calls
 P = TypeVar("P")
+
+# Type alias representing any client-side gRPC interceptor
+ClientInterceptor: TypeAlias = (
+    grpc.UnaryUnaryClientInterceptor
+    | grpc.UnaryStreamClientInterceptor
+    | grpc.StreamUnaryClientInterceptor
+    | grpc.StreamStreamClientInterceptor
+)
+
+# Runtime tuple of gRPC client interceptor base classes for isinstance checks
+_CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
 
 
 def _patch_callable_name(callable_):
@@ -417,6 +438,52 @@ def _modify_target_for_direct_path(target: str) -> str:
         # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
         target = f"google-c2p{direct_path_separator}{target_without_port}"
     return target
+
+
+def apply_channel_interceptors(
+    channel: grpc.Channel,
+    interceptors: (
+        Sequence[ClientInterceptor | Callable[[grpc.Channel], grpc.Channel]] | None
+    ) = None,
+) -> grpc.Channel:
+    """Applies client interceptors or channel-intercepting callables to a gRPC channel.
+
+    Executes in reverse order so the first interceptor in the sequence becomes the
+    outermost layer on outbound requests and the innermost layer on inbound responses,
+    aligning with the behavior of ``grpc.intercept_channel``.
+
+    Args:
+        channel (grpc.Channel): The channel to intercept.
+        interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
+            Additional interceptors (or callables that apply interceptors) to apply to the gRPC channel.
+
+    Returns:
+        grpc.Channel: The intercepted channel, or the original channel if no
+            interceptors were provided.
+
+    Raises:
+        TypeError: If an item in ``interceptors`` is neither a gRPC ClientInterceptor
+            nor a Callable[[Channel], Channel].
+    """
+    if not interceptors:
+        return channel
+
+    modified_channel = channel
+    # Reverse the inputs to align with the behavior of grpc.create_channel(*interceptors)
+    for interceptor in reversed(list(interceptors)):
+        if isinstance(interceptor, _CLIENT_INTERCEPTOR_CLASSES):
+            modified_channel = grpc.intercept_channel(modified_channel, interceptor)
+        elif callable(interceptor):
+            interceptor_callable = cast(
+                Callable[[grpc.Channel], grpc.Channel], interceptor
+            )
+            modified_channel = interceptor_callable(modified_channel)
+        else:
+            raise TypeError(
+                f"Expected ClientInterceptor or Callable[[Channel], Channel], got {type(interceptor).__name__}"
+            )
+
+    return modified_channel
 
 
 _MethodCall = collections.namedtuple(

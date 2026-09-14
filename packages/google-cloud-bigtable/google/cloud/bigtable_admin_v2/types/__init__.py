@@ -128,6 +128,7 @@ from .instance import (
 )
 from .table import (
     AuthorizedView,
+    AvroSchema,
     Backup,
     BackupInfo,
     ChangeStreamConfig,
@@ -254,6 +255,7 @@ __all__ = (
     "LogicalView",
     "MaterializedView",
     "AuthorizedView",
+    "AvroSchema",
     "Backup",
     "BackupInfo",
     "ChangeStreamConfig",

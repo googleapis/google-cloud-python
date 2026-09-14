@@ -132,6 +132,31 @@ def test_from_http_response_json_content():
     assert exception.errors == ["1", "2"]
 
 
+def test_from_http_response_json_list_content():
+    response = make_response(
+        json.dumps(
+            [{"error": {"message": "json message", "errors": ["1", "2"]}}]
+        ).encode("utf-8")
+    )
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http.client.NOT_FOUND
+    assert exception.message == "POST https://example.com/: json message"
+    assert exception.errors == ["1", "2"]
+
+
+def test_from_http_response_json_list_content_without_error_dict():
+    response = make_response(json.dumps(["error message"]).encode("utf-8"))
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http.client.NOT_FOUND
+    assert exception.message == "POST https://example.com/: unknown error"
+
+
 def test_from_http_response_bad_json_content():
     response = make_response(json.dumps({"meep": "moop"}).encode("utf-8"))
 

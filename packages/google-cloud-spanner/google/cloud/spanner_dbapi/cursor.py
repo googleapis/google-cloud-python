@@ -25,6 +25,7 @@ from google.api_core.exceptions import (
     InvalidArgument,
     OutOfRange,
 )
+
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import (
     _helpers,

@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.dialogflow_v2beta1._compat import transcode_request
 from google.cloud.dialogflow_v2beta1.types import participant
 from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 
@@ -995,19 +996,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseAnalyzeContent._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_analyze_content(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseAnalyzeContent,
+                    "_BaseAnalyzeContent__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1167,21 +1165,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
-
             request, metadata = self._interceptor.pre_compile_suggestion(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseCompileSuggestion,
+                    "_BaseCompileSuggestion__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1322,21 +1317,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
-
             request, metadata = self._interceptor.pre_create_participant(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCreateParticipant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseCreateParticipant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCreateParticipant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseCreateParticipant,
+                    "_BaseCreateParticipant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1476,15 +1468,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetParticipant._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseGetParticipant._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseGetParticipant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseGetParticipant,
+                    "_BaseGetParticipant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1623,17 +1616,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListParticipants._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_participants(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseListParticipants._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListParticipants._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseListParticipants,
+                    "_BaseListParticipants__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1774,17 +1768,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListSuggestions._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_suggestions(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseListSuggestions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListSuggestions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseListSuggestions,
+                    "_BaseListSuggestions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1945,21 +1940,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseSuggestArticles._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_suggest_articles(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestArticles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseSuggestArticles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestArticles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseSuggestArticles,
+                    "_BaseSuggestArticles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2100,21 +2092,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
-
             request, metadata = self._interceptor.pre_suggest_faq_answers(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseSuggestFaqAnswers,
+                    "_BaseSuggestFaqAnswers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2255,21 +2244,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
-
             request, metadata = self._interceptor.pre_suggest_knowledge_assist(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist,
+                    "_BaseSuggestKnowledgeAssist__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2410,21 +2396,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
-
             request, metadata = self._interceptor.pre_suggest_smart_replies(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseSuggestSmartReplies,
+                    "_BaseSuggestSmartReplies__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2565,21 +2548,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             """
 
             http_options = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
-
             request, metadata = self._interceptor.pre_update_participant(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseUpdateParticipant,
+                    "_BaseUpdateParticipant__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2857,19 +2837,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseParticipantsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseParticipantsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3001,15 +2978,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3138,17 +3116,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3255,17 +3234,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseParticipantsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3397,15 +3375,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             http_options = (
                 _BaseParticipantsRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseParticipantsRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

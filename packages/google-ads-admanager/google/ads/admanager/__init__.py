@@ -36,6 +36,9 @@ from google.ads.admanager_v1.services.audience_segment_service.client import (
 from google.ads.admanager_v1.services.bandwidth_group_service.client import (
     BandwidthGroupServiceClient,
 )
+from google.ads.admanager_v1.services.break_template_service.client import (
+    BreakTemplateServiceClient,
+)
 from google.ads.admanager_v1.services.browser_language_service.client import (
     BrowserLanguageServiceClient,
 )
@@ -122,6 +125,9 @@ from google.ads.admanager_v1.services.mobile_device_service.client import (
 from google.ads.admanager_v1.services.mobile_device_submodel_service.client import (
     MobileDeviceSubmodelServiceClient,
 )
+from google.ads.admanager_v1.services.native_style_service.client import (
+    NativeStyleServiceClient,
+)
 from google.ads.admanager_v1.services.network_service.client import NetworkServiceClient
 from google.ads.admanager_v1.services.operating_system_service.client import (
     OperatingSystemServiceClient,
@@ -168,6 +174,9 @@ from google.ads.admanager_v1.services.viewability_provider_service.client import
     ViewabilityProviderServiceClient,
 )
 from google.ads.admanager_v1.types.ad_break_messages import AdBreak
+from google.ads.admanager_v1.types.ad_break_optimization_type_enum import (
+    AdBreakOptimizationTypeEnum,
+)
 from google.ads.admanager_v1.types.ad_break_service import (
     CreateAdBreakRequest,
     DeleteAdBreakRequest,
@@ -194,6 +203,9 @@ from google.ads.admanager_v1.types.ad_rule_enums import (
     AdRuleFrequencyCapBehaviorEnum,
     AdRuleStatusEnum,
 )
+from google.ads.admanager_v1.types.ad_rule_fill_order_direction_enum import (
+    AdRuleFillOrderDirectionEnum,
+)
 from google.ads.admanager_v1.types.ad_rule_messages import AdRule, AdRuleSlot
 from google.ads.admanager_v1.types.ad_rule_service import (
     BatchActivateAdRulesRequest,
@@ -218,6 +230,7 @@ from google.ads.admanager_v1.types.ad_rule_slot_bumper_enum import AdRuleSlotBum
 from google.ads.admanager_v1.types.ad_rule_slot_midroll_frequency_type_enum import (
     AdRuleSlotMidrollFrequencyTypeEnum,
 )
+from google.ads.admanager_v1.types.ad_spot_fill_type_enum import AdSpotFillTypeEnum
 from google.ads.admanager_v1.types.ad_spot_messages import AdSpot
 from google.ads.admanager_v1.types.ad_spot_service import (
     BatchCreateAdSpotsRequest,
@@ -288,8 +301,27 @@ from google.ads.admanager_v1.types.application_service import (
     UpdateApplicationRequest,
 )
 from google.ads.admanager_v1.types.applied_label import AppliedLabel
+from google.ads.admanager_v1.types.audience_segment_enums import (
+    AudienceSegmentApprovalStatusEnum,
+    AudienceSegmentLicenseTypeEnum,
+    AudienceSegmentStatusEnum,
+    AudienceSegmentTypeEnum,
+)
 from google.ads.admanager_v1.types.audience_segment_messages import AudienceSegment
 from google.ads.admanager_v1.types.audience_segment_service import (
+    BatchActivateAudienceSegmentsRequest,
+    BatchActivateAudienceSegmentsResponse,
+    BatchApproveAudienceSegmentsRequest,
+    BatchApproveAudienceSegmentsResponse,
+    BatchCreateAudienceSegmentsRequest,
+    BatchCreateAudienceSegmentsResponse,
+    BatchDeactivateAudienceSegmentsRequest,
+    BatchDeactivateAudienceSegmentsResponse,
+    BatchPopulateAudienceSegmentsRequest,
+    BatchPopulateAudienceSegmentsResponse,
+    BatchRejectAudienceSegmentsRequest,
+    BatchRejectAudienceSegmentsResponse,
+    CreateAudienceSegmentRequest,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
@@ -301,6 +333,21 @@ from google.ads.admanager_v1.types.bandwidth_group_service import (
     ListBandwidthGroupsResponse,
 )
 from google.ads.admanager_v1.types.brand_lift_partner_enum import BrandLiftPartnerEnum
+from google.ads.admanager_v1.types.break_template_messages import (
+    BreakTemplate,
+    BreakTemplateMember,
+)
+from google.ads.admanager_v1.types.break_template_service import (
+    BatchCreateBreakTemplatesRequest,
+    BatchCreateBreakTemplatesResponse,
+    BatchUpdateBreakTemplatesRequest,
+    BatchUpdateBreakTemplatesResponse,
+    CreateBreakTemplateRequest,
+    GetBreakTemplateRequest,
+    ListBreakTemplatesRequest,
+    ListBreakTemplatesResponse,
+    UpdateBreakTemplateRequest,
+)
 from google.ads.admanager_v1.types.browser_language_messages import BrowserLanguage
 from google.ads.admanager_v1.types.browser_language_service import (
     GetBrowserLanguageRequest,
@@ -350,12 +397,21 @@ from google.ads.admanager_v1.types.child_publisher_messages import ChildPublishe
 from google.ads.admanager_v1.types.child_publisher_service import (
     BatchCreateChildPublishersRequest,
     BatchCreateChildPublishersResponse,
+    BatchRejectChildPublishersRequest,
+    BatchRejectChildPublishersResponse,
+    BatchRenegotiateChildPublisherAgreementsRequest,
+    BatchRenegotiateChildPublisherAgreementsResponse,
+    BatchResendChildPublisherInvitationEmailsRequest,
+    BatchResendChildPublisherInvitationEmailsResponse,
     BatchUpdateChildPublishersRequest,
     BatchUpdateChildPublishersResponse,
+    BatchWithdrawChildPublishersRequest,
+    BatchWithdrawChildPublishersResponse,
     CreateChildPublisherRequest,
     GetChildPublisherRequest,
     ListChildPublishersRequest,
     ListChildPublishersResponse,
+    RenegotiateChildPublisherAgreementRequest,
     UpdateChildPublisherRequest,
 )
 from google.ads.admanager_v1.types.cms_metadata_key_enums import (
@@ -819,11 +875,36 @@ from google.ads.admanager_v1.types.mobile_device_submodel_service import (
     ListMobileDeviceSubmodelsRequest,
     ListMobileDeviceSubmodelsResponse,
 )
-from google.ads.admanager_v1.types.network_messages import Network
+from google.ads.admanager_v1.types.native_style_enums import NativeStyleStatusEnum
+from google.ads.admanager_v1.types.native_style_messages import NativeStyle
+from google.ads.admanager_v1.types.native_style_service import (
+    BatchActivateNativeStylesRequest,
+    BatchActivateNativeStylesResponse,
+    BatchArchiveNativeStylesRequest,
+    BatchArchiveNativeStylesResponse,
+    BatchCreateNativeStylesRequest,
+    BatchCreateNativeStylesResponse,
+    BatchDeactivateNativeStylesRequest,
+    BatchDeactivateNativeStylesResponse,
+    BatchUpdateNativeStylesRequest,
+    BatchUpdateNativeStylesResponse,
+    CreateNativeStyleRequest,
+    GetNativeStyleRequest,
+    ListNativeStylesRequest,
+    ListNativeStylesResponse,
+    UpdateNativeStyleRequest,
+)
+from google.ads.admanager_v1.types.network_messages import (
+    DefaultThirdPartyDataDeclaration,
+    Network,
+)
 from google.ads.admanager_v1.types.network_service import (
+    GetDefaultThirdPartyDataDeclarationRequest,
     GetNetworkRequest,
     ListNetworksRequest,
     ListNetworksResponse,
+    ProvisionTestNetworkRequest,
+    UpdateNetworkRequest,
 )
 from google.ads.admanager_v1.types.nielsen_ctv_pacing_enum import NielsenCtvPacingEnum
 from google.ads.admanager_v1.types.non_guaranteed_deal_priority import (
@@ -1160,6 +1241,7 @@ __all__ = (
     "ApplicationServiceClient",
     "AudienceSegmentServiceClient",
     "BandwidthGroupServiceClient",
+    "BreakTemplateServiceClient",
     "BrowserLanguageServiceClient",
     "BrowserServiceClient",
     "CdnConfigServiceClient",
@@ -1192,6 +1274,7 @@ __all__ = (
     "MobileCarrierServiceClient",
     "MobileDeviceServiceClient",
     "MobileDeviceSubmodelServiceClient",
+    "NativeStyleServiceClient",
     "NetworkServiceClient",
     "OperatingSystemServiceClient",
     "OperatingSystemVersionServiceClient",
@@ -1214,6 +1297,7 @@ __all__ = (
     "UserServiceClient",
     "ViewabilityProviderServiceClient",
     "AdBreak",
+    "AdBreakOptimizationTypeEnum",
     "CreateAdBreakRequest",
     "DeleteAdBreakRequest",
     "GetAdBreakRequest",
@@ -1232,6 +1316,7 @@ __all__ = (
     "SearchAdReviewCenterAdsResponse",
     "AdRuleFrequencyCapBehaviorEnum",
     "AdRuleStatusEnum",
+    "AdRuleFillOrderDirectionEnum",
     "AdRule",
     "AdRuleSlot",
     "BatchActivateAdRulesRequest",
@@ -1251,6 +1336,7 @@ __all__ = (
     "AdRuleSlotBehaviorEnum",
     "AdRuleSlotBumperEnum",
     "AdRuleSlotMidrollFrequencyTypeEnum",
+    "AdSpotFillTypeEnum",
     "AdSpot",
     "BatchCreateAdSpotsRequest",
     "BatchCreateAdSpotsResponse",
@@ -1307,7 +1393,24 @@ __all__ = (
     "ListApplicationsResponse",
     "UpdateApplicationRequest",
     "AppliedLabel",
+    "AudienceSegmentApprovalStatusEnum",
+    "AudienceSegmentLicenseTypeEnum",
+    "AudienceSegmentStatusEnum",
+    "AudienceSegmentTypeEnum",
     "AudienceSegment",
+    "BatchActivateAudienceSegmentsRequest",
+    "BatchActivateAudienceSegmentsResponse",
+    "BatchApproveAudienceSegmentsRequest",
+    "BatchApproveAudienceSegmentsResponse",
+    "BatchCreateAudienceSegmentsRequest",
+    "BatchCreateAudienceSegmentsResponse",
+    "BatchDeactivateAudienceSegmentsRequest",
+    "BatchDeactivateAudienceSegmentsResponse",
+    "BatchPopulateAudienceSegmentsRequest",
+    "BatchPopulateAudienceSegmentsResponse",
+    "BatchRejectAudienceSegmentsRequest",
+    "BatchRejectAudienceSegmentsResponse",
+    "CreateAudienceSegmentRequest",
     "GetAudienceSegmentRequest",
     "ListAudienceSegmentsRequest",
     "ListAudienceSegmentsResponse",
@@ -1316,6 +1419,17 @@ __all__ = (
     "ListBandwidthGroupsRequest",
     "ListBandwidthGroupsResponse",
     "BrandLiftPartnerEnum",
+    "BreakTemplate",
+    "BreakTemplateMember",
+    "BatchCreateBreakTemplatesRequest",
+    "BatchCreateBreakTemplatesResponse",
+    "BatchUpdateBreakTemplatesRequest",
+    "BatchUpdateBreakTemplatesResponse",
+    "CreateBreakTemplateRequest",
+    "GetBreakTemplateRequest",
+    "ListBreakTemplatesRequest",
+    "ListBreakTemplatesResponse",
+    "UpdateBreakTemplateRequest",
     "BrowserLanguage",
     "GetBrowserLanguageRequest",
     "ListBrowserLanguagesRequest",
@@ -1350,12 +1464,21 @@ __all__ = (
     "ChildPublisher",
     "BatchCreateChildPublishersRequest",
     "BatchCreateChildPublishersResponse",
+    "BatchRejectChildPublishersRequest",
+    "BatchRejectChildPublishersResponse",
+    "BatchRenegotiateChildPublisherAgreementsRequest",
+    "BatchRenegotiateChildPublisherAgreementsResponse",
+    "BatchResendChildPublisherInvitationEmailsRequest",
+    "BatchResendChildPublisherInvitationEmailsResponse",
     "BatchUpdateChildPublishersRequest",
     "BatchUpdateChildPublishersResponse",
+    "BatchWithdrawChildPublishersRequest",
+    "BatchWithdrawChildPublishersResponse",
     "CreateChildPublisherRequest",
     "GetChildPublisherRequest",
     "ListChildPublishersRequest",
     "ListChildPublishersResponse",
+    "RenegotiateChildPublisherAgreementRequest",
     "UpdateChildPublisherRequest",
     "CmsMetadataKeyStatusEnum",
     "CmsMetadataKey",
@@ -1691,10 +1814,31 @@ __all__ = (
     "GetMobileDeviceSubmodelRequest",
     "ListMobileDeviceSubmodelsRequest",
     "ListMobileDeviceSubmodelsResponse",
+    "NativeStyleStatusEnum",
+    "NativeStyle",
+    "BatchActivateNativeStylesRequest",
+    "BatchActivateNativeStylesResponse",
+    "BatchArchiveNativeStylesRequest",
+    "BatchArchiveNativeStylesResponse",
+    "BatchCreateNativeStylesRequest",
+    "BatchCreateNativeStylesResponse",
+    "BatchDeactivateNativeStylesRequest",
+    "BatchDeactivateNativeStylesResponse",
+    "BatchUpdateNativeStylesRequest",
+    "BatchUpdateNativeStylesResponse",
+    "CreateNativeStyleRequest",
+    "GetNativeStyleRequest",
+    "ListNativeStylesRequest",
+    "ListNativeStylesResponse",
+    "UpdateNativeStyleRequest",
+    "DefaultThirdPartyDataDeclaration",
     "Network",
+    "GetDefaultThirdPartyDataDeclarationRequest",
     "GetNetworkRequest",
     "ListNetworksRequest",
     "ListNetworksResponse",
+    "ProvisionTestNetworkRequest",
+    "UpdateNetworkRequest",
     "NielsenCtvPacingEnum",
     "NonGuaranteedDealPriority",
     "OperatingSystem",

@@ -40,15 +40,33 @@ jobs:
       # Each weight is roughly 1 minute of expected execution time
       # Default for unset packages is 1
       PACKAGE_WEIGHTS: |
-        google-ai-generativelanguage: 4
-        google-auth: 5
+        django-google-spanner: 2
+        gapic-generator: 3
+        google-ai-generativelanguage: 3
+        google-api-core: 2
+        google-auth: 2
+        google-cloud-bigquery: 4
+        google-cloud-bigquery-storage: 2
+        google-cloud-bigtable: 4
         google-cloud-compute: 12
         google-cloud-compute-v1beta: 12
-        google-cloud-dialogflow: 6
-        google-cloud-dialogflow-cx: 6
-        google-cloud-discoveryengine: 8
-        google-cloud-retail: 5
-        google-shopping-merchant-accounts: 4
+        google-cloud-datastore: 3
+        google-cloud-dialogflow: 4
+        google-cloud-dialogflow-cx: 4
+        google-cloud-discoveryengine: 4
+        google-cloud-firestore: 3
+        google-cloud-logging: 3
+        google-cloud-monitoring: 3
+        google-cloud-ndb: 2
+        google-cloud-pubsub: 2
+        google-cloud-retail: 3
+        google-cloud-spanner: 4
+        google-cloud-storage: 4
+        google-shopping-merchant-accounts: 3
+        pandas-gbq: 2
+        proto-plus: 1
+        sqlalchemy-bigquery: 2
+        sqlalchemy-spanner: 2
     steps:
     - name: Checkout
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -156,12 +174,52 @@ jobs:
         path: .coverage.${{ matrix.python }}.*
         include-hidden-files: true
 
+  core-deps:
+    needs: initialize
+    if: needs.initialize.outputs.matrix != '[]' && needs.initialize.outputs.matrix != ''
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: true
+      matrix:
+        python: ["3.14"]
+        package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    name: ${{ matrix.package_shard.is_sharded && format('core-deps handwritten ({0}, {1})', matrix.python, matrix.package_shard.name) || format('core-deps handwritten ({0})', matrix.python) }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+        persist-credentials: false
+    - name: Setup Python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: ${{ matrix.python }}
+        cache: 'pip'
+        allow-prereleases: true
+    - name: Install nox
+      run: |
+        pip install nox
+    - name: Run core_deps_from_source for ${{ matrix.package_shard.description }}
+      env:
+        BUILD_TYPE: presubmit
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TEST_TYPE: core_deps_from_source
+        PY_VERSION: ${{ matrix.python }}
+        PACKAGE_LIST: ${{ matrix.package_shard.packages }}
+        NOX_DEFAULT_VENV_BACKEND: "virtualenv"
+        NOXFORCEPYTHON: ${{ matrix.python }}
+      run: |
+        ci/run_conditional_tests.sh
+
   all-tests:
-    needs: [initialize, unit]
+    needs: [initialize, unit, core-deps]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Check unit test results
+      - name: Check test results
         run: |
           # 1. Check initialize job
           if [[ "${{ needs.initialize.result }}" != "success" ]]; then
@@ -173,7 +231,12 @@ jobs:
             echo "Unit tests failed"
             exit 1
           fi
-          echo "All unit tests passed or were skipped"
+          # 3. Check core dependencies test shards
+          if [[ "${{ needs.core-deps.result }}" != "success" && "${{ needs.core-deps.result }}" != "skipped" ]]; then
+            echo "Core dependencies tests failed"
+            exit 1
+          fi
+          echo "All unit and core dependencies tests passed or were skipped"
 
   cover:
     if: always() && !cancelled() && needs.all-tests.result == 'success'

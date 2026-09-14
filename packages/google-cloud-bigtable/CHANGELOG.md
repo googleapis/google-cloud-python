@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.43.0...google-cloud-bigtable-v2.44.0) (2026-09-03)
+
+
+### Features
+
+* **bigtable:** Rerouted CheckAndMutateRows and ReadModifyWriteRows to data client ([#18190](https://github.com/googleapis/google-cloud-python/issues/18190)) ([990f86e](https://github.com/googleapis/google-cloud-python/commit/990f86e45df15c594e82d19d6fe482f12d128430))
+* **bigtable:** Rerouted DirectRow.commit to use mutate_row ([#18191](https://github.com/googleapis/google-cloud-python/issues/18191)) ([7126a54](https://github.com/googleapis/google-cloud-python/commit/7126a548e4231ae5f5e49599d53d84a94b9302ca))
+* update API sources and regenerate ([#18267](https://github.com/googleapis/google-cloud-python/issues/18267)) ([813a5c1](https://github.com/googleapis/google-cloud-python/commit/813a5c17cbe42b3a8386e7ad7475a3d7ada33842))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.42.0...google-cloud-bigtable-v2.43.0) (2026-08-21)
 
 

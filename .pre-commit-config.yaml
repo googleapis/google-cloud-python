@@ -27,3 +27,6 @@ repos:
     # Run the linter.
     - id: ruff-check
       args: [ --select, I, --fix, --target-version=py310, --line-length=88 ]
+    # Run the formatter.
+    - id: ruff-format
+      args: [ --target-version=py310, --line-length=88 ]

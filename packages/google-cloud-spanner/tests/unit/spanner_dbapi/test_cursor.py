@@ -20,13 +20,14 @@ from unittest import mock
 
 from google.api_core.exceptions import Aborted
 from google.auth.credentials import AnonymousCredentials
+from google.rpc.code_pb2 import ABORTED
+
 from google.cloud.spanner_dbapi.connection import connect
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
     Statement,
     StatementType,
 )
-from google.rpc.code_pb2 import ABORTED
 
 
 class TestCursor(unittest.TestCase):
@@ -454,6 +455,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_integrity_error(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import IntegrityError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -486,6 +488,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_invalid_argument(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -500,6 +503,7 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_internal_server_error(self):
         from google.api_core import exceptions
+
         from google.cloud.spanner_dbapi.exceptions import OperationalError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -763,10 +767,11 @@ class TestCursor(unittest.TestCase):
         transaction.commit.assert_called_once()
 
     def test_executemany_insert_batch_failed(self):
+        from google.rpc.code_pb2 import UNKNOWN
+
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi.exceptions import OperationalError
         from google.cloud.spanner_v1.types.spanner import Session
-        from google.rpc.code_pb2 import UNKNOWN
 
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
         err_details = "Details here"
@@ -1162,6 +1167,7 @@ class TestCursor(unittest.TestCase):
         while streaming the first element with a PeekIterator.
         """
         from google.api_core.exceptions import Aborted
+
         from google.cloud.spanner_dbapi.connection import connect
 
         connection = connect("test-instance", "test-database")

@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.developerconnect_v1._compat import transcode_request
 from google.cloud.developerconnect_v1.types import developer_connect
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -1942,21 +1943,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
-
             request, metadata = self._interceptor.pre_create_account_connector(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector,
+                    "_BaseCreateAccountConnector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2096,21 +2094,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseCreateConnection,
+                    "_BaseCreateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2250,21 +2245,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
-
             request, metadata = self._interceptor.pre_create_git_repository_link(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink,
+                    "_BaseCreateGitRepositoryLink__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2404,17 +2396,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_account_connector(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector,
+                    "_BaseDeleteAccountConnector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2552,17 +2545,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteConnection,
+                    "_BaseDeleteConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2700,17 +2694,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_git_repository_link(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink,
+                    "_BaseDeleteGitRepositoryLink__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2850,15 +2845,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_self(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteSelf,
+                    "_BaseDeleteSelf__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2995,15 +2991,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteUser,
+                    "_BaseDeleteUser__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3140,21 +3137,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_access_token(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchAccessToken,
+                    "_BaseFetchAccessToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3296,17 +3290,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_git_hub_installations(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations,
+                    "_BaseFetchGitHubInstallations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3448,15 +3443,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_git_refs(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchGitRefs,
+                    "_BaseFetchGitRefs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3597,17 +3593,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_linkable_git_repositories(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories,
+                    "_BaseFetchLinkableGitRepositories__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3750,21 +3747,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_read_token(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchReadToken,
+                    "_BaseFetchReadToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3906,21 +3900,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
-
             request, metadata = self._interceptor.pre_fetch_read_write_token(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken,
+                    "_BaseFetchReadWriteToken__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4063,15 +4054,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_fetch_self(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFetchSelf,
+                    "_BaseFetchSelf__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4209,15 +4201,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFinishOAuth._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_finish_o_auth(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFinishOAuth._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseFinishOAuth._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseFinishOAuth,
+                    "_BaseFinishOAuth__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4362,17 +4355,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
-
             request, metadata = self._interceptor.pre_get_account_connector(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseGetAccountConnector,
+                    "_BaseGetAccountConnector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4508,15 +4502,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseGetConnection,
+                    "_BaseGetConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4654,17 +4649,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
-
             request, metadata = self._interceptor.pre_get_git_repository_link(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink,
+                    "_BaseGetGitRepositoryLink__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4806,17 +4802,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
-
             request, metadata = self._interceptor.pre_list_account_connectors(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListAccountConnectors,
+                    "_BaseListAccountConnectors__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4960,17 +4957,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
-
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListConnections._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListConnections._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListConnections,
+                    "_BaseListConnections__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5110,17 +5108,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
-
             request, metadata = self._interceptor.pre_list_git_repository_links(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks,
+                    "_BaseListGitRepositoryLinks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5263,15 +5262,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseListUsers._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_users(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListUsers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListUsers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListUsers,
+                    "_BaseListUsers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5411,15 +5411,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseStartOAuth._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_start_o_auth(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseStartOAuth._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseStartOAuth._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseStartOAuth,
+                    "_BaseStartOAuth__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5561,21 +5562,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
-
             request, metadata = self._interceptor.pre_update_account_connector(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector,
+                    "_BaseUpdateAccountConnector__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -5715,21 +5713,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
-
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseUpdateConnection,
+                    "_BaseUpdateConnection__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6147,15 +6142,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetLocation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6285,15 +6281,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6422,21 +6419,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6540,17 +6534,18 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6657,15 +6652,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -6795,15 +6791,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             """
 
             http_options = _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperConnectRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperConnectRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

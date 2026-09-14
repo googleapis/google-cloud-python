@@ -6,6 +6,7 @@
 
 import os
 
+import django
 from django.db.backends.base.features import BaseDatabaseFeatures
 from django.db.utils import InterfaceError
 
@@ -14,7 +15,23 @@ from django_spanner import USE_EMULATOR
 
 class DatabaseFeatures(BaseDatabaseFeatures):
     can_introspect_big_integer_field = False
+
+    @property
+    def introspected_field_types(self):
+        return {
+            **super().introspected_field_types,
+            "BigIntegerField": "IntegerField",
+            "BigAutoField": "AutoField",
+            "SmallAutoField": "AutoField",
+            "SmallIntegerField": "IntegerField",
+            "PositiveBigIntegerField": "IntegerField",
+            "PositiveIntegerField": "IntegerField",
+            "PositiveSmallIntegerField": "IntegerField",
+            "DurationField": "IntegerField",
+        }
+
     can_introspect_duration_field = False
+    can_return_columns_from_insert = True
     can_introspect_foreign_keys = False
     # TimeField is introspected as DateTimeField because they both use
     # TIMESTAMP.
@@ -42,7 +59,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     if USE_EMULATOR:
         # Emulator does not support json.
         supports_json_field = False
-        # Emulator does not support check constrints.
+        # Emulator does not support check constraints.
         supports_column_check_constraints = False
         supports_table_check_constraints = False
     else:
@@ -53,6 +70,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_composite_primary_keys = True
     # Spanner does not support order by null modifiers.
     supports_order_by_nulls_modifier = False
+    supports_any_value = True
+    supports_covering_indexes = True
     # Spanner does not support SELECTing an arbitrary expression that also
     # appears in the GROUP BY clause.
     supports_subqueries_in_group_by = False
@@ -196,6 +215,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "many_to_one_null.tests.ManyToOneNullTests.test_set_clear_non_bulk",
         "many_to_one_null.tests.ManyToOneNullTests.test_unsaved",
         "foreign_object.tests.MultiColumnFKTests.test_prefetch_foreignobject_reverse",
+        # Indexes tests: Spanner uses STORING instead of PostgreSQL's INCLUDE syntax
+        # and does not support partial (WHERE) indexes. Upstream test assertions hardcode
+        # the literal string 'INCLUDE', causing string assertion failures against Spanner's STORING clause.
+        "indexes.tests.CoveringIndexTests.test_covering_index",
+        "indexes.tests.CoveringIndexTests.test_covering_partial_index",
         # Admin ChangeList tests
         "admin_changelist.tests.ChangeListTests.test_custom_lookup_in_search_fields",
         "admin_changelist.tests.ChangeListTests.test_deterministic_order_for_model_ordered_by_its_manager",
@@ -2256,3 +2280,30 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "expressions.tests.BasicExpressionsTests.test_outerref_mixed_case_table_name",
             "db_functions.text.test_concat.ConcatTests.test_concat_non_str",
         )
+
+    django_6_0_skip_tests = (
+        # Spanner uses random int64 IDs; test assumes monotonic ordering matching insertion order.
+        "prefetch_related.tests.PrefetchRelatedMTICacheTests.test_parent_m2m_available_in_child",
+        # Client-side AutoField ID generation sets pk before save; _is_pk_set() triggers refresh_from_db instead of AttributeError.
+        "defer_regress.tests.DeferCopyInstanceTests.test_bulk_create",
+        "defer_regress.tests.DeferCopyInstanceTests.test_save",
+        # Spanner does not support nested transactions/savepoints; raising inside atomic() aborts the whole transaction.
+        "update_only_fields.tests.UpdateOnlyFieldsTests.test_update_fields_not_updated",
+        # Test checks warning caller stacklevel; wrapping create_test_db shifts frame depth.
+        "backends.base.test_creation.TestDbCreationTests.test_serialize_deprecation",
+        # Runtime client-side AutoField initialization defaults trigger false-positive diffs in makemigrations autodetector.
+        "migrations.test_commands.MakeMigrationsTests.test_makemigrations_check_no_changes",
+        "migrations.test_commands.MakeMigrationsTests.test_makemigrations_model_rename_interactive",
+        "migrations.test_commands.MakeMigrationsTests.test_makemigrations_no_changes",
+        # Spanner query parameter limit (max_query_params = 900) limits batch chunk size.
+        "bulk_create.tests.BulkCreateTests.test_max_batch_size",
+        # Query count assertions mismatch due to Spanner batch DML execution behavior.
+        "bulk_create.tests.BulkCreateTransactionTests.test_multiple_batches",
+        # All objects get client-side PKs, collapsing multi-query insertion into a single batch query.
+        "bulk_create.tests.BulkCreateTransactionTests.test_objs_with_and_without_pk",
+        # Tie-breaker ordering on pk assumes sequential integer IDs; Spanner uses random IDs.
+        "ordering.tests.OrderingTests.test_order_by_case_when_constant_value",
+    )
+
+    if django.VERSION >= (6, 0):
+        skip_tests += django_6_0_skip_tests
