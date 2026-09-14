@@ -145,6 +145,7 @@ class ResumableUploadSession:
         # Stall control tracking via monotonic clock
         self._aggregate_lag: float = 0.0
         self._stall_timeout_started: Optional[float] = None
+        self._captured_progress: Optional[List[common.UploadProgress]] = None
 
     @property
     def upload_url(self) -> Optional[str]:
@@ -199,21 +200,23 @@ class ResumableUploadSession:
             setattr(exc, "chunk_size", self.chunk_size)
 
     def _notify_progress(self, state: common.ProgressState) -> None:
-        """Notifies registered progress callback with current upload status.
+        """Notifies progress with current upload status.
 
         Args:
             state: ProgressState transition milestone.
         """
-        if self._config.on_progress and self.upload_url:
-            self._config.on_progress(
-                common.UploadProgress(
-                    upload_url=self.upload_url,
-                    chunk_size=self.chunk_size,
-                    bytes_uploaded=self._state.bytes_uploaded,
-                    total_bytes=self._state.total_bytes,
-                    state=state,
-                )
+        if self.upload_url:
+            progress = common.UploadProgress(
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
+                bytes_uploaded=self._state.bytes_uploaded,
+                total_bytes=self._state.total_bytes,
+                state=state,
             )
+            if self._captured_progress is not None:
+                self._captured_progress.append(progress)
+            if self._config.on_progress:
+                self._config.on_progress(progress)
 
     @contextlib.contextmanager
     def _capture_progress(
@@ -225,18 +228,11 @@ class ResumableUploadSession:
             List buffering UploadProgress snapshots during generator execution.
         """
         captured: List[common.UploadProgress] = []
-        old_cb = self._config.on_progress
-
-        def capture(p: common.UploadProgress) -> None:
-            captured.append(p)
-            if old_cb:
-                old_cb(p)
-
-        self._config.on_progress = capture
+        self._captured_progress = captured
         try:
             yield captured
         finally:
-            self._config.on_progress = old_cb
+            self._captured_progress = None
 
     def _get_deadline_remaining(self) -> Optional[float]:
         """Calculates remaining seconds until the configured upload deadline.
