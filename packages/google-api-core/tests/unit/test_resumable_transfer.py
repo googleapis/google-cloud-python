@@ -751,9 +751,7 @@ def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
 
 
 def test_upload_state_properties():
-    state = upload_state.ResumableUploadState(
-        "https://api.example.com/init", chunk_size=500
-    )
+    state = upload_state.ProtocolState("https://api.example.com/init", chunk_size=500)
     assert state.initial_url == "https://api.example.com/init"
     assert state.resumable_url is None
     assert state.bytes_uploaded == 0
@@ -768,19 +766,19 @@ def test_upload_state_properties():
 
 
 def test_upload_state_start_errors():
-    state = upload_state.ResumableUploadState("https://api.example.com/init")
+    state = upload_state.ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Start command failed with status 500"):
         state.process_start_response(500, {})
     assert state.invalid is True
 
-    state2 = upload_state.ResumableUploadState("https://api.example.com/init")
+    state2 = upload_state.ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Server did not return"):
         state2.process_start_response(200, {"X-Goog-Upload-Status": "active"})
     assert state2.invalid is True
 
 
 def test_upload_state_chunk_and_query_errors():
-    state = upload_state.ResumableUploadState("https://api.example.com/init")
+    state = upload_state.ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Upload session URL not established"):
         state.build_chunk_request(b"data", is_last_chunk=True)
 
@@ -800,12 +798,12 @@ def test_upload_state_chunk_and_query_errors():
     assert state.invalid is True
 
     # process_query_response with final status
-    state3 = upload_state.ResumableUploadState("https://api.example.com/init")
+    state3 = upload_state.ProtocolState("https://api.example.com/init")
     state3.process_query_response(200, {"X-Goog-Upload-Status": "final"})
     assert state3.finished is True
 
     # process_query_response with cancelled status
-    state4 = upload_state.ResumableUploadState("https://api.example.com/init")
+    state4 = upload_state.ProtocolState("https://api.example.com/init")
     with pytest.raises(UploadCancelledError):
         state4.process_query_response(200, {"X-Goog-Upload-Status": "cancelled"})
     assert state4.invalid is True
@@ -817,12 +815,12 @@ def test_sync_upload_session_properties_and_enrichment():
         upload_url="https://api.example.com/init",
         transport=session_transport,
     )
-    assert session._ensure_session() is session_transport
-    assert session.resumable_url is None
+    assert session._get_transport(None) is session_transport
+    assert session._state.resumable_url is None
     assert session.bytes_uploaded == 0
-    assert session.total_bytes is None
+    assert session._state.total_bytes is None
     assert session.finished is False
-    assert session.invalid is False
+    assert session._state.invalid is False
 
     # Exception without __dict__ does not fail _enrich_exception
     exc_no_dict = Exception()
@@ -960,6 +958,7 @@ def test_sync_cancel_failure_raises():
     err_resp.ok = False
     err_resp.status_code = 500
     err_resp.headers = {}
+    err_resp.request = mock.Mock(method="POST", url="https://upload.example.com")
     err_resp.json.return_value = {"error": {"message": "Server Error", "errors": []}}
     session_transport.request.return_value = err_resp
 
