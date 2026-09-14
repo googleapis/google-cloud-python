@@ -80,9 +80,7 @@ class ResumableUploadConfig:
     start_retry: Optional[google.api_core.retry.Retry] = None
     stall_minimum_rate: int = 64 * 1024
     stall_timeout: float = 120.0
-    headers: Optional[
-        Union[Mapping[str, str], Sequence[Tuple[str, str]]]
-    ] = None
+    headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None
     deadline: Optional[datetime.datetime] = None
     timeout: Optional[float] = None
     retry: Optional[google.api_core.retry.Retry] = None
