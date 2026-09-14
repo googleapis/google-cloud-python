@@ -1202,7 +1202,8 @@ def test_sync_transmit_chunk_timeout_outer_exception():
     # To hit line 554-558 (outer exception handler with elapsed deadline)
     config_dl = ResumableUploadConfig(
         stall_minimum_rate=0,
-        deadline=datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=5),
+        deadline=datetime.datetime.now(datetime.timezone.utc)
+        + datetime.timedelta(seconds=5),
         retry=google.api_core.retry.Retry(predicate=lambda e: False),
     )
     session_dl = ResumableUploadSession(
