@@ -105,6 +105,7 @@ class AsyncClient(BaseClient):
         database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
+        decode_bson: bool = False,
     ) -> None:
         super(AsyncClient, self).__init__(
             project=project,
@@ -112,6 +113,7 @@ class AsyncClient(BaseClient):
             database=database,
             client_info=client_info,
             client_options=client_options,
+            decode_bson=decode_bson,
         )
 
     def _to_sync_copy(self):
@@ -124,6 +126,7 @@ class AsyncClient(BaseClient):
                 database=self._database,
                 client_info=self._client_info,
                 client_options=self._client_options,
+                decode_bson=self.decode_bson,
             )
         return self._sync_copy
 

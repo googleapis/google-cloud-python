@@ -1496,7 +1496,8 @@ def _query_response_to_snapshot(
 
     document_id = _helpers.get_doc_id(response_pb.document, expected_prefix)
     reference = collection.document(document_id)
-    data = _helpers.decode_dict(response_pb.document.fields, collection._client)
+    fields = response_pb.document.fields
+    data = _helpers.decode_dict(fields, collection._client)
     snapshot = document.DocumentSnapshot(
         reference,
         data,
@@ -1504,6 +1505,7 @@ def _query_response_to_snapshot(
         read_time=response_pb.read_time,
         create_time=response_pb.document.create_time,
         update_time=response_pb.document.update_time,
+        raw_fields=fields,
     )
     return snapshot
 
@@ -1527,7 +1529,8 @@ def _collection_group_query_response_to_snapshot(
     if not response_pb._pb.HasField("document"):
         return None
     reference = collection._client.document(response_pb.document.name)
-    data = _helpers.decode_dict(response_pb.document.fields, collection._client)
+    fields = response_pb.document.fields
+    data = _helpers.decode_dict(fields, collection._client)
     snapshot = document.DocumentSnapshot(
         reference,
         data,
@@ -1535,6 +1538,7 @@ def _collection_group_query_response_to_snapshot(
         read_time=response_pb._pb.read_time,
         create_time=response_pb._pb.document.create_time,
         update_time=response_pb._pb.document.update_time,
+        raw_fields=fields,
     )
     return snapshot
 

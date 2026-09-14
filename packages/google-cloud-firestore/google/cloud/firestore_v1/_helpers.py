@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import collections.abc
 import datetime
 import json
 from typing import (
@@ -44,6 +45,16 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -182,6 +193,9 @@ def encode_value(value) -> types.document.Value:
     if value is None:
         return document.Value(null_value=struct_pb2.NULL_VALUE)
 
+    if hasattr(value, "to_map_value"):
+        return encode_value(value.to_map_value())
+
     # Must come before int since ``bool`` is an integer subtype.
     if isinstance(value, bool):
         return document.Value(boolean_value=value)
@@ -217,9 +231,6 @@ def encode_value(value) -> types.document.Value:
         value_list = tuple(encode_value(element) for element in value)
         value_pb = document.ArrayValue(values=value_list)
         return document.Value(array_value=value_pb)
-
-    if isinstance(value, Vector):
-        return encode_value(value.to_map_value())
 
     if isinstance(value, dict):
         value_dict = encode_dict(value)
@@ -344,10 +355,8 @@ def reference_value_to_document(reference_value, client) -> Any:
 
 
 def decode_value(
-    value, client
-) -> Union[
-    None, bool, int, float, list, datetime.datetime, str, bytes, dict, GeoPoint, Vector
-]:
+    value, client=None, decode_bson: Optional[bool] = None
+) -> Any:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
     Args:
@@ -355,11 +364,10 @@ def decode_value(
             Firestore protobuf to be decoded / parsed / converted.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
+        decode_bson (Optional[bool]): Whether to decode BSON types.
 
     Returns:
-        Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]: A native
-        Python value converted from the ``value``.
+        Any: A native Python value converted from the ``value``.
 
     Raises:
         NotImplementedError: If the ``value_type`` is ``reference_value``.
@@ -390,15 +398,20 @@ def decode_value(
         )
     elif value_type == "array_value":
         return [
-            decode_value(element, client) for element in value_pb.array_value.values
+            decode_value(element, client=client, decode_bson=decode_bson)
+            for element in value_pb.array_value.values
         ]
     elif value_type == "map_value":
-        return decode_dict(value_pb.map_value.fields, client)
+        return decode_dict(
+            value_pb.map_value.fields, client=client, decode_bson=decode_bson
+        )
     else:
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client) -> Union[dict, Vector]:
+def decode_dict(
+    value_fields, client=None, decode_bson: Optional[bool] = None
+) -> Any:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -406,14 +419,22 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
             protobuf map of Firestore ``Value``-s.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
+        decode_bson (Optional[bool]): Whether to decode BSON types.
 
     Returns:
-        Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
-        of native Python values converted from the ``value_fields``.
+        Any: A dictionary or BSON object/Vector converted from ``value_fields``.
     """
+    effective_decode = (
+        decode_bson
+        if decode_bson is not None
+        else (client.decode_bson if (client is not None and hasattr(client, "decode_bson")) else False)
+    )
+
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
-    res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
+    res = {
+        key: decode_value(value, client=client, decode_bson=decode_bson)
+        for key, value in value_fields_pb.items()
+    }
 
     if res.get("__type__", None) == "__vector__":
         # Vector data type is represented as mapping.
@@ -421,7 +442,46 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
         values = cast(Sequence[float], res["value"])
         return Vector(values)
 
+    if effective_decode and len(res) == 1:
+        key, val = next(iter(res.items()))
+        bson_obj = _parse_bson_mapping(key, val)
+        if bson_obj is not None:
+            return bson_obj
+
     return res
+
+
+def _parse_bson_mapping(key: str, val: Any) -> Optional[Any]:
+    """Converts legacy BSON map value representations to native BSON instances."""
+    try:
+        if key == "__oid__" and isinstance(val, str):
+            return BSONObjectID(val)
+        elif key == "__decimal128__" and isinstance(val, str):
+            return BSONDecimal128(val)
+        elif key == "__int__" and type(val) is int:
+            return BSONInt32(val)
+        elif key == "__minkey__" and type(val) is int:
+            return BSONMinKey()
+        elif key == "__maxkey__" and type(val) is int:
+            return BSONMaxKey()
+        elif key == "__timestamp__" and isinstance(val, collections.abc.Mapping):
+            sec = val.get("seconds")
+            inc = val.get("increment")
+            if type(sec) is int and type(inc) is int and len(val) == 2:
+                return BSONTimestamp(sec, inc)
+        elif key == "__regex__" and isinstance(val, collections.abc.Mapping):
+            pat = val.get("pattern")
+            opt = val.get("options", "")
+            if isinstance(pat, str) and isinstance(opt, str) and len(val) in (1, 2):
+                return BSONRegex(pat, opt)
+        elif key == "__binary__" and isinstance(val, collections.abc.Mapping):
+            sub = val.get("sub_type")
+            bdata = val.get("bytes")
+            if type(sub) is int and isinstance(bdata, (bytes, bytearray, memoryview)) and len(val) == 2:
+                return BSONBinary(bdata, subtype=sub)
+    except (ValueError, TypeError):
+        pass
+    return None
 
 
 def get_doc_id(document_pb, expected_prefix) -> str:
@@ -524,32 +584,29 @@ class DocumentExtractor(object):
         prefix_path = FieldPath()
         iterator = self._get_document_iterator(prefix_path)
 
+        handlers = (
+            (lambda v: v is transforms.DELETE_FIELD, lambda fp, v: self.deleted_fields.append(fp)),
+            (lambda v: v is transforms.SERVER_TIMESTAMP, lambda fp, v: self.server_timestamps.append(fp)),
+            (lambda v: isinstance(v, transforms.ArrayRemove), lambda fp, v: self.array_removes.update({fp: v.values})),
+            (lambda v: isinstance(v, transforms.ArrayUnion), lambda fp, v: self.array_unions.update({fp: v.values})),
+            (lambda v: isinstance(v, transforms.Increment), lambda fp, v: self.increments.update({fp: v.value})),
+            (lambda v: isinstance(v, transforms.Maximum), lambda fp, v: self.maximums.update({fp: v.value})),
+            (lambda v: isinstance(v, transforms.Minimum), lambda fp, v: self.minimums.update({fp: v.value})),
+        )
+
         for field_path, value in iterator:
             if field_path == prefix_path and value is _EmptyDict:
                 self.empty_document = True
+                continue
 
-            elif value is transforms.DELETE_FIELD:
-                self.deleted_fields.append(field_path)
+            handled = False
+            for match, action in handlers:
+                if match(value):
+                    action(field_path, value)
+                    handled = True
+                    break
 
-            elif value is transforms.SERVER_TIMESTAMP:
-                self.server_timestamps.append(field_path)
-
-            elif isinstance(value, transforms.ArrayRemove):
-                self.array_removes[field_path] = value.values
-
-            elif isinstance(value, transforms.ArrayUnion):
-                self.array_unions[field_path] = value.values
-
-            elif isinstance(value, transforms.Increment):
-                self.increments[field_path] = value.value
-
-            elif isinstance(value, transforms.Maximum):
-                self.maximums[field_path] = value.value
-
-            elif isinstance(value, transforms.Minimum):
-                self.minimums[field_path] = value.value
-
-            else:
+            if not handled:
                 self.field_paths.append(field_path)
                 set_field_value(self.set_fields, field_path, value)
 
