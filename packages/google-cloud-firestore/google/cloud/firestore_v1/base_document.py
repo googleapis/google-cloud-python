@@ -388,21 +388,92 @@ class DocumentSnapshot(object):
     """
 
     def __init__(
-        self, reference, data, exists, read_time, create_time, update_time
+        self,
+        reference,
+        data,
+        exists,
+        read_time,
+        create_time,
+        update_time,
+        raw_fields=None,
+        decode_bson: Optional[bool] = None,
     ) -> None:
         self._reference = reference
-        # We want immutable data, so callers can't modify this value
-        # out from under us.
-        self._data = copy.deepcopy(data)
         self._exists = exists
         self.read_time = read_time
         self.create_time = create_time
         self.update_time = update_time
+        self._raw_fields = raw_fields
+
+        client = getattr(reference, "_client", None) if reference else None
+        self._decode_bson = (
+            decode_bson
+            if decode_bson is not None
+            else (getattr(client, "decode_bson", False) if client else False)
+        )
+        self._data_raw = None
+        self._data_bson = None
+
+        if raw_fields is not None:
+            if self._decode_bson:
+                self._data_bson = copy.deepcopy(data)
+            else:
+                self._data_raw = copy.deepcopy(data)
+        else:
+            self._data_raw = copy.deepcopy(data) if data is not None else None
+
+    def _get_data(self, decode_bson: Optional[bool] = None) -> Optional[Dict[str, Any]]:
+        effective_decode = (
+            decode_bson
+            if decode_bson is not None
+            else (
+                self._decode_bson
+                if hasattr(self, "_decode_bson") and self._decode_bson is not None
+                else (
+                    self._reference._client.decode_bson
+                    if (
+                        self._reference
+                        and hasattr(self._reference, "_client")
+                        and self._reference._client
+                    )
+                    else False
+                )
+            )
+        )
+
+        if effective_decode:
+            if self._data_bson is None:
+                if self._raw_fields is not None:
+                    client = self._reference._client if self._reference else None
+                    self._data_bson = _helpers.decode_dict(
+                        self._raw_fields, client, decode_bson=True
+                    )
+                elif self._data_raw is not None:
+                    self._data_bson = self._data_raw
+            return self._data_bson
+        else:
+            if self._data_raw is None:
+                if self._raw_fields is not None:
+                    client = self._reference._client if self._reference else None
+                    self._data_raw = _helpers.decode_dict(
+                        self._raw_fields, client, decode_bson=False
+                    )
+                elif self._data_bson is not None:
+                    self._data_raw = self._data_bson
+            return self._data_raw
+
+    @property
+    def _data(self) -> Optional[Dict[str, Any]]:
+        return self._get_data()
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
-        return self._reference == other._reference and self._data == other._data
+        return (
+            self._reference == other._reference
+            and self.read_time == other.read_time
+            and self._get_data(decode_bson=False) == other._get_data(decode_bson=False)
+        )
 
     def __hash__(self):
         return hash(self._reference) + hash(self.update_time)
@@ -448,84 +519,22 @@ class DocumentSnapshot(object):
         """
         return self._reference
 
-    def get(self, field_path: str) -> Any:
-        """Get a value from the snapshot data.
-
-        If the data is nested, for example:
-
-        .. code-block:: python
-
-           >>> snapshot.to_dict()
-           {
-               'top1': {
-                   'middle2': {
-                       'bottom3': 20,
-                       'bottom4': 22,
-                   },
-                   'middle5': True,
-               },
-               'top6': b'\x00\x01 foo',
-           }
-
-        a **field path** can be used to access the nested data. For
-        example:
-
-        .. code-block:: python
-
-           >>> snapshot.get('top1')
-           {
-               'middle2': {
-                   'bottom3': 20,
-                   'bottom4': 22,
-               },
-               'middle5': True,
-           }
-           >>> snapshot.get('top1.middle2')
-           {
-               'bottom3': 20,
-               'bottom4': 22,
-           }
-           >>> snapshot.get('top1.middle2.bottom3')
-           20
-
-        See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
-        more information on **field paths**.
-
-        A copy is returned since the data may contain mutable values,
-        but the data stored in the snapshot must remain immutable.
-
-        Args:
-            field_path (str): A field path (``.``-delimited list of
-                field names).
-
-        Returns:
-            Any or None:
-                (A copy of) the value stored for the ``field_path`` or
-                None if snapshot document does not exist.
-
-        Raises:
-            KeyError: If the ``field_path`` does not match nested data
-                in the snapshot.
-        """
+    def get(self, field_path: str, decode_bson: Optional[bool] = None) -> Any:
+        """Get a value from the snapshot data."""
         if not self._exists:
             return None
-        nested_data = field_path_module.get_nested_value(field_path, self._data)
+        data = self._get_data(decode_bson=decode_bson)
+        nested_data = field_path_module.get_nested_value(field_path, data)
         return copy.deepcopy(nested_data)
 
-    def to_dict(self) -> Union[Dict[str, Any], None]:
-        """Retrieve the data contained in this snapshot.
-
-        A copy is returned since the data may contain mutable values,
-        but the data stored in the snapshot must remain immutable.
-
-        Returns:
-            Dict[str, Any] or None:
-                The data in the snapshot.  Returns None if reference
-                does not exist.
-        """
+    def to_dict(
+        self, decode_bson: Optional[bool] = None
+    ) -> Union[Dict[str, Any], None]:
+        """Retrieve the data contained in this snapshot."""
         if not self._exists:
             return None
-        return copy.deepcopy(self._data)
+        data = self._get_data(decode_bson=decode_bson)
+        return copy.deepcopy(data)
 
     def _to_protobuf(self) -> Optional[Document]:
         return _helpers.document_snapshot_to_protobuf(self)

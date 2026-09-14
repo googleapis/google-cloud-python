@@ -132,6 +132,7 @@ class BaseClient(ClientWithProject):
         database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
+        decode_bson: bool = False,
     ) -> None:
         database = database or DEFAULT_DATABASE
         # NOTE: This API has no use for the _http argument, but sending it
@@ -165,6 +166,7 @@ class BaseClient(ClientWithProject):
         self._client_options = client_options
 
         self._database = database
+        self.decode_bson = decode_bson
 
     def _firestore_api_helper(self, transport, client_class, client_module) -> Any:
         """Lazy-loading getter GAPIC Firestore API.
@@ -610,7 +612,8 @@ def _parse_batch_get(
     result_type = get_doc_response._pb.WhichOneof("result")
     if result_type == "found":
         reference = _get_reference(get_doc_response.found.name, reference_map)
-        data = _helpers.decode_dict(get_doc_response.found.fields, client)
+        fields = get_doc_response.found.fields
+        data = _helpers.decode_dict(fields, client)
         snapshot = DocumentSnapshot(
             reference,
             data,
@@ -618,6 +621,7 @@ def _parse_batch_get(
             read_time=get_doc_response.read_time,
             create_time=get_doc_response.found.create_time,
             update_time=get_doc_response.found.update_time,
+            raw_fields=fields,
         )
     elif result_type == "missing":
         reference = _get_reference(get_doc_response.missing, reference_map)

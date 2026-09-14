@@ -103,3 +103,53 @@ def test_pymongo_document_writes(client, cleanup, database):
 
     snapshot = doc_ref.get()
     assert snapshot.exists
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_document_writes_and_reads(client, cleanup, database):
+    """Test standard write and read operations for BSON types on Enterprise DB."""
+    collection_id = "bson_docs_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("bson_doc")
+    cleanup(doc_ref.delete)
+
+    bson_payload = {
+        "_id": BSONObjectID("507f191e810c19729de860ea"),
+        "price": BSONDecimal128("199.99"),
+        "qty": BSONInt32(50),
+        "pattern": BSONRegex(pattern="^prod.*", flags="i"),
+        "ts": BSONTimestamp(seconds=1710000000, increment=2),
+        "binary_data": BSONBinary(sub_type=1, data=b"binary_payload"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
+    }
+
+    doc_ref.set(bson_payload)
+
+    snapshot = doc_ref.get(decode_bson=True)
+    assert snapshot.exists
+    assert snapshot.to_dict(decode_bson=True) == bson_payload
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_bson_document_writes_and_reads_async(client, cleanup, database):
+    """Test async write and read operations for BSON types on Enterprise DB."""
+    collection_id = "bson_docs_async_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("bson_doc")
+    cleanup(doc_ref.delete)
+
+    bson_payload = {
+        "_id": BSONObjectID("507f191e810c19729de860ea"),
+        "price": BSONDecimal128("299.99"),
+        "qty": BSONInt32(100),
+        "pattern": BSONRegex(pattern="^async.*", flags="m"),
+        "ts": BSONTimestamp(seconds=1720000000, increment=1),
+        "binary_data": BSONBinary(sub_type=1, data=b"async_binary_payload"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
+    }
+
+    await doc_ref.set(bson_payload)
+
+    snapshot = await doc_ref.get(decode_bson=True)
+    assert snapshot.exists
+    assert snapshot.to_dict(decode_bson=True) == bson_payload

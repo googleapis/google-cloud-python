@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import collections.abc
 import datetime
 import json
 import re
@@ -48,8 +49,12 @@ from google.cloud.firestore_v1 import transforms, types
 from google.cloud.firestore_v1.bson import (
     BSONBinary,
     BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
     BSONObjectID,
     BSONRegex,
+    BSONTimestamp,
     BSONType,
 )
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
@@ -453,7 +458,100 @@ def decode_value(
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client) -> Union[dict, Vector]:
+def _parse_oid(val: Any) -> BSONObjectID:
+    if not isinstance(val, str):
+        raise ValueError(f"Invalid BSONObjectID map value, expected str: {val!r}")
+    return BSONObjectID(val)
+
+
+def _parse_decimal128(val: Any) -> BSONDecimal128:
+    if not isinstance(val, str):
+        raise ValueError(f"Invalid BSONDecimal128 map value, expected str: {val!r}")
+    return BSONDecimal128(val)
+
+
+def _parse_int32(val: Any) -> BSONInt32:
+    if type(val) is not int or isinstance(val, bool):
+        raise ValueError(f"Invalid BSONInt32 map value, expected int: {val!r}")
+    return BSONInt32(val)
+
+
+def _parse_minkey(val: Any) -> BSONMinKey:
+    if type(val) is not int or isinstance(val, bool):
+        raise ValueError(f"Invalid BSONMinKey map value, expected int: {val!r}")
+    return BSONMinKey()
+
+
+def _parse_maxkey(val: Any) -> BSONMaxKey:
+    if type(val) is not int or isinstance(val, bool):
+        raise ValueError(f"Invalid BSONMaxKey map value, expected int: {val!r}")
+    return BSONMaxKey()
+
+
+def _parse_timestamp(val: Any) -> BSONTimestamp:
+    if not isinstance(val, collections.abc.Mapping):
+        raise ValueError(f"Invalid BSONTimestamp map value, expected mapping: {val!r}")
+    sec = val.get("seconds")
+    inc = val.get("increment")
+    if (
+        type(sec) is not int
+        or type(inc) is not int
+        or isinstance(sec, bool)
+        or isinstance(inc, bool)
+        or len(val) != 2
+    ):
+        raise ValueError(f"Invalid BSONTimestamp fields: {val!r}")
+    return BSONTimestamp(sec, inc)
+
+
+def _parse_regex(val: Any) -> BSONRegex:
+    if not isinstance(val, collections.abc.Mapping):
+        raise ValueError(f"Invalid BSONRegex map value, expected mapping: {val!r}")
+    pat = val.get("pattern")
+    opt = val.get("options", "")
+    if not isinstance(pat, str) or not isinstance(opt, str) or len(val) not in (1, 2):
+        raise ValueError(f"Invalid BSONRegex fields: {val!r}")
+    return BSONRegex(pat, opt)
+
+
+def _parse_binary(val: Any) -> BSONBinary:
+    if not isinstance(val, collections.abc.Mapping):
+        raise ValueError(f"Invalid BSONBinary map value, expected mapping: {val!r}")
+    sub = val.get("sub_type")
+    bdata = val.get("bytes")
+    if (
+        type(sub) is not int
+        or isinstance(sub, bool)
+        or not isinstance(bdata, (bytes, bytearray, memoryview))
+        or len(val) != 2
+    ):
+        raise ValueError(f"Invalid BSONBinary fields: {val!r}")
+    return BSONBinary(bdata, subtype=sub)
+
+
+_BSON_MAP_PARSERS = {
+    "__oid__": _parse_oid,
+    "__decimal128__": _parse_decimal128,
+    "__int__": _parse_int32,
+    "__minkey__": _parse_minkey,
+    "__maxkey__": _parse_maxkey,
+    "__timestamp__": _parse_timestamp,
+    "__regex__": _parse_regex,
+    "__binary__": _parse_binary,
+}
+
+
+def _parse_bson_mapping(key: str, val: Any) -> Optional[Any]:
+    """Converts legacy BSON map value representations to native BSON instances."""
+    parser = _BSON_MAP_PARSERS.get(key)
+    if parser is not None:
+        return parser(val)
+    return None
+
+
+def decode_dict(
+    value_fields, client, decode_bson: Optional[bool] = None
+) -> Union[dict, Vector]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -461,20 +559,28 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
             protobuf map of Firestore ``Value``-s.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
+        decode_bson (Optional[bool]): Flag indicating whether to decode BSON map representations.
 
     Returns:
-        Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
-        of native Python values converted from the ``value_fields``.
+        Dict[str, Any]: A dictionary converted from ``value_fields``.
     """
+    effective_decode = (
+        decode_bson
+        if decode_bson is not None
+        else getattr(client, "decode_bson", False)
+    )
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
     res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
 
     if res.get("__type__", None) == "__vector__":
-        # Vector data type is represented as mapping.
-        # {"__type__":"__vector__", "value": [1.0, 2.0, 3.0]}.
         values = cast(Sequence[float], res["value"])
         return Vector(values)
+
+    if effective_decode and len(res) == 1:
+        single_key = next(iter(res))
+        parsed = _parse_bson_mapping(single_key, res[single_key])
+        if parsed is not None:
+            return parsed
 
     return res
 

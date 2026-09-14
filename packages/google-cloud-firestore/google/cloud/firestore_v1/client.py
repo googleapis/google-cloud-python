@@ -94,6 +94,7 @@ class Client(BaseClient):
         database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
+        decode_bson: bool = False,
     ) -> None:
         super(Client, self).__init__(
             project=project,
@@ -101,6 +102,7 @@ class Client(BaseClient):
             database=database,
             client_info=client_info,
             client_options=client_options,
+            decode_bson=decode_bson,
         )
 
     @property

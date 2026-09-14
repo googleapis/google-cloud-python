@@ -393,6 +393,20 @@ def test_encode_value_duck_typed_pymongo():
     )
 
 
+def test_decode_dict_malformed_bson_raises():
+    import pytest
+
+    from google.cloud.firestore_v1._helpers import decode_dict
+    from google.cloud.firestore_v1.types import document
+
+    # Invalid payload schema raises ValueError when decode_bson=True
+    malformed = {
+        "__oid__": document.Value(integer_value=12345)
+    }  # should be string_value
+    with pytest.raises(ValueError, match="Invalid BSONObjectID map value"):
+        decode_dict(malformed, client=None, decode_bson=True)
+
+
 def test_reference_value_to_document_w_bad_format():
     from google.cloud.firestore_v1._helpers import (
         BAD_REFERENCE_ERROR,
