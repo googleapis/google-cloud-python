@@ -65,7 +65,7 @@ class ResumableUploadConfig:
         start_retry: Custom retry policy for the start request.
         stall_minimum_rate: Minimum transfer rate in bytes per second. Defaults to 64 KiB/s.
         stall_timeout: Stall duration threshold in seconds. Defaults to 120s.
-        additional_headers: Additional HTTP headers dispatched exclusively with start request.
+        headers: Additional HTTP headers dispatched exclusively with start request.
         deadline: Overall global deadline for the upload process.
         timeout: Fallback per-request timeout.
         retry: Fallback retry policy.
@@ -80,7 +80,7 @@ class ResumableUploadConfig:
     start_retry: Optional[google.api_core.retry.Retry] = None
     stall_minimum_rate: int = 64 * 1024
     stall_timeout: float = 120.0
-    additional_headers: Optional[
+    headers: Optional[
         Union[Mapping[str, str], Sequence[Tuple[str, str]]]
     ] = None
     deadline: Optional[datetime.datetime] = None
@@ -105,11 +105,11 @@ class ResumableUploadConfig:
     @property
     def start_headers(self) -> Optional[Sequence[Tuple[str, str]]]:
         """Returns normalized additional headers for the start request."""
-        if self.additional_headers is None:
+        if self.headers is None:
             return None
-        if isinstance(self.additional_headers, Mapping):
-            return list(self.additional_headers.items())
-        return list(self.additional_headers)
+        if isinstance(self.headers, Mapping):
+            return list(self.headers.items())
+        return list(self.headers)
 
 
 class ResumableUploadSession:

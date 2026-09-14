@@ -254,7 +254,7 @@ def test_resumable_upload_config_defaults():
     assert config.stall_timeout == 120.0
     assert config.start_timeout is None
     assert config.start_retry is None
-    assert config.additional_headers is None
+    assert config.headers is None
     assert config.deadline is None
 
 
@@ -263,7 +263,7 @@ def test_resumable_upload_config_fallbacks_and_headers():
     config1 = ResumableUploadConfig(
         start_timeout=45.0,
         retry=retry1,
-        additional_headers={"X-Test": "1"},
+        headers={"X-Test": "1"},
     )
     assert config1.timeout == 45.0
     assert config1.start_timeout == 45.0
@@ -275,7 +275,7 @@ def test_resumable_upload_config_fallbacks_and_headers():
     config2 = ResumableUploadConfig(
         timeout=30.0,
         start_retry=retry2,
-        additional_headers=[("X-Test", "2")],
+        headers=[("X-Test", "2")],
     )
     assert config2.timeout == 30.0
     assert config2.start_timeout == 30.0
