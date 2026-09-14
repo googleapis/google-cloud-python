@@ -14,6 +14,7 @@
 
 """Asynchronous tests for Resumable Upload protocol implementation."""
 
+import asyncio
 import datetime
 import io
 import json
