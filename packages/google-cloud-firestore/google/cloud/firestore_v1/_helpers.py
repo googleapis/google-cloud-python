@@ -225,6 +225,18 @@ def encode_value(value: Any) -> document.Value:
         options_str = _extract_regex_options(flags_attr)
         return encode_value(BSONRegex(pattern_attr, options_str))
 
+    # Duck-typing input bridge for external PyMongo / bson package objects (zero dependency)
+    if hasattr(value, "binary") and not isinstance(
+        value, (bytes, bytearray, BSONBinary)
+    ):
+        return encode_value(BSONObjectID(getattr(value, "binary")))
+    elif hasattr(value, "to_decimal") and not isinstance(value, BSONDecimal128):
+        return encode_value(BSONDecimal128(getattr(value, "to_decimal")()))
+    elif hasattr(value, "pattern") and not isinstance(value, (str, BSONRegex)):
+        return encode_value(
+            BSONRegex(getattr(value, "pattern"), str(getattr(value, "flags", "")))
+        )
+
     # Must come before int since ``bool`` is an integer subtype.
     if isinstance(value, bool):
         return document.Value(boolean_value=value)
