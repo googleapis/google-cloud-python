@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import unittest
+from unittest import mock
 
 from google.cloud.spanner_v1.omni import opaque
 from google.cloud.spanner_v1.omni.proto import authentication_pb2, login_pb2
@@ -1072,6 +1073,35 @@ class TestOpaqueCrypto(unittest.TestCase):
             with self.assertRaises(ValueError) as cm:
                 auth_short.final_request(resp_short)
             self.assertIn("Invalid serialized envelope length", str(cm.exception))
+
+    def test_missing_cryptography_dependency(self):
+        import importlib
+        import sys
+
+        with mock.patch.dict(
+            sys.modules,
+            {
+                "cryptography": None,
+                "cryptography.hazmat": None,
+                "cryptography.hazmat.primitives": None,
+                "cryptography.hazmat.primitives.kdf": None,
+                "cryptography.hazmat.primitives.kdf.argon2": None,
+                "cryptography.hazmat.primitives.kdf.hkdf": None,
+            },
+        ):
+            with self.assertRaises(ImportError) as cm:
+                importlib.reload(opaque)
+            self.assertIn(
+                "The 'cryptography' package is required for Spanner Omni authentication",
+                str(cm.exception),
+            )
+            self.assertIn(
+                "pip install google-cloud-spanner[omni]",
+                str(cm.exception),
+            )
+
+        # Reload opaque cleanly
+        importlib.reload(opaque)
 
 
 if __name__ == "__main__":

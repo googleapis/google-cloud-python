@@ -23,9 +23,15 @@ import hmac
 import secrets
 from typing import Optional, Tuple
 
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
-from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+try:
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
+    from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+except ImportError as err:
+    raise ImportError(
+        "The 'cryptography' package is required for Spanner Omni authentication. "
+        "Please install it with 'pip install google-cloud-spanner[omni]'."
+    ) from err
 
 from google.cloud.spanner_v1.omni.proto import login_pb2
 

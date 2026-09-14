@@ -995,6 +995,7 @@ def connect(
                     import copy
 
                     client_options = copy.copy(client_options)
+                    client_options.api_endpoint = host_endpoint
             client = spanner.Client(
                 project=project,
                 credentials=credentials,

@@ -277,6 +277,16 @@ class Test_connect(unittest.TestCase):
             client_options=opts_with_ep,
         )
 
+        # client_options is ClientOptions object without api_endpoint (using experimental_host)
+        opts_empty_ep = ClientOptions()
+        connect(
+            INSTANCE,
+            DATABASE,
+            instance_type="omni",
+            experimental_host="omni-host:15000",
+            client_options=opts_empty_ep,
+        )
+
         # Missing host when instance_type='omni' raises ValueError
         with self.assertRaises(ValueError) as ctx:
             connect(
