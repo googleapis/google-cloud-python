@@ -49,6 +49,17 @@ from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
 from google.cloud.firestore_v1.vector import Vector
 
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
+
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1 import DocumentSnapshot
 
@@ -218,7 +229,7 @@ def encode_value(value) -> types.document.Value:
         value_pb = document.ArrayValue(values=value_list)
         return document.Value(array_value=value_pb)
 
-    if isinstance(value, Vector):
+    if hasattr(value, "to_map_value") and callable(getattr(value, "to_map_value")):
         return encode_value(value.to_map_value())
 
     if isinstance(value, dict):
@@ -415,11 +426,33 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
     res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
 
-    if res.get("__type__", None) == "__vector__":
+    type_tag = res.get("__type__", None)
+    if type_tag == "__vector__":
         # Vector data type is represented as mapping.
         # {"__type__":"__vector__", "value": [1.0, 2.0, 3.0]}.
         values = cast(Sequence[float], res["value"])
         return Vector(values)
+    elif "__oid__" in res:
+        return BSONObjectID(res["__oid__"])
+    elif "__decimal128__" in res:
+        return BSONDecimal128(res["__decimal128__"])
+    elif "__int__" in res:
+        return BSONInt32(res["__int__"])
+    elif "__regex__" in res:
+        val = res["__regex__"]
+        return BSONRegex(pattern=val["pattern"], flags=val.get("options", ""))
+    elif "__request_timestamp__" in res:
+        val = res["__request_timestamp__"]
+        return BSONTimestamp(seconds=val["seconds"], increment=val["increment"])
+    elif "__binary__" in res:
+        raw = res["__binary__"]
+        if isinstance(raw, bytes) and len(raw) > 0:
+            return BSONBinary(sub_type=raw[0], data=raw[1:])
+        return BSONBinary(sub_type=0, data=b"")
+    elif "__min__" in res:
+        return BSONMinKey()
+    elif "__max__" in res:
+        return BSONMaxKey()
 
     return res
 

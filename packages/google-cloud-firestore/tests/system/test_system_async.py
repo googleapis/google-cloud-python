@@ -33,6 +33,16 @@ from google.api_core.exceptions import (
 )
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.oauth2 import service_account
+from google.cloud.firestore import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
 from test__helpers import (
     EMULATOR_CREDS,
     ENTERPRISE_MODE_ERROR,
@@ -3746,3 +3756,29 @@ async def test_large_document_pipeline_async(client, cleanup, database, method):
         results = [doc async for doc in pipeline.stream()]
 
     assert [doc.data() for doc in results] == [{"payload": large_payload}]
+
+
+# @pytest.mark.skip(reason="Temporarily skipped. Requires backend BSON / MongoDB feature flag.")
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_bson_document_writes_and_reads_async(client, cleanup, database):
+    """Test async write and read operations for BSON types on Enterprise DB."""
+    collection_id = "bson_docs_async_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("bson_doc")
+    cleanup(doc_ref.delete)
+
+    bson_payload = {
+        "_id": BSONObjectID("507f191e810c19729de860ea"),
+        "price": BSONDecimal128("299.99"),
+        "qty": BSONInt32(100),
+        "pattern": BSONRegex(pattern="^async.*", flags="m"),
+        "ts": BSONTimestamp(seconds=1720000000, increment=1),
+        "binary_data": BSONBinary(sub_type=1, data=b"async_binary_payload"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
+    }
+
+    await doc_ref.set(bson_payload)
+
+    snapshot = await doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == bson_payload
