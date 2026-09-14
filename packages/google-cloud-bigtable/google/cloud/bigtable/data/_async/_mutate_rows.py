@@ -14,6 +14,7 @@
 #
 from __future__ import annotations
 
+import functools
 from typing import TYPE_CHECKING, Sequence
 
 from google.api_core import exceptions as core_exceptions
@@ -85,6 +86,7 @@ class _MutateRowsOperationAsync:
         attempt_timeout: float | None,
         metric: ActiveOperationMetric,
         retryable_exceptions: Sequence[type[Exception]] = (),
+        metadata: Sequence[tuple[str, str]] = (),
     ):
         # check that mutations are within limits
         total_mutations = sum(len(entry.mutations) for entry in mutation_entries)
@@ -95,7 +97,7 @@ class _MutateRowsOperationAsync:
                 f"all entries. Found {total_mutations}."
             )
         self._target = target
-        self._gapic_fn = gapic_client.mutate_rows
+        self._gapic_fn = functools.partial(gapic_client.mutate_rows, metadata=metadata)
         # create predicate for determining which errors are retryable
         self.is_retryable = retries.if_exception_type(
             # RPC level errors

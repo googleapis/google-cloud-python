@@ -24,6 +24,8 @@ import warnings
 from collections import deque
 from typing import TYPE_CHECKING, Sequence, cast
 
+from google.cloud.bigtable.gapic_version import __version__ as _bigtable_version
+
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
@@ -364,6 +366,9 @@ class MutationsBatcher:
                 attempt_timeout=self._attempt_timeout,
                 metric=metric,
                 retryable_exceptions=self._retryable_errors,
+                metadata=[
+                    ("x-goog-api-client", f"bigtable-batcher/{_bigtable_version}")
+                ],
             )
             operation.start()
         except MutationsExceptionGroup as e:

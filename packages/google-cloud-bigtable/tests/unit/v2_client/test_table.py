@@ -838,6 +838,7 @@ def _table_mutate_rows_helper(
         operation_timeout=expected_operation_timeout,
         attempt_timeout=expected_attempt_timeout,
         retryable_errors=expected_retryable_errors,
+        metadata=(),
     )
 
     # Check that mutation entries are in order
@@ -1617,6 +1618,28 @@ def test_table_restore_table_w_backup_id():
 
 def test_table_restore_table_w_backup_name():
     _table_restore_helper(backup_name=BACKUP_NAME)
+
+
+def test_table_mutate_rows_no_batcher_header():
+    """Direct table.mutate_rows calls do not add the batcher header."""
+    from google.cloud.bigtable.row import DirectRow
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+
+    row = DirectRow(row_key=b"row_key", table=table)
+    row.set_cell("cf", b"col", b"value")
+
+    with mock.patch.object(table._table_impl, "bulk_mutate_rows"):
+        table.mutate_rows([row], retry=None)
+        _, kwargs = table._table_impl.bulk_mutate_rows.call_args
+        metadata = list(kwargs.get("metadata", []))
+        assert not any(
+            k == "x-goog-api-client" and "bigtable-batcher" in v
+            for k, v in metadata
+        )
 
 
 def test__create_row_request_table_name_only():

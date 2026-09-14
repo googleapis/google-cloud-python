@@ -22,6 +22,8 @@ from dataclasses import dataclass
 
 from google.api_core.exceptions import from_grpc_status
 
+from google.cloud.bigtable.gapic_version import __version__ as _bigtable_version
+
 FLUSH_COUNT = 100  # after this many elements, send out the batch
 
 MAX_MUTATION_SIZE = 20 * 1024 * 1024  # 20MB # after this many bytes, send out the batch
@@ -418,7 +420,10 @@ class MutationsBatcher(object):
         """
         responses = []
         if len(rows_to_flush) > 0:
-            response = self.table.mutate_rows(rows_to_flush)
+            response = self.table.mutate_rows(
+                rows_to_flush,
+                metadata=[("x-goog-api-client", f"bigtable-batcher/{_bigtable_version}")],
+            )
 
             if self._user_batch_completed_callback:
                 self._user_batch_completed_callback(response)

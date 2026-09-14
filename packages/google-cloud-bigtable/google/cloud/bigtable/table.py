@@ -699,7 +699,7 @@ class Table(object):
         )
         return self.read_rows(**kwargs)
 
-    def mutate_rows(self, rows, retry=DEFAULT_RETRY, timeout=DEFAULT):
+    def mutate_rows(self, rows, retry=DEFAULT_RETRY, timeout=DEFAULT, metadata=()):
         """Mutates multiple rows in bulk.
 
         For example:
@@ -788,6 +788,7 @@ class Table(object):
                 operation_timeout=operation_timeout,
                 attempt_timeout=attempt_timeout,
                 retryable_errors=retryable_errors,
+                metadata=metadata,
             )
         except MutationsExceptionGroup as mut_exc_group:
             # We exception handle as follows:
@@ -1157,7 +1158,6 @@ class Table(object):
                 "backup": backup_name,
             }
         )
-
 
 class ClusterState(object):
     """Representation of a Cluster State.

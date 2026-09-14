@@ -836,6 +836,29 @@ class TestMutationsBatcher:
                 assert kwargs["metric"] == expected_metric
                 assert result == []
 
+    def test__execute_mutate_rows_passes_batcher_metadata(self):
+        """_execute_mutate_rows constructs _MutateRowsOperation with the batcher version header."""
+        from google.cloud.bigtable.gapic_version import __version__ as _bigtable_version
+
+        with mock.patch.object(
+            CrossSync._Sync_Impl, "_MutateRowsOperation"
+        ) as mock_op_cls:
+            mock_op_cls.return_value = CrossSync.Mock()
+            mock_op_cls.return_value.start = CrossSync.Mock(return_value=None)
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 10
+            table.default_mutate_rows_attempt_timeout = 8
+            table.default_mutate_rows_retryable_errors = ()
+            with self._make_one(table) as instance:
+                instance._execute_mutate_rows([self._make_mutation()], mock.Mock())
+                _, kwargs = mock_op_cls.call_args
+                metadata = list(kwargs.get("metadata", []))
+                assert any(
+                    k == "x-goog-api-client"
+                    and v == f"bigtable-batcher/{_bigtable_version}"
+                    for k, v in metadata
+                )
+
     def test__execute_mutate_rows_returns_errors(self):
         """Errors from operation should be retruned as list"""
         from google.cloud.bigtable.data.exceptions import (

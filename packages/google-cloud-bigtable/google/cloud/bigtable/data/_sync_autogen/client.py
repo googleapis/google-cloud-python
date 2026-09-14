@@ -1431,6 +1431,7 @@ class _DataApiTarget(abc.ABC):
         attempt_timeout: float | None | TABLE_DEFAULT = TABLE_DEFAULT.MUTATE_ROWS,
         retryable_errors: Sequence[type[Exception]]
         | TABLE_DEFAULT = TABLE_DEFAULT.MUTATE_ROWS,
+        metadata: Sequence[tuple[str, str]] = (),
     ):
         """Applies mutations for multiple rows in a single batched request.
 
@@ -1473,6 +1474,7 @@ class _DataApiTarget(abc.ABC):
             attempt_timeout,
             metric=self._create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
+            metadata=metadata,
         )
         operation.start()
 

@@ -331,6 +331,25 @@ def test_flush_async_batch_count(mocked_executor_submit):
     assert mocked_executor_submit.call_count == 3
 
 
+def test_flush_rows_passes_batcher_header():
+    """_flush_rows calls table.mutate_rows with the batcher version header."""
+    from google.cloud.bigtable.gapic_version import __version__ as _bigtable_version
+
+    table = _Table(TABLE_NAME)
+    with MutationsBatcher(table=table) as batcher:
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", 1)
+        batcher.mutate(row)
+
+    assert table.mutation_calls == 1
+    metadata = table.last_mutate_rows_kwargs.get("metadata", [])
+    assert any(
+        k == "x-goog-api-client" and v == f"bigtable-batcher/{_bigtable_version}"
+        for k, v in metadata
+    )
+
+
+
 class _Instance(object):
     def __init__(self, client=None):
         self._client = client
@@ -341,10 +360,12 @@ class _Table(object):
         self.name = name
         self._instance = _Instance(client)
         self.mutation_calls = 0
+        self.last_mutate_rows_kwargs = {}
 
-    def mutate_rows(self, rows):
+    def mutate_rows(self, rows, **kwargs):
         from google.rpc.status_pb2 import Status
 
         self.mutation_calls += 1
+        self.last_mutate_rows_kwargs = kwargs
 
         return [Status(code=0) for _ in rows]
