@@ -1184,3 +1184,126 @@ class TestSessionsMtls:
                 mock_resp_401.close.assert_called_once()
 
         await session.close()
+
+    @pytest.mark.asyncio
+    async def test_credential_refresh_not_implemented_no_retry_on_non_mtls(self):
+        """Validate credentials raising NotImplementedError on refresh do NOT
+        retry when the request is on a non-mTLS endpoint."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+
+        resp = await session.request("GET", "https://pubsub.googleapis.com/test")
+
+        assert resp == mock_resp_401
+        assert mock_auth_req.call_count == 1
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_credential_refresh_not_implemented_no_retry_when_cert_not_rotated(
+        self,
+    ):
+        """Validate credentials raising NotImplementedError on refresh do NOT
+        retry when the mTLS certificate has not rotated."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_resp_401.close = mock.AsyncMock()
+
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"current_cert"
+
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+        ) as mock_check:
+            mock_check.return_value = (
+                b"current_cert",
+                b"current_key",
+                b"same_fp",
+                b"same_fp",
+            )
+
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+
+            assert resp == mock_resp_401
+            assert mock_auth_req.call_count == 1
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_credential_refresh_not_implemented_concurrent_rotation_retries(
+        self,
+    ):
+        """Validate that concurrent requests hitting 401 during rotation both retry
+        and succeed when credentials raise NotImplementedError."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(side_effect=NotImplementedError)
+
+        mock_resp_401_a = mock.Mock(
+            status_code=http_client.UNAUTHORIZED, close=mock.AsyncMock()
+        )
+        mock_resp_401_b = mock.Mock(
+            status_code=http_client.UNAUTHORIZED, close=mock.AsyncMock()
+        )
+        mock_resp_200_a = mock.Mock(status_code=http_client.OK, close=mock.AsyncMock())
+        mock_resp_200_b = mock.Mock(status_code=http_client.OK, close=mock.AsyncMock())
+
+        mock_auth_req = mock.AsyncMock(
+            side_effect=[
+                mock_resp_401_a,
+                mock_resp_401_b,
+                mock_resp_200_a,
+                mock_resp_200_b,
+            ]
+        )
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with mock.patch(
+            "google.auth.aio.transport.mtls.check_parameters_for_unauthorized_response",
+            new_callable=mock.AsyncMock,
+        ) as mock_check:
+            with mock.patch.object(
+                session, "configure_mtls_channel", new_callable=mock.AsyncMock
+            ):
+                mock_check.return_value = (
+                    b"new_cert",
+                    b"new_key",
+                    b"old_fp",
+                    b"new_fp",
+                )
+
+                resps = await asyncio.gather(
+                    session.request("GET", "https://pubsub.mtls.googleapis.com/test"),
+                    session.request("GET", "https://pubsub.mtls.googleapis.com/test"),
+                )
+                assert resps == [mock_resp_200_a, mock_resp_200_b]
+                assert mock_auth_req.call_count == 4
+
+        await session.close()

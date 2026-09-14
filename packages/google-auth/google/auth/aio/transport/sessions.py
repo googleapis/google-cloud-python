@@ -165,6 +165,7 @@ class AsyncAuthorizedSession:
         self._auth_request = _auth_request
         self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
+        self._mtls_reconfig_counter = 0
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
 
@@ -326,6 +327,7 @@ class AsyncAuthorizedSession:
         start_time = time.monotonic()
         refresh_counter_at_error = self._refresh_counter
         check_counter_at_error = self._mtls_check_counter
+        reconfig_counter_at_error = self._mtls_reconfig_counter
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -444,6 +446,7 @@ class AsyncAuthorizedSession:
                                                             call_key_bytes,
                                                         )
                                                     )
+                                                    self._mtls_reconfig_counter += 1
                                                 except Exception as e:
                                                     _LOGGER.error(
                                                         "Failed to reconfigure mTLS channel: %s",
@@ -485,6 +488,11 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
+                                    if (
+                                        self._mtls_reconfig_counter
+                                        <= reconfig_counter_at_error
+                                    ):
+                                        return response
                                 except (
                                     exceptions.RefreshError,
                                     getattr(exceptions, "InvalidOperation", Exception),
