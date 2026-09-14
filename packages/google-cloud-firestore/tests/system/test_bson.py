@@ -27,6 +27,7 @@ from google.cloud.firestore import (
     BSONRegex,
     BSONTimestamp,
     Increment,
+    Query,
 )
 
 
@@ -153,3 +154,22 @@ async def test_bson_document_writes_and_reads_async(client, cleanup, database):
     snapshot = await doc_ref.get(decode_bson=True)
     assert snapshot.exists
     assert snapshot.to_dict(decode_bson=True) == bson_payload
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_query_ordering(client, cleanup, database):
+    """Test backend query ordering over BSON fields on Enterprise DB."""
+    collection_id = "bson_query_ord_" + UNIQUE_RESOURCE_ID
+    col_ref = client.collection(collection_id)
+
+    doc1 = col_ref.document("doc1")
+    doc2 = col_ref.document("doc2")
+    cleanup(doc1.delete)
+    cleanup(doc2.delete)
+
+    doc1.set({"qty": BSONInt32(10)})
+    doc2.set({"qty": BSONInt32(50)})
+
+    query = col_ref.order_by("qty", direction=Query.ASCENDING)
+    results = [doc.to_dict(decode_bson=True)["qty"] for doc in query.stream()]
+    assert results == [BSONInt32(10), BSONInt32(50)]

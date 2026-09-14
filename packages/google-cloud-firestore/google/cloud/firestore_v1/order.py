@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2017 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,243 +13,449 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Order semantics for Firestore types matching backend database indexes."""
+
+from __future__ import annotations
+
+import collections.abc
+import datetime
+import decimal
 import math
 from enum import Enum
-from typing import Any
+from typing import Any, Tuple
 
-from google.cloud.firestore_v1._helpers import GeoPoint, decode_value
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
+from google.cloud.firestore_v1._helpers import GeoPoint, decode_dict
+from google.cloud.firestore_v1.base_document import BaseDocumentReference
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
+from google.cloud.firestore_v1.vector import Vector
+
+
+class _RefValue:
+    """Internal wrapper for DocumentReference path comparison."""
+
+    def __init__(self, value: str):
+        self.value = value
+
+
+def _extract_canonical_value(val: Any) -> Any:
+    """Extract canonical native Python representation from protobuf or BSON objects."""
+    if val is None or isinstance(
+        val,
+        (
+            bool,
+            BSONMinKey,
+            BSONMaxKey,
+            BSONObjectID,
+            BSONDecimal128,
+            BSONTimestamp,
+            BSONRegex,
+            BSONBinary,
+            BSONInt32,
+            GeoPoint,
+            Vector,
+            _RefValue,
+            BaseDocumentReference,
+        ),
+    ):
+        return val
+
+    # Handle protobuf Value message
+    if hasattr(val, "_pb") or hasattr(val, "WhichOneof"):
+        value_pb = getattr(val, "_pb", val)
+        vtype = value_pb.WhichOneof("value_type")
+        if vtype == "null_value":
+            return None
+        elif vtype == "boolean_value":
+            return value_pb.boolean_value
+        elif vtype == "integer_value":
+            return value_pb.integer_value
+        elif vtype == "double_value":
+            return value_pb.double_value
+        elif vtype == "timestamp_value":
+            return DatetimeWithNanoseconds.from_timestamp_pb(value_pb.timestamp_value)
+        elif vtype == "string_value":
+            return value_pb.string_value
+        elif vtype == "bytes_value":
+            return value_pb.bytes_value
+        elif vtype == "reference_value":
+            return _RefValue(value_pb.reference_value)
+        elif vtype == "geo_point_value":
+            return GeoPoint(
+                value_pb.geo_point_value.latitude, value_pb.geo_point_value.longitude
+            )
+        elif vtype == "array_value":
+            return [_extract_canonical_value(x) for x in value_pb.array_value.values]
+        elif vtype == "map_value":
+            decoded = decode_dict(
+                value_pb.map_value.fields, client=None, decode_bson=True
+            )
+            return _extract_canonical_value(decoded)
+
+    # Handle legacy map dictionary with single key signature
+    if isinstance(val, dict) and len(val) == 1:
+        key = next(iter(val))
+        if key in (
+            "__oid__",
+            "__decimal128__",
+            "__int__",
+            "__minkey__",
+            "__maxkey__",
+            "__timestamp__",
+            "__regex__",
+            "__binary__",
+        ):
+            v = val[key]
+            if key == "__oid__" and isinstance(v, str):
+                return BSONObjectID(v)
+            elif key == "__decimal128__" and isinstance(v, str):
+                return BSONDecimal128(v)
+            elif key == "__int__" and isinstance(v, int):
+                return BSONInt32(v)
+            elif key == "__minkey__":
+                return BSONMinKey()
+            elif key == "__maxkey__":
+                return BSONMaxKey()
+            elif key == "__timestamp__" and isinstance(
+                v, (dict, collections.abc.Mapping)
+            ):
+                return BSONTimestamp(v.get("seconds", 0), v.get("increment", 0))
+            elif key == "__regex__" and isinstance(v, (dict, collections.abc.Mapping)):
+                return BSONRegex(v.get("pattern", ""), v.get("options", ""))
+            elif key == "__binary__" and isinstance(v, (dict, collections.abc.Mapping)):
+                return BSONBinary(v.get("bytes", b""), subtype=v.get("sub_type", 0))
+            else:
+                try:
+                    decoded = decode_dict(val, client=None, decode_bson=True)
+                    if not isinstance(decoded, dict):
+                        return _extract_canonical_value(decoded)
+                except Exception:
+                    pass
+
+    if isinstance(val, (list, tuple)):
+        return [_extract_canonical_value(x) for x in val]
+
+    if isinstance(val, dict):
+        return {k: _extract_canonical_value(v) for k, v in val.items()}
+
+    return val
 
 
 class TypeOrder(Enum):
-    """The supported Data Type.
+    """The 17-rank BSON and Firestore data type priority order."""
 
-    Note: The Enum value does not imply the sort order.
-    """
-
-    NULL = 0
-    BOOLEAN = 1
-    NUMBER = 2
-    TIMESTAMP = 3
-    STRING = 4
-    BLOB = 5
-    REF = 6
-    GEO_POINT = 7
-    ARRAY = 8
-    OBJECT = 9
-    VECTOR = 10
+    MIN_KEY = 1
+    NULL = 2
+    BOOLEAN = 3
+    NUMBER = 4
+    TIMESTAMP = 5
+    BSON_TIMESTAMP = 6
+    STRING = 7
+    BLOB = 8
+    BSON_BINARY = 9
+    REF = 10
+    BSON_OBJECT_ID = 11
+    GEO_POINT = 12
+    BSON_REGEX = 13
+    ARRAY = 14
+    VECTOR = 15
+    OBJECT = 16
+    MAX_KEY = 17
 
     @staticmethod
-    def from_value(value) -> Any:
-        v = value._pb.WhichOneof("value_type")
-        lut = {
-            "null_value": TypeOrder.NULL,
-            "boolean_value": TypeOrder.BOOLEAN,
-            "integer_value": TypeOrder.NUMBER,
-            "double_value": TypeOrder.NUMBER,
-            "timestamp_value": TypeOrder.TIMESTAMP,
-            "string_value": TypeOrder.STRING,
-            "bytes_value": TypeOrder.BLOB,
-            "reference_value": TypeOrder.REF,
-            "geo_point_value": TypeOrder.GEO_POINT,
-            "array_value": TypeOrder.ARRAY,
-            "map_value": TypeOrder.OBJECT,
-        }
+    def from_value(value) -> TypeOrder:
+        cval = _extract_canonical_value(value)
+        if isinstance(cval, BSONMinKey):
+            return TypeOrder.MIN_KEY
+        if cval is None:
+            return TypeOrder.NULL
+        if isinstance(cval, bool):
+            return TypeOrder.BOOLEAN
+        if isinstance(cval, (int, float, BSONInt32, BSONDecimal128)):
+            return TypeOrder.NUMBER
+        if isinstance(cval, (datetime.datetime, DatetimeWithNanoseconds)):
+            return TypeOrder.TIMESTAMP
+        if isinstance(cval, BSONTimestamp):
+            return TypeOrder.BSON_TIMESTAMP
+        if isinstance(cval, str):
+            return TypeOrder.STRING
+        if isinstance(cval, bytes):
+            return TypeOrder.BLOB
+        if isinstance(cval, BSONBinary):
+            return TypeOrder.BSON_BINARY
+        if isinstance(cval, (_RefValue, BaseDocumentReference)):
+            return TypeOrder.REF
+        if isinstance(cval, BSONObjectID):
+            return TypeOrder.BSON_OBJECT_ID
+        if isinstance(cval, GeoPoint):
+            return TypeOrder.GEO_POINT
+        if isinstance(cval, BSONRegex):
+            return TypeOrder.BSON_REGEX
+        if isinstance(cval, (list, tuple)):
+            return TypeOrder.ARRAY
+        if isinstance(cval, Vector):
+            return TypeOrder.VECTOR
+        if isinstance(cval, (dict, collections.abc.Mapping)):
+            return TypeOrder.OBJECT
+        if isinstance(cval, BSONMaxKey):
+            return TypeOrder.MAX_KEY
 
-        if v not in lut:
-            raise ValueError(f"Could not detect value type for {v}")
-
-        if v == "map_value":
-            if (
-                "__type__" in value.map_value.fields
-                and value.map_value.fields["__type__"].string_value == "__vector__"
-            ):
-                return TypeOrder.VECTOR
-        return lut[v]
+        raise ValueError(f"Could not detect value type for {cval!r}")
 
 
-# NOTE: This order is defined by the backend and cannot be changed.
 _TYPE_ORDER_MAP = {
-    TypeOrder.NULL: 0,
-    TypeOrder.BOOLEAN: 1,
-    TypeOrder.NUMBER: 2,
-    TypeOrder.TIMESTAMP: 3,
-    TypeOrder.STRING: 4,
-    TypeOrder.BLOB: 5,
-    TypeOrder.REF: 6,
-    TypeOrder.GEO_POINT: 7,
-    TypeOrder.ARRAY: 8,
-    TypeOrder.VECTOR: 9,
-    TypeOrder.OBJECT: 10,
+    TypeOrder.MIN_KEY: 1,
+    TypeOrder.NULL: 2,
+    TypeOrder.BOOLEAN: 3,
+    TypeOrder.NUMBER: 4,
+    TypeOrder.TIMESTAMP: 5,
+    TypeOrder.BSON_TIMESTAMP: 6,
+    TypeOrder.STRING: 7,
+    TypeOrder.BLOB: 8,
+    TypeOrder.BSON_BINARY: 9,
+    TypeOrder.REF: 10,
+    TypeOrder.BSON_OBJECT_ID: 11,
+    TypeOrder.GEO_POINT: 12,
+    TypeOrder.BSON_REGEX: 13,
+    TypeOrder.ARRAY: 14,
+    TypeOrder.VECTOR: 15,
+    TypeOrder.OBJECT: 16,
+    TypeOrder.MAX_KEY: 17,
 }
 
 
 class Order(object):
-    """
-    Order implements the ordering semantics of the backend.
-    """
+    """Order implements the ordering semantics of the backend."""
 
     @classmethod
     def compare(cls, left, right) -> int:
-        """
-        Main comparison function for all Firestore types.
-        @return -1 is left < right, 0 if left == right, otherwise 1
-        """
-        # First compare the types.
-        leftType = TypeOrder.from_value(left)
-        rightType = TypeOrder.from_value(right)
-        if leftType != rightType:
-            if _TYPE_ORDER_MAP[leftType] < _TYPE_ORDER_MAP[rightType]:
-                return -1
-            else:
-                return 1
+        left_canon = _extract_canonical_value(left)
+        right_canon = _extract_canonical_value(right)
 
-        if leftType == TypeOrder.NULL:
-            return 0  # nulls are all equal
-        elif leftType == TypeOrder.BOOLEAN:
-            return cls._compare_to(left.boolean_value, right.boolean_value)
-        elif leftType == TypeOrder.NUMBER:
-            return cls.compare_numbers(left, right)
-        elif leftType == TypeOrder.TIMESTAMP:
-            return cls.compare_timestamps(left, right)
-        elif leftType == TypeOrder.STRING:
-            return cls._compare_to(left.string_value, right.string_value)
-        elif leftType == TypeOrder.BLOB:
-            return cls.compare_blobs(left, right)
-        elif leftType == TypeOrder.REF:
-            return cls.compare_resource_paths(left, right)
-        elif leftType == TypeOrder.GEO_POINT:
-            return cls.compare_geo_points(left, right)
-        elif leftType == TypeOrder.ARRAY:
-            return cls.compare_arrays(left, right)
-        elif leftType == TypeOrder.VECTOR:
-            # ARRAYs < VECTORs < MAPs
-            return cls.compare_vectors(left, right)
-        elif leftType == TypeOrder.OBJECT:
-            return cls.compare_objects(left, right)
+        left_type = TypeOrder.from_value(left_canon)
+        right_type = TypeOrder.from_value(right_canon)
+
+        if left_type != right_type:
+            left_rank = _TYPE_ORDER_MAP[left_type]
+            right_rank = _TYPE_ORDER_MAP[right_type]
+            return (left_rank > right_rank) - (left_rank < right_rank)
+
+        if left_type in (TypeOrder.MIN_KEY, TypeOrder.NULL, TypeOrder.MAX_KEY):
+            return 0
+        elif left_type == TypeOrder.BOOLEAN:
+            return cls._compare_to(left_canon, right_canon)
+        elif left_type == TypeOrder.NUMBER:
+            return cls.compare_numbers(left_canon, right_canon)
+        elif left_type == TypeOrder.TIMESTAMP:
+            return cls.compare_timestamps(left_canon, right_canon)
+        elif left_type == TypeOrder.BSON_TIMESTAMP:
+            return cls.compare_bson_timestamps(left_canon, right_canon)
+        elif left_type == TypeOrder.STRING:
+            return cls._compare_to(left_canon, right_canon)
+        elif left_type == TypeOrder.BLOB:
+            return cls._compare_to(left_canon, right_canon)
+        elif left_type == TypeOrder.BSON_BINARY:
+            return cls.compare_bson_binary(left_canon, right_canon)
+        elif left_type == TypeOrder.REF:
+            return cls.compare_resource_paths(left_canon, right_canon)
+        elif left_type == TypeOrder.BSON_OBJECT_ID:
+            return cls._compare_to(left_canon.value, right_canon.value)
+        elif left_type == TypeOrder.GEO_POINT:
+            return cls.compare_geo_points(left_canon, right_canon)
+        elif left_type == TypeOrder.BSON_REGEX:
+            return cls.compare_bson_regex(left_canon, right_canon)
+        elif left_type == TypeOrder.ARRAY:
+            return cls.compare_arrays(left_canon, right_canon)
+        elif left_type == TypeOrder.VECTOR:
+            return cls.compare_vectors(left_canon, right_canon)
+        elif left_type == TypeOrder.OBJECT:
+            return cls.compare_objects(left_canon, right_canon)
         else:
-            raise ValueError(f"Unknown TypeOrder {leftType}")
+            raise ValueError(f"Unknown TypeOrder {left_type}")
 
     @staticmethod
-    def compare_blobs(left, right) -> int:
-        left_bytes = left.bytes_value
-        right_bytes = right.bytes_value
-
-        return Order._compare_to(left_bytes, right_bytes)
+    def _to_decimal_or_nan(val) -> Any:
+        if isinstance(val, BSONDecimal128):
+            try:
+                return val.to_decimal()
+            except (decimal.DecimalException, ArithmeticError):
+                return None
+        if isinstance(val, float):
+            if math.isnan(val):
+                return "NaN"
+            return decimal.Decimal(str(val))
+        if isinstance(val, BSONInt32):
+            return decimal.Decimal(val.value)
+        if isinstance(val, int):
+            return decimal.Decimal(val)
+        if isinstance(val, str):
+            try:
+                return decimal.Decimal(val)
+            except Exception:
+                return None
+        if isinstance(val, decimal.Decimal):
+            return val
+        return None
 
     @staticmethod
-    def compare_timestamps(left, right) -> Any:
-        left = left._pb.timestamp_value
-        right = right._pb.timestamp_value
+    def compare_numbers(left, right) -> int:
+        d_left = Order._to_decimal_or_nan(left)
+        d_right = Order._to_decimal_or_nan(right)
 
-        seconds = Order._compare_to(left.seconds or 0, right.seconds or 0)
-        if seconds != 0:
-            return seconds
-
-        return Order._compare_to(left.nanos or 0, right.nanos or 0)
-
-    @staticmethod
-    def compare_geo_points(left, right) -> Any:
-        left_value = decode_value(left, None)
-        right_value = decode_value(right, None)
-        if not isinstance(left_value, GeoPoint) or not isinstance(
-            right_value, GeoPoint
-        ):
-            raise AttributeError("invalid geopoint encountered")
-        cmp = (left_value.latitude > right_value.latitude) - (
-            left_value.latitude < right_value.latitude
+        left_is_nan = d_left == "NaN" or (
+            isinstance(d_left, decimal.Decimal) and d_left.is_nan()
+        )
+        right_is_nan = d_right == "NaN" or (
+            isinstance(d_right, decimal.Decimal) and d_right.is_nan()
         )
 
-        if cmp != 0:
-            return cmp
-        return (left_value.longitude > right_value.longitude) - (
-            left_value.longitude < right_value.longitude
-        )
+        if left_is_nan and right_is_nan:
+            return 0
+        if left_is_nan:
+            return -1
+        if right_is_nan:
+            return 1
+
+        if d_left is None or d_right is None:
+            return 0
+
+        if d_left == d_right:
+            return 0
+        return 1 if d_left > d_right else -1
+
+    @staticmethod
+    def _extract_ts_seconds_nanos(ts) -> Tuple[int, int]:
+        if hasattr(ts, "seconds") and hasattr(ts, "nanos"):
+            return (getattr(ts, "seconds", 0) or 0, getattr(ts, "nanos", 0) or 0)
+        if isinstance(ts, DatetimeWithNanoseconds):
+            ts_pb = ts.timestamp_pb()
+            return (ts_pb.seconds or 0, ts_pb.nanos or 0)
+        if isinstance(ts, datetime.datetime):
+            dt_seconds = int(ts.timestamp())
+            dt_nanos = ts.microsecond * 1000
+            return (dt_seconds, dt_nanos)
+        return (0, 0)
+
+    @staticmethod
+    def compare_timestamps(left, right) -> int:
+        s1, n1 = Order._extract_ts_seconds_nanos(left)
+        s2, n2 = Order._extract_ts_seconds_nanos(right)
+        sec_cmp = Order._compare_to(s1, s2)
+        if sec_cmp != 0:
+            return sec_cmp
+        return Order._compare_to(n1, n2)
+
+    @staticmethod
+    def compare_bson_timestamps(left: BSONTimestamp, right: BSONTimestamp) -> int:
+        sec_cmp = Order._compare_to(left.seconds, right.seconds)
+        if sec_cmp != 0:
+            return sec_cmp
+        return Order._compare_to(left.increment, right.increment)
+
+    @staticmethod
+    def compare_bson_binary(left: BSONBinary, right: BSONBinary) -> int:
+        data_cmp = Order._compare_to(left.data, right.data)
+        if data_cmp != 0:
+            return data_cmp
+        return Order._compare_to(left.subtype, right.subtype)
 
     @staticmethod
     def compare_resource_paths(left, right) -> int:
-        left = left.reference_value
-        right = right.reference_value
+        p_left = (
+            left.path
+            if hasattr(left, "path")
+            else (left.value if hasattr(left, "value") else str(left))
+        )
+        p_right = (
+            right.path
+            if hasattr(right, "path")
+            else (right.value if hasattr(right, "value") else str(right))
+        )
 
-        left_segments = left.split("/")
-        right_segments = right.split("/")
+        left_segments = p_left.split("/")
+        right_segments = p_right.split("/")
         shorter = min(len(left_segments), len(right_segments))
-        # compare segments
         for i in range(shorter):
             if left_segments[i] < right_segments[i]:
                 return -1
             if left_segments[i] > right_segments[i]:
                 return 1
 
-        left_length = len(left)
-        right_length = len(right)
+        left_length = len(p_left)
+        right_length = len(p_right)
         return (left_length > right_length) - (left_length < right_length)
 
     @staticmethod
-    def compare_arrays(left, right) -> int:
-        l_values = left.array_value.values
-        r_values = right.array_value.values
+    def compare_geo_points(left: GeoPoint, right: GeoPoint) -> int:
+        cmp = (left.latitude > right.latitude) - (left.latitude < right.latitude)
+        if cmp != 0:
+            return cmp
+        return (left.longitude > right.longitude) - (left.longitude < right.longitude)
 
-        length = min(len(l_values), len(r_values))
+    @staticmethod
+    def compare_bson_regex(left: BSONRegex, right: BSONRegex) -> int:
+        pat_cmp = Order._compare_to(left.pattern, right.pattern)
+        if pat_cmp != 0:
+            return pat_cmp
+        return Order._compare_to(left.options, right.options)
+
+    @staticmethod
+    def compare_arrays(left: list, right: list) -> int:
+        length = min(len(left), len(right))
         for i in range(length):
-            cmp = Order.compare(l_values[i], r_values[i])
+            cmp = Order.compare(left[i], right[i])
             if cmp != 0:
                 return cmp
-
-        return Order._compare_to(len(l_values), len(r_values))
-
-    @staticmethod
-    def compare_vectors(left, right) -> int:
-        # First compare the size of vector.
-        l_values = left.map_value.fields["value"]
-        r_values = right.map_value.fields["value"]
-
-        left_length = len(l_values.array_value.values)
-        right_length = len(r_values.array_value.values)
-
-        if left_length != right_length:
-            return Order._compare_to(left_length, right_length)
-
-        # Compare element if the size matches.
-        return Order.compare_arrays(l_values, r_values)
+        return Order._compare_to(len(left), len(right))
 
     @staticmethod
-    def compare_objects(left, right) -> int:
-        left_fields = left.map_value.fields
-        right_fields = right.map_value.fields
-
-        for left_key, right_key in zip(sorted(left_fields), sorted(right_fields)):
-            keyCompare = Order._compare_to(left_key, right_key)
-            if keyCompare != 0:
-                return keyCompare
-
-            value_compare = Order.compare(
-                left_fields[left_key], right_fields[right_key]
-            )
-            if value_compare != 0:
-                return value_compare
-
-        return Order._compare_to(len(left_fields), len(right_fields))
+    def compare_vectors(left: Vector, right: Vector) -> int:
+        l_vals = list(left) if isinstance(left, (Vector, list, tuple)) else []
+        r_vals = list(right) if isinstance(right, (Vector, list, tuple)) else []
+        if len(l_vals) != len(r_vals):
+            return Order._compare_to(len(l_vals), len(r_vals))
+        return Order.compare_arrays(l_vals, r_vals)
 
     @staticmethod
-    def compare_numbers(left, right) -> int:
-        left_value = decode_value(left, None)
-        right_value = decode_value(right, None)
-        return Order.compare_doubles(left_value, right_value)
+    def compare_objects(left: dict, right: dict) -> int:
+        def key_sort_tuple(k):
+            k_canon = _extract_canonical_value(k)
+            k_type = TypeOrder.from_value(k_canon)
+            return (_TYPE_ORDER_MAP[k_type], str(k_canon))
+
+        left_keys = sorted(left.keys(), key=key_sort_tuple)
+        right_keys = sorted(right.keys(), key=key_sort_tuple)
+
+        for lk, rk in zip(left_keys, right_keys):
+            key_cmp = Order.compare(lk, rk)
+            if key_cmp != 0:
+                return key_cmp
+            val_cmp = Order.compare(left[lk], right[rk])
+            if val_cmp != 0:
+                return val_cmp
+
+        return Order._compare_to(len(left), len(right))
+
+    @staticmethod
+    def compare_blobs(left, right) -> int:
+        left_bytes = getattr(left, "bytes_value", left)
+        right_bytes = getattr(right, "bytes_value", right)
+        return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod
     def compare_doubles(left, right) -> int:
-        if math.isnan(left):
-            if math.isnan(right):
-                return 0
-            return -1
-        if math.isnan(right):
-            return 1
-
-        return Order._compare_to(left, right)
+        return Order.compare_numbers(left, right)
 
     @staticmethod
     def _compare_to(left, right) -> int:
-        # We can't just use cmp(left, right) because cmp doesn't exist
-        # in Python 3, so this is an equivalent suggested by
-        # https://docs.python.org/3.0/whatsnew/3.0.html#ordering-comparisons
         return (left > right) - (left < right)

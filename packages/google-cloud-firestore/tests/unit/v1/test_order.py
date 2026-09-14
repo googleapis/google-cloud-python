@@ -275,3 +275,36 @@ def _object_value(keysAndValues):
     from google.cloud.firestore_v1._helpers import encode_value
 
     return encode_value(keysAndValues)
+
+
+def test_order_bson_types_comparison():
+    from google.cloud.firestore_v1.bson import (
+        BSONDecimal128,
+        BSONInt32,
+        BSONMaxKey,
+        BSONMinKey,
+    )
+    from google.cloud.firestore_v1.order import Order
+
+    target = Order()
+
+    min_key = BSONMinKey()
+    max_key = BSONMaxKey()
+    int32 = BSONInt32(42)
+    dec = BSONDecimal128("42.0")
+    nan_dec = BSONDecimal128("NaN")
+    inf_dec = BSONDecimal128("Infinity")
+
+    # MinKey is smaller than everything
+    assert target.compare(min_key, int32) == -1
+    assert target.compare(min_key, max_key) == -1
+
+    # MaxKey is larger than everything
+    assert target.compare(max_key, int32) == 1
+    assert target.compare(max_key, min_key) == 1
+
+    # Decimal vs Int32 equality
+    assert target.compare(int32, dec) == 0
+
+    # NaN is smaller than all numbers
+    assert target.compare(nan_dec, inf_dec) == -1
