@@ -18,7 +18,17 @@ import asyncio
 import datetime
 import io
 import json
-from typing import Any, AsyncIterator, Dict, List, Mapping, Optional, Tuple, Union
+from typing import (
+    Any,
+    AsyncIterable,
+    AsyncIterator,
+    Dict,
+    List,
+    Mapping,
+    Optional,
+    Tuple,
+    Union,
+)
 from unittest import mock
 
 import pytest
@@ -1146,10 +1156,12 @@ async def test_async_prepare_async_reader_types() -> None:
         upload_url="https://api.example.com/start",
     )
 
-    # Native async reader with coroutine read
-    class AsyncReader:
+    class AsyncReader(AsyncIterable[bytes]):  # Inherit to satisfy mypy
         async def read(self, n: int) -> bytes:
             return b"chunk"
+
+        async def __aiter__(self) -> AsyncIterator[bytes]:
+            yield b"chunk"
 
     reader_fn, size, obj = session._prepare_async_reader(AsyncReader(), None)
     chunk = await reader_fn(5)
