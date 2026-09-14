@@ -547,9 +547,9 @@ class ResumableUploadSession:
                 return resp
             except Exception as exc:
                 self._enrich_exception(exc)
-                if isinstance(
-                    exc, (requests.exceptions.Timeout, exceptions.DeadlineExceeded)
-                ):
+                if isinstance(exc, exceptions.DeadlineExceeded):
+                    raise
+                if isinstance(exc, requests.exceptions.Timeout):
                     remaining = self._get_deadline_remaining()
                     if remaining is not None and remaining <= 0:
                         raise exceptions.DeadlineExceeded(

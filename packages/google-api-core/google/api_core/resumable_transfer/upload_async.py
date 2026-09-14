@@ -499,7 +499,15 @@ class AsyncResumableUploadSession:
                 return status_code, resp_headers, resp_body
             except Exception as exc:
                 self._enrich_exception(exc)
-                if isinstance(exc, (asyncio.TimeoutError, exceptions.DeadlineExceeded)):
+                if isinstance(exc, exceptions.DeadlineExceeded):
+                    raise
+                if isinstance(
+                    exc,
+                    (
+                        asyncio.TimeoutError,
+                        aiohttp.ServerTimeoutError if aiohttp else (),
+                    ),
+                ):
                     remaining = self._get_deadline_remaining()
                     if remaining is not None and remaining <= 0:
                         raise exceptions.DeadlineExceeded(

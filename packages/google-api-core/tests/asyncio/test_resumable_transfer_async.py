@@ -1010,3 +1010,217 @@ def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
             upload_url="https://upload.example.com/resumable-async",
             stream=invalid_stream,
         )
+
+
+def test_async_enrich_exception_without_dict() -> None:
+    """Verifies that _enrich_exception handles objects without __dict__."""
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+    )
+    exc = Exception()
+    session._enrich_exception(exc)
+
+
+def test_async_notify_progress_branches() -> None:
+    """Verifies progress notification callbacks and queues."""
+    called = []
+    config = ResumableUploadConfig(on_progress=lambda p: called.append(p))
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+    )
+    # When upload_url is established on state
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    q: asyncio.Queue = asyncio.Queue()
+    session._notify_progress(common.ProgressState.UPLOADING, queue=q)
+    assert len(called) == 1
+    assert q.qsize() == 1
+
+
+def test_async_deadline_handling_and_start_timeout() -> None:
+    """Verifies deadline remaining calculations and start timeout calculation."""
+    # Past deadline raises DeadlineExceeded
+    past = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=10)
+    config = ResumableUploadConfig(deadline=past)
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+    )
+    with pytest.raises(exceptions.DeadlineExceeded):
+        session._get_deadline_remaining()
+
+    # Naive future deadline is localized to UTC
+    future_naive = datetime.datetime.now() + datetime.timedelta(hours=1)
+    config2 = ResumableUploadConfig(deadline=future_naive)
+    session2 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config2,
+    )
+    rem = session2._get_deadline_remaining()
+    assert rem is not None and rem > 0
+    t = session2._get_start_timeout()
+    assert t > 0
+
+
+@pytest.mark.asyncio
+async def test_async_retry_branches() -> None:
+    """Verifies retry predicate branches in _async_retry."""
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+    )
+
+    # MissingStatusHeaderError retries and raises on final attempt
+    attempts = 0
+
+    async def fail_missing_header():
+        nonlocal attempts
+        attempts += 1
+        raise exceptions.MissingStatusHeaderError("missing")
+
+    with pytest.raises(exceptions.MissingStatusHeaderError):
+        await session._async_retry(fail_missing_header, max_attempts=2)
+    assert attempts == 2
+
+    # Non-retryable GoogleAPICallError raises immediately
+    async def fail_400():
+        raise exceptions.from_http_status(400, "Bad Request")
+
+    with pytest.raises(exceptions.BadRequest):
+        await session._async_retry(fail_400, max_attempts=3)
+
+    # Retryable GoogleAPICallError retries and raises on final attempt
+    attempts_503 = 0
+
+    async def fail_503():
+        nonlocal attempts_503
+        attempts_503 += 1
+        raise exceptions.from_http_status(503, "Service Unavailable")
+
+    with pytest.raises(exceptions.ServiceUnavailable):
+        await session._async_retry(fail_503, max_attempts=2)
+    assert attempts_503 == 2
+
+
+def test_async_transport_missing_errors() -> None:
+    """Verifies ValueError when transport is missing from upload, resume, and cancel."""
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+    )
+    with pytest.raises(
+        ValueError, match="An aiohttp.ClientSession transport must be provided"
+    ):
+        session.upload(stream=b"data")
+
+    with pytest.raises(
+        ValueError, match="An aiohttp.ClientSession transport must be provided"
+    ):
+        session.resume(upload_url="https://upload.example.com/123", stream=b"data")
+
+
+@pytest.mark.asyncio
+async def test_async_cancel_missing_transport_and_error() -> None:
+    """Verifies cancel method with missing transport and server error."""
+    session = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/123",
+    )
+    with pytest.raises(
+        ValueError, match="An aiohttp.ClientSession transport must be provided"
+    ):
+        await session.cancel()
+
+    err_resp = DummyAsyncResponse(status=500, headers={}, body=b"Cancel Error")
+    sess_transport = DummyAsyncSession([err_resp])
+    session2 = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/123",
+        transport=sess_transport,
+    )
+    with pytest.raises(exceptions.GoogleAPICallError):
+        await session2.cancel()
+
+
+@pytest.mark.asyncio
+async def test_async_prepare_async_reader_types() -> None:
+    """Verifies async reader preparation for native async reader, tell error, and iterables."""
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+    )
+
+    # Native async reader with coroutine read
+    class AsyncReader:
+        async def read(self, n: int) -> bytes:
+            return b"chunk"
+
+    reader_fn, size, obj = session._prepare_async_reader(AsyncReader(), None)
+    chunk = await reader_fn(5)
+    assert chunk == b"chunk"
+
+    # Sync stream whose tell() raises OSError
+    class TellFailingStream(io.BytesIO):
+        def tell(self) -> int:
+            raise OSError("tell error")
+
+    stream = TellFailingStream(b"data")
+    reader_fn2, size2, obj2 = session._prepare_async_reader(stream, None)
+    chunk2 = await reader_fn2(4)
+    assert chunk2 == b"data"
+    assert session._start_stream_offset == 0
+
+    # Sync Iterable[bytes]
+    reader_fn3, size3, obj3 = session._prepare_async_reader([b"part1", b"part2"], None)
+    chunk3 = await reader_fn3(10)
+    assert chunk3 == b"part1part2"
+
+
+@pytest.mark.asyncio
+async def test_async_initiate_and_recover_failures() -> None:
+    """Verifies initiate and recover error handling when server returns error codes."""
+    err_resp = DummyAsyncResponse(status=400, headers={}, body=b"Bad Request")
+    sess_transport = DummyAsyncSession([err_resp])
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=sess_transport,
+    )
+    with pytest.raises(exceptions.BadRequest):
+        await session.initiate(transport=sess_transport)
+
+    err_resp2 = DummyAsyncResponse(status=400, headers={}, body=b"Query Failed")
+    sess_transport2 = DummyAsyncSession([err_resp2])
+    session2 = AsyncResumableUploadSession(
+        transport=sess_transport2,
+    )
+    session2._state._resumable_url = "https://upload.example.com/123"
+    with pytest.raises(exceptions.BadRequest):
+        await session2._recover(sess_transport2)
+
+
+@pytest.mark.asyncio
+async def test_async_recover_stream_errors() -> None:
+    """Verifies UnseekableStreamError during async recovery."""
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "10"},
+        body=b"",
+    )
+    sess_transport = DummyAsyncSession([query_resp])
+    session = AsyncResumableUploadSession(
+        transport=sess_transport,
+    )
+    session._state._resumable_url = "https://upload.example.com/123"
+
+    # Stream whose seekable() returns False
+    unseekable = mock.Mock()
+    unseekable.seekable.return_value = False
+    with pytest.raises(UnseekableStreamError, match="Stream is not seekable"):
+        await session._recover(sess_transport, stream_obj=unseekable)
+
+    # Stream whose seek() raises OSError
+    sess_transport2 = DummyAsyncSession([query_resp])
+    session2 = AsyncResumableUploadSession(
+        transport=sess_transport2,
+    )
+    session2._state._resumable_url = "https://upload.example.com/123"
+    failing_seek = mock.Mock()
+    failing_seek.seekable.return_value = True
+    failing_seek.seek.side_effect = OSError("Seek error")
+    with pytest.raises(UnseekableStreamError, match="Failed to seek stream"):
+        await session2._recover(sess_transport2, stream_obj=failing_seek)
