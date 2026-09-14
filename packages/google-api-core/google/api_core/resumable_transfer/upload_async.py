@@ -766,7 +766,6 @@ class AsyncResumableUploadSession:
             TypeError: If the stream type is not supported.
         """
         computed_size = size
-        stream_obj: Any = None
 
         if isinstance(stream, bytes):
             bytes_io = io.BytesIO(stream)
