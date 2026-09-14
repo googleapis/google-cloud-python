@@ -106,6 +106,10 @@ class _NumericValue(object):
     """
 
     def __init__(self, value) -> None:
+        if hasattr(value, "to_map_value") or type(value).__name__.startswith("BSON"):
+            raise TypeError(
+                "Numeric transforms (Increment, Maximum, Minimum) do not support BSON types."
+            )
         if not isinstance(value, (int, float)):
             raise ValueError("Pass an integer / float value.")
 
