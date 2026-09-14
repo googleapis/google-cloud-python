@@ -91,7 +91,7 @@ class ProtocolState(object):
     def build_start_request(
         self,
         body: Union[str, bytes] = "",
-        headers: Optional[Sequence[Tuple[str, str]]] = None,
+        headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None,
         content_type: Optional[str] = None,
         size: Optional[int] = None,
     ) -> Tuple[str, str, Dict[str, str], bytes]:
@@ -99,7 +99,7 @@ class ProtocolState(object):
 
         Args:
             body: Initial metadata payload.
-            headers: Optional sequence of header tuples to include.
+            headers: Optional sequence or mapping of headers to include.
             content_type: MIME type of the stream payload.
             size: Total size of the stream in bytes, if known.
 
@@ -110,7 +110,8 @@ class ProtocolState(object):
         req_headers: Dict[str, str] = {}
 
         if headers:
-            for k, v in headers:
+            header_items = headers.items() if isinstance(headers, Mapping) else headers
+            for k, v in header_items:
                 key = k.decode("utf-8") if isinstance(k, bytes) else str(k)
                 val = v.decode("utf-8") if isinstance(v, bytes) else str(v)
                 req_headers[key] = val
@@ -237,6 +238,8 @@ class ProtocolState(object):
             raise exceptions.UploadCancelledError(
                 "Upload session was cancelled by server"
             )
+        else:
+            raise ValueError(f"Unknown upload status: {status}")
 
     def build_query_request(self) -> Tuple[str, str, Dict[str, str], bytes]:
         """Formats the query request to discover server offset during recovery.
@@ -286,6 +289,8 @@ class ProtocolState(object):
             raise exceptions.UploadCancelledError(
                 "Upload session was cancelled by server"
             )
+        else:
+            raise ValueError(f"Unknown upload status: {status}")
 
         return self._bytes_uploaded
 

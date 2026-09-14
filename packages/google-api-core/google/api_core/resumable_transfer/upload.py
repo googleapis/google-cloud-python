@@ -40,8 +40,8 @@ import proto
 import requests
 from google.protobuf import json_format
 
-import google.api_core.retry
 from google.api_core import exceptions
+from google.api_core.retry import Retry, StreamingRetry
 from google.api_core.resumable_transfer import common, upload_state
 
 _LOGGER = logging.getLogger(__name__)
@@ -49,10 +49,50 @@ _DEFAULT_START_TIMEOUT = 60.0  # seconds for initial start request
 _monotonic_clock = time.monotonic
 
 
-class _RecoveryRetransmit(Exception):
-    """Internal exception indicating state synchronization succeeded and chunk should retransmit."""
+class _IterableStream(io.RawIOBase):
+    """Memory-efficient stream wrapper around an Iterable[bytes]."""
 
-    pass
+    def __init__(self, iterable: Iterable[bytes]) -> None:
+        self._iterator = iter(iterable)
+        self._buffer = bytearray()
+
+    def readable(self) -> bool:
+        return True
+
+    def seekable(self) -> bool:
+        return False
+
+    def readinto(self, b: bytearray) -> int:
+        req_len = len(b)
+        while len(self._buffer) < req_len:
+            try:
+                chunk = next(self._iterator)
+                if chunk:
+                    self._buffer.extend(chunk)
+            except StopIteration:
+                break
+        n = min(req_len, len(self._buffer))
+        b[:n] = self._buffer[:n]
+        del self._buffer[:n]
+        return n
+
+    def read(self, size: int = -1) -> bytes:
+        if size == -1:
+            chunks = list(self._iterator)
+            data = bytes(self._buffer) + b"".join(chunks)
+            self._buffer.clear()
+            return data
+        while len(self._buffer) < size:
+            try:
+                chunk = next(self._iterator)
+                if chunk:
+                    self._buffer.extend(chunk)
+            except StopIteration:
+                break
+        n = min(size, len(self._buffer))
+        res = bytes(self._buffer[:n])
+        del self._buffer[:n]
+        return res
 
 
 @dataclasses.dataclass
@@ -77,13 +117,13 @@ class ResumableUploadConfig:
 
     chunk_size: int = common.DEFAULT_CHUNK_SIZE
     start_timeout: Optional[float] = None
-    start_retry: Optional[google.api_core.retry.Retry] = None
+    start_retry: Optional[Retry] = None
     stall_minimum_rate: int = 64 * 1024
     stall_timeout: float = 120.0
     headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None
     deadline: Optional[datetime.datetime] = None
     timeout: Optional[float] = None
-    retry: Optional[google.api_core.retry.Retry] = None
+    retry: Optional[Union[Retry, StreamingRetry]] = None
     on_progress: Optional[Callable[[common.UploadProgress], None]] = None
     response_type: Optional[Any] = None
     content_type: Optional[str] = None
@@ -141,6 +181,11 @@ class ResumableUploadSession:
         self._buffered_chunk: Optional[memoryview] = None
         self._buffered_chunk_offset: int = 0
         self._start_stream_offset: int = 0
+        self._stream_eof: bool = False
+
+        # State synchronization & recovery flags for streaming retries
+        self._needs_recovery: bool = False
+        self._recovered_from_error: bool = False
 
         # Stall control tracking via monotonic clock
         self._aggregate_lag: float = 0.0
@@ -195,9 +240,8 @@ class ResumableUploadSession:
         Args:
             exc: Exception instance to augment with upload_url and chunk_size.
         """
-        if hasattr(exc, "__dict__"):
-            setattr(exc, "upload_url", self.upload_url)
-            setattr(exc, "chunk_size", self.chunk_size)
+        setattr(exc, "upload_url", self.upload_url)
+        setattr(exc, "chunk_size", self.chunk_size)
 
     def _notify_progress(self, state: common.ProgressState) -> None:
         """Notifies progress with current upload status.
@@ -247,7 +291,7 @@ class ResumableUploadSession:
             now = datetime.datetime.now(datetime.timezone.utc)
             dl = self._config.deadline
             if dl.tzinfo is None:
-                dl = dl.replace(tzinfo=datetime.timezone.utc)
+                dl = dl.astimezone(datetime.timezone.utc)
             remaining = (dl - now).total_seconds()
             if remaining <= 0:
                 raise exceptions.DeadlineExceeded(
@@ -271,7 +315,7 @@ class ResumableUploadSession:
         return timeout
 
     def _get_retry_predicate(self) -> Callable[[Any], bool]:
-        """Returns a predicate function for determining if an exception is retryable.
+        """Returns a predicate function for unary requests (start, query, cancel).
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -284,6 +328,7 @@ class ResumableUploadSession:
                     exceptions.DeadlineExceeded,
                     exceptions.TransferStalledError,
                     exceptions.UploadCancelledError,
+                    exceptions.UnseekableStreamError,
                 ),
             ):
                 return False
@@ -305,8 +350,46 @@ class ResumableUploadSession:
 
         return should_retry
 
-    def _get_retry(self, is_start: bool = False) -> google.api_core.retry.Retry:
-        """Resolves retry policy for requests.
+    def _get_streaming_predicate(self) -> Callable[[Any], bool]:
+        """Returns a predicate function for determining if an exception is retryable during chunk streaming.
+
+        Returns:
+            A callable accepting an exception and returning a boolean.
+        """
+
+        def should_retry_streaming(exc: Any) -> bool:
+            if isinstance(
+                exc,
+                (
+                    exceptions.DeadlineExceeded,
+                    exceptions.TransferStalledError,
+                    exceptions.UploadCancelledError,
+                    exceptions.UnseekableStreamError,
+                ),
+            ):
+                return False
+            if isinstance(exc, exceptions.MissingStatusHeaderError):
+                return True
+            if isinstance(exc, requests.exceptions.RequestException):
+                if isinstance(
+                    exc,
+                    (
+                        requests.exceptions.ConnectionError,
+                        requests.exceptions.ChunkedEncodingError,
+                        requests.exceptions.Timeout,
+                    ),
+                ):
+                    return True
+            if isinstance(exc, exceptions.GoogleAPICallError):
+                return (exc.code in common.RETRYABLE_STATUS_CODES) or (
+                    exc.code in common.RECOVERABLE_STATUS_CODES
+                )
+            return False
+
+        return should_retry_streaming
+
+    def _get_retry(self, is_start: bool = False) -> Retry:
+        """Resolves retry policy for unary control requests.
 
         Args:
             is_start: Whether this retry policy is for the start request.
@@ -316,9 +399,47 @@ class ResumableUploadSession:
         """
         if is_start and self._config.start_retry:
             return self._config.start_retry
-        if self._config.retry:
+        if isinstance(self._config.retry, Retry):
             return self._config.retry
-        return google.api_core.retry.Retry(predicate=self._get_retry_predicate())
+        return Retry(predicate=self._get_retry_predicate())
+
+    def _get_streaming_retry(
+        self, on_error: Optional[Callable[[Exception], Any]] = None
+    ) -> StreamingRetry:
+        """Resolves retry policy for streaming chunk uploads.
+
+        Args:
+            on_error: Optional callback executed when an exception triggers a retry attempt.
+
+        Returns:
+            Configured or default StreamingRetry instance.
+        """
+        if isinstance(self._config.retry, StreamingRetry):
+            return self._config.retry
+
+        base_retry = self._config.retry
+        predicate = self._get_streaming_predicate()
+        initial = getattr(base_retry, "_initial", 1.0)
+        maximum = getattr(base_retry, "_maximum", 60.0)
+        multiplier = getattr(base_retry, "_multiplier", 2.0)
+        timeout = getattr(base_retry, "_timeout", None)
+
+        user_on_error = getattr(base_retry, "_on_error", None)
+
+        callbacks = [cb for cb in (user_on_error, on_error) if cb is not None]
+
+        def combined_on_error(exc: Exception) -> Any:
+            for cb in callbacks:
+                cb(exc)
+
+        return StreamingRetry(
+            predicate=predicate,
+            initial=initial,
+            maximum=maximum,
+            multiplier=multiplier,
+            timeout=timeout,
+            on_error=combined_on_error if callbacks else None,
+        )
 
     def _compute_chunk_timeout(self, data_len: int) -> float:
         """Computes the dynamic per-attempt chunk timeout based on stall control and deadlines.
@@ -374,6 +495,7 @@ class ResumableUploadSession:
             if (
                 _monotonic_clock() - self._stall_timeout_started
                 >= self._config.stall_timeout
+                or self._aggregate_lag >= self._config.stall_timeout
             ):
                 self._get_deadline_remaining()
                 raise exceptions.TransferStalledError(
@@ -467,7 +589,7 @@ class ResumableUploadSession:
     def _transmit_chunk(
         self, transport: requests.Session, stream: BinaryIO, size: Optional[int]
     ) -> requests.Response:
-        """Transmits the next data chunk with stall control and error recovery.
+        """Transmits a single data chunk via HTTP with stall control.
 
         Args:
             transport: The requests session.
@@ -476,110 +598,82 @@ class ResumableUploadSession:
 
         Returns:
             The HTTP response for the transmitted chunk.
+
+        Raises:
+            exceptions.TransferStalledError: If chunk transmission times out.
+            exceptions.DeadlineExceeded: If deadline is exceeded.
+            exceptions.GoogleAPICallError: If server responds with HTTP error.
         """
+        chunk_size = self._state.chunk_size
 
-        def do_transmit() -> requests.Response:
-            chunk_size = self._state.chunk_size
+        if self._buffered_chunk is None:
+            raw_bytes = stream.read(chunk_size)
+            if not raw_bytes:
+                raw_bytes = b""
+            if len(raw_bytes) < chunk_size:
+                self._stream_eof = True
+            self._buffered_chunk = memoryview(raw_bytes)
+            self._buffered_chunk_offset = self._state.bytes_uploaded
 
-            # Retain active chunk in zero-copy buffer if not present
-            if self._buffered_chunk is None:
-                raw_bytes = stream.read(chunk_size)
-                if not raw_bytes:
-                    raw_bytes = b""
-                self._buffered_chunk = memoryview(raw_bytes)
-                self._buffered_chunk_offset = self._state.bytes_uploaded
+        data = self._buffered_chunk
+        data_len = len(data)
 
-            data = self._buffered_chunk
-            data_len = len(data)
-
-            is_last = data_len < chunk_size
-            if size is not None and self._state.bytes_uploaded + data_len >= size:
-                is_last = True
-
-            method, url, headers, payload = self._state.build_chunk_request(
-                data=data,
-                is_last_chunk=is_last,
-                content_type=self._config.content_type,
+        if size is not None:
+            is_last = self._state.bytes_uploaded + data_len >= size
+        else:
+            is_last = self._stream_eof and (
+                data_len == 0 or len(self._buffered_chunk) == data_len
             )
 
-            def do_http() -> requests.Response:
-                per_attempt_timeout = self._compute_chunk_timeout(data_len)
-                try:
-                    resp = transport.request(
-                        method,
-                        url,
-                        data=payload,
-                        headers=headers,
-                        timeout=per_attempt_timeout,
-                    )
-                except requests.exceptions.Timeout as exc:
-                    if self._config.stall_minimum_rate and self._config.stall_timeout:
-                        remaining = self._get_deadline_remaining()
-                        if remaining is not None and remaining <= 0:
-                            raise exceptions.DeadlineExceeded(
-                                f"Resumable upload deadline {self._config.deadline} exceeded."
-                            ) from exc
-                        raise exceptions.TransferStalledError(
-                            f"Upload stalled: chunk transfer timed out ({exc}).",
-                            upload_url=self.upload_url,
-                            chunk_size=self.chunk_size,
-                        ) from exc
-                    raise
-                if not resp.ok:
-                    raise exceptions.from_http_response(resp)
-                return resp
-
-            try:
-                t_start = _monotonic_clock()
-                resp = self._get_retry()(do_http)()
-                t_elapsed = _monotonic_clock() - t_start
-
-                self._update_stall_control(data_len, t_start, t_elapsed)
-                self._state.process_chunk_response(
-                    resp.status_code, resp.headers, data_len
-                )
-                self._buffered_chunk = None
-                self._notify_progress(
-                    common.ProgressState.FINALIZED
-                    if self._state.finished
-                    else common.ProgressState.UPLOADING
-                )
-                return resp
-            except Exception as exc:
-                self._enrich_exception(exc)
-                if isinstance(exc, exceptions.DeadlineExceeded):
-                    raise
-                if isinstance(exc, requests.exceptions.Timeout):
-                    remaining = self._get_deadline_remaining()
-                    if remaining is not None and remaining <= 0:
-                        raise exceptions.DeadlineExceeded(
-                            f"Resumable upload deadline {self._config.deadline} exceeded."
-                        ) from exc
-                    raise exceptions.TransferStalledError(
-                        f"Upload stalled: chunk transfer timed out ({exc}).",
-                        upload_url=self.upload_url,
-                        chunk_size=self.chunk_size,
-                    ) from exc
-
-                is_recoverable = (
-                    isinstance(exc, exceptions.GoogleAPICallError)
-                    and exc.code in common.RECOVERABLE_STATUS_CODES
-                ) or isinstance(exc, exceptions.MissingStatusHeaderError)
-
-                if is_recoverable:
-                    _LOGGER.info(
-                        "Recoverable error %s during chunk upload. Querying server offset.",
-                        exc,
-                    )
-                    self._notify_progress(common.ProgressState.RECOVERING)
-                    self._recover(transport, stream)
-                    raise _RecoveryRetransmit()
-                raise
-
-        recovery_loop = google.api_core.retry.Retry(
-            predicate=lambda e: isinstance(e, _RecoveryRetransmit)
+        method, url, headers, payload = self._state.build_chunk_request(
+            data=data,
+            is_last_chunk=is_last,
+            content_type=self._config.content_type,
         )
-        return recovery_loop(do_transmit)()
+
+        per_attempt_timeout = self._compute_chunk_timeout(data_len)
+        try:
+            t_start = _monotonic_clock()
+            resp = transport.request(
+                method,
+                url,
+                data=payload,
+                headers=headers,
+                timeout=per_attempt_timeout,
+            )
+            t_elapsed = _monotonic_clock() - t_start
+        except requests.exceptions.Timeout as exc:
+            self._enrich_exception(exc)
+            remaining = self._get_deadline_remaining()
+            if remaining is not None and remaining <= 0:
+                raise exceptions.DeadlineExceeded(
+                    f"Resumable upload deadline {self._config.deadline} exceeded."
+                ) from exc
+            raise exceptions.TransferStalledError(
+                f"Upload stalled: chunk transfer timed out ({exc}).",
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
+            ) from exc
+        except Exception as exc:
+            self._enrich_exception(exc)
+            raise
+
+        if not resp.ok:
+            exc = exceptions.from_http_response(resp)
+            self._enrich_exception(exc)
+            raise exc
+
+        self._update_stall_control(data_len, t_start, t_elapsed)
+        self._state.process_chunk_response(
+            resp.status_code, resp.headers, data_len
+        )
+        self._buffered_chunk = None
+        self._notify_progress(
+            common.ProgressState.FINALIZED
+            if self._state.finished
+            else common.ProgressState.UPLOADING
+        )
+        return resp
 
     def _recover(self, transport: requests.Session, stream: BinaryIO) -> int:
         """Queries server for committed byte offset and adjusts buffer / stream.
@@ -608,6 +702,9 @@ class ResumableUploadSession:
 
         resp = self._get_retry()(do_query)()
         received = self._state.process_query_response(resp.status_code, resp.headers)
+        if self._state.finished:
+            self._response = self._format_response(resp)
+            return received
         self._notify_progress(common.ProgressState.OFFSET_RECEIVED)
         return self._reposition_stream_offset(stream, received)
 
@@ -636,7 +733,7 @@ class ResumableUploadSession:
         computed_size: Optional[int],
         captured: Optional[List[common.UploadProgress]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
-        """Transmits chunks until transfer completes, yielding buffered progress updates.
+        """Transmits chunks until transfer completes using StreamingRetry.
 
         Args:
             transport: The requests session.
@@ -655,16 +752,47 @@ class ResumableUploadSession:
                 yield captured.pop(0)
 
         final_resp = None
-        while not self._state.finished and not self._state.invalid:
-            final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
-            if captured:
+
+        def on_stream_error(exc: Exception) -> None:
+            self._enrich_exception(exc)
+            is_recoverable = (
+                isinstance(exc, exceptions.GoogleAPICallError)
+                and exc.code in common.RECOVERABLE_STATUS_CODES
+            ) or isinstance(exc, exceptions.MissingStatusHeaderError)
+            if is_recoverable:
+                _LOGGER.info(
+                    "Recoverable error %s during chunk upload. Scheduling offset recovery.",
+                    exc,
+                )
+                self._needs_recovery = True
+                self._recovered_from_error = True
+
+        def _chunk_stream_generator() -> Generator[common.UploadProgress, None, None]:
+            nonlocal final_resp
+            if self._needs_recovery:
+                if self._recovered_from_error:
+                    self._notify_progress(common.ProgressState.RECOVERING)
+                self._recover(transport, stream_obj)
+                self._needs_recovery = False
+                self._recovered_from_error = False
                 while captured:
                     yield captured.pop(0)
 
-        if final_resp is None:
-            raise ValueError("Upload completed without receiving a final response.")
+            while not self._state.finished and not self._state.invalid:
+                final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
+                if self._state.finished:
+                    self._response = self._format_response(final_resp)
+                while captured:
+                    yield captured.pop(0)
 
-        self._response = self._format_response(final_resp)
+        retryable_stream = self._get_streaming_retry(on_error=on_stream_error)(
+            _chunk_stream_generator
+        )
+        for progress in retryable_stream():
+            yield progress
+
+        if final_resp is None and self._response is None:
+            raise ValueError("Upload completed without receiving a final response.")
 
     def upload(
         self,
@@ -692,6 +820,8 @@ class ResumableUploadSession:
             stream=stream, request_body=request_body, size=size, transport=transport
         ):
             pass
+        if self._response is None:
+            raise ValueError("Upload completed without receiving a final response.")
         return self._response
 
     def iter_upload(
@@ -762,6 +892,8 @@ class ResumableUploadSession:
             transport=transport,
         ):
             pass
+        if self._response is None:
+            raise ValueError("Upload completed without receiving a final response.")
         return self._response
 
     def iter_resume(
@@ -799,10 +931,11 @@ class ResumableUploadSession:
             self._state._chunk_size = chunk_size
 
         self._state._resumable_url = actual_url
+        self._needs_recovery = True
+        self._recovered_from_error = False
         with self._capture_progress() as captured:
             try:
                 stream_obj, computed_size = self._prepare_stream(stream, size)
-                self._recover(sess, stream_obj)
                 yield from self._transmit_all_chunks(
                     sess, stream_obj, computed_size, captured
                 )
@@ -829,10 +962,12 @@ class ResumableUploadSession:
             stream_obj: BinaryIO = io.BytesIO(stream)
             if computed_size is None:
                 computed_size = len(stream)
-        elif not hasattr(stream, "read") and isinstance(stream, Iterable):
+        elif isinstance(stream, (list, tuple)):
             stream_obj = io.BytesIO(b"".join(stream))
             if computed_size is None:
                 computed_size = stream_obj.getbuffer().nbytes
+        elif not hasattr(stream, "read") and isinstance(stream, Iterable):
+            stream_obj = cast(BinaryIO, _IterableStream(stream))
         elif hasattr(stream, "read"):
             stream_obj = cast(BinaryIO, stream)
             if computed_size is None:

@@ -1296,3 +1296,309 @@ def test_sync_format_response_payload_custom_inputs():
     msg_instance = empty_pb2.Empty()
     res_msg = _format_response_payload(b"{}", response_type=msg_instance)
     assert isinstance(res_msg, empty_pb2.Empty)
+
+
+def test_sync_iterable_stream_methods():
+    from google.api_core.resumable_transfer.upload import _IterableStream
+
+    stream = _IterableStream([b"hello ", b"brave ", b"new ", b"world"])
+    assert stream.readable() is True
+    assert stream.seekable() is False
+
+    buf = bytearray(5)
+    n = stream.readinto(buf)
+    assert n == 5
+    assert bytes(buf) == b"hello"
+
+    rest = stream.read(-1)
+    assert rest == b" brave new world"
+
+    empty_stream = _IterableStream([])
+    assert empty_stream.read(10) == b""
+
+
+def test_sync_upload_with_generator_stream():
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-gen",
+        },
+    )
+    chunk_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "gen.txt", "size": 12}',
+    )
+    session_transport.request.side_effect = [start_resp, chunk_resp]
+
+    def gen():
+        yield b"chunk1"
+        yield b"chunk2"
+
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(response_type=DummyResponse),
+        transport=session_transport,
+    )
+    resp = session.upload(stream=gen())
+    assert resp.name == "gen.txt"
+    assert session.bytes_uploaded == 12
+
+
+def test_sync_partial_recovery_does_not_prematurely_finalize():
+    """Verifies that when recovery slices an uncommitted chunk, is_last is not incorrectly set to True."""
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-partial",
+        },
+    )
+    chunk1_err = mock.Mock(
+        ok=False,
+        status_code=409,
+        headers={},
+        content=b"Conflict",
+    )
+    chunk1_err.json.return_value = {"error": {"message": "Conflict"}}
+    chunk1_err.text = "Conflict"
+
+    query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "20",
+        },
+    )
+
+    chunk1_retry_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "active"},
+    )
+
+    chunk2_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "partial.txt", "size": 100}',
+    )
+
+    session_transport.request.side_effect = [
+        start_resp,
+        chunk1_err,
+        query_resp,
+        chunk1_retry_resp,
+        chunk2_resp,
+    ]
+
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(chunk_size=50, response_type=DummyResponse),
+        transport=session_transport,
+    )
+
+    data = b"x" * 100
+    resp = session.upload(stream=data, size=100)
+    assert resp.name == "partial.txt"
+    assert session.bytes_uploaded == 100
+
+    retry_call = session_transport.request.call_args_list[3]
+    retry_headers = retry_call[1]["headers"]
+    assert retry_headers["X-Goog-Upload-Command"] == "upload"
+    assert retry_headers["X-Goog-Upload-Offset"] == "20"
+
+
+def test_sync_recovery_status_final():
+    """Verifies that if query reveals upload is already FINAL on server, session completes."""
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-final",
+        },
+    )
+    session_transport.request.side_effect = [
+        start_resp,
+        requests.exceptions.ConnectionError("Connection dropped"),
+        mock.Mock(
+            ok=True,
+            status_code=200,
+            headers={"X-Goog-Upload-Status": "final"},
+            content=b'{"name": "finalized_on_server.txt", "size": 10}',
+        ),
+    ]
+
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(response_type=DummyResponse),
+        transport=session_transport,
+    )
+    resp = session.upload(stream=b"0123456789")
+    assert resp.name == "finalized_on_server.txt"
+    assert session.finished is True
+
+
+def test_sync_streaming_retry_custom_options():
+    """Verifies _get_streaming_retry when retry is already a StreamingRetry or has custom on_error."""
+    from google.api_core.retry import StreamingRetry
+
+    custom_retry = StreamingRetry(initial=0.5, maximum=2.0)
+    config = ResumableUploadConfig(retry=custom_retry)
+    session = ResumableUploadSession(config=config)
+    assert session._get_streaming_retry() is custom_retry
+
+    on_error_calls = []
+    base_retry = google.api_core.retry.Retry(on_error=lambda e: on_error_calls.append(e))
+    config2 = ResumableUploadConfig(retry=base_retry)
+    session2 = ResumableUploadSession(config=config2)
+    stream_retry = session2._get_streaming_retry(on_error=lambda e: on_error_calls.append("second"))
+    exc = requests.exceptions.ConnectionError("error")
+    stream_retry._on_error(exc)
+    assert len(on_error_calls) == 2
+
+
+def test_sync_streaming_predicate_branches():
+    """Verifies streaming predicate branches."""
+    session = ResumableUploadSession()
+    pred = session._get_streaming_predicate()
+
+    assert pred(exceptions.DeadlineExceeded("dl")) is False
+    assert pred(TransferStalledError("stalled")) is False
+    assert pred(UploadCancelledError("cancelled")) is False
+    assert pred(UnseekableStreamError("unseekable")) is False
+    assert pred(MissingStatusHeaderError("missing")) is True
+    assert pred(requests.exceptions.ConnectionError("conn")) is True
+    assert pred(requests.exceptions.ChunkedEncodingError("chunk")) is True
+    assert pred(requests.exceptions.Timeout("timeout")) is True
+    assert pred(requests.exceptions.HTTPError("http")) is False
+    assert pred(exceptions.from_http_status(409, "conflict")) is True
+    assert pred(exceptions.from_http_status(503, "503")) is True
+    assert pred(exceptions.from_http_status(404, "404")) is False
+    assert pred(ValueError("other")) is False
+
+
+def test_sync_format_response_payload_unrecognized_type():
+    from google.api_core.resumable_transfer.upload import _format_response_payload
+    dummy_obj = object()
+    res = _format_response_payload(b"hello", response_type=dummy_obj)
+    assert res == b"hello"
+
+
+def test_sync_upload_and_resume_none_response_raises():
+    session = ResumableUploadSession(upload_url="https://api.example.com/start")
+    session._state._resumable_url = "https://upload.example.com/resumable-none"
+    session.iter_upload = mock.Mock(return_value=iter([]))
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        session.upload(stream=b"data")
+
+    session.iter_resume = mock.Mock(return_value=iter([]))
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        session.resume(upload_url="https://upload.example.com/resumable-none", stream=b"data")
+
+
+def test_sync_prepare_stream_size_already_provided():
+    session = ResumableUploadSession()
+    s1, c1 = session._prepare_stream(b"hello", 5)
+    assert c1 == 5
+    s2, c2 = session._prepare_stream([b"hello"], 5)
+    assert c2 == 5
+    bio = io.BytesIO(b"hello")
+    s3, c3 = session._prepare_stream(bio, 5)
+    assert c3 == 5
+
+
+def test_sync_reposition_stream_offset_mismatch_buffer():
+    session = ResumableUploadSession()
+    session._buffered_chunk = memoryview(b"12345")
+    session._buffered_chunk_offset = 10
+    seekable = io.BytesIO(b"012345678912345")
+    session._reposition_stream_offset(seekable, 0)
+    assert session._buffered_chunk is None
+    assert seekable.tell() == 0
+
+
+def test_sync_additional_edge_cases():
+    # 1. _enrich_exception
+    session = ResumableUploadSession(resumable_url="https://upload.example.com/1")
+    exc = ValueError("test error")
+    session._enrich_exception(exc)
+    assert exc.upload_url == "https://upload.example.com/1"
+    assert exc.chunk_size == session.chunk_size
+
+    # 2. _notify_progress when upload_url is None
+    session_no_url = ResumableUploadSession()
+    session_no_url._notify_progress(common.ProgressState.STARTED)
+
+    # 3. _IterableStream edge cases: empty chunk in iterator, StopIteration in readinto, and read() with pre-buffered data
+    from google.api_core.resumable_transfer.upload import _IterableStream
+
+    it_stream = _IterableStream(iter([b"ab", b"", b"cd"]))
+    b_arr = bytearray(10)
+    n = it_stream.readinto(b_arr)
+    assert n == 4
+    assert b_arr[:4] == b"abcd"
+
+    it_stream2 = _IterableStream(iter([b"hello world"]))
+    assert it_stream2.read(5) == b"hello"
+    it_stream2.readinto(bytearray(1))
+    assert it_stream2.read(2) == b"wo"
+
+    it_stream3 = _IterableStream(iter([b"", b"test"]))
+    assert it_stream3.read(4) == b"test"
+
+    # 4. RequestException that is not Timeout, ConnectionError, ChunkedEncodingError
+    pred = session._get_retry_predicate()
+    http_err = requests.exceptions.HTTPError("bad request", response=mock.Mock(status_code=400))
+    assert pred(http_err) is False
+
+    # 5. _get_streaming_retry called without on_error argument
+    s_ret = session._get_streaming_retry()
+    assert s_ret is not None
+
+    # 6. Stream without tell attribute in _prepare_stream
+    class StreamNoTell:
+        def read(self, n=-1):
+            return b"stream-no-tell"
+
+    s_no_tell, sz = session._prepare_stream(StreamNoTell(), 14)
+    assert sz == 14
+
+    # 7. Server offset recovery returning FINAL status
+    mock_transport = mock.create_autospec(requests.Session, instance=True)
+    final_query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"final": true}',
+    )
+    mock_transport.request.return_value = final_query_resp
+    session._recover(mock_transport, io.BytesIO(b"data"))
+    assert session.finished
+    assert session.response is not None
+
+    # 8. ProtocolState unknown status error in chunk response & query response
+    from google.api_core.resumable_transfer.upload_state import ProtocolState
+    state = ProtocolState()
+    state._resumable_url = "https://upload.example.com/state"
+    with pytest.raises(ValueError, match="Unknown upload status"):
+        state.process_chunk_response(200, {"X-Goog-Upload-Status": "invalid_status"}, 10)
+
+    with pytest.raises(ValueError, match="Unknown upload status"):
+        state.process_query_response(200, {"X-Goog-Upload-Status": "invalid_status"})
+
+    with pytest.raises(exceptions.UploadCancelledError):
+        state.process_chunk_response(200, {"X-Goog-Upload-Status": "cancelled"}, 10)
+
+    with pytest.raises(exceptions.UploadCancelledError):
+        state.process_query_response(200, {"X-Goog-Upload-Status": "cancelled"})
+

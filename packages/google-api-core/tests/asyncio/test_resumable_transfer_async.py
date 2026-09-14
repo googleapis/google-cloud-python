@@ -1237,3 +1237,329 @@ async def test_async_recover_stream_errors() -> None:
     failing_seek.seek.side_effect = OSError("Seek error")
     with pytest.raises(UnseekableStreamError, match="Failed to seek stream"):
         await session2._recover(sess_transport2, stream_obj=failing_seek)
+
+
+@pytest.mark.asyncio
+async def test_async_operation_cancel_and_base_exception() -> None:
+    """Verifies op.cancel() cancels background task and propagates to progress()."""
+    # 1. upload cancel
+    class SlowResponse(DummyAsyncResponse):
+        async def __aenter__(self):
+            await asyncio.sleep(10.0)
+            return self
+
+    class SlowSession:
+        def request(self, *args, **kwargs):
+            return SlowResponse(200, {}, b"")
+
+    slow_session_transport = SlowSession()
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=slow_session_transport,
+    )
+    op = session.upload(stream=b"data")
+    await asyncio.sleep(0.01)
+    op.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await op
+
+    with pytest.raises(asyncio.CancelledError):
+        async for _ in op.progress():
+            pass
+
+    # 2. resume cancel
+    session_resume = AsyncResumableUploadSession(
+        transport=slow_session_transport,
+    )
+    op_resume = session_resume.resume(
+        upload_url="https://upload.example.com/resumable-123",
+        stream=b"data",
+        chunk_size=1024,
+    )
+    assert session_resume.chunk_size == 1024
+    await asyncio.sleep(0.01)
+    op_resume.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await op_resume
+
+    with pytest.raises(asyncio.CancelledError):
+        async for _ in op_resume.progress():
+            pass
+
+
+def test_async_notify_progress_edge_cases() -> None:
+    """Verifies _notify_progress when upload_url is None and target_queue is None."""
+    session = AsyncResumableUploadSession()
+    session._notify_progress(common.ProgressState.STARTED)
+
+    session_with_url = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
+    session_with_url._notify_progress(common.ProgressState.STARTED, progress_queue=None, queue=None)
+
+
+def test_async_predicate_branches() -> None:
+    """Verifies all branches of _get_retry_predicate and _get_streaming_predicate."""
+    session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
+    retry_pred = session._get_retry_predicate()
+    stream_pred = session._get_streaming_predicate()
+
+    assert retry_pred(exceptions.MissingStatusHeaderError("missing")) is True
+    assert retry_pred(asyncio.TimeoutError()) is True
+    assert retry_pred(aiohttp.ClientConnectionError("conn")) is True
+    assert retry_pred(ValueError("other")) is False
+
+    assert stream_pred(asyncio.TimeoutError()) is True
+    assert stream_pred(aiohttp.ClientConnectionError("conn")) is True
+    assert stream_pred(ValueError("other")) is False
+
+
+def test_async_retry_configuration_conversions() -> None:
+    """Verifies _get_async_retry and _get_async_streaming_retry conversions."""
+    import google.api_core.retry
+    import google.api_core.retry_async
+
+    # start_retry as AsyncRetry
+    async_ret = google.api_core.retry_async.AsyncRetry()
+    cfg1 = ResumableUploadConfig(start_retry=async_ret)
+    s1 = AsyncResumableUploadSession(config=cfg1)
+    assert s1._get_async_retry(is_start=True) is async_ret
+
+    # start_retry as sync Retry
+    sync_ret = google.api_core.retry.Retry()
+    cfg2 = ResumableUploadConfig(start_retry=sync_ret)
+    s2 = AsyncResumableUploadSession(config=cfg2)
+    res_retry = s2._get_async_retry(is_start=True)
+    assert isinstance(res_retry, google.api_core.retry_async.AsyncRetry)
+
+    # retry as AsyncRetry
+    cfg3 = ResumableUploadConfig(retry=async_ret)
+    s3 = AsyncResumableUploadSession(config=cfg3)
+    assert s3._get_async_retry(is_start=False) is async_ret
+
+    # retry as sync Retry
+    cfg4 = ResumableUploadConfig(retry=sync_ret)
+    s4 = AsyncResumableUploadSession(config=cfg4)
+    res_retry2 = s4._get_async_retry(is_start=False)
+    assert isinstance(res_retry2, google.api_core.retry_async.AsyncRetry)
+
+    # retry as AsyncStreamingRetry
+    async_stream_ret = google.api_core.retry.AsyncStreamingRetry()
+    cfg5 = ResumableUploadConfig(retry=async_stream_ret)
+    s5 = AsyncResumableUploadSession(config=cfg5)
+    assert s5._get_async_streaming_retry() is async_stream_ret
+
+
+@pytest.mark.asyncio
+async def test_async_retry_generic_exception() -> None:
+    """Verifies _async_retry retries generic Exception up to max_attempts."""
+    session = AsyncResumableUploadSession()
+    attempts = 0
+
+    async def fail_generic():
+        nonlocal attempts
+        attempts += 1
+        raise KeyError("generic error")
+
+    with pytest.raises(KeyError):
+        await session._async_retry(fail_generic, max_attempts=3, initial_delay=0.01)
+    assert attempts == 3
+
+    # max_attempts=0 loop exit
+    assert await session._async_retry(mock.AsyncMock(), max_attempts=0) is None
+
+
+@pytest.mark.asyncio
+async def test_async_transmit_chunk_stall_and_timeouts() -> None:
+    """Verifies timeouts, deadlines, and stall control inside _transmit_chunk."""
+    # 1. empty bytes from reader_fn
+    session = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
+    resp_done = DummyAsyncResponse(200, {"X-Goog-Upload-Status": "final"}, b"done")
+    sess_transport = DummyAsyncSession([resp_done])
+    async def empty_reader(n: int) -> bytes:
+        return b""
+    t_resp = await session._transmit_chunk(sess_transport, empty_reader, 0)
+    assert session.finished
+
+    # 2. explicit config.timeout and future deadline
+    future = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=60)
+    cfg_timeout = ResumableUploadConfig(timeout=30.0, deadline=future)
+    session_to = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        config=cfg_timeout,
+    )
+    resp_chunk = DummyAsyncResponse(200, {"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "4"}, b"")
+    sess_transport2 = DummyAsyncSession([resp_chunk])
+    async def bytes_reader(n: int) -> bytes:
+        return b"1234"
+    await session_to._transmit_chunk(sess_transport2, bytes_reader, 4)
+
+    # 3. TimeoutError with deadline remaining <= 0 raises DeadlineExceeded
+    session_dl = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        config=ResumableUploadConfig(deadline=future),
+    )
+    class TimeoutTransport:
+        def request(self, *args, **kwargs):
+            raise asyncio.TimeoutError("timed out")
+
+    session_dl._get_deadline_remaining = mock.Mock(return_value=-1.0)
+    with pytest.raises(exceptions.DeadlineExceeded):
+        await session_dl._transmit_chunk(TimeoutTransport(), bytes_reader, 4)
+
+    # 4. TimeoutError with deadline remaining > 0 raises TransferStalledError
+    session_stall_to = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+    )
+    with pytest.raises(exceptions.TransferStalledError):
+        await session_stall_to._transmit_chunk(TimeoutTransport(), bytes_reader, 4)
+
+    # 5. Stall control normal chunk pass and positive lag below timeout
+    cfg_stall2 = ResumableUploadConfig(stall_minimum_rate=1024, stall_timeout=10.0)
+    session_stall2 = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        config=cfg_stall2,
+    )
+    # First chunk: positive lag below stall_timeout (sets _stall_timeout_started)
+    session_stall2._aggregate_lag = 1.0
+    sess_transport4 = DummyAsyncSession([resp_chunk, resp_chunk])
+    await session_stall2._transmit_chunk(sess_transport4, bytes_reader, 4)
+    assert session_stall2._stall_timeout_started is not None
+
+    # Second chunk: _stall_timeout_started is already set, still below stall_timeout
+    await session_stall2._transmit_chunk(sess_transport4, bytes_reader, 4)
+
+    # 6. Stall control lag exceeds stall_timeout
+    cfg_stall = ResumableUploadConfig(stall_minimum_rate=1024, stall_timeout=1.0)
+    session_stall = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        config=cfg_stall,
+    )
+    session_stall._aggregate_lag = 2.0  # Already exceeds stall_timeout
+    sess_transport3 = DummyAsyncSession([resp_chunk])
+    with pytest.raises(exceptions.TransferStalledError, match="Upload stalled: transfer rate remained below"):
+        await session_stall._transmit_chunk(sess_transport3, bytes_reader, 4)
+
+    # 7. Stall control disabled (stall_minimum_rate=0)
+    cfg_no_stall = ResumableUploadConfig(stall_minimum_rate=0)
+    session_no_stall = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        config=cfg_no_stall,
+    )
+    sess_transport_no_stall = DummyAsyncSession([resp_chunk])
+    await session_no_stall._transmit_chunk(sess_transport_no_stall, bytes_reader, 4)
+
+
+@pytest.mark.asyncio
+async def test_async_recover_final_status_and_unseekable_buffer() -> None:
+    """Verifies _recover when query returns FINAL and when server offset is outside buffer."""
+    # 1. Query returns FINAL
+    final_query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"completed",
+    )
+    sess_transport = DummyAsyncSession([final_query_resp])
+    session = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        transport=sess_transport,
+    )
+    await session._recover(sess_transport)
+    assert session.finished
+    assert session.response == b"completed"
+
+    # 2. Server offset outside buffered chunk with unseekable/None stream
+    active_query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "100"},
+        body=b"",
+    )
+    sess_transport2 = DummyAsyncSession([active_query_resp])
+    session2 = AsyncResumableUploadSession(
+        resumable_url="https://upload.example.com/1",
+        transport=sess_transport2,
+    )
+    session2._buffered_chunk = memoryview(b"12345")
+    session2._buffered_chunk_offset = 0  # received (100) is outside 0..5
+    with pytest.raises(UnseekableStreamError, match="Server offset 100 precedes active buffer"):
+        await session2._recover(sess_transport2, stream_obj=None)
+
+
+@pytest.mark.asyncio
+async def test_async_transmit_all_chunks_already_finished() -> None:
+    """Verifies _async_transmit_all_chunks returns None if upload already finished."""
+    session = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
+    session._state._finished = True
+    res = await session._async_transmit_all_chunks(
+        mock.Mock(), mock.Mock(), 0, asyncio.Queue(), None
+    )
+    assert res is None
+
+
+@pytest.mark.asyncio
+async def test_async_upload_and_resume_missing_final_response() -> None:
+    """Verifies ValueError when upload/resume completes without final response."""
+    # 1. upload missing final response
+    session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
+    session._ensure_aiohttp = mock.Mock()
+    session._transport = mock.Mock()
+    session.initiate = mock.AsyncMock()
+    session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    op = session.upload(stream=b"data")
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        await op
+
+    # upload finished True but response is None
+    session._state._finished = True
+    session._response = None
+    session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    op_finished_none = session.upload(stream=b"data")
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        await op_finished_none
+
+    # 2. resume missing final response
+    session_resume = AsyncResumableUploadSession()
+    session_resume._ensure_aiohttp = mock.Mock()
+    session_resume._transport = mock.Mock()
+    session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    op2 = session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        await op2
+
+    # resume finished True but response is None
+    session_resume._state._finished = True
+    session_resume._response = None
+    session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    op_res_finished_none = session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        await op_res_finished_none
+
+
+@pytest.mark.asyncio
+async def test_async_prepare_async_reader_additional_cases() -> None:
+    """Verifies explicit size, stream without tell, and buffered reading from AsyncIterable."""
+    session = AsyncResumableUploadSession()
+
+    # 1. bytes with explicit size
+    r1, s1, _ = session._prepare_async_reader(b"hello", size=5)
+    assert s1 == 5
+    assert await r1(5) == b"hello"
+
+    # 2. sync stream with explicit size and without tell
+    class SyncStreamNoTell:
+        def read(self, n: int) -> bytes:
+            return b"chunk"
+
+    r2, s2, _ = session._prepare_async_reader(SyncStreamNoTell(), size=5)
+    assert s2 == 5
+    assert await r2(5) == b"chunk"
+
+    # 3. AsyncIterable reading with pre-buffered data (len(buffer) >= n)
+    async def byte_generator():
+        yield b"abcdefghij"
+
+    r3, s3, _ = session._prepare_async_reader(byte_generator(), None)
+    c1 = await r3(3)
+    assert c1 == b"abc"
+    c2 = await r3(3)
+    assert c2 == b"def"
+
