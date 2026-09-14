@@ -111,7 +111,9 @@ class ProtocolState(object):
 
         if headers:
             for k, v in headers:
-                req_headers[k] = v.decode("utf-8") if isinstance(v, bytes) else str(v)
+                key = k.decode("utf-8") if isinstance(k, bytes) else str(k)
+                val = v.decode("utf-8") if isinstance(v, bytes) else str(v)
+                req_headers[key] = val
 
         req_headers[common.HEADER_PROTOCOL] = common.PROTOCOL_RESUMABLE
         req_headers[common.HEADER_COMMAND] = common.Command.START.value
