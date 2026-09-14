@@ -32,6 +32,7 @@ from typing import (
     Sequence,
     Tuple,
     Union,
+    cast,
 )
 
 import google.protobuf.message
@@ -196,8 +197,8 @@ class ResumableUploadSession:
             exc: Exception instance to augment with upload_url and chunk_size.
         """
         if hasattr(exc, "__dict__"):
-            exc.upload_url = self.upload_url
-            exc.chunk_size = self.chunk_size
+            setattr(exc, "upload_url", self.upload_url)
+            setattr(exc, "chunk_size", self.chunk_size)
 
     def _notify_progress(self, state: common.ProgressState) -> None:
         """Notifies registered progress callback with current upload status.
@@ -390,7 +391,9 @@ class ResumableUploadSession:
                     )
                 raise exceptions.TransferStalledError(
                     f"Upload stalled: transfer rate remained below {rate} bytes/s "
-                    f"for longer than {self._config.stall_timeout}s."
+                    f"for longer than {self._config.stall_timeout}s.",
+                    upload_url=self.upload_url,
+                    chunk_size=self.chunk_size,
                 )
         else:
             self._stall_timeout_started = None
@@ -419,19 +422,19 @@ class ResumableUploadSession:
 
         self._buffered_chunk = None
         if hasattr(stream, "seekable") and not stream.seekable():
-            err = exceptions.UnseekableStreamError(
-                f"Stream is not seekable. Cannot recover upload to offset {received}."
+            raise exceptions.UnseekableStreamError(
+                f"Stream is not seekable. Cannot recover upload to offset {received}.",
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
             )
-            self._enrich_exception(err)
-            raise err
         try:
             stream.seek(self._start_stream_offset + received)
         except (OSError, AttributeError) as exc:
-            err = exceptions.UnseekableStreamError(
-                f"Failed to seek stream to offset {received}: {exc}"
-            )
-            self._enrich_exception(err)
-            raise err from exc
+            raise exceptions.UnseekableStreamError(
+                f"Failed to seek stream to offset {received}: {exc}",
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
+            ) from exc
 
         return received
 
@@ -551,11 +554,11 @@ class ResumableUploadSession:
                         raise exceptions.DeadlineExceeded(
                             f"Resumable upload deadline {self._config.deadline} exceeded."
                         ) from exc
-                    stalled_err = exceptions.TransferStalledError(
-                        f"Upload stalled: chunk transfer timed out ({exc})."
-                    )
-                    self._enrich_exception(stalled_err)
-                    raise stalled_err from exc
+                    raise exceptions.TransferStalledError(
+                        f"Upload stalled: chunk transfer timed out ({exc}).",
+                        upload_url=self.upload_url,
+                        chunk_size=self.chunk_size,
+                    ) from exc
 
                 is_recoverable = (
                     isinstance(exc, exceptions.GoogleAPICallError)
@@ -828,7 +831,7 @@ class ResumableUploadSession:
             if computed_size is None:
                 computed_size = stream_obj.getbuffer().nbytes
         else:
-            stream_obj = stream
+            stream_obj = cast(BinaryIO, stream)
             if computed_size is None:
                 if hasattr(stream_obj, "getbuffer"):
                     computed_size = stream_obj.getbuffer().nbytes
@@ -888,7 +891,7 @@ def _format_response_payload(
         content = bytes(response)
 
     if isinstance(response_type, type) and issubclass(response_type, proto.Message):
-        return response_type.from_json(content, ignore_unknown_fields=True)
+        return cast(Any, response_type).from_json(content, ignore_unknown_fields=True)
     if isinstance(response_type, type) and issubclass(
         response_type, google.protobuf.message.Message
     ):

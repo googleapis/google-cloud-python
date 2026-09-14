@@ -202,6 +202,16 @@ class AsyncResumableUploadSession:
                 "Please install google-api-core[async_rest]."
             )
 
+    def _enrich_exception(self, exc: BaseException) -> None:
+        """Attaches session diagnostic metadata to an active exception.
+
+        Args:
+            exc: Exception instance to augment with upload_url and chunk_size.
+        """
+        if hasattr(exc, "__dict__"):
+            setattr(exc, "upload_url", self.upload_url)
+            setattr(exc, "chunk_size", self.chunk_size)
+
     def _notify_progress(
         self, state: common.ProgressState, queue: Optional[asyncio.Queue] = None
     ) -> None:
@@ -457,7 +467,9 @@ class AsyncResumableUploadSession:
                                     f"Resumable upload deadline {self._config.deadline} exceeded."
                                 )
                             raise exceptions.TransferStalledError(
-                                f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s."
+                                f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
+                                upload_url=self.upload_url,
+                                chunk_size=self.chunk_size,
                             )
                     else:
                         self._stall_timeout_started = None
@@ -472,21 +484,18 @@ class AsyncResumableUploadSession:
                 )
                 return status_code, resp_headers, resp_body
             except Exception as exc:
-                if hasattr(exc, "__dict__"):
-                    exc.upload_url = self.upload_url
-                    exc.chunk_size = self.chunk_size
+                self._enrich_exception(exc)
                 if isinstance(exc, (asyncio.TimeoutError, exceptions.DeadlineExceeded)):
                     remaining = self._get_deadline_remaining()
                     if remaining is not None and remaining <= 0:
                         raise exceptions.DeadlineExceeded(
                             f"Resumable upload deadline {self._config.deadline} exceeded."
                         ) from exc
-                    stalled_err = exceptions.TransferStalledError(
-                        f"Upload stalled: chunk transfer timed out ({exc})."
-                    )
-                    stalled_err.upload_url = self.upload_url
-                    stalled_err.chunk_size = self.chunk_size
-                    raise stalled_err from exc
+                    raise exceptions.TransferStalledError(
+                        f"Upload stalled: chunk transfer timed out ({exc}).",
+                        upload_url=self.upload_url,
+                        chunk_size=self.chunk_size,
+                    ) from exc
 
                 is_recoverable = (
                     isinstance(exc, exceptions.GoogleAPICallError)
@@ -556,29 +565,26 @@ class AsyncResumableUploadSession:
         self._buffered_chunk = None
         if stream_obj is not None and hasattr(stream_obj, "seek"):
             if hasattr(stream_obj, "seekable") and not stream_obj.seekable():
-                err = exceptions.UnseekableStreamError(
-                    f"Stream is not seekable. Cannot recover upload to offset {received}."
+                raise exceptions.UnseekableStreamError(
+                    f"Stream is not seekable. Cannot recover upload to offset {received}.",
+                    upload_url=self.upload_url,
+                    chunk_size=self.chunk_size,
                 )
-                err.upload_url = self.upload_url
-                err.chunk_size = self.chunk_size
-                raise err
             try:
                 stream_obj.seek(self._start_stream_offset + received)
                 return received
             except (OSError, AttributeError) as exc:
-                err = exceptions.UnseekableStreamError(
-                    f"Failed to seek stream to offset {received}: {exc}"
-                )
-                err.upload_url = self.upload_url
-                err.chunk_size = self.chunk_size
-                raise err from exc
+                raise exceptions.UnseekableStreamError(
+                    f"Failed to seek stream to offset {received}: {exc}",
+                    upload_url=self.upload_url,
+                    chunk_size=self.chunk_size,
+                ) from exc
 
-        err = exceptions.UnseekableStreamError(
-            f"Server offset {received} precedes active buffer. Stream cannot be rewound."
+        raise exceptions.UnseekableStreamError(
+            f"Server offset {received} precedes active buffer. Stream cannot be rewound.",
+            upload_url=self.upload_url,
+            chunk_size=self.chunk_size,
         )
-        err.upload_url = self.upload_url
-        err.chunk_size = self.chunk_size
-        raise err
 
     async def cancel(self, transport: Optional[Any] = None) -> None:
         """Cancels the resumable upload session asynchronously.
@@ -664,9 +670,7 @@ class AsyncResumableUploadSession:
                 progress_queue.put_nowait(_DONE_SENTINEL)
                 return self._response
             except Exception as exc:
-                if hasattr(exc, "__dict__"):
-                    exc.upload_url = self.upload_url
-                    exc.chunk_size = self.chunk_size
+                self._enrich_exception(exc)
                 progress_queue.put_nowait(exc)
                 raise
 
@@ -735,9 +739,7 @@ class AsyncResumableUploadSession:
                 progress_queue.put_nowait(_DONE_SENTINEL)
                 return self._response
             except Exception as exc:
-                if hasattr(exc, "__dict__"):
-                    exc.upload_url = self.upload_url
-                    exc.chunk_size = self.chunk_size
+                self._enrich_exception(exc)
                 progress_queue.put_nowait(exc)
                 raise
 
@@ -764,17 +766,17 @@ class AsyncResumableUploadSession:
             TypeError: If the stream type is not supported.
         """
         computed_size = size
-        stream_obj = None
+        stream_obj: Any = None
 
         if isinstance(stream, bytes):
-            stream_obj = io.BytesIO(stream)
+            bytes_io = io.BytesIO(stream)
             if computed_size is None:
                 computed_size = len(stream)
 
             async def reader(n: int) -> bytes:
-                return stream_obj.read(n)
+                return bytes_io.read(n)
 
-            return reader, computed_size, stream_obj
+            return reader, computed_size, bytes_io
 
         if hasattr(stream, "read") and inspect.iscoroutinefunction(stream.read):
             # Native async reader (e.g. asyncio.StreamReader)
@@ -785,20 +787,20 @@ class AsyncResumableUploadSession:
 
         if hasattr(stream, "read"):
             # Synchronous binary stream: offload blocking reads to worker thread
-            stream_obj = stream
-            if computed_size is None and hasattr(stream, "getbuffer"):
-                computed_size = stream.getbuffer().nbytes
+            sync_stream: Any = stream
+            if computed_size is None and hasattr(sync_stream, "getbuffer"):
+                computed_size = sync_stream.getbuffer().nbytes
 
-            if hasattr(stream_obj, "tell"):
+            if hasattr(sync_stream, "tell"):
                 try:
-                    self._start_stream_offset = stream_obj.tell()
+                    self._start_stream_offset = sync_stream.tell()
                 except (OSError, AttributeError):
                     self._start_stream_offset = 0
 
             async def reader(n: int) -> bytes:
-                return await asyncio.to_thread(stream.read, n)  # type: ignore
+                return await asyncio.to_thread(sync_stream.read, n)
 
-            return reader, computed_size, stream_obj
+            return reader, computed_size, sync_stream
 
         if hasattr(stream, "__aiter__"):
             # Native AsyncIterable[bytes]

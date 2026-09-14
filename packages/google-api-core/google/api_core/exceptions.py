@@ -446,28 +446,39 @@ class AsyncRestUnsupportedParameterError(NotImplementedError):
     pass
 
 
-class TransferStalledError(GoogleAPICallError):
+class ResumableTransferError(GoogleAPICallError):
+    """Base class for resumable transfer errors."""
+
+    upload_url: Optional[str] = None
+    chunk_size: Optional[int] = None
+
+    def __init__(
+        self,
+        message: str,
+        *args,
+        upload_url: Optional[str] = None,
+        chunk_size: Optional[int] = None,
+        **kwargs,
+    ) -> None:
+        super().__init__(message, *args, **kwargs)
+        self.upload_url = upload_url
+        self.chunk_size = chunk_size
+
+
+class TransferStalledError(ResumableTransferError):
     """Raised when upload throughput stays below minimum rate past stall timeout."""
 
-    pass
 
-
-class UnseekableStreamError(GoogleAPICallError):
+class UnseekableStreamError(ResumableTransferError):
     """Raised when server recovery requires rewinding a non-seekable stream."""
 
-    pass
 
-
-class UploadCancelledError(GoogleAPICallError):
+class UploadCancelledError(ResumableTransferError):
     """Raised when the upload is cancelled by the client or server."""
 
-    pass
 
-
-class MissingStatusHeaderError(GoogleAPICallError):
+class MissingStatusHeaderError(ResumableTransferError):
     """Raised when server response lacks the required X-Goog-Upload-Status header."""
-
-    pass
 
 
 def exception_class_for_http_status(status_code):

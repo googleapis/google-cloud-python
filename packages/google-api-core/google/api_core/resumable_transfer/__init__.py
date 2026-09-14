@@ -16,6 +16,7 @@
 
 from google.api_core.exceptions import (
     MissingStatusHeaderError,
+    ResumableTransferError,
     TransferStalledError,
     UnseekableStreamError,
     UploadCancelledError,
@@ -41,6 +42,7 @@ __all__ = [
     "DEFAULT_CHUNK_SIZE",
     "MissingStatusHeaderError",
     "ProgressState",
+    "ResumableTransferError",
     "Status",
     "TransferStalledError",
     "UnseekableStreamError",
