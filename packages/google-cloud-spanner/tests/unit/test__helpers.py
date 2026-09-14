@@ -1862,3 +1862,104 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.months, case["expected_months"])
                     self.assertEqual(result.days, case["expected_days"])
                     self.assertEqual(result.nanos, case["expected_nanos"])
+
+
+class Test_get_type_decoder(unittest.TestCase):
+    def _callFUT(self, *args, **kwargs):
+        from google.cloud.spanner_v1._helpers import _get_type_decoder
+
+        return _get_type_decoder(*args, **kwargs)
+
+    def test_scalar_decoders(self):
+        import datetime
+        import decimal
+        import uuid
+
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+        from google.cloud.spanner_v1._helpers import _SCALAR_DECODERS
+        from google.cloud.spanner_v1.data_types import Interval, JsonObject
+
+        test_cases = [
+            (TypeCode.STRING, Value(string_value="hello"), "hello"),
+            (TypeCode.BYTES, Value(string_value="bytes"), b"bytes"),
+            (TypeCode.BOOL, Value(bool_value=True), True),
+            (TypeCode.INT64, Value(string_value="42"), 42),
+            (TypeCode.FLOAT64, Value(string_value="3.14"), 3.14),
+            (TypeCode.FLOAT32, Value(string_value="2.5"), 2.5),
+            (
+                TypeCode.DATE,
+                Value(string_value="2026-03-15"),
+                datetime.date(2026, 3, 15),
+            ),
+            (
+                TypeCode.TIMESTAMP,
+                Value(string_value="2026-03-15T12:00:00Z"),
+                datetime.datetime(2026, 3, 15, 12, 0, tzinfo=datetime.timezone.utc),
+            ),
+            (TypeCode.NUMERIC, Value(string_value="99.99"), decimal.Decimal("99.99")),
+            (TypeCode.JSON, Value(string_value='{"a": 1}'), JsonObject({"a": 1})),
+            (
+                TypeCode.UUID,
+                Value(string_value="12345678-1234-5678-1234-567812345678"),
+                uuid.UUID("12345678-1234-5678-1234-567812345678"),
+            ),
+            (TypeCode.INTERVAL, Value(string_value="P1Y"), Interval.from_str("P1Y")),
+        ]
+        for type_code, sample_value_pb, expected_result in test_cases:
+            field_type = Type(code=type_code)
+            decoder = self._callFUT(field_type, "column_name")
+            self.assertIs(decoder, _SCALAR_DECODERS[int(type_code)])
+            self.assertEqual(decoder(sample_value_pb), expected_result)
+
+    def test_proto_and_enum(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        proto_type = Type(code=TypeCode.PROTO)
+        proto_decoder = self._callFUT(proto_type, "proto_column")
+        self.assertTrue(callable(proto_decoder))
+
+        enum_type = Type(code=TypeCode.ENUM)
+        enum_decoder = self._callFUT(enum_type, "enum_column")
+        self.assertTrue(callable(enum_decoder))
+        self.assertEqual(enum_decoder(Value(string_value="1")), 1)
+
+    def test_array_and_struct(self):
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
+
+        array_type = Type(
+            code=TypeCode.ARRAY,
+            array_element_type=Type(code=TypeCode.STRING),
+        )
+        array_decoder = self._callFUT(array_type, "array_column")
+        self.assertTrue(callable(array_decoder))
+
+        struct_field = StructType.Field(
+            name="subfield", type_=Type(code=TypeCode.STRING)
+        )
+        struct_type = Type(
+            code=TypeCode.STRUCT,
+            struct_type=StructType(fields=[struct_field]),
+        )
+        struct_decoder = self._callFUT(struct_type, "struct_column")
+        self.assertTrue(callable(struct_decoder))
+
+    def test_unknown_and_unspecified_types(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        unspecified_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
+        with self.assertRaises(ValueError):
+            self._callFUT(unspecified_type, "unspecified")
+
+        unknown_type = mock.Mock(code=999)
+        with self.assertRaises(ValueError):
+            self._callFUT(unknown_type, "unknown")
+
+        invalid_code_type = mock.Mock(code="invalid")
+        with self.assertRaises(ValueError):
+            self._callFUT(invalid_code_type, "invalid")
