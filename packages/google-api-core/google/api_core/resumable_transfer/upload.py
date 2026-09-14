@@ -381,11 +381,7 @@ class ResumableUploadSession:
                 _monotonic_clock() - self._stall_timeout_started
                 >= self._config.stall_timeout
             ):
-                remaining = self._get_deadline_remaining()
-                if remaining is not None and remaining <= 0:
-                    raise exceptions.DeadlineExceeded(
-                        f"Resumable upload deadline {self._config.deadline} exceeded."
-                    )
+                self._get_deadline_remaining()
                 raise exceptions.TransferStalledError(
                     f"Upload stalled: transfer rate remained below {rate} bytes/s "
                     f"for longer than {self._config.stall_timeout}s.",
