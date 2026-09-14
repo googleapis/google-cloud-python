@@ -1,5 +1,6 @@
 import asyncio
 import inspect
+import os
 import time
 
 from google.api_core.exceptions import Aborted
@@ -153,3 +154,44 @@ def _create_experimental_host_transport(
         client_key,
         interceptors=interceptors,
     )
+
+
+_PENDING_DRAIN_TASKS = set()
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=_PENDING_DRAIN_TASKS.clear)
+
+
+def _drain_stream(iterator):
+    """Drain an async stream iterator to EOF in the background.
+
+    Called when PartialResultSet.last is True to allow the caller to return immediately
+    while consuming trailing gRPC metadata so the stream terminates cleanly with status OK.
+    """
+    if iterator is None:
+        return
+
+    async def _drain():
+        try:
+            async for _ in iterator:
+                pass
+        except asyncio.CancelledError:
+            if hasattr(iterator, "cancel"):
+                try:
+                    iterator.cancel()
+                except Exception:
+                    pass
+            raise
+        except Exception:
+            pass
+
+    try:
+        task = asyncio.create_task(_drain())
+        _PENDING_DRAIN_TASKS.add(task)
+        task.add_done_callback(_PENDING_DRAIN_TASKS.discard)
+    except RuntimeError:
+        # Event loop may be closed or not running.
+        if hasattr(iterator, "cancel"):
+            try:
+                iterator.cancel()
+            except Exception:
+                pass

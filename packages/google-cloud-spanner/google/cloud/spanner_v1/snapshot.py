@@ -35,6 +35,7 @@ from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_error_with_request_id,
     _check_rst_stream_error,
+    _drain_stream,
     _make_value_pb,
     _merge_client_context,
     _merge_query_options,
@@ -113,75 +114,98 @@ def _restart_on_unavailable(
     attempt = 1
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
     current_request_id = None
-    while True:
-        try:
-            if iterator is None:
-                with (
-                    trace_call(
-                        trace_name,
-                        session,
-                        attributes,
-                        observability_options=observability_options,
-                        metadata=metadata,
-                    ) as span,
-                    MetricsCapture(resource_info),
-                ):
-                    (
-                        call_metadata,
-                        current_request_id,
-                    ) = request_id_manager.metadata_and_request_id(
-                        nth_request, attempt, metadata, span
-                    )
-                    iterator = CrossSync._Sync_Impl.run_if_async(
-                        method, request=request, metadata=call_metadata
-                    )
-            item: PartialResultSet
-            for item in iterator:
-                item_buffer.append(item)
+    stream_finished = False
+
+    try:
+        while True:
+            try:
+                if iterator is None:
+                    with (
+                        trace_call(
+                            trace_name,
+                            session,
+                            attributes,
+                            observability_options=observability_options,
+                            metadata=metadata,
+                        ) as span,
+                        MetricsCapture(resource_info),
+                    ):
+                        (
+                            call_metadata,
+                            current_request_id,
+                        ) = request_id_manager.metadata_and_request_id(
+                            nth_request, attempt, metadata, span
+                        )
+                        iterator = CrossSync._Sync_Impl.run_if_async(
+                            method, request=request, metadata=call_metadata
+                        )
+                item: PartialResultSet
+                for item in iterator:
+                    item_buffer.append(item)
+                    if transaction is not None:
+                        transaction._update_for_result_set_pb(item)
+                    if (
+                        item._pb is not None
+                        and item._pb.HasField("precommit_token")
+                        and (transaction is not None)
+                    ):
+                        transaction._update_for_precommit_token_pb(item.precommit_token)
+                    try:
+                        item_is_last = item.last
+                    except AttributeError:
+                        item_is_last = False
+
+                    if item_is_last:
+                        stream_finished = True
+                        _drain_stream(iterator)
+                        iterator = None
+                        break
+
+                    if item.resume_token:
+                        resume_token = item.resume_token
+                        break
+            except ServiceUnavailable:
+                del item_buffer[:]
+                request.resume_token = resume_token
                 if transaction is not None:
-                    transaction._update_for_result_set_pb(item)
-                if (
-                    item._pb is not None
-                    and item._pb.HasField("precommit_token")
-                    and (transaction is not None)
-                ):
-                    transaction._update_for_precommit_token_pb(item.precommit_token)
-                if item.resume_token:
-                    resume_token = item.resume_token
-                    break
-        except ServiceUnavailable:
-            del item_buffer[:]
-            request.resume_token = resume_token
-            if transaction is not None:
-                transaction_selector = transaction._build_transaction_selector_pb()
-            request.transaction = transaction_selector
-            attempt += 1
-            iterator = None
-            continue
-        except InternalServerError as exc:
-            resumable_error = any(
-                (
-                    resumable_message in exc.message
-                    for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+                    transaction_selector = transaction._build_transaction_selector_pb()
+                request.transaction = transaction_selector
+                attempt += 1
+                iterator = None
+                continue
+            except InternalServerError as exc:
+                resumable_error = any(
+                    (
+                        resumable_message in exc.message
+                        for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+                    )
                 )
-            )
-            if not resumable_error:
+                if not resumable_error:
+                    raise _augment_error_with_request_id(exc, current_request_id)
+                del item_buffer[:]
+                request.resume_token = resume_token
+                if transaction is not None:
+                    transaction_selector = transaction._build_transaction_selector_pb()
+                attempt += 1
+                request.transaction = transaction_selector
+                iterator = None
+                continue
+            except Exception as exc:
                 raise _augment_error_with_request_id(exc, current_request_id)
+            if len(item_buffer) == 0:
+                iterator = None
+                break
+            for item in item_buffer:
+                yield item
             del item_buffer[:]
-            request.resume_token = resume_token
-            if transaction is not None:
-                transaction_selector = transaction._build_transaction_selector_pb()
-            attempt += 1
-            request.transaction = transaction_selector
-            iterator = None
-            continue
-        except Exception as exc:
-            raise _augment_error_with_request_id(exc, current_request_id)
-        if len(item_buffer) == 0:
-            break
-        for item in item_buffer:
-            yield item
-        del item_buffer[:]
+            if stream_finished:
+                break
+    finally:
+        if iterator is not None and hasattr(iterator, "cancel"):
+            try:
+                iterator.cancel()
+            except Exception:
+                pass
 
 
 class _SnapshotBase(_SessionWrapper):
