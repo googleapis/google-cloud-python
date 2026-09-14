@@ -856,7 +856,8 @@ def _delay_until_retry(exc, deadline, attempts, default_retry_delay=None):
     :param attempts: number of call retries
     """
 
-    cause = exc.errors[0]
+    errors = getattr(exc, "errors", None)
+    cause = errors[0] if errors else exc
     now = time.time()
     if now >= deadline:
         raise
