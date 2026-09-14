@@ -48,11 +48,28 @@ def is_otel_capabilities_enabled(
     Returns:
         bool: True if enabled and installed, False otherwise.
     """
-    is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
-        env_var=env_var,
-        feature_key=_TRACER_PROVIDER,
-        configuration=client_options,
-    )
+    if client_options is not None:
+        tracing_opt = (
+            client_options.get("tracing_enabled")
+            if isinstance(client_options, dict)
+            else getattr(client_options, "tracing_enabled", None)
+        )
+        if tracing_opt is False:
+            return False
+        if tracing_opt is True:
+            is_tracing_enabled = True
+        else:
+            is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+                env_var=env_var,
+                feature_key=_TRACER_PROVIDER,
+                configuration=client_options,
+            )
+    else:
+        is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+            env_var=env_var,
+            feature_key=_TRACER_PROVIDER,
+            configuration=client_options,
+        )
 
     if is_tracing_enabled:
         try:

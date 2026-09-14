@@ -412,6 +412,9 @@ def showcase(
             "opentelemetry-sdk",
             "opentelemetry-instrumentation-grpc",
         )
+        local_core = Path(__file__).parent.parent / "google-api-core"
+        if local_core.exists() and (local_core / "setup.py").exists():
+            session.install("-e", str(local_core))
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [

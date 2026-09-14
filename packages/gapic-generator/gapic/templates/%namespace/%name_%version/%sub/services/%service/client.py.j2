@@ -554,6 +554,18 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 is not None
             ):
                 interceptors.append(otel_interceptor)
+            elif (
+                isinstance(transport_init, type)
+                and issubclass(transport_init, {{ service.grpc_asyncio_transport_name }})
+                and _observability is not None
+                and (
+                    otel_async_interceptors := _observability.get_otel_async_interceptor(
+                        self._client_options
+                    )
+                )
+                is not None
+            ):
+                interceptors.extend(otel_async_interceptors)
             {% endif %}
 
             # initialize with the provided callable or the passed in class
