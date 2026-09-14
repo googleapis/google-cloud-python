@@ -66,3 +66,40 @@ def test_bson_document_writes(client, cleanup, database):
 
     snapshot = doc_ref.get()
     assert snapshot.exists
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_pymongo_document_writes(client, cleanup, database):
+    """Test write operations using native duck-typed PyMongo objects on Enterprise DB."""
+    import decimal
+
+    class DummyPyMongoObjectId:
+        def __init__(self, raw: bytes):
+            self.binary = raw
+
+    class DummyPyMongoDecimal128:
+        def __init__(self, d: decimal.Decimal):
+            self._d = d
+
+        def to_decimal(self):
+            return self._d
+
+    class DummyPyMongoRegex:
+        def __init__(self, pat: str, flags: str):
+            self.pattern = pat
+            self.flags = flags
+
+    collection_id = "pymongo_docs_write_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("pymongo_doc")
+    cleanup(doc_ref.delete)
+
+    payload = {
+        "_id": DummyPyMongoObjectId(bytes.fromhex("507f191e810c19729de860ea")),
+        "price": DummyPyMongoDecimal128(decimal.Decimal("99.99")),
+        "pattern": DummyPyMongoRegex("^test.*", "i"),
+    }
+
+    doc_ref.set(payload)
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists

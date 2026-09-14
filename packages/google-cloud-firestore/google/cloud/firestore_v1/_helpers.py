@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import re
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -44,7 +45,13 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import BSONType
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONObjectID,
+    BSONRegex,
+    BSONType,
+)
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -164,13 +171,28 @@ def verify_path(path, is_collection) -> None:
             raise ValueError(msg)
 
 
-def encode_value(value) -> types.document.Value:
-    """Converts a native Python value into a Firestore protobuf ``Value``.
+_REGEX_FLAG_MAP = (
+    (re.IGNORECASE, "i"),
+    (re.MULTILINE, "m"),
+    (re.DOTALL, "s"),
+    (re.VERBOSE, "x"),
+    (re.LOCALE, "l"),
+)
+
+
+def _extract_regex_options(flags: Union[int, str]) -> str:
+    if isinstance(flags, str):
+        return flags
+    if isinstance(flags, int):
+        return "".join(char for bit, char in _REGEX_FLAG_MAP if flags & bit)
+    return ""
+
+
+def encode_value(value: Any) -> document.Value:
+    """Convert a Python value into a Value protobuf.
 
     Args:
-        value (Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint, \
-            ~google.cloud.firestore_v1.vector.Vector]): A native
+        value (Any): The
             Python value to convert to a protobuf field.
 
     Returns:
@@ -185,6 +207,23 @@ def encode_value(value) -> types.document.Value:
 
     if isinstance(value, BSONType):
         return encode_value(value.to_map_value())
+
+    # Duck-typing input bridge for external PyMongo / bson package objects (zero dependency)
+    binary_attr = getattr(value, "binary", None)
+    if binary_attr is not None and not isinstance(
+        value, (bytes, bytearray, BSONBinary)
+    ):
+        return encode_value(BSONObjectID(binary_attr))
+
+    to_decimal_fn = getattr(value, "to_decimal", None)
+    if callable(to_decimal_fn) and not isinstance(value, BSONDecimal128):
+        return encode_value(BSONDecimal128(to_decimal_fn()))
+
+    pattern_attr = getattr(value, "pattern", None)
+    if pattern_attr is not None and not isinstance(value, (str, BSONRegex)):
+        flags_attr = getattr(value, "flags", "")
+        options_str = _extract_regex_options(flags_attr)
+        return encode_value(BSONRegex(pattern_attr, options_str))
 
     # Must come before int since ``bool`` is an integer subtype.
     if isinstance(value, bool):

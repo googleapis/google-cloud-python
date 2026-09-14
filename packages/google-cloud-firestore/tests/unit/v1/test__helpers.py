@@ -354,6 +354,45 @@ def test_encode_dict_w_many_types():
     assert encoded_dict == expected_dict
 
 
+def test_encode_value_duck_typed_pymongo():
+    import decimal
+
+    from google.cloud.firestore_v1._helpers import encode_value
+
+    class DummyPyMongoObjectId:
+        def __init__(self, raw: bytes):
+            self.binary = raw
+
+    class DummyPyMongoDecimal128:
+        def __init__(self, d: decimal.Decimal):
+            self._d = d
+
+        def to_decimal(self):
+            return self._d
+
+    class DummyPyMongoRegex:
+        def __init__(self, pat: str, flags: str):
+            self.pattern = pat
+            self.flags = flags
+
+    dummy_oid = DummyPyMongoObjectId(bytes.fromhex("507f1f77bcf86cd799439011"))
+    res_oid = encode_value(dummy_oid)
+    assert (
+        res_oid.map_value.fields["__oid__"].string_value == "507f1f77bcf86cd799439011"
+    )
+
+    dummy_dec = DummyPyMongoDecimal128(decimal.Decimal("99.99"))
+    res_dec = encode_value(dummy_dec)
+    assert res_dec.map_value.fields["__decimal128__"].string_value == "99.99"
+
+    dummy_reg = DummyPyMongoRegex("^test$", "i")
+    res_reg = encode_value(dummy_reg)
+    assert (
+        res_reg.map_value.fields["__regex__"].map_value.fields["pattern"].string_value
+        == "^test$"
+    )
+
+
 def test_reference_value_to_document_w_bad_format():
     from google.cloud.firestore_v1._helpers import (
         BAD_REFERENCE_ERROR,
@@ -2572,3 +2611,17 @@ def _make_field_path(*fields):
     from google.cloud.firestore_v1 import field_path
 
     return field_path.FieldPath(*fields)
+
+
+def test_encode_value_w_compiled_regex_flags():
+    import re
+
+    from google.cloud.firestore_v1._helpers import encode_value
+
+    compiled_re = re.compile("abc", re.I | re.M)
+    encoded = encode_value(compiled_re)
+    # Checks that compiled regex integer flags translate to 'im' options
+    fields = encoded.map_value.fields
+    assert fields["__regex__"].map_value.fields["pattern"].string_value == "abc"
+    assert "i" in fields["__regex__"].map_value.fields["options"].string_value
+    assert "m" in fields["__regex__"].map_value.fields["options"].string_value
