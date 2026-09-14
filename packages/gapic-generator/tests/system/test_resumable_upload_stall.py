@@ -64,7 +64,7 @@ def test_resumable_upload_stall_control_success(intercepted_resumable_upload_res
     # Stall control: 100 bytes/s minimum rate, 5s timeout -> fast upload succeeds easily
     config = ResumableUploadConfig(
         chunk_size=512,
-        stall_min_rate=100.0,
+        stall_minimum_rate=100.0,
         stall_timeout=5.0,
     )
 
@@ -96,7 +96,7 @@ def test_resumable_upload_stall_control_triggers_abort(intercepted_resumable_upl
 
     config = ResumableUploadConfig(
         chunk_size=512,
-        stall_min_rate=10_000_000.0,  # 10 MB/s minimum
+        stall_minimum_rate=10_000_000.0,  # 10 MB/s minimum
         stall_timeout=0.5,            # Abort if lagging for > 500ms
         headers=scenario_headers,
     )
@@ -158,7 +158,7 @@ def test_resumable_upload_stall_vs_deadline_conversion(intercepted_resumable_upl
     future_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=10.0)
     config_stall = ResumableUploadConfig(
         chunk_size=512,
-        stall_min_rate=10_000_000.0,
+        stall_minimum_rate=10_000_000.0,
         stall_timeout=0.4,
         deadline=future_deadline,
         headers=scenario_headers,
@@ -177,7 +177,7 @@ def test_resumable_upload_stall_vs_deadline_conversion(intercepted_resumable_upl
     near_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(milliseconds=300)
     config_deadline = ResumableUploadConfig(
         chunk_size=512,
-        stall_min_rate=10_000_000.0,
+        stall_minimum_rate=10_000_000.0,
         stall_timeout=0.4,
         deadline=near_deadline,
         headers=scenario_headers,
