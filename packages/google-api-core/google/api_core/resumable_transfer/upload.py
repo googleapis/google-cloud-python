@@ -833,6 +833,8 @@ class ResumableUploadSession:
             Tuple of (prepared BinaryIO stream, computed total size).
         """
         computed_size = size
+        if isinstance(stream, (str, dict)):
+            raise TypeError(f"Unsupported stream type: {type(stream)}")
         if isinstance(stream, bytes):
             stream_obj: BinaryIO = io.BytesIO(stream)
             if computed_size is None:
@@ -841,7 +843,7 @@ class ResumableUploadSession:
             stream_obj = io.BytesIO(b"".join(stream))
             if computed_size is None:
                 computed_size = stream_obj.getbuffer().nbytes
-        else:
+        elif hasattr(stream, "read"):
             stream_obj = cast(BinaryIO, stream)
             if computed_size is None:
                 if hasattr(stream_obj, "getbuffer"):
@@ -855,6 +857,8 @@ class ResumableUploadSession:
                     stream_obj.seek(0, io.SEEK_END)
                     computed_size = stream_obj.tell() - cur
                     stream_obj.seek(cur)
+        else:
+            raise TypeError(f"Unsupported stream type: {type(stream)}")
 
         if hasattr(stream_obj, "tell"):
             try:

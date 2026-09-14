@@ -725,3 +725,27 @@ def test_sync_response_type_raw_response():
     )
     resp = session.upload(stream=b"payload")
     assert resp is chunk_resp
+
+
+def test_sync_retry_predicate_allows_timeout_with_stall_control():
+    config = ResumableUploadConfig(stall_minimum_rate=1024, stall_timeout=1.0)
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+    )
+    predicate = session._get_retry_predicate()
+    assert predicate(requests.exceptions.Timeout("Read timed out")) is True
+
+
+
+@pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
+def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=session_transport,
+    )
+    with pytest.raises(TypeError, match="Unsupported stream type"):
+        session.upload(stream=invalid_stream)
+
+

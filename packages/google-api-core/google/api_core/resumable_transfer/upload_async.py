@@ -655,12 +655,12 @@ class AsyncResumableUploadSession:
             raise ValueError("An aiohttp.ClientSession transport must be provided.")
 
         progress_queue: asyncio.Queue = asyncio.Queue()
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(
+            stream, size
+        )
 
         async def _run():
             try:
-                reader_fn, computed_size, stream_obj = self._prepare_async_reader(
-                    stream, size
-                )
                 await self.initiate(
                     transport=sess,
                     request_body=request_body,
@@ -726,12 +726,12 @@ class AsyncResumableUploadSession:
 
         self._state._resumable_url = upload_url
         progress_queue: asyncio.Queue = asyncio.Queue()
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(
+            stream, size
+        )
 
         async def _run():
             try:
-                reader_fn, computed_size, stream_obj = self._prepare_async_reader(
-                    stream, size
-                )
                 await self._recover(sess, stream_obj)
                 self._notify_progress(
                     common.ProgressState.OFFSET_RECEIVED, progress_queue
@@ -780,6 +780,9 @@ class AsyncResumableUploadSession:
             TypeError: If the stream type is not supported.
         """
         computed_size = size
+
+        if isinstance(stream, (str, dict)):
+            raise TypeError(f"Unsupported stream type: {type(stream)}")
 
         if isinstance(stream, bytes):
             bytes_io = io.BytesIO(stream)

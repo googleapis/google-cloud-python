@@ -984,3 +984,30 @@ async def test_async_operation_error_propagation_in_progress() -> None:
 
     with pytest.raises(exceptions.Forbidden):
         await upload_op
+
+
+@pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
+def test_async_upload_rejects_invalid_stream_types(invalid_stream: Any) -> None:
+    """Verifies that str, dict, and non-stream objects raise TypeError synchronously on upload()."""
+    async_transport = DummyAsyncSession([])
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+    )
+    with pytest.raises(TypeError, match="Unsupported stream type"):
+        session.upload(stream=invalid_stream)
+
+
+@pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
+def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
+    """Verifies that str, dict, and non-stream objects raise TypeError synchronously on resume()."""
+    async_transport = DummyAsyncSession([])
+    session = AsyncResumableUploadSession(
+        transport=async_transport,
+    )
+    with pytest.raises(TypeError, match="Unsupported stream type"):
+        session.resume(
+            upload_url="https://upload.example.com/resumable-async",
+            stream=invalid_stream,
+        )
+
