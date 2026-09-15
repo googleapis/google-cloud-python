@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import asyncio
+import functools
 import json
 import math
 import os
@@ -61,6 +62,9 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
+
+# NOTE: Isolated import block preserves import shielding for service_account
+# to prevent ruff/flake8 sorting conflicts between local hooks and CI environments.
 from google.oauth2 import service_account
 
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
@@ -473,6 +477,93 @@ def test_secret_manager_service_client_client_options(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience="https://language.googleapis.com",
+        )
+
+
+def test_secret_manager_service_client_otel_channel_injection_enabled():
+    mock_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_interceptor
+    with (
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = SecretManagerServiceClient(transport="grpc")
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert "interceptors" in called_kwargs
+        assert called_kwargs["interceptors"] == [mock_interceptor]
+
+
+def test_secret_manager_service_client_otel_channel_injection_disabled():
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = None
+    with (
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = SecretManagerServiceClient(transport="grpc")
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert not called_kwargs.get("interceptors", [])
+
+
+def test_secret_manager_service_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transports.SecretManagerServiceGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+
+
+def test_secret_manager_service_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transports.SecretManagerServiceGrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
         )
 
 

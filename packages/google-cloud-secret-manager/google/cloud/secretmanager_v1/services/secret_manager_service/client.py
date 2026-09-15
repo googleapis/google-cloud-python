@@ -42,8 +42,13 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    # mypy: _observability was added in google-api-core 2.35.0; guard for older versions
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:
+    _observability = None  # type: ignore[assignment]
 
 from google.cloud.secretmanager_v1 import gapic_version as package_version
 from google.cloud.secretmanager_v1._compat import (
@@ -608,18 +613,36 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., SecretManagerServiceTransport], transport)
             )
+            # When OpenTelemetry tracing is enabled, obtain the channel interceptor
+            # and pass it to the transport.
+            interceptors = []
+            if (
+                transport_init is SecretManagerServiceGrpcTransport
+                and _observability is not None
+                and (
+                    otel_interceptor := _observability.get_otel_interceptor(
+                        self._client_options
+                    )
+                )
+                is not None
+            ):
+                interceptors.append(otel_interceptor)
+
             # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "credentials_file": self._client_options.credentials_file,
+                "host": self._api_endpoint,
+                "scopes": self._client_options.scopes,
+                "client_cert_source_for_mtls": self._client_cert_source,
+                "quota_project_id": self._client_options.quota_project_id,
+                "client_info": client_info,
+                "always_use_jwt_access": True,
+                "api_audience": self._client_options.api_audience,
+                **({"interceptors": interceptors} if interceptors else {}),
+            }
+
+            self._transport = transport_init(**transport_kwargs)
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
