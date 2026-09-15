@@ -296,6 +296,64 @@ def test_encode_value_w_bad_type():
         encode_value(value)
 
 
+def test_encode_value_bson_types():
+    from google.cloud.firestore_v1._helpers import encode_value
+    from google.cloud.firestore_v1.bson import (
+        BSONBinary,
+        BSONDecimal128,
+        BSONInt32,
+        BSONMaxKey,
+        BSONMinKey,
+        BSONObjectID,
+        BSONRegex,
+        BSONTimestamp,
+    )
+
+    oid = BSONObjectID("507f1f77bcf86cd799439011")
+    res_oid = encode_value(oid)
+    assert res_oid.map_value.fields["__oid__"].string_value == "507f1f77bcf86cd799439011"
+
+    dec = BSONDecimal128("12.34")
+    res_dec = encode_value(dec)
+    assert res_dec.map_value.fields["__decimal128__"].string_value == "12.34"
+
+    int32 = BSONInt32(42)
+    res_int32 = encode_value(int32)
+    assert res_int32.map_value.fields["__int__"].integer_value == 42
+
+    ts = BSONTimestamp(100, 200)
+    res_ts = encode_value(ts)
+    assert res_ts.map_value.fields["__timestamp__"].map_value.fields["seconds"].integer_value == 100
+    assert res_ts.map_value.fields["__timestamp__"].map_value.fields["increment"].integer_value == 200
+
+    reg = BSONRegex("pat", "i")
+    res_reg = encode_value(reg)
+    assert res_reg.map_value.fields["__regex__"].map_value.fields["pattern"].string_value == "pat"
+
+    bin_val = BSONBinary(b"data", subtype=3)
+    res_bin = encode_value(bin_val)
+    assert res_bin.map_value.fields["__binary__"].map_value.fields["sub_type"].integer_value == 3
+    assert res_bin.map_value.fields["__binary__"].map_value.fields["bytes"].bytes_value == b"data"
+
+    min_val = BSONMinKey()
+    res_min = encode_value(min_val)
+    assert res_min.map_value.fields["__minkey__"].integer_value == 1
+
+    max_val = BSONMaxKey()
+    res_max = encode_value(max_val)
+    assert res_max.map_value.fields["__maxkey__"].integer_value == 1
+
+
+def test_decode_dict_malformed_bson_fallback():
+    from google.cloud.firestore_v1._helpers import decode_dict
+    from google.cloud.firestore_v1.types import document
+
+    # Invalid payload schema gracefully falls back to returning raw dict
+    malformed = {"__oid__": document.Value(integer_value=12345)}  # should be string_value
+    decoded = decode_dict(malformed, client=None, decode_bson=True)
+    assert decoded == {"__oid__": 12345}
+
+
 def test_encode_dict_w_many_types():
     from google.protobuf import struct_pb2, timestamp_pb2
 

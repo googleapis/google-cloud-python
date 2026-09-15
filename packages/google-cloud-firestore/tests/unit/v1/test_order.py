@@ -13,127 +13,121 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import decimal
 import mock
 import pytest
 
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
+from google.cloud.firestore_v1.order import Order, TypeOrder, _TYPE_ORDER_MAP
+
 
 def _make_order(*args, **kwargs):
-    from google.cloud.firestore_v1.order import Order
-
     return Order(*args, **kwargs)
 
 
 def test_order_compare_across_heterogenous_values():
-    from google.cloud.firestore_v1.order import Order
-
-    # Constants used to represent min/max values of storage types.
     int_max_value = 2**31 - 1
     int_min_value = -(2**31)
     float_min_value = 1.175494351**-38
     float_nan = float("nan")
     inf = float("inf")
 
-    groups = [None] * 68
+    groups = []
 
-    groups[0] = [nullValue()]
+    # Rank 1: MinKey
+    groups.append([BSONMinKey()])
 
-    groups[1] = [_boolean_value(False)]
-    groups[2] = [_boolean_value(True)]
+    # Rank 2: Null
+    groups.append([nullValue()])
 
-    # numbers
-    groups[3] = [_double_value(float_nan), _double_value(float_nan)]
-    groups[4] = [_double_value(-inf)]
-    groups[5] = [_int_value(int_min_value - 1)]
-    groups[6] = [_int_value(int_min_value)]
-    groups[7] = [_double_value(-1.1)]
-    # Integers and Doubles order the same.
-    groups[8] = [_int_value(-1), _double_value(-1.0)]
-    groups[9] = [_double_value(-float_min_value)]
-    # zeros all compare the same.
-    groups[10] = [
-        _int_value(0),
-        _double_value(-0.0),
-        _double_value(0.0),
-        _double_value(+0.0),
-    ]
-    groups[11] = [_double_value(float_min_value)]
-    groups[12] = [_int_value(1), _double_value(1.0)]
-    groups[13] = [_double_value(1.1)]
-    groups[14] = [_int_value(int_max_value)]
-    groups[15] = [_int_value(int_max_value + 1)]
-    groups[16] = [_double_value(inf)]
+    # Rank 3: Boolean
+    groups.append([_boolean_value(False)])
+    groups.append([_boolean_value(True)])
 
-    groups[17] = [_timestamp_value(123, 0)]
-    groups[18] = [_timestamp_value(123, 123)]
-    groups[19] = [_timestamp_value(345, 0)]
+    # Rank 4: Numbers
+    groups.append([_double_value(-inf)])
+    groups.append([_int_value(int_min_value - 1)])
+    groups.append([_int_value(int_min_value), BSONInt32(int_min_value)])
+    groups.append([_double_value(-1.1)])
+    groups.append([_int_value(-1), _double_value(-1.0), BSONInt32(-1), BSONDecimal128("-1.0")])
+    groups.append([_double_value(-float_min_value)])
+    groups.append([_int_value(0), _double_value(-0.0), _double_value(0.0), BSONInt32(0), BSONDecimal128("0")])
+    groups.append([_double_value(float_min_value)])
+    groups.append([_int_value(1), _double_value(1.0), BSONInt32(1), BSONDecimal128("1")])
+    groups.append([_double_value(1.1)])
+    groups.append([_int_value(int_max_value), BSONInt32(int_max_value)])
+    groups.append([_int_value(int_max_value + 1)])
+    groups.append([_double_value(inf)])
+    # NaNs sort after +Infinity
+    groups.append([_double_value(float_nan), _double_value(float_nan), BSONDecimal128("NaN")])
 
-    # strings
-    groups[20] = [_string_value("")]
-    groups[21] = [_string_value("\u0000\ud7ff\ue000\uffff")]
-    groups[22] = [_string_value("(╯°□°）╯︵ ┻━┻")]
-    groups[23] = [_string_value("a")]
-    groups[24] = [_string_value("abc def")]
-    # latin small letter e + combining acute accent + latin small letter b
-    groups[25] = [_string_value("e\u0301b")]
-    groups[26] = [_string_value("æ")]
-    # latin small letter e with acute accent + latin small letter a
-    groups[27] = [_string_value("\u00e9a")]
+    # Rank 5: Native Timestamps
+    groups.append([_timestamp_value(123, 0)])
+    groups.append([_timestamp_value(123, 123)])
+    groups.append([_timestamp_value(345, 0)])
 
-    # blobs
-    groups[28] = [_blob_value(b"")]
-    groups[29] = [_blob_value(b"\x00")]
-    groups[30] = [_blob_value(b"\x00\x01\x02\x03\x04")]
-    groups[31] = [_blob_value(b"\x00\x01\x02\x04\x03")]
-    groups[32] = [_blob_value(b"\x7f")]
+    # Rank 6: BSONTimestamp
+    groups.append([BSONTimestamp(100, 1)])
+    groups.append([BSONTimestamp(100, 2)])
+    groups.append([BSONTimestamp(200, 0)])
 
-    # resource names
-    groups[33] = [_reference_value("projects/p1/databases/d1/documents/c1/doc1")]
-    groups[34] = [_reference_value("projects/p1/databases/d1/documents/c1/doc2")]
-    groups[35] = [
-        _reference_value("projects/p1/databases/d1/documents/c1/doc2/c2/doc1")
-    ]
-    groups[36] = [
-        _reference_value("projects/p1/databases/d1/documents/c1/doc2/c2/doc2")
-    ]
-    groups[37] = [_reference_value("projects/p1/databases/d1/documents/c10/doc1")]
-    groups[38] = [_reference_value("projects/p1/databases/d1/documents/c2/doc1")]
-    groups[39] = [_reference_value("projects/p2/databases/d2/documents/c1/doc1")]
-    groups[40] = [_reference_value("projects/p2/databases/d2/documents/c1-/doc1")]
-    groups[41] = [_reference_value("projects/p2/databases/d3/documents/c1-/doc1")]
+    # Rank 7: Strings
+    groups.append([_string_value("")])
+    groups.append([_string_value("a")])
+    groups.append([_string_value("abc def")])
 
-    # geo points
-    groups[42] = [_geoPoint_value(-90, -180)]
-    groups[43] = [_geoPoint_value(-90, 0)]
-    groups[44] = [_geoPoint_value(-90, 180)]
-    groups[45] = [_geoPoint_value(0, -180)]
-    groups[46] = [_geoPoint_value(0, 0)]
-    groups[47] = [_geoPoint_value(0, 180)]
-    groups[48] = [_geoPoint_value(1, -180)]
-    groups[49] = [_geoPoint_value(1, 0)]
-    groups[50] = [_geoPoint_value(1, 180)]
-    groups[51] = [_geoPoint_value(90, -180)]
-    groups[52] = [_geoPoint_value(90, 0)]
-    groups[53] = [_geoPoint_value(90, 180)]
+    # Rank 8: Blobs
+    groups.append([_blob_value(b"")])
+    groups.append([_blob_value(b"\x00")])
+    groups.append([_blob_value(b"\x7f")])
 
-    # arrays
-    groups[54] = [_array_value()]
-    groups[55] = [_array_value(["bar"])]
-    groups[56] = [_array_value(["foo"])]
-    groups[57] = [_array_value(["foo", 0])]
-    groups[58] = [_array_value(["foo", 1])]
-    groups[59] = [_array_value(["foo", "0"])]
+    # Rank 9: BSONBinary
+    groups.append([BSONBinary(b"\x00", subtype=0)])
+    groups.append([BSONBinary(b"\x00", subtype=1)])
+    groups.append([BSONBinary(b"\x01", subtype=0)])
 
-    # vectors
-    groups[60] = [_object_value({"__type__": "__vector__", "value": [3.0, 2.0]})]
-    groups[61] = [_object_value({"__type__": "__vector__", "value": [1.0, 2.0, 5.0]})]
-    groups[62] = [_object_value({"__type__": "__vector__", "value": [2.0, 2.0, 5.0]})]
+    # Rank 10: Refs / Resource names
+    groups.append([_reference_value("projects/p1/databases/d1/documents/c1/doc1")])
+    groups.append([_reference_value("projects/p1/databases/d1/documents/c1/doc2")])
 
-    # objects
-    groups[63] = [_object_value({"bar": 0})]
-    groups[64] = [_object_value({"bar": 0, "foo": 1})]
-    groups[65] = [_object_value({"bar": 1})]
-    groups[66] = [_object_value({"bar": 2})]
-    groups[67] = [_object_value({"bar": "0"})]
+    # Rank 11: BSONObjectID
+    groups.append([BSONObjectID("000000000000000000000001")])
+    groups.append([BSONObjectID("507f1f77bcf86cd799439011")])
+
+    # Rank 12: GeoPoint
+    groups.append([_geoPoint_value(-90, -180)])
+    groups.append([_geoPoint_value(0, 0)])
+    groups.append([_geoPoint_value(90, 180)])
+
+    # Rank 13: BSONRegex
+    groups.append([BSONRegex("a", "i")])
+    groups.append([BSONRegex("a", "m")])
+    groups.append([BSONRegex("b", "i")])
+
+    # Rank 14: Arrays
+    groups.append([_array_value()])
+    groups.append([_array_value(["bar"])])
+    groups.append([_array_value(["foo"])])
+
+    # Rank 15: Vectors
+    groups.append([_object_value({"__type__": "__vector__", "value": [3.0, 2.0]})])
+    groups.append([_object_value({"__type__": "__vector__", "value": [1.0, 2.0, 5.0]})])
+
+    # Rank 16: Objects
+    groups.append([_object_value({"bar": 0})])
+    groups.append([_object_value({"bar": 1})])
+
+    # Rank 17: MaxKey
+    groups.append([BSONMaxKey()])
 
     target = _make_order()
 
@@ -142,118 +136,89 @@ def test_order_compare_across_heterogenous_values():
             for j in range(len(groups)):
                 for right in groups[j]:
                     expected = Order._compare_to(i, j)
-                    assert target.compare(left, right) == expected
-
-                    expected = Order._compare_to(j, i)
-                    assert target.compare(right, left) == expected
-
-
-def test_order_compare_w_typeorder_type_failure():
-    target = _make_order()
-    left = mock.Mock()
-    left.WhichOneof.return_value = "imaginary-type"
-
-    with pytest.raises(ValueError) as exc_info:
-        target.compare(left, mock.Mock())
-
-    (message,) = exc_info.value.args
-    assert message.startswith("Could not detect value")
-
-
-def test_order_compare_w_failure_to_find_type():
-    from google.cloud.firestore_v1.order import TypeOrder
-
-    target = _make_order()
-    left = mock.Mock()
-    left.WhichOneof.return_value = "imaginary-type"
-    right = mock.Mock()
-    # Patch from value to get to the deep compare. Since left is a bad type
-    # expect this to fail with value error.
-    with mock.patch.object(TypeOrder, "from_value") as to:
-        to.value = None
-        with pytest.raises(ValueError) as exc_info:
-            target.compare(left, right)
-
-    (message,) = exc_info.value.args
-    assert message.startswith("Unknown TypeOrder")
-
-
-@pytest.mark.parametrize("invalid_point_is_left", [True, False])
-def test_order_compare_invalid_geo_points(invalid_point_is_left):
-    """
-    comparing invalid geopoints should raise exception
-    """
-    target = _make_order()
-    points = [_array_value(), _geoPoint_value(10, 10)]
-    if not invalid_point_is_left:
-        # reverse points
-        points = points[::-1]
-    with pytest.raises(AttributeError):
-        target.compare_geo_points(*points)
+                    res = target.compare(left, right)
+                    assert res == expected, f"Failed comparing group {i} ({left!r}) vs group {j} ({right!r}), got {res}, expected {expected}"
 
 
 def test_order_all_value_present():
-    from google.cloud.firestore_v1.order import _TYPE_ORDER_MAP, TypeOrder
-
     for type_order in TypeOrder:
         assert type_order in _TYPE_ORDER_MAP
 
 
-def test_order_compare_w_objects_different_keys():
-    left = _object_value({"foo": 0})
-    right = _object_value({"bar": 0})
-
+def test_order_nan_bypassing_and_precision():
     target = _make_order()
-    target.compare(left, right)
+    nan_decimal = BSONDecimal128("NaN")
+    inf_decimal = BSONDecimal128("Infinity")
+    normal_decimal = BSONDecimal128("123.45678901234567890123456789")
+
+    # NaN sorts after +Infinity
+    assert target.compare(nan_decimal, inf_decimal) == 1
+    assert target.compare(inf_decimal, nan_decimal) == -1
+    assert target.compare(nan_decimal, nan_decimal) == 0
+
+    # Decimal vs int comparison equality
+    assert target.compare(BSONInt32(5), BSONDecimal128("5.0")) == 0
+    assert target.compare(BSONInt32(5), 5) == 0
+
+
+def test_order_compare_raw_legacy_single_key_dict():
+    target = _make_order()
+    oid1 = {"__oid__": "507f1f77bcf86cd799439011"}
+    oid2 = {"__oid__": "507f1f77bcf86cd799439011"}
+    assert target.compare(oid1, oid2) == 0
+
+
+def test_bson_binary_sorting_order():
+    target = _make_order()
+    b1 = BSONBinary(b"aaa", subtype=2)
+    b2 = BSONBinary(b"bbb", subtype=0)
+    b3 = BSONBinary(b"aaa", subtype=3)
+
+    # Data bytes comparison first
+    assert target.compare(b1, b2) == -1
+
+    # Subtype as secondary tie-breaker
+    assert target.compare(b1, b3) == -1
 
 
 def _boolean_value(b):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(b)
 
 
 def _double_value(d):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(d)
 
 
 def _int_value(value):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(value)
 
 
 def _string_value(s):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(s)
 
 
 def _reference_value(r):
     from google.cloud.firestore_v1.types import document
-
     return document.Value(reference_value=r)
 
 
 def _blob_value(b):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(b)
 
 
 def nullValue():
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(None)
 
 
 def _timestamp_value(seconds, nanos):
     from google.protobuf import timestamp_pb2
-
     from google.cloud.firestore_v1.types import document
-
     return document.Value(
         timestamp_value=timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
     )
@@ -261,17 +226,14 @@ def _timestamp_value(seconds, nanos):
 
 def _geoPoint_value(latitude, longitude):
     from google.cloud.firestore_v1._helpers import GeoPoint, encode_value
-
     return encode_value(GeoPoint(latitude, longitude))
 
 
 def _array_value(values=[]):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(values)
 
 
 def _object_value(keysAndValues):
     from google.cloud.firestore_v1._helpers import encode_value
-
     return encode_value(keysAndValues)

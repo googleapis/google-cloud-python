@@ -31,6 +31,16 @@ from google.cloud.firestore_v1._helpers import (
     ReadAfterWriteError,
     WriteOption,
 )
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_client import AsyncClient
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
@@ -147,6 +157,14 @@ __all__: List[str] = [
     "async_transactional",
     "AsyncTransaction",
     "AsyncWriteBatch",
+    "BSONBinary",
+    "BSONDecimal128",
+    "BSONInt32",
+    "BSONMaxKey",
+    "BSONMinKey",
+    "BSONObjectID",
+    "BSONRegex",
+    "BSONTimestamp",
     "Client",
     "CountAggregation",
     "CollectionGroup",

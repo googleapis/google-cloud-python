@@ -106,6 +106,18 @@ class _NumericValue(object):
     """
 
     def __init__(self, value) -> None:
+        from google.cloud.firestore_v1.bson import (
+            BSONBinary,
+            BSONDecimal128,
+            BSONInt32,
+            BSONMaxKey,
+            BSONMinKey,
+            BSONObjectID,
+            BSONRegex,
+            BSONTimestamp,
+        )
+        if isinstance(value, (BSONObjectID, BSONDecimal128, BSONTimestamp, BSONRegex, BSONBinary, BSONInt32, BSONMinKey, BSONMaxKey)):
+            raise TypeError("Numeric transforms (Increment, Maximum, Minimum) do not support BSON types.")
         if not isinstance(value, (int, float)):
             raise ValueError("Pass an integer / float value.")
 
