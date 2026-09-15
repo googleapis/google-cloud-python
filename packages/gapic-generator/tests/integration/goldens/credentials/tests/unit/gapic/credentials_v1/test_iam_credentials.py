@@ -751,9 +751,8 @@ def test_iam_credentials_client_client_options_from_dict():
 
 
 def test_iam_credentials_client_otel_channel_injection_enabled():
-    mock_interceptor = mock.Mock()
     mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = mock_interceptor
+    mock_obs.is_otel_capabilities_enabled.return_value = True
     with (
         mock.patch(
             "google.iam.credentials_v1.services.iam_credentials.client._observability",
@@ -765,14 +764,14 @@ def test_iam_credentials_client_otel_channel_injection_enabled():
     ):
         client = IAMCredentialsClient(transport="grpc")
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert called_kwargs.get("interceptors") == [mock_interceptor]
+        assert called_kwargs.get("client_options") == client._client_options
 
 
 def test_iam_credentials_client_otel_channel_injection_disabled():
     mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = None
+    mock_obs.is_otel_capabilities_enabled.return_value = False
     with (
         mock.patch(
             "google.iam.credentials_v1.services.iam_credentials.client._observability",
@@ -784,9 +783,9 @@ def test_iam_credentials_client_otel_channel_injection_disabled():
     ):
         client = IAMCredentialsClient(transport="grpc")
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert not called_kwargs.get("interceptors", [])
+        assert not called_kwargs.get("client_options")
 
 
 def test_iam_credentials_grpc_transport_channel_interceptors():
@@ -813,6 +812,42 @@ def test_iam_credentials_grpc_transport_channel_interceptors():
 
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_iam_credentials_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.iam.credentials_v1.services.iam_credentials.transports.grpc._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.IAMCredentialsGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.IAMCredentialsGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
         )
         assert transport.grpc_channel == mock_channel
 

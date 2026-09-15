@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -67,6 +69,7 @@ class EventarcTransport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -97,6 +100,9 @@ class EventarcTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -134,251 +140,311 @@ class EventarcTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
+        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
+        # with older versions of google-api-core.
+        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # Base transport raises NotImplementedError for abstract kind property.
+            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Remove tracing-specific arguments if older google-api-core is installed
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.get_trigger: gapic_v1.method.wrap_method(
+            self.get_trigger: self._wrap_method(
                 self.get_trigger,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetTrigger",
             ),
-            self.list_triggers: gapic_v1.method.wrap_method(
+            self.list_triggers: self._wrap_method(
                 self.list_triggers,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListTriggers",
             ),
-            self.create_trigger: gapic_v1.method.wrap_method(
+            self.create_trigger: self._wrap_method(
                 self.create_trigger,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateTrigger",
             ),
-            self.update_trigger: gapic_v1.method.wrap_method(
+            self.update_trigger: self._wrap_method(
                 self.update_trigger,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateTrigger",
             ),
-            self.delete_trigger: gapic_v1.method.wrap_method(
+            self.delete_trigger: self._wrap_method(
                 self.delete_trigger,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteTrigger",
             ),
-            self.get_channel: gapic_v1.method.wrap_method(
+            self.get_channel: self._wrap_method(
                 self.get_channel,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetChannel",
             ),
-            self.list_channels: gapic_v1.method.wrap_method(
+            self.list_channels: self._wrap_method(
                 self.list_channels,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListChannels",
             ),
-            self.create_channel_: gapic_v1.method.wrap_method(
+            self.create_channel_: self._wrap_method(
                 self.create_channel_,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateChannel",
             ),
-            self.update_channel: gapic_v1.method.wrap_method(
+            self.update_channel: self._wrap_method(
                 self.update_channel,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateChannel",
             ),
-            self.delete_channel: gapic_v1.method.wrap_method(
+            self.delete_channel: self._wrap_method(
                 self.delete_channel,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteChannel",
             ),
-            self.get_provider: gapic_v1.method.wrap_method(
+            self.get_provider: self._wrap_method(
                 self.get_provider,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetProvider",
             ),
-            self.list_providers: gapic_v1.method.wrap_method(
+            self.list_providers: self._wrap_method(
                 self.list_providers,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListProviders",
             ),
-            self.get_channel_connection: gapic_v1.method.wrap_method(
+            self.get_channel_connection: self._wrap_method(
                 self.get_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetChannelConnection",
             ),
-            self.list_channel_connections: gapic_v1.method.wrap_method(
+            self.list_channel_connections: self._wrap_method(
                 self.list_channel_connections,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListChannelConnections",
             ),
-            self.create_channel_connection: gapic_v1.method.wrap_method(
+            self.create_channel_connection: self._wrap_method(
                 self.create_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateChannelConnection",
             ),
-            self.delete_channel_connection: gapic_v1.method.wrap_method(
+            self.delete_channel_connection: self._wrap_method(
                 self.delete_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection",
             ),
-            self.get_google_channel_config: gapic_v1.method.wrap_method(
+            self.get_google_channel_config: self._wrap_method(
                 self.get_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig",
             ),
-            self.update_google_channel_config: gapic_v1.method.wrap_method(
+            self.update_google_channel_config: self._wrap_method(
                 self.update_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
             ),
-            self.get_message_bus: gapic_v1.method.wrap_method(
+            self.get_message_bus: self._wrap_method(
                 self.get_message_bus,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetMessageBus",
             ),
-            self.list_message_buses: gapic_v1.method.wrap_method(
+            self.list_message_buses: self._wrap_method(
                 self.list_message_buses,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListMessageBuses",
             ),
-            self.list_message_bus_enrollments: gapic_v1.method.wrap_method(
+            self.list_message_bus_enrollments: self._wrap_method(
                 self.list_message_bus_enrollments,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
             ),
-            self.create_message_bus: gapic_v1.method.wrap_method(
+            self.create_message_bus: self._wrap_method(
                 self.create_message_bus,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateMessageBus",
             ),
-            self.update_message_bus: gapic_v1.method.wrap_method(
+            self.update_message_bus: self._wrap_method(
                 self.update_message_bus,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateMessageBus",
             ),
-            self.delete_message_bus: gapic_v1.method.wrap_method(
+            self.delete_message_bus: self._wrap_method(
                 self.delete_message_bus,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteMessageBus",
             ),
-            self.get_enrollment: gapic_v1.method.wrap_method(
+            self.get_enrollment: self._wrap_method(
                 self.get_enrollment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetEnrollment",
             ),
-            self.list_enrollments: gapic_v1.method.wrap_method(
+            self.list_enrollments: self._wrap_method(
                 self.list_enrollments,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListEnrollments",
             ),
-            self.create_enrollment: gapic_v1.method.wrap_method(
+            self.create_enrollment: self._wrap_method(
                 self.create_enrollment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateEnrollment",
             ),
-            self.update_enrollment: gapic_v1.method.wrap_method(
+            self.update_enrollment: self._wrap_method(
                 self.update_enrollment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateEnrollment",
             ),
-            self.delete_enrollment: gapic_v1.method.wrap_method(
+            self.delete_enrollment: self._wrap_method(
                 self.delete_enrollment,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteEnrollment",
             ),
-            self.get_pipeline: gapic_v1.method.wrap_method(
+            self.get_pipeline: self._wrap_method(
                 self.get_pipeline,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetPipeline",
             ),
-            self.list_pipelines: gapic_v1.method.wrap_method(
+            self.list_pipelines: self._wrap_method(
                 self.list_pipelines,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListPipelines",
             ),
-            self.create_pipeline: gapic_v1.method.wrap_method(
+            self.create_pipeline: self._wrap_method(
                 self.create_pipeline,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreatePipeline",
             ),
-            self.update_pipeline: gapic_v1.method.wrap_method(
+            self.update_pipeline: self._wrap_method(
                 self.update_pipeline,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdatePipeline",
             ),
-            self.delete_pipeline: gapic_v1.method.wrap_method(
+            self.delete_pipeline: self._wrap_method(
                 self.delete_pipeline,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeletePipeline",
             ),
-            self.get_google_api_source: gapic_v1.method.wrap_method(
+            self.get_google_api_source: self._wrap_method(
                 self.get_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/GetGoogleApiSource",
             ),
-            self.list_google_api_sources: gapic_v1.method.wrap_method(
+            self.list_google_api_sources: self._wrap_method(
                 self.list_google_api_sources,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/ListGoogleApiSources",
             ),
-            self.create_google_api_source: gapic_v1.method.wrap_method(
+            self.create_google_api_source: self._wrap_method(
                 self.create_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/CreateGoogleApiSource",
             ),
-            self.update_google_api_source: gapic_v1.method.wrap_method(
+            self.update_google_api_source: self._wrap_method(
                 self.update_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/UpdateGoogleApiSource",
             ),
-            self.delete_google_api_source: gapic_v1.method.wrap_method(
+            self.delete_google_api_source: self._wrap_method(
                 self.delete_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.eventarc.v1.Eventarc/DeleteGoogleApiSource",
             ),
-            self.get_location: gapic_v1.method.wrap_method(
+            self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_locations: gapic_v1.method.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,

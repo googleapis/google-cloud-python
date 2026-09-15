@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.asset_v1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -55,6 +57,7 @@ class AssetServiceTransport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -85,6 +88,9 @@ class AssetServiceTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -122,26 +128,49 @@ class AssetServiceTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
+        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
+        # with older versions of google-api-core.
+        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # Base transport raises NotImplementedError for abstract kind property.
+            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Remove tracing-specific arguments if older google-api-core is installed
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.export_assets: gapic_v1.method.wrap_method(
+            self.export_assets: self._wrap_method(
                 self.export_assets,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/ExportAssets",
             ),
-            self.list_assets: gapic_v1.method.wrap_method(
+            self.list_assets: self._wrap_method(
                 self.list_assets,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/ListAssets",
             ),
-            self.batch_get_assets_history: gapic_v1.method.wrap_method(
+            self.batch_get_assets_history: self._wrap_method(
                 self.batch_get_assets_history,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -155,13 +184,15 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/BatchGetAssetsHistory",
             ),
-            self.create_feed: gapic_v1.method.wrap_method(
+            self.create_feed: self._wrap_method(
                 self.create_feed,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/CreateFeed",
             ),
-            self.get_feed: gapic_v1.method.wrap_method(
+            self.get_feed: self._wrap_method(
                 self.get_feed,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -175,8 +206,9 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/GetFeed",
             ),
-            self.list_feeds: gapic_v1.method.wrap_method(
+            self.list_feeds: self._wrap_method(
                 self.list_feeds,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -190,13 +222,15 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/ListFeeds",
             ),
-            self.update_feed: gapic_v1.method.wrap_method(
+            self.update_feed: self._wrap_method(
                 self.update_feed,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/UpdateFeed",
             ),
-            self.delete_feed: gapic_v1.method.wrap_method(
+            self.delete_feed: self._wrap_method(
                 self.delete_feed,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -210,8 +244,9 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/DeleteFeed",
             ),
-            self.search_all_resources: gapic_v1.method.wrap_method(
+            self.search_all_resources: self._wrap_method(
                 self.search_all_resources,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -225,8 +260,9 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=15.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/SearchAllResources",
             ),
-            self.search_all_iam_policies: gapic_v1.method.wrap_method(
+            self.search_all_iam_policies: self._wrap_method(
                 self.search_all_iam_policies,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -240,8 +276,9 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=15.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/SearchAllIamPolicies",
             ),
-            self.analyze_iam_policy: gapic_v1.method.wrap_method(
+            self.analyze_iam_policy: self._wrap_method(
                 self.analyze_iam_policy,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -254,68 +291,81 @@ class AssetServiceTransport(abc.ABC):
                 ),
                 default_timeout=300.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeIamPolicy",
             ),
-            self.analyze_iam_policy_longrunning: gapic_v1.method.wrap_method(
+            self.analyze_iam_policy_longrunning: self._wrap_method(
                 self.analyze_iam_policy_longrunning,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
             ),
-            self.analyze_move: gapic_v1.method.wrap_method(
+            self.analyze_move: self._wrap_method(
                 self.analyze_move,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeMove",
             ),
-            self.query_assets: gapic_v1.method.wrap_method(
+            self.query_assets: self._wrap_method(
                 self.query_assets,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/QueryAssets",
             ),
-            self.create_saved_query: gapic_v1.method.wrap_method(
+            self.create_saved_query: self._wrap_method(
                 self.create_saved_query,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/CreateSavedQuery",
             ),
-            self.get_saved_query: gapic_v1.method.wrap_method(
+            self.get_saved_query: self._wrap_method(
                 self.get_saved_query,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/GetSavedQuery",
             ),
-            self.list_saved_queries: gapic_v1.method.wrap_method(
+            self.list_saved_queries: self._wrap_method(
                 self.list_saved_queries,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/ListSavedQueries",
             ),
-            self.update_saved_query: gapic_v1.method.wrap_method(
+            self.update_saved_query: self._wrap_method(
                 self.update_saved_query,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/UpdateSavedQuery",
             ),
-            self.delete_saved_query: gapic_v1.method.wrap_method(
+            self.delete_saved_query: self._wrap_method(
                 self.delete_saved_query,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/DeleteSavedQuery",
             ),
-            self.batch_get_effective_iam_policies: gapic_v1.method.wrap_method(
+            self.batch_get_effective_iam_policies: self._wrap_method(
                 self.batch_get_effective_iam_policies,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies",
             ),
-            self.analyze_org_policies: gapic_v1.method.wrap_method(
+            self.analyze_org_policies: self._wrap_method(
                 self.analyze_org_policies,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeOrgPolicies",
             ),
-            self.analyze_org_policy_governed_containers: gapic_v1.method.wrap_method(
+            self.analyze_org_policy_governed_containers: self._wrap_method(
                 self.analyze_org_policy_governed_containers,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers",
             ),
-            self.analyze_org_policy_governed_assets: gapic_v1.method.wrap_method(
+            self.analyze_org_policy_governed_assets: self._wrap_method(
                 self.analyze_org_policy_governed_assets,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets",
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,

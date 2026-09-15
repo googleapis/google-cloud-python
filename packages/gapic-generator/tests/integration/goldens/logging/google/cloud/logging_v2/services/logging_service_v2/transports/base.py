@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -58,6 +60,7 @@ class LoggingServiceV2Transport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -88,6 +91,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -125,16 +131,37 @@ class LoggingServiceV2Transport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
+        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
+        # with older versions of google-api-core.
+        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # Base transport raises NotImplementedError for abstract kind property.
+            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Remove tracing-specific arguments if older google-api-core is installed
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.delete_log: gapic_v1.method.wrap_method(
+            self.delete_log: self._wrap_method(
                 self.delete_log,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -149,8 +176,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/DeleteLog",
             ),
-            self.write_log_entries: gapic_v1.method.wrap_method(
+            self.write_log_entries: self._wrap_method(
                 self.write_log_entries,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -165,8 +193,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/WriteLogEntries",
             ),
-            self.list_log_entries: gapic_v1.method.wrap_method(
+            self.list_log_entries: self._wrap_method(
                 self.list_log_entries,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -181,8 +210,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/ListLogEntries",
             ),
-            self.list_monitored_resource_descriptors: gapic_v1.method.wrap_method(
+            self.list_monitored_resource_descriptors: self._wrap_method(
                 self.list_monitored_resource_descriptors,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -197,8 +227,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/ListMonitoredResourceDescriptors",
             ),
-            self.list_logs: gapic_v1.method.wrap_method(
+            self.list_logs: self._wrap_method(
                 self.list_logs,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -213,8 +244,9 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/ListLogs",
             ),
-            self.tail_log_entries: gapic_v1.method.wrap_method(
+            self.tail_log_entries: self._wrap_method(
                 self.tail_log_entries,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -229,18 +261,20 @@ class LoggingServiceV2Transport(abc.ABC):
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
+                method_name="google.logging.v2.LoggingServiceV2/TailLogEntries",
+                is_streaming=True,
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,

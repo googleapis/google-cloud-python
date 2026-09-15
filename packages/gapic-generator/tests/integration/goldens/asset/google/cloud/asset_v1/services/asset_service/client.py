@@ -15,6 +15,7 @@
 #
 from collections import OrderedDict
 from http import HTTPStatus
+import inspect
 import json
 import logging as std_logging
 import os
@@ -552,21 +553,18 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., AssetServiceTransport], transport)
             )
-            # When OpenTelemetry tracing is enabled, obtain the channel interceptor
-            # and pass it to the transport.
-            interceptors = []
+            # When OpenTelemetry tracing is enabled, pass client_options to the transport
+            # so it can wire tracing interceptors and method spans.
+            client_options = None
             if (
-                isinstance(transport_init, type)
-                and issubclass(transport_init, AssetServiceGrpcTransport)
-                and _observability is not None
+                _observability is not None
+                and _observability.is_otel_capabilities_enabled(self._client_options)
                 and (
-                    otel_interceptor := _observability.get_otel_interceptor(
-                        self._client_options
-                    )
+                    not isinstance(transport_init, type)
+                    or issubclass(transport_init, AssetServiceGrpcTransport)
                 )
-                is not None
             ):
-                interceptors.append(otel_interceptor)
+                client_options = self._client_options
 
             # initialize with the provided callable or the passed in class
             transport_kwargs = {
@@ -579,7 +577,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 "client_info": client_info,
                 "always_use_jwt_access": True,
                 "api_audience": self._client_options.api_audience,
-                **({"interceptors": interceptors} if interceptors else {}),
+                **({"client_options": client_options} if client_options else {}),
             }
             self._transport = transport_init(**transport_kwargs)
 

@@ -26,7 +26,12 @@ if TYPE_CHECKING:  # pragma: NO COVER
     # ClientInterceptor was added in google-api-core 2.36.0+; ignore attribute-defined for older api-core versions during type checking
     from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
 from google.api_core import operations_v1
+from google.api_core import client_options as client_options_lib
 from google.api_core import gapic_v1
+try:
+    from google.api_core import _observability
+except ImportError:  # pragma: NO COVER
+    _observability = None
 import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -144,6 +149,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
                     ]
                 ]
             ] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -197,6 +203,9 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
             interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
                 Additional interceptors (or callables that apply interceptors) to apply to the
                 gRPC channel.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -253,6 +262,7 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             api_audience=api_audience,
+            client_options=client_options,
         )
 
         if not self._grpc_channel:
@@ -274,12 +284,20 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
                 ],
             )
 
+        channel_interceptors = list(interceptors) if interceptors else []
+        if (
+            _observability is not None
+            and (otel_interceptor := _observability.get_otel_interceptor(self._client_options)) is not None
+            and otel_interceptor not in channel_interceptors
+        ):
+            channel_interceptors.append(otel_interceptor)
+
         apply_interceptors = getattr(
             grpc_helpers,
             "apply_channel_interceptors",
             lambda channel, interceptors: channel,
         )
-        self._grpc_channel = apply_interceptors(self._grpc_channel, interceptors)
+        self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
         self._interceptor = _LoggingClientInterceptor()
         self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)

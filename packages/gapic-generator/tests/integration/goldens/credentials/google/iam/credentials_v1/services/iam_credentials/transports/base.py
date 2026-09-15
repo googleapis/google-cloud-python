@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.iam.credentials_v1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -52,6 +54,7 @@ class IAMCredentialsTransport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -82,6 +85,9 @@ class IAMCredentialsTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -119,16 +125,37 @@ class IAMCredentialsTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
+        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
+        # with older versions of google-api-core.
+        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # Base transport raises NotImplementedError for abstract kind property.
+            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Remove tracing-specific arguments if older google-api-core is installed
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.generate_access_token: gapic_v1.method.wrap_method(
+            self.generate_access_token: self._wrap_method(
                 self.generate_access_token,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -142,8 +169,9 @@ class IAMCredentialsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.iam.credentials.v1.IAMCredentials/GenerateAccessToken",
             ),
-            self.generate_id_token: gapic_v1.method.wrap_method(
+            self.generate_id_token: self._wrap_method(
                 self.generate_id_token,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -157,8 +185,9 @@ class IAMCredentialsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.iam.credentials.v1.IAMCredentials/GenerateIdToken",
             ),
-            self.sign_blob: gapic_v1.method.wrap_method(
+            self.sign_blob: self._wrap_method(
                 self.sign_blob,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -172,8 +201,9 @@ class IAMCredentialsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.iam.credentials.v1.IAMCredentials/SignBlob",
             ),
-            self.sign_jwt: gapic_v1.method.wrap_method(
+            self.sign_jwt: self._wrap_method(
                 self.sign_jwt,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -187,6 +217,7 @@ class IAMCredentialsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.iam.credentials.v1.IAMCredentials/SignJwt",
             ),
          }
 
