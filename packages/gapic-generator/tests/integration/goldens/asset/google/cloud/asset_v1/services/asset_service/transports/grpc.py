@@ -22,7 +22,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union, TYPE_CHECKI
 import grpc  # type: ignore
 from google.api_core import grpc_helpers
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: NO COVER
     # ClientInterceptor was added in google-api-core 2.36.0+; ignore attribute-defined for older api-core versions during type checking
     from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
 from google.api_core import operations_v1
