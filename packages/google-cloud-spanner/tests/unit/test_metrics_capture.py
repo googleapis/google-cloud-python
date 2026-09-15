@@ -50,3 +50,95 @@ def test_metrics_capture_exit(mock_tracer_factory):
         pass
 
     mock_tracer.record_operation_completion.assert_called_once()
+
+
+def test_metrics_capture_reuse(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+
+    capture = MetricsCapture()
+    with capture:
+        assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+
+    assert SpannerMetricsTracerFactory.get_current_tracer() is None
+    assert capture._token is None
+
+    # Reusing the same context manager instance must not raise an error
+    with capture:
+        assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+
+    assert SpannerMetricsTracerFactory.get_current_tracer() is None
+    assert capture._token is None
+
+
+def test_metrics_capture_disabled():
+    SpannerMetricsTracerFactory(enabled=False)
+    try:
+        with MetricsCapture() as capture:
+            assert capture is not None
+            assert SpannerMetricsTracerFactory.get_current_tracer() is None
+    finally:
+        SpannerMetricsTracerFactory(enabled=True)
+
+
+def test_metrics_capture_with_resource_info(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+
+    resource_info = {
+        "project": "test_p",
+        "instance": "test_i",
+        "database": "test_d",
+    }
+    with MetricsCapture(resource_info=resource_info):
+        pass
+
+    mock_tracer.set_project.assert_called_once_with("test_p")
+    mock_tracer.set_instance.assert_called_once_with("test_i")
+    mock_tracer.set_database.assert_called_once_with("test_d")
+
+
+def test_metrics_capture_exit_without_token():
+    capture = MetricsCapture()
+    assert capture.__exit__(None, None, None) is False
+
+
+def test_metrics_capture_with_partial_resource_info(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+    with MetricsCapture(resource_info={"database": "only_db"}):
+        pass
+    mock_tracer.set_database.assert_called_once_with("only_db")
+    mock_tracer.set_project.assert_not_called()
+    mock_tracer.set_instance.assert_not_called()
+
+
+def test_metrics_capture_factory_returns_none(mock_tracer_factory):
+    mock_tracer_factory.return_value = None
+    with MetricsCapture(resource_info={"project": "p"}):
+        pass
+
+
+def test_metrics_capture_with_project_and_instance_only(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer_factory.return_value = mock_tracer
+    with MetricsCapture(resource_info={"project": "p", "instance": "i"}):
+        pass
+    mock_tracer.set_project.assert_called_once_with("p")
+    mock_tracer.set_instance.assert_called_once_with("i")
+    mock_tracer.set_database.assert_not_called()
+
+
+def test_metrics_capture_exit_error_resets_token(mock_tracer_factory):
+    mock_tracer = mock.Mock()
+    mock_tracer.record_operation_completion.side_effect = RuntimeError(
+        "Completion failure"
+    )
+    mock_tracer_factory.return_value = mock_tracer
+
+    with pytest.raises(RuntimeError, match="Completion failure"):
+        with MetricsCapture():
+            assert SpannerMetricsTracerFactory.get_current_tracer() is mock_tracer
+
+    # Verified: Token is cleanly reset even on exception
+    assert SpannerMetricsTracerFactory.get_current_tracer() is None

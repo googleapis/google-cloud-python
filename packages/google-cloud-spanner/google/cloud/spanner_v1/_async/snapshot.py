@@ -28,7 +28,7 @@ from google.api_core.exceptions import (
 from google.protobuf.struct_pb2 import Struct
 
 from google.cloud.aio._cross_sync import CrossSync
-from google.cloud.spanner_v1._async._helpers import _retry
+from google.cloud.spanner_v1._async._helpers import _drain_stream, _retry
 from google.cloud.spanner_v1._async.streamed import StreamedResultSet
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
@@ -67,6 +67,86 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
     "Received unexpected EOS on DATA frame from server",
 )
+
+_RAW_EXECUTE_SQL_REQUEST_TYPE = ExecuteSqlRequest.pb()
+
+
+def _make_execute_sql_request(
+    session_name,
+    sql,
+    seqno,
+    params=None,
+    param_types=None,
+    query_options=None,
+    request_options=None,
+    query_mode=None,
+    partition=None,
+    last_statement=None,
+    data_boost_enabled=None,
+    directed_read_options=None,
+):
+    """Construct an ExecuteSqlRequest bypassing proto-plus reflection."""
+    try:
+        raw = _RAW_EXECUTE_SQL_REQUEST_TYPE(
+            session=session_name,
+            sql=sql,
+            seqno=seqno,
+        )
+        if params is not None:
+            if isinstance(params, dict):
+                if params:
+                    raw.params.update(params)
+                else:
+                    raw.params.SetInParent()
+            else:
+                raw.params.CopyFrom(getattr(params, "_pb", params))
+        if param_types:
+            for k, v in param_types.items():
+                raw.param_types[k].CopyFrom(getattr(v, "_pb", v))
+        if query_options is not None:
+            raw.query_options.CopyFrom(getattr(query_options, "_pb", query_options))
+        if request_options is not None:
+            raw.request_options.CopyFrom(
+                getattr(request_options, "_pb", request_options)
+            )
+        if query_mode is not None:
+            raw.query_mode = query_mode
+        if partition is not None:
+            raw.partition_token = partition
+        if last_statement:
+            raw.last_statement = last_statement
+        if data_boost_enabled:
+            raw.data_boost_enabled = data_boost_enabled
+        if directed_read_options is not None:
+            raw.directed_read_options.CopyFrom(
+                getattr(directed_read_options, "_pb", directed_read_options)
+            )
+        return ExecuteSqlRequest.wrap(raw)
+    except Exception:
+        req_kwargs = {
+            "session": session_name,
+            "sql": sql,
+            "seqno": seqno,
+        }
+        if params is not None:
+            req_kwargs["params"] = params
+        if param_types:
+            req_kwargs["param_types"] = param_types
+        if query_options is not None:
+            req_kwargs["query_options"] = query_options
+        if request_options is not None:
+            req_kwargs["request_options"] = request_options
+        if query_mode is not None:
+            req_kwargs["query_mode"] = query_mode
+        if partition is not None:
+            req_kwargs["partition_token"] = partition
+        if last_statement:
+            req_kwargs["last_statement"] = last_statement
+        if data_boost_enabled:
+            req_kwargs["data_boost_enabled"] = data_boost_enabled
+        if directed_read_options is not None:
+            req_kwargs["directed_read_options"] = directed_read_options
+        return ExecuteSqlRequest(req_kwargs)
 
 
 @CrossSync.convert
@@ -114,94 +194,118 @@ async def _restart_on_unavailable(
     attempt = 1
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
     current_request_id = None
+    stream_finished = False
 
-    while True:
-        try:
-            # Get results iterator.
-            if iterator is None:
-                with (
-                    trace_call(
-                        trace_name,
-                        session,
-                        attributes,
-                        observability_options=observability_options,
-                        metadata=metadata,
-                    ) as span,
-                    MetricsCapture(resource_info),
-                ):
-                    (
-                        call_metadata,
-                        current_request_id,
-                    ) = request_id_manager.metadata_and_request_id(
-                        nth_request,
-                        attempt,
-                        metadata,
-                        span,
-                    )
-                    iterator = await CrossSync.run_if_async(
-                        method,
-                        request=request,
-                        metadata=call_metadata,
-                    )
+    try:
+        while True:
+            try:
+                # Get results iterator.
+                if iterator is None:
+                    with (
+                        trace_call(
+                            trace_name,
+                            session,
+                            attributes,
+                            observability_options=observability_options,
+                            metadata=metadata,
+                        ) as span,
+                        MetricsCapture(resource_info),
+                    ):
+                        (
+                            call_metadata,
+                            current_request_id,
+                        ) = request_id_manager.metadata_and_request_id(
+                            nth_request,
+                            attempt,
+                            metadata,
+                            span,
+                        )
+                        iterator = await CrossSync.run_if_async(
+                            method,
+                            request=request,
+                            metadata=call_metadata,
+                        )
 
-            # Add items from iterator to buffer.
-            item: PartialResultSet
-            async for item in iterator:
-                item_buffer.append(item)
+                # Add items from iterator to buffer.
+                item: PartialResultSet
+                async for item in iterator:
+                    item_buffer.append(item)
+                    item_pb = getattr(item, "_pb", None) or item
 
-                # Update the transaction from the response.
+                    # Update the transaction from the response.
+                    if transaction is not None:
+                        transaction._update_for_result_set_pb(item)
+                    if (
+                        item_pb is not None
+                        and getattr(item_pb, "HasField", lambda _: False)(
+                            "precommit_token"
+                        )
+                        and transaction is not None
+                    ):
+                        await transaction._update_for_precommit_token_pb(
+                            item_pb.precommit_token
+                        )
+
+                    item_is_last = getattr(item_pb, "last", False)
+
+                    if item_is_last:
+                        stream_finished = True
+                        _drain_stream(iterator)
+                        iterator = None
+                        break
+
+                    item_resume_token = getattr(item_pb, "resume_token", b"")
+                    if item_resume_token:
+                        resume_token = item_resume_token
+                        break
+
+            except ServiceUnavailable:
+                del item_buffer[:]
+                request.resume_token = resume_token
                 if transaction is not None:
-                    transaction._update_for_result_set_pb(item)
-                if (
-                    item._pb is not None
-                    and item._pb.HasField("precommit_token")
-                    and transaction is not None
-                ):
-                    await transaction._update_for_precommit_token_pb(
-                        item.precommit_token
-                    )
+                    transaction_selector = transaction._build_transaction_selector_pb()
+                request.transaction = transaction_selector
+                attempt += 1
+                iterator = None
+                continue
 
-                if item.resume_token:
-                    resume_token = item.resume_token
-                    break
+            except InternalServerError as exc:
+                resumable_error = any(
+                    resumable_message in exc.message
+                    for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
+                )
+                if not resumable_error:
+                    raise _augment_error_with_request_id(exc, current_request_id)
+                del item_buffer[:]
+                request.resume_token = resume_token
+                if transaction is not None:
+                    transaction_selector = transaction._build_transaction_selector_pb()
+                attempt += 1
+                request.transaction = transaction_selector
+                iterator = None
+                continue
 
-        except ServiceUnavailable:
-            del item_buffer[:]
-            request.resume_token = resume_token
-            if transaction is not None:
-                transaction_selector = transaction._build_transaction_selector_pb()
-            request.transaction = transaction_selector
-            attempt += 1
-            iterator = None
-            continue
-
-        except InternalServerError as exc:
-            resumable_error = any(
-                resumable_message in exc.message
-                for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
-            )
-            if not resumable_error:
+            except Exception as exc:
+                # Augment any other exception with the request ID
                 raise _augment_error_with_request_id(exc, current_request_id)
+
+            if len(item_buffer) == 0:
+                iterator = None
+                break
+
+            for item in item_buffer:
+                yield item
+
             del item_buffer[:]
-            request.resume_token = resume_token
-            if transaction is not None:
-                transaction_selector = transaction._build_transaction_selector_pb()
-            attempt += 1
-            request.transaction = transaction_selector
-            iterator = None
-            continue
 
-        except Exception as exc:
-            # Augment any other exception with the request ID
-            raise _augment_error_with_request_id(exc, current_request_id)
-
-        if len(item_buffer) == 0:
-            break
-
-        for item in item_buffer:
-            yield item
-
-        del item_buffer[:]
+            if stream_finished:
+                break
+    finally:
+        if iterator is not None and hasattr(iterator, "cancel"):
+            try:
+                iterator.cancel()
+            except Exception:
+                pass
 
 
 class _SnapshotBase(_SessionWrapper):
@@ -386,12 +490,10 @@ class _SnapshotBase(_SessionWrapper):
             database._instance._client._client_context, self._client_context
         )
         request_options = _merge_request_options(request_options, client_context)
-
         if request_options is None:
             request_options = RequestOptions()
         elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
-
         if self._read_only:
             request_options.transaction_tag = None
             if (
@@ -402,14 +504,14 @@ class _SnapshotBase(_SessionWrapper):
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
 
-        execute_sql_request = ExecuteSqlRequest(
-            session=session.name,
+        execute_sql_request = _make_execute_sql_request(
+            session_name=session.name,
             sql=sql,
+            seqno=self._execute_sql_request_count,
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
-            partition_token=partition,
-            seqno=self._execute_sql_request_count,
+            partition=partition,
             query_options=query_options,
             request_options=request_options,
             last_statement=last_statement,
@@ -759,16 +861,27 @@ class _SnapshotBase(_SessionWrapper):
         self, result_set_pb: Union[ResultSet, PartialResultSet]
     ) -> None:
         """Updates the snapshot for the given result set."""
-        if result_set_pb.metadata and result_set_pb.metadata.transaction:
-            self._update_for_transaction_pb(result_set_pb.metadata.transaction)
+        rs_pb = getattr(result_set_pb, "_pb", None) or result_set_pb
+        metadata = getattr(rs_pb, "metadata", None)
+        if metadata is not None:
+            tx = getattr(metadata, "transaction", None)
+            if tx is not None and (
+                getattr(tx, "id", None)
+                or getattr(tx, "HasField", lambda _: False)("precommit_token")
+            ):
+                self._update_for_transaction_pb(tx)
 
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction."""
-        if self._transaction_id is None and transaction_pb.id:
-            self._transaction_id = transaction_pb.id
+        tx_pb = getattr(transaction_pb, "_pb", None) or transaction_pb
+        tx_id = getattr(tx_pb, "id", None)
+        if self._transaction_id is None and tx_id:
+            self._transaction_id = tx_id
 
-        if transaction_pb._pb.HasField("precommit_token"):
-            self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
+        if tx_pb is not None and getattr(tx_pb, "HasField", lambda _: False)(
+            "precommit_token"
+        ):
+            self._update_for_precommit_token_pb_unsafe(tx_pb.precommit_token)
 
     @CrossSync.convert
     async def _update_for_precommit_token_pb(

@@ -22,7 +22,42 @@ import mock
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.semconv.resource import ResourceAttributes
 
-from google.cloud.spanner_v1 import TransactionOptions, _helpers
+from google.cloud.spanner_v1 import ExecuteSqlRequest, TransactionOptions, _helpers
+
+
+class Test_to_query_options(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _to_query_options
+
+        return _to_query_options(*args, **kw)
+
+    def test_none(self):
+        self.assertIsNone(self._callFUT(None))
+
+    def test_empty_dict(self):
+        self.assertIsNone(self._callFUT({}))
+
+    def test_dict_with_empty_values(self):
+        self.assertIsNone(self._callFUT({"optimizer_version": ""}))
+
+    def test_valid_dict(self):
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({"optimizer_version": "1"})
+        self.assertEqual(result, expected)
+
+    def test_empty_proto_object(self):
+        self.assertIsNone(self._callFUT(ExecuteSqlRequest.QueryOptions()))
+
+    def test_populated_proto_object(self):
+        options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(options)
+        self.assertEqual(result, options)
+
+    def test_invalid_type(self):
+        with self.assertRaises(TypeError):
+            self._callFUT("invalid")
+        with self.assertRaises(TypeError):
+            self._callFUT(123)
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -37,8 +72,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_base_dict_and_merge_none(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = {
             "optimizer_version": "2",
             "optimizer_statistics_package": "auto_20191128_14_47_22UTC",
@@ -52,16 +85,12 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_empty_and_merge_empty(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions()
         merge = ExecuteSqlRequest.QueryOptions()
         result = self._callFUT(base, merge)
         self.assertIsNone(result)
 
     def test_base_none_merge_object(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = ExecuteSqlRequest.QueryOptions(
             optimizer_version="3",
@@ -71,8 +100,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, merge)
 
     def test_base_none_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = {"optimizer_version": "3"}
         expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
@@ -80,8 +107,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_object_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions(
             optimizer_version="1",
             optimizer_statistics_package="auto_20191128_14_47_22UTC",
@@ -93,6 +118,106 @@ class Test_merge_query_options(unittest.TestCase):
         )
         result = self._callFUT(base, merge)
         self.assertEqual(result, expected)
+
+    def test_base_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, None)
+        self.assertEqual(result, base)
+
+    def test_base_empty_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(base, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_empty_object(self):
+        merge = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(None, merge)
+        self.assertIsNone(result)
+
+    def test_base_object_not_mutated_on_merge(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        merge = {"optimizer_version": "3"}
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="3",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+
+    def test_base_dict_merge_dict(self):
+        base = {"optimizer_version": "1"}
+        merge = {"optimizer_statistics_package": "auto_20191128_14_47_22UTC"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_override_dict(self):
+        base = {
+            "optimizer_version": "1",
+            "optimizer_statistics_package": "pkg1",
+        }
+        merge = {"optimizer_version": "2"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_empty_merge_none(self):
+        result = self._callFUT({}, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_dict_empty(self):
+        result = self._callFUT(None, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_empty_dict(self):
+        result = self._callFUT({}, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_object(self):
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({}, merge)
+        self.assertEqual(result, merge)
+
+    def test_base_object_merge_empty_dict(self):
+        base = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(base, {})
+        self.assertEqual(result, base)
+
+    def test_base_object_merge_object(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="pkg1",
+        )
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+        self.assertEqual(base.optimizer_statistics_package, "pkg1")
+        self.assertEqual(merge.optimizer_version, "2")
+        self.assertEqual(merge.optimizer_statistics_package, "")
+
+    def test_invalid_type_raises_error(self):
+        with self.assertRaises(TypeError):
+            self._callFUT("invalid", None)
+        with self.assertRaises(TypeError):
+            self._callFUT(None, 123)
 
 
 class Test_get_cloud_region(unittest.TestCase):
@@ -152,6 +277,44 @@ class Test_get_cloud_region(unittest.TestCase):
             self.assertIn("Failed to detect GCP resource location", log.output[0])
 
 
+class Test_try_to_coerce_bytes(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _try_to_coerce_bytes
+
+        return _try_to_coerce_bytes(*args, **kw)
+
+    def test_w_valid_bytes(self):
+        valid_bytes = b"sample_bytes"
+        result = self._callFUT(valid_bytes)
+        self.assertEqual(result, valid_bytes)
+
+    def test_w_invalid_bytes(self):
+        invalid_bytes = b"\xff\xfe"
+        with self.assertRaises(ValueError):
+            self._callFUT(invalid_bytes)
+
+
+class Test_validate_and_decode_bytes(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _validate_and_decode_bytes
+
+        return _validate_and_decode_bytes(*args, **kw)
+
+    def test_w_valid_bytes(self):
+        valid_bytes = b"sample_bytes"
+        result = self._callFUT(valid_bytes)
+        self.assertEqual(result, "sample_bytes")
+        self.assertIsInstance(result, str)
+
+    def test_w_invalid_bytes(self):
+        invalid_bytes = b"\xff\xfe"
+        with self.assertRaises(ValueError) as context:
+            self._callFUT(invalid_bytes)
+        self.assertIn(
+            "Received a bytes that is not base64 encoded", str(context.exception)
+        )
+
+
 class Test_make_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_value_pb
@@ -166,10 +329,12 @@ class Test_make_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
 
         BYTES = b"BYTES"
-        expected = Value(string_value=BYTES)
+        expected = Value(string_value="BYTES")
         value_pb = self._callFUT(BYTES)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb, expected)
+        self.assertIsInstance(value_pb.string_value, str)
+        self.assertEqual(value_pb.string_value, "BYTES")
 
     def test_w_invalid_bytes(self):
         BYTES = b"\xff\xfe\x03&"
@@ -420,10 +585,15 @@ class Test_make_value_pb(unittest.TestCase):
         from .testdata import singer_pb2
 
         singer_info = singer_pb2.SingerInfo()
-        expected = Value(string_value=base64.b64encode(singer_info.SerializeToString()))
+        expected = Value(
+            string_value=base64.b64encode(singer_info.SerializeToString()).decode(
+                "utf-8"
+            )
+        )
         value_pb = self._callFUT(singer_info)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb, expected)
+        self.assertIsInstance(value_pb.string_value, str)
 
     def test_w_proto_enum(self):
         from google.protobuf.struct_pb2 import Value
@@ -433,6 +603,140 @@ class Test_make_value_pb(unittest.TestCase):
         value_pb = self._callFUT(singer_pb2.Genre.ROCK)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, "3")
+
+    def test_w_json_object(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import JsonObject
+
+        value = JsonObject({"key": "value"})
+        value_pb = self._callFUT(value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, '{"key":"value"}')
+
+    def test_w_uuid(self):
+        import uuid
+
+        from google.protobuf.struct_pb2 import Value
+
+        unique_id = uuid.uuid4()
+        value_pb = self._callFUT(unique_id)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, str(unique_id))
+
+    def test_w_interval(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.data_types import Interval
+
+        interval = Interval(months=1, days=2, nanos=3000)
+        value_pb = self._callFUT(interval)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, str(interval))
+
+    def test_w_proto_message_none(self):
+        from unittest.mock import MagicMock
+
+        from google.protobuf.message import Message
+
+        mock_message = MagicMock(spec=Message)
+        mock_message.SerializeToString.return_value = None
+        value_pb = self._callFUT(mock_message)
+        self.assertTrue(value_pb.HasField("null_value"))
+
+    def test_w_subclass_fallback(self):
+        import decimal
+        import uuid
+        from unittest.mock import MagicMock
+
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import ListValue
+
+        from google.cloud.spanner_v1 import JsonObject
+        from google.cloud.spanner_v1.data_types import Interval
+
+        class CustomList(list):
+            pass
+
+        class CustomTuple(tuple):
+            pass
+
+        class CustomInt(int):
+            pass
+
+        class CustomFloat(float):
+            pass
+
+        class CustomDate(datetime.date):
+            pass
+
+        class CustomDatetime(datetime.datetime):
+            pass
+
+        class CustomDatetimeNanos(datetime_helpers.DatetimeWithNanoseconds):
+            pass
+
+        class CustomBytes(bytes):
+            pass
+
+        class CustomStr(str):
+            pass
+
+        class CustomDecimal(decimal.Decimal):
+            pass
+
+        class CustomJsonObject(JsonObject):
+            pass
+
+        class CustomInterval(Interval):
+            pass
+
+        class CustomUUID(uuid.UUID):
+            pass
+
+        mock_bool = MagicMock(spec=bool)
+        mock_list_value = MagicMock(spec=ListValue)
+        mock_list_value.__getitem__.side_effect = IndexError
+
+        fallback_cases = [
+            (CustomList([1]), "list_value"),
+            (CustomTuple((1,)), "list_value"),
+            (CustomInt(42), "string_value"),
+            (CustomFloat(3.14), "number_value"),
+            (CustomFloat(float("nan")), "string_value"),
+            (CustomFloat(float("inf")), "string_value"),
+            (CustomDate(2023, 5, 10), "string_value"),
+            (
+                CustomDatetime(2023, 5, 10, 12, 0, tzinfo=datetime.timezone.utc),
+                "string_value",
+            ),
+            (
+                CustomDatetimeNanos(
+                    2023, 5, 10, 12, 0, nanosecond=500, tzinfo=datetime.timezone.utc
+                ),
+                "string_value",
+            ),
+            (CustomBytes(b"custom_bytes"), "string_value"),
+            (CustomStr("custom_str"), "string_value"),
+            (CustomDecimal("99.95"), "string_value"),
+            (CustomJsonObject({"a": 1}), "string_value"),
+            (CustomJsonObject(None), "null_value"),
+            (CustomInterval(months=2), "string_value"),
+            (
+                CustomUUID("12345678-1234-5678-1234-567812345678"),
+                "string_value",
+            ),
+            (mock_bool, "bool_value"),
+            (mock_list_value, "list_value"),
+        ]
+
+        for value, field in fallback_cases:
+            with self.subTest(val_type=type(value).__name__):
+                result = self._callFUT(value)
+                self.assertTrue(
+                    result.HasField(field),
+                    f"Expected field {field} for {type(value)}, got {result}",
+                )
 
 
 class Test_make_list_value_pb(unittest.TestCase):
@@ -913,7 +1217,9 @@ class Test_parse_value_pb(unittest.TestCase):
         VALUE = singer_pb2.SingerInfo()
         field_type = Type(code=TypeCode.PROTO)
         field_name = "proto_message_column"
-        value_pb = Value(string_value=base64.b64encode(VALUE.SerializeToString()))
+        value_pb = Value(
+            string_value=base64.b64encode(VALUE.SerializeToString()).decode("utf-8")
+        )
         column_info = {"proto_message_column": singer_pb2.SingerInfo()}
 
         self.assertEqual(
@@ -1862,3 +2168,361 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.months, case["expected_months"])
                     self.assertEqual(result.days, case["expected_days"])
                     self.assertEqual(result.nanos, case["expected_nanos"])
+
+
+class TestBoundedStreamDrainer(unittest.TestCase):
+    def test_drain_stream_consumes_iterator(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drain_stream_inline_fallback_on_full_queue(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        items = [1, 2]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+
+        self.assertEqual(consumed, [1, 2])
+
+    def test_drain_stream_handles_none(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(None)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_handles_iterator_exception(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Stream broken")
+
+        iterator = FailingIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+    def test_drain_stream_after_shutdown_drains_inline(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+        self.assertEqual(consumed, [1, 2, 3])
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_inline_fallback_iterator_exception(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Failed inline")
+
+        iterator = FailingIterator()
+        # Should catch and ignore the exception without raising
+        drainer.drain(iterator)
+
+    def test_drainer_fallback_on_ensure_started_error(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=1)
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    val = items.pop(0)
+                    consumed.append(val)
+                    return val
+                raise StopIteration
+
+        with mock.patch.object(
+            drainer, "_ensure_started", side_effect=RuntimeError("thread limit reached")
+        ):
+            drainer.drain(MockIterator())
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drainer_ensure_started_partial_failure_retains_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=3)
+        start_count = 0
+
+        def _mock_thread_start(thread_self):
+            nonlocal start_count
+            start_count += 1
+            if start_count > 1:
+                raise RuntimeError("thread limit reached")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            _mock_thread_start,
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should remain True because 1 worker was successfully created
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 1)
+
+        # Subsequent call must not attempt to spawn additional threads
+        drainer._ensure_started()
+        self.assertEqual(len(drainer._workers), 1)
+
+    def test_drainer_ensure_started_total_failure_resets_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            side_effect=RuntimeError("no threads"),
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should be reset to False because 0 workers were created
+        self.assertFalse(drainer._started)
+        self.assertEqual(len(drainer._workers), 0)
+
+    def test_drainer_shutdown_with_full_queue(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+        drainer._ensure_started()
+        drainer._queue.put_nowait(mock.Mock())
+        drainer._queue.put_nowait(mock.Mock())
+        self.assertTrue(drainer._queue.full())
+
+        # Calling shutdown when queue is already full must not raise queue.Full
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+    def test_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 2)
+
+        drainer._reset_after_fork()
+        self.assertFalse(drainer._started)
+        self.assertFalse(drainer._stopped)
+        self.assertEqual(len(drainer._workers), 0)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drainer_garbage_collection(self):
+        import gc
+        import weakref
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        ref = weakref.ref(drainer)
+        del drainer
+        gc.collect()
+
+        self.assertIsNone(ref())
+
+    def test_global_stream_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        _helpers._GLOBAL_STREAM_DRAINER._ensure_started()
+        self.assertTrue(_helpers._GLOBAL_STREAM_DRAINER._started)
+
+        _helpers._GLOBAL_STREAM_DRAINER._reset_after_fork()
+        self.assertFalse(_helpers._GLOBAL_STREAM_DRAINER._started)
+        self.assertEqual(len(_helpers._GLOBAL_STREAM_DRAINER._workers), 0)
+        self.assertEqual(_helpers._GLOBAL_STREAM_DRAINER._queue.qsize(), 0)
+
+    def test_module_drain_stream(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import _helpers
+
+        with mock.patch.object(_helpers._GLOBAL_STREAM_DRAINER, "drain") as mock_drain:
+            iterator = mock.Mock()
+            _helpers._drain_stream(iterator)
+            mock_drain.assert_called_once_with(iterator)
+
+
+class Test_get_type_decoder(unittest.TestCase):
+    def _callFUT(self, *args, **kwargs):
+        from google.cloud.spanner_v1._helpers import _get_type_decoder
+
+        return _get_type_decoder(*args, **kwargs)
+
+    def test_scalar_decoders(self):
+        import datetime
+        import decimal
+        import uuid
+
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+        from google.cloud.spanner_v1._helpers import _SCALAR_DECODERS
+        from google.cloud.spanner_v1.data_types import Interval, JsonObject
+
+        test_cases = [
+            (TypeCode.STRING, Value(string_value="hello"), "hello"),
+            (TypeCode.BYTES, Value(string_value="bytes"), b"bytes"),
+            (TypeCode.BOOL, Value(bool_value=True), True),
+            (TypeCode.INT64, Value(string_value="42"), 42),
+            (TypeCode.FLOAT64, Value(string_value="3.14"), 3.14),
+            (TypeCode.FLOAT32, Value(string_value="2.5"), 2.5),
+            (
+                TypeCode.DATE,
+                Value(string_value="2026-03-15"),
+                datetime.date(2026, 3, 15),
+            ),
+            (
+                TypeCode.TIMESTAMP,
+                Value(string_value="2026-03-15T12:00:00Z"),
+                datetime.datetime(2026, 3, 15, 12, 0, tzinfo=datetime.timezone.utc),
+            ),
+            (TypeCode.NUMERIC, Value(string_value="99.99"), decimal.Decimal("99.99")),
+            (TypeCode.JSON, Value(string_value='{"a": 1}'), JsonObject({"a": 1})),
+            (
+                TypeCode.UUID,
+                Value(string_value="12345678-1234-5678-1234-567812345678"),
+                uuid.UUID("12345678-1234-5678-1234-567812345678"),
+            ),
+            (TypeCode.INTERVAL, Value(string_value="P1Y"), Interval.from_str("P1Y")),
+        ]
+        for type_code, sample_value_pb, expected_result in test_cases:
+            field_type = Type(code=type_code)
+            decoder = self._callFUT(field_type, "column_name")
+            self.assertIs(decoder, _SCALAR_DECODERS[int(type_code)])
+            self.assertEqual(decoder(sample_value_pb), expected_result)
+
+    def test_proto_and_enum(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        proto_type = Type(code=TypeCode.PROTO)
+        proto_decoder = self._callFUT(proto_type, "proto_column")
+        self.assertTrue(callable(proto_decoder))
+
+        enum_type = Type(code=TypeCode.ENUM)
+        enum_decoder = self._callFUT(enum_type, "enum_column")
+        self.assertTrue(callable(enum_decoder))
+        self.assertEqual(enum_decoder(Value(string_value="1")), 1)
+
+    def test_array_and_struct(self):
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
+
+        array_type = Type(
+            code=TypeCode.ARRAY,
+            array_element_type=Type(code=TypeCode.STRING),
+        )
+        array_decoder = self._callFUT(array_type, "array_column")
+        self.assertTrue(callable(array_decoder))
+
+        struct_field = StructType.Field(
+            name="subfield", type_=Type(code=TypeCode.STRING)
+        )
+        struct_type = Type(
+            code=TypeCode.STRUCT,
+            struct_type=StructType(fields=[struct_field]),
+        )
+        struct_decoder = self._callFUT(struct_type, "struct_column")
+        self.assertTrue(callable(struct_decoder))
+
+    def test_unknown_and_unspecified_types(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        unspecified_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
+        with self.assertRaises(ValueError):
+            self._callFUT(unspecified_type, "unspecified")
+
+        unknown_type = mock.Mock(code=999)
+        with self.assertRaises(ValueError):
+            self._callFUT(unknown_type, "unknown")
+
+        invalid_code_type = mock.Mock(code="invalid")
+        with self.assertRaises(ValueError):
+            self._callFUT(invalid_code_type, "invalid")

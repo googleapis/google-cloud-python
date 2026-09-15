@@ -121,8 +121,8 @@ class DatabaseSessionsManager(object):
         """Returns a multiplexed session from the database session manager.
 
         If the multiplexed session is not defined, creates a new multiplexed
-        session and starts a maintenance thread to periodically delete and
-        recreate it so that it remains valid. Otherwise, simply returns the
+        session and starts a maintenance thread to periodically rotate
+        it so that it remains valid. Otherwise, simply returns the
         current multiplexed session.
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
@@ -162,8 +162,8 @@ class DatabaseSessionsManager(object):
         self, session: Optional[Session] = None
     ) -> CrossSync._Sync_Impl.Task:
         """Builds and returns a multiplexed session maintenance thread for
-        the database session manager. This thread will periodically delete
-        and recreate the multiplexed session to ensure that it is always valid.
+        the database session manager. This thread will periodically rotate
+        the multiplexed session to ensure that it is always valid.
 
         :type session: :class:`~google.cloud.spanner_v1.session.Session`
         :param session: (Optional) The multiplexed session to maintain.
@@ -196,14 +196,7 @@ class DatabaseSessionsManager(object):
             return False
 
         with self._multiplexed_session_lock:
-            old_session = self._multiplexed_session
             self._multiplexed_session = new_session
-
-        if old_session is not None:
-            try:
-                CrossSync._Sync_Impl.run_if_async(old_session.delete)
-            except Exception:
-                pass
 
         return True
 
@@ -211,9 +204,9 @@ class DatabaseSessionsManager(object):
     def _maintain_multiplexed_session(session_manager_ref) -> None:
         """Maintains the multiplexed session for the database session manager.
 
-        This method will delete and recreate the referenced database session manager's
+        This method will periodically rotate the referenced database session manager's
         multiplexed session to ensure that it is always valid. The method will run until
-        the database session manager is deleted or the multiplexed session is deleted.
+        the database session manager is garbage collected or the session manager is closed.
 
         :type session_manager_ref: :class:`_weakref.ReferenceType`
         :param session_manager_ref: A weak reference to the database session manager."""
@@ -269,7 +262,4 @@ class DatabaseSessionsManager(object):
             self._multiplexed_session_terminate_event.set()
         if self._multiplexed_session_thread is not None:
             self._multiplexed_session_thread.join()
-        if self._multiplexed_session is not None:
-            session_to_delete = self._multiplexed_session
-            self._multiplexed_session = None
-            session_to_delete.delete()
+        self._multiplexed_session = None
