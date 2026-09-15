@@ -41,7 +41,10 @@ from google.auth import credentials as ga_credentials
 from google.rpc import code_pb2
 from google.showcase import EchoClient
 
-from .conftest import construct_client
+try:
+    from .conftest import construct_client
+except (ImportError, ValueError):
+    from conftest import construct_client
 
 
 @pytest.fixture
