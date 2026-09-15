@@ -25,6 +25,7 @@ import operator
 import random
 import re
 import uuid
+from typing import Any
 
 from google import auth
 import google.api_core.exceptions
@@ -124,8 +125,9 @@ class BigQueryExecutionContext(DefaultExecutionContext):
     def create_cursor(self):
         # Set arraysize
         c = super(BigQueryExecutionContext, self).create_cursor()
-        if self.dialect.arraysize:
-            c.arraysize = self.dialect.arraysize
+        arraysize = getattr(self.dialect, "arraysize", None)
+        if arraysize:
+            c.arraysize = arraysize
         return c
 
     def get_insert_default(self, column):  # pragma: NO COVER
@@ -191,17 +193,21 @@ class BigQueryExecutionContext(DefaultExecutionContext):
 
 class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     compound_keywords = SQLCompiler.compound_keywords.copy()
-    compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
-    compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"
-    compound_keywords[selectable.CompoundSelect.EXCEPT] = "EXCEPT DISTINCT"
-    compound_keywords[selectable.CompoundSelect.INTERSECT] = "INTERSECT DISTINCT"
+    # The following attributes are not exposed in SQLAlchemy stubs for CompoundSelect but work at runtime.
+    # mypy has trouble resolving the type for these, hence the ignore pragma.
+    compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"  # type: ignore[attr-defined]
+    compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"  # type: ignore[attr-defined]
+    compound_keywords[selectable.CompoundSelect.EXCEPT] = "EXCEPT DISTINCT"  # type: ignore[attr-defined]
+    compound_keywords[selectable.CompoundSelect.INTERSECT] = "INTERSECT DISTINCT"  # type: ignore[attr-defined]
 
     def __init__(self, dialect, statement, *args, **kwargs):
         if isinstance(statement, Column):
             kwargs["compile_kwargs"] = util.immutabledict({"include_table": False})
         super(BigQueryCompiler, self).__init__(dialect, statement, *args, **kwargs)
 
-    def visit_insert(self, insert_stmt, asfrom=False, **kw):
+    # The signature of visit_insert is incompatible with supertype SQLCompiler in modern SQLAlchemy.
+    # mypy flags this as an override error, hence the ignore pragma.
+    def visit_insert(self, insert_stmt, asfrom=False, **kw):  # type: ignore[override]
         # The (internal) documentation for `inline` is confusing, but
         # having `inline` be true prevents us from generating default
         # primary-key values when we're doing executemany, which seem broken.
@@ -272,20 +278,23 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
     def _known_tables(self):
         known_tables = set()
 
-        for from_ in self.compile_state.froms:
-            if isinstance(from_, Table):
-                known_tables.add(from_.name)
-            elif isinstance(from_, CTE):
-                known_tables.add(from_.name)
-                for column in from_.original.selected_columns:
-                    table = getattr(column, "table", None)
-                    if table is not None:
-                        known_tables.add(table.name)
+        if self.compile_state is not None:
+            # CompileState.froms is an internal SQLAlchemy attribute not exposed in stubs.
+            # mypy cannot verify this attribute, hence the ignore pragma.
+            for from_ in self.compile_state.froms:  # type: ignore[attr-defined]
+                if isinstance(from_, Table):
+                    known_tables.add(from_.name)
+                elif isinstance(from_, CTE):
+                    known_tables.add(from_.name)
+                    for column in getattr(from_.original, "selected_columns", []):
+                        table = getattr(column, "table", None)
+                        if table is not None:
+                            known_tables.add(table.name)
 
         # If we have the table in the `from` of our parent, do not add the alias
         # as this will add the table twice and cause an implicit JOIN for that
         # table on itself
-        asfrom_froms = self.stack[-1].get("asfrom_froms", [])
+        asfrom_froms: Any = self.stack[-1].get("asfrom_froms", [])
         for from_ in asfrom_froms:
             if isinstance(from_, Table):
                 known_tables.add(from_.name)
@@ -298,6 +307,7 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         add_to_result_map=None,
         include_table=True,
         result_map_targets=(),
+        ambiguous_table_name_map=None,
         **kwargs,
     ):
         name = orig_name = column.name
@@ -319,7 +329,10 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         if is_literal:
             name = self.escape_literal_column(name)
         else:
-            name = self.preparer.quote(name, column=True)
+            # The IdentifierPreparer.quote method in the base SQLAlchemy class
+            # does not accept a 'column' argument, but the subclass does.
+            # mypy flags this as an unexpected keyword, hence the ignore pragma.
+            name = self.preparer.quote(name, column=True)  # type: ignore[call-arg]
         table = column.table
         if table is None or not include_table or not table.named_with_column:
             return name
@@ -455,11 +468,11 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
 
     ############################################################################
 
-    __placeholder = re.compile(r"%\(([^\]:]+)(:[^\]:]+)?\)s$").match
+    __placeholder = re.compile(r"%\(([^\]:]+)(:[^\]:]+)?\)s$")
 
     __expanded_param = re.compile(
         rf"\({__expanding_conflict}\[" rf"{__expanding_text}" rf"_[^\]]+\]\)$"
-    ).match
+    )
 
     __remove_type_parameter = _helpers.substitute_string_re_method(
         r"""
@@ -479,6 +492,9 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         within_columns_clause=False,
         literal_binds=False,
         skip_bind_expression=False,
+        literal_execute=False,
+        render_postcompile=False,
+        is_upsert_set=False,
         **kwargs,
     ):
         type_ = bindparam.type
@@ -523,9 +539,12 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
 
         param = super(BigQueryCompiler, self).visit_bindparam(
             bindparam,
-            within_columns_clause,
-            literal_binds,
-            skip_bind_expression,
+            within_columns_clause=within_columns_clause,
+            literal_binds=literal_binds,
+            skip_bind_expression=skip_bind_expression,
+            literal_execute=literal_execute,
+            render_postcompile=render_postcompile,
+            is_upsert_set=is_upsert_set,
             **kwargs,
         )
 
@@ -542,7 +561,7 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
             if type_.precision is None:
                 type_.precision = len(t.digits)
 
-            if type_.scale is None and t.exponent < 0:
+            if type_.scale is None and isinstance(t.exponent, int) and t.exponent < 0:
                 type_.scale = -t.exponent
 
         bq_type = self.dialect.type_compiler.process(type_)
@@ -551,12 +570,12 @@ class BigQueryCompiler(vendored_postgresql.PGCompiler, SQLCompiler):
         assert_(param != "%s", f"Unexpected param: {param}")
 
         if bindparam.expanding:  # pragma: NO COVER
-            assert_(self.__expanded_param(param), f"Unexpected param: {param}")
+            assert_(self.__expanded_param.match(param), f"Unexpected param: {param}")
             if self.__sqlalchemy_version_info < packaging.version.parse("1.4.27"):
                 param = param.replace(")", f":{bq_type})")
 
         else:
-            m = self.__placeholder(param)
+            m = self.__placeholder.match(param)
             if m:
                 name, type_ = m.groups()
                 assert_(type_ is None)
@@ -902,7 +921,10 @@ class BigQueryDDLCompiler(DDLCompiler):
             )
 
         # Generic Case
-        if partitioning_period not in allowed_partitions:
+        if (
+            allowed_partitions is not None
+            and partitioning_period not in allowed_partitions
+        ):
             raise ValueError(
                 "The TimePartitioning.type_ must be one of: "
                 f"{allowed_partitions}, received {partitioning_period}."
@@ -1048,7 +1070,8 @@ class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
 class BigQueryDialect(DefaultDialect):
     name = "bigquery"
     driver = "bigquery"
-    preparer = BigQueryIdentifierPreparer
+    # Assigning a subclass to a class attribute that expects the base class causes invariance issues in mypy, hence the ignore pragma.
+    preparer = BigQueryIdentifierPreparer  # type: ignore[assignment]
     statement_compiler = BigQueryCompiler
     type_compiler = BigQueryTypeCompiler
     ddl_compiler = BigQueryDDLCompiler
@@ -1102,7 +1125,7 @@ class BigQueryDialect(DefaultDialect):
         self.project_id = None
         self.billing_project_id = billing_project_id
         self.location = location
-        self.identifier_preparer = self.preparer(self)
+        self.identifier_preparer = BigQueryIdentifierPreparer(self)
         self.dataset_id = None
         self.list_tables_page_size = list_tables_page_size
 
@@ -1128,7 +1151,7 @@ class BigQueryDialect(DefaultDialect):
         if self.dataset_id is None and project_id == self.billing_project_id:
             return provided_config
         job_config = provided_config or QueryJobConfig()
-        if project_id != self.billing_project_id:
+        if project_id and project_id != self.billing_project_id:
             job_config.connection_properties = [
                 ConnectionProperty(key="dataset_project_id", value=project_id)
             ]
@@ -1391,15 +1414,14 @@ class unnest(sqlalchemy.sql.functions.GenericFunction):
             raise TypeError("The unnest function requires a single argument.")
         arg = args[0]
         if isinstance(arg, sqlalchemy.sql.expression.ColumnElement):
-            if not (
-                isinstance(arg.type, sqlalchemy.sql.sqltypes.ARRAY)
-                or (
-                    hasattr(arg.type, "impl")
-                    and isinstance(arg.type.impl, sqlalchemy.sql.sqltypes.ARRAY)
-                )
+            if isinstance(arg.type, sqlalchemy.sql.sqltypes.ARRAY):
+                self.type = arg.type.item_type
+            elif hasattr(arg.type, "impl") and isinstance(
+                arg.type.impl, sqlalchemy.sql.sqltypes.ARRAY
             ):
+                self.type = arg.type.impl.item_type
+            else:
                 raise TypeError("The argument to unnest must have an ARRAY type.")
-            self.type = arg.type.item_type
         super().__init__(*args, **kwargs)
 
 
