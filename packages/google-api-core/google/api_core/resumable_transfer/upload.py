@@ -219,18 +219,11 @@ class ResumableUploadSession:
                 self._config.on_progress(progress)
 
     @contextlib.contextmanager
-    def _capture_progress(
-        self,
-    ) -> Generator[List[common.UploadProgress], None, None]:
-        """Intercepts progress events to buffer snapshots for generator consumers.
-
-        Yields:
-            List buffering UploadProgress snapshots during generator execution.
-        """
-        captured: List[common.UploadProgress] = []
-        self._captured_progress = captured
+    def _capture_progress(self) -> Generator[None, None, None]:
+        """Initializes self._captured_progress to buffer snapshots for generator consumers."""
+        self._captured_progress = []
         try:
-            yield captured
+            yield
         finally:
             self._captured_progress = None
 
@@ -645,7 +638,6 @@ class ResumableUploadSession:
         transport: requests.Session,
         stream_obj: BinaryIO,
         computed_size: Optional[int],
-        captured: Optional[List[common.UploadProgress]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Transmits chunks until transfer completes, yielding buffered progress updates.
 
@@ -653,7 +645,6 @@ class ResumableUploadSession:
             transport: The requests session.
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
-            captured: Optional buffer accumulating progress snapshots.
 
         Yields:
             UploadProgress snapshots for each transmission milestone.
@@ -661,16 +652,16 @@ class ResumableUploadSession:
         Raises:
             ValueError: If upload concludes without a server response.
         """
-        if captured:
-            while captured:
-                yield captured.pop(0)
+        if self._captured_progress:
+            while self._captured_progress:
+                yield self._captured_progress.pop(0)
 
         final_resp = None
         while not self._state.finished and not self._state.invalid:
             final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
-            if captured:
-                while captured:
-                    yield captured.pop(0)
+            if self._captured_progress:
+                while self._captured_progress:
+                    yield self._captured_progress.pop(0)
 
         if final_resp is None:
             raise ValueError("Upload completed without receiving a final response.")
@@ -728,15 +719,13 @@ class ResumableUploadSession:
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
         sess = self._get_transport(transport)
-        with self._capture_progress() as captured:
+        with self._capture_progress():
             try:
                 stream_obj, computed_size = self._prepare_stream(stream, size)
                 self.initiate(
                     transport=sess, request_body=request_body, size=computed_size
                 )
-                yield from self._transmit_all_chunks(
-                    sess, stream_obj, computed_size, captured
-                )
+                yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
             except Exception as exc:
                 self._enrich_exception(exc)
                 raise
@@ -810,13 +799,11 @@ class ResumableUploadSession:
             self._state._chunk_size = chunk_size
 
         self._state._resumable_url = actual_url
-        with self._capture_progress() as captured:
+        with self._capture_progress():
             try:
                 stream_obj, computed_size = self._prepare_stream(stream, size)
                 self._recover(sess, stream_obj)
-                yield from self._transmit_all_chunks(
-                    sess, stream_obj, computed_size, captured
-                )
+                yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
             except Exception as exc:
                 self._enrich_exception(exc)
                 raise

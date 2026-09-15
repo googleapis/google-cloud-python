@@ -1024,12 +1024,14 @@ def test_sync_on_progress_and_capture():
         config=config,
     )
     session._state._resumable_url = "https://api.example.com/init"
-    with session._capture_progress() as captured:
+    with session._capture_progress():
         session._notify_progress(common.ProgressState.UPLOADING)
-    assert len(captured) == 1
-    assert captured[0].state == common.ProgressState.UPLOADING
-    assert callback_mock.called
-    assert callback_mock.call_args[0][0] is captured[0]
+        assert session._captured_progress is not None
+        assert len(session._captured_progress) == 1
+        assert session._captured_progress[0].state == common.ProgressState.UPLOADING
+        assert callback_mock.called
+        assert callback_mock.call_args[0][0] is session._captured_progress[0]
+    assert session._captured_progress is None
 
 
 def test_sync_naive_deadline_tz():
@@ -1472,7 +1474,7 @@ def test_sync_transmit_all_chunks_captured_empty():
     stream_obj = io.BytesIO(b"data")
 
     # Consume the generator
-    list(session._transmit_all_chunks(session_transport, stream_obj, 4, []))
+    list(session._transmit_all_chunks(session_transport, stream_obj, 4))
 
 
 def test_sync_upload_multiple_chunks():
