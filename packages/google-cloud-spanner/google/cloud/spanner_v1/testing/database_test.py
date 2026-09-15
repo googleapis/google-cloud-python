@@ -119,10 +119,9 @@ class TestDatabase(Database):
         return self._spanner_api
 
     def _create_spanner_client_for_tests(self, client_options, credentials):
-        (
-            api_endpoint,
-            client_cert_source_func,
-        ) = SpannerClient.get_mtls_endpoint_and_cert_source(client_options)
+        api_endpoint, client_cert_source_func = (
+            SpannerClient.get_mtls_endpoint_and_cert_source(client_options)
+        )
         channel = grpc_helpers.create_channel(
             api_endpoint,
             credentials=credentials,

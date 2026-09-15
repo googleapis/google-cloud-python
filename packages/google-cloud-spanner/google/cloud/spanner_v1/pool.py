@@ -81,8 +81,7 @@ class AbstractSessionPool(object):
                     by the pool.
 
     :type database_role: str
-    :param database_role: (Optional) user-assigned database_role for the session.
-    """
+    :param database_role: (Optional) user-assigned database_role for the session."""
 
     _database = None
 
@@ -224,8 +223,7 @@ class FixedSizePool(AbstractSessionPool):
                     by the pool.
 
     :type database_role: str
-    :param database_role: (Optional) user-assigned database_role for the session.
-    """
+    :param database_role: (Optional) user-assigned database_role for the session."""
 
     DEFAULT_SIZE = 10
     DEFAULT_TIMEOUT = 10
@@ -441,8 +439,7 @@ class BurstyPool(AbstractSessionPool):
                     by the pool.
 
     :type database_role: str
-    :param database_role: (Optional) user-assigned database_role for the session.
-    """
+    :param database_role: (Optional) user-assigned database_role for the session."""
 
     def __init__(self, target_size=10, labels=None, database_role=None):
         super(BurstyPool, self).__init__(labels=labels, database_role=database_role)
@@ -556,8 +553,7 @@ class PingingPool(FixedSizePool):
                     by the pool.
 
     :type database_role: str
-    :param database_role: (Optional) user-assigned database_role for the session.
-    """
+    :param database_role: (Optional) user-assigned database_role for the session."""
 
     def __init__(
         self,
@@ -767,8 +763,7 @@ class TransactionPingingPool(PingingPool):
                     by the pool.
 
     :type database_role: str
-    :param database_role: (Optional) user-assigned database_role for the session.
-    """
+    :param database_role: (Optional) user-assigned database_role for the session."""
 
     def __init__(
         self,

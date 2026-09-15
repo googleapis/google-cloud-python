@@ -70,8 +70,7 @@ class Session(object):
     :param database_role: (Optional) user-assigned database_role for the session.
 
     :type is_multiplexed: bool
-    :param is_multiplexed: (Optional) whether this session is a multiplexed session.
-    """
+    :param is_multiplexed: (Optional) whether this session is a multiplexed session."""
 
     def __init__(self, database, labels=None, database_role=None, is_multiplexed=False):
         self._database = database
