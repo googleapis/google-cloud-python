@@ -1758,7 +1758,11 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
         transport=transport,
     )
 
-    # Disable HTTP-level _async_retry so 503 immediately triggers protocol-level _recover()
+    # Resumable uploads have two layers of retry:
+    # 1. HTTP-level retry (do_http): blindly re-sends the HTTP request on transient 503 errors.
+    # 2. Protocol-level recovery (_recover): triggered when HTTP retries exhaust; sends a "query"
+    #    command to discover committed server offset and slices the active chunk buffer.
+    # Disable HTTP-level _async_retry here so the 503 immediately triggers protocol-level _recover().
     async def no_retry(coro_fn: Any, max_attempts: int = 1) -> Any:
         return await coro_fn()
 
