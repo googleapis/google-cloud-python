@@ -159,6 +159,7 @@ class AsyncResumableUploadSession:
         # In-memory zero-copy buffer
         self._buffered_chunk: Optional[memoryview] = None
         self._buffered_chunk_offset: int = 0
+        self._buffered_chunk_is_last: bool = False
         self._start_stream_offset: int = 0
 
         # Stall control tracking via monotonic clock
@@ -391,20 +392,30 @@ class AsyncResumableUploadSession:
         async def do_transmit():
             chunk_size = self._state.chunk_size
 
-            # Retain active chunk in zero-copy buffer if not present
+            # Retain active chunk in zero-copy buffer if not present.
+            # Ensure that EOF status (_buffered_chunk_is_last) is computed once
+            # when reading from the stream and preserved across _recover() retries.
+            # On partial server commit, _recover() slices _buffered_chunk in-place
+            # to the uncommitted tail. Preserving _buffered_chunk_is_last ensures
+            # that a sliced tail smaller than chunk_size is not prematurely
+            # treated as the final chunk when unread bytes remain in the stream.
             if self._buffered_chunk is None:
                 raw_bytes = await reader_fn(chunk_size)
                 if not raw_bytes:
                     raw_bytes = b""
                 self._buffered_chunk = memoryview(raw_bytes)
                 self._buffered_chunk_offset = self._state.bytes_uploaded
+                is_eof = len(raw_bytes) < chunk_size
+                if (
+                    size is not None
+                    and self._state.bytes_uploaded + len(raw_bytes) >= size
+                ):
+                    is_eof = True
+                self._buffered_chunk_is_last = is_eof
 
             data = self._buffered_chunk
             data_len = len(data)
-
-            is_last = data_len < chunk_size
-            if size is not None and self._state.bytes_uploaded + data_len >= size:
-                is_last = True
+            is_last = self._buffered_chunk_is_last
 
             method, url, headers, payload = self._state.build_chunk_request(
                 data=data,
