@@ -3578,7 +3578,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             client = client_module.Client(
                 project="proj",
@@ -3632,7 +3632,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),  # noqa: F821
         ):
             client = client_module.Client(
                 project="proj",
@@ -5044,7 +5044,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             client = client_module.Client(
                 project="proj",
@@ -5098,7 +5098,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),  # noqa: F821
         ):
             client = client_module.Client(
                 project="proj",
@@ -6037,7 +6037,7 @@ class TestRowIterator(unittest.TestCase):
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
@@ -6072,7 +6072,7 @@ class TestRowIterator(unittest.TestCase):
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
@@ -6104,7 +6104,7 @@ class TestRowIterator(unittest.TestCase):
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
@@ -6135,7 +6135,7 @@ class TestRowIterator(unittest.TestCase):
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
@@ -6208,7 +6208,7 @@ class TestRowIterator(unittest.TestCase):
                 "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
                 False,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
             self.assertLogs("google.cloud.bigquery.table", level="DEBUG") as cm,
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
