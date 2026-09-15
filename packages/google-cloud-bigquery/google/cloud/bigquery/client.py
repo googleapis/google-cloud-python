@@ -76,9 +76,11 @@ from google.cloud.bigquery import (
     _versions_helpers,
     enums,
     job,
-    version,
 )
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import (
+    version as bq_version,
+)
 from google.cloud.bigquery._helpers import (
     _DEFAULT_HOST,
     _DEFAULT_HOST_TEMPLATE,
@@ -649,7 +651,7 @@ class Client(ClientWithProject):
 
         # Track the google-cloud-bigquery version as "legacy" because this code
         # path is intended to be migrated to pandas-gbq itself.
-        user_agent = f"legacy-gcb/{version.__version__} {pandas_user_agent}"
+        user_agent = f"legacy-gcb/{bq_version.__version__} {pandas_user_agent}"
 
         if client_info is None:
             amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(

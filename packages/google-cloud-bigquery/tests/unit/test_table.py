@@ -3551,8 +3551,6 @@ class TestRowIterator(unittest.TestCase):
         pytest.importorskip("numpy")
         pytest.importorskip("pyarrow")
         pytest.importorskip("google.cloud.bigquery_storage")
-        import sys
-
         import google.auth.credentials
         from google.cloud import bigquery_storage
         from google.cloud.bigquery import client as client_module
@@ -3610,8 +3608,6 @@ class TestRowIterator(unittest.TestCase):
         pytest.importorskip("numpy")
         pytest.importorskip("pyarrow")
         pytest.importorskip("google.cloud.bigquery_storage")
-        import sys
-
         import google.auth.credentials
         from google.cloud import bigquery_storage
         from google.cloud.bigquery import client as client_module
@@ -5021,8 +5017,6 @@ class TestRowIterator(unittest.TestCase):
         pytest.importorskip("numpy")
         pytest.importorskip("pandas")
         pytest.importorskip("google.cloud.bigquery_storage")
-        import sys
-
         import google.auth.credentials
         from google.cloud import bigquery_storage
         from google.cloud.bigquery import client as client_module
@@ -5080,8 +5074,6 @@ class TestRowIterator(unittest.TestCase):
         pytest.importorskip("numpy")
         pytest.importorskip("pandas")
         pytest.importorskip("google.cloud.bigquery_storage")
-        import sys
-
         import google.auth.credentials
         from google.cloud import bigquery_storage
         from google.cloud.bigquery import client as client_module
