@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.37.0
+    version: 2.38.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -663,7 +663,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.45.0
+    version: 2.46.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
