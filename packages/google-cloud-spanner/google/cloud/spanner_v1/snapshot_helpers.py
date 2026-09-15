@@ -647,15 +647,26 @@ class _SnapshotBase(_SessionWrapper):
         self, result_set_pb: Union[ResultSet, PartialResultSet]
     ) -> None:
         """Updates the snapshot for the given result set."""
-        if result_set_pb.metadata and result_set_pb.metadata.transaction:
-            self._update_for_transaction_pb(result_set_pb.metadata.transaction)
+        rs_pb = getattr(result_set_pb, "_pb", result_set_pb)
+        metadata = getattr(rs_pb, "metadata", None)
+        if metadata is not None:
+            tx = getattr(metadata, "transaction", None)
+            if tx is not None and (
+                getattr(tx, "id", None)
+                or getattr(tx, "HasField", lambda _: False)("precommit_token")
+            ):
+                self._update_for_transaction_pb(tx)
 
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction."""
-        if self._transaction_id is None and transaction_pb.id:
-            self._transaction_id = transaction_pb.id
-        if transaction_pb._pb.HasField("precommit_token"):
-            self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
+        tx_pb = getattr(transaction_pb, "_pb", transaction_pb)
+        tx_id = getattr(tx_pb, "id", None)
+        if self._transaction_id is None and tx_id:
+            self._transaction_id = tx_id
+        if tx_pb is not None and getattr(tx_pb, "HasField", lambda _: False)(
+            "precommit_token"
+        ):
+            self._update_for_precommit_token_pb_unsafe(tx_pb.precommit_token)
 
     def _update_for_precommit_token_pb(
         self, precommit_token_pb: MultiplexedSessionPrecommitToken
