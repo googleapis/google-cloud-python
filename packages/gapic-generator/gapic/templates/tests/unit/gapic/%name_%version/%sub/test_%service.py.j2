@@ -905,9 +905,8 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
 
 
 def test_{{ service.client_name|snake_case }}_otel_channel_injection_enabled():
-    mock_interceptor = mock.Mock()
     mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = mock_interceptor
+    mock_obs.is_otel_capabilities_enabled.return_value = True
     with (
         mock.patch(
             "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.client._observability",
@@ -919,14 +918,14 @@ def test_{{ service.client_name|snake_case }}_otel_channel_injection_enabled():
     ):
         client = {{ service.client_name }}(transport="grpc")
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert called_kwargs.get("interceptors") == [mock_interceptor]
+        assert called_kwargs.get("client_options") == client._client_options
 
 
 def test_{{ service.client_name|snake_case }}_otel_channel_injection_disabled():
     mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = None
+    mock_obs.is_otel_capabilities_enabled.return_value = False
     with (
         mock.patch(
             "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.client._observability",
@@ -938,9 +937,9 @@ def test_{{ service.client_name|snake_case }}_otel_channel_injection_disabled():
     ):
         client = {{ service.client_name }}(transport="grpc")
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(client._client_options)
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert not called_kwargs.get("interceptors", [])
+        assert not called_kwargs.get("client_options")
 
 
 def test_{{ service.name|snake_case }}_grpc_transport_channel_interceptors():
@@ -967,6 +966,42 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel_interceptors():
 
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.transports.grpc._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.{{ service.grpc_transport_name }},
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.{{ service.grpc_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
         )
         assert transport.grpc_channel == mock_channel
 
