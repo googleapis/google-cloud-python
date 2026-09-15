@@ -298,6 +298,148 @@ class StreamedResultSet(object):
             )
         return rows
 
+    @CrossSync.convert
+    async def to_arrow_batches(self, max_chunk_size: int = 65536):
+        """Yield query results as a sequence of PyArrow RecordBatches.
+
+        :type max_chunk_size: int
+        :param max_chunk_size: Target maximum number of rows per :class:`pyarrow.RecordBatch`.
+            Defaults to 65,536.
+
+        :rtype: Iterator[:class:`pyarrow.RecordBatch`]
+        :returns: An iterator yielding RecordBatch objects.
+        """
+        try:
+            import google_cloud_spanner_arrow as spanner_arrow_c
+            _HAS_ARROW_ACCELERATOR = True
+        except ImportError:
+            spanner_arrow_c = None
+            _HAS_ARROW_ACCELERATOR = False
+
+        from google.cloud.spanner_v1._arrow import (
+            _check_pyarrow,
+            convert_column_to_arrow_array,
+            extract_columns_from_rows,
+            spanner_schema_to_arrow_schema,
+        )
+
+        _check_pyarrow()
+        import pyarrow as pa
+
+        self._lazy_decode = True
+
+        if self._metadata is None:
+            try:
+                await self._consume_next()
+            except CrossSync.StopIteration:
+                pass
+            if self._metadata is None:
+                return
+
+        fields = self.fields
+        pa_schema = spanner_schema_to_arrow_schema(fields)
+        field_types = [f.type_ for f in fields]
+        type_codes = [f.type_.code for f in fields]
+
+        accumulated_rows = []
+
+        while True:
+            if self._rows:
+                accumulated_rows.extend(self._rows)
+                self._rows = []
+
+            while len(accumulated_rows) >= max_chunk_size:
+                batch_rows = accumulated_rows[:max_chunk_size]
+                accumulated_rows = accumulated_rows[max_chunk_size:]
+                if _HAS_ARROW_ACCELERATOR:
+                    yield spanner_arrow_c.rows_to_arrow_batch(
+                        fields, batch_rows, schema=pa_schema
+                    )
+                else:
+                    col_buffers = extract_columns_from_rows(batch_rows, field_types)
+                    arrays = [
+                        convert_column_to_arrow_array(col_data, pa_field, type_code)
+                        for col_data, pa_field, type_code in zip(
+                            col_buffers, pa_schema, type_codes
+                        )
+                    ]
+                    yield pa.RecordBatch.from_arrays(arrays, schema=pa_schema)
+
+            if self._done:
+                break
+
+            try:
+                await self._consume_next()
+            except CrossSync.StopIteration:
+                break
+
+        if accumulated_rows:
+            if _HAS_ARROW_ACCELERATOR:
+                yield spanner_arrow_c.rows_to_arrow_batch(
+                    fields, accumulated_rows, schema=pa_schema
+                )
+            else:
+                col_buffers = extract_columns_from_rows(accumulated_rows, field_types)
+                arrays = [
+                    convert_column_to_arrow_array(col_data, pa_field, type_code)
+                    for col_data, pa_field, type_code in zip(
+                        col_buffers, pa_schema, type_codes
+                    )
+                ]
+                yield pa.RecordBatch.from_arrays(arrays, schema=pa_schema)
+
+    @CrossSync.convert
+    async def to_arrow(self, max_chunk_size: int = 65536):
+        """Return the result of a query as a PyArrow Table.
+
+        :type max_chunk_size: int
+        :param max_chunk_size: Target maximum number of rows per chunk when reading.
+            Defaults to 65,536.
+
+        :rtype: :class:`pyarrow.Table`
+        :returns: A PyArrow Table containing all rows from the query result.
+        """
+        from google.cloud.spanner_v1._arrow import (
+            _check_pyarrow,
+            spanner_schema_to_arrow_schema,
+        )
+
+        _check_pyarrow()
+        import pyarrow as pa
+
+        batches = []
+        if CrossSync.is_async:
+            async for batch in self.to_arrow_batches(max_chunk_size=max_chunk_size):
+                batches.append(batch)
+        else:
+            for batch in self.to_arrow_batches(max_chunk_size=max_chunk_size):
+                batches.append(batch)
+
+        if not batches:
+            if self._metadata is not None:
+                schema = spanner_schema_to_arrow_schema(self.fields)
+            else:
+                schema = pa.schema([])
+            return pa.Table.from_batches([], schema=schema)
+        return pa.Table.from_batches(batches)
+
+    @CrossSync.convert
+    async def to_dataframe(self, max_chunk_size: int = 65536, **kwargs):
+        """Return the result of a query as a Pandas DataFrame.
+
+        :type max_chunk_size: int
+        :param max_chunk_size: Target maximum number of rows per chunk when reading.
+            Defaults to 65,536.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments forwarded to :meth:`pyarrow.Table.to_pandas`.
+
+        :rtype: :class:`pandas.DataFrame`
+        :returns: A Pandas DataFrame containing all rows from the query result.
+        """
+        table = await self.to_arrow(max_chunk_size=max_chunk_size)
+        return table.to_pandas(**kwargs)
+
 
 class Unmergeable(ValueError):
     """Unable to merge two values.
