@@ -1,0 +1,166 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: prerelease
+
+on:
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PACKAGE_DIRS: packages
+  NOX_REUSE_EXISTING_VIRTUALENVS: "true"
+  NOX_ENVDIR: "/tmp/shared_nox_envs"
+  NOX_DEFAULT_VENV_BACKEND: "virtualenv"
+  UV_PRERELEASE: "allow"
+  # Workaround: Allows libcst/Rust extensions to compile on Python 3.15+ while PyO3 catches up
+  PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
+  PARALLEL_WORKERS: "1"
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: ${{ github.repository == 'googleapis/google-cloud-python' }}
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      packages: ${{ steps.set-matrix.outputs.packages }}
+    env:
+      # GitHub Actions supports up to 256 jobs per matrix. Setting MAX_SHARDS=256 and
+      # MIN_SHARD_WEIGHT=1 ensures each handwritten package is placed on its own dedicated
+      # shard while leaving plenty of room for new handwritten packages to be added.
+      MAX_SHARDS: 256
+      MIN_SHARD_WEIGHT: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.14"
+      - name: Get package shards
+        id: set-matrix
+        env:
+          BUILD_TYPE: continuous
+          TEST_ALL_PACKAGES: "true"
+          HANDWRITTEN_ONLY: "true"
+          MAX_SHARDS: ${{ env.MAX_SHARDS }}
+          MIN_SHARD_WEIGHT: ${{ env.MIN_SHARD_WEIGHT }}
+        run: |
+          python3 ci/get_package_shards.py
+      - name: Create issue if initialize fails
+        if: ${{ failure() }}
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+        with:
+          title: "prerelease_deps workflow initialize failed"
+          body: |
+            The [pre-release check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed during the initialize step.
+
+  prerelease:
+    needs: initialize
+    if: needs.initialize.outputs.matrix != '[]' && needs.initialize.outputs.matrix != ''
+    runs-on: ubuntu-22.04
+    # Never fail the workflow run; errors are reported via GitHub issues instead
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.15"]
+        package_shard: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    name: prerelease (${{ matrix.python }}, ${{ matrix.package_shard.description }})
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+        # See https://github.com/googleapis/google-cloud-python/issues/12013
+        # and https://github.com/actions/checkout#checkout-head.
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+          allow-prereleases: true
+      - name: Cache pip wheels (including compiled source builds)
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.cache/pip
+          # Save a fresh cache snapshot for each run so newly compiled wheels are persisted
+          key: ${{ runner.os }}-pip-prerelease-${{ matrix.python }}-${{ matrix.package_shard.description }}-${{ github.run_id }}
+          # Restore the most recent cache from previous runs for this package/python
+          restore-keys: |
+            ${{ runner.os }}-pip-prerelease-${{ matrix.python }}-${{ matrix.package_shard.description }}-
+      - name: Install nox
+        run: |
+          pip install nox
+      - name: Run prerelease_deps for ${{ matrix.package_shard.description }}
+        env:
+          BUILD_TYPE: continuous
+          TEST_TYPE: prerelease
+          PY_VERSION: ${{ matrix.python }}
+          PACKAGE_LIST: ${{ matrix.package_shard.packages }}
+          NOX_DEFAULT_VENV_BACKEND: "virtualenv"
+          NOXFORCEPYTHON: ${{ matrix.python }}
+        run: |
+          ci/run_conditional_tests.sh 2>&1 | tee /tmp/prerelease_test.log
+      - name: Prepare issue body on failure
+        if: ${{ failure() }}
+        id: issue-body
+        run: |
+          DEPS_LIST=$(cat /tmp/prerelease_pip_list.txt 2>/dev/null || echo "Unavailable")
+          LOG_TAIL=$(tail -n 60 /tmp/prerelease_test.log 2>/dev/null | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' || echo "Unavailable")
+          {
+            echo "body<<EOF_ISSUE_BODY"
+            echo "The [pre-release check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed for \`${{ matrix.package_shard.description }}\`."
+            echo ""
+            echo "- **Package:** \`${{ matrix.package_shard.description }}\`"
+            echo "- **Python Version:** \`${{ matrix.python }}\`"
+            echo "- **Workflow Run:** [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo ""
+            echo "<details>"
+            echo "<summary>Installed Dependencies (pip list)</summary>"
+            echo ""
+            echo '```text'
+            echo "${DEPS_LIST}"
+            echo '```'
+            echo "</details>"
+            echo ""
+            echo "<details>"
+            echo "<summary>Test Failure Output (last 60 lines)</summary>"
+            echo ""
+            echo '```text'
+            echo "${LOG_TAIL}"
+            echo '```'
+            echo "</details>"
+            echo "EOF_ISSUE_BODY"
+          } >> "$GITHUB_OUTPUT"
+      - name: Create issue on failure
+        if: ${{ failure() }}
+        uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+        with:
+          title: "prerelease_deps failed for ${{ matrix.package_shard.description }}"
+          body: ${{ steps.issue-body.outputs.body }}

@@ -148,8 +148,9 @@ def get_packages_to_test():
     build_type = os.environ.get("BUILD_TYPE", "presubmit")
     target_branch = os.environ.get("TARGET_BRANCH", "main")
     test_all_packages = os.environ.get("TEST_ALL_PACKAGES", "false").lower() == "true"
+    handwritten_only = os.environ.get("HANDWRITTEN_ONLY", "false").lower() == "true"
 
-    all_packages = get_packages()
+    all_packages = get_packages(handwritten_only=handwritten_only)
 
     if test_all_packages:
         return all_packages
@@ -227,7 +228,8 @@ def group_packages(packages_map):
 
     # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
-    target_weight = max(10, math.ceil(total_weight / max_shards))
+    min_shard_weight = int(os.environ.get("MIN_SHARD_WEIGHT", 10))
+    target_weight = max(min_shard_weight, math.ceil(total_weight / max_shards))
 
     shards_list = []
     current_shard_items = []

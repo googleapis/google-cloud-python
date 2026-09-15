@@ -65,8 +65,20 @@ case ${TEST_TYPE} in
         retval=$?
         ;;
     prerelease)
-        nox -s prerelease_deps-3.14
+        if [[ "$(pwd)" == */preview-packages/* ]]; then
+            echo "Skipping prerelease for preview package $(pwd)"
+            exit 0
+        fi
+        nox --stop-on-first-error -s prerelease_deps
         retval=$?
+        if [ ${retval} -ne 0 ]; then
+            for pip_bin in ${NOX_ENVDIR:-.nox}/prerelease_deps*/bin/pip; do
+                if [ -x "$pip_bin" ]; then
+                    "$pip_bin" list > /tmp/prerelease_pip_list.txt
+                    break
+                fi
+            done
+        fi
         ;;
     core_deps_from_source)
         if [[ "$(pwd)" == */preview-packages/* ]]; then
