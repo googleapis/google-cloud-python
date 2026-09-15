@@ -67,12 +67,16 @@ jobs:
           git clone --recurse-submodules --single-branch https://github.com/googleapis/synthtool.git /home/runner/synthtool
 
       - name: Regenerate
+        env:
+          GLOBAL_REGEN: ${{ steps.filter.outputs.global_regen }}
+          EVENT_NAME: ${{ github.event_name }}
+          PACKAGES: ${{ steps.get-packages.outputs.packages }}
         run: |
-          if [ "${{ steps.filter.outputs.global_regen }}" = "true" ] || [ "${{ github.event_name }}" = "push" ]; then
+          if [ "$GLOBAL_REGEN" = "true" ] || [ "$EVENT_NAME" = "push" ]; then
             echo "Running full regeneration..."
             librarian generate -all -v
-          elif [ -n "${{ steps.get-packages.outputs.packages }}" ]; then
-            for pkg_path in ${{ steps.get-packages.outputs.packages }}; do
+          elif [ -n "$PACKAGES" ]; then
+            for pkg_path in $PACKAGES; do
               pkg=$(basename "$pkg_path")
               echo "Regenerating $pkg..."
               librarian generate "$pkg"
