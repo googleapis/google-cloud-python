@@ -1331,26 +1331,6 @@ class TellErrorStream:
         raise OSError("tell failed")
 
 
-# CustomNoDictObj defines __slots__ as empty and has no parent class.
-# It is used to test exception/metadata enrichment when the passed object
-# does not have a __dict__ attribute (such as certain system exceptions).
-class CustomNoDictObj:
-    __slots__ = ()
-
-
-class NoTellStream:
-    def read(self, n):
-        return b""
-
-
-class TellErrorStream:
-    def read(self, n):
-        return b""
-
-    def tell(self):
-        raise OSError("tell failed")
-
-
 class CustomReadStream:
     def __init__(self, data):
         self.data = data
@@ -1359,14 +1339,14 @@ class CustomReadStream:
         return self.data
 
 
-def test_sync_enrich_exception_no_dict():
+def test_sync_enrich_exception():
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         transport=mock.sentinel.transport,
     )
-    exc = CustomNoDictObj()
+    exc = RuntimeError("test error")
     session._enrich_exception(exc)
-    assert not hasattr(exc, "upload_url")
+    assert getattr(exc, "upload_url") == "https://api.example.com/init"
 
 
 def test_sync_notify_progress_no_upload_url():

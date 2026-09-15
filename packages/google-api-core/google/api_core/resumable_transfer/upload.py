@@ -195,9 +195,8 @@ class ResumableUploadSession:
         Args:
             exc: Exception instance to augment with upload_url and chunk_size.
         """
-        if hasattr(exc, "__dict__"):
-            setattr(exc, "upload_url", self.upload_url)
-            setattr(exc, "chunk_size", self.chunk_size)
+        setattr(exc, "upload_url", self.upload_url)
+        setattr(exc, "chunk_size", self.chunk_size)
 
     def _notify_progress(self, state: common.ProgressState) -> None:
         """Notifies progress with current upload status.

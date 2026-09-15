@@ -1023,20 +1023,14 @@ def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
         )
 
 
-# CustomNoDictObj defines __slots__ as empty and has no parent class.
-# It is used to test exception/metadata enrichment when the passed object
-# does not have a __dict__ attribute (such as certain system exceptions).
-class CustomNoDictObj:
-    __slots__ = ()
-
-
-def test_async_enrich_exception_without_dict() -> None:
-    """Verifies that _enrich_exception handles objects without __dict__."""
+def test_async_enrich_exception() -> None:
+    """Verifies that _enrich_exception attaches upload_url and chunk_size."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
     )
-    exc = CustomNoDictObj()
+    exc = RuntimeError("test error")
     session._enrich_exception(exc)
+    assert getattr(exc, "upload_url") == "https://api.example.com/start"
 
 
 def test_async_notify_progress_branches() -> None:
@@ -1146,7 +1140,10 @@ async def test_async_retry_branches() -> None:
     assert attempts_runtime == 2
 
     # max_attempts=0 covers loop bypass falling through
-    res = await session._async_retry(lambda: 123, max_attempts=0)
+    async def dummy_async_func() -> int:
+        return 123
+
+    res = await session._async_retry(dummy_async_func, max_attempts=0)
     assert res is None
 
 
@@ -1376,10 +1373,10 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
         transport=TimeoutAsyncSession(),
     )
     session2._state._resumable_url = "https://upload.example.com/resumable-async"
-    session2._get_deadline_remaining = lambda: -5.0
 
-    with pytest.raises(exceptions.DeadlineExceeded):
-        await session2.upload(stream=b"data")
+    with mock.patch.object(session2, "_get_deadline_remaining", return_value=-5.0):
+        with pytest.raises(exceptions.DeadlineExceeded):
+            await session2.upload(stream=b"data")
 
 
 @pytest.mark.asyncio
@@ -1427,27 +1424,47 @@ async def test_async_prepare_async_reader_additional_branches() -> None:
         upload_url="https://api.example.com/start",
     )
 
-    class LocalNoTellStream:
-        def read(self, n):
-            return b""
+    # Inherit from concrete io.BytesIO so mypy recognizes these test streams as
+    # valid BinaryIO instances without requiring cast() or type: ignore (since
+    # typing.BinaryIO is an abstract class).
+    class LocalNoTellStream(io.BytesIO):
+        """Simulates a stream that has read() but lacks getbuffer() and tell().
 
-    class LocalCustomReadStream:
-        def __init__(self, data):
-            self.data = data
+        Overrides __getattribute__ to raise AttributeError for "tell" and
+        "getbuffer" so that hasattr(stream, "tell") and hasattr(stream, "getbuffer")
+        evaluate to False at runtime while remaining mypy-compliant.
+        """
 
-        def read(self, n):
-            return self.data
+        def __getattribute__(self, name: str) -> Any:
+            if name in ("tell", "getbuffer"):
+                raise AttributeError(f"no {name}")
+            return super().__getattribute__(name)
+
+    class LocalCustomReadStream(io.BytesIO):
+        """Simulates a stream that lacks getbuffer() and where tell() raises OSError.
+
+        Used to verify that _prepare_async_reader gracefully catches OSError
+        when attempting to record the starting stream offset via tell().
+        """
+
+        def __getattribute__(self, name: str) -> Any:
+            if name == "getbuffer":
+                raise AttributeError("no getbuffer")
+            return super().__getattribute__(name)
+
+        def tell(self) -> int:
+            raise OSError("tell failed")
 
     # 1. bytes stream with explicit size
     reader_fn1, size1, obj1 = session._prepare_async_reader(b"data", size=4)
     assert size1 == 4
 
     # 2. NoTellStream: read but no tell
-    stream2 = LocalNoTellStream()
+    stream2 = LocalNoTellStream(b"")
     reader_fn2, size2, obj2 = session._prepare_async_reader(stream2, size=None)
     assert size2 is None
 
-    # 3. CustomReadStream: read, but no getbuffer and no tell
+    # 3. CustomReadStream: read, but no getbuffer and tell raises OSError
     stream3 = LocalCustomReadStream(b"hello")
     reader_fn3, size3, obj3 = session._prepare_async_reader(stream3, size=None)
     assert size3 is None
@@ -1574,10 +1591,10 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
         transport=TimeoutAsyncSession(),
     )
     session2._state._resumable_url = "https://upload.example.com/resumable-async"
-    session2._get_deadline_remaining = lambda: -5.0
 
-    with pytest.raises(exceptions.DeadlineExceeded):
-        await session2.upload(stream=b"data")
+    with mock.patch.object(session2, "_get_deadline_remaining", return_value=-5.0):
+        with pytest.raises(exceptions.DeadlineExceeded):
+            await session2.upload(stream=b"data")
 
 
 @pytest.mark.asyncio
@@ -1625,13 +1642,13 @@ async def test_async_upload_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
     session._state._finished = True
     session._state._resumable_url = "https://upload.example.com/resumable-async"
-    session.initiate = mock.AsyncMock()
 
-    sess_transport = DummyAsyncSession([])
-    with pytest.raises(
-        ValueError, match="Upload completed without receiving a final response"
-    ):
-        await session.upload(stream=b"data", transport=sess_transport)
+    with mock.patch.object(session, "initiate", new_callable=mock.AsyncMock):
+        sess_transport = DummyAsyncSession([])
+        with pytest.raises(
+            ValueError, match="Upload completed without receiving a final response"
+        ):
+            await session.upload(stream=b"data", transport=sess_transport)
 
 
 @pytest.mark.asyncio
@@ -1639,17 +1656,17 @@ async def test_async_resume_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
     session._state._finished = True
     session._state._resumable_url = "https://upload.example.com/resumable-async"
-    session._recover = mock.AsyncMock()
 
     sess_transport = DummyAsyncSession([])
-    op = session.resume(
-        upload_url="https://upload.example.com/resumable-async",
-        stream=b"data",
-        chunk_size=1024,
-        transport=sess_transport,
-    )
-    with pytest.raises(
-        ValueError,
-        match="Upload resumed but completed without receiving a final response",
-    ):
-        await op
+    with mock.patch.object(session, "_recover", new_callable=mock.AsyncMock):
+        op = session.resume(
+            upload_url="https://upload.example.com/resumable-async",
+            stream=b"data",
+            chunk_size=1024,
+            transport=sess_transport,
+        )
+        with pytest.raises(
+            ValueError,
+            match="Upload resumed but completed without receiving a final response",
+        ):
+            await op
