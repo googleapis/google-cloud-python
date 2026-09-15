@@ -1248,17 +1248,15 @@ def test_sync_recover_failure():
         session._recover(transport, io.BytesIO(b"data"))
 
 
-def test_sync_transmit_all_chunks_completed_without_response():
+def test_sync_chunk_stream_generator_already_finished():
     transport = mock.create_autospec(requests.Session, instance=True)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         transport=transport,
     )
     session._state._finished = True
-    with pytest.raises(
-        ValueError, match="Upload completed without receiving a final response"
-    ):
-        session._transmit_all_chunks(transport, io.BytesIO(b"data"), 4)
+    gen = session._chunk_stream_generator(transport, io.BytesIO(b"data"), 4)
+    assert list(gen) == []
 
 
 def test_sync_resume_errors():
@@ -1507,7 +1505,7 @@ def test_sync_upload_and_resume_none_response_raises():
     session = ResumableUploadSession(upload_url="https://api.example.com/start", transport=transport)
     session._state._resumable_url = "https://upload.example.com/resumable-none"
     session.initiate = mock.Mock()
-    session._transmit_all_chunks = mock.Mock()
+    session._chunk_stream_generator = mock.Mock(return_value=iter([]))
     session._response = None
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         session.upload(stream=b"data")
@@ -1621,5 +1619,85 @@ def test_stall_tracker_no_deadline_checker():
     tracker.aggregate_lag = 1.0
     with pytest.raises(exceptions.TransferStalledError):
         tracker.update(data_len=100, t_start=time.monotonic() - 1.0, t_elapsed=1.0)
+
+
+def test_sync_upload_and_resume_with_method_args():
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "final",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-args",
+        },
+    )
+    chunk_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "args.txt", "size": 5}',
+    )
+    session_transport.request.side_effect = [start_resp, chunk_resp]
+
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        chunk_size=10,
+        transport=session_transport,
+    )
+    progress_events = []
+    deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)
+    res = session.upload(
+        stream=b"hello",
+        request_body='{"metadata": "val"}',
+        headers={"X-Custom": "header"},
+        content_type="text/plain",
+        start_timeout=15.0,
+        timeout=30.0,
+        deadline=deadline,
+        on_progress=progress_events.append,
+        response_type=DummyResponse,
+    )
+    assert isinstance(res, DummyResponse)
+    assert res.name == "args.txt"
+    assert len(progress_events) == 2
+
+    start_call_kwargs = session_transport.request.call_args_list[0].kwargs
+    assert start_call_kwargs["headers"]["X-Custom"] == "header"
+    assert start_call_kwargs["headers"]["X-Goog-Upload-Header-Content-Type"] == "text/plain"
+    assert start_call_kwargs["timeout"] <= 15.0
+
+    query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "2",
+        },
+    )
+    resumed_chunk_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "resumed_args.txt", "size": 5}',
+    )
+    session_transport.request.side_effect = [query_resp, resumed_chunk_resp]
+
+    resume_progress = []
+    session_resume = ResumableUploadSession(transport=session_transport)
+    res_resume = session_resume.resume(
+        upload_url="https://upload.example.com/resumable-args",
+        stream=io.BytesIO(b"hello"),
+        size=5,
+        chunk_size=10,
+        timeout=25.0,
+        deadline=deadline,
+        on_progress=resume_progress.append,
+        response_type=DummyResponse,
+    )
+    assert isinstance(res_resume, DummyResponse)
+    assert res_resume.name == "resumed_args.txt"
+    assert len(resume_progress) == 2
+
 
 

@@ -66,6 +66,9 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         config: Optional[ResumableUploadConfig] = None,
         resumable_url: Optional[str] = None,
         transport: Optional[Any] = None,
+        chunk_size: Optional[int] = None,
+        stall_minimum_rate: Optional[int] = None,
+        stall_timeout: Optional[float] = None,
     ) -> None:
         """Initializes an AsyncResumableUploadSession.
 
@@ -74,12 +77,18 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             config: Optional upload configuration parameters.
             resumable_url: Pre-existing upload session URL if resuming.
             transport: Optional aiohttp.ClientSession.
+            chunk_size: Optional chunk size override in bytes.
+            stall_minimum_rate: Optional stall minimum rate override (bytes/s).
+            stall_timeout: Optional stall timeout duration override in seconds.
         """
         super().__init__(
             upload_url=upload_url,
             config=config,
             resumable_url=resumable_url,
             transport=transport,
+            chunk_size=chunk_size,
+            stall_minimum_rate=stall_minimum_rate,
+            stall_timeout=stall_timeout,
         )
 
     def _ensure_aiohttp(self) -> None:
@@ -94,10 +103,15 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 "Install with `pip install google-api-core[async_rest]`."
             )
 
-    def _get_async_retry(self, is_start: bool = False) -> AsyncRetry:
+    def _get_async_retry(
+        self,
+        retry: Optional[Any] = None,
+        is_start: bool = False,
+    ) -> AsyncRetry:
         """Resolves async retry policy for unary control requests.
 
         Args:
+            retry: Explicit retry policy if provided.
             is_start: Whether this retry policy is for the start request.
 
         Returns:
@@ -115,42 +129,46 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 multiplier=getattr(self._config.start_retry, "_multiplier", 2.0),
                 timeout=getattr(self._config.start_retry, "_timeout", None),
             )
-        if isinstance(self._config.retry, AsyncRetry):
-            return self._config.retry
-        if self._config.retry is not None:
+        actual_retry = retry if retry is not None else self._config.retry
+        if isinstance(actual_retry, AsyncRetry):
+            return actual_retry
+        if actual_retry is not None:
             return AsyncRetry(
                 predicate=getattr(
-                    self._config.retry, "_predicate", self._get_retry_predicate()
+                    actual_retry, "_predicate", self._get_retry_predicate()
                 ),
-                initial=getattr(self._config.retry, "_initial", 1.0),
-                maximum=getattr(self._config.retry, "_maximum", 60.0),
-                multiplier=getattr(self._config.retry, "_multiplier", 2.0),
-                timeout=getattr(self._config.retry, "_timeout", None),
+                initial=getattr(actual_retry, "_initial", 1.0),
+                maximum=getattr(actual_retry, "_maximum", 60.0),
+                multiplier=getattr(actual_retry, "_multiplier", 2.0),
+                timeout=getattr(actual_retry, "_timeout", None),
             )
         return AsyncRetry(predicate=self._get_retry_predicate())
 
     def _get_async_streaming_retry(
-        self, on_error: Optional[Callable[[Exception], Any]] = None
+        self,
+        retry: Optional[Any] = None,
+        on_error: Optional[Callable[[Exception], Any]] = None,
     ) -> AsyncStreamingRetry:
         """Resolves async retry policy for streaming chunk uploads.
 
         Args:
+            retry: Explicit retry policy override if provided.
             on_error: Optional callback executed when an exception triggers a retry attempt.
 
         Returns:
             Configured or default AsyncStreamingRetry instance.
         """
-        if isinstance(self._config.retry, AsyncStreamingRetry):
-            return self._config.retry
+        actual_retry = retry if retry is not None else self._config.retry
+        if isinstance(actual_retry, AsyncStreamingRetry):
+            return actual_retry
 
-        base_retry = self._config.retry
         predicate = self._get_streaming_predicate()
-        initial = getattr(base_retry, "_initial", 1.0)
-        maximum = getattr(base_retry, "_maximum", 60.0)
-        multiplier = getattr(base_retry, "_multiplier", 2.0)
-        timeout = getattr(base_retry, "_timeout", None)
+        initial = getattr(actual_retry, "_initial", 1.0)
+        maximum = getattr(actual_retry, "_maximum", 60.0)
+        multiplier = getattr(actual_retry, "_multiplier", 2.0)
+        timeout = getattr(actual_retry, "_timeout", None)
 
-        user_on_error = getattr(base_retry, "_on_error", None)
+        user_on_error = getattr(actual_retry, "_on_error", None)
 
         callbacks = [cb for cb in (user_on_error, on_error) if cb is not None]
 
@@ -213,6 +231,12 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         transport: Any,
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
+        headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[Union[AsyncRetry, Retry]] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> str:
         """Initiates the upload session by sending the start command asynchronously.
 
@@ -220,6 +244,12 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: The aiohttp client session.
             request_body: Initial metadata payload sent with start command.
             size: Total stream size in bytes, if known.
+            headers: Additional HTTP headers dispatched with start request.
+            content_type: MIME type of the stream payload.
+            retry: Optional custom retry policy for start request.
+            timeout: Optional timeout in seconds for start request.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback for progress updates.
 
         Returns:
             The upload session URL.
@@ -229,18 +259,22 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             MissingStatusHeaderError: If the server response lacks status header.
         """
         self._ensure_aiohttp()
-        method, url, headers, payload = self._state.build_start_request(
+        req_headers = headers if headers is not None else self._config.start_headers
+        req_content_type = (
+            content_type if content_type is not None else self._config.content_type
+        )
+        method, url, start_headers, payload = self._state.build_start_request(
             body=request_body,
-            headers=self._config.start_headers,
-            content_type=self._config.content_type,
+            headers=req_headers,
+            content_type=req_content_type,
             size=size,
         )
 
         async def do_initiate() -> str:
-            timeout_sec = self._get_start_timeout()
+            timeout_sec = self._get_start_timeout(timeout=timeout, deadline=deadline)
             client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
             async with transport.request(
-                method, url, data=payload, headers=headers, timeout=client_timeout
+                method, url, data=payload, headers=start_headers, timeout=client_timeout
             ) as resp:
                 resp_headers = dict(resp.headers)
                 body = await resp.read()
@@ -253,8 +287,8 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 )
                 return session_url
 
-        session_url = await self._get_async_retry(is_start=True)(do_initiate)()
-        self._notify_progress(common.ProgressState.STARTED)
+        session_url = await self._get_async_retry(retry=retry, is_start=True)(do_initiate)()
+        self._notify_progress(common.ProgressState.STARTED, on_progress=on_progress)
         return session_url
 
     async def _transmit_chunk(
@@ -263,6 +297,9 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
         stream_obj: Any = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Tuple[int, Mapping[str, str], bytes]:
         """Transmits a single data chunk asynchronously via aiohttp with stall control.
 
@@ -271,6 +308,9 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
             stream_obj: Underlying stream object for recovery seeking.
+            timeout: Optional timeout ceiling in seconds.
+            deadline: Optional overall deadline.
+            on_progress: Optional callback for progress updates.
 
         Returns:
             Tuple of (status code, headers mapping, response body bytes).
@@ -307,7 +347,9 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             content_type=self._config.content_type,
         )
 
-        per_attempt_timeout = self._compute_chunk_timeout(data_len)
+        per_attempt_timeout = self._compute_chunk_timeout(
+            data_len, timeout=timeout, deadline=deadline
+        )
         client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
         try:
             t_start = _monotonic_clock()
@@ -330,10 +372,11 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             getattr(aiohttp, "ServerTimeoutError", ()),
         ) as exc:
             self._enrich_exception(exc)
-            remaining = self._get_deadline_remaining()
+            remaining = self._get_deadline_remaining(deadline)
             if remaining is not None and remaining <= 0:
+                dl = deadline or self._config.deadline
                 raise exceptions.DeadlineExceeded(
-                    f"Resumable upload deadline {self._config.deadline} exceeded."
+                    f"Resumable upload deadline {dl} exceeded."
                 ) from exc
             raise exceptions.TransferStalledError(
                 f"Upload stalled: chunk transfer timed out ({exc}).",
@@ -344,23 +387,36 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             self._enrich_exception(exc)
             raise
 
-        self._update_stall_control(data_len, t_start, t_elapsed)
+        self._update_stall_control(data_len, t_start, t_elapsed, deadline=deadline)
 
         self._state.process_chunk_response(resp.status, resp_headers, data_len)
         self._buffered_chunk = None
         self._notify_progress(
             common.ProgressState.FINALIZED
             if self._state.finished
-            else common.ProgressState.UPLOADING
+            else common.ProgressState.UPLOADING,
+            on_progress=on_progress,
         )
         return resp.status, resp_headers, resp_body
 
-    async def _recover(self, transport: Any, stream_obj: Any = None) -> int:
+    async def _recover(
+        self,
+        transport: Any,
+        stream_obj: Any = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
+    ) -> int:
         """Queries server for committed byte offset and adjusts buffer.
 
         Args:
             transport: The aiohttp client session.
             stream_obj: Underlying stream object to rewind if seekable.
+            timeout: Optional timeout in seconds.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback for progress updates.
+            response_type: Optional response deserialization type.
 
         Returns:
             The confirmed server byte offset.
@@ -370,34 +426,37 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             exceptions.GoogleAPICallError: If query request fails on the server.
         """
         method, url, headers, payload = self._state.build_query_request()
+        timeout_sec = self._get_start_timeout(timeout=timeout, deadline=deadline)
+        client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
+        async with transport.request(
+            method, url, data=payload, headers=headers, timeout=client_timeout
+        ) as resp:
+            resp_headers = dict(resp.headers)
+            body = await resp.read()
+            if resp.status not in (200, 201):
+                raise exceptions.from_http_status(
+                    resp.status, body.decode("utf-8", errors="replace")
+                )
 
-        async def do_query() -> Tuple[int, Mapping[str, str], bytes]:
-            timeout_sec = self._get_start_timeout()
-            client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
-            async with transport.request(
-                method, url, data=payload, headers=headers, timeout=client_timeout
-            ) as resp:
-                resp_headers = dict(resp.headers)
-                body = await resp.read()
-                if resp.status not in (200, 201):
-                    raise exceptions.from_http_status(
-                        resp.status, body.decode("utf-8", errors="replace")
-                    )
-                return resp.status, resp_headers, body
-
-        status_code, resp_headers, body = await self._get_async_retry()(do_query)()
-        received = self._state.process_query_response(status_code, resp_headers)
+        received = self._state.process_query_response(resp.status, resp_headers)
         if self._state.finished:
-            self._response = self._format_response(body)
+            self._response = self._format_response(body, response_type=response_type)
             return received
-        self._notify_progress(common.ProgressState.OFFSET_RECEIVED)
+        self._notify_progress(common.ProgressState.OFFSET_RECEIVED, on_progress=on_progress)
         return self._reposition_stream_offset(stream_obj, received)
 
-    async def cancel(self, transport: Optional[Any] = None) -> None:
+    async def cancel(
+        self,
+        transport: Optional[Any] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+    ) -> None:
         """Cancels the resumable upload session asynchronously.
 
         Args:
             transport: Optional aiohttp client session.
+            timeout: Optional timeout in seconds.
+            deadline: Optional overall upload deadline.
 
         Raises:
             ValueError: If transport is missing.
@@ -408,7 +467,7 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         if sess is None:
             raise ValueError("An aiohttp.ClientSession transport must be provided.")
         method, url, headers, payload = self._state.build_cancel_request()
-        timeout_sec = self._get_start_timeout()
+        timeout_sec = self._get_start_timeout(timeout=timeout, deadline=deadline)
         client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
         async with sess.request(
             method, url, data=payload, headers=headers, timeout=client_timeout
@@ -421,66 +480,75 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 )
             self._state.process_cancel_response(resp.status, resp_headers)
 
-    async def _async_transmit_all_chunks(
+    async def _async_chunk_stream_generator(
         self,
         transport: Any,
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
         stream_obj: Any = None,
-    ) -> Optional[Tuple[int, Mapping[str, str], bytes]]:
-        """Transmits all chunks asynchronously until completion using AsyncStreamingRetry.
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
+    ) -> AsyncIterator[Tuple[int, Mapping[str, str], bytes]]:
+        """Generates chunk transmission responses asynchronously with recovery support for AsyncStreamingRetry.
 
         Args:
             transport: The aiohttp client session.
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
             stream_obj: Underlying stream object for recovery seeking.
+            timeout: Optional per-chunk timeout in seconds.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback receiving progress updates.
+            response_type: Optional response deserialization type.
 
-        Returns:
-            Final response tuple if transfer produced chunk response.
+        Yields:
+            Tuple of (status code, headers mapping, response body bytes).
         """
-        if self._state.finished:
-            return None
+        if self._needs_recovery:
+            if self._recovered_from_error:
+                self._notify_progress(common.ProgressState.RECOVERING, on_progress=on_progress)
+            await self._recover(
+                transport,
+                stream_obj,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+                response_type=response_type,
+            )
+            self._needs_recovery = False
+            self._recovered_from_error = False
 
-        def on_stream_error(exc: Exception) -> None:
-            self._enrich_exception(exc)
-            if common.is_recoverable_error(exc):
-                _LOGGER.info(
-                    "Recoverable error %s during async chunk upload. Scheduling offset recovery.",
-                    exc,
-                )
-                self._needs_recovery = True
-                self._recovered_from_error = True
-
-        async def _chunk_stream_generator():
-            if self._needs_recovery:
-                if self._recovered_from_error:
-                    self._notify_progress(common.ProgressState.RECOVERING)
-                await self._recover(transport, stream_obj)
-                self._needs_recovery = False
-                self._recovered_from_error = False
-
-            while not self._state.finished and not self._state.invalid:
-                resp_tuple = await self._transmit_chunk(
-                    transport, reader_fn, size, stream_obj
-                )
-                yield resp_tuple
-
-        retryable_stream_fn = self._get_async_streaming_retry(
-            on_error=on_stream_error
-        )(_chunk_stream_generator)
-        stream = await retryable_stream_fn()
-        final_resp_tuple = None
-        async for resp_tuple in stream:
-            final_resp_tuple = resp_tuple
-
-        return final_resp_tuple
+        while not self._state.finished and not self._state.invalid:
+            resp_tuple = await self._transmit_chunk(
+                transport,
+                reader_fn,
+                size,
+                stream_obj=stream_obj,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+            )
+            if self._state.finished:
+                _, _, body_bytes = resp_tuple
+                self._response = self._format_response(body_bytes, response_type=response_type)
+            yield resp_tuple
 
     async def upload(
         self,
         stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
+        headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None,
+        content_type: Optional[str] = None,
+        start_retry: Optional[Union[AsyncRetry, Retry]] = None,
+        start_timeout: Optional[float] = None,
+        retry: Optional[Union[AsyncRetry, AsyncStreamingRetry, Retry]] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
         transport: Optional[Any] = None,
     ) -> Any:
         """Executes the upload asynchronously from start to completion.
@@ -489,6 +557,15 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             stream: Data payload to upload (async iterable, binary stream, bytes, or iterable).
             request_body: Initial metadata payload sent with the start request.
             size: Total stream size in bytes, if known.
+            headers: Additional HTTP headers dispatched with start request.
+            content_type: MIME type of the stream payload.
+            start_retry: Custom retry policy for start request.
+            start_timeout: Per-request timeout in seconds for start request.
+            retry: Retry policy for chunk uploads and recovery queries.
+            timeout: Per-request timeout in seconds for chunk uploads.
+            deadline: Overall global deadline for the upload process.
+            on_progress: Callback function receiving UploadProgress notifications.
+            response_type: Optional response deserialization type or callable.
             transport: Optional aiohttp client session.
 
         Returns:
@@ -509,15 +586,31 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 transport=sess,
                 request_body=request_body,
                 size=computed_size,
+                headers=headers,
+                content_type=content_type,
+                retry=start_retry or retry,
+                timeout=start_timeout or timeout,
+                deadline=deadline,
+                on_progress=on_progress,
             )
-            final_resp_tuple = await self._async_transmit_all_chunks(
-                sess, reader_fn, computed_size, stream_obj
+
+            retry_policy = self._get_async_streaming_retry(
+                retry=retry, on_error=self._on_stream_error
             )
-            if final_resp_tuple is None and not self._state.finished:
-                raise ValueError("Upload completed without receiving a final response.")
-            if final_resp_tuple is not None:
-                _, _, body_bytes = final_resp_tuple
-                self._response = self._format_response(body_bytes)
+            retryable_stream_fn = retry_policy(self._async_chunk_stream_generator)
+            stream_iter = await retryable_stream_fn(
+                sess,
+                reader_fn,
+                computed_size,
+                stream_obj=stream_obj,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+                response_type=response_type,
+            )
+            async for _ in stream_iter:
+                pass
+
             return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)
@@ -531,6 +624,11 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         ] = None,
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
+        retry: Optional[Union[AsyncRetry, AsyncStreamingRetry, Retry]] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
         transport: Optional[Any] = None,
     ) -> Any:
         """Resumes an existing upload asynchronously from a saved upload URL.
@@ -540,6 +638,11 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             stream: Data payload to resume uploading.
             size: Total stream size in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
+            retry: Retry policy for chunk uploads and recovery queries.
+            timeout: Per-request timeout in seconds.
+            deadline: Overall global deadline for the upload process.
+            on_progress: Callback function receiving UploadProgress notifications.
+            response_type: Optional response deserialization type or callable.
             transport: Optional aiohttp client session.
 
         Returns:
@@ -568,14 +671,23 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
 
         reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
         try:
-            final_resp_tuple = await self._async_transmit_all_chunks(
-                sess, reader_fn, computed_size, stream_obj
+            retry_policy = self._get_async_streaming_retry(
+                retry=retry, on_error=self._on_stream_error
             )
-            if final_resp_tuple is None and not self._state.finished:
-                raise ValueError("Upload completed without receiving a final response.")
-            if final_resp_tuple is not None:
-                _, _, body_bytes = final_resp_tuple
-                self._response = self._format_response(body_bytes)
+            retryable_stream_fn = retry_policy(self._async_chunk_stream_generator)
+            stream_iter = await retryable_stream_fn(
+                sess,
+                reader_fn,
+                computed_size,
+                stream_obj=stream_obj,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+                response_type=response_type,
+            )
+            async for _ in stream_iter:
+                pass
+
             return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)

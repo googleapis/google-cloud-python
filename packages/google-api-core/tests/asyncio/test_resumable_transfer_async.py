@@ -1483,32 +1483,38 @@ async def test_async_recover_final_status_and_unseekable_buffer() -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_transmit_all_chunks_already_finished() -> None:
-    """Verifies _async_transmit_all_chunks returns None if upload already finished."""
+async def test_async_chunk_stream_generator_already_finished() -> None:
+    """Verifies _async_chunk_stream_generator yields nothing if upload already finished."""
     session = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
     session._state._finished = True
-    res = await session._async_transmit_all_chunks(
-        mock.Mock(), mock.Mock(), 0, None
-    )
-    assert res is None
+    chunks = []
+    async for chunk in session._async_chunk_stream_generator(
+        mock.Mock(), mock.AsyncMock(), 0, None
+    ):
+        chunks.append(chunk)
+    assert chunks == []
 
 
 @pytest.mark.asyncio
 async def test_async_upload_and_resume_missing_final_response() -> None:
     """Verifies ValueError when upload/resume completes without final response."""
+    async def empty_generator(*args, **kwargs):
+        if False:
+            yield None
+
     # 1. upload missing final response
     session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
     session._ensure_aiohttp = mock.Mock()
     session._transport = mock.Mock()
     session.initiate = mock.AsyncMock()
-    session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    session._async_chunk_stream_generator = empty_generator
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         await session.upload(stream=b"data")
 
     # upload finished True but response is None
     session._state._finished = True
     session._response = None
-    session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    session._async_chunk_stream_generator = empty_generator
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         await session.upload(stream=b"data")
 
@@ -1516,14 +1522,14 @@ async def test_async_upload_and_resume_missing_final_response() -> None:
     session_resume = AsyncResumableUploadSession()
     session_resume._ensure_aiohttp = mock.Mock()
     session_resume._transport = mock.Mock()
-    session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    session_resume._async_chunk_stream_generator = empty_generator
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         await session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
 
     # resume finished True but response is None
     session_resume._state._finished = True
     session_resume._response = None
-    session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
+    session_resume._async_chunk_stream_generator = empty_generator
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         await session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
 
@@ -1556,4 +1562,90 @@ async def test_async_prepare_async_reader_additional_cases() -> None:
     assert c1 == b"abc"
     c2 = await r3(3)
     assert c2 == b"def"
+
+
+@pytest.mark.asyncio
+async def test_async_upload_and_resume_with_method_args() -> None:
+    session_transport = mock.create_autospec(aiohttp.ClientSession, instance=True)
+
+    start_resp = mock.AsyncMock()
+    start_resp.status = 200
+    start_resp.headers = {
+        "X-Goog-Upload-Status": "final",
+        "X-Goog-Upload-URL": "https://upload.example.com/resumable-async-args",
+    }
+    start_resp.read.return_value = b""
+
+    chunk_resp = mock.AsyncMock()
+    chunk_resp.status = 200
+    chunk_resp.headers = {"X-Goog-Upload-Status": "final"}
+    chunk_resp.read.return_value = b'{"name": "async_args.txt", "size": 5}'
+
+    def make_ctx(resp):
+        ctx = mock.AsyncMock()
+        ctx.__aenter__.return_value = resp
+        ctx.__aexit__.return_value = None
+        return ctx
+
+    session_transport.request.side_effect = [
+        make_ctx(start_resp),
+        make_ctx(chunk_resp),
+    ]
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        chunk_size=10,
+        transport=session_transport,
+    )
+    progress_events = []
+    deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)
+    res = await session.upload(
+        stream=b"hello",
+        request_body='{"metadata": "val"}',
+        headers={"X-Custom": "header"},
+        content_type="text/plain",
+        start_timeout=15.0,
+        timeout=30.0,
+        deadline=deadline,
+        on_progress=progress_events.append,
+        response_type=DummyResponse,
+    )
+    assert isinstance(res, DummyResponse)
+    assert res.name == "async_args.txt"
+    assert len(progress_events) == 2
+
+    query_resp = mock.AsyncMock()
+    query_resp.status = 200
+    query_resp.headers = {
+        "X-Goog-Upload-Status": "active",
+        "X-Goog-Upload-Size-Received": "2",
+    }
+    query_resp.read.return_value = b""
+
+    resumed_chunk_resp = mock.AsyncMock()
+    resumed_chunk_resp.status = 200
+    resumed_chunk_resp.headers = {"X-Goog-Upload-Status": "final"}
+    resumed_chunk_resp.read.return_value = b'{"name": "resumed_async_args.txt", "size": 5}'
+
+    session_transport.request.side_effect = [
+        make_ctx(query_resp),
+        make_ctx(resumed_chunk_resp),
+    ]
+
+    resume_progress = []
+    session_resume = AsyncResumableUploadSession(transport=session_transport)
+    res_resume = await session_resume.resume(
+        upload_url="https://upload.example.com/resumable-async-args",
+        stream=io.BytesIO(b"hello"),
+        size=5,
+        chunk_size=10,
+        timeout=25.0,
+        deadline=deadline,
+        on_progress=resume_progress.append,
+        response_type=DummyResponse,
+    )
+    assert isinstance(res_resume, DummyResponse)
+    assert res_resume.name == "resumed_async_args.txt"
+    assert len(resume_progress) == 2
+
 

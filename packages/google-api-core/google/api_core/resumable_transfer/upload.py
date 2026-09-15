@@ -104,6 +104,9 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         config: Optional[ResumableUploadConfig] = None,
         resumable_url: Optional[str] = None,
         transport: Optional[requests.Session] = None,
+        chunk_size: Optional[int] = None,
+        stall_minimum_rate: Optional[int] = None,
+        stall_timeout: Optional[float] = None,
     ) -> None:
         """Initializes a ResumableUploadSession.
 
@@ -112,12 +115,18 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             config: Optional upload configuration parameters.
             resumable_url: Pre-existing upload session URL if resuming.
             transport: Optional requests session.
+            chunk_size: Optional chunk size override in bytes.
+            stall_minimum_rate: Optional stall minimum rate override (bytes/s).
+            stall_timeout: Optional stall timeout duration override in seconds.
         """
         super().__init__(
             upload_url=upload_url,
             config=config,
             resumable_url=resumable_url,
             transport=transport,
+            chunk_size=chunk_size,
+            stall_minimum_rate=stall_minimum_rate,
+            stall_timeout=stall_timeout,
         )
 
     def _get_transport(self, transport: Optional[requests.Session]) -> requests.Session:
@@ -137,10 +146,15 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             raise ValueError("A requests.Session transport must be provided.")
         return sess
 
-    def _get_retry(self, is_start: bool = False) -> Retry:
+    def _get_retry(
+        self,
+        retry: Optional[Any] = None,
+        is_start: bool = False,
+    ) -> Retry:
         """Resolves retry policy for unary control requests.
 
         Args:
+            retry: Explicit retry policy if provided.
             is_start: Whether this retry policy is for the start request.
 
         Returns:
@@ -148,28 +162,32 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         """
         if is_start and self._config.start_retry:
             return self._config.start_retry
-        if isinstance(self._config.retry, Retry):
-            return self._config.retry
+        actual_retry = retry if retry is not None else self._config.retry
+        if isinstance(actual_retry, Retry):
+            return actual_retry
         return Retry(predicate=self._get_retry_predicate())
 
     def _get_streaming_retry(
-        self, on_error: Optional[Callable[[Exception], Any]] = None
+        self,
+        retry: Optional[Any] = None,
+        on_error: Optional[Callable[[Exception], Any]] = None,
     ) -> StreamingRetry:
         """Resolves retry policy for streaming chunk uploads.
 
         Args:
+            retry: Explicit retry policy override if provided.
             on_error: Optional callback executed when an exception triggers a retry attempt.
 
         Returns:
             Configured or default StreamingRetry instance.
         """
-        if isinstance(self._config.retry, StreamingRetry):
-            return self._config.retry
+        actual_retry = retry if retry is not None else self._config.retry
+        if isinstance(actual_retry, StreamingRetry):
+            return actual_retry
 
-        base_retry = self._config.retry
         callbacks = [
             cb
-            for cb in (getattr(base_retry, "_on_error", None), on_error)
+            for cb in (getattr(actual_retry, "_on_error", None), on_error)
             if cb is not None
         ]
 
@@ -179,18 +197,24 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
 
         return StreamingRetry(
             predicate=self._get_streaming_predicate(),
-            initial=getattr(base_retry, "_initial", 1.0),
-            maximum=getattr(base_retry, "_maximum", 60.0),
-            multiplier=getattr(base_retry, "_multiplier", 2.0),
-            timeout=getattr(base_retry, "_timeout", None),
+            initial=getattr(actual_retry, "_initial", 1.0),
+            maximum=getattr(actual_retry, "_maximum", 60.0),
+            multiplier=getattr(actual_retry, "_multiplier", 2.0),
+            timeout=getattr(actual_retry, "_timeout", None),
             on_error=combined_on_error if callbacks else None,
         )
 
     def initiate(
         self,
-        transport: requests.Session,
+        transport: Optional[requests.Session] = None,
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
+        headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[Retry] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> str:
         """Initiates the upload session by sending the start command.
 
@@ -198,21 +222,32 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             transport: The requests session.
             request_body: JSON payload for initial start request.
             size: Total size of payload in bytes, if known.
+            headers: Additional HTTP headers dispatched with start request.
+            content_type: MIME type of the stream payload.
+            retry: Optional custom retry policy for start request.
+            timeout: Optional timeout in seconds for start request.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback for progress updates.
 
         Returns:
             The upload session URL.
         """
-        method, url, headers, payload = self._state.build_start_request(
+        sess = self._get_transport(transport)
+        req_headers = headers if headers is not None else self._config.start_headers
+        req_content_type = (
+            content_type if content_type is not None else self._config.content_type
+        )
+        method, url, start_headers, payload = self._state.build_start_request(
             body=request_body,
-            headers=self._config.start_headers,
-            content_type=self._config.content_type,
+            headers=req_headers,
+            content_type=req_content_type,
             size=size,
         )
 
         def do_initiate() -> str:
-            timeout = self._get_start_timeout()
-            response = transport.request(
-                method, url, data=payload, headers=headers, timeout=timeout
+            to = self._get_start_timeout(timeout=timeout, deadline=deadline)
+            response = sess.request(
+                method, url, data=payload, headers=start_headers, timeout=to
             )
             if not response.ok:
                 raise exceptions.from_http_response(response)
@@ -221,12 +256,19 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             )
             return session_url
 
-        session_url = self._get_retry(is_start=True)(do_initiate)()
-        self._notify_progress(common.ProgressState.STARTED)
+        actual_retry = self._get_retry(retry=retry, is_start=True)
+        session_url = actual_retry(do_initiate)()
+        self._notify_progress(common.ProgressState.STARTED, on_progress=on_progress)
         return session_url
 
     def _transmit_chunk(
-        self, transport: requests.Session, stream: BinaryIO, size: Optional[int]
+        self,
+        transport: requests.Session,
+        stream: BinaryIO,
+        size: Optional[int],
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> requests.Response:
         """Transmits a single data chunk via HTTP with stall control.
 
@@ -234,6 +276,9 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             transport: The requests session.
             stream: The input data stream.
             size: Total size of the stream in bytes, if known.
+            timeout: Optional timeout ceiling in seconds.
+            deadline: Optional overall deadline.
+            on_progress: Optional callback for progress updates.
 
         Returns:
             The HTTP response for the transmitted chunk.
@@ -270,7 +315,9 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             content_type=self._config.content_type,
         )
 
-        per_attempt_timeout = self._compute_chunk_timeout(data_len)
+        per_attempt_timeout = self._compute_chunk_timeout(
+            data_len, timeout=timeout, deadline=deadline
+        )
         try:
             t_start = _monotonic_clock()
             resp = transport.request(
@@ -283,10 +330,11 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             t_elapsed = _monotonic_clock() - t_start
         except requests.exceptions.Timeout as exc:
             self._enrich_exception(exc)
-            remaining = self._get_deadline_remaining()
+            remaining = self._get_deadline_remaining(deadline)
             if remaining is not None and remaining <= 0:
+                dl = deadline or self._config.deadline
                 raise exceptions.DeadlineExceeded(
-                    f"Resumable upload deadline {self._config.deadline} exceeded."
+                    f"Resumable upload deadline {dl} exceeded."
                 ) from exc
             raise exceptions.TransferStalledError(
                 f"Upload stalled: chunk transfer timed out ({exc}).",
@@ -302,7 +350,7 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             self._enrich_exception(exc)
             raise exc
 
-        self._update_stall_control(data_len, t_start, t_elapsed)
+        self._update_stall_control(data_len, t_start, t_elapsed, deadline=deadline)
         self._state.process_chunk_response(
             resp.status_code, resp.headers, data_len
         )
@@ -310,16 +358,27 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         self._notify_progress(
             common.ProgressState.FINALIZED
             if self._state.finished
-            else common.ProgressState.UPLOADING
+            else common.ProgressState.UPLOADING,
+            on_progress=on_progress,
         )
         return resp
 
-    def _recover(self, transport: requests.Session, stream: BinaryIO) -> int:
+    def _recover(
+        self,
+        transport: requests.Session,
+        stream: BinaryIO,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+    ) -> int:
         """Queries server for committed byte offset and adjusts buffer / stream.
 
         Args:
             transport: The requests session.
             stream: The input data stream.
+            timeout: Optional timeout in seconds.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback for progress updates.
 
         Returns:
             The confirmed server byte offset.
@@ -329,29 +388,32 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             exceptions.GoogleAPICallError: If query request fails on the server.
         """
         method, url, headers, payload = self._state.build_query_request()
+        to = self._get_start_timeout(timeout=timeout, deadline=deadline)
+        resp = transport.request(
+            method, url, data=payload, headers=headers, timeout=to
+        )
+        if not resp.ok:
+            raise exceptions.from_http_response(resp)
 
-        def do_query() -> requests.Response:
-            timeout = self._get_start_timeout()
-            resp = transport.request(
-                method, url, data=payload, headers=headers, timeout=timeout
-            )
-            if not resp.ok:
-                raise exceptions.from_http_response(resp)
-            return resp
-
-        resp = self._get_retry()(do_query)()
         received = self._state.process_query_response(resp.status_code, resp.headers)
         if self._state.finished:
             self._response = self._format_response(resp)
             return received
-        self._notify_progress(common.ProgressState.OFFSET_RECEIVED)
+        self._notify_progress(common.ProgressState.OFFSET_RECEIVED, on_progress=on_progress)
         return self._reposition_stream_offset(stream, received)
 
-    def cancel(self, transport: Optional[requests.Session] = None) -> None:
+    def cancel(
+        self,
+        transport: Optional[requests.Session] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+    ) -> None:
         """Cancels the resumable upload session.
 
         Args:
             transport: Optional requests session to use for dispatching cancellation.
+            timeout: Optional timeout in seconds.
+            deadline: Optional overall upload deadline.
 
         Raises:
             ValueError: If no requests session is available.
@@ -359,74 +421,76 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         """
         sess = self._get_transport(transport)
         method, url, headers, payload = self._state.build_cancel_request()
-        timeout = self._get_start_timeout()
-        resp = sess.request(method, url, data=payload, headers=headers, timeout=timeout)
+        to = self._get_start_timeout(timeout=timeout, deadline=deadline)
+        resp = sess.request(method, url, data=payload, headers=headers, timeout=to)
         if not resp.ok:
             raise exceptions.from_http_response(resp)
         self._state.process_cancel_response(resp.status_code, resp.headers)
 
-    def _transmit_all_chunks(
+    def _chunk_stream_generator(
         self,
         transport: requests.Session,
         stream_obj: BinaryIO,
         computed_size: Optional[int],
-    ) -> requests.Response:
-        """Transmits chunks until transfer completes using StreamingRetry.
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
+    ) -> Generator[requests.Response, None, None]:
+        """Generates chunk transmission responses with recovery support for StreamingRetry.
 
         Args:
             transport: The requests session.
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
+            timeout: Optional per-chunk timeout in seconds.
+            deadline: Optional overall upload deadline.
+            on_progress: Optional callback receiving progress updates.
+            response_type: Optional response deserialization type.
 
-        Returns:
-            The final response received upon completion.
-
-        Raises:
-            ValueError: If upload concludes without a server response.
+        Yields:
+            HTTP responses from chunk upload requests.
         """
-        final_resp = None
+        if self._needs_recovery:
+            if self._recovered_from_error:
+                self._notify_progress(common.ProgressState.RECOVERING, on_progress=on_progress)
+            self._recover(
+                transport,
+                stream_obj,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+            )
+            self._needs_recovery = False
+            self._recovered_from_error = False
 
-        def on_stream_error(exc: Exception) -> None:
-            self._enrich_exception(exc)
-            if common.is_recoverable_error(exc):
-                _LOGGER.info(
-                    "Recoverable error %s during chunk upload. Scheduling offset recovery.",
-                    exc,
-                )
-                self._needs_recovery = True
-                self._recovered_from_error = True
-
-        def _chunk_stream_generator() -> Generator[requests.Response, None, None]:
-            nonlocal final_resp
-            if self._needs_recovery:
-                if self._recovered_from_error:
-                    self._notify_progress(common.ProgressState.RECOVERING)
-                self._recover(transport, stream_obj)
-                self._needs_recovery = False
-                self._recovered_from_error = False
-
-            while not self._state.finished and not self._state.invalid:
-                final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
-                if self._state.finished:
-                    self._response = self._format_response(final_resp)
-                yield final_resp
-
-        retryable_stream = self._get_streaming_retry(on_error=on_stream_error)(
-            _chunk_stream_generator
-        )
-        for chunk_resp in retryable_stream():
-            final_resp = chunk_resp
-
-        if final_resp is None and self._response is None:
-            raise ValueError("Upload completed without receiving a final response.")
-
-        return final_resp
+        while not self._state.finished and not self._state.invalid:
+            resp = self._transmit_chunk(
+                transport,
+                stream_obj,
+                computed_size,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+            )
+            if self._state.finished:
+                self._response = self._format_response(resp, response_type=response_type)
+            yield resp
 
     def upload(
         self,
         stream: Union[BinaryIO, bytes, Iterable[bytes]],
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
+        headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None,
+        content_type: Optional[str] = None,
+        start_retry: Optional[Retry] = None,
+        start_timeout: Optional[float] = None,
+        retry: Optional[Union[Retry, StreamingRetry]] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
         transport: Optional[requests.Session] = None,
     ) -> Any:
         """Executes the resumable upload from start to completion.
@@ -435,6 +499,15 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             stream: Data payload to upload (file-like stream, bytes, or iterable of bytes).
             request_body: Initial metadata payload sent with the start request.
             size: Total stream size in bytes, if known.
+            headers: Additional HTTP headers dispatched with start request.
+            content_type: MIME type of the stream payload.
+            start_retry: Custom retry policy for start request.
+            start_timeout: Per-request timeout in seconds for start request.
+            retry: Retry policy for chunk uploads and unary queries.
+            timeout: Per-request timeout in seconds for chunk uploads.
+            deadline: Overall global deadline for the upload process.
+            on_progress: Callback function receiving UploadProgress notifications.
+            response_type: Optional response deserialization type or callable.
             transport: Optional requests session.
 
         Returns:
@@ -448,9 +521,32 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
             self.initiate(
-                transport=sess, request_body=request_body, size=computed_size
+                transport=sess,
+                request_body=request_body,
+                size=computed_size,
+                headers=headers,
+                content_type=content_type,
+                retry=start_retry or retry,
+                timeout=start_timeout or timeout,
+                deadline=deadline,
+                on_progress=on_progress,
             )
-            self._transmit_all_chunks(sess, stream_obj, computed_size)
+
+            retry_policy = self._get_streaming_retry(
+                retry=retry, on_error=self._on_stream_error
+            )
+            retryable_stream = retry_policy(self._chunk_stream_generator)(
+                sess,
+                stream_obj,
+                computed_size,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+                response_type=response_type,
+            )
+            for _ in retryable_stream:
+                pass
+
             return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)
@@ -462,6 +558,11 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         stream: Optional[Union[BinaryIO, bytes, Iterable[bytes]]] = None,
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
+        retry: Optional[Union[Retry, StreamingRetry]] = None,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        response_type: Optional[Any] = None,
         transport: Optional[requests.Session] = None,
     ) -> Any:
         """Resumes an existing upload from a saved upload URL.
@@ -471,6 +572,11 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             stream: The data payload to resume uploading from.
             size: Total size of the payload in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
+            retry: Retry policy for chunk uploads and recovery queries.
+            timeout: Per-request timeout in seconds.
+            deadline: Overall global deadline for the upload process.
+            on_progress: Callback function receiving UploadProgress notifications.
+            response_type: Optional response deserialization type or callable.
             transport: Optional requests session.
 
         Returns:
@@ -495,7 +601,22 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         self._recovered_from_error = False
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
-            self._transmit_all_chunks(sess, stream_obj, computed_size)
+
+            retry_policy = self._get_streaming_retry(
+                retry=retry, on_error=self._on_stream_error
+            )
+            retryable_stream = retry_policy(self._chunk_stream_generator)(
+                sess,
+                stream_obj,
+                computed_size,
+                timeout=timeout,
+                deadline=deadline,
+                on_progress=on_progress,
+                response_type=response_type,
+            )
+            for _ in retryable_stream:
+                pass
+
             return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)

@@ -18,6 +18,7 @@ import contextlib
 import dataclasses
 import datetime
 import enum
+import logging
 import time
 from typing import (
     Any,
@@ -43,6 +44,8 @@ except ImportError:  # pragma: NO COVER
     aiohttp = None  # type: ignore
 
 from google.api_core import exceptions
+
+_LOGGER = logging.getLogger(__name__)
 
 _NETWORK_ERRORS: Tuple[type, ...] = (
     TimeoutError,
@@ -418,15 +421,32 @@ class BaseResumableUploadSession:
         config: Optional[ResumableUploadConfig] = None,
         resumable_url: Optional[str] = None,
         transport: Optional[Any] = None,
+        chunk_size: Optional[int] = None,
+        stall_minimum_rate: Optional[int] = None,
+        stall_timeout: Optional[float] = None,
     ) -> None:
         from google.api_core.resumable_transfer import upload_state
 
         self._config = config or ResumableUploadConfig()
+        effective_chunk_size = (
+            chunk_size if chunk_size is not None else self._config.chunk_size
+        )
+        effective_stall_min = (
+            stall_minimum_rate
+            if stall_minimum_rate is not None
+            else self._config.stall_minimum_rate
+        )
+        effective_stall_timeout = (
+            stall_timeout
+            if stall_timeout is not None
+            else self._config.stall_timeout
+        )
+
         self._transport = transport
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
-            chunk_size=self._config.chunk_size,
+            chunk_size=effective_chunk_size,
             resumable_url=resumable_url,
         )
 
@@ -439,8 +459,8 @@ class BaseResumableUploadSession:
         self._recovered_from_error: bool = False
 
         self._stall_tracker = StallTracker(
-            minimum_rate=self._config.stall_minimum_rate,
-            timeout=self._config.stall_timeout,
+            minimum_rate=effective_stall_min,
+            timeout=effective_stall_timeout,
         )
 
     def _get_retry_predicate(self) -> Callable[[Any], bool]:
@@ -499,6 +519,17 @@ class BaseResumableUploadSession:
         setattr(exc, "upload_url", self.upload_url)
         setattr(exc, "chunk_size", self.chunk_size)
 
+    def _on_stream_error(self, exc: Exception) -> None:
+        """Callback invoked when a streaming chunk transfer encounters an error."""
+        self._enrich_exception(exc)
+        if is_recoverable_error(exc):
+            _LOGGER.info(
+                "Recoverable error %s during chunk upload. Scheduling offset recovery.",
+                exc,
+            )
+            self._needs_recovery = True
+            self._recovered_from_error = True
+
     def _create_progress(self, state: ProgressState) -> Optional[UploadProgress]:
         """Creates an UploadProgress snapshot if upload_url is established."""
         if not self.upload_url:
@@ -511,41 +542,65 @@ class BaseResumableUploadSession:
             state=state,
         )
 
-    def _notify_progress(self, state: ProgressState) -> Optional[UploadProgress]:
-        """Dispatches an UploadProgress snapshot to config.on_progress."""
+    def _notify_progress(
+        self,
+        state: ProgressState,
+        on_progress: Optional[Callable[[UploadProgress], None]] = None,
+    ) -> Optional[UploadProgress]:
+        """Dispatches an UploadProgress snapshot to on_progress or config.on_progress."""
         progress = self._create_progress(state)
-        if progress is not None and self._config.on_progress:
-            self._config.on_progress(progress)
+        callback = on_progress or self._config.on_progress
+        if progress is not None and callback:
+            callback(progress)
         return progress
 
-    def _get_deadline_remaining(self) -> Optional[float]:
+    def _get_deadline_remaining(
+        self, deadline: Optional[datetime.datetime] = None
+    ) -> Optional[float]:
         """Calculates remaining seconds until the configured upload deadline."""
-        return compute_deadline_remaining(self._config.deadline)
+        dl = deadline or self._config.deadline
+        return compute_deadline_remaining(dl)
 
-    def _get_start_timeout(self) -> float:
+    def _get_start_timeout(
+        self,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+    ) -> float:
         """Computes timeout in seconds for start and control requests."""
-        remaining = self._get_deadline_remaining()
-        timeout = (
-            self._config.start_timeout or self._config.timeout or DEFAULT_START_TIMEOUT
+        remaining = self._get_deadline_remaining(deadline)
+        t = (
+            timeout
+            or self._config.start_timeout
+            or self._config.timeout
+            or DEFAULT_START_TIMEOUT
         )
         if remaining is not None:
-            return min(timeout, remaining)
-        return timeout
+            return min(t, remaining)
+        return t
 
-    def _compute_chunk_timeout(self, data_len: int) -> float:
+    def _compute_chunk_timeout(
+        self,
+        data_len: int,
+        timeout: Optional[float] = None,
+        deadline: Optional[datetime.datetime] = None,
+    ) -> float:
         """Computes dynamic per-attempt chunk timeout based on stall control and deadlines."""
-        remaining = self._get_deadline_remaining()
+        remaining = self._get_deadline_remaining(deadline)
         return compute_chunk_timeout(
             data_len=data_len,
-            stall_minimum_rate=self._config.stall_minimum_rate,
-            stall_timeout=self._config.stall_timeout,
+            stall_minimum_rate=self._stall_tracker.minimum_rate,
+            stall_timeout=self._stall_tracker.timeout,
             aggregate_lag=self._stall_tracker.aggregate_lag,
-            configured_timeout=self._config.timeout,
+            configured_timeout=timeout or self._config.timeout,
             deadline_remaining=remaining,
         )
 
     def _update_stall_control(
-        self, data_len: int, t_start: float, t_elapsed: float
+        self,
+        data_len: int,
+        t_start: float,
+        t_elapsed: float,
+        deadline: Optional[datetime.datetime] = None,
     ) -> None:
         """Updates aggregate transfer rate lag and enforces stall timeout and deadlines."""
         self._stall_tracker.update(
@@ -554,12 +609,19 @@ class BaseResumableUploadSession:
             t_elapsed=t_elapsed,
             upload_url=self.upload_url,
             chunk_size=self.chunk_size,
-            deadline_checker=self._get_deadline_remaining,
+            deadline_checker=lambda: self._get_deadline_remaining(deadline),
         )
 
-    def _format_response(self, response: Any) -> Any:
+    def _format_response(
+        self, response: Any, response_type: Optional[Any] = None
+    ) -> Any:
         """Formats response into protobuf message type if provided."""
-        return format_response_payload(response, self._config.response_type)
+        rtype = (
+            response_type
+            if response_type is not None
+            else self._config.response_type
+        )
+        return format_response_payload(response, rtype)
 
     def _reposition_stream_offset(self, stream_obj: Any, received: int) -> int:
         """Adjusts in-memory chunk buffer or seeks input stream to server offset."""
