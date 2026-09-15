@@ -20,7 +20,7 @@ import http.client as http_client
 import inspect
 import logging
 import time
-from typing import Mapping, Optional, TYPE_CHECKING, Union
+from typing import Mapping, Optional, Tuple, TYPE_CHECKING, Union
 import urllib.parse
 import warnings
 
@@ -56,6 +56,19 @@ try:
     AIOHTTP_INSTALLED = True
 except ImportError:  # pragma: NO COVER
     AIOHTTP_INSTALLED = False
+
+
+def _retrieve_task_exception(task: "asyncio.Task") -> None:
+    """Mark a finished task's exception as retrieved.
+
+    Used as a done-callback so that a background mTLS initialization failure
+    that nobody ends up awaiting (for example, because the only caller timed
+    out) does not later surface as an unraisable
+    "Task exception was never retrieved" warning during garbage collection.
+    Callers that *do* await the task still observe the exception normally.
+    """
+    if not task.cancelled():
+        task.exception()
 
 
 @asynccontextmanager
@@ -154,7 +167,7 @@ class AsyncAuthorizedSession:
         if not _auth_request and AIOHTTP_INSTALLED:
             _auth_request = AiohttpRequest()
         self._is_mtls = False
-        self._mtls_init_task = None
+        self._mtls_init_task: Optional[asyncio.Task] = None
         self._cached_cert = None
         self._client_cert_callback = None
         self._old_auth_requests: list[transport.Request] = []
@@ -165,10 +178,70 @@ class AsyncAuthorizedSession:
         self._auth_request = _auth_request
         self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
+        # Incremented every time the mTLS channel is successfully reconfigured.
+        # Unlike a coroutine-local flag, this lets a request that skipped the
+        # rotation check (because a concurrent request already performed it)
+        # still observe that the channel changed since its own 401.
+        self._mtls_reconfig_counter = 0
+        # Value of `_mtls_reconfig_counter` observed when the most recently
+        # completed credential refresh *started*. Counting refresh completions
+        # is not sufficient to decide whether a token is usable on the current
+        # channel: a refresh that began before a rotation and finished after it
+        # was still minted over the old transport, and a certificate-bound
+        # token from the old channel is rejected by the new one. Recording the
+        # generation a refresh started in lets us tell the two apart.
+        self._last_refresh_reconfig_gen = -1
+        # Serializes the decision to create a new mTLS initialization task so
+        # that two concurrent callers cannot both spawn `_do_configure()`.
+        self._mtls_init_lock: Optional[asyncio.Lock] = None
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
+        # Set by `close()`. Guarded by `_mtls_init_lock` so that an in-flight
+        # certificate rotation cannot install a new transport on a session that
+        # has already been torn down.
+        self._closed = False
 
-    async def configure_mtls_channel(self, client_cert_callback=None):
+    async def _trim_old_auth_requests(self) -> None:
+        """Close retired transports, keeping at most the two most recent."""
+        while len(self._old_auth_requests) > 2:
+            oldest_auth_request = self._old_auth_requests.pop(0)
+            try:
+                if hasattr(oldest_auth_request, "close"):
+                    res = oldest_auth_request.close()
+                    if inspect.isawaitable(res):
+                        await res
+            except Exception as caught_exc:
+                _LOGGER.debug(
+                    "Failed to close a retired auth transport: %s", caught_exc
+                )
+
+    async def _reset_non_mtls_state(self) -> None:
+        """Clear mTLS state, retiring a library-owned mTLS transport.
+
+        If the session previously installed its own mTLS-enabled transport,
+        that transport still presents the old client certificate. Simply
+        clearing the flags would leave subsequent requests sending a stale
+        cert, so the transport is retired and replaced with a fresh non-mTLS
+        one. A caller-supplied custom transport is never replaced.
+        """
+        was_mtls = self._is_mtls
+        self._is_mtls = False
+        self._cached_cert = None
+        if (
+            was_mtls
+            and AIOHTTP_INSTALLED
+            and isinstance(self._auth_request, AiohttpRequest)
+        ):
+            self._old_auth_requests.append(self._auth_request)
+            self._auth_request = AiohttpRequest()
+            await self._trim_old_auth_requests()
+
+    async def configure_mtls_channel(
+        self,
+        client_cert_callback=None,
+        force: bool = False,
+        _cert_key_override: Optional[Tuple[bytes, bytes]] = None,
+    ):
         """Configure the client certificate and key for SSL connection.
 
         This method configures mTLS if client certificates are explicitly enabled
@@ -188,83 +261,176 @@ class AsyncAuthorizedSession:
                 key bytes both in PEM format.
                 If the callback is None, application default SSL credentials
                 will be used.
+            force (bool):
+                Whether to force reconfiguration even if the channel is already configured
+                with the same callback.
+            _cert_key_override (Optional[Tuple[bytes, bytes]]):
+                Internal use only. An explicit (cert, key) pair to install,
+                bypassing ``client_cert_callback`` resolution. Used by the
+                certificate-rotation path so it does not have to temporarily
+                mutate ``self._client_cert_callback``, which would otherwise
+                be visible to (and clobber) concurrent callers. When set, the
+                channel is always reconfigured and the user-supplied callback
+                is left untouched.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS channel
                 creation failed for any reason.
+            google.auth.exceptions.InvalidOperation: If the session has already
+                been closed.
         """
-        if self._mtls_init_task is None:
-            self._client_cert_callback = client_cert_callback
+        if self._mtls_init_lock is None:
+            self._mtls_init_lock = asyncio.Lock()
+        init_lock = self._mtls_init_lock
 
-            async def _do_configure():
-                # Run the blocking check in an executor
-                use_client_cert = await mtls._run_in_executor(
-                    google.auth.transport._mtls_helper.check_use_client_cert
+        # Serialize the decide-and-create step so two concurrent callers cannot
+        # both spawn `_do_configure()`. The lock is released before awaiting the
+        # task itself, so a slow configuration does not block unrelated callers.
+        async with init_lock:
+            if self._closed:
+                # Without this, a rotation triggered by an in-flight request
+                # could build and install a brand new transport after `close()`
+                # has already drained everything, leaking it permanently.
+                #
+                # A task that was *already* running when `close()` landed needs
+                # no separate check: `close()` sets `_closed` and cancels the
+                # task without yielding in between, so a running
+                # `_do_configure` is always interrupted at one of its awaits
+                # before it reaches the point where it installs a transport.
+                raise exceptions.InvalidOperation(
+                    "Cannot configure the mTLS channel on a closed session."
                 )
-                if not use_client_cert:
-                    return
+            if _cert_key_override is not None:
+                needs_reconfig = True
+            else:
+                is_explicit_reconfig = (
+                    client_cert_callback != self._client_cert_callback
+                )
+                task_failed = (
+                    self._mtls_init_task is not None
+                    and self._mtls_init_task.done()
+                    and (
+                        self._mtls_init_task.cancelled()
+                        or self._mtls_init_task.exception() is not None
+                    )
+                )
+                needs_reconfig = (
+                    self._mtls_init_task is None
+                    or is_explicit_reconfig
+                    or task_failed
+                    or force
+                )
 
-                try:
-                    (
-                        is_mtls,
-                        cert,
-                        key,
-                    ) = await mtls.get_client_cert_and_key(client_cert_callback)
+            if not needs_reconfig:
+                task = self._mtls_init_task
+            else:
+                old_task = self._mtls_init_task
+                if old_task is not None and not old_task.done():
+                    old_task.cancel()
+                    # `asyncio.wait` does not re-raise the awaited task's
+                    # exception, and does not convert that task's cancellation
+                    # into ours -- while still letting a cancellation targeted
+                    # at *this* coroutine propagate normally.
+                    await asyncio.wait({old_task})
+                if _cert_key_override is None:
+                    # Only a user-driven call may change the stored callback.
+                    # The internal rotation path leaves it untouched.
+                    self._client_cert_callback = client_cert_callback
 
-                    if is_mtls:
-                        # Re-create the auth request with the new SSL context
-                        if AIOHTTP_INSTALLED and isinstance(
-                            self._auth_request, AiohttpRequest
-                        ):
-                            ssl_context = await mtls._run_in_executor(
-                                mtls.make_client_cert_ssl_context, cert, key
-                            )
-                            connector = aiohttp.TCPConnector(ssl=ssl_context)
-                            new_session = aiohttp.ClientSession(connector=connector)
+                async def _do_configure():
+                    # Run the blocking check in an executor. It reads and parses
+                    # a config file, so it can fail in ways the caller is
+                    # promised to see as `MutualTLSChannelError`.
+                    try:
+                        use_client_cert = await mtls._run_in_executor(
+                            google.auth.transport._mtls_helper.check_use_client_cert
+                        )
+                    except Exception as caught_exc:
+                        raise exceptions.MutualTLSChannelError(
+                            caught_exc
+                        ) from caught_exc
+                    if not use_client_cert:
+                        return
 
-                            old_auth_request = self._auth_request
-                            self._auth_request = AiohttpRequest(session=new_session)
-                            self._old_auth_requests.append(old_auth_request)
-
-                            while len(self._old_auth_requests) > 2:
-                                oldest_auth_request = self._old_auth_requests[0]
-                                try:
-                                    if hasattr(oldest_auth_request, "close"):
-                                        res = oldest_auth_request.close()
-                                        if inspect.isawaitable(res):
-                                            await res
-                                except Exception:
-                                    pass
-                                self._old_auth_requests.pop(0)
-
+                    try:
+                        if _cert_key_override is not None:
+                            is_mtls = True
+                            cert, key = _cert_key_override
                         else:
-                            is_mtls = False
-                            warnings.warn(
-                                "Attempted to establish mTLS, but a custom async transport was provided. "
-                                "google-auth cannot automatically configure custom transports for mTLS. "
-                                "Falling back to standard TLS. If your custom transport is not manually "
-                                "configured for mTLS, you may encounter 401 Unauthorized errors when "
-                                "using Certificate-Bound Tokens.",
-                                UserWarning,
-                            )
+                            (
+                                is_mtls,
+                                cert,
+                                key,
+                            ) = await mtls.get_client_cert_and_key(client_cert_callback)
 
-                    self._is_mtls = is_mtls
-                    if is_mtls:
-                        self._cached_cert = cert
-                    else:
-                        self._cached_cert = None
+                        if is_mtls:
+                            # Re-create the auth request with the new SSL context
+                            if AIOHTTP_INSTALLED and isinstance(
+                                self._auth_request, AiohttpRequest
+                            ):
+                                ssl_context = await mtls._run_in_executor(
+                                    mtls.make_client_cert_ssl_context, cert, key
+                                )
+                                connector = aiohttp.TCPConnector(ssl=ssl_context)
+                                new_session = aiohttp.ClientSession(connector=connector)
 
-                except Exception as caught_exc:
-                    new_exc = exceptions.MutualTLSChannelError(caught_exc)
-                    raise new_exc from caught_exc
+                                old_auth_request = self._auth_request
+                                self._auth_request = AiohttpRequest(session=new_session)
+                                self._is_mtls = True
+                                self._cached_cert = cert
+                                self._old_auth_requests.append(old_auth_request)
+                                await self._trim_old_auth_requests()
 
-            self._mtls_init_task = asyncio.create_task(_do_configure())
+                            else:
+                                await self._reset_non_mtls_state()
+                                warnings.warn(
+                                    "Attempted to establish mTLS, but a custom async transport was provided. "
+                                    "google-auth cannot automatically configure custom transports for mTLS. "
+                                    "Falling back to standard TLS. If your custom transport is not manually "
+                                    "configured for mTLS, you may encounter 401 Unauthorized errors when "
+                                    "using Certificate-Bound Tokens.",
+                                    UserWarning,
+                                )
+                        else:
+                            await self._reset_non_mtls_state()
 
-        try:
-            return await self._mtls_init_task
-        except BaseException:
-            self._mtls_init_task = None
-            raise
+                    except Exception as caught_exc:
+                        new_exc = exceptions.MutualTLSChannelError(caught_exc)
+                        raise new_exc from caught_exc
+
+                task = asyncio.create_task(_do_configure())
+                # If every awaiter goes away (e.g. the only caller timed out)
+                # a failure would otherwise surface as an unraisable
+                # "Task exception was never retrieved" warning at GC time.
+                task.add_done_callback(_retrieve_task_exception)
+                self._mtls_init_task = task
+
+            if task is None:  # pragma: no cover - defensive
+                raise exceptions.MutualTLSChannelError(
+                    "mTLS initialization task was not created."
+                )
+
+        while True:
+            try:
+                return await asyncio.shield(task)
+            except asyncio.CancelledError:
+                if not task.cancelled():
+                    # The cancellation targeted this caller rather than the
+                    # initialization task, so it must propagate.
+                    raise
+                # The task we were waiting on was cancelled by a concurrent
+                # reconfiguration. That coroutine holds `init_lock` across
+                # both the cancel and the creation of the replacement, so
+                # acquiring it here waits until the replacement is installed.
+                async with init_lock:
+                    current = self._mtls_init_task
+                if current is None or current is task:
+                    # Nobody installed a replacement (e.g. the session is
+                    # closing); surface the cancellation.
+                    raise
+                # Follow the replacement rather than reporting a cancellation
+                # this caller never requested.
+                task = current
 
     async def request(
         self,
@@ -312,13 +478,14 @@ class AsyncAuthorizedSession:
                 channel reconfiguration fails for any reason during certificate rotation.
         """
         _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
-        if self._mtls_init_task and not self._mtls_init_task.done():
-            try:
-                await asyncio.shield(self._mtls_init_task)
-            except Exception:
-                # Suppress all exceptions from the background mTLS initialization task,
-                # allowing the request to fail naturally elsewhere.
-                pass
+        # Wait for any in-flight mTLS initialization to settle. `asyncio.wait`
+        # neither re-raises the task's exception (the request should fail
+        # naturally elsewhere instead) nor turns that task's cancellation into
+        # ours, while a cancellation aimed at *this* coroutine still
+        # propagates. Looping re-reads the attribute in case a concurrent
+        # `configure_mtls_channel()` swapped in a replacement task.
+        while self._mtls_init_task is not None and not self._mtls_init_task.done():
+            await asyncio.wait({self._mtls_init_task})
         retries = _exponential_backoff.AsyncExponentialBackoff(
             total_attempts=total_attempts,
         )
@@ -326,6 +493,7 @@ class AsyncAuthorizedSession:
         start_time = time.monotonic()
         refresh_counter_at_error = self._refresh_counter
         check_counter_at_error = self._mtls_check_counter
+        reconfig_counter_at_error = self._mtls_reconfig_counter
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -409,10 +577,12 @@ class AsyncAuthorizedSession:
                                             exceptions.MutualTLSChannelError,
                                             OSError,
                                             ValueError,
+                                            TypeError,
                                             ImportError,
                                         ) as e:
                                             _LOGGER.warning(
-                                                "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                                "Failed to check client certificate parameters: %s. "
+                                                "Falling back to credential refresh and retry.",
                                                 e,
                                             )
                                         else:
@@ -421,30 +591,34 @@ class AsyncAuthorizedSession:
                                                 and cached_fingerprint
                                                 != current_cert_fingerprint
                                             ):
-                                                saved_callback = (
-                                                    self._client_cert_callback
-                                                )
                                                 try:
                                                     _LOGGER.info(
                                                         "Client certificate has changed, reconfiguring mTLS "
                                                         "channel."
                                                     )
-                                                    if self._mtls_init_task is not None:
-                                                        if (
-                                                            not self._mtls_init_task.done()
-                                                        ):
-                                                            try:
-                                                                await self._mtls_init_task
-                                                            except Exception:
-                                                                pass
-                                                        self._mtls_init_task = None
+                                                    # Pass the rotated cert/key
+                                                    # directly rather than
+                                                    # temporarily swapping
+                                                    # `self._client_cert_callback`,
+                                                    # which is shared state and
+                                                    # could be observed (or
+                                                    # clobbered) by concurrent
+                                                    # callers.
                                                     await self.configure_mtls_channel(
-                                                        lambda: (
+                                                        _cert_key_override=(
                                                             call_cert_bytes,
                                                             call_key_bytes,
                                                         )
                                                     )
+                                                    self._mtls_reconfig_counter += 1
                                                 except Exception as e:
+                                                    # NOTE: `_mtls_check_counter`
+                                                    # is deliberately left
+                                                    # un-incremented below, so a
+                                                    # queued coroutine retries
+                                                    # the reconfiguration rather
+                                                    # than inheriting this
+                                                    # failure.
                                                     _LOGGER.error(
                                                         "Failed to reconfigure mTLS channel: %s",
                                                         e,
@@ -452,10 +626,6 @@ class AsyncAuthorizedSession:
                                                     raise exceptions.MutualTLSChannelError(
                                                         "Failed to reconfigure mTLS channel"
                                                     ) from e
-                                                finally:
-                                                    self._client_cert_callback = (
-                                                        saved_callback
-                                                    )
                                             else:
                                                 if current_cert_fingerprint is None:
                                                     _LOGGER.info(
@@ -469,27 +639,64 @@ class AsyncAuthorizedSession:
                                                     )
                                         # Always increment so waiting tasks skip the check block
                                         self._mtls_check_counter += 1
+
+                        # Derived from session state rather than a local flag:
+                        # a concurrent request may have performed the rotation
+                        # on our behalf (we then skipped the check block), and
+                        # that request still needs to retry on the new channel.
+                        #
+                        # Evaluated at each use rather than snapshotted here: a
+                        # concurrent request can rotate the channel while this
+                        # coroutine is queued on `_refresh_lock` or waiting for
+                        # its own refresh to fail. A value captured at this
+                        # point would miss that rotation and drop a retry that
+                        # would have succeeded on the new channel.
+                        def channel_reconfigured() -> bool:
+                            return (
+                                self._mtls_reconfig_counter > reconfig_counter_at_error
+                            )
+
                         if self._refresh_lock is None:
                             self._refresh_lock = asyncio.Lock()
 
                         async with self._refresh_lock:
-                            # Check if another task already refreshed credentials while we were waiting
-                            if self._refresh_counter > refresh_counter_at_error:
+                            # A concurrent refresh only makes this one redundant
+                            # if it completed after this request's 401 *and* it
+                            # was started on the channel we are about to retry
+                            # on. Completion order alone is not enough: a
+                            # refresh that began before a rotation and finished
+                            # after it minted its token over the old transport,
+                            # and the rotated channel will reject it.
+                            already_refreshed = (
+                                self._refresh_counter > refresh_counter_at_error
+                                and self._last_refresh_reconfig_gen
+                                >= self._mtls_reconfig_counter
+                            )
+                            if already_refreshed:
                                 _LOGGER.debug(
                                     "Credentials were already refreshed by a concurrent task. Skipping duplicate refresh."
                                 )
                             else:
+                                # Snapshot the generation *before* awaiting so a
+                                # rotation that lands mid-refresh is not
+                                # credited to the token we are about to mint.
+                                reconfig_gen = self._mtls_reconfig_counter
                                 try:
                                     await self._credentials.refresh(self._auth_request)
                                 except NotImplementedError:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
-                                    return response
-                                except (
-                                    exceptions.RefreshError,
-                                    getattr(exceptions, "InvalidOperation", Exception),
-                                ) as e:
+                                    if not channel_reconfigured():
+                                        return response
+                                except exceptions.InvalidOperation as e:
+                                    _LOGGER.debug(
+                                        "Credentials cannot be refreshed: %s",
+                                        e,
+                                    )
+                                    if not channel_reconfigured():
+                                        return response
+                                except exceptions.RefreshError as e:
                                     _LOGGER.debug(
                                         "Credential refresh failed, returning 401 response. Error: %s",
                                         e,
@@ -497,6 +704,7 @@ class AsyncAuthorizedSession:
                                     return response
                                 else:
                                     self._refresh_counter += 1
+                                    self._last_refresh_reconfig_gen = reconfig_gen
 
                         if is_streaming:
                             return response
@@ -513,8 +721,10 @@ class AsyncAuthorizedSession:
                             res = response.close()
                             if inspect.isawaitable(res):
                                 await res
-                        except Exception:
-                            pass
+                        except Exception as close_exc:
+                            _LOGGER.debug(
+                                "Failed to close the 401 response: %s", close_exc
+                            )
                     raise
                 # If it returned a response (meaning streaming or error), bail out
                 if early_return_response is not None:
@@ -524,8 +734,8 @@ class AsyncAuthorizedSession:
                         res = response.close()
                         if inspect.isawaitable(res):
                             await res
-                    except Exception:
-                        pass
+                    except Exception as close_exc:
+                        _LOGGER.debug("Failed to close the 401 response: %s", close_exc)
                 if max_allowed_time is not None:
                     remaining_time = max(
                         0.0, max_allowed_time - (time.monotonic() - start_time)
@@ -820,25 +1030,43 @@ class AsyncAuthorizedSession:
     async def close(self) -> None:
         """
         Close the underlying auth request session.
+
+        Once closed, the session refuses further mTLS (re)configuration, so an
+        in-flight certificate rotation cannot resurrect it with a freshly built
+        transport that nothing would ever close.
         """
-        if self._mtls_init_task and not self._mtls_init_task.done():
-            self._mtls_init_task.cancel()
-            try:
-                await self._mtls_init_task
-            except asyncio.CancelledError:
-                pass
+        if self._mtls_init_lock is None:
+            self._mtls_init_lock = asyncio.Lock()
+        # Flip the flag under the same lock `configure_mtls_channel` uses to
+        # decide whether to spawn a task, so the two cannot interleave.
+        async with self._mtls_init_lock:
+            self._closed = True
+            init_task = self._mtls_init_task
         try:
-            if hasattr(self._auth_request, "close"):
-                res = self._auth_request.close()
-                if inspect.isawaitable(res):
-                    await res
+            if init_task and not init_task.done():
+                init_task.cancel()
+                # Same rationale as `configure_mtls_channel`: `asyncio.wait`
+                # lets the cancelled initialization task unwind without
+                # absorbing a cancellation aimed at this `close()` call.
+                await asyncio.wait({init_task})
         finally:
-            for old_request in self._old_auth_requests:
+            while self._old_auth_requests:
+                old_request = self._old_auth_requests.pop(0)
                 try:
                     if hasattr(old_request, "close"):
                         res = old_request.close()
                         if inspect.isawaitable(res):
                             await res
-                except Exception:
-                    pass
-            self._old_auth_requests.clear()
+                except Exception as caught_exc:
+                    _LOGGER.debug(
+                        "Failed to close a retired auth transport: %s", caught_exc
+                    )
+            try:
+                if hasattr(self._auth_request, "close"):
+                    res = self._auth_request.close()
+                    if inspect.isawaitable(res):
+                        await res
+            except Exception as caught_exc:
+                _LOGGER.debug(
+                    "Failed to close the active auth transport: %s", caught_exc
+                )
