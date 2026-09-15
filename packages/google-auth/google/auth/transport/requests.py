@@ -20,20 +20,23 @@ import functools
 import http.client as http_client
 import logging
 import numbers
+import threading
 import time
 from typing import Optional
+from urllib import parse as urllib_parse
 
 try:
     import requests
+    import requests.adapters
+    import requests.exceptions
+    from requests.packages.urllib3.util.ssl_ import (  # type: ignore
+        create_urllib3_context,
+    )
+    import urllib3.exceptions
 except ImportError as caught_exc:  # pragma: NO COVER
     raise ImportError(
         "The requests library is not installed from please install the requests package to use the requests transport."
     ) from caught_exc
-import requests.adapters  # pylint: disable=ungrouped-imports
-import requests.exceptions  # pylint: disable=ungrouped-imports
-from requests.packages.urllib3.util.ssl_ import (  # type: ignore
-    create_urllib3_context,
-)  # pylint: disable=ungrouped-imports
 
 from google.auth import _helpers
 from google.auth import exceptions
@@ -144,6 +147,17 @@ class Request(transport.Request):
 
         self.session = session
 
+        # The adapter this Request mounted. Stays None if the session already had
+        # an mTLS adapter when it was passed in.
+        self._mtls_adapter = None
+        self._cached_cert = None
+
+        # Prefixes on self.session where _mtls_adapter is mounted, so a rotation
+        # can remount the new adapter on all of them.
+        self._mounted_mtls_prefixes = set()
+
+        self._mtls_lock = threading.RLock()
+
     def __del__(self):
         try:
             if hasattr(self, "session") and self.session is not None:
@@ -154,6 +168,160 @@ class Request(transport.Request):
             # TypeError.
             pass
 
+    def _configure_mtls_if_needed(
+        self, url, force_reconfigure=False, client_cert_callback=None
+    ):
+        """Lazily mounts a mutual TLS adapter onto the session for mTLS endpoints.
+
+        Args:
+            url (str): The target request URL.
+            force_reconfigure (bool): If True, rebuilds the mTLS adapter and remounts
+                all tracked URL prefixes even if already configured.
+            client_cert_callback (Optional[Callable[[], Tuple[bytes, bytes]]]): Optional
+                callback returning (cert_bytes, key_bytes) in PEM format.
+        """
+        if not _mtls_helper.is_mtls_endpoint(url):
+            return
+        if not _mtls_helper.check_use_client_cert():
+            return
+
+        # Mount on the specific origin rather than globally on "https://" so client
+        # certificates are not sent to other hosts sharing this session. The trailing
+        # slash prevents requests' startswith() matching from matching lookalike domains.
+        parsed = urllib_parse.urlparse(url)
+        prefix = f"{parsed.scheme}://{parsed.netloc}/"
+
+        # If the session has an mTLS adapter mounted for this URL that was not created
+        # by this Request (e.g. via AuthorizedSession or a custom caller mount), leave
+        # it untouched. Checking `session_adapter is not self._mtls_adapter` ensures
+        # `force_reconfigure=True` can still replace our own `_mtls_adapter`.
+        session_adapter = self.session.get_adapter(url if parsed.path else prefix)
+        if (
+            getattr(session_adapter, "_is_mtls", False)
+            and session_adapter is not self._mtls_adapter
+        ):
+            return
+
+        if not force_reconfigure and prefix in self._mounted_mtls_prefixes:
+            return
+
+        with self._mtls_lock:
+            # Re-check in case another thread mounted this prefix while waiting on the lock.
+            if not force_reconfigure and prefix in self._mounted_mtls_prefixes:
+                return
+
+            has_cert, cert, key = _mtls_helper.get_client_cert_and_key(
+                client_cert_callback
+            )
+            if not has_cert:
+                return
+
+            if force_reconfigure or self._mtls_adapter is None:
+                # Copy necessary configuration from the session's current adapter so
+                # existing adapter settings carry over to the mTLS adapter.
+                kwargs = {}
+                if session_adapter is not None:
+                    kwargs["max_retries"] = getattr(session_adapter, "max_retries", 0)
+                    kwargs["pool_connections"] = getattr(
+                        session_adapter,
+                        "_pool_connections",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    )
+                    kwargs["pool_maxsize"] = getattr(
+                        session_adapter,
+                        "_pool_maxsize",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    )
+                    kwargs["pool_block"] = getattr(
+                        session_adapter,
+                        "_pool_block",
+                        requests.adapters.DEFAULT_POOLBLOCK,
+                    )
+                old_mtls_adapter = self._mtls_adapter
+                self._mtls_adapter = _MutualTlsAdapter(cert, key, **kwargs)
+                self._cached_cert = cert
+                self._mounted_mtls_prefixes.add(prefix)
+
+                # Mount the new adapter across all tracked .mtls. prefixes and close
+                # any replaced adapter. HTTPAdapter.close() clears idle pooled connections
+                # without interrupting in-flight requests or streams.
+                for tracked_prefix in self._mounted_mtls_prefixes:
+                    self.session.mount(tracked_prefix, self._mtls_adapter)
+                if old_mtls_adapter is not None:
+                    old_mtls_adapter.close()
+            else:
+                self.session.mount(prefix, self._mtls_adapter)
+                self._mounted_mtls_prefixes.add(prefix)
+
+    def _handle_mtls_unauthorized_response(self, url, used_cert):
+        """Handles a 401 Unauthorized response from an mTLS endpoint.
+
+        Checks whether the client certificate on disk has rotated since
+        ``used_cert`` was cached, and reconfigures the mTLS adapter if so.
+
+        Args:
+            url (str): The target request URL that returned 401.
+            used_cert (bytes): The client certificate bytes used for the
+                failed request.
+
+        Returns:
+            bool: True if the mTLS adapter was reconfigured (by this thread or a
+                concurrent thread) and the request should be retried.
+        """
+        with self._mtls_lock:
+            if self._cached_cert != used_cert:
+                return True
+
+            try:
+                (
+                    call_cert_bytes,
+                    call_key_bytes,
+                    cached_fp,
+                    current_fp,
+                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                    self._cached_cert
+                )
+                if cached_fp == current_fp:
+                    return False
+
+                _LOGGER.info(
+                    "Client certificate has changed, reconfiguring mTLS adapter."
+                )
+                self._configure_mtls_if_needed(
+                    url,
+                    force_reconfigure=True,
+                    client_cert_callback=lambda: (call_cert_bytes, call_key_bytes),
+                )
+            except Exception as exc:
+                _LOGGER.debug(
+                    "Failed to reconfigure mTLS adapter on 401 response: %s",
+                    exc,
+                )
+                return False
+
+            return self._cached_cert != used_cert
+
+    def _should_retry_closed_pool(self, caught_exc, used_cert):
+        """Checks whether a ConnectionError should be retried on the new mTLS adapter.
+
+        Args:
+            caught_exc (requests.exceptions.ConnectionError): The exception
+                raised during the request.
+            used_cert (Optional[bytes]): The client certificate bytes used for
+                the failed request.
+
+        Returns:
+            bool: True if the error wraps a ClosedPoolError and a concurrent
+                thread reconfigured the mTLS adapter with a new certificate
+                while this request was in flight.
+        """
+        return (
+            used_cert is not None
+            and self._cached_cert != used_cert
+            and bool(caught_exc.args)
+            and isinstance(caught_exc.args[0], urllib3.exceptions.ClosedPoolError)
+        )
+
     def __call__(
         self,
         url,
@@ -161,7 +329,7 @@ class Request(transport.Request):
         body=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Make an HTTP request using requests.
 
@@ -184,11 +352,41 @@ class Request(transport.Request):
             google.auth.exceptions.TransportError: If any exception occurred.
         """
         try:
-            _helpers.request_log(_LOGGER, method, url, body, headers)
-            response = self.session.request(
-                method, url, data=body, headers=headers, timeout=timeout, **kwargs
+            self._configure_mtls_if_needed(url)
+            # Snapshot the active cert before the network call in case another
+            # thread reconfigures mTLS mid-flight.
+            used_cert = (
+                self._cached_cert
+                if self.session.get_adapter(url) is self._mtls_adapter
+                else None
             )
+            _helpers.request_log(_LOGGER, method, url, body, headers)
+            try:
+                response = self.session.request(
+                    method, url, data=body, headers=headers, timeout=timeout, **kwargs
+                )
+            except requests.exceptions.ConnectionError as caught_exc:
+                if not self._should_retry_closed_pool(caught_exc, used_cert):
+                    raise
+                used_cert = self._cached_cert
+                _helpers.request_log(_LOGGER, method, url, body, headers)
+                response = self.session.request(
+                    method, url, data=body, headers=headers, timeout=timeout, **kwargs
+                )
             _helpers.response_log(_LOGGER, response)
+
+            if (
+                response.status_code == http_client.UNAUTHORIZED
+                and used_cert is not None
+                and _mtls_helper.is_mtls_endpoint(url)
+                and self._handle_mtls_unauthorized_response(url, used_cert)
+            ):
+                _helpers.request_log(_LOGGER, method, url, body, headers)
+                response = self.session.request(
+                    method, url, data=body, headers=headers, timeout=timeout, **kwargs
+                )
+                _helpers.response_log(_LOGGER, response)
+
             return _Response(response)
         except requests.exceptions.RequestException as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
@@ -196,6 +394,7 @@ class Request(transport.Request):
 
 
 class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
+    _is_mtls = True
     """
     A TransportAdapter that enables mutual TLS.
 
@@ -262,6 +461,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
 
 
 class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
+    _is_mtls = True
     """
     A TransportAdapter that enables mutual TLS and offloads the client side
     signing operation to the signing library.
@@ -570,7 +770,7 @@ class AuthorizedSession(requests.Session):
         headers=None,
         max_allowed_time=None,
         timeout=_DEFAULT_TIMEOUT,
-        **kwargs
+        **kwargs,
     ):
         """Implementation of Requests' request.
 
@@ -632,7 +832,7 @@ class AuthorizedSession(requests.Session):
                 data=data,
                 headers=request_headers,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
         remaining_time = guard.remaining_timeout
 
@@ -705,7 +905,7 @@ class AuthorizedSession(requests.Session):
                 max_allowed_time=remaining_time,
                 timeout=timeout,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs
+                **kwargs,
             )
 
         return response

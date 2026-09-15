@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import http.client as http_client
 import logging
+import threading
 import warnings
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
@@ -114,6 +115,161 @@ class Request(transport.Request):
 
     def __init__(self, http):
         self.http = http
+        # The PoolManager this Request created for mTLS endpoints. Stays None if
+        # self.http was already configured for mTLS externally.
+        self._mtls_http = None
+        self._cached_cert = None
+        self._mtls_lock = threading.RLock()
+
+    def close(self):
+        """Close the underlying mTLS PoolManager if one was created."""
+        # Guard against partially initialized instances when called from __del__.
+        if not hasattr(self, "_mtls_lock"):
+            return
+
+        # Detach the pool and reset state under the lock before clearing so
+        # concurrent requests do not use a closing pool.
+        with self._mtls_lock:
+            old_mtls_http = self._mtls_http
+            self._mtls_http = None
+            self._cached_cert = None
+
+        if old_mtls_http is not None:
+            old_mtls_http.clear()
+
+    def __del__(self):
+        try:
+            self.close()
+        except Exception:
+            # During interpreter shutdown, Python may clear module globals (like
+            # queue.Empty inside urllib3) to None before __del__ runs, causing
+            # pool cleanup to raise TypeError or AttributeError.
+            pass
+
+    def _get_http_for_url(
+        self, url, force_reconfigure=False, client_cert_callback=None
+    ):
+        """Returns the appropriate urllib3 PoolManager for the target URL.
+
+        For standard non-mTLS URLs or when client certificates are disabled, returns
+        self.http. For .mtls. endpoints, lazily creates and caches a dedicated mutual TLS
+        PoolManager (self._mtls_http) so standard traffic on self.http is unaffected.
+
+        Args:
+            url (str): The target request URL.
+            force_reconfigure (bool): If True, rebuilds the mTLS pool even if already
+                configured.
+            client_cert_callback (Optional[Callable[[], Tuple[bytes, bytes]]]): Optional
+                callback returning (cert_bytes, key_bytes) in PEM format.
+
+        Returns:
+            urllib3.PoolManager: The connection pool manager to use for the request.
+        """
+        # If self.http already has mTLS configured (e.g. via AuthorizedHttp),
+        # leave it untouched and use self.http directly.
+        if getattr(self.http, "_is_mtls", False):
+            return self.http
+        if not _mtls_helper.is_mtls_endpoint(url):
+            return self.http
+        if not _mtls_helper.check_use_client_cert():
+            return self.http
+
+        if not force_reconfigure and self._mtls_http is not None:
+            return self._mtls_http
+
+        with self._mtls_lock:
+            # Re-check in case another thread created the mTLS pool while waiting on the lock.
+            if not force_reconfigure and self._mtls_http is not None:
+                return self._mtls_http
+
+            has_cert, cert, key = _mtls_helper.get_client_cert_and_key(
+                client_cert_callback
+            )
+            if not has_cert:
+                return self.http
+
+            # Copy necessary configuration from self.http so existing pool settings
+            # carry over to the mTLS pool manager.
+            kwargs = {}
+            if hasattr(self.http, "connection_pool_kw"):
+                for pool_key in ("retries", "maxsize", "block", "timeout"):
+                    if pool_key in self.http.connection_pool_kw:
+                        kwargs[pool_key] = self.http.connection_pool_kw[pool_key]
+            if getattr(self.http, "headers", None):
+                kwargs["headers"] = dict(self.http.headers)
+            if hasattr(getattr(self.http, "pools", None), "_maxsize"):
+                kwargs["num_pools"] = self.http.pools._maxsize
+            old_mtls_http = self._mtls_http
+            self._mtls_http = _make_mutual_tls_http(cert, key, **kwargs)
+            self._cached_cert = cert
+            if old_mtls_http is not None:
+                # PoolManager.clear() drops cached HTTPConnectionPool references so idle
+                # sockets are closed without interrupting in-flight or streaming requests.
+                old_mtls_http.clear()
+
+            return self._mtls_http
+
+    def _handle_mtls_unauthorized_response(self, url, used_cert):
+        """Handles a 401 Unauthorized response from an mTLS endpoint.
+
+        Checks whether the client certificate on disk has rotated since
+        ``used_cert`` was cached, and reconfigures the mTLS pool manager if so.
+
+        Args:
+            url (str): The target request URL that returned 401.
+            used_cert (bytes): The client certificate bytes used for the
+                failed request.
+
+        Returns:
+            bool: True if the mTLS pool manager was reconfigured (by this thread
+                or a concurrent thread) and the request should be retried.
+        """
+        with self._mtls_lock:
+            if self._cached_cert != used_cert:
+                return True
+
+            try:
+                (
+                    call_cert_bytes,
+                    call_key_bytes,
+                    cached_fp,
+                    current_fp,
+                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                    self._cached_cert
+                )
+                if cached_fp == current_fp:
+                    return False
+
+                _LOGGER.info(
+                    "Client certificate has changed, reconfiguring mTLS pool manager."
+                )
+                self._get_http_for_url(
+                    url,
+                    force_reconfigure=True,
+                    client_cert_callback=lambda: (call_cert_bytes, call_key_bytes),
+                )
+            except Exception as exc:
+                _LOGGER.debug(
+                    "Failed to reconfigure mTLS pool manager on 401 response: %s",
+                    exc,
+                )
+                return False
+
+            return self._cached_cert != used_cert
+
+    def _should_retry_closed_pool(self, used_cert):
+        """Checks whether a ClosedPoolError should be retried on the new mTLS pool.
+
+        Args:
+            used_cert (Optional[bytes]): The client certificate bytes used for
+                the failed request.
+
+        Returns:
+            bool: True if this request used an mTLS certificate and a concurrent
+                thread reconfigured the mTLS pool with a new certificate while
+                this request was in flight.
+        """
+        return used_cert is not None and self._cached_cert != used_cert
 
     def __call__(
         self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
@@ -144,11 +300,39 @@ class Request(transport.Request):
             kwargs["timeout"] = timeout
 
         try:
-            _helpers.request_log(_LOGGER, method, url, body, headers)
-            response = self.http.request(
-                method, url, body=body, headers=headers, **kwargs
+            http_client_pool = self._get_http_for_url(url)
+            # Snapshot the active cert before the network call in case another
+            # thread reconfigures mTLS mid-flight.
+            used_cert = (
+                self._cached_cert if http_client_pool is self._mtls_http else None
             )
+            _helpers.request_log(_LOGGER, method, url, body, headers)
+            try:
+                response = http_client_pool.request(
+                    method, url, body=body, headers=headers, **kwargs
+                )
+            except urllib3.exceptions.ClosedPoolError:
+                if not self._should_retry_closed_pool(used_cert):
+                    raise
+                used_cert = self._cached_cert
+                _helpers.request_log(_LOGGER, method, url, body, headers)
+                response = self._mtls_http.request(
+                    method, url, body=body, headers=headers, **kwargs
+                )
             _helpers.response_log(_LOGGER, response)
+
+            if (
+                response.status == http_client.UNAUTHORIZED
+                and used_cert is not None
+                and _mtls_helper.is_mtls_endpoint(url)
+                and self._handle_mtls_unauthorized_response(url, used_cert)
+            ):
+                _helpers.request_log(_LOGGER, method, url, body, headers)
+                response = self._mtls_http.request(
+                    method, url, body=body, headers=headers, **kwargs
+                )
+                _helpers.response_log(_LOGGER, response)
+
             return _Response(response)
         except urllib3.exceptions.HTTPError as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
@@ -162,13 +346,15 @@ def _make_default_http():
         return urllib3.PoolManager()
 
 
-def _make_mutual_tls_http(cert, key):
+def _make_mutual_tls_http(cert, key, **kwargs):
     """Create a mutual TLS HTTP connection with the given client cert and key.
     See https://github.com/urllib3/urllib3/issues/474#issuecomment-253168415
 
     Args:
         cert (bytes): client certificate in PEM format
         key (bytes): client private key in PEM format
+        kwargs: Additional keyword arguments passed to the
+            :class:`urllib3.PoolManager` constructor.
 
     Returns:
         urllib3.PoolManager: Mutual TLS HTTP connection.
@@ -199,7 +385,8 @@ def _make_mutual_tls_http(cert, key):
             "Failed to configure client certificate and key for mTLS."
         ) from exc
 
-    http = urllib3.PoolManager(ssl_context=ctx)
+    http = urllib3.PoolManager(ssl_context=ctx, **kwargs)
+    http._is_mtls = True
     return http
 
 
