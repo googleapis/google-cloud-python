@@ -19,6 +19,17 @@ from google.cloud.firestore_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectID,
+    BSONRegex,
+    BSONTimestamp,
+)
+
 from typing import List
 
 from google.cloud.firestore_v1 import (
@@ -92,6 +103,14 @@ __all__: List[str] = [
     "async_transactional",
     "AsyncTransaction",
     "AsyncWriteBatch",
+    "BSONBinary",
+    "BSONDecimal128",
+    "BSONInt32",
+    "BSONMaxKey",
+    "BSONMinKey",
+    "BSONObjectID",
+    "BSONRegex",
+    "BSONTimestamp",
     "Client",
     "CountAggregation",
     "CollectionGroup",
