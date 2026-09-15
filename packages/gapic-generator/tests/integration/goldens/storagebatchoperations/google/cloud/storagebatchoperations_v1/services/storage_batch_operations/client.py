@@ -528,6 +528,18 @@ class StorageBatchOperationsClient(metaclass=StorageBatchOperationsClientMeta):
                 is not None
             ):
                 interceptors.append(otel_interceptor)
+            elif (
+                isinstance(transport_init, type)
+                and issubclass(transport_init, StorageBatchOperationsGrpcAsyncIOTransport)
+                and _observability is not None
+                and (
+                    otel_async_interceptors := _observability.get_otel_async_interceptor(
+                        self._client_options
+                    )
+                )
+                is not None
+            ):
+                interceptors.extend(otel_async_interceptors)
 
             # initialize with the provided callable or the passed in class
             transport_kwargs = {

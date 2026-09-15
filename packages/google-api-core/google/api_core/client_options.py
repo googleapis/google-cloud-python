@@ -124,6 +124,7 @@ class ClientOptions(object):
         api_audience: Optional[str] = None,
         universe_domain: Optional[str] = None,
         tracer_provider: Optional["opentelemetry.trace.TracerProvider"] = None,
+        tracing_enabled: Optional[bool] = None,
     ):
         if credentials_file is not None:
             warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
@@ -144,6 +145,7 @@ class ClientOptions(object):
         self.api_audience = api_audience
         self.universe_domain = universe_domain
         self.tracer_provider = tracer_provider
+        self.tracing_enabled = tracing_enabled
 
     def __repr__(self) -> str:
         return "ClientOptions: " + repr(self.__dict__)

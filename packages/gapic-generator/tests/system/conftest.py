@@ -154,7 +154,7 @@ def construct_client(
     client_class,
     use_mtls,
     transport_name="grpc",
-    channel_creator=grpc.insecure_channel,  # for grpc,grpc_asyncio only
+    channel_creator=None,  # for grpc,grpc_asyncio only
     credentials=ga_credentials.AnonymousCredentials(),
     transport_endpoint="localhost:7469",
     client_options=None,
@@ -177,12 +177,28 @@ def construct_client(
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
             # TODO(gapic-generator-python/issues/1914): Need to test grpc transports without a channel_creator
+            if channel_creator is None:
+                if transport_name == "grpc_asyncio":
+                    channel_creator = aio.insecure_channel
+                else:
+                    channel_creator = grpc.insecure_channel
             assert channel_creator
             interceptors = []
-            if _observability is not None and transport_name == "grpc":
-                otel_interceptor = _observability.get_otel_interceptor(client_options)
-                if otel_interceptor is not None:
-                    interceptors.append(otel_interceptor)
+            if _observability is not None:
+                if transport_name == "grpc":
+                    otel_interceptor = _observability.get_otel_interceptor(
+                        client_options
+                    )
+                    if otel_interceptor is not None:
+                        interceptors.append(otel_interceptor)
+                elif transport_name == "grpc_asyncio":
+                    get_async = getattr(
+                        _observability, "get_otel_async_interceptor", None
+                    )
+                    if get_async is not None:
+                        async_interceptors = get_async(client_options)
+                        if async_interceptors:
+                            interceptors.extend(async_interceptors)
             transport = transport_cls(
                 credentials=credentials,
                 channel=channel_creator(transport_endpoint),
