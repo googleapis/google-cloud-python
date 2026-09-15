@@ -16,6 +16,7 @@ import copy
 import datetime
 import logging
 import re
+import sys
 import time
 import types
 import unittest
@@ -3577,7 +3578,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
             client = client_module.Client(
                 project="proj",
@@ -3631,7 +3632,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": None}),  # noqa: F821
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
         ):
             client = client_module.Client(
                 project="proj",
@@ -5043,7 +5044,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),  # noqa: F821
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
         ):
             client = client_module.Client(
                 project="proj",
@@ -5097,7 +5098,7 @@ class TestRowIterator(unittest.TestCase):
                 "create_channel",
                 return_value=mock_channel,
             ),
-            mock.patch.dict(sys.modules, {"pandas_gbq": None}),  # noqa: F821
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
         ):
             client = client_module.Client(
                 project="proj",
