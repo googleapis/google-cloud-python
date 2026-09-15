@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -57,6 +59,7 @@ class StorageBatchOperationsTransport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -87,6 +90,9 @@ class StorageBatchOperationsTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -124,16 +130,37 @@ class StorageBatchOperationsTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
+        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
+        # with older versions of google-api-core.
+        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # Base transport raises NotImplementedError for abstract kind property.
+            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # Remove tracing-specific arguments if older google-api-core is installed
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_jobs: gapic_v1.method.wrap_method(
+            self.list_jobs: self._wrap_method(
                 self.list_jobs,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -146,8 +173,9 @@ class StorageBatchOperationsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListJobs",
             ),
-            self.get_job: gapic_v1.method.wrap_method(
+            self.get_job: self._wrap_method(
                 self.get_job,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -160,18 +188,21 @@ class StorageBatchOperationsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetJob",
             ),
-            self.create_job: gapic_v1.method.wrap_method(
+            self.create_job: self._wrap_method(
                 self.create_job,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/CreateJob",
             ),
-            self.delete_job: gapic_v1.method.wrap_method(
+            self.delete_job: self._wrap_method(
                 self.delete_job,
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/DeleteJob",
             ),
-            self.cancel_job: gapic_v1.method.wrap_method(
+            self.cancel_job: self._wrap_method(
                 self.cancel_job,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -184,8 +215,9 @@ class StorageBatchOperationsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/CancelJob",
             ),
-            self.list_bucket_operations: gapic_v1.method.wrap_method(
+            self.list_bucket_operations: self._wrap_method(
                 self.list_bucket_operations,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -198,8 +230,9 @@ class StorageBatchOperationsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListBucketOperations",
             ),
-            self.get_bucket_operation: gapic_v1.method.wrap_method(
+            self.get_bucket_operation: self._wrap_method(
                 self.get_bucket_operation,
                 default_retry=retries.Retry(
                     initial=1.0,
@@ -212,33 +245,34 @@ class StorageBatchOperationsTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+                method_name="google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetBucketOperation",
             ),
-            self.get_location: gapic_v1.method.wrap_method(
+            self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_locations: gapic_v1.method.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
