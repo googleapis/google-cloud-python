@@ -22,6 +22,9 @@ from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
 from google.cloud.storage import __version__
+from google.cloud.storage._bucket_metadata_cache import BucketMetadataCache
+from google.cloud.storage._helpers import create_trace_span_helper
+from google.cloud.storage.asyncio import _utils
 
 _DEFAULT_HOST = "storage.googleapis.com"
 
@@ -73,6 +76,7 @@ class AsyncGrpcClient:
         *,
         attempt_direct_path=True,
     ):
+        self._bucket_metadata_cache = BucketMetadataCache(self)
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
                 raise ValueError(
@@ -212,24 +216,31 @@ class AsyncGrpcClient:
         :param retry: (Optional) Designation of what errors, if any, should be retried.
         """
         _validate_metadata(metadata)
-        # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
-        bucket_path = f"projects/_/buckets/{bucket_name}"
-        request = storage_v2.DeleteObjectRequest(
-            bucket=bucket_path,
-            object=object_name,
-            generation=generation,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            **kwargs,
-        )
-        await self._grpc_client.delete_object(
-            request=request,
-            metadata=metadata,
-            timeout=timeout,
-            retry=retry,
-        )
+        async with create_trace_span_helper(
+            self,
+            bucket_name,
+            "Storage.AsyncGrpcClient.deleteObject",
+            rpc_system="grpc",
+        ):
+            # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
+            bucket_path = f"projects/_/buckets/{bucket_name}"
+            request = storage_v2.DeleteObjectRequest(
+                bucket=bucket_path,
+                object=object_name,
+                generation=generation,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                **kwargs,
+            )
+            final_metadata = _utils.inject_traceparent_to_metadata(metadata)
+            await self._grpc_client.delete_object(
+                request=request,
+                metadata=final_metadata,
+                timeout=timeout,
+                retry=retry,
+            )
 
     async def get_object(
         self,
@@ -292,24 +303,31 @@ class AsyncGrpcClient:
         :returns: The object metadata resource.
         """
         _validate_metadata(metadata)
-        bucket_path = f"projects/_/buckets/{bucket_name}"
+        async with create_trace_span_helper(
+            self,
+            bucket_name,
+            "Storage.AsyncGrpcClient.getObject",
+            rpc_system="grpc",
+        ):
+            bucket_path = f"projects/_/buckets/{bucket_name}"
 
-        request = storage_v2.GetObjectRequest(
-            bucket=bucket_path,
-            object=object_name,
-            generation=generation,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            soft_deleted=soft_deleted or False,
-            **kwargs,
-        )
+            request = storage_v2.GetObjectRequest(
+                bucket=bucket_path,
+                object=object_name,
+                generation=generation,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                soft_deleted=soft_deleted or False,
+                **kwargs,
+            )
 
-        # Calls the underlying GAPIC StorageAsyncClient.get_object method
-        return await self._grpc_client.get_object(
-            request=request,
-            metadata=metadata,
-            timeout=timeout,
-            retry=retry,
-        )
+            final_metadata = _utils.inject_traceparent_to_metadata(metadata)
+            # Calls the underlying GAPIC StorageAsyncClient.get_object method
+            return await self._grpc_client.get_object(
+                request=request,
+                metadata=final_metadata,
+                timeout=timeout,
+                retry=retry,
+            )
