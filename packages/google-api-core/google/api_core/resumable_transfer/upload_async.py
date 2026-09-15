@@ -520,7 +520,8 @@ class AsyncResumableUploadSession:
 
                 is_recoverable = (
                     isinstance(exc, exceptions.GoogleAPICallError)
-                    and exc.code in common.RECOVERABLE_STATUS_CODES
+                    and exc.code
+                    in (common.RECOVERABLE_STATUS_CODES + common.RETRYABLE_STATUS_CODES)
                 ) or isinstance(exc, exceptions.MissingStatusHeaderError)
 
                 if is_recoverable:

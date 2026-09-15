@@ -1027,10 +1027,11 @@ def test_async_enrich_exception() -> None:
     """Verifies that _enrich_exception attaches upload_url and chunk_size."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
+        resumable_url="https://upload.example.com/resumable-async",
     )
     exc = RuntimeError("test error")
     session._enrich_exception(exc)
-    assert getattr(exc, "upload_url") == "https://api.example.com/start"
+    assert getattr(exc, "upload_url") == "https://upload.example.com/resumable-async"
 
 
 def test_async_notify_progress_branches() -> None:
@@ -1670,3 +1671,99 @@ async def test_async_resume_already_finished_raises_value_error() -> None:
             match="Upload resumed but completed without receiving a final response",
         ):
             await op
+
+
+@pytest.mark.asyncio
+async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> None:
+    """Ensure that retrying a partially committed chunk (len < chunk_size) does not prematurely finalize.
+
+    When a 4-byte chunk (b"0123") partially succeeds (server commits 2 bytes)
+    and is retried, ensure that the remaining 2 bytes (b"23") are sent with
+    "upload" rather than "upload, finalize" so the remaining payload (b"45")
+    is not dropped.
+    """
+    server_received_bytes = bytearray()
+
+    class StatefulAsyncTransport:
+        def __init__(self) -> None:
+            self.call_count = 0
+
+        def request(
+            self,
+            method: str,
+            url: str,
+            data: Any = None,
+            headers: Optional[Mapping[str, str]] = None,
+            **kwargs: Any,
+        ) -> DummyAsyncResponse:
+            self.call_count += 1
+            cmd = headers.get("X-Goog-Upload-Command", "") if headers else ""
+
+            # Request 1: start session
+            if self.call_count == 1:
+                assert cmd == "start"
+                return DummyAsyncResponse(
+                    status=200,
+                    headers={
+                        "X-Goog-Upload-Status": "active",
+                        "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+                    },
+                    body=b"",
+                )
+
+            # Request 2: initial Chunk 1 (b"0123") -> server commits partial 2 bytes (b"01"), then fails 503
+            if self.call_count == 2:
+                assert cmd == "upload"
+                assert bytes(data) == b"0123"
+                server_received_bytes.extend(b"01")
+                return DummyAsyncResponse(
+                    status=503,
+                    headers={},
+                    body=b"Service Unavailable",
+                )
+
+            # Request 3: recovery query -> server reports 2 committed bytes
+            if self.call_count == 3:
+                assert cmd == "query"
+                return DummyAsyncResponse(
+                    status=200,
+                    headers={
+                        "X-Goog-Upload-Status": "active",
+                        "X-Goog-Upload-Size-Received": str(len(server_received_bytes)),
+                    },
+                    body=b"",
+                )
+
+            # Subsequent upload requests (Request 4: remaining b"23", Request 5: final b"45")
+            if data:
+                server_received_bytes.extend(bytes(data))
+
+            if "finalize" in cmd:
+                return DummyAsyncResponse(
+                    status=200,
+                    headers={"X-Goog-Upload-Status": "final"},
+                    body=b"{}",
+                )
+            return DummyAsyncResponse(
+                status=200,
+                headers={"X-Goog-Upload-Status": "active"},
+                body=b"",
+            )
+
+    transport = StatefulAsyncTransport()
+    config = ResumableUploadConfig(chunk_size=4)
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=transport,
+    )
+
+    # Disable HTTP-level _async_retry so 503 immediately triggers protocol-level _recover()
+    async def no_retry(coro_fn: Any, max_attempts: int = 1) -> Any:
+        return await coro_fn()
+
+    with mock.patch.object(session, "_async_retry", side_effect=no_retry):
+        await session.upload(stream=b"012345")
+
+    # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
+    assert bytes(server_received_bytes) == b"012345"

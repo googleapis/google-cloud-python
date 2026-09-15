@@ -1342,11 +1342,12 @@ class CustomReadStream:
 def test_sync_enrich_exception():
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
+        resumable_url="https://upload.example.com/resumable-123",
         transport=mock.sentinel.transport,
     )
     exc = RuntimeError("test error")
     session._enrich_exception(exc)
-    assert getattr(exc, "upload_url") == "https://api.example.com/init"
+    assert getattr(exc, "upload_url") == "https://upload.example.com/resumable-123"
 
 
 def test_sync_notify_progress_no_upload_url():
@@ -1542,3 +1543,92 @@ def test_state_process_chunk_response_unknown_status():
     state.process_chunk_response(200, {"X-Goog-Upload-Status": "unknown"}, 100)
     assert state.bytes_uploaded == 0
     assert not state.finished
+
+
+def test_sync_partial_chunk_recovery_does_not_prematurely_finalize():
+    """Ensure that retrying a partially committed chunk (len < chunk_size) does not prematurely finalize.
+
+    When a 4-byte chunk (b"0123") partially succeeds (server commits 2 bytes)
+    and is retried, ensure that the remaining 2 bytes (b"23") are sent with
+    "upload" rather than "upload, finalize" so the remaining payload (b"45")
+    is not dropped.
+    """
+    server_received_bytes = bytearray()
+    call_count = 0
+
+    def handle_request(method, url, data=None, headers=None, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        cmd = headers.get("X-Goog-Upload-Command", "") if headers else ""
+
+        resp = mock.create_autospec(requests.Response, instance=True)
+        resp.request = mock.Mock(method=method, url=url)
+        resp.content = b""
+
+        # Request 1: start session
+        if call_count == 1:
+            assert cmd == "start"
+            resp.status_code = 200
+            resp.ok = True
+            resp.headers = {
+                "X-Goog-Upload-Status": "active",
+                "X-Goog-Upload-URL": "https://upload.example.com/resumable-123",
+            }
+            return resp
+
+        # Request 2: initial Chunk 1 (b"0123") -> server commits partial 2 bytes (b"01"), then fails 503
+        if call_count == 2:
+            assert cmd == "upload"
+            assert bytes(data) == b"0123"
+            server_received_bytes.extend(b"01")
+            resp.status_code = 503
+            resp.ok = False
+            resp.headers = {}
+            resp.json.return_value = {
+                "error": {"code": 503, "message": "Service Unavailable"}
+            }
+            return resp
+
+        # Request 3: recovery query -> server reports 2 committed bytes
+        if call_count == 3:
+            assert cmd == "query"
+            resp.status_code = 200
+            resp.ok = True
+            resp.headers = {
+                "X-Goog-Upload-Status": "active",
+                "X-Goog-Upload-Size-Received": str(len(server_received_bytes)),
+            }
+            return resp
+
+        # Subsequent upload requests (Request 4: remaining b"23", Request 5: final b"45")
+        if data:
+            server_received_bytes.extend(bytes(data))
+
+        resp.status_code = 200
+        resp.ok = True
+        if "finalize" in cmd:
+            resp.headers = {"X-Goog-Upload-Status": "final"}
+            resp.content = b"{}"
+        else:
+            resp.headers = {"X-Goog-Upload-Status": "active"}
+        return resp
+
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    session_transport.request.side_effect = handle_request
+
+    # Resumable uploads have two layers of retry:
+    # 1. HTTP-level retry (do_http): blindly re-sends the HTTP request on transient 503 errors.
+    # 2. Protocol-level recovery (_recover): triggered when HTTP retries exhaust; sends a "query"
+    #    command to discover committed server offset and slices the active chunk buffer.
+    # Disable HTTP-level retry here so the 503 immediately triggers protocol-level _recover().
+    retry_cfg = google.api_core.retry.Retry(predicate=lambda exc: False)
+    config = ResumableUploadConfig(chunk_size=4, retry=retry_cfg)
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=config,
+    )
+
+    session.upload(stream=b"012345", transport=session_transport)
+
+    # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
+    assert bytes(server_received_bytes) == b"012345"
