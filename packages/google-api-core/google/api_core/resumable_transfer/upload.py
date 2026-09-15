@@ -35,10 +35,7 @@ from typing import (
     cast,
 )
 
-import google.protobuf.message
-import proto
 import requests
-from google.protobuf import json_format
 
 from google.api_core import exceptions
 from google.api_core.retry import Retry, StreamingRetry
@@ -95,63 +92,11 @@ class _IterableStream(io.RawIOBase):
         return res
 
 
-@dataclasses.dataclass
-class ResumableUploadConfig:
-    """Configuration options for a resumable upload.
-
-    Attributes:
-        chunk_size: Size in bytes for each uploaded data chunk. Defaults to 10 MiB.
-        start_timeout: Local per-request timeout in seconds for start request.
-        start_retry: Custom retry policy for the start request.
-        stall_minimum_rate: Minimum transfer rate in bytes per second. Defaults to 64 KiB/s.
-        stall_timeout: Stall duration threshold in seconds. Defaults to 120s.
-        headers: Additional HTTP headers dispatched exclusively with start request.
-        deadline: Overall global deadline for the upload process.
-        timeout: Fallback per-request timeout.
-        retry: Fallback retry policy.
-        on_progress: Callback function receiving UploadProgress notifications.
-        response_type: Optional message class (proto.Message or google.protobuf.message.Message),
-            callable deserializer, or None to return raw response.
-        content_type: MIME type of the stream payload.
-    """
-
-    chunk_size: int = common.DEFAULT_CHUNK_SIZE
-    start_timeout: Optional[float] = None
-    start_retry: Optional[Retry] = None
-    stall_minimum_rate: int = 64 * 1024
-    stall_timeout: float = 120.0
-    headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None
-    deadline: Optional[datetime.datetime] = None
-    timeout: Optional[float] = None
-    retry: Optional[Union[Retry, StreamingRetry]] = None
-    on_progress: Optional[Callable[[common.UploadProgress], None]] = None
-    response_type: Optional[Any] = None
-    content_type: Optional[str] = None
-
-    def __post_init__(self) -> None:
-        """Normalizes fallback timeouts and retry policies."""
-        if self.start_timeout is not None and self.timeout is None:
-            self.timeout = self.start_timeout
-        elif self.timeout is not None and self.start_timeout is None:
-            self.start_timeout = self.timeout
-
-        if self.start_retry is not None and self.retry is None:
-            self.retry = self.start_retry
-        elif self.retry is not None and self.start_retry is None:
-            self.start_retry = self.retry
-
-    @property
-    def start_headers(self) -> Optional[Sequence[Tuple[str, str]]]:
-        """Returns normalized additional headers for the start request."""
-        if self.headers is None:
-            return None
-        if isinstance(self.headers, Mapping):
-            return list(self.headers.items())
-        return list(self.headers)
+ResumableUploadConfig = common.ResumableUploadConfig
 
 
-class ResumableUploadSession:
-    """Manages the full lifecycle of a resumable upload session."""
+class ResumableUploadSession(common.BaseResumableUploadSession):
+    """Manages the full lifecycle of a synchronous resumable upload session."""
 
     def __init__(
         self,
@@ -168,54 +113,12 @@ class ResumableUploadSession:
             resumable_url: Pre-existing upload session URL if resuming.
             transport: Optional requests session.
         """
-        self._config = config or ResumableUploadConfig()
-        self._transport = transport
-        self._response: Optional[Any] = None
-        self._state = upload_state.ProtocolState(
+        super().__init__(
             upload_url=upload_url,
-            chunk_size=self._config.chunk_size,
+            config=config,
             resumable_url=resumable_url,
+            transport=transport,
         )
-
-        # In-memory zero-copy buffer (never discard chunk until confirmed)
-        self._buffered_chunk: Optional[memoryview] = None
-        self._buffered_chunk_offset: int = 0
-        self._start_stream_offset: int = 0
-        self._stream_eof: bool = False
-
-        # State synchronization & recovery flags for streaming retries
-        self._needs_recovery: bool = False
-        self._recovered_from_error: bool = False
-
-        # Stall control tracking via monotonic clock
-        self._aggregate_lag: float = 0.0
-        self._stall_timeout_started: Optional[float] = None
-        self._captured_progress: Optional[List[common.UploadProgress]] = None
-
-    @property
-    def upload_url(self) -> Optional[str]:
-        """Optional[str]: The unique upload URL for this session."""
-        return self._state.resumable_url
-
-    @property
-    def chunk_size(self) -> int:
-        """int: The negotiated chunk size."""
-        return self._state.chunk_size
-
-    @property
-    def response(self) -> Optional[Any]:
-        """Optional[Any]: The cached response message if finished."""
-        return self._response
-
-    @property
-    def bytes_uploaded(self) -> int:
-        """int: Confirmed number of bytes committed so far."""
-        return self._state.bytes_uploaded
-
-    @property
-    def finished(self) -> bool:
-        """bool: Whether the upload has completed successfully."""
-        return self._state.finished
 
     def _get_transport(self, transport: Optional[requests.Session]) -> requests.Session:
         """Resolves the requests.Session transport.
@@ -233,160 +136,6 @@ class ResumableUploadSession:
         if sess is None:
             raise ValueError("A requests.Session transport must be provided.")
         return sess
-
-    def _enrich_exception(self, exc: BaseException) -> None:
-        """Attaches session diagnostic metadata to an active exception.
-
-        Args:
-            exc: Exception instance to augment with upload_url and chunk_size.
-        """
-        setattr(exc, "upload_url", self.upload_url)
-        setattr(exc, "chunk_size", self.chunk_size)
-
-    def _notify_progress(self, state: common.ProgressState) -> None:
-        """Notifies progress with current upload status.
-
-        Args:
-            state: ProgressState transition milestone.
-        """
-        if self.upload_url:
-            progress = common.UploadProgress(
-                upload_url=self.upload_url,
-                chunk_size=self.chunk_size,
-                bytes_uploaded=self._state.bytes_uploaded,
-                total_bytes=self._state.total_bytes,
-                state=state,
-            )
-            if self._captured_progress is not None:
-                self._captured_progress.append(progress)
-            if self._config.on_progress:
-                self._config.on_progress(progress)
-
-    @contextlib.contextmanager
-    def _capture_progress(
-        self,
-    ) -> Generator[List[common.UploadProgress], None, None]:
-        """Intercepts progress events to buffer snapshots for generator consumers.
-
-        Yields:
-            List buffering UploadProgress snapshots during generator execution.
-        """
-        captured: List[common.UploadProgress] = []
-        self._captured_progress = captured
-        try:
-            yield captured
-        finally:
-            self._captured_progress = None
-
-    def _get_deadline_remaining(self) -> Optional[float]:
-        """Calculates remaining seconds until the configured upload deadline.
-
-        Returns:
-            Remaining seconds before deadline, or None if no deadline configured.
-
-        Raises:
-            exceptions.DeadlineExceeded: If deadline has already elapsed.
-        """
-        if self._config.deadline:
-            now = datetime.datetime.now(datetime.timezone.utc)
-            dl = self._config.deadline
-            if dl.tzinfo is None:
-                dl = dl.astimezone(datetime.timezone.utc)
-            remaining = (dl - now).total_seconds()
-            if remaining <= 0:
-                raise exceptions.DeadlineExceeded(
-                    f"Resumable upload deadline {self._config.deadline} exceeded."
-                )
-            return remaining
-        return None
-
-    def _get_start_timeout(self) -> float:
-        """Computes timeout in seconds for start and control requests.
-
-        Returns:
-            Applicable timeout in seconds.
-        """
-        remaining = self._get_deadline_remaining()
-        timeout = (
-            self._config.start_timeout or self._config.timeout or _DEFAULT_START_TIMEOUT
-        )
-        if remaining is not None:
-            return min(timeout, remaining)
-        return timeout
-
-    def _get_retry_predicate(self) -> Callable[[Any], bool]:
-        """Returns a predicate function for unary requests (start, query, cancel).
-
-        Returns:
-            A callable accepting an exception and returning a boolean.
-        """
-
-        def should_retry(exc: Any) -> bool:
-            if isinstance(
-                exc,
-                (
-                    exceptions.DeadlineExceeded,
-                    exceptions.TransferStalledError,
-                    exceptions.UploadCancelledError,
-                    exceptions.UnseekableStreamError,
-                ),
-            ):
-                return False
-            if isinstance(exc, exceptions.MissingStatusHeaderError):
-                return True
-            if isinstance(exc, requests.exceptions.RequestException):
-                if isinstance(
-                    exc,
-                    (
-                        requests.exceptions.ConnectionError,
-                        requests.exceptions.ChunkedEncodingError,
-                        requests.exceptions.Timeout,
-                    ),
-                ):
-                    return True
-            if isinstance(exc, exceptions.GoogleAPICallError):
-                return exc.code in common.RETRYABLE_STATUS_CODES
-            return False
-
-        return should_retry
-
-    def _get_streaming_predicate(self) -> Callable[[Any], bool]:
-        """Returns a predicate function for determining if an exception is retryable during chunk streaming.
-
-        Returns:
-            A callable accepting an exception and returning a boolean.
-        """
-
-        def should_retry_streaming(exc: Any) -> bool:
-            if isinstance(
-                exc,
-                (
-                    exceptions.DeadlineExceeded,
-                    exceptions.TransferStalledError,
-                    exceptions.UploadCancelledError,
-                    exceptions.UnseekableStreamError,
-                ),
-            ):
-                return False
-            if isinstance(exc, exceptions.MissingStatusHeaderError):
-                return True
-            if isinstance(exc, requests.exceptions.RequestException):
-                if isinstance(
-                    exc,
-                    (
-                        requests.exceptions.ConnectionError,
-                        requests.exceptions.ChunkedEncodingError,
-                        requests.exceptions.Timeout,
-                    ),
-                ):
-                    return True
-            if isinstance(exc, exceptions.GoogleAPICallError):
-                return (exc.code in common.RETRYABLE_STATUS_CODES) or (
-                    exc.code in common.RECOVERABLE_STATUS_CODES
-                )
-            return False
-
-        return should_retry_streaming
 
     def _get_retry(self, is_start: bool = False) -> Retry:
         """Resolves retry policy for unary control requests.
@@ -418,134 +167,24 @@ class ResumableUploadSession:
             return self._config.retry
 
         base_retry = self._config.retry
-        predicate = self._get_streaming_predicate()
-        initial = getattr(base_retry, "_initial", 1.0)
-        maximum = getattr(base_retry, "_maximum", 60.0)
-        multiplier = getattr(base_retry, "_multiplier", 2.0)
-        timeout = getattr(base_retry, "_timeout", None)
-
-        user_on_error = getattr(base_retry, "_on_error", None)
-
-        callbacks = [cb for cb in (user_on_error, on_error) if cb is not None]
+        callbacks = [
+            cb
+            for cb in (getattr(base_retry, "_on_error", None), on_error)
+            if cb is not None
+        ]
 
         def combined_on_error(exc: Exception) -> Any:
             for cb in callbacks:
                 cb(exc)
 
         return StreamingRetry(
-            predicate=predicate,
-            initial=initial,
-            maximum=maximum,
-            multiplier=multiplier,
-            timeout=timeout,
+            predicate=self._get_streaming_predicate(),
+            initial=getattr(base_retry, "_initial", 1.0),
+            maximum=getattr(base_retry, "_maximum", 60.0),
+            multiplier=getattr(base_retry, "_multiplier", 2.0),
+            timeout=getattr(base_retry, "_timeout", None),
             on_error=combined_on_error if callbacks else None,
         )
-
-    def _compute_chunk_timeout(self, data_len: int) -> float:
-        """Computes the dynamic per-attempt chunk timeout based on stall control and deadlines.
-
-        Args:
-            data_len: Length of the current chunk in bytes.
-
-        Returns:
-            Timeout in seconds for chunk transmission attempt.
-        """
-        rate = self._config.stall_minimum_rate
-        expected_sec = data_len / rate if rate > 0 else 60.0
-        next_chunk_timeout = max(
-            1.0,
-            expected_sec - self._aggregate_lag + self._config.stall_timeout,
-        )
-        per_attempt_timeout = max(5.0, min(next_chunk_timeout, 2.0 * expected_sec))
-
-        if self._config.timeout:
-            per_attempt_timeout = min(self._config.timeout, per_attempt_timeout)
-
-        remaining = self._get_deadline_remaining()
-        if remaining is not None:
-            per_attempt_timeout = min(per_attempt_timeout, remaining)
-
-        return per_attempt_timeout
-
-    def _update_stall_control(
-        self, data_len: int, t_start: float, t_elapsed: float
-    ) -> None:
-        """Updates aggregate transfer rate lag and enforces stall timeout and deadlines.
-
-        Args:
-            data_len: Length of the transmitted chunk in bytes.
-            t_start: Monotonic timestamp before chunk transmission began.
-            t_elapsed: Elapsed duration in seconds for chunk transmission.
-
-        Raises:
-            exceptions.DeadlineExceeded: If upload deadline is exceeded.
-            exceptions.TransferStalledError: If transfer throughput stalls past configured timeout.
-        """
-        if not (self._config.stall_minimum_rate and self._config.stall_timeout):
-            return
-
-        rate = self._config.stall_minimum_rate
-        expected_sec = data_len / rate if rate > 0 else 0.0
-        current_lag = t_elapsed - expected_sec
-        self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
-
-        if self._aggregate_lag > 0.0:
-            if self._stall_timeout_started is None:
-                self._stall_timeout_started = t_start
-            if (
-                _monotonic_clock() - self._stall_timeout_started
-                >= self._config.stall_timeout
-                or self._aggregate_lag >= self._config.stall_timeout
-            ):
-                self._get_deadline_remaining()
-                raise exceptions.TransferStalledError(
-                    f"Upload stalled: transfer rate remained below {rate} bytes/s "
-                    f"for longer than {self._config.stall_timeout}s.",
-                    upload_url=self.upload_url,
-                    chunk_size=self.chunk_size,
-                )
-        else:
-            self._stall_timeout_started = None
-
-    def _reposition_stream_offset(self, stream: BinaryIO, received: int) -> int:
-        """Adjusts in-memory chunk buffer or seeks input stream to server offset.
-
-        Args:
-            stream: The input data stream.
-            received: Confirmed byte offset committed on the server.
-
-        Returns:
-            The confirmed server byte offset.
-
-        Raises:
-            exceptions.UnseekableStreamError: If server offset precedes buffer and stream cannot be rewound.
-        """
-        if self._buffered_chunk is not None:
-            chunk_start = self._buffered_chunk_offset
-            chunk_end = chunk_start + len(self._buffered_chunk)
-            if chunk_start <= received <= chunk_end:
-                discard_len = received - chunk_start
-                self._buffered_chunk = self._buffered_chunk[discard_len:]
-                self._buffered_chunk_offset = received
-                return received
-
-        self._buffered_chunk = None
-        if hasattr(stream, "seekable") and not stream.seekable():
-            raise exceptions.UnseekableStreamError(
-                f"Stream is not seekable. Cannot recover upload to offset {received}.",
-                upload_url=self.upload_url,
-                chunk_size=self.chunk_size,
-            )
-        try:
-            stream.seek(self._start_stream_offset + received)
-        except (OSError, AttributeError) as exc:
-            raise exceptions.UnseekableStreamError(
-                f"Failed to seek stream to offset {received}: {exc}",
-                upload_url=self.upload_url,
-                chunk_size=self.chunk_size,
-            ) from exc
-
-        return received
 
     def initiate(
         self,
@@ -731,7 +370,6 @@ class ResumableUploadSession:
         transport: requests.Session,
         stream_obj: BinaryIO,
         computed_size: Optional[int],
-        captured: Optional[List[common.UploadProgress]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Transmits chunks until transfer completes using StreamingRetry.
 
@@ -739,7 +377,6 @@ class ResumableUploadSession:
             transport: The requests session.
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
-            captured: Optional buffer accumulating progress snapshots.
 
         Yields:
             UploadProgress snapshots for each transmission milestone.
@@ -747,19 +384,11 @@ class ResumableUploadSession:
         Raises:
             ValueError: If upload concludes without a server response.
         """
-        if captured:
-            while captured:
-                yield captured.pop(0)
-
         final_resp = None
 
         def on_stream_error(exc: Exception) -> None:
             self._enrich_exception(exc)
-            is_recoverable = (
-                isinstance(exc, exceptions.GoogleAPICallError)
-                and exc.code in common.RECOVERABLE_STATUS_CODES
-            ) or isinstance(exc, exceptions.MissingStatusHeaderError)
-            if is_recoverable:
+            if common.is_recoverable_error(exc):
                 _LOGGER.info(
                     "Recoverable error %s during chunk upload. Scheduling offset recovery.",
                     exc,
@@ -771,25 +400,35 @@ class ResumableUploadSession:
             nonlocal final_resp
             if self._needs_recovery:
                 if self._recovered_from_error:
-                    self._notify_progress(common.ProgressState.RECOVERING)
+                    yield cast(
+                        common.UploadProgress,
+                        self._create_progress(common.ProgressState.RECOVERING),
+                    )
                 self._recover(transport, stream_obj)
+                yield cast(
+                    common.UploadProgress,
+                    self._create_progress(common.ProgressState.OFFSET_RECEIVED),
+                )
                 self._needs_recovery = False
                 self._recovered_from_error = False
-                while captured:
-                    yield captured.pop(0)
 
             while not self._state.finished and not self._state.invalid:
                 final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
                 if self._state.finished:
                     self._response = self._format_response(final_resp)
-                while captured:
-                    yield captured.pop(0)
+                yield cast(
+                    common.UploadProgress,
+                    self._create_progress(
+                        common.ProgressState.FINALIZED
+                        if self._state.finished
+                        else common.ProgressState.UPLOADING
+                    ),
+                )
 
         retryable_stream = self._get_streaming_retry(on_error=on_stream_error)(
             _chunk_stream_generator
         )
-        for progress in retryable_stream():
-            yield progress
+        yield from retryable_stream()
 
         if final_resp is None and self._response is None:
             raise ValueError("Upload completed without receiving a final response.")
@@ -820,9 +459,7 @@ class ResumableUploadSession:
             stream=stream, request_body=request_body, size=size, transport=transport
         ):
             pass
-        if self._response is None:
-            raise ValueError("Upload completed without receiving a final response.")
-        return self._response
+        return self._finish_response()
 
     def iter_upload(
         self,
@@ -847,18 +484,19 @@ class ResumableUploadSession:
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
         sess = self._get_transport(transport)
-        with self._capture_progress() as captured:
-            try:
-                stream_obj, computed_size = self._prepare_stream(stream, size)
-                self.initiate(
-                    transport=sess, request_body=request_body, size=computed_size
-                )
-                yield from self._transmit_all_chunks(
-                    sess, stream_obj, computed_size, captured
-                )
-            except Exception as exc:
-                self._enrich_exception(exc)
-                raise
+        try:
+            stream_obj, computed_size = self._prepare_stream(stream, size)
+            self.initiate(
+                transport=sess, request_body=request_body, size=computed_size
+            )
+            yield cast(
+                common.UploadProgress,
+                self._create_progress(common.ProgressState.STARTED),
+            )
+            yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
+        except Exception as exc:
+            self._enrich_exception(exc)
+            raise
 
     def resume(
         self,
@@ -892,9 +530,7 @@ class ResumableUploadSession:
             transport=transport,
         ):
             pass
-        if self._response is None:
-            raise ValueError("Upload completed without receiving a final response.")
-        return self._response
+        return self._finish_response()
 
     def iter_resume(
         self,
@@ -933,15 +569,12 @@ class ResumableUploadSession:
         self._state._resumable_url = actual_url
         self._needs_recovery = True
         self._recovered_from_error = False
-        with self._capture_progress() as captured:
-            try:
-                stream_obj, computed_size = self._prepare_stream(stream, size)
-                yield from self._transmit_all_chunks(
-                    sess, stream_obj, computed_size, captured
-                )
-            except Exception as exc:
-                self._enrich_exception(exc)
-                raise
+        try:
+            stream_obj, computed_size = self._prepare_stream(stream, size)
+            yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
+        except Exception as exc:
+            self._enrich_exception(exc)
+            raise
 
     def _prepare_stream(
         self, stream: Union[BinaryIO, bytes, Iterable[bytes]], size: Optional[int]
@@ -993,55 +626,5 @@ class ResumableUploadSession:
 
         return stream_obj, computed_size
 
-    def _format_response(self, response: requests.Response) -> Any:
-        """Formats response into protobuf message type if provided.
 
-        Args:
-            response: HTTP response object from final chunk.
-
-        Returns:
-            Deserialized protobuf message or the raw response object.
-        """
-        return _format_response_payload(response, self._config.response_type)
-
-
-def _format_response_payload(
-    response: Union[Any, bytes],
-    response_type: Optional[Any],
-) -> Any:
-    """Formats raw response or bytes into protobuf or proto-plus message type if configured.
-
-    Args:
-        response: Raw HTTP response object or response body bytes.
-        response_type: Deserializer callable, proto.Message class, or
-            google.protobuf.message.Message class or instance.
-
-    Returns:
-        Deserialized protobuf message or the raw response object / bytes.
-    """
-    if response_type is None:
-        return response
-
-    content: bytes
-    if isinstance(response, bytes):
-        content = response
-    elif hasattr(response, "content"):
-        content = response.content
-    else:
-        content = bytes(response)
-
-    if isinstance(response_type, type) and issubclass(response_type, proto.Message):
-        return cast(Any, response_type).from_json(content, ignore_unknown_fields=True)
-    if isinstance(response_type, type) and issubclass(
-        response_type, google.protobuf.message.Message
-    ):
-        instance = response_type()
-        return json_format.Parse(content, instance, ignore_unknown_fields=True)
-    if isinstance(response_type, google.protobuf.message.Message):
-        return json_format.Parse(content, response_type, ignore_unknown_fields=True)
-    if hasattr(response_type, "from_json") and callable(response_type.from_json):
-        return response_type.from_json(content)
-    if callable(response_type):
-        return response_type(content)
-
-    return response
+_format_response_payload = common.format_response_payload

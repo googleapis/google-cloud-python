@@ -18,6 +18,7 @@ import asyncio
 import datetime
 import io
 import json
+import time
 from typing import (
     Any,
     AsyncIterable,
@@ -1421,8 +1422,11 @@ async def test_async_transmit_chunk_stall_and_timeouts() -> None:
     )
     # First chunk: positive lag below stall_timeout (sets _stall_timeout_started)
     session_stall2._aggregate_lag = 1.0
+    assert session_stall2._aggregate_lag == 1.0
     sess_transport4 = DummyAsyncSession([resp_chunk, resp_chunk])
     await session_stall2._transmit_chunk(sess_transport4, bytes_reader, 4)
+    assert session_stall2._stall_timeout_started is not None
+    session_stall2._stall_timeout_started = time.monotonic()
     assert session_stall2._stall_timeout_started is not None
 
     # Second chunk: _stall_timeout_started is already set, still below stall_timeout

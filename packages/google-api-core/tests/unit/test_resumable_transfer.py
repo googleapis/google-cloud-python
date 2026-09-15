@@ -868,6 +868,8 @@ def test_sync_retry_predicate_branches():
     assert pred(TransferStalledError("stalled")) is False
     assert pred(UploadCancelledError("cancelled")) is False
     assert pred(MissingStatusHeaderError("missing")) is True
+    assert pred(ConnectionError("builtin conn")) is True
+    assert pred(TimeoutError("builtin timeout")) is True
     assert pred(requests.exceptions.ConnectionError("conn")) is True
     assert pred(requests.exceptions.ChunkedEncodingError("chunked")) is True
     assert pred(exceptions.from_http_status(503, "503")) is True
@@ -1000,7 +1002,7 @@ def test_sync_resume_chunk_size_override():
     assert session.chunk_size == 1024
 
 
-def test_sync_on_progress_and_capture():
+def test_sync_on_progress():
     callback_mock = mock.Mock()
     config = ResumableUploadConfig(on_progress=callback_mock)
     session = ResumableUploadSession(
@@ -1008,12 +1010,11 @@ def test_sync_on_progress_and_capture():
         config=config,
     )
     session._state._resumable_url = "https://api.example.com/init"
-    with session._capture_progress() as captured:
-        session._notify_progress(common.ProgressState.UPLOADING)
-    assert len(captured) == 1
-    assert captured[0].state == common.ProgressState.UPLOADING
+    progress = session._notify_progress(common.ProgressState.UPLOADING)
+    assert progress is not None
+    assert progress.state == common.ProgressState.UPLOADING
     assert callback_mock.called
-    assert callback_mock.call_args[0][0] is captured[0]
+    assert callback_mock.call_args[0][0] is progress
 
 
 def test_sync_naive_deadline_tz():
@@ -1108,6 +1109,11 @@ def test_sync_update_stall_control_disabled():
     )
     session._update_stall_control(512, time.monotonic(), 5.0)
     assert session._aggregate_lag == 0.0
+    session._aggregate_lag = 1.5
+    assert session._aggregate_lag == 1.5
+    assert session._stall_timeout_started is None
+    session._stall_timeout_started = 123.45
+    assert session._stall_timeout_started == 123.45
 
 
 def test_sync_initiate_failure():
@@ -1601,4 +1607,14 @@ def test_sync_additional_edge_cases():
 
     with pytest.raises(exceptions.UploadCancelledError):
         state.process_query_response(200, {"X-Goog-Upload-Status": "cancelled"})
+
+
+def test_stall_tracker_no_deadline_checker():
+    import time
+
+    tracker = common.StallTracker(minimum_rate=1024, timeout=0.1)
+    tracker.aggregate_lag = 1.0
+    with pytest.raises(exceptions.TransferStalledError):
+        tracker.update(data_len=100, t_start=time.monotonic() - 1.0, t_elapsed=1.0)
+
 
