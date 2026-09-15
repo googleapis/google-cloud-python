@@ -730,7 +730,7 @@ def test_sync_response_type_raw_response():
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
-    assert resp is chunk_resp
+    assert resp == b"raw_content"
 
 
 def test_sync_retry_predicate_allows_timeout_with_stall_control():

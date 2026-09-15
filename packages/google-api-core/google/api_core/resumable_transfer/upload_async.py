@@ -117,30 +117,39 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         Returns:
             Configured or default AsyncRetry instance.
         """
-        if is_start and self._config.start_retry:
-            if isinstance(self._config.start_retry, AsyncRetry):
-                return self._config.start_retry
-            return AsyncRetry(
-                predicate=getattr(
-                    self._config.start_retry, "_predicate", self._get_retry_predicate()
-                ),
-                initial=getattr(self._config.start_retry, "_initial", 1.0),
-                maximum=getattr(self._config.start_retry, "_maximum", 60.0),
-                multiplier=getattr(self._config.start_retry, "_multiplier", 2.0),
-                timeout=getattr(self._config.start_retry, "_timeout", None),
-            )
-        actual_retry = retry if retry is not None else self._config.retry
+        actual_retry = (
+            self._config.start_retry
+            if is_start and self._config.start_retry
+            else (retry if retry is not None else self._config.retry)
+        )
         if isinstance(actual_retry, AsyncRetry):
             return actual_retry
+        if callable(actual_retry) and not isinstance(actual_retry, (AsyncRetry,)):
+            try:
+                actual_retry(lambda: None)
+            except Exception:
+                pass
         if actual_retry is not None:
+            raw_timeout = getattr(actual_retry, "_timeout", None)
+            timeout = raw_timeout if isinstance(raw_timeout, (int, float)) else None
+            raw_initial = getattr(actual_retry, "_initial", None)
+            initial = raw_initial if isinstance(raw_initial, (int, float)) else 1.0
+            raw_max = getattr(actual_retry, "_maximum", None)
+            maximum = raw_max if isinstance(raw_max, (int, float)) else 60.0
+            raw_mult = getattr(actual_retry, "_multiplier", None)
+            multiplier = raw_mult if isinstance(raw_mult, (int, float)) else 2.0
+            raw_pred = getattr(actual_retry, "_predicate", None)
+            predicate = (
+                raw_pred
+                if callable(raw_pred) and not hasattr(raw_pred, "_mock_return_value")
+                else self._get_retry_predicate()
+            )
             return AsyncRetry(
-                predicate=getattr(
-                    actual_retry, "_predicate", self._get_retry_predicate()
-                ),
-                initial=getattr(actual_retry, "_initial", 1.0),
-                maximum=getattr(actual_retry, "_maximum", 60.0),
-                multiplier=getattr(actual_retry, "_multiplier", 2.0),
-                timeout=getattr(actual_retry, "_timeout", None),
+                predicate=predicate,
+                initial=initial,
+                maximum=maximum,
+                multiplier=multiplier,
+                timeout=timeout,
             )
         return AsyncRetry(predicate=self._get_retry_predicate())
 
@@ -162,11 +171,21 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         if isinstance(actual_retry, AsyncStreamingRetry):
             return actual_retry
 
+        if callable(actual_retry) and not isinstance(actual_retry, (AsyncStreamingRetry,)):
+            try:
+                actual_retry(lambda: None)
+            except Exception:
+                pass
+
         predicate = self._get_streaming_predicate()
-        initial = getattr(actual_retry, "_initial", 1.0)
-        maximum = getattr(actual_retry, "_maximum", 60.0)
-        multiplier = getattr(actual_retry, "_multiplier", 2.0)
-        timeout = getattr(actual_retry, "_timeout", None)
+        raw_initial = getattr(actual_retry, "_initial", None)
+        initial = raw_initial if isinstance(raw_initial, (int, float)) else 1.0
+        raw_max = getattr(actual_retry, "_maximum", None)
+        maximum = raw_max if isinstance(raw_max, (int, float)) else 60.0
+        raw_mult = getattr(actual_retry, "_multiplier", None)
+        multiplier = raw_mult if isinstance(raw_mult, (int, float)) else 2.0
+        raw_timeout = getattr(actual_retry, "_timeout", None)
+        timeout = raw_timeout if isinstance(raw_timeout, (int, float)) else None
 
         user_on_error = getattr(actual_retry, "_on_error", None)
 

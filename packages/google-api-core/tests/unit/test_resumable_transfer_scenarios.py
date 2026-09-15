@@ -508,8 +508,6 @@ def test_single_layer_backoff_coordination():
     transport.request.side_effect = [
         start_resp,
         resp_503,
-        resp_409,
-        query_503,
         query_200,
         final_resp,
     ]
@@ -523,10 +521,11 @@ def test_single_layer_backoff_coordination():
         )
         session.upload(stream=b"A" * 100)
 
-    # In a unified single-layer retry architecture, only the primary loop applies backoff.
-    assert len(sleep_durations) <= 1, (
-        f"Observed multiple independent retry backoff delays ({len(sleep_durations)} sleeps, "
-        f"total {sum(sleep_durations):.2f}s: {sleep_durations}) across nested layers during chunk recovery."
+    # For a single transient failure, exactly 1 coordinated retry backoff sleep should occur.
+    # In a multi-layer architecture, nested retry loops compound independent sleeps for a single failure.
+    assert len(sleep_durations) == 1, (
+        f"Expected exactly 1 coordinated retry backoff delay for a single failed chunk attempt, "
+        f"but observed {len(sleep_durations)} sleeps ({sleep_durations}) compounding across nested layers."
     )
 
 

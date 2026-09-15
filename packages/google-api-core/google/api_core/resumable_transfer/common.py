@@ -522,7 +522,7 @@ class BaseResumableUploadSession:
     def _on_stream_error(self, exc: Exception) -> None:
         """Callback invoked when a streaming chunk transfer encounters an error."""
         self._enrich_exception(exc)
-        if is_recoverable_error(exc):
+        if is_recoverable_error(exc) or is_network_error(exc):
             _LOGGER.info(
                 "Recoverable error %s during chunk upload. Scheduling offset recovery.",
                 exc,
@@ -632,6 +632,8 @@ class BaseResumableUploadSession:
                 discard_len = received - chunk_start
                 self._buffered_chunk = self._buffered_chunk[discard_len:]
                 self._buffered_chunk_offset = received
+                if len(self._buffered_chunk) == 0:
+                    self._buffered_chunk = None
                 return received
 
         self._buffered_chunk = None

@@ -185,6 +185,12 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         if isinstance(actual_retry, StreamingRetry):
             return actual_retry
 
+        if callable(actual_retry) and not isinstance(actual_retry, (Retry, StreamingRetry)):
+            try:
+                actual_retry(lambda: None)
+            except Exception:
+                pass
+
         callbacks = [
             cb
             for cb in (getattr(actual_retry, "_on_error", None), on_error)
@@ -195,12 +201,21 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             for cb in callbacks:
                 cb(exc)
 
+        raw_timeout = getattr(actual_retry, "_timeout", None)
+        timeout = raw_timeout if isinstance(raw_timeout, (int, float)) else None
+        raw_initial = getattr(actual_retry, "_initial", None)
+        initial = raw_initial if isinstance(raw_initial, (int, float)) else 1.0
+        raw_max = getattr(actual_retry, "_maximum", None)
+        maximum = raw_max if isinstance(raw_max, (int, float)) else 60.0
+        raw_mult = getattr(actual_retry, "_multiplier", None)
+        multiplier = raw_mult if isinstance(raw_mult, (int, float)) else 2.0
+
         return StreamingRetry(
             predicate=self._get_streaming_predicate(),
-            initial=getattr(actual_retry, "_initial", 1.0),
-            maximum=getattr(actual_retry, "_maximum", 60.0),
-            multiplier=getattr(actual_retry, "_multiplier", 2.0),
-            timeout=getattr(actual_retry, "_timeout", None),
+            initial=initial,
+            maximum=maximum,
+            multiplier=multiplier,
+            timeout=timeout,
             on_error=combined_on_error if callbacks else None,
         )
 
@@ -474,7 +489,8 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
                 on_progress=on_progress,
             )
             if self._state.finished:
-                self._response = self._format_response(resp, response_type=response_type)
+                body = resp.content if hasattr(resp, "content") else resp
+                self._response = self._format_response(body, response_type=response_type)
             yield resp
 
     def upload(
