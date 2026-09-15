@@ -1127,6 +1127,17 @@ def test_sync_update_stall_control_disabled():
     session._update_stall_control(512, time.monotonic(), 5.0)
     assert session._aggregate_lag == 0.0
 
+    # Ensure that _stall_timeout_started resets to None when transfer rate exceeds minimum rate (no lag).
+    active_config = ResumableUploadConfig(stall_minimum_rate=1024, stall_timeout=10.0)
+    active_session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=active_config,
+    )
+    active_session._stall_timeout_started = 100.0
+    active_session._update_stall_control(1024, time.monotonic(), 0.1)
+    assert active_session._aggregate_lag == 0.0
+    assert active_session._stall_timeout_started is None
+
 
 def test_sync_initiate_failure():
     transport = mock.create_autospec(requests.Session, instance=True)
