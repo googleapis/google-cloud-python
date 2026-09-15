@@ -26,6 +26,7 @@ import time
 import uuid
 from contextlib import contextmanager
 
+import proto
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
@@ -40,9 +41,11 @@ from google.cloud.spanner_v1.request_id_header import (
     with_request_id_metadata_only,
 )
 from google.cloud.spanner_v1.types import (
+    DirectedReadOptions,
     ExecuteSqlRequest,
     RequestOptions,
     TransactionOptions,
+    Type,
     TypeCode,
 )
 
@@ -200,6 +203,108 @@ def _merge_query_options(base, merge):
     if not combined.optimizer_version and not combined.optimizer_statistics_package:
         return None
     return combined
+
+
+# The protobuf class underlying the proto-plus ``ExecuteSqlRequest`` wrapper.
+_EXECUTE_SQL_REQUEST_PB = ExecuteSqlRequest.pb()
+
+
+def _as_raw_pb(value, message_type):
+    """Return the raw protobuf message for ``value``.
+
+    ``value`` may be a proto-plus message, a ``dict``, a raw protobuf message,
+    or ``None``:
+
+    - proto-plus messages are unwrapped directly, which is the hot path;
+    - dicts are converted by proto-plus, because the raw protobuf constructor
+      only accepts dicts whose values are themselves dicts and rejects
+      proto-plus messages nested inside them;
+    - raw protobuf messages and ``None`` are returned unchanged. The raw
+      constructor treats a ``None`` keyword argument as "field not set".
+
+    :type value: :class:`~proto.message.Message` or :class:`dict` or
+        :class:`~google.protobuf.message.Message` or None
+    :param value: the value to convert.
+
+    :type message_type: type
+    :param message_type: the proto-plus class of the target field, used to
+        convert ``value`` when it is a ``dict``.
+
+    :rtype: :class:`~google.protobuf.message.Message` or None
+    :returns: the raw protobuf message, or ``value`` unchanged.
+    """
+    if isinstance(value, proto.Message):
+        return type(value).pb(value)
+    if isinstance(value, dict):
+        return message_type.pb(message_type(value))
+    return value
+
+
+def _make_execute_sql_request(
+    session_name,
+    sql,
+    seqno,
+    params=None,
+    param_types=None,
+    query_mode=None,
+    partition=None,
+    query_options=None,
+    request_options=None,
+    last_statement=False,
+    data_boost_enabled=False,
+    directed_read_options=None,
+):
+    """Build an :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest`.
+
+    ``ExecuteSqlRequest(**kwargs)`` marshals every keyword argument through
+    proto-plus, which performs Python-level descriptor lookups and type
+    coercion for each field. Executing a query is a hot path, so the request is
+    built on the underlying protobuf message instead and shallow-wrapped with
+    :meth:`~proto.message.Message.wrap`. The result is an ordinary
+    ``ExecuteSqlRequest`` that serializes to identical bytes, built several
+    times faster.
+
+    Arguments accept the same types as the proto-plus constructor: proto-plus
+    messages, dicts, or raw protobuf messages. ``None`` leaves the
+    corresponding field unset, with two documented exceptions:
+
+    - ``params=None`` is treated as "no parameters", where the proto-plus
+      constructor raises;
+    - a ``params`` dict must hold plain Python values, not raw
+      :class:`~google.protobuf.struct_pb2.Value` messages. ``execute_sql``
+      always passes an already-encoded ``Struct``, so this only affects direct
+      callers of this helper.
+
+    :rtype: :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest`
+    :returns: the request to send to ``ExecuteStreamingSql``.
+    """
+    if isinstance(query_mode, str):
+        query_mode = ExecuteSqlRequest.QueryMode[query_mode]
+    return ExecuteSqlRequest.wrap(
+        _EXECUTE_SQL_REQUEST_PB(
+            session=session_name,
+            sql=sql,
+            seqno=seqno,
+            params=params,
+            param_types=(
+                {
+                    name: _as_raw_pb(param_type, Type)
+                    for name, param_type in param_types.items()
+                }
+                if param_types
+                else None
+            ),
+            query_mode=query_mode,
+            partition_token=partition,
+            query_options=_as_raw_pb(query_options, ExecuteSqlRequest.QueryOptions),
+            request_options=_as_raw_pb(request_options, RequestOptions),
+            last_statement=last_statement,
+            data_boost_enabled=data_boost_enabled,
+            directed_read_options=_as_raw_pb(
+                directed_read_options, DirectedReadOptions
+            ),
+        )
+    )
 
 
 def _merge_client_context(base, merge):
