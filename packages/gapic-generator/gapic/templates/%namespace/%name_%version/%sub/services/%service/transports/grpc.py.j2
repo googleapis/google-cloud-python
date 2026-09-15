@@ -10,6 +10,7 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 {% if service.has_lro %}
 from google.api_core import operations_v1
@@ -49,6 +50,9 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+{% if service.has_resumable_upload_methods %}
+from .rest import {{ service.name }}RestTransport
+{% endif %}
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -353,11 +357,27 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
+            {% if method.is_resumable_upload %}
+            if not self._credentials:
+                def _error_stub(*args, **kwargs):
+                    raise core_exceptions.GoogleAPICallError(
+                        "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                    )
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _error_stub
+            else:
+                rest_transport = {{ service.name }}RestTransport(
+                    host=self._host,
+                    credentials=self._credentials,
+                    client_info=self._client_info,
+                )
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = rest_transport.{{ method.transport_safe_name|snake_case }}
+            {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
+            {% endif %}
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 

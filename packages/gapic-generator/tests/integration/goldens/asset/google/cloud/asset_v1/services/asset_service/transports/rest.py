@@ -1283,7 +1283,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.AnalyzeIamPolicyResponse()
             pb_resp = asset_service.AnalyzeIamPolicyResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1538,7 +1539,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.AnalyzeMoveResponse()
             pb_resp = asset_service.AnalyzeMoveResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_move(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1665,7 +1667,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.AnalyzeOrgPoliciesResponse()
             pb_resp = asset_service.AnalyzeOrgPoliciesResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_org_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1793,7 +1796,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1921,7 +1925,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2045,7 +2050,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.BatchGetAssetsHistoryResponse()
             pb_resp = asset_service.BatchGetAssetsHistoryResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_get_assets_history(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2173,7 +2179,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.BatchGetEffectiveIamPoliciesResponse()
             pb_resp = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2306,7 +2313,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.Feed()
             pb_resp = asset_service.Feed.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2433,7 +2441,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.SavedQuery()
             pb_resp = asset_service.SavedQuery.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2871,7 +2880,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.Feed()
             pb_resp = asset_service.Feed.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -2997,7 +3007,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.SavedQuery()
             pb_resp = asset_service.SavedQuery.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3121,7 +3132,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.ListAssetsResponse()
             pb_resp = asset_service.ListAssetsResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3245,7 +3257,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.ListFeedsResponse()
             pb_resp = asset_service.ListFeedsResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_feeds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3369,7 +3382,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.ListSavedQueriesResponse()
             pb_resp = asset_service.ListSavedQueriesResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_saved_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3494,7 +3508,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.QueryAssetsResponse()
             pb_resp = asset_service.QueryAssetsResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3618,7 +3633,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.SearchAllIamPoliciesResponse()
             pb_resp = asset_service.SearchAllIamPoliciesResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_all_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3742,7 +3758,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.SearchAllResourcesResponse()
             pb_resp = asset_service.SearchAllResourcesResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_all_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -3875,7 +3892,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.Feed()
             pb_resp = asset_service.Feed.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4002,7 +4020,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = asset_service.SavedQuery()
             pb_resp = asset_service.SavedQuery.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]

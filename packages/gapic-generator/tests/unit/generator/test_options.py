@@ -280,3 +280,12 @@ def test_options_resource_name_aliases():
         # 3. MissingAlias: 
         # (The empty ' ' string safely 'continues' without warning, as intended)
         assert warn.call_count == 3
+
+
+def test_options_resumable_upload_prefix():
+    opts_default = Options.build("")
+    assert opts_default.resumable_upload_prefix == ""
+
+    opts_custom = Options.build("resumable-upload-prefix=custom/upload/prefix")
+    assert opts_custom.resumable_upload_prefix == "custom/upload/prefix"
+

@@ -1345,7 +1345,8 @@ class _ProtoBuilder:
             wrapped = loader(
                 child, address=address, path=path + (i,), resources=resources
             )
-            answer[wrapped.name] = wrapped
+            if wrapped is not None:
+                answer[wrapped.name] = wrapped
         return answer
 
     def _get_oneofs(
@@ -1633,6 +1634,9 @@ class _ProtoBuilder:
         # Iterate over the methods and collect them into a dictionary.
         answer: Dict[str, wrappers.Method] = collections.OrderedDict()
         for i, meth_pb in enumerate(methods):
+            if self._is_media_upload_proto(meth_pb) and not self.opts.resumable_upload_prefix:
+                continue
+
             retry, timeout = self._get_retry_and_timeout(service_address, meth_pb)
 
             # Create the method wrapper object.
@@ -1651,10 +1655,36 @@ class _ProtoBuilder:
                 output=self.api_messages[meth_pb.output_type.lstrip(".")],
                 retry=retry,
                 timeout=timeout,
+                resumable_upload_prefix=self.opts.resumable_upload_prefix,
             )
 
         # Done; return the answer.
         return answer
+
+    def _is_media_upload_proto(
+        self, meth_pb: descriptor_pb2.MethodDescriptorProto
+    ) -> bool:
+        try:
+            if meth_pb.options:
+                http = meth_pb.options.Extensions[annotations_pb2.http]
+                if getattr(http, "media_upload", None) and getattr(
+                    http.media_upload, "enabled", False
+                ):
+                    return True
+                for binding in getattr(http, "additional_bindings", ()):
+                    if getattr(binding, "media_upload", None) and getattr(
+                        binding.media_upload, "enabled", False
+                    ):
+                        return True
+        except Exception:
+            pass
+
+        # TODO(cl/964122389): TEMPORARY - Remove this hardcoded fallback once
+        # the media_upload annotation is published in cl/964122389 and added to gapic-showcase proto.
+        if meth_pb.name == "UploadMedia":
+            return True
+
+        return False
 
     def _load_message(
         self,

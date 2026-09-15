@@ -37,6 +37,12 @@ from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
+try:
+    from google.showcase import ResumableUploadServiceClient
+
+    HAS_RESUMABLE_UPLOAD_CLIENT = True
+except ImportError:
+    HAS_RESUMABLE_UPLOAD_CLIENT = False
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from grpc.experimental import aio
@@ -288,6 +294,33 @@ class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
         return request, metadata
 
 
+if HAS_RESUMABLE_UPLOAD_CLIENT:
+    try:
+        from google.showcase_v1beta1.services.resumable_upload_service.transports import (
+            ResumableUploadServiceRestInterceptor,
+        )
+
+        class ResumableUploadMetadataClientRestInterceptor(
+            ResumableUploadServiceRestInterceptor
+        ):
+            request_metadata: Sequence[Tuple[str, str]] = []
+            response_metadata: Sequence[Tuple[str, str]] = []
+
+            def pre_upload_media(self, request, metadata):
+                self.request_metadata = metadata
+                return request, metadata
+
+            def post_upload_media_with_metadata(self, request, metadata):
+                self.response_metadata = metadata
+                return request, metadata
+
+        HAS_RESUMABLE_UPLOAD_INTERCEPTOR = True
+    except ImportError:
+        HAS_RESUMABLE_UPLOAD_INTERCEPTOR = False
+else:
+    HAS_RESUMABLE_UPLOAD_INTERCEPTOR = False
+
+
 if HAS_ASYNC_REST_ECHO_TRANSPORT:
 
     class EchoMetadataClientRestAsyncInterceptor(AsyncEchoRestInterceptor):
@@ -516,3 +549,29 @@ def intercepted_echo_rest_async():
     )
 
     return EchoAsyncClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_resumable_upload_rest(use_mtls, use_tls):
+    if not HAS_RESUMABLE_UPLOAD_CLIENT or not HAS_RESUMABLE_UPLOAD_INTERCEPTOR:
+        pytest.skip("ResumableUploadServiceClient not available.")
+
+    transport_name = "rest"
+    transport_cls = ResumableUploadServiceClient.get_transport_class(transport_name)
+    interceptor = ResumableUploadMetadataClientRestInterceptor()
+
+    url_scheme = "https" if (use_mtls or use_tls) else "http"
+    transport = transport_cls(
+        credentials=ga_credentials.AnonymousCredentials(),
+        host="localhost:7469",
+        url_scheme=url_scheme,
+        interceptor=interceptor,
+    )
+    if use_mtls or use_tls:
+        transport._session.verify = CERT_PATH
+        transport._session.mount("https://", HostNameIgnoringAdapter())
+    if use_mtls:
+        transport._session.cert = (CERT_PATH, KEY_PATH)
+
+    return ResumableUploadServiceClient(transport=transport), interceptor
+
