@@ -111,6 +111,38 @@ def test_encode_basic_es384(es384_signer):
     assert header == {"typ": "JWT", "alg": "ES384", "kid": es384_signer.key_id}
 
 
+def test_encode_basic_mldsa(monkeypatch):
+    class MockMLDSA65PrivateKey:
+        def sign(self, message):
+            return b"mldsa-sig"
+
+    mock_mldsa = mock.Mock()
+    mock_mldsa.MLDSA65PrivateKey = MockMLDSA65PrivateKey
+    monkeypatch.setattr(crypt.pqc, "mldsa", mock_mldsa)
+    monkeypatch.setattr(
+        crypt.pqc.serialization,
+        "load_pem_private_key",
+        lambda key, password, backend: MockMLDSA65PrivateKey(),
+    )
+
+    der_bytes = (
+        b"\x30\x20\x02\x01\x00\x30\x0b"
+        b"\x06\x09\x60\x86\x48\x01\x65\x03\x04\x03\x12"
+        b"\x04\x0a\x04\x08\x00\x00\x00\x00\x00\x00\x00\x00"
+    )
+    import base64
+
+    b64_key = base64.b64encode(der_bytes).decode("ascii")
+    pem = f"-----BEGIN PRIVATE KEY-----\n{b64_key}\n-----END PRIVATE KEY-----"
+    mldsa_signer = crypt.PqcSigner.from_string(pem, "key-mldsa-65")
+
+    test_payload = {"test": "value"}
+    encoded = jwt.encode(mldsa_signer, test_payload)
+    header, payload, _, _ = jwt._unverified_decode(encoded)
+    assert payload == test_payload
+    assert header == {"typ": "JWT", "alg": "ML-DSA-65", "kid": "key-mldsa-65"}
+
+
 @pytest.fixture
 def token_factory(signer, es256_signer, es384_signer):
     def factory(
@@ -188,6 +220,82 @@ def test_decode_valid_es384(token_factory):
     assert payload["aud"] == "audience@example.com"
     assert payload["user"] == "billy bob"
     assert payload["metadata"]["meta"] == "data"
+
+
+def test_decode_valid_mldsa(monkeypatch):
+    if jwt.pqc is None:
+        pytest.skip("pqc is not available")
+
+    class MockMLDSA65PrivateKey:
+        def sign(self, message):
+            return b"mldsa-sig"
+
+    class MockMLDSA65PublicKey:
+        def verify(self, signature, message):
+            if signature != b"mldsa-sig":
+                raise ValueError("Invalid signature")
+
+    mock_mldsa = mock.Mock()
+    mock_mldsa.MLDSA65PrivateKey = MockMLDSA65PrivateKey
+    mock_mldsa.MLDSA65PublicKey = MockMLDSA65PublicKey
+    monkeypatch.setattr(crypt.pqc, "mldsa", mock_mldsa)
+    monkeypatch.setattr(
+        crypt.pqc.serialization,
+        "load_pem_private_key",
+        lambda key, password, backend: MockMLDSA65PrivateKey(),
+    )
+    monkeypatch.setattr(
+        crypt.pqc.serialization,
+        "load_pem_public_key",
+        lambda pub, backend: MockMLDSA65PublicKey(),
+    )
+
+    pem = "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----"
+    mldsa_signer = crypt.pqc.PqcSigner.from_string(pem, "key-mldsa-65")
+
+    now = _helpers.datetime_to_secs(_helpers.utcnow())
+    test_payload = {"test": "value", "iat": now, "exp": now + 300}
+    encoded = jwt.encode(mldsa_signer, test_payload)
+    payload = jwt.decode(encoded, certs="mock-pubkey")
+    assert payload == test_payload
+
+
+def test_decode_valid_mldsa44(monkeypatch):
+    if jwt.pqc is None:
+        pytest.skip("pqc is not available")
+
+    class MockMLDSA44PrivateKey:
+        def sign(self, message):
+            return b"mldsa-44-sig"
+
+    class MockMLDSA44PublicKey:
+        def verify(self, signature, message):
+            if signature != b"mldsa-44-sig":
+                raise ValueError("Invalid signature")
+
+    mock_mldsa = mock.Mock()
+    mock_mldsa.MLDSA44PrivateKey = MockMLDSA44PrivateKey
+    mock_mldsa.MLDSA44PublicKey = MockMLDSA44PublicKey
+    monkeypatch.setattr(crypt.pqc, "mldsa", mock_mldsa)
+    monkeypatch.setattr(
+        crypt.pqc.serialization,
+        "load_pem_private_key",
+        lambda key, password, backend: MockMLDSA44PrivateKey(),
+    )
+    monkeypatch.setattr(
+        crypt.pqc.serialization,
+        "load_pem_public_key",
+        lambda pub, backend: MockMLDSA44PublicKey(),
+    )
+
+    pem = "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----"
+    mldsa_signer = crypt.pqc.PqcSigner.from_string(pem, "key-mldsa-44")
+
+    now = _helpers.datetime_to_secs(_helpers.utcnow())
+    test_payload = {"test": "value", "iat": now, "exp": now + 300}
+    encoded = jwt.encode(mldsa_signer, test_payload)
+    payload = jwt.decode(encoded, certs="mock-pubkey")
+    assert payload == test_payload
 
 
 def test_decode_valid_with_audience(token_factory):
