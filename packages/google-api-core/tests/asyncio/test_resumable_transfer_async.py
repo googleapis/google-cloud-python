@@ -1022,13 +1022,19 @@ def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
             stream=invalid_stream,
         )
 
+# CustomNoDictObj defines __slots__ as empty and has no parent class.
+# It is used to test exception/metadata enrichment when the passed object
+# does not have a __dict__ attribute (such as certain system exceptions).
+class CustomNoDictObj:
+    __slots__ = ()
+
 
 def test_async_enrich_exception_without_dict() -> None:
     """Verifies that _enrich_exception handles objects without __dict__."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
     )
-    exc = Exception()
+    exc = CustomNoDictObj()
     session._enrich_exception(exc)
 
 
@@ -1040,11 +1046,19 @@ def test_async_notify_progress_branches() -> None:
         upload_url="https://api.example.com/start",
         config=config,
     )
+    # When upload_url is None
+    session._notify_progress(common.ProgressState.UPLOADING)
+    assert len(called) == 0
+
     # When upload_url is established on state
     session._state._resumable_url = "https://upload.example.com/resumable-async"
+    # Call with queue=None
+    session._notify_progress(common.ProgressState.UPLOADING, queue=None)
+    assert len(called) == 1
+
     q: asyncio.Queue = asyncio.Queue()
     session._notify_progress(common.ProgressState.UPLOADING, queue=q)
-    assert len(called) == 1
+    assert len(called) == 2
     assert q.qsize() == 1
 
 
@@ -1110,6 +1124,29 @@ async def test_async_retry_branches() -> None:
     with pytest.raises(exceptions.ServiceUnavailable):
         await session._async_retry(fail_503, max_attempts=2)
     assert attempts_503 == 2
+
+    # DeadlineExceeded propagates immediately (no retry)
+    async def fail_deadline():
+        raise exceptions.DeadlineExceeded("deadline")
+
+    with pytest.raises(exceptions.DeadlineExceeded):
+        await session._async_retry(fail_deadline, max_attempts=3)
+
+    # General Exception propagates on last attempt
+    attempts_runtime = 0
+
+    async def fail_runtime():
+        nonlocal attempts_runtime
+        attempts_runtime += 1
+        raise RuntimeError("runtime")
+
+    with pytest.raises(RuntimeError):
+        await session._async_retry(fail_runtime, max_attempts=2)
+    assert attempts_runtime == 2
+
+    # max_attempts=0 covers loop bypass falling through
+    res = await session._async_retry(lambda: 123, max_attempts=0)
+    assert res is None
 
 
 def test_async_transport_missing_errors() -> None:
@@ -1237,3 +1274,342 @@ async def test_async_recover_stream_errors() -> None:
     failing_seek.seek.side_effect = OSError("Seek error")
     with pytest.raises(UnseekableStreamError, match="Failed to seek stream"):
         await session2._recover(sess_transport2, stream_obj=failing_seek)
+
+
+@pytest.mark.asyncio
+async def test_async_upload_with_timeout_and_deadline() -> None:
+    future_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=60)
+    config = ResumableUploadConfig(timeout=30.0, deadline=future_deadline)
+
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    resp = DummyAsyncResponse(status=200, headers={"X-Goog-Upload-Status": "final"}, body=b"{}")
+    sess_transport = DummyAsyncSession([start_resp, resp])
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=sess_transport,
+    )
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+
+    # Run the upload
+    res = await session.upload(stream=b"data")
+    assert res == b"{}"
+
+
+@pytest.mark.asyncio
+async def test_async_transmit_chunk_timeout_errors() -> None:
+    # 1. TimeoutError raises TransferStalledError when remaining is > 0
+    future_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=60)
+    config = ResumableUploadConfig(deadline=future_deadline)
+
+    class TimeoutAsyncSession:
+        def __init__(self):
+            self.calls = 0
+
+        def request(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                class StartContext:
+                    async def __aenter__(self):
+                        class Resp:
+                            status = 200
+                            headers = {
+                                "X-Goog-Upload-Status": "active",
+                                "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+                            }
+                            async def read(self):
+                                return b""
+                        return Resp()
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+                return StartContext()
+            else:
+                class TimeoutContext:
+                    async def __aenter__(self):
+                        raise asyncio.TimeoutError("timeout")
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+                return TimeoutContext()
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=TimeoutAsyncSession(),
+    )
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+
+    with pytest.raises(exceptions.TransferStalledError):
+        await session.upload(stream=b"data")
+
+    # 2. TimeoutError raises DeadlineExceeded when remaining <= 0
+    past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=10)
+    config2 = ResumableUploadConfig(deadline=past_deadline)
+
+    session2 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config2,
+        transport=TimeoutAsyncSession(),
+    )
+    session2._state._resumable_url = "https://upload.example.com/resumable-async"
+    session2._get_deadline_remaining = lambda: -5.0
+
+    with pytest.raises(exceptions.DeadlineExceeded):
+        await session2.upload(stream=b"data")
+
+
+@pytest.mark.asyncio
+async def test_async_upload_multiple_chunks_async_iterable() -> None:
+    # chunk_size = 3, payload = b"012345" (6 bytes)
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    chunk1_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active"},
+        body=b"",
+    )
+    chunk2_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"{}",
+    )
+    sess_transport = DummyAsyncSession([start_resp, chunk1_resp, chunk2_resp])
+
+    async def async_gen():
+        yield b"012"
+        yield b"345"
+
+    config = ResumableUploadConfig(chunk_size=3)
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=sess_transport,
+    )
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+
+    res = await session.upload(stream=async_gen())
+    assert res == b"{}"
+
+
+@pytest.mark.asyncio
+async def test_async_prepare_async_reader_additional_branches() -> None:
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+    )
+
+    class LocalNoTellStream:
+        def read(self, n):
+            return b""
+
+    class LocalCustomReadStream:
+        def __init__(self, data):
+            self.data = data
+        def read(self, n):
+            return self.data
+
+    # 1. bytes stream with explicit size
+    reader_fn1, size1, obj1 = session._prepare_async_reader(b"data", size=4)
+    assert size1 == 4
+
+    # 2. NoTellStream: read but no tell
+    stream2 = LocalNoTellStream()
+    reader_fn2, size2, obj2 = session._prepare_async_reader(stream2, size=None)
+    assert size2 is None
+
+    # 3. CustomReadStream: read, but no getbuffer and no tell
+    stream3 = LocalCustomReadStream(b"hello")
+    reader_fn3, size3, obj3 = session._prepare_async_reader(stream3, size=None)
+    assert size3 is None
+
+
+@pytest.mark.asyncio
+async def test_async_upload_empty_stream() -> None:
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    chunk_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"{}",
+    )
+    async_transport = DummyAsyncSession([start_resp, chunk_resp])
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+    )
+    res = await session.upload(stream=b"")
+    assert res == b"{}"
+
+
+@pytest.mark.asyncio
+async def test_async_upload_no_stall_config() -> None:
+    config = ResumableUploadConfig(stall_minimum_rate=0, stall_timeout=0)
+
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    resp = DummyAsyncResponse(status=200, headers={"X-Goog-Upload-Status": "final"}, body=b"{}")
+    sess_transport = DummyAsyncSession([start_resp, resp])
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=sess_transport,
+    )
+    res = await session.upload(stream=b"data")
+    assert res == b"{}"
+
+
+@pytest.mark.asyncio
+async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
+    # 1. TimeoutError raises TransferStalledError when remaining is > 0 and no stall control
+    future_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=60)
+    config = ResumableUploadConfig(deadline=future_deadline, stall_minimum_rate=0, stall_timeout=0)
+
+    class TimeoutAsyncSession:
+        def __init__(self):
+            self.calls = 0
+
+        def request(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                class StartContext:
+                    async def __aenter__(self):
+                        class Resp:
+                            status = 200
+                            headers = {
+                                "X-Goog-Upload-Status": "active",
+                                "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+                            }
+                            async def read(self):
+                                return b""
+                        return Resp()
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+                return StartContext()
+            else:
+                class TimeoutContext:
+                    async def __aenter__(self):
+                        raise asyncio.TimeoutError("timeout")
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+                return TimeoutContext()
+
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=TimeoutAsyncSession(),
+    )
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+
+    with pytest.raises(exceptions.TransferStalledError):
+        await session.upload(stream=b"data")
+
+    # 2. TimeoutError raises DeadlineExceeded when remaining <= 0 and no stall control
+    past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(seconds=10)
+    config2 = ResumableUploadConfig(deadline=past_deadline, stall_minimum_rate=0, stall_timeout=0)
+
+    session2 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config2,
+        transport=TimeoutAsyncSession(),
+    )
+    session2._state._resumable_url = "https://upload.example.com/resumable-async"
+    session2._get_deadline_remaining = lambda: -5.0
+
+    with pytest.raises(exceptions.DeadlineExceeded):
+        await session2.upload(stream=b"data")
+
+
+@pytest.mark.asyncio
+async def test_async_recover_buffered_chunk_out_of_bounds() -> None:
+    session = AsyncResumableUploadSession()
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._buffered_chunk = memoryview(b"data")
+    session._buffered_chunk_offset = 0
+
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "10"},
+        body=b"",
+    )
+    sess_transport = DummyAsyncSession([query_resp])
+
+    unseekable = mock.Mock()
+    unseekable.seekable.return_value = False
+
+    with pytest.raises(UnseekableStreamError):
+        await session._recover(sess_transport, stream_obj=unseekable)
+
+    assert session._buffered_chunk is None
+
+
+@pytest.mark.asyncio
+async def test_async_recover_stream_obj_none() -> None:
+    session = AsyncResumableUploadSession()
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._buffered_chunk = None
+
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active", "X-Goog-Upload-Size-Received": "10"},
+        body=b"",
+    )
+    sess_transport = DummyAsyncSession([query_resp])
+
+    with pytest.raises(UnseekableStreamError, match="precedes active buffer"):
+        await session._recover(sess_transport, stream_obj=None)
+
+
+@pytest.mark.asyncio
+async def test_async_upload_already_finished_raises_value_error() -> None:
+    session = AsyncResumableUploadSession()
+    session._state._finished = True
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session.initiate = mock.AsyncMock()
+
+    sess_transport = DummyAsyncSession([])
+    with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
+        await session.upload(stream=b"data", transport=sess_transport)
+
+
+@pytest.mark.asyncio
+async def test_async_resume_already_finished_raises_value_error() -> None:
+    session = AsyncResumableUploadSession()
+    session._state._finished = True
+    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._recover = mock.AsyncMock()
+
+    sess_transport = DummyAsyncSession([])
+    op = session.resume(
+        upload_url="https://upload.example.com/resumable-async",
+        stream=b"data",
+        chunk_size=1024,
+        transport=sess_transport,
+    )
+    with pytest.raises(ValueError, match="Upload resumed but completed without receiving a final response"):
+        await op
+

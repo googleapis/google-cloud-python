@@ -225,6 +225,15 @@ def test_protocol_state_chunk_missing_status_header():
         state.process_chunk_response(200, {}, 10)
 
 
+def test_protocol_state_chunk_cancelled_status():
+    state = upload_state.ProtocolState(
+        resumable_url="https://upload.example.com/session"
+    )
+    with pytest.raises(UploadCancelledError):
+        state.process_chunk_response(200, {"X-Goog-Upload-Status": "cancelled"}, 10)
+    assert state.invalid
+
+
 def test_protocol_state_query_and_cancel():
     state = upload_state.ProtocolState(
         resumable_url="https://upload.example.com/session"
@@ -237,6 +246,15 @@ def test_protocol_state_query_and_cancel():
     )
     assert received == 1024
     assert state.bytes_uploaded == 1024
+
+    # query with unknown status
+    state2 = upload_state.ProtocolState(
+        resumable_url="https://upload.example.com/session"
+    )
+    received2 = state2.process_query_response(
+        200, {"X-Goog-Upload-Status": "unknown"}
+    )
+    assert received2 == 0
 
     method, url, headers, payload = state.build_cancel_request()
     assert headers["X-Goog-Upload-Command"] == "cancel"
@@ -1296,3 +1314,246 @@ def test_sync_format_response_payload_custom_inputs():
     msg_instance = empty_pb2.Empty()
     res_msg = _format_response_payload(b"{}", response_type=msg_instance)
     assert isinstance(res_msg, empty_pb2.Empty)
+
+
+class SlotException(Exception):
+    __slots__ = ()
+
+
+class NoTellStream:
+    def read(self, n):
+        return b""
+
+
+class TellErrorStream:
+    def read(self, n):
+        return b""
+    def tell(self):
+        raise OSError("tell failed")
+
+
+# CustomNoDictObj defines __slots__ as empty and has no parent class.
+# It is used to test exception/metadata enrichment when the passed object
+# does not have a __dict__ attribute (such as certain system exceptions).
+class CustomNoDictObj:
+    __slots__ = ()
+
+
+class NoTellStream:
+    def read(self, n):
+        return b""
+
+
+class TellErrorStream:
+    def read(self, n):
+        return b""
+    def tell(self):
+        raise OSError("tell failed")
+
+
+class CustomReadStream:
+    def __init__(self, data):
+        self.data = data
+    def read(self, n):
+        return self.data
+
+
+def test_sync_enrich_exception_no_dict():
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        transport=mock.sentinel.transport,
+    )
+    exc = CustomNoDictObj()
+    session._enrich_exception(exc)
+    assert not hasattr(exc, "upload_url")
+
+
+def test_sync_notify_progress_no_upload_url():
+    session = ResumableUploadSession(
+        upload_url=None,
+        resumable_url=None,
+        transport=mock.sentinel.transport,
+    )
+    session._notify_progress(common.ProgressState.STARTED)
+
+
+def test_sync_should_retry_request_exception_not_retryable():
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        transport=mock.sentinel.transport,
+    )
+    should_retry = session._get_retry_predicate()
+    exc = requests.exceptions.HTTPError("Non-retryable HTTP Error")
+    assert not should_retry(exc)
+
+
+class NoSeekableButSeekStream:
+    def read(self, n):
+        return b""
+    def seek(self, offset):
+        pass
+
+
+class UnseekableReadStream:
+    def read(self, n):
+        return b""
+    def seekable(self):
+        return False
+
+
+class SeekableNoTellStream:
+    def read(self, n):
+        return b""
+    def seekable(self):
+        return True
+
+
+def test_sync_rewind_stream_no_seekable_attr():
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        transport=mock.sentinel.transport,
+    )
+    stream = NoSeekableButSeekStream()
+    session._reposition_stream_offset(stream, 0)
+
+
+def test_sync_recover_buffered_chunk_out_of_bounds():
+    session = ResumableUploadSession()
+    session._buffered_chunk = memoryview(b"data")
+    session._buffered_chunk_offset = 0
+
+    unseekable = mock.Mock()
+    unseekable.seekable.return_value = False
+
+    with pytest.raises(UnseekableStreamError):
+        session._reposition_stream_offset(unseekable, 10)
+
+    assert session._buffered_chunk is None
+
+
+def test_sync_prepare_stream_edge_cases():
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        transport=mock.sentinel.transport,
+    )
+
+    # 1. NoTellStream: Has read, but no tell
+    stream1 = NoTellStream()
+    s_obj1, size1 = session._prepare_stream(stream1, size=None)
+    assert s_obj1 is stream1
+    assert size1 is None
+    assert session._start_stream_offset == 0
+
+    # 2. TellErrorStream: Has read and tell, but tell raises OSError
+    stream2 = TellErrorStream()
+    s_obj2, size2 = session._prepare_stream(stream2, size=None)
+    assert s_obj2 is stream2
+    assert size2 is None
+    assert session._start_stream_offset == 0
+
+    # 3. CustomReadStream: Has read, no getbuffer, no seekable
+    stream3 = CustomReadStream(b"hello")
+    s_obj3, size3 = session._prepare_stream(stream3, size=None)
+    assert s_obj3 is stream3
+    assert size3 is None
+
+    # 4. UnseekableReadStream: Has read, has seekable returning False
+    stream4 = UnseekableReadStream()
+    s_obj4, size4 = session._prepare_stream(stream4, size=None)
+    assert s_obj4 is stream4
+    assert size4 is None
+
+    # 5. SeekableNoTellStream: Has read, has seekable returning True, no tell
+    stream5 = SeekableNoTellStream()
+    s_obj5, size5 = session._prepare_stream(stream5, size=None)
+    assert s_obj5 is stream5
+    assert size5 is None
+
+
+def test_sync_transmit_all_chunks_captured_empty():
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+    chunk_resp = mock.create_autospec(requests.Response, instance=True)
+    chunk_resp.status_code = 200
+    chunk_resp.content = b"{}"
+    chunk_resp.headers = {"X-Goog-Upload-Status": "final"}
+    session_transport.request.return_value = chunk_resp
+
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+    )
+    session._state._resumable_url = "https://upload.example.com/resumable-123"
+
+    session._captured_progress = None
+    stream_obj = io.BytesIO(b"data")
+
+    # Consume the generator
+    list(session._transmit_all_chunks(session_transport, stream_obj, 4, []))
+
+
+def test_sync_upload_multiple_chunks():
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+
+    # Start response
+    start_resp = mock.create_autospec(requests.Response, instance=True)
+    start_resp.status_code = 200
+    start_resp.content = b""
+    start_resp.headers = {
+        "X-Goog-Upload-Status": "active",
+        "X-Goog-Upload-URL": "https://upload.example.com/resumable-123",
+    }
+
+    # 1st chunk response: active
+    chunk1_resp = mock.create_autospec(requests.Response, instance=True)
+    chunk1_resp.status_code = 200
+    chunk1_resp.content = b""
+    chunk1_resp.headers = {"X-Goog-Upload-Status": "active"}
+
+    # 2nd chunk response: final
+    chunk2_resp = mock.create_autospec(requests.Response, instance=True)
+    chunk2_resp.status_code = 200
+    chunk2_resp.content = b"{}"
+    chunk2_resp.headers = {"X-Goog-Upload-Status": "final"}
+
+    session_transport.request.side_effect = [start_resp, chunk1_resp, chunk2_resp]
+
+    config = ResumableUploadConfig(chunk_size=5)
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=config,
+    )
+
+    res = session.upload(stream=b"0123456789", transport=session_transport)
+    assert res is chunk2_resp
+    assert session.bytes_uploaded == 10
+    assert session_transport.request.call_count == 3
+
+
+def test_sync_format_response_payload_unsupported_type():
+    from google.api_core.resumable_transfer.upload import _format_response_payload
+    res = _format_response_payload(b"some content", "unsupported")
+    assert res == b"some content"
+
+
+def test_sync_prepare_stream_explicit_size():
+    session = ResumableUploadSession(upload_url="https://api.example.com/init")
+
+    # 1. bytes with explicit size
+    _, computed_size = session._prepare_stream(b"abcd", size=4)
+    assert computed_size == 4
+
+    # 2. Iterable with explicit size
+    _, computed_size = session._prepare_stream([b"ab", b"cd"], size=4)
+    assert computed_size == 4
+
+    # 3. BinaryIO with explicit size
+    _, computed_size = session._prepare_stream(io.BytesIO(b"abcd"), size=4)
+    assert computed_size == 4
+
+
+def test_state_process_chunk_response_unknown_status():
+    from google.api_core.resumable_transfer.upload_state import ProtocolState
+    state = ProtocolState(upload_url="https://api.example.com/init")
+    state.process_chunk_response(200, {"X-Goog-Upload-Status": "unknown"}, 100)
+    assert state.bytes_uploaded == 0
+    assert not state.finished
+
