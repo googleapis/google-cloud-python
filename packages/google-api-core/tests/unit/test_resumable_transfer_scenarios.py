@@ -695,4 +695,64 @@ def test_socket_timeout_initiates_recovery():
     calls = transport.request.call_args_list
     assert len(calls) > 2, (
         f"Expected socket read timeout to attempt recovery rather than terminating after {len(calls)} call(s)."
+
+@pytest.mark.asyncio
+async def test_async_upload_cancellation_does_not_deadlock():
+    """Verifies that cancelling an in-flight async upload terminates cleanly without queue deadlock.
+
+    As flagged in review comment 4010236327, in the original PR design where
+    session.upload() returned an AsyncUploadOperation wrapping a background task
+    and an internal progress_queue, cancelling the task with asyncio.CancelledError
+    (a BaseException) bypassed `except Exception:` and never inserted the sentinel
+    into _progress_queue, causing consumers awaiting progress to hang indefinitely.
+
+    With a direct coroutine design (or proper BaseException handling), task cancellation
+    propagates cleanly without hanging.
+    """
+    import asyncio
+    import inspect
+
+    class HangingTransport:
+        def __init__(self):
+            self.started = asyncio.Event()
+
+        def request(self, method, url, **kwargs):
+            return self._Ctx(self)
+
+        class _Ctx:
+            def __init__(self, parent):
+                self.parent = parent
+
+            async def __aenter__(self):
+                self.parent.started.set()
+                await asyncio.sleep(60)
+
+            async def __aexit__(self, *args):
+                pass
+
+    transport = HangingTransport()
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        transport=transport,
+    )
+
+    upload_ret = session.upload(stream=b"payload")
+
+    if inspect.iscoroutine(upload_ret):
+        # Refactored coroutine design
+        task = asyncio.create_task(upload_ret)
+        await transport.started.wait()
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await asyncio.wait_for(task, timeout=5)
+    else:
+        # Original AsyncUploadOperation design with progress queue
+        op = upload_ret
+        progress_iter = op.progress()
+        consume_task = asyncio.create_task(progress_iter.__anext__())
+        await transport.started.wait()
+        op._task.cancel()
+        # Should terminate with CancelledError or StopAsyncIteration rather than hanging
+        with pytest.raises((asyncio.CancelledError, StopAsyncIteration)):
+            await asyncio.wait_for(consume_task, timeout=5)
     )
