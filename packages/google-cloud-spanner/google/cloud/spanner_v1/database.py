@@ -452,6 +452,7 @@ class Database(object):
                     client._ca_certificate,
                     client._client_certificate,
                     client._client_key,
+                    credentials=client.credentials,
                 )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
