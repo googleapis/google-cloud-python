@@ -131,7 +131,9 @@ from google.cloud.bigquery.table import (
 )
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
-pandas = _versions_helpers.PANDAS_VERSIONS.try_import()  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
+pandas = (
+    _versions_helpers.PANDAS_VERSIONS.try_import()
+)  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
 
 
 ResumableTimeoutType = Union[
