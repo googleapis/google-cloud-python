@@ -693,8 +693,7 @@ def test_socket_timeout_initiates_recovery():
     session.upload(stream=b"A" * 100)
 
     calls = transport.request.call_args_list
-    assert len(calls) > 2, (
-        f"Expected socket read timeout to attempt recovery rather than terminating after {len(calls)} call(s)."
+    assert len(calls) > 2, f"Expected socket read timeout to attempt recovery rather than terminating after {len(calls)} call(s)."
 
 @pytest.mark.asyncio
 async def test_async_upload_cancellation_does_not_deadlock():
@@ -755,4 +754,3 @@ async def test_async_upload_cancellation_does_not_deadlock():
         # Should terminate with CancelledError or StopAsyncIteration rather than hanging
         with pytest.raises((asyncio.CancelledError, StopAsyncIteration)):
             await asyncio.wait_for(consume_task, timeout=5)
-    )
