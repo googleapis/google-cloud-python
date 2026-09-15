@@ -281,7 +281,6 @@ class Client(ClientWithProject):
             )
         else:
             self._client_options = client_options
-
         host_endpoint = None
         if experimental_host is not None:
             warnings.warn(
@@ -291,13 +290,11 @@ class Client(ClientWithProject):
             )
             instance_type = "omni"
             host_endpoint = experimental_host
-
         if instance_type is not None:
             instance_type = instance_type.lower()
             if instance_type not in ("cloud", "omni"):
                 raise ValueError("instance_type must be one of 'cloud' or 'omni'")
         self._instance_type = instance_type
-
         if self._emulator_host:
             credentials = AnonymousCredentials()
         elif self._instance_type == "omni":
@@ -307,12 +304,10 @@ class Client(ClientWithProject):
                         host_endpoint = self._client_options.api_endpoint
                     elif isinstance(self._client_options, dict):
                         host_endpoint = self._client_options.get("api_endpoint")
-
             if not host_endpoint:
                 raise ValueError(
                     "Host must be set for connecting to Spanner Omni instances"
                 )
-
             project = "default"
             self._use_plain_text = use_plain_text
             self._ca_certificate = ca_certificate
@@ -549,8 +544,7 @@ class Client(ClientWithProject):
         :rtype:
             :class:`~google.cloud.spanner_v1.DefaultTransactionOptions`
             or :class:`dict`
-        :returns: The default transaction options that are used by this client for all transactions.
-        """
+        :returns: The default transaction options that are used by this client for all transactions."""
         return self._default_transaction_options
 
     @property
