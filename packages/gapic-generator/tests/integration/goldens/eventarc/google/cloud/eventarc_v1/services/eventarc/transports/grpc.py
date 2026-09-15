@@ -17,22 +17,14 @@ import json
 import logging as std_logging
 import pickle
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union, TYPE_CHECKING
 
 import grpc  # type: ignore
 from google.api_core import grpc_helpers
 
-# Optional: OpenTelemetry tracing capabilities for grpc channel injection
-# Note: ClientInterceptor was added in google-api-core 2.36.0+; fallback for older versions
-try:
+if TYPE_CHECKING:
+    # ClientInterceptor was added in google-api-core 2.36.0+; ignore attribute-defined for older api-core versions during type checking
     from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    ClientInterceptor = Union[  # type: ignore[misc,assignment]
-        grpc.UnaryUnaryClientInterceptor,
-        grpc.UnaryStreamClientInterceptor,
-        grpc.StreamUnaryClientInterceptor,
-        grpc.StreamStreamClientInterceptor,
-    ]
 from google.api_core import operations_v1
 from google.api_core import gapic_v1
 import google.auth                         # type: ignore
@@ -161,7 +153,7 @@ class EventarcGrpcTransport(EventarcTransport):
             interceptors: Optional[
                 Sequence[
                     Union[
-                        ClientInterceptor,
+                        "ClientInterceptor",
                         Callable[[grpc.Channel], grpc.Channel],
                     ]
                 ]
