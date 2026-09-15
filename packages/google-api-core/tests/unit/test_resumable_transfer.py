@@ -251,9 +251,7 @@ def test_protocol_state_query_and_cancel():
     state2 = upload_state.ProtocolState(
         resumable_url="https://upload.example.com/session"
     )
-    received2 = state2.process_query_response(
-        200, {"X-Goog-Upload-Status": "unknown"}
-    )
+    received2 = state2.process_query_response(200, {"X-Goog-Upload-Status": "unknown"})
     assert received2 == 0
 
     method, url, headers, payload = state.build_cancel_request()
@@ -1328,6 +1326,7 @@ class NoTellStream:
 class TellErrorStream:
     def read(self, n):
         return b""
+
     def tell(self):
         raise OSError("tell failed")
 
@@ -1347,6 +1346,7 @@ class NoTellStream:
 class TellErrorStream:
     def read(self, n):
         return b""
+
     def tell(self):
         raise OSError("tell failed")
 
@@ -1354,6 +1354,7 @@ class TellErrorStream:
 class CustomReadStream:
     def __init__(self, data):
         self.data = data
+
     def read(self, n):
         return self.data
 
@@ -1390,6 +1391,7 @@ def test_sync_should_retry_request_exception_not_retryable():
 class NoSeekableButSeekStream:
     def read(self, n):
         return b""
+
     def seek(self, offset):
         pass
 
@@ -1397,6 +1399,7 @@ class NoSeekableButSeekStream:
 class UnseekableReadStream:
     def read(self, n):
         return b""
+
     def seekable(self):
         return False
 
@@ -1404,6 +1407,7 @@ class UnseekableReadStream:
 class SeekableNoTellStream:
     def read(self, n):
         return b""
+
     def seekable(self):
         return True
 
@@ -1530,6 +1534,7 @@ def test_sync_upload_multiple_chunks():
 
 def test_sync_format_response_payload_unsupported_type():
     from google.api_core.resumable_transfer.upload import _format_response_payload
+
     res = _format_response_payload(b"some content", "unsupported")
     assert res == b"some content"
 
@@ -1552,8 +1557,8 @@ def test_sync_prepare_stream_explicit_size():
 
 def test_state_process_chunk_response_unknown_status():
     from google.api_core.resumable_transfer.upload_state import ProtocolState
+
     state = ProtocolState(upload_url="https://api.example.com/init")
     state.process_chunk_response(200, {"X-Goog-Upload-Status": "unknown"}, 100)
     assert state.bytes_uploaded == 0
     assert not state.finished
-
