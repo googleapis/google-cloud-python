@@ -35,6 +35,7 @@ from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _augment_error_with_request_id,
     _check_rst_stream_error,
+    _make_execute_sql_request,
     _make_value_pb,
     _merge_client_context,
     _merge_query_options,
@@ -584,13 +585,13 @@ class _SnapshotBase(_SessionWrapper):
                 directed_read_options = database._directed_read_options
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
-        execute_sql_request = ExecuteSqlRequest(
-            session=session.name,
+        execute_sql_request = _make_execute_sql_request(
+            session_name=session.name,
             sql=sql,
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
-            partition_token=partition,
+            partition=partition,
             seqno=self._execute_sql_request_count,
             query_options=query_options,
             request_options=request_options,
