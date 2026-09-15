@@ -34,7 +34,6 @@ from google.api_core.resumable_transfer.upload import (
 )
 from google.api_core.resumable_transfer.upload_async import (
     AsyncResumableUploadSession,
-    AsyncUploadOperation,
 )
 
 __all__ = [
@@ -51,5 +50,4 @@ __all__ = [
     "ResumableUploadConfig",
     "ResumableUploadSession",
     "AsyncResumableUploadSession",
-    "AsyncUploadOperation",
 ]

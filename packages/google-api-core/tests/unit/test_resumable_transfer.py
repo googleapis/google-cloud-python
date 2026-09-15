@@ -356,14 +356,17 @@ def test_sync_upload_iterative_progress():
 
     session_transport.request.side_effect = [start_resp, chunk1_resp, chunk2_resp]
 
-    config = ResumableUploadConfig(chunk_size=4, response_type=DummyResponse)
+    progress_events = []
+    config = ResumableUploadConfig(
+        chunk_size=4, response_type=DummyResponse, on_progress=progress_events.append
+    )
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
         transport=session_transport,
     )
 
-    progress_events = list(session.iter_upload(stream=b"12345678"))
+    resp = session.upload(stream=b"12345678")
     assert len(progress_events) == 3
     assert progress_events[0].state == ProgressState.STARTED
     assert progress_events[1].state == ProgressState.UPLOADING
@@ -371,8 +374,8 @@ def test_sync_upload_iterative_progress():
     assert progress_events[2].state == ProgressState.FINALIZED
     assert progress_events[2].bytes_uploaded == 8
 
-    assert session.response.name == "stream.txt"
-    assert session.response.size == 8
+    assert resp.name == "stream.txt"
+    assert resp.size == 8
 
 
 def test_sync_resume():
@@ -432,19 +435,20 @@ def test_sync_iter_resume():
     )
     session_transport.request.side_effect = [query_resp, chunk_resp]
 
-    config = ResumableUploadConfig(response_type=DummyResponse)
+    progress_list = []
+    config = ResumableUploadConfig(
+        response_type=DummyResponse, on_progress=progress_list.append
+    )
     session = ResumableUploadSession(config=config)
 
     stream = io.BytesIO(b"0123456789")
-    progress_list = list(
-        session.iter_resume(
-            upload_url="https://upload.example.com/resumable-123",
-            stream=stream,
-            transport=session_transport,
-        )
+    resp = session.resume(
+        upload_url="https://upload.example.com/resumable-123",
+        stream=stream,
+        transport=session_transport,
     )
 
-    assert session.response.name == "iter_resumed.txt"
+    assert resp.name == "iter_resumed.txt"
     assert session.bytes_uploaded == 10
     assert session.finished is True
     assert len(progress_list) == 2
@@ -1254,21 +1258,19 @@ def test_sync_transmit_all_chunks_completed_without_response():
     with pytest.raises(
         ValueError, match="Upload completed without receiving a final response"
     ):
-        list(session._transmit_all_chunks(transport, io.BytesIO(b"data"), 4))
+        session._transmit_all_chunks(transport, io.BytesIO(b"data"), 4)
 
 
-def test_sync_iter_resume_errors():
+def test_sync_resume_errors():
     transport = mock.create_autospec(requests.Session, instance=True)
     session = ResumableUploadSession(transport=transport)
     with pytest.raises(ValueError, match="An upload URL must be provided to resume"):
-        list(session.iter_resume(upload_url=None, stream=b"data"))
+        session.resume(upload_url=None, stream=b"data")
 
     with pytest.raises(
         ValueError, match="A data stream or payload must be provided to resume"
     ):
-        list(
-            session.iter_resume(upload_url="https://api.example.com/init", stream=None)
-        )
+        session.resume(upload_url="https://api.example.com/init", stream=None)
 
 
 def test_sync_prepare_stream_tell_error():
@@ -1501,13 +1503,16 @@ def test_sync_format_response_payload_unrecognized_type():
 
 
 def test_sync_upload_and_resume_none_response_raises():
-    session = ResumableUploadSession(upload_url="https://api.example.com/start")
+    transport = mock.create_autospec(requests.Session, instance=True)
+    session = ResumableUploadSession(upload_url="https://api.example.com/start", transport=transport)
     session._state._resumable_url = "https://upload.example.com/resumable-none"
-    session.iter_upload = mock.Mock(return_value=iter([]))
+    session.initiate = mock.Mock()
+    session._transmit_all_chunks = mock.Mock()
+    session._response = None
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         session.upload(stream=b"data")
 
-    session.iter_resume = mock.Mock(return_value=iter([]))
+    session._response = None
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
         session.resume(upload_url="https://upload.example.com/resumable-none", stream=b"data")
 

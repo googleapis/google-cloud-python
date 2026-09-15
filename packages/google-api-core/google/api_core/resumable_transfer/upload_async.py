@@ -54,80 +54,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_START_TIMEOUT = 60.0  # seconds for initial start request
-_DONE_SENTINEL = object()
 _monotonic_clock = time.monotonic
-
-ResponseProto = TypeVar("ResponseProto")
-
-
-class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
-    """Handle representing an active asynchronous upload operation.
-
-    Implements Awaitable[ResponseProto] so awaiting the operation directly
-    returns the deserialized response upon transfer completion.
-    """
-
-    def __init__(
-        self,
-        task: asyncio.Task,
-        session: "AsyncResumableUploadSession",
-        progress_queue: asyncio.Queue,
-    ) -> None:
-        """Initializes the active upload operation handle.
-
-        Args:
-            task: Background asyncio task driving the upload.
-            session: Underlying asynchronous resumable upload session.
-            progress_queue: Queue used to deliver upload progress updates.
-        """
-        self._task = task
-        self._session = session
-        self._progress_queue = progress_queue
-
-    def __await__(self) -> Generator[Any, None, ResponseProto]:
-        """Awaits completion of the upload task and returns the server response."""
-        return self._task.__await__()
-
-    def cancel(self) -> None:
-        """Cancels the underlying upload task."""
-        self._task.cancel()
-
-    async def progress(self) -> AsyncIterator[common.UploadProgress]:
-        """Returns an asynchronous stream yielding progress snapshots without blocking uploads.
-
-        Yields:
-            UploadProgress snapshots for each progress transition.
-
-        Raises:
-            Exception: Re-raises any exception encountered during the background transfer.
-        """
-        while True:
-            item = await self._progress_queue.get()
-            if item is _DONE_SENTINEL:
-                break
-            if isinstance(item, BaseException):
-                raise item
-            yield item
-
-    @property
-    def response(self) -> Optional[ResponseProto]:
-        """The deserialized protobuf response message, or None if in progress."""
-        return self._session.response
-
-    @property
-    def upload_url(self) -> Optional[str]:
-        """The session upload URL."""
-        return self._session.upload_url
-
-    @property
-    def chunk_size(self) -> int:
-        """The negotiated chunk size."""
-        return self._session.chunk_size
-
-    @property
-    def bytes_uploaded(self) -> int:
-        """Total confirmed bytes committed so far."""
-        return self._session.bytes_uploaded
 
 
 class AsyncResumableUploadSession(common.BaseResumableUploadSession):
@@ -286,7 +213,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         transport: Any,
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
-        progress_queue: Optional[asyncio.Queue] = None,
     ) -> str:
         """Initiates the upload session by sending the start command asynchronously.
 
@@ -294,7 +220,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: The aiohttp client session.
             request_body: Initial metadata payload sent with start command.
             size: Total stream size in bytes, if known.
-            progress_queue: Optional queue to receive progress event.
 
         Returns:
             The upload session URL.
@@ -329,7 +254,7 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
                 return session_url
 
         session_url = await self._get_async_retry(is_start=True)(do_initiate)()
-        self._notify_progress(common.ProgressState.STARTED, progress_queue)
+        self._notify_progress(common.ProgressState.STARTED)
         return session_url
 
     async def _transmit_chunk(
@@ -337,7 +262,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         transport: Any,
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
-        progress_queue: Optional[asyncio.Queue] = None,
         stream_obj: Any = None,
     ) -> Tuple[int, Mapping[str, str], bytes]:
         """Transmits a single data chunk asynchronously via aiohttp with stall control.
@@ -346,7 +270,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: The aiohttp client session.
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
-            progress_queue: Optional queue to receive progress updates.
             stream_obj: Underlying stream object for recovery seeking.
 
         Returns:
@@ -428,8 +351,7 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         self._notify_progress(
             common.ProgressState.FINALIZED
             if self._state.finished
-            else common.ProgressState.UPLOADING,
-            progress_queue,
+            else common.ProgressState.UPLOADING
         )
         return resp.status, resp_headers, resp_body
 
@@ -468,7 +390,7 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         if self._state.finished:
             self._response = self._format_response(body)
             return received
-
+        self._notify_progress(common.ProgressState.OFFSET_RECEIVED)
         return self._reposition_stream_offset(stream_obj, received)
 
     async def cancel(self, transport: Optional[Any] = None) -> None:
@@ -504,7 +426,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         transport: Any,
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
-        progress_queue: asyncio.Queue,
         stream_obj: Any = None,
     ) -> Optional[Tuple[int, Mapping[str, str], bytes]]:
         """Transmits all chunks asynchronously until completion using AsyncStreamingRetry.
@@ -513,7 +434,6 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: The aiohttp client session.
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
-            progress_queue: Queue to receive progress updates.
             stream_obj: Underlying stream object for recovery seeking.
 
         Returns:
@@ -535,19 +455,14 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
         async def _chunk_stream_generator():
             if self._needs_recovery:
                 if self._recovered_from_error:
-                    self._notify_progress(
-                        common.ProgressState.RECOVERING, progress_queue
-                    )
+                    self._notify_progress(common.ProgressState.RECOVERING)
                 await self._recover(transport, stream_obj)
-                self._notify_progress(
-                    common.ProgressState.OFFSET_RECEIVED, progress_queue
-                )
                 self._needs_recovery = False
                 self._recovered_from_error = False
 
             while not self._state.finished and not self._state.invalid:
                 resp_tuple = await self._transmit_chunk(
-                    transport, reader_fn, size, progress_queue, stream_obj
+                    transport, reader_fn, size, stream_obj
                 )
                 yield resp_tuple
 
@@ -561,74 +476,14 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
 
         return final_resp_tuple
 
-    def _start_operation(
-        self,
-        stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
-        size: Optional[int],
-        transport: Optional[Any],
-        request_body: Union[str, bytes] = "",
-        is_resume: bool = False,
-    ) -> AsyncUploadOperation:
-        self._ensure_aiohttp()
-        sess = transport or self._transport
-        if sess is None:
-            raise ValueError("An aiohttp.ClientSession transport must be provided.")
-
-        progress_queue: asyncio.Queue = asyncio.Queue()
-        reader_fn, computed_size, stream_obj = self._prepare_async_reader(
-            stream, size
-        )
-
-        async def _run():
-            try:
-                if is_resume:
-                    self._needs_recovery = True
-                    self._recovered_from_error = False
-                else:
-                    await self.initiate(
-                        transport=sess,
-                        request_body=request_body,
-                        size=computed_size,
-                        progress_queue=progress_queue,
-                    )
-
-                final_resp_tuple = await self._async_transmit_all_chunks(
-                    sess, reader_fn, computed_size, progress_queue, stream_obj
-                )
-
-                if final_resp_tuple is None and not self._state.finished:
-                    raise ValueError(
-                        "Upload completed without receiving a final response."
-                    )
-
-                if final_resp_tuple is not None:
-                    _, _, body_bytes = final_resp_tuple
-                    self._response = self._format_response(body_bytes)
-
-                return self._finish_response()
-            except Exception as exc:
-                self._enrich_exception(exc)
-                progress_queue.put_nowait(exc)
-                raise
-            except BaseException as exc:
-                progress_queue.put_nowait(exc)
-                raise
-            finally:
-                progress_queue.put_nowait(_DONE_SENTINEL)
-
-        task = asyncio.create_task(_run())
-        return AsyncUploadOperation(
-            task=task, session=self, progress_queue=progress_queue
-        )
-
-    def upload(
+    async def upload(
         self,
         stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         transport: Optional[Any] = None,
-    ) -> AsyncUploadOperation:
-        """Initiates and executes upload asynchronously, returning an AsyncUploadOperation.
+    ) -> Any:
+        """Executes the upload asynchronously from start to completion.
 
         Args:
             stream: Data payload to upload (async iterable, binary stream, bytes, or iterable).
@@ -637,28 +492,48 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: Optional aiohttp client session.
 
         Returns:
-            An AsyncUploadOperation handle representing the active transfer.
+            The final server response payload or deserialized response message.
 
         Raises:
-            ValueError: If transport is missing.
+            ValueError: If transport is missing or upload completes without a response.
+            GoogleAPICallError: If an unrecoverable API error occurs.
         """
-        return self._start_operation(
-            stream=stream,
-            size=size,
-            transport=transport,
-            request_body=request_body,
-            is_resume=False,
-        )
+        self._ensure_aiohttp()
+        sess = transport or self._transport
+        if sess is None:
+            raise ValueError("An aiohttp.ClientSession transport must be provided.")
 
-    def resume(
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
+        try:
+            await self.initiate(
+                transport=sess,
+                request_body=request_body,
+                size=computed_size,
+            )
+            final_resp_tuple = await self._async_transmit_all_chunks(
+                sess, reader_fn, computed_size, stream_obj
+            )
+            if final_resp_tuple is None and not self._state.finished:
+                raise ValueError("Upload completed without receiving a final response.")
+            if final_resp_tuple is not None:
+                _, _, body_bytes = final_resp_tuple
+                self._response = self._format_response(body_bytes)
+            return self._finish_response()
+        except Exception as exc:
+            self._enrich_exception(exc)
+            raise
+
+    async def resume(
         self,
-        upload_url: str,
-        stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
+        upload_url: Optional[str] = None,
+        stream: Optional[
+            Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]]
+        ] = None,
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[Any] = None,
-    ) -> AsyncUploadOperation:
-        """Resumes an existing upload asynchronously, returning an AsyncUploadOperation.
+    ) -> Any:
+        """Resumes an existing upload asynchronously from a saved upload URL.
 
         Args:
             upload_url: Established upload session URL.
@@ -668,20 +543,43 @@ class AsyncResumableUploadSession(common.BaseResumableUploadSession):
             transport: Optional aiohttp client session.
 
         Returns:
-            An AsyncUploadOperation handle representing the resumed transfer.
+            The final server response payload or deserialized response message.
 
         Raises:
-            ValueError: If transport is missing.
+            ValueError: If required arguments are missing or response not received.
+            GoogleAPICallError: If an unrecoverable API error occurs.
         """
+        self._ensure_aiohttp()
+        sess = transport or self._transport
+        if sess is None:
+            raise ValueError("An aiohttp.ClientSession transport must be provided.")
+
+        actual_url = upload_url or self.upload_url
+        if not actual_url:
+            raise ValueError("An upload URL must be provided to resume.")
+        if stream is None:
+            raise ValueError("A data stream or payload must be provided to resume.")
+
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
-        self._state._resumable_url = upload_url
-        return self._start_operation(
-            stream=stream,
-            size=size,
-            transport=transport,
-            is_resume=True,
-        )
+        self._state._resumable_url = actual_url
+        self._needs_recovery = True
+        self._recovered_from_error = False
+
+        reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
+        try:
+            final_resp_tuple = await self._async_transmit_all_chunks(
+                sess, reader_fn, computed_size, stream_obj
+            )
+            if final_resp_tuple is None and not self._state.finished:
+                raise ValueError("Upload completed without receiving a final response.")
+            if final_resp_tuple is not None:
+                _, _, body_bytes = final_resp_tuple
+                self._response = self._format_response(body_bytes)
+            return self._finish_response()
+        except Exception as exc:
+            self._enrich_exception(exc)
+            raise
 
     def _prepare_async_reader(
         self,

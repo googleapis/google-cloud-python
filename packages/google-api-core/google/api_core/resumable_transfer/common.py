@@ -511,20 +511,11 @@ class BaseResumableUploadSession:
             state=state,
         )
 
-    def _notify_progress(
-        self,
-        state: ProgressState,
-        progress_queue: Optional[Any] = None,
-        queue: Optional[Any] = None,
-    ) -> Optional[UploadProgress]:
-        """Notifies callback and optional queue."""
+    def _notify_progress(self, state: ProgressState) -> Optional[UploadProgress]:
+        """Dispatches an UploadProgress snapshot to config.on_progress."""
         progress = self._create_progress(state)
-        if progress is not None:
-            if self._config.on_progress:
-                self._config.on_progress(progress)
-            target_queue = queue if queue is not None else progress_queue
-            if target_queue is not None:
-                target_queue.put_nowait(progress)
+        if progress is not None and self._config.on_progress:
+            self._config.on_progress(progress)
         return progress
 
     def _get_deadline_remaining(self) -> Optional[float]:

@@ -370,7 +370,7 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         transport: requests.Session,
         stream_obj: BinaryIO,
         computed_size: Optional[int],
-    ) -> Generator[common.UploadProgress, None, None]:
+    ) -> requests.Response:
         """Transmits chunks until transfer completes using StreamingRetry.
 
         Args:
@@ -378,8 +378,8 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
 
-        Yields:
-            UploadProgress snapshots for each transmission milestone.
+        Returns:
+            The final response received upon completion.
 
         Raises:
             ValueError: If upload concludes without a server response.
@@ -396,19 +396,12 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
                 self._needs_recovery = True
                 self._recovered_from_error = True
 
-        def _chunk_stream_generator() -> Generator[common.UploadProgress, None, None]:
+        def _chunk_stream_generator() -> Generator[requests.Response, None, None]:
             nonlocal final_resp
             if self._needs_recovery:
                 if self._recovered_from_error:
-                    yield cast(
-                        common.UploadProgress,
-                        self._create_progress(common.ProgressState.RECOVERING),
-                    )
+                    self._notify_progress(common.ProgressState.RECOVERING)
                 self._recover(transport, stream_obj)
-                yield cast(
-                    common.UploadProgress,
-                    self._create_progress(common.ProgressState.OFFSET_RECEIVED),
-                )
                 self._needs_recovery = False
                 self._recovered_from_error = False
 
@@ -416,22 +409,18 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
                 final_resp = self._transmit_chunk(transport, stream_obj, computed_size)
                 if self._state.finished:
                     self._response = self._format_response(final_resp)
-                yield cast(
-                    common.UploadProgress,
-                    self._create_progress(
-                        common.ProgressState.FINALIZED
-                        if self._state.finished
-                        else common.ProgressState.UPLOADING
-                    ),
-                )
+                yield final_resp
 
         retryable_stream = self._get_streaming_retry(on_error=on_stream_error)(
             _chunk_stream_generator
         )
-        yield from retryable_stream()
+        for chunk_resp in retryable_stream():
+            final_resp = chunk_resp
 
         if final_resp is None and self._response is None:
             raise ValueError("Upload completed without receiving a final response.")
+
+        return final_resp
 
     def upload(
         self,
@@ -455,45 +444,14 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             ValueError: If transport is missing or upload completes without a response.
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
-        for _ in self.iter_upload(
-            stream=stream, request_body=request_body, size=size, transport=transport
-        ):
-            pass
-        return self._finish_response()
-
-    def iter_upload(
-        self,
-        stream: Union[BinaryIO, bytes, Iterable[bytes]],
-        request_body: Union[str, bytes] = "",
-        size: Optional[int] = None,
-        transport: Optional[requests.Session] = None,
-    ) -> Generator[common.UploadProgress, None, None]:
-        """Streams upload execution, yielding UploadProgress snapshots (PEP 255).
-
-        Args:
-            stream: Data payload to upload (file-like stream, bytes, or iterable of bytes).
-            request_body: Initial metadata payload sent with the start request.
-            size: Total stream size in bytes, if known.
-            transport: Optional requests session.
-
-        Yields:
-            UploadProgress snapshots for each chunk transmission milestone.
-
-        Raises:
-            ValueError: If transport is missing or upload completes without a response.
-            GoogleAPICallError: If an unrecoverable API error occurs.
-        """
         sess = self._get_transport(transport)
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
             self.initiate(
                 transport=sess, request_body=request_body, size=computed_size
             )
-            yield cast(
-                common.UploadProgress,
-                self._create_progress(common.ProgressState.STARTED),
-            )
-            yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
+            self._transmit_all_chunks(sess, stream_obj, computed_size)
+            return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)
             raise
@@ -522,40 +480,6 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
             ValueError: If required arguments are missing or response not received.
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
-        for _ in self.iter_resume(
-            upload_url=upload_url,
-            stream=stream,
-            size=size,
-            chunk_size=chunk_size,
-            transport=transport,
-        ):
-            pass
-        return self._finish_response()
-
-    def iter_resume(
-        self,
-        upload_url: Optional[str] = None,
-        stream: Optional[Union[BinaryIO, bytes, Iterable[bytes]]] = None,
-        size: Optional[int] = None,
-        chunk_size: Optional[int] = None,
-        transport: Optional[requests.Session] = None,
-    ) -> Generator[common.UploadProgress, None, None]:
-        """Streams resumption of an upload, yielding UploadProgress snapshots.
-
-        Args:
-            upload_url: The pre-existing upload session URL.
-            stream: The data payload to resume uploading from.
-            size: Total size of the payload in bytes, if known.
-            chunk_size: Optional chunk size override in bytes.
-            transport: Optional requests session.
-
-        Yields:
-            UploadProgress snapshots for each chunk transmission milestone.
-
-        Raises:
-            ValueError: If required arguments are missing or response not received.
-            GoogleAPICallError: If an unrecoverable API error occurs.
-        """
         sess = self._get_transport(transport)
         actual_url = upload_url or self.upload_url
         if not actual_url:
@@ -571,7 +495,8 @@ class ResumableUploadSession(common.BaseResumableUploadSession):
         self._recovered_from_error = False
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
-            yield from self._transmit_all_chunks(sess, stream_obj, computed_size)
+            self._transmit_all_chunks(sess, stream_obj, computed_size)
+            return self._finish_response()
         except Exception as exc:
             self._enrich_exception(exc)
             raise

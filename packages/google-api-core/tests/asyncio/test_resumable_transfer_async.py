@@ -38,7 +38,6 @@ from google.protobuf import empty_pb2
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import (
     AsyncResumableUploadSession,
-    AsyncUploadOperation,
     ProgressState,
     ResumableUploadConfig,
     TransferStalledError,
@@ -197,15 +196,16 @@ def test_async_session_initialization_defaults() -> None:
     assert session.finished is False
 
 
-def test_async_missing_transport_raises() -> None:
+@pytest.mark.asyncio
+async def test_async_missing_transport_raises() -> None:
     """Verifies that invoking session operations without a transport raises ValueError."""
     session = AsyncResumableUploadSession()
 
     with pytest.raises(ValueError, match="aiohttp.ClientSession"):
-        session.upload(stream=b"data")
+        await session.upload(stream=b"data")
 
     with pytest.raises(ValueError, match="aiohttp.ClientSession"):
-        session.resume(upload_url="https://upload.example.com", stream=b"data")
+        await session.resume(upload_url="https://upload.example.com", stream=b"data")
 
 
 @pytest.mark.asyncio
@@ -266,7 +266,7 @@ async def test_async_upload_direct_execution() -> None:
 
 @pytest.mark.asyncio
 async def test_async_upload_multi_chunk_operation_handle() -> None:
-    """Verifies multi-chunk upload dispatching and AsyncUploadOperation property handles."""
+    """Verifies multi-chunk upload dispatching and session properties."""
     start_resp = DummyAsyncResponse(
         status=200,
         headers={
@@ -294,16 +294,13 @@ async def test_async_upload_multi_chunk_operation_handle() -> None:
         transport=async_transport,
     )
 
-    upload_op = session.upload(stream=b"12345678")
-    assert isinstance(upload_op, AsyncUploadOperation)
-    assert upload_op.chunk_size == 4
-
-    result = await upload_op
+    result = await session.upload(stream=b"12345678")
     assert isinstance(result, DummyResponse)
     assert result.name == "multi.txt"
-    assert upload_op.response == result
-    assert upload_op.bytes_uploaded == 8
-    assert upload_op.upload_url == "https://upload.example.com/resumable-async"
+    assert session.response == result
+    assert session.bytes_uploaded == 8
+    assert session.upload_url == "https://upload.example.com/resumable-async"
+    assert session.chunk_size == 4
 
     # Validate commands dispatched in request history
     assert len(async_transport.requests) == 3
@@ -345,19 +342,17 @@ async def test_async_upload_progress_tracking() -> None:
     )
 
     async_transport = DummyAsyncSession([start_resp, chunk1_resp, chunk2_resp])
-    config = ResumableUploadConfig(chunk_size=4, response_type=DummyResponse)
+    progress_list: List[UploadProgress] = []
+    config = ResumableUploadConfig(
+        chunk_size=4, response_type=DummyResponse, on_progress=progress_list.append
+    )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
         transport=async_transport,
     )
 
-    upload_op = session.upload(stream=b"12345678")
-    progress_list: List[UploadProgress] = []
-    async for p in upload_op.progress():
-        progress_list.append(p)
-
-    final_resp = await upload_op
+    final_resp = await session.upload(stream=b"12345678")
     assert isinstance(final_resp, DummyResponse)
     assert len(progress_list) == 3
     assert progress_list[0].state == ProgressState.STARTED
@@ -500,11 +495,10 @@ async def test_async_resume_success() -> None:
         transport=async_transport,
     )
 
-    upload_op = session.resume(
+    resp = await session.resume(
         upload_url="https://upload.example.com/resumable-async",
         stream=b"0123456789",
     )
-    resp = await upload_op
     assert resp.name == "resumed_async.txt"
     assert session.bytes_uploaded == 10
     assert session.finished is True
@@ -534,13 +528,11 @@ async def test_async_resume_recovery_unseekable_stream_raises() -> None:
     )
 
     stream = NonSeekableBytesIO(b"some content")
-    upload_op = session.resume(
-        upload_url="https://upload.example.com/resumable-async",
-        stream=stream,
-    )
-
     with pytest.raises(UnseekableStreamError) as exc_info:
-        await upload_op
+        await session.resume(
+            upload_url="https://upload.example.com/resumable-async",
+            stream=stream,
+        )
 
     assert exc_info.value.upload_url == "https://upload.example.com/resumable-async"
 
@@ -569,11 +561,10 @@ async def test_async_resume_recovery_seekable_stream() -> None:
     )
 
     stream = io.BytesIO(b"abcdef")
-    upload_op = session.resume(
+    resp = await session.resume(
         upload_url="https://upload.example.com/resumable-async",
         stream=stream,
     )
-    resp = await upload_op
     assert resp.name == "seekable.txt"
     assert session.bytes_uploaded == 6
 
@@ -967,8 +958,8 @@ async def test_async_response_type_raw_bytes() -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_operation_error_propagation_in_progress() -> None:
-    """Verifies that background task errors propagate through progress queue iteration."""
+async def test_async_upload_error_propagation() -> None:
+    """Verifies that chunk upload errors propagate when awaiting session.upload()."""
     start_resp = DummyAsyncResponse(
         status=200,
         headers={
@@ -989,36 +980,33 @@ async def test_async_operation_error_propagation_in_progress() -> None:
         transport=async_transport,
     )
 
-    upload_op = session.upload(stream=b"data")
     with pytest.raises(exceptions.Forbidden):
-        async for _ in upload_op.progress():
-            pass
-
-    with pytest.raises(exceptions.Forbidden):
-        await upload_op
+        await session.upload(stream=b"data")
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
-def test_async_upload_rejects_invalid_stream_types(invalid_stream: Any) -> None:
-    """Verifies that str, dict, and non-stream objects raise TypeError synchronously on upload()."""
+async def test_async_upload_rejects_invalid_stream_types(invalid_stream: Any) -> None:
+    """Verifies that str, dict, and non-stream objects raise TypeError on upload()."""
     async_transport = DummyAsyncSession([])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         transport=async_transport,
     )
     with pytest.raises(TypeError, match="Unsupported stream type"):
-        session.upload(stream=invalid_stream)
+        await session.upload(stream=invalid_stream)
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("invalid_stream", ["invalid_string", {"key": "value"}, 12345])
-def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
-    """Verifies that str, dict, and non-stream objects raise TypeError synchronously on resume()."""
+async def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
+    """Verifies that str, dict, and non-stream objects raise TypeError on resume()."""
     async_transport = DummyAsyncSession([])
     session = AsyncResumableUploadSession(
         transport=async_transport,
     )
     with pytest.raises(TypeError, match="Unsupported stream type"):
-        session.resume(
+        await session.resume(
             upload_url="https://upload.example.com/resumable-async",
             stream=invalid_stream,
         )
@@ -1034,7 +1022,7 @@ def test_async_enrich_exception_without_dict() -> None:
 
 
 def test_async_notify_progress_branches() -> None:
-    """Verifies progress notification callbacks and queues."""
+    """Verifies progress notification callbacks."""
     called = []
     config = ResumableUploadConfig(on_progress=lambda p: called.append(p))
     session = AsyncResumableUploadSession(
@@ -1043,10 +1031,8 @@ def test_async_notify_progress_branches() -> None:
     )
     # When upload_url is established on state
     session._state._resumable_url = "https://upload.example.com/resumable-async"
-    q: asyncio.Queue = asyncio.Queue()
-    session._notify_progress(common.ProgressState.UPLOADING, queue=q)
+    session._notify_progress(common.ProgressState.UPLOADING)
     assert len(called) == 1
-    assert q.qsize() == 1
 
 
 def test_async_deadline_handling_and_start_timeout() -> None:
@@ -1113,20 +1099,21 @@ async def test_async_retry_branches() -> None:
     assert attempts_503 == 2
 
 
-def test_async_transport_missing_errors() -> None:
-    """Verifies ValueError when transport is missing from upload, resume, and cancel."""
+@pytest.mark.asyncio
+async def test_async_transport_missing_errors() -> None:
+    """Verifies ValueError when transport is missing from upload and resume."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
     )
     with pytest.raises(
         ValueError, match="An aiohttp.ClientSession transport must be provided"
     ):
-        session.upload(stream=b"data")
+        await session.upload(stream=b"data")
 
     with pytest.raises(
         ValueError, match="An aiohttp.ClientSession transport must be provided"
     ):
-        session.resume(upload_url="https://upload.example.com/123", stream=b"data")
+        await session.resume(upload_url="https://upload.example.com/123", stream=b"data")
 
 
 @pytest.mark.asyncio
@@ -1241,8 +1228,8 @@ async def test_async_recover_stream_errors() -> None:
 
 
 @pytest.mark.asyncio
-async def test_async_operation_cancel_and_base_exception() -> None:
-    """Verifies op.cancel() cancels background task and propagates to progress()."""
+async def test_async_task_cancel() -> None:
+    """Verifies task cancellation during upload and resume."""
     # 1. upload cancel
     class SlowResponse(DummyAsyncResponse):
         async def __aenter__(self):
@@ -1259,43 +1246,50 @@ async def test_async_operation_cancel_and_base_exception() -> None:
         upload_url="https://api.example.com/start",
         transport=slow_session_transport,
     )
-    op = session.upload(stream=b"data")
+    task = asyncio.create_task(session.upload(stream=b"data"))
     await asyncio.sleep(0.01)
-    op.cancel()
+    task.cancel()
     with pytest.raises(asyncio.CancelledError):
-        await op
-
-    with pytest.raises(asyncio.CancelledError):
-        async for _ in op.progress():
-            pass
+        await task
 
     # 2. resume cancel
     session_resume = AsyncResumableUploadSession(
         transport=slow_session_transport,
     )
-    op_resume = session_resume.resume(
-        upload_url="https://upload.example.com/resumable-123",
-        stream=b"data",
-        chunk_size=1024,
+    task_resume = asyncio.create_task(
+        session_resume.resume(
+            upload_url="https://upload.example.com/resumable-123",
+            stream=b"data",
+            chunk_size=1024,
+        )
     )
-    assert session_resume.chunk_size == 1024
     await asyncio.sleep(0.01)
-    op_resume.cancel()
+    assert session_resume.chunk_size == 1024
+    task_resume.cancel()
     with pytest.raises(asyncio.CancelledError):
-        await op_resume
-
-    with pytest.raises(asyncio.CancelledError):
-        async for _ in op_resume.progress():
-            pass
+        await task_resume
 
 
 def test_async_notify_progress_edge_cases() -> None:
-    """Verifies _notify_progress when upload_url is None and target_queue is None."""
+    """Verifies _notify_progress when upload_url is None and when on_progress is None."""
     session = AsyncResumableUploadSession()
     session._notify_progress(common.ProgressState.STARTED)
 
     session_with_url = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
-    session_with_url._notify_progress(common.ProgressState.STARTED, progress_queue=None, queue=None)
+    session_with_url._notify_progress(common.ProgressState.STARTED)
+
+
+@pytest.mark.asyncio
+async def test_async_resume_errors() -> None:
+    """Verifies ValueError when required resume arguments are missing."""
+    session = AsyncResumableUploadSession(transport=mock.Mock())
+    with pytest.raises(ValueError, match="An upload URL must be provided to resume"):
+        await session.resume(upload_url=None, stream=b"data")
+
+    with pytest.raises(
+        ValueError, match="A data stream or payload must be provided to resume"
+    ):
+        await session.resume(upload_url="https://api.example.com/init", stream=None)
 
 
 def test_async_predicate_branches() -> None:
@@ -1494,7 +1488,7 @@ async def test_async_transmit_all_chunks_already_finished() -> None:
     session = AsyncResumableUploadSession(resumable_url="https://upload.example.com/1")
     session._state._finished = True
     res = await session._async_transmit_all_chunks(
-        mock.Mock(), mock.Mock(), 0, asyncio.Queue(), None
+        mock.Mock(), mock.Mock(), 0, None
     )
     assert res is None
 
@@ -1508,34 +1502,30 @@ async def test_async_upload_and_resume_missing_final_response() -> None:
     session._transport = mock.Mock()
     session.initiate = mock.AsyncMock()
     session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
-    op = session.upload(stream=b"data")
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
-        await op
+        await session.upload(stream=b"data")
 
     # upload finished True but response is None
     session._state._finished = True
     session._response = None
     session._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
-    op_finished_none = session.upload(stream=b"data")
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
-        await op_finished_none
+        await session.upload(stream=b"data")
 
     # 2. resume missing final response
     session_resume = AsyncResumableUploadSession()
     session_resume._ensure_aiohttp = mock.Mock()
     session_resume._transport = mock.Mock()
     session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
-    op2 = session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
-        await op2
+        await session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
 
     # resume finished True but response is None
     session_resume._state._finished = True
     session_resume._response = None
     session_resume._async_transmit_all_chunks = mock.AsyncMock(return_value=None)
-    op_res_finished_none = session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
     with pytest.raises(ValueError, match="Upload completed without receiving a final response"):
-        await op_res_finished_none
+        await session_resume.resume(upload_url="https://upload.example.com/1", stream=b"data")
 
 
 @pytest.mark.asyncio
