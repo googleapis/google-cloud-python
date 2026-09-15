@@ -918,8 +918,15 @@ def test_sync_prepare_stream_seekable_and_iterable():
     )
 
     stream_obj, computed_size = session._prepare_stream([b"hello ", b"world"], None)
-    assert stream_obj.read() == b"hello world"
-    assert computed_size == 11
+    assert stream_obj.seekable() is False
+    assert stream_obj.read(4) == b"hell"
+    assert stream_obj.read(4) == b"o wo"
+    assert stream_obj.read(4) == b"rld"
+    assert stream_obj.read(4) == b""
+    assert computed_size is None
+
+    stream_obj_all, _ = session._prepare_stream([b"hello ", b"world"], None)
+    assert stream_obj_all.read() == b"hello world"
 
     class CustomSeekable:
         def __init__(self, data: bytes):

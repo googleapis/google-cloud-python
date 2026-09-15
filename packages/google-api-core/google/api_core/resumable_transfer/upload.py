@@ -55,6 +55,45 @@ class _RecoveryRetransmit(Exception):
     pass
 
 
+class _IterableReader(io.BytesIO):
+    """Wraps an Iterable[bytes] as a non-seekable binary stream.
+
+    Ensure that chunks are pulled lazily from the underlying iterator
+    on each read() call rather than buffering the entire iterable into memory.
+    Inherits from io.BytesIO so static type checkers recognize instances as
+    BinaryIO without casts.
+    """
+
+    def __init__(self, iterable: Iterable[bytes]) -> None:
+        super().__init__()
+        self._iterator = iter(iterable)
+        self._buffer = bytearray()
+
+    def seekable(self) -> bool:
+        return False
+
+    def tell(self) -> int:
+        raise OSError("Stream is not seekable")
+
+    def read(self, size: Optional[int] = -1) -> bytes:
+        if size is None or size < 0:
+            for chunk in self._iterator:
+                self._buffer.extend(chunk)
+            result = bytes(self._buffer)
+            self._buffer.clear()
+            return result
+
+        while len(self._buffer) < size:
+            try:
+                chunk = next(self._iterator)
+                self._buffer.extend(chunk)
+            except StopIteration:
+                break
+        result = bytes(self._buffer[:size])
+        del self._buffer[:size]
+        return result
+
+
 @dataclasses.dataclass
 class ResumableUploadConfig:
     """Configuration options for a resumable upload.
@@ -828,9 +867,7 @@ class ResumableUploadSession:
             if computed_size is None:
                 computed_size = len(stream)
         elif not hasattr(stream, "read") and isinstance(stream, Iterable):
-            stream_obj = io.BytesIO(b"".join(stream))
-            if computed_size is None:
-                computed_size = stream_obj.getbuffer().nbytes
+            stream_obj = _IterableReader(stream)
         elif hasattr(stream, "read"):
             stream_obj = cast(BinaryIO, stream)
             if computed_size is None:
