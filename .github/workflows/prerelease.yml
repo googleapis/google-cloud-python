@@ -15,6 +15,10 @@
 name: prerelease
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/prerelease.yml'
+      - 'ci/**'
   schedule:
     # Run daily at midnight UTC
     - cron: '0 0 * * *'
@@ -25,7 +29,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -42,7 +46,6 @@ jobs:
   initialize:
     runs-on: ubuntu-latest
     continue-on-error: true
-    if: ${{ github.repository == 'googleapis/google-cloud-python' }}
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       packages: ${{ steps.set-matrix.outputs.packages }}
@@ -72,7 +75,8 @@ jobs:
         run: |
           python3 ci/get_package_shards.py
       - name: Create issue if initialize fails
-        if: ${{ failure() }}
+        if: ${{ failure() && github.repository == 'googleapis/google-cloud-python' }}
+        continue-on-error: true
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "prerelease_deps workflow initialize failed"
@@ -159,7 +163,8 @@ jobs:
             echo "EOF_ISSUE_BODY"
           } >> "$GITHUB_OUTPUT"
       - name: Create issue on failure
-        if: ${{ failure() }}
+        if: ${{ failure() && github.repository == 'googleapis/google-cloud-python' }}
+        continue-on-error: true
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "prerelease_deps failed for ${{ matrix.package_shard.description }}"
