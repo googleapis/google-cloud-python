@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import http.client as http_client
 import logging
+import threading
 import warnings
 
 # Certifi is Mozilla's certificate bundle. Urllib3 needs a certificate bundle
@@ -309,6 +310,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
         # credentials.refresh).
         self._request = Request(self.http)
         self._is_mtls = False
+        self._mtls_reauth_lock = threading.Lock()
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
@@ -318,6 +320,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             )
 
         super(AuthorizedHttp, self).__init__()
+
+    @property
+    def is_mtls(self):
+        """Indicates if the created SSL channel is mutual TLS."""
+        return self._is_mtls
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configures mutual TLS channel using the given client_cert_callback or
@@ -431,40 +438,49 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
-                use_mtls = self._is_mtls and _mtls_helper.is_mtls_endpoint(url)
+                use_mtls = getattr(self, "_is_mtls", False) and _mtls_helper.is_mtls_endpoint(url)
+
                 if use_mtls:
-                    (
-                        call_cert_bytes,
-                        call_key_bytes,
-                        cached_fingerprint,
-                        current_cert_fingerprint,
-                    ) = _mtls_helper.check_parameters_for_unauthorized_response(
-                        self._cached_cert
-                    )
-                    if cached_fingerprint != current_cert_fingerprint:
-                        try:
-                            _LOGGER.info(
-                                "Client certificate has changed, reconfiguring mTLS "
-                                "channel."
-                            )
-                            self.configure_mtls_channel(
-                                client_cert_callback=lambda: (
+                    with self._mtls_reauth_lock:
+                        if getattr(self, "is_mtls", getattr(self, "_is_mtls", False)):
+                            try:
+                                (
                                     call_cert_bytes,
                                     call_key_bytes,
+                                    cached_fingerprint,
+                                    current_cert_fingerprint,
+                                ) = _mtls_helper.check_parameters_for_unauthorized_response(
+                                    getattr(self, "_cached_cert", None)
                                 )
-                            )
-                        except Exception as e:
-                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
-                            raise exceptions.MutualTLSChannelError(
-                                "Failed to reconfigure mTLS channel"
-                            ) from e
-
-                    else:
-                        _LOGGER.info(
-                            "Skipping reconfiguration of mTLS channel because the "
-                            "client certificate has not changed."
-                        )
-
+                                if cached_fingerprint != current_cert_fingerprint:
+                                    try:
+                                        _LOGGER.info(
+                                            "Client certificate has changed, reconfiguring mTLS "
+                                            "channel."
+                                        )
+                                        self.configure_mtls_channel(
+                                            client_cert_callback=lambda: (
+                                                call_cert_bytes,
+                                                call_key_bytes,
+                                            )
+                                        )
+                                    except Exception as e:
+                                        _LOGGER.error(
+                                            "Failed to reconfigure mTLS channel: %s", e
+                                        )
+                                        raise exceptions.MutualTLSChannelError(
+                                            "Failed to reconfigure mTLS channel"
+                                        ) from e
+                                else:
+                                    _LOGGER.info(
+                                        "Skipping reconfiguration of mTLS channel because the "
+                                        "client certificate has not changed."
+                                    )
+                            except Exception as e:
+                                _LOGGER.warning(
+                                    "Failed to check parameters or reconfigure mTLS channel: %s",
+                                    e,
+                                )
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status,
