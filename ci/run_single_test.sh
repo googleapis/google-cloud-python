@@ -71,14 +71,6 @@ case ${TEST_TYPE} in
         fi
         nox --stop-on-first-error -s prerelease_deps
         retval=$?
-        if [ ${retval} -ne 0 ]; then
-            for pip_bin in ${NOX_ENVDIR:-.nox}/prerelease_deps*/bin/pip; do
-                if [ -x "$pip_bin" ]; then
-                    "$pip_bin" list > /tmp/prerelease_pip_list.txt
-                    break
-                fi
-            done
-        fi
         ;;
     core_deps_from_source)
         if [[ "$(pwd)" == */preview-packages/* ]]; then
@@ -252,6 +244,17 @@ case ${TEST_TYPE} in
         retval=$?
         ;;
     esac
+
+if [ ${retval} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
+    mkdir -p "${FAILURE_LOG_DIR}"
+    pkg_name=$(basename "$(pwd)")
+    for pip_bin in ${NOX_ENVDIR:-.nox}/*/bin/pip; do
+        if [ -x "$pip_bin" ]; then
+            "$pip_bin" list > "${FAILURE_LOG_DIR}/${pkg_name}.pip.txt" 2>/dev/null || true
+            break
+        fi
+    done
+fi
 
 # Clean up `__pycache__` and `.nox` directories to avoid error
 # `No space left on device` seen when running tests in Github Actions

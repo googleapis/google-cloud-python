@@ -228,8 +228,7 @@ def group_packages(packages_map):
 
     # Dynamically determine target weight to balance across max shards.
     max_shards = int(os.environ.get("MAX_SHARDS", 16))
-    min_shard_weight = int(os.environ.get("MIN_SHARD_WEIGHT", 10))
-    target_weight = max(min_shard_weight, math.ceil(total_weight / max_shards))
+    target_weight = max(10, math.ceil(total_weight / max_shards))
 
     shards_list = []
     current_shard_items = []
