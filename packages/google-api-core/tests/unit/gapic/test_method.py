@@ -525,9 +525,10 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
         wrapped()
 
     mock_target.assert_called_once()
-    mock_otel.span.set_attribute.assert_called_with(
+    mock_otel.span.set_attribute.assert_any_call(
         "rpc.response.status_code", "RuntimeError"
     )
+    mock_otel.span.set_attribute.assert_any_call("error.type", "RuntimeError")
 
 
 @pytest.mark.parametrize(
@@ -547,7 +548,7 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
 def test_wrap_method_otel_tracing_error_status_code_mapping(
     mock_otel, exc, expected_status
 ):
-    """Proves that exceptions are cleanly mapped to canonical rpc.response.status_code names."""
+    """Proves that exceptions are cleanly mapped to canonical rpc.response.status_code and error.type names."""
     mock_target = mock.Mock(side_effect=exc)
 
     wrapped = google.api_core.gapic_v1.method.wrap_method(
@@ -557,9 +558,10 @@ def test_wrap_method_otel_tracing_error_status_code_mapping(
     with pytest.raises(type(exc)):
         wrapped()
 
-    mock_otel.span.set_attribute.assert_called_with(
+    mock_otel.span.set_attribute.assert_any_call(
         "rpc.response.status_code", expected_status
     )
+    mock_otel.span.set_attribute.assert_any_call("error.type", expected_status)
 
 
 def test_wrap_method_otel_tracing_import_error(monkeypatch):
@@ -687,11 +689,13 @@ def test_wrap_method_otel_tracing_attributes_no_service(mock_otel):
 
 
 def test_extract_error_attributes_standard_exception():
-    """Proves that _extract_error_attributes returns empty dict for standard exceptions without ErrorInfo."""
-    assert (
-        google.api_core.gapic_v1.method._extract_error_attributes(ValueError("fail"))
-        == {}
-    )
+    """Proves that _extract_error_attributes returns fallback error.type for exceptions without ErrorInfo."""
+    assert google.api_core.gapic_v1.method._extract_error_attributes(
+        ValueError("fail")
+    ) == {"error.type": "ValueError"}
+    assert google.api_core.gapic_v1.method._extract_error_attributes(
+        exceptions.InvalidArgument("invalid argument")
+    ) == {"error.type": "INVALID_ARGUMENT"}
     assert google.api_core.gapic_v1.method._extract_error_attributes(None) == {}
 
 
@@ -838,12 +842,14 @@ def test_extract_error_attributes_variations():
         "google.api_core.exceptions._parse_grpc_error_details",
         side_effect=ValueError("bad proto"),
     ):
-        assert _extract_error_attributes(exc_with_resp) == {}
+        assert _extract_error_attributes(exc_with_resp) == {
+            "error.type": "SimpleNamespace"
+        }
 
     # 4. error_info with empty domain, empty reason, empty metadata
     error_info_empty = types.SimpleNamespace(domain="", reason="", metadata=None)
     exc_empty = types.SimpleNamespace(error_info=error_info_empty)
-    assert _extract_error_attributes(exc_empty) == {}
+    assert _extract_error_attributes(exc_empty) == {"error.type": "SimpleNamespace"}
 
     # 5. else fallback where target_exc directly has domain, reason, and metadata
     exc_fallback = types.SimpleNamespace(
@@ -863,7 +869,9 @@ def test_extract_error_attributes_variations():
         reason="",
         metadata={},
     )
-    assert _extract_error_attributes(exc_fallback_empty) == {}
+    assert _extract_error_attributes(exc_fallback_empty) == {
+        "error.type": "SimpleNamespace"
+    }
 
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
@@ -881,9 +889,8 @@ def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
     )
     with pytest.raises(ValueError):
         wrapped1()
-    mock_span1.set_attribute.assert_called_with(
-        "rpc.response.status_code", "ValueError"
-    )
+    mock_span1.set_attribute.assert_any_call("rpc.response.status_code", "ValueError")
+    mock_span1.set_attribute.assert_any_call("error.type", "ValueError")
 
     # Test span without set_attribute (e.g. mock or stub lacking set_attribute)
     mock_span2 = mock.Mock(spec=[])

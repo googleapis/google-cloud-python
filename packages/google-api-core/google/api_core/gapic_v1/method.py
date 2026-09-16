@@ -216,6 +216,11 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     reason = getattr(source, "reason", None)
     if reason:
         attrs["error.type"] = reason
+    elif target_exc is not None:
+        # Fallback per OpenTelemetry Semantic Conventions: every failed span should record
+        # a low-cardinality error.type. Use canonical status code name or exception class name.
+        status_code = _extract_status_code(target_exc)
+        attrs["error.type"] = status_code or target_exc.__class__.__name__
     metadata = getattr(source, "metadata", None)
     if metadata:
         for k, v in metadata.items():
