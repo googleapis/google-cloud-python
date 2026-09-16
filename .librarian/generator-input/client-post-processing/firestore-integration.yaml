@@ -75,6 +75,7 @@ replacements:
           BSONMaxKey,
           BSONMinKey,
           BSONObjectId,
+          BSONTimestamp,
       )
       from google.cloud.firestore_v1.client import Client
       from google.cloud.firestore_v1.collection import CollectionReference
@@ -182,6 +183,7 @@ replacements:
           "BSONMaxKey",
           "BSONMinKey",
           "BSONObjectId",
+          "BSONTimestamp",
           "Client",
           "CountAggregation",
           "CollectionGroup",
@@ -259,6 +261,7 @@ replacements:
           BSONMaxKey,
           BSONMinKey,
           BSONObjectId,
+          BSONTimestamp,
           Client,
           CollectionGroup,
           CollectionReference,
@@ -321,6 +324,7 @@ replacements:
           "BSONMaxKey",
           "BSONMinKey",
           "BSONObjectId",
+          "BSONTimestamp",
           "Client",
           "CountAggregation",
           "CollectionGroup",

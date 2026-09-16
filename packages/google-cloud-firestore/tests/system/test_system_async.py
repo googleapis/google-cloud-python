@@ -57,6 +57,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONTimestamp,
 )
 from google.cloud.firestore_v1.query_profile import (
     ExecutionStats,
@@ -1268,6 +1269,7 @@ async def test_async_bson_document_writes(client, cleanup, database):
         "int32_val": BSONInt32(42),
         "binary_val_sub0": BSONBinary(b"hello", subtype=0),
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
     }
 
     await doc_ref.set(bson_payload)
@@ -1281,6 +1283,12 @@ async def test_async_bson_document_writes(client, cleanup, database):
         "int32_val": {"__int__": 42},
         "binary_val_sub0": b"hello",
         "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
     }
 
 

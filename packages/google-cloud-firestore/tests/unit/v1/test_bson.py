@@ -26,6 +26,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONTimestamp,
     _BSONType,
 )
 
@@ -352,3 +353,83 @@ def test_bson_binary_copy():
 def test_bson_binary_pickle():
     val = BSONBinary(b"hello", subtype=5)
     assert pickle.loads(pickle.dumps(val)) == val
+
+
+def test_bson_timestamp_valid():
+    ts = BSONTimestamp(1700000000, 42)
+    assert ts.seconds == 1700000000
+    assert ts.increment == 42
+    assert ts._to_map_value() == {
+        "__request_timestamp__": {
+            "seconds": 1700000000,
+            "increment": 42,
+        }
+    }
+    assert repr(ts) == "BSONTimestamp(seconds=1700000000, increment=42)"
+
+
+def test_bson_timestamp_signed_int32_conversion():
+    # Negative signed 32-bit int inputs convert to unsigned uint32 per spec
+    ts1 = BSONTimestamp(-1, -1)
+    assert ts1.seconds == 4294967295
+    assert ts1.increment == 4294967295
+
+    ts2 = BSONTimestamp(-2147483648, -2147483648)
+    assert ts2.seconds == 2147483648
+    assert ts2.increment == 2147483648
+
+
+def test_bson_timestamp_boundaries():
+    ts_min = BSONTimestamp(0, 0)
+    ts_max = BSONTimestamp(4294967295, 4294967295)
+    assert ts_min.seconds == 0
+    assert ts_min.increment == 0
+    assert ts_max.seconds == 4294967295
+    assert ts_max.increment == 4294967295
+
+
+@pytest.mark.parametrize(
+    "sec_input, inc_input, exc_type, match_msg",
+    [
+        (-2147483649, 0, ValueError, "must be between"),
+        (0, -2147483649, ValueError, "must be between"),
+        (4294967296, 0, ValueError, "must be between"),
+        (0, 4294967296, ValueError, "must be between"),
+        (True, 0, TypeError, "seconds must be an int"),
+        (0, False, TypeError, "increment must be an int"),
+        ("1700000000", 0, TypeError, "seconds must be an int"),
+        (0, 1.5, TypeError, "increment must be an int"),
+    ],
+)
+def test_bson_timestamp_invalid_inputs(sec_input, inc_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONTimestamp(sec_input, inc_input)
+
+
+def test_bson_timestamp_equality():
+    ts1 = BSONTimestamp(100, 1)
+    ts2 = BSONTimestamp(100, 1)
+    ts3 = BSONTimestamp(100, 2)
+    ts4 = BSONTimestamp(200, 1)
+    assert ts1 == ts2
+    assert ts1 != ts3
+    assert ts1 != ts4
+    assert ts1 != 100
+
+
+def test_bson_timestamp_hash_and_dict_key():
+    ts1 = BSONTimestamp(100, 1)
+    ts2 = BSONTimestamp(100, 1)
+    assert hash(ts1) == hash(ts2)
+    assert len({ts1, ts2}) == 1
+
+
+def test_bson_timestamp_copy():
+    ts = BSONTimestamp(100, 1)
+    assert copy.copy(ts) == ts
+    assert copy.deepcopy(ts) == ts
+
+
+def test_bson_timestamp_pickle():
+    ts = BSONTimestamp(100, 1)
+    assert pickle.loads(pickle.dumps(ts)) == ts

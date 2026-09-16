@@ -34,6 +34,7 @@ __all__ = [
     "BSONMaxKey",
     "BSONInt32",
     "BSONBinary",
+    "BSONTimestamp",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -287,3 +288,84 @@ class BSONBinary(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._data, self._subtype))
+
+
+class BSONTimestamp(_BSONType):
+    """Represents a BSON Timestamp container for Firestore operation log entries.
+
+    Args:
+        seconds (int): Timestamp seconds as a signed int32 (-2^31 to 2^31-1) or unsigned long (0 to 2^32-1).
+        increment (int): Timestamp increment as a signed int32 (-2^31 to 2^31-1) or unsigned long (0 to 2^32-1).
+
+    Raises:
+        TypeError: If seconds or increment is not an integer or is a boolean.
+        ValueError: If seconds or increment is outside -2^31 to 2^32-1 range.
+
+    Example:
+        >>> ts = BSONTimestamp(1700000000, 1)
+        >>> ts.seconds
+        1700000000
+        >>> ts.increment
+        1
+        >>> ts_neg = BSONTimestamp(-1, -1)
+        >>> ts_neg.seconds
+        4294967295
+        >>> ts_neg.increment
+        4294967295
+    """
+
+    __slots__ = ("_seconds", "_increment")
+
+    _MIN_INT32: int = -(1 << 31)
+    _MAX_UINT32: int = (1 << 32) - 1
+
+    def __init__(self, seconds: int, increment: int):
+        self._seconds: int = self._validate_and_convert_to_unsigned(seconds, "seconds")
+        self._increment: int = self._validate_and_convert_to_unsigned(
+            increment, "increment"
+        )
+
+    @classmethod
+    def _validate_and_convert_to_unsigned(cls, val: int, name: str) -> int:
+        """Validates integer input and converts signed int32 to unsigned long representation."""
+        if isinstance(val, bool) or not isinstance(val, int):
+            raise TypeError(f"BSONTimestamp {name} must be an int.")
+        if not (cls._MIN_INT32 <= val <= cls._MAX_UINT32):
+            raise ValueError(
+                f"BSONTimestamp {name} must be between {cls._MIN_INT32} and {cls._MAX_UINT32}."
+            )
+        if val < 0:
+            val = val % (1 << 32)
+        return val
+
+    @property
+    def seconds(self) -> int:
+        """int: The seconds value in unsigned long representation."""
+        return self._seconds
+
+    @property
+    def increment(self) -> int:
+        """int: The increment value in unsigned long representation."""
+        return self._increment
+
+    def _to_map_value(self) -> Dict[str, Dict[str, int]]:
+        """Returns map dictionary representation for wire serialization."""
+        return {
+            "__request_timestamp__": {
+                "seconds": self._seconds,
+                "increment": self._increment,
+            }
+        }
+
+    def __repr__(self) -> str:
+        return f"BSONTimestamp(seconds={self._seconds}, increment={self._increment})"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONTimestamp):
+            return (
+                self._seconds == other._seconds and self._increment == other._increment
+            )
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._seconds, self._increment))
