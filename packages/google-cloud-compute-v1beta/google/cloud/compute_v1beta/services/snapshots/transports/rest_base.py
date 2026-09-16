@@ -135,6 +135,22 @@ class _BaseSnapshotsRestTransport(SnapshotsTransport):
             ]
             return http_options
 
+    class _BaseGetEffectiveRecycleBinRule:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/global/snapshots/{snapshot}/getEffectiveRecycleBinRule",
+                },
+            ]
+            return http_options
+
     class _BaseGetIamPolicy:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

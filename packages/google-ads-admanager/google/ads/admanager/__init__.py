@@ -36,6 +36,9 @@ from google.ads.admanager_v1.services.audience_segment_service.client import (
 from google.ads.admanager_v1.services.bandwidth_group_service.client import (
     BandwidthGroupServiceClient,
 )
+from google.ads.admanager_v1.services.break_template_service.client import (
+    BreakTemplateServiceClient,
+)
 from google.ads.admanager_v1.services.browser_language_service.client import (
     BrowserLanguageServiceClient,
 )
@@ -171,6 +174,9 @@ from google.ads.admanager_v1.services.viewability_provider_service.client import
     ViewabilityProviderServiceClient,
 )
 from google.ads.admanager_v1.types.ad_break_messages import AdBreak
+from google.ads.admanager_v1.types.ad_break_optimization_type_enum import (
+    AdBreakOptimizationTypeEnum,
+)
 from google.ads.admanager_v1.types.ad_break_service import (
     CreateAdBreakRequest,
     DeleteAdBreakRequest,
@@ -197,6 +203,9 @@ from google.ads.admanager_v1.types.ad_rule_enums import (
     AdRuleFrequencyCapBehaviorEnum,
     AdRuleStatusEnum,
 )
+from google.ads.admanager_v1.types.ad_rule_fill_order_direction_enum import (
+    AdRuleFillOrderDirectionEnum,
+)
 from google.ads.admanager_v1.types.ad_rule_messages import AdRule, AdRuleSlot
 from google.ads.admanager_v1.types.ad_rule_service import (
     BatchActivateAdRulesRequest,
@@ -221,6 +230,7 @@ from google.ads.admanager_v1.types.ad_rule_slot_bumper_enum import AdRuleSlotBum
 from google.ads.admanager_v1.types.ad_rule_slot_midroll_frequency_type_enum import (
     AdRuleSlotMidrollFrequencyTypeEnum,
 )
+from google.ads.admanager_v1.types.ad_spot_fill_type_enum import AdSpotFillTypeEnum
 from google.ads.admanager_v1.types.ad_spot_messages import AdSpot
 from google.ads.admanager_v1.types.ad_spot_service import (
     BatchCreateAdSpotsRequest,
@@ -303,12 +313,15 @@ from google.ads.admanager_v1.types.audience_segment_service import (
     BatchActivateAudienceSegmentsResponse,
     BatchApproveAudienceSegmentsRequest,
     BatchApproveAudienceSegmentsResponse,
+    BatchCreateAudienceSegmentsRequest,
+    BatchCreateAudienceSegmentsResponse,
     BatchDeactivateAudienceSegmentsRequest,
     BatchDeactivateAudienceSegmentsResponse,
     BatchPopulateAudienceSegmentsRequest,
     BatchPopulateAudienceSegmentsResponse,
     BatchRejectAudienceSegmentsRequest,
     BatchRejectAudienceSegmentsResponse,
+    CreateAudienceSegmentRequest,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
@@ -320,6 +333,21 @@ from google.ads.admanager_v1.types.bandwidth_group_service import (
     ListBandwidthGroupsResponse,
 )
 from google.ads.admanager_v1.types.brand_lift_partner_enum import BrandLiftPartnerEnum
+from google.ads.admanager_v1.types.break_template_messages import (
+    BreakTemplate,
+    BreakTemplateMember,
+)
+from google.ads.admanager_v1.types.break_template_service import (
+    BatchCreateBreakTemplatesRequest,
+    BatchCreateBreakTemplatesResponse,
+    BatchUpdateBreakTemplatesRequest,
+    BatchUpdateBreakTemplatesResponse,
+    CreateBreakTemplateRequest,
+    GetBreakTemplateRequest,
+    ListBreakTemplatesRequest,
+    ListBreakTemplatesResponse,
+    UpdateBreakTemplateRequest,
+)
 from google.ads.admanager_v1.types.browser_language_messages import BrowserLanguage
 from google.ads.admanager_v1.types.browser_language_service import (
     GetBrowserLanguageRequest,
@@ -1213,6 +1241,7 @@ __all__ = (
     "ApplicationServiceClient",
     "AudienceSegmentServiceClient",
     "BandwidthGroupServiceClient",
+    "BreakTemplateServiceClient",
     "BrowserLanguageServiceClient",
     "BrowserServiceClient",
     "CdnConfigServiceClient",
@@ -1268,6 +1297,7 @@ __all__ = (
     "UserServiceClient",
     "ViewabilityProviderServiceClient",
     "AdBreak",
+    "AdBreakOptimizationTypeEnum",
     "CreateAdBreakRequest",
     "DeleteAdBreakRequest",
     "GetAdBreakRequest",
@@ -1286,6 +1316,7 @@ __all__ = (
     "SearchAdReviewCenterAdsResponse",
     "AdRuleFrequencyCapBehaviorEnum",
     "AdRuleStatusEnum",
+    "AdRuleFillOrderDirectionEnum",
     "AdRule",
     "AdRuleSlot",
     "BatchActivateAdRulesRequest",
@@ -1305,6 +1336,7 @@ __all__ = (
     "AdRuleSlotBehaviorEnum",
     "AdRuleSlotBumperEnum",
     "AdRuleSlotMidrollFrequencyTypeEnum",
+    "AdSpotFillTypeEnum",
     "AdSpot",
     "BatchCreateAdSpotsRequest",
     "BatchCreateAdSpotsResponse",
@@ -1370,12 +1402,15 @@ __all__ = (
     "BatchActivateAudienceSegmentsResponse",
     "BatchApproveAudienceSegmentsRequest",
     "BatchApproveAudienceSegmentsResponse",
+    "BatchCreateAudienceSegmentsRequest",
+    "BatchCreateAudienceSegmentsResponse",
     "BatchDeactivateAudienceSegmentsRequest",
     "BatchDeactivateAudienceSegmentsResponse",
     "BatchPopulateAudienceSegmentsRequest",
     "BatchPopulateAudienceSegmentsResponse",
     "BatchRejectAudienceSegmentsRequest",
     "BatchRejectAudienceSegmentsResponse",
+    "CreateAudienceSegmentRequest",
     "GetAudienceSegmentRequest",
     "ListAudienceSegmentsRequest",
     "ListAudienceSegmentsResponse",
@@ -1384,6 +1419,17 @@ __all__ = (
     "ListBandwidthGroupsRequest",
     "ListBandwidthGroupsResponse",
     "BrandLiftPartnerEnum",
+    "BreakTemplate",
+    "BreakTemplateMember",
+    "BatchCreateBreakTemplatesRequest",
+    "BatchCreateBreakTemplatesResponse",
+    "BatchUpdateBreakTemplatesRequest",
+    "BatchUpdateBreakTemplatesResponse",
+    "CreateBreakTemplateRequest",
+    "GetBreakTemplateRequest",
+    "ListBreakTemplatesRequest",
+    "ListBreakTemplatesResponse",
+    "UpdateBreakTemplateRequest",
     "BrowserLanguage",
     "GetBrowserLanguageRequest",
     "ListBrowserLanguagesRequest",

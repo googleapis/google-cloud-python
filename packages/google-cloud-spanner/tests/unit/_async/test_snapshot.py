@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import datetime
 import unittest
 from datetime import timedelta
@@ -71,20 +72,55 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
     async def test_read_errors(self):
         snapshot = self._make_snapshot(_Session(), multi_use=False)
         snapshot._read_request_count = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.read(TABLE_NAME, COLUMNS, None)
 
+    @mock.patch(
+        "google.cloud.spanner_v1._async.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS",
+        0.01,
+    )
+    async def test_read_w_multi_use_not_begun_times_out(self):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
         snapshot = self._make_snapshot(_Session(), multi_use=True)
         snapshot._read_request_count = 1
         snapshot._transaction_id = None
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             await snapshot.read(TABLE_NAME, COLUMNS, None)
 
     async def test_execute_sql_errors(self):
         snapshot = self._make_snapshot(_Session(), multi_use=False)
         snapshot._read_request_count = 1
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             await snapshot.execute_sql(SQL_QUERY)
+
+    async def test_wait_for_transaction_begin_waits_for_concurrent_begin(self):
+        """A concurrent request must wait for the in-flight inline begin.
+
+        Regression test: without the begin event, the second request observes
+        ``_transaction_id is None`` and wrongly raises "Transaction has not begun."
+        """
+
+        snapshot = self._make_snapshot(_Session(), multi_use=True)
+
+        # First request claims the inline begin, but has not completed yet, so
+        # no transaction id is available.
+        await snapshot._wait_for_transaction_begin()
+        self.assertTrue(snapshot._begin_request_sent)
+
+        concurrent_request = asyncio.ensure_future(
+            snapshot._wait_for_transaction_begin()
+        )
+
+        # The concurrent request blocks while the transaction id is unknown.
+        done, _ = await asyncio.wait([concurrent_request], timeout=0.1)
+        self.assertEqual(done, set())
+
+        # Completing the inline begin releases it.
+        snapshot._update_for_transaction_pb(TransactionPB(id=TXN_ID))
+        await asyncio.wait_for(concurrent_request, timeout=10)
 
     async def test_partition_read_ok(self):
         token_1 = b"TOKEN1"
@@ -1023,12 +1059,20 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         call_args = api.execute_streaming_sql.call_args
         self.assertEqual(call_args.kwargs["request"].partition_token, b"token")
 
+    @mock.patch(
+        "google.cloud.spanner_v1._async.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS",
+        0.01,
+    )
     async def test_execute_sql_not_begun_error(self):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
         session = _Session()
         snapshot = self._make_snapshot(session, multi_use=True)
         snapshot._read_request_count = 1
         snapshot._transaction_id = None
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             await snapshot.execute_sql(SQL_QUERY)
 
     async def test_execute_sql_w_params(self):

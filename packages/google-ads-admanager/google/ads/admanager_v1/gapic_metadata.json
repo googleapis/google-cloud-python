@@ -279,6 +279,11 @@
                 "batch_approve_audience_segments"
               ]
             },
+            "BatchCreateAudienceSegments": {
+              "methods": [
+                "batch_create_audience_segments"
+              ]
+            },
             "BatchDeactivateAudienceSegments": {
               "methods": [
                 "batch_deactivate_audience_segments"
@@ -292,6 +297,11 @@
             "BatchRejectAudienceSegments": {
               "methods": [
                 "batch_reject_audience_segments"
+              ]
+            },
+            "CreateAudienceSegment": {
+              "methods": [
+                "create_audience_segment"
               ]
             },
             "GetAudienceSegment": {
@@ -321,6 +331,45 @@
             "ListBandwidthGroups": {
               "methods": [
                 "list_bandwidth_groups"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BreakTemplateService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BreakTemplateServiceClient",
+          "rpcs": {
+            "BatchCreateBreakTemplates": {
+              "methods": [
+                "batch_create_break_templates"
+              ]
+            },
+            "BatchUpdateBreakTemplates": {
+              "methods": [
+                "batch_update_break_templates"
+              ]
+            },
+            "CreateBreakTemplate": {
+              "methods": [
+                "create_break_template"
+              ]
+            },
+            "GetBreakTemplate": {
+              "methods": [
+                "get_break_template"
+              ]
+            },
+            "ListBreakTemplates": {
+              "methods": [
+                "list_break_templates"
+              ]
+            },
+            "UpdateBreakTemplate": {
+              "methods": [
+                "update_break_template"
               ]
             }
           }

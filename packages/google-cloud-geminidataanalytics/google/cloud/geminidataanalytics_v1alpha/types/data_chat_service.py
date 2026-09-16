@@ -129,6 +129,9 @@ class GenerationOptions(proto.Message):
         generate_disambiguation_question (bool):
             Optional. If true (default to false), the service may return
             a clarifying_question if the input query is ambiguous.
+        generate_debug_info (bool):
+            Optional. If true (default to false), returns
+            internal debugging information.
     """
 
     generate_query_result: bool = proto.Field(
@@ -146,6 +149,10 @@ class GenerationOptions(proto.Message):
     generate_disambiguation_question: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    generate_debug_info: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -181,17 +188,34 @@ class ParameterizedSecureViewParameters(proto.Message):
     generation and query execution.
 
     Attributes:
-        parameters (MutableMapping[str, str]):
-            Optional. Named parameters for Parameterized Secure Views
-            (PSV). The map keys are parameter names (e.g.,
-            ``"user_id"``), and values are the corresponding parameter
-            values (e.g., ``"123"``).
+        parameters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.ParameterizedSecureViewParameters.Parameter]):
+            Optional. Named parameters for Parameterized
+            Secure Views (PSV).
     """
 
-    parameters: MutableMapping[str, str] = proto.MapField(
-        proto.STRING,
-        proto.STRING,
+    class Parameter(proto.Message):
+        r"""Represents a single parameter for Parameterized Secure Views.
+
+        Attributes:
+            key (str):
+                Required. The parameter key (e.g., ``"user_id"``).
+            value (str):
+                Required. The parameter value (e.g., ``"123"``).
+        """
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    parameters: MutableSequence[Parameter] = proto.RepeatedField(
+        proto.MESSAGE,
         number=1,
+        message=Parameter,
     )
 
 
@@ -223,6 +247,14 @@ class QueryDataResponse(proto.Message):
             field contains a question to the user for clarification. The
             returned represents the service's best effort based on the
             ambiguous input.
+        pipeline_debug_info (google.protobuf.struct_pb2.Struct):
+            Detailed step-by-step pipeline execution information.
+            Populated only if generation_options.generate_debug_info was
+            true. Provided for debugging and transparency purposes only.
+            The structure and content of this object is not guaranteed
+            and may change at any time without notice. Do not write
+            production code or business logic depending on the fields in
+            this object.
     """
 
     generated_query: str = proto.Field(
@@ -246,6 +278,11 @@ class QueryDataResponse(proto.Message):
         proto.STRING,
         number=5,
     )
+    pipeline_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=struct_pb2.Struct,
+    )
 
 
 class ExecutedQueryResult(proto.Message):
@@ -261,6 +298,12 @@ class ExecutedQueryResult(proto.Message):
             The total number of rows in the full result
             set, if known. This may be an estimate or an
             exact count.
+
+            Note: if an internal limit (such as LIMIT 1000)
+            was applied during query execution to guard
+            against excessive data transfer, this count
+            reflects the truncated result size rather than
+            the unrestricted table result size.
         partial_result (bool):
             Set to true if the returned rows in ``query_result`` are a
             subset of the full result. This can happen, for example, if
@@ -358,11 +401,10 @@ class ListMessagesRequest(proto.Message):
             Required. The conversation to list messages under. Format:
             ``projects/{project}/locations/{location}/conversations/{conversation_id}``
         page_size (int):
-            Optional. Requested page size. Server may
-            return fewer items than requested. The max page
-            size is 100. All larger page sizes will be
-            coerced to 100. If unspecified, server will pick
-            50 as an approperiate default.
+            Optional. Requested page size. Server may return fewer items
+            than requested. The max page size is ``100``. All larger
+            page sizes will be coerced to ``100``. If unspecified,
+            server will pick ``50`` as an appropriate default.
         page_token (str):
             Optional. A token identifying a page of
             results the server should return.

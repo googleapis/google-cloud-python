@@ -18,7 +18,6 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 import functools
-import threading
 from typing import List, Optional, Union
 
 from google.api_core import gapic_v1
@@ -71,6 +70,7 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
     "Received unexpected EOS on DATA frame from server",
 )
+_TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
 
 
 def _restart_on_unavailable(
@@ -99,8 +99,7 @@ def _restart_on_unavailable(
 
     :type transaction_selector: :class:`transaction_pb2.TransactionSelector`
     :param transaction_selector: Transaction selector object to be used in request if transaction is not passed,
-    if both transaction_selector and transaction are passed, then transaction is given priority.
-    """
+    if both transaction_selector and transaction are passed, then transaction is given priority."""
     resume_token: bytes = b""
     item_buffer: List[PartialResultSet] = []
     if transaction is not None:
@@ -115,7 +114,6 @@ def _restart_on_unavailable(
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
     current_request_id = None
     stream_finished = False
-
     try:
         while True:
             try:
@@ -130,11 +128,10 @@ def _restart_on_unavailable(
                         ) as span,
                         MetricsCapture(resource_info),
                     ):
-                        (
-                            call_metadata,
-                            current_request_id,
-                        ) = request_id_manager.metadata_and_request_id(
-                            nth_request, attempt, metadata, span
+                        call_metadata, current_request_id = (
+                            request_id_manager.metadata_and_request_id(
+                                nth_request, attempt, metadata, span
+                            )
                         )
                         iterator = CrossSync._Sync_Impl.run_if_async(
                             method, request=request, metadata=call_metadata
@@ -154,13 +151,11 @@ def _restart_on_unavailable(
                         item_is_last = item.last
                     except AttributeError:
                         item_is_last = False
-
                     if item_is_last:
                         stream_finished = True
                         _drain_stream(iterator)
                         iterator = None
                         break
-
                     if item.resume_token:
                         resume_token = item.resume_token
                         break
@@ -226,19 +221,12 @@ class _SnapshotBase(_SessionWrapper):
         self._execute_sql_request_count: int = 0
         self._read_request_count: int = 0
         self._begin_request_sent: bool = False
-
-        # Identifier for the transaction.
         self._transaction_id: Optional[bytes] = None
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
         self._lock: CrossSync._Sync_Impl.Lock = CrossSync._Sync_Impl.Lock()
-
-        # Operation within a transaction can be performed using multiple
-        # threads, so we need to use a lock when updating the transaction.
-        self._lock: threading.Lock = threading.Lock()
-
-        # Event to coordinate concurrent requests beginning the transaction.
-        # This is used to prevent the "Transaction has not begun" race condition.
-        self._transaction_begin_event = threading.Event()
+        self._transaction_begin_event: CrossSync._Sync_Impl.Event = (
+            CrossSync._Sync_Impl.Event()
+        )
 
     @property
     def _resource_info(self):
@@ -249,6 +237,33 @@ class _SnapshotBase(_SessionWrapper):
             "instance": database._instance.instance_id,
             "database": database.database_id,
         }
+
+    def _wait_for_transaction_begin(self) -> None:
+        """Claims the inline-begin for this request, or waits for it to complete.
+
+        The first request against the transaction is the one that begins it
+        inline. Requests that are issued concurrently, before the transaction
+        id is available, must wait for that first request to complete instead
+        of assuming that the transaction has not begun.
+
+        :raises ValueError: if the transaction has already been used to execute
+            a request, but is not a multi-use transaction, or if the concurrent
+            request that began the transaction did not complete in time."""
+        with self._lock:
+            if self._begin_request_sent or self._read_request_count > 0:
+                if not self._multi_use:
+                    raise ValueError("Cannot re-use single-use snapshot.")
+                wait_needed = self._transaction_id is None
+            else:
+                wait_needed = False
+                self._begin_request_sent = True
+        if not wait_needed:
+            return
+        CrossSync._Sync_Impl.event_wait(
+            self._transaction_begin_event, timeout=_TRANSACTION_BEGIN_TIMEOUT_SECONDS
+        )
+        if not self._transaction_begin_event.is_set():
+            raise ValueError("Timed out waiting for transaction to begin.")
 
     def begin(self) -> bytes:
         """Begins a transaction on the database.
@@ -354,31 +369,8 @@ class _SnapshotBase(_SessionWrapper):
         :returns: a result set instance which can be used to consume rows.
 
         :raises ValueError: if the Transaction already used to execute a
-            read request, but is not a multi-use transaction or has not begun.
-        """
-
-        with self._lock:
-            # Check if this request is beginning the transaction.
-            # If a request is already in progress, other requests must wait
-            # until the transaction ID is available.
-            if self._begin_request_sent or self._read_request_count > 0:
-                if not self._multi_use:
-                    raise ValueError("Cannot re-use single-use snapshot.")
-                if self._transaction_id is None:
-                    wait_needed = True
-                else:
-                    wait_needed = False
-            else:
-                wait_needed = False
-                self._begin_request_sent = True
-
-        if wait_needed:
-            # Wait for the transaction to begin (set by another concurrent request).
-            # This prevents the race condition where concurrent requests think
-            # the transaction hasn't begun.
-            if not self._transaction_begin_event.wait(timeout=30.0):
-                raise ValueError("Timed out waiting for transaction to begin.")
-
+            read request, but is not a multi-use transaction or has not begun."""
+        self._wait_for_transaction_begin()
         session = self._session
         database = session._database
         api = database.spanner_api
@@ -550,31 +542,8 @@ class _SnapshotBase(_SessionWrapper):
             specific column in the given row.
 
         :raises ValueError: if the Transaction already used to execute a
-            read request, but is not a multi-use transaction or has not begun.
-        """
-
-        with self._lock:
-            # Check if this request is beginning the transaction.
-            # If a request is already in progress, other requests must wait
-            # until the transaction ID is available.
-            if self._begin_request_sent or self._read_request_count > 0:
-                if not self._multi_use:
-                    raise ValueError("Cannot re-use single-use snapshot.")
-                if self._transaction_id is None:
-                    wait_needed = True
-                else:
-                    wait_needed = False
-            else:
-                wait_needed = False
-                self._begin_request_sent = True
-
-        if wait_needed:
-            # Wait for the transaction to begin (set by another concurrent request).
-            # This prevents the race condition where concurrent requests think
-            # the transaction hasn't begun.
-            if not self._transaction_begin_event.wait(timeout=30.0):
-                raise ValueError("Timed out waiting for transaction to begin.")
-
+            read request, but is not a multi-use transaction or has not begun."""
+        self._wait_for_transaction_begin()
         if params is not None:
             params_pb = Struct(
                 fields={key: _make_value_pb(value) for key, value in params.items()}
@@ -934,9 +903,7 @@ class _SnapshotBase(_SessionWrapper):
         """Updates the snapshot for the given transaction."""
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
-            # Notify waiting threads that the transaction has begun.
             self._transaction_begin_event.set()
-
         if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
 
