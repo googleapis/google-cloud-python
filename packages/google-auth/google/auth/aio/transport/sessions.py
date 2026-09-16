@@ -488,8 +488,14 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
+                                    # A retry only helps when an mTLS reconfiguration
+                                    # occurred for this mTLS endpoint. Short-circuit on
+                                    # non-mTLS endpoints first so that a concurrent
+                                    # rotation (which bumps the session-wide counter)
+                                    # cannot trigger a spurious retry here.
                                     if (
-                                        self._mtls_reconfig_counter
+                                        not is_mtls_endpoint
+                                        or self._mtls_reconfig_counter
                                         <= reconfig_counter_at_error
                                     ):
                                         return response
