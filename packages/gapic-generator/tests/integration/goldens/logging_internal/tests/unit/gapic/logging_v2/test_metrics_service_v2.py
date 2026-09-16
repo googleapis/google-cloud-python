@@ -3208,6 +3208,41 @@ def test_metrics_service_v2_base_transport_with_adc():
         adc.assert_called_once()
 
 
+def test_metrics_service_v2_base_transport_wrap_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.logging_v2.services.metrics_service_v2.transports.MetricsServiceV2Transport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.MetricsServiceV2Transport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc"
+
+            # Test modern google-api-core with tracing support
+            transport._wrap_with_tracing = True
+            func = mock.Mock()
+            transport._wrap_method(func)
+            assert mock_wrap.call_args.kwargs.get("client_options") == options
+            assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
+
+            # Test older google-api-core without tracing support
+            mock_wrap.reset_mock()
+            transport._wrap_with_tracing = False
+            transport._wrap_method(func, client_options=options, kind="grpc")
+            assert "client_options" not in mock_wrap.call_args.kwargs
+            assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test without kind (e.g. abstract base transport)
+            mock_wrap.reset_mock()
+            mock_kind.side_effect = NotImplementedError
+            transport._wrap_with_tracing = True
+            transport._wrap_method(func)
+            assert mock_wrap.call_args.kwargs.get("client_options") == options
+            assert "kind" not in mock_wrap.call_args.kwargs
+
+
 def test_metrics_service_v2_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:
