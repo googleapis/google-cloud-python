@@ -27,7 +27,7 @@ Example:
 import abc
 import decimal
 import re
-from typing import Any, Dict, Union
+from typing import Any, Callable, Dict, Union
 
 __all__ = [
     "BSONObjectId",
@@ -538,7 +538,23 @@ class BSONDecimal128(_BSONType):
         return NotImplemented
 
     def __hash__(self) -> int:
-        normalized_str = (
-            "NAN" if self._value.upper() == "NAN" else self._value
-        )
+        normalized_str = "NAN" if self._value.upper() == "NAN" else self._value
         return hash((type(self), normalized_str))
+
+
+_BSON_DECODERS: Dict[str, Callable[[Any], Any]] = {
+    "__oid__": BSONObjectId,
+    "__min__": lambda _: BSONMinKey(),
+    "__max__": lambda _: BSONMaxKey(),
+    "__int__": BSONInt32,
+    "__decimal128__": BSONDecimal128,
+    "__binary__": lambda v: BSONBinary(v[1:], subtype=v[0])
+    if isinstance(v, (bytes, bytearray)) and v
+    else None,
+    "__request_timestamp__": lambda v: BSONTimestamp(v["seconds"], v["increment"])
+    if isinstance(v, dict) and "seconds" in v and "increment" in v
+    else None,
+    "__regex__": lambda v: BSONRegex(v["pattern"], v.get("options", ""))
+    if isinstance(v, dict) and "pattern" in v
+    else None,
+}

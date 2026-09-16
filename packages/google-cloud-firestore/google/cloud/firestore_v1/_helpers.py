@@ -44,7 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import _BSONType
+from google.cloud.firestore_v1.bson import _BSON_DECODERS, _BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -402,7 +402,20 @@ def decode_value(
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client) -> Union[dict, Vector]:
+def _decode_bson_dict(data: dict) -> Optional[_BSONType]:
+    """Decode a single-key wire map dictionary if registered."""
+    if len(data) == 1:
+        key, val = next(iter(data.items()))
+        decoder = _BSON_DECODERS.get(key)
+        if decoder is not None:
+            try:
+                return decoder(val)
+            except Exception:
+                pass
+    return None
+
+
+def decode_dict(value_fields, client) -> Union[dict, Vector, _BSONType]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -412,9 +425,9 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
             A client that has a document factory.
 
     Returns:
-        Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
-        of native Python values converted from the ``value_fields``.
+        Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson._BSONType]: A dictionary of native \
+        Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
     res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
@@ -425,7 +438,7 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
         values = cast(Sequence[float], res["value"])
         return Vector(values)
 
-    return res
+    return _decode_bson_dict(res) or res
 
 
 def get_doc_id(document_pb, expected_prefix) -> str:
