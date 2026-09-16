@@ -246,10 +246,9 @@ async def test_async_upload_direct_execution() -> None:
     )
 
     async_transport = DummyAsyncSession([start_resp, chunk_resp])
-    config = ResumableUploadConfig(response_type=DummyResponse)
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=config,
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -286,10 +285,11 @@ async def test_async_upload_multi_chunk_operation_handle() -> None:
     )
 
     async_transport = DummyAsyncSession([start_resp, chunk1_resp, chunk2_resp])
-    config = ResumableUploadConfig(chunk_size=4, response_type=DummyResponse)
+    config = ResumableUploadConfig(chunk_size=4)
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -344,10 +344,11 @@ async def test_async_upload_progress_tracking() -> None:
     )
 
     async_transport = DummyAsyncSession([start_resp, chunk1_resp, chunk2_resp])
-    config = ResumableUploadConfig(chunk_size=4, response_type=DummyResponse)
+    config = ResumableUploadConfig(chunk_size=4)
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -396,7 +397,7 @@ async def test_async_stream_types_async_iterable() -> None:
 
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -425,7 +426,7 @@ async def test_async_stream_types_binary_io() -> None:
     async_transport = DummyAsyncSession([start_resp, chunk_resp])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -455,7 +456,7 @@ async def test_async_stream_types_sync_iterable() -> None:
     async_transport = DummyAsyncSession([start_resp, chunk_resp])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -496,7 +497,7 @@ async def test_async_resume_success() -> None:
 
     async_transport = DummyAsyncSession([query_resp, chunk_resp])
     session = AsyncResumableUploadSession(
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -529,7 +530,7 @@ async def test_async_resume_recovery_unseekable_stream_raises() -> None:
 
     async_transport = DummyAsyncSession([query_resp])
     session = AsyncResumableUploadSession(
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -564,7 +565,7 @@ async def test_async_resume_recovery_seekable_stream() -> None:
 
     async_transport = DummyAsyncSession([query_resp, chunk_resp])
     session = AsyncResumableUploadSession(
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -653,7 +654,7 @@ async def test_async_retry_transient_http_errors() -> None:
     async_transport = DummyAsyncSession([start_resp, chunk_503, chunk_success])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -721,7 +722,7 @@ async def test_async_recoverable_status_code_triggers_recovery() -> None:
     )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -765,7 +766,7 @@ async def test_async_missing_status_header_triggers_recovery() -> None:
     )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=async_transport,
     )
 
@@ -879,7 +880,7 @@ async def test_async_response_type_proto_message() -> None:
     async_transport = DummyAsyncSession([start_resp, chunk_resp])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=EchoResponse),
+        response_type=EchoResponse,
         transport=async_transport,
     )
 
@@ -908,7 +909,7 @@ async def test_async_response_type_protobuf_message() -> None:
     async_transport = DummyAsyncSession([start_resp, chunk_resp])
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=empty_pb2.Empty),
+        response_type=empty_pb2.Empty,
         transport=async_transport,
     )
 
@@ -943,7 +944,7 @@ async def test_async_response_type_callable() -> None:
 
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=custom_parser),
+        response_type=custom_parser,
         transport=async_transport,
     )
 
@@ -1050,11 +1051,10 @@ def test_async_enrich_exception() -> None:
 def test_async_notify_progress_branches() -> None:
     """Verifies progress notification callbacks and queues."""
     called = []
-    config = ResumableUploadConfig(on_progress=lambda p: called.append(p))
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=config,
     )
+    session._on_progress = lambda p: called.append(p)
     # When upload_url is None
     session._notify_progress(common.ProgressState.UPLOADING)
     assert len(called) == 0
@@ -1120,33 +1120,31 @@ async def test_async_retry_branches() -> None:
     assert pred_transfer(exceptions.from_http_status(500, "Internal Error")) is True
 
     # Default retry resolution
-    default_unary = session._get_async_retry(is_start=True)
+    default_unary = session._get_async_retry()
     assert isinstance(default_unary, google.api_core.retry.AsyncRetry)
 
     default_stream = session._get_async_streaming_retry()
     assert isinstance(default_stream, google.api_core.retry.AsyncStreamingRetry)
 
-    # Custom AsyncRetry resolution
+    # Custom AsyncRetry resolution via start_retry and retry_override
     custom_unary = google.api_core.retry.AsyncRetry(initial=0.5)
     session_unary = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(retry=custom_unary),
+        start_retry=custom_unary,
     )
-    assert session_unary._get_async_retry(is_start=True) is custom_unary
-    converted_stream = session_unary._get_async_streaming_retry()
+    assert session_unary._get_async_retry() is custom_unary
+    converted_stream = session_unary._get_async_streaming_retry(
+        retry_override=custom_unary
+    )
     assert isinstance(converted_stream, google.api_core.retry.AsyncStreamingRetry)
     assert converted_stream._initial == 0.5
 
-    # Custom AsyncStreamingRetry resolution
+    # Custom AsyncStreamingRetry resolution via retry_override
     custom_stream = google.api_core.retry.AsyncStreamingRetry(initial=0.25)
-    session_stream = AsyncResumableUploadSession(
-        upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(retry=custom_stream),
+    assert (
+        session._get_async_streaming_retry(retry_override=custom_stream)
+        is custom_stream
     )
-    assert session_stream._get_async_streaming_retry() is custom_stream
-    converted_unary = session_stream._get_async_retry(is_start=False)
-    assert isinstance(converted_unary, google.api_core.retry.AsyncRetry)
-    assert converted_unary._initial == 0.25
 
 
 def test_async_transport_missing_errors() -> None:
@@ -1281,7 +1279,7 @@ async def test_async_upload_with_timeout_and_deadline() -> None:
     future_deadline = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
         seconds=60
     )
-    config = ResumableUploadConfig(timeout=30.0, deadline=future_deadline)
+    config = ResumableUploadConfig(deadline=future_deadline)
 
     start_resp = DummyAsyncResponse(
         status=200,
@@ -1304,7 +1302,7 @@ async def test_async_upload_with_timeout_and_deadline() -> None:
     session._state._resumable_url = "https://upload.example.com/resumable-async"
 
     # Run the upload
-    res = await session.upload(stream=b"data")
+    res = await session.upload(stream=b"data", timeout=30.0)
     assert res == b"{}"
 
 
@@ -1759,9 +1757,6 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
     transport = StatefulAsyncTransport()
     config = ResumableUploadConfig(
         chunk_size=4,
-        retry=google.api_core.retry.AsyncStreamingRetry(
-            predicate=lambda exc: True, initial=0.001
-        ),
     )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
@@ -1769,7 +1764,12 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
         transport=transport,
     )
 
-    await session.upload(stream=b"012345")
+    await session.upload(
+        stream=b"012345",
+        retry=google.api_core.retry.AsyncStreamingRetry(
+            predicate=lambda exc: True, initial=0.001
+        ),
+    )
 
     # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
     assert bytes(server_received_bytes) == b"012345"
@@ -1857,3 +1857,62 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
     assert len(first_pass) == 2
     second_pass = [p async for p in op_ok.progress()]
     assert second_pass == []
+
+
+@pytest.mark.asyncio
+async def test_async_method_override_arguments() -> None:
+    """Verifies content_type and on_progress overrides on initiate, upload, and resume."""
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/123",
+        },
+        body=b"",
+    )
+    chunk_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"{}",
+    )
+
+    # 1. initiate with content_type override
+    session1 = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
+    await session1.initiate(
+        transport=DummyAsyncSession([start_resp]), content_type="text/plain"
+    )
+    assert session1._content_type == "text/plain"
+
+    # 2. upload with content_type and on_progress overrides
+    progress_events: List[UploadProgress] = []
+    session2 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=DummyAsyncSession([start_resp, chunk_resp]),
+    )
+    await session2.upload(
+        stream=b"data",
+        content_type="text/csv",
+        on_progress=lambda p: progress_events.append(p),
+    )
+    assert session2._content_type == "text/csv"
+    assert len(progress_events) == 2
+
+    # 3. resume with on_progress override
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "0",
+        },
+        body=b"",
+    )
+    resume_events: List[UploadProgress] = []
+    session3 = AsyncResumableUploadSession(
+        transport=DummyAsyncSession([query_resp, chunk_resp])
+    )
+    await session3.resume(
+        upload_url="https://upload.example.com/123",
+        stream=b"data",
+        on_progress=lambda p: resume_events.append(p),
+    )
+    assert len(resume_events) == 2

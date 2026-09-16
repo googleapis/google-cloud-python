@@ -157,6 +157,10 @@ class AsyncResumableUploadSession:
         config: Optional[ResumableUploadConfig] = None,
         resumable_url: Optional[str] = None,
         transport: Optional[Any] = None,
+        content_type: Optional[str] = None,
+        response_type: Optional[Any] = None,
+        start_retry: Optional[google.api_core.retry.AsyncRetry] = None,
+        start_timeout: Optional[float] = None,
     ) -> None:
         """Initializes an AsyncResumableUploadSession.
 
@@ -165,9 +169,18 @@ class AsyncResumableUploadSession:
             config: Optional upload configuration parameters.
             resumable_url: Pre-existing upload session URL if resuming.
             transport: Optional aiohttp.ClientSession.
+            content_type: Optional MIME type of the stream payload.
+            response_type: Optional message class, callable deserializer, or None.
+            start_retry: Optional unary AsyncRetry policy for the start request.
+            start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
         self._transport = transport
+        self._content_type = content_type
+        self._response_type = response_type
+        self._start_retry = start_retry
+        self._start_timeout = start_timeout
+        self._on_progress: Optional[Callable[[common.UploadProgress], Any]] = None
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
@@ -249,9 +262,9 @@ class AsyncResumableUploadSession:
                 total_bytes=self._state.total_bytes,
                 state=state,
             )
-            if self._config.on_progress:
+            if self._on_progress:
                 try:
-                    self._config.on_progress(progress)
+                    self._on_progress(progress)
                 except Exception:  # pragma: NO COVER
                     pass
             if queue is not None:
@@ -279,15 +292,20 @@ class AsyncResumableUploadSession:
             return remaining
         return None
 
-    def _get_start_timeout(self) -> float:
+    def _get_start_timeout(self, timeout_override: Optional[float] = None) -> float:
         """Computes timeout in seconds for start and control requests.
+
+        Args:
+            timeout_override: Explicit timeout override in seconds.
 
         Returns:
             Applicable timeout in seconds.
         """
         remaining = self._get_deadline_remaining()
         timeout = (
-            self._config.start_timeout or self._config.timeout or _DEFAULT_START_TIMEOUT
+            timeout_override
+            if timeout_override is not None
+            else (self._start_timeout or _DEFAULT_START_TIMEOUT)
         )
         if remaining is not None:
             return min(timeout, remaining)
@@ -332,56 +350,50 @@ class AsyncResumableUploadSession:
         return should_retry
 
     def _get_async_retry(
-        self, is_start: bool = False
+        self, retry_override: Optional[google.api_core.retry.AsyncRetry] = None
     ) -> google.api_core.retry.AsyncRetry:
         """Resolves unary AsyncRetry policy for start requests.
 
         Args:
-            is_start: Whether this retry policy is for the start request.
+            retry_override: Optional unary AsyncRetry policy override for the start request.
 
         Returns:
             Configured or default unary AsyncRetry instance.
         """
-        candidate = (
-            self._config.start_retry
-            if is_start and self._config.start_retry
-            else self._config.retry
-        )
+        candidate = retry_override or self._start_retry
         if candidate is not None:
-            if isinstance(candidate, google.api_core.retry.AsyncRetry):
-                return candidate
-            return google.api_core.retry.AsyncRetry(
-                predicate=candidate._predicate,
-                initial=candidate._initial,
-                maximum=candidate._maximum,
-                multiplier=candidate._multiplier,
-                timeout=candidate._timeout,
-                on_error=candidate._on_error,
-            )
+            return candidate
         return google.api_core.retry.AsyncRetry(
-            predicate=self._get_retry_predicate(is_start=is_start)
+            predicate=self._get_retry_predicate(is_start=True)
         )
 
     def _get_async_streaming_retry(
         self,
+        retry_override: Optional[
+            Union[
+                google.api_core.retry.AsyncRetry,
+                google.api_core.retry.AsyncStreamingRetry,
+            ]
+        ] = None,
     ) -> google.api_core.retry.AsyncStreamingRetry:
         """Resolves the AsyncStreamingRetry policy for the chunk upload generator.
+
+        Args:
+            retry_override: Optional retry policy override for chunk transmission.
 
         Returns:
             Configured or default AsyncStreamingRetry instance.
         """
-        if self._config.retry:
-            if isinstance(
-                self._config.retry, google.api_core.retry.AsyncStreamingRetry
-            ):
-                return self._config.retry
+        if retry_override is not None:
+            if isinstance(retry_override, google.api_core.retry.AsyncStreamingRetry):
+                return retry_override
             return google.api_core.retry.AsyncStreamingRetry(
-                predicate=self._config.retry._predicate,
-                initial=self._config.retry._initial,
-                maximum=self._config.retry._maximum,
-                multiplier=self._config.retry._multiplier,
-                timeout=self._config.retry._timeout,
-                on_error=self._config.retry._on_error,
+                predicate=retry_override._predicate,
+                initial=retry_override._initial,
+                maximum=retry_override._maximum,
+                multiplier=retry_override._multiplier,
+                timeout=retry_override._timeout,
+                on_error=retry_override._on_error,
             )
         return google.api_core.retry.AsyncStreamingRetry(
             predicate=self._get_retry_predicate(is_start=False)
@@ -393,6 +405,9 @@ class AsyncResumableUploadSession:
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         progress_queue: Optional[asyncio.Queue] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[google.api_core.retry.AsyncRetry] = None,
+        timeout: Optional[float] = None,
     ) -> str:
         """Initiates the upload session by sending the start command asynchronously.
 
@@ -401,6 +416,9 @@ class AsyncResumableUploadSession:
             request_body: Initial metadata payload sent with start command.
             size: Total stream size in bytes, if known.
             progress_queue: Optional queue to receive progress event.
+            content_type: Optional MIME type override of the payload.
+            retry: Optional unary AsyncRetry policy override for the start request.
+            timeout: Optional per-request timeout override in seconds.
 
         Returns:
             The upload session URL.
@@ -410,15 +428,18 @@ class AsyncResumableUploadSession:
             MissingStatusHeaderError: If the server response lacks status header.
         """
         self._ensure_aiohttp()
+        if content_type is not None:
+            self._content_type = content_type
+
         method, url, headers, payload = self._state.build_start_request(
             body=request_body,
             headers=self._config.start_headers,
-            content_type=self._config.content_type,
+            content_type=self._content_type,
             size=size,
         )
 
         async def do_initiate():
-            timeout_sec = self._get_start_timeout()
+            timeout_sec = self._get_start_timeout(timeout_override=timeout)
             client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
             async with transport.request(
                 method, url, data=payload, headers=headers, timeout=client_timeout
@@ -434,8 +455,8 @@ class AsyncResumableUploadSession:
                 )
                 return session_url
 
-        retry = self._get_async_retry(is_start=True)
-        retryable_initiate = retry(do_initiate)
+        retry_policy = self._get_async_retry(retry_override=retry)
+        retryable_initiate = retry_policy(do_initiate)
         session_url = await retryable_initiate()
         self._notify_progress(common.ProgressState.STARTED, progress_queue)
         return session_url
@@ -446,6 +467,7 @@ class AsyncResumableUploadSession:
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
         progress_queue: Optional[asyncio.Queue] = None,
+        timeout: Optional[float] = None,
     ) -> Tuple[int, Mapping[str, str], bytes]:
         """Transmits the next data chunk asynchronously with stall control.
 
@@ -454,6 +476,7 @@ class AsyncResumableUploadSession:
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
             progress_queue: Optional queue to receive progress updates.
+            timeout: Optional per-attempt timeout ceiling in seconds.
 
         Returns:
             Tuple of (status code, headers mapping, response body bytes).
@@ -490,7 +513,7 @@ class AsyncResumableUploadSession:
         method, url, headers, payload = self._state.build_chunk_request(
             data=data,
             is_last_chunk=is_last,
-            content_type=self._config.content_type,
+            content_type=self._content_type,
         )
 
         rate = self._config.stall_minimum_rate
@@ -501,8 +524,8 @@ class AsyncResumableUploadSession:
         )
         per_attempt_timeout = max(5.0, min(next_chunk_timeout, 2.0 * expected_sec))
 
-        if self._config.timeout:
-            per_attempt_timeout = min(self._config.timeout, per_attempt_timeout)
+        if timeout is not None:
+            per_attempt_timeout = min(timeout, per_attempt_timeout)
 
         remaining = self._get_deadline_remaining()
         if remaining is not None:
@@ -687,6 +710,13 @@ class AsyncResumableUploadSession:
         computed_size: Optional[int],
         progress_queue: Optional[asyncio.Queue] = None,
         stream_obj: Optional[object] = None,
+        retry: Optional[
+            Union[
+                google.api_core.retry.AsyncRetry,
+                google.api_core.retry.AsyncStreamingRetry,
+            ]
+        ] = None,
+        timeout: Optional[float] = None,
     ) -> Optional[Tuple[int, Mapping[str, str], bytes]]:
         """Transmits chunks until completion using a single outer AsyncStreamingRetry coordinator.
 
@@ -696,6 +726,8 @@ class AsyncResumableUploadSession:
             computed_size: Total stream size in bytes, if known.
             progress_queue: Optional queue receiving UploadProgress snapshots.
             stream_obj: Underlying stream object for recovery seeking.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
 
         Returns:
             Tuple of (status code, headers, body bytes) of the final server response, or None.
@@ -720,7 +752,11 @@ class AsyncResumableUploadSession:
             while not self._state.finished and not self._state.invalid:
                 try:
                     final_resp_tuple = await self._transmit_chunk(
-                        transport, reader_fn, computed_size, progress_queue
+                        transport,
+                        reader_fn,
+                        computed_size,
+                        progress_queue,
+                        timeout=timeout,
                     )
                 except Exception as exc:
                     is_recoverable = (
@@ -743,8 +779,8 @@ class AsyncResumableUploadSession:
                 yield
 
         try:
-            retry = self._get_async_streaming_retry()
-            retryable_stream = retry(attempt_stream)
+            retry_policy = self._get_async_streaming_retry(retry_override=retry)
+            retryable_stream = retry_policy(attempt_stream)
             stream_gen = await retryable_stream()
             async for _ in stream_gen:
                 pass
@@ -768,6 +804,15 @@ class AsyncResumableUploadSession:
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         transport: Optional[Any] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[
+            Union[
+                google.api_core.retry.AsyncRetry,
+                google.api_core.retry.AsyncStreamingRetry,
+            ]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
         """Initiates and executes upload asynchronously, returning an AsyncUploadOperation.
 
@@ -776,6 +821,10 @@ class AsyncResumableUploadSession:
             request_body: Initial metadata payload sent with the start request.
             size: Total stream size in bytes, if known.
             transport: Optional aiohttp client session.
+            content_type: Optional MIME type of the stream payload.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             An AsyncUploadOperation handle representing the active transfer.
@@ -787,6 +836,11 @@ class AsyncResumableUploadSession:
         sess = transport or self._transport
         if sess is None:
             raise ValueError("An aiohttp.ClientSession transport must be provided.")
+
+        if content_type is not None:
+            self._content_type = content_type
+        if on_progress is not None:
+            self._on_progress = on_progress
 
         progress_queue: asyncio.Queue = asyncio.Queue()
         reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
@@ -801,7 +855,13 @@ class AsyncResumableUploadSession:
                 )
 
                 final_resp_tuple = await self._transmit_all_chunks(
-                    sess, reader_fn, computed_size, progress_queue, stream_obj
+                    sess,
+                    reader_fn,
+                    computed_size,
+                    progress_queue,
+                    stream_obj,
+                    retry=retry,
+                    timeout=timeout,
                 )
 
                 if final_resp_tuple is None:
@@ -828,6 +888,14 @@ class AsyncResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[Any] = None,
+        retry: Optional[
+            Union[
+                google.api_core.retry.AsyncRetry,
+                google.api_core.retry.AsyncStreamingRetry,
+            ]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
         """Resumes an existing upload asynchronously, returning an AsyncUploadOperation.
 
@@ -837,6 +905,9 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional aiohttp client session.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             An AsyncUploadOperation handle representing the resumed transfer.
@@ -851,6 +922,8 @@ class AsyncResumableUploadSession:
 
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
+        if on_progress is not None:
+            self._on_progress = on_progress
 
         self._state._resumable_url = upload_url
         progress_queue: asyncio.Queue = asyncio.Queue()
@@ -861,7 +934,13 @@ class AsyncResumableUploadSession:
                 await self._recover(sess, stream_obj, progress_queue=progress_queue)
 
                 final_resp_tuple = await self._transmit_all_chunks(
-                    sess, reader_fn, computed_size, progress_queue, stream_obj
+                    sess,
+                    reader_fn,
+                    computed_size,
+                    progress_queue,
+                    stream_obj,
+                    retry=retry,
+                    timeout=timeout,
                 )
 
                 if final_resp_tuple is None:
@@ -995,4 +1074,4 @@ class AsyncResumableUploadSession:
         Returns:
             Deserialized protobuf message or the raw bytes response.
         """
-        return _format_response_payload(response_bytes, self._config.response_type)
+        return _format_response_payload(response_bytes, self._response_type)

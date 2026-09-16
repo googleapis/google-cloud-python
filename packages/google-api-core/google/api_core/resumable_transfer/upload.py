@@ -101,6 +101,10 @@ class ResumableUploadSession:
         config: Optional[ResumableUploadConfig] = None,
         resumable_url: Optional[str] = None,
         transport: Optional[requests.Session] = None,
+        content_type: Optional[str] = None,
+        response_type: Optional[Any] = None,
+        start_retry: Optional[google.api_core.retry.Retry] = None,
+        start_timeout: Optional[float] = None,
     ) -> None:
         """Initializes a ResumableUploadSession.
 
@@ -109,9 +113,18 @@ class ResumableUploadSession:
             config: Optional upload configuration parameters.
             resumable_url: Pre-existing upload session URL if resuming.
             transport: Optional requests session.
+            content_type: Optional MIME type of the stream payload.
+            response_type: Optional message class, callable deserializer, or None.
+            start_retry: Optional unary Retry policy for the start request.
+            start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
         self._transport = transport
+        self._content_type = content_type
+        self._response_type = response_type
+        self._start_retry = start_retry
+        self._start_timeout = start_timeout
+        self._on_progress: Optional[Callable[[common.UploadProgress], None]] = None
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
@@ -202,8 +215,8 @@ class ResumableUploadSession:
             )
             if progress_queue is not None:
                 progress_queue.append(progress)
-            if self._config.on_progress:
-                self._config.on_progress(progress)
+            if self._on_progress:
+                self._on_progress(progress)
 
     def _get_deadline_remaining(self) -> Optional[float]:
         """Calculates remaining seconds until the configured upload deadline.
@@ -227,15 +240,20 @@ class ResumableUploadSession:
             return remaining
         return None
 
-    def _get_start_timeout(self) -> float:
+    def _get_start_timeout(self, timeout_override: Optional[float] = None) -> float:
         """Computes timeout in seconds for start and control requests.
+
+        Args:
+            timeout_override: Explicit timeout override in seconds.
 
         Returns:
             Applicable timeout in seconds.
         """
         remaining = self._get_deadline_remaining()
         timeout = (
-            self._config.start_timeout or self._config.timeout or _DEFAULT_START_TIMEOUT
+            timeout_override
+            if timeout_override is not None
+            else (self._start_timeout or _DEFAULT_START_TIMEOUT)
         )
         if remaining is not None:
             return min(timeout, remaining)
@@ -287,61 +305,61 @@ class ResumableUploadSession:
 
         return should_retry
 
-    def _get_retry(self, is_start: bool = False) -> google.api_core.retry.Retry:
+    def _get_retry(
+        self, retry_override: Optional[google.api_core.retry.Retry] = None
+    ) -> google.api_core.retry.Retry:
         """Resolves unary Retry policy for start requests.
 
         Args:
-            is_start: Whether this retry policy is for the start request.
+            retry_override: Optional unary Retry policy override for the start request.
 
         Returns:
             Configured or default unary Retry instance.
         """
-        candidate = (
-            self._config.start_retry
-            if is_start and self._config.start_retry
-            else self._config.retry
-        )
+        candidate = retry_override or self._start_retry
         if candidate is not None:
-            if isinstance(candidate, google.api_core.retry.Retry):
-                return candidate
-            return google.api_core.retry.Retry(
-                predicate=candidate._predicate,
-                initial=candidate._initial,
-                maximum=candidate._maximum,
-                multiplier=candidate._multiplier,
-                timeout=candidate._timeout,
-                on_error=candidate._on_error,
-            )
+            return candidate
         return google.api_core.retry.Retry(
-            predicate=self._get_retry_predicate(is_start=is_start)
+            predicate=self._get_retry_predicate(is_start=True)
         )
 
-    def _get_streaming_retry(self) -> google.api_core.retry.StreamingRetry:
+    def _get_streaming_retry(
+        self,
+        retry_override: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+    ) -> google.api_core.retry.StreamingRetry:
         """Resolves the StreamingRetry policy for the chunk upload generator.
+
+        Args:
+            retry_override: Optional retry policy override for chunk transmission.
 
         Returns:
             Configured or default StreamingRetry instance.
         """
-        if self._config.retry:
-            if isinstance(self._config.retry, google.api_core.retry.StreamingRetry):
-                return self._config.retry
+        if retry_override is not None:
+            if isinstance(retry_override, google.api_core.retry.StreamingRetry):
+                return retry_override
             return google.api_core.retry.StreamingRetry(
-                predicate=self._config.retry._predicate,
-                initial=self._config.retry._initial,
-                maximum=self._config.retry._maximum,
-                multiplier=self._config.retry._multiplier,
-                timeout=self._config.retry._timeout,
-                on_error=self._config.retry._on_error,
+                predicate=retry_override._predicate,
+                initial=retry_override._initial,
+                maximum=retry_override._maximum,
+                multiplier=retry_override._multiplier,
+                timeout=retry_override._timeout,
+                on_error=retry_override._on_error,
             )
         return google.api_core.retry.StreamingRetry(
             predicate=self._get_retry_predicate(is_start=False)
         )
 
-    def _compute_chunk_timeout(self, data_len: int) -> float:
+    def _compute_chunk_timeout(
+        self, data_len: int, timeout_override: Optional[float] = None
+    ) -> float:
         """Computes the dynamic per-attempt chunk timeout based on stall control and deadlines.
 
         Args:
             data_len: Length of the current chunk in bytes.
+            timeout_override: Optional per-attempt timeout ceiling in seconds.
 
         Returns:
             Timeout in seconds for chunk transmission attempt.
@@ -354,8 +372,8 @@ class ResumableUploadSession:
         )
         per_attempt_timeout = max(5.0, min(next_chunk_timeout, 2.0 * expected_sec))
 
-        if self._config.timeout:
-            per_attempt_timeout = min(self._config.timeout, per_attempt_timeout)
+        if timeout_override is not None:
+            per_attempt_timeout = min(timeout_override, per_attempt_timeout)
 
         remaining = self._get_deadline_remaining()
         if remaining is not None:
@@ -452,6 +470,9 @@ class ResumableUploadSession:
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         progress_queue: Optional[List[common.UploadProgress]] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[google.api_core.retry.Retry] = None,
+        timeout: Optional[float] = None,
     ) -> str:
         """Initiates the upload session by sending the start command.
 
@@ -460,21 +481,27 @@ class ResumableUploadSession:
             request_body: JSON payload for initial start request.
             size: Total size of payload in bytes, if known.
             progress_queue: Optional list buffering UploadProgress snapshots.
+            content_type: Optional MIME type override of the payload.
+            retry: Optional unary Retry policy override for the start request.
+            timeout: Optional per-request timeout override in seconds.
 
         Returns:
             The upload session URL.
         """
+        if content_type is not None:
+            self._content_type = content_type
+
         method, url, headers, payload = self._state.build_start_request(
             body=request_body,
             headers=self._config.start_headers,
-            content_type=self._config.content_type,
+            content_type=self._content_type,
             size=size,
         )
 
         def do_initiate() -> str:
-            timeout = self._get_start_timeout()
+            req_timeout = self._get_start_timeout(timeout_override=timeout)
             response = transport.request(
-                method, url, data=payload, headers=headers, timeout=timeout
+                method, url, data=payload, headers=headers, timeout=req_timeout
             )
             if not response.ok:
                 raise exceptions.from_http_response(response)
@@ -483,8 +510,8 @@ class ResumableUploadSession:
             )
             return session_url
 
-        retry = self._get_retry(is_start=True)
-        retryable_initiate = retry(do_initiate)
+        retry_policy = self._get_retry(retry_override=retry)
+        retryable_initiate = retry_policy(do_initiate)
         session_url = retryable_initiate()
         self._notify_progress(
             common.ProgressState.STARTED, progress_queue=progress_queue
@@ -497,6 +524,7 @@ class ResumableUploadSession:
         stream: Union[BinaryIO, Iterable[bytes]],
         size: Optional[int],
         progress_queue: Optional[List[common.UploadProgress]] = None,
+        timeout: Optional[float] = None,
     ) -> requests.Response:
         """Transmits a single data chunk attempt with stall control.
 
@@ -505,6 +533,7 @@ class ResumableUploadSession:
             stream: The input data stream.
             size: Total size of the stream in bytes, if known.
             progress_queue: Optional list buffering UploadProgress snapshots.
+            timeout: Optional per-attempt timeout ceiling in seconds.
 
         Returns:
             The HTTP response for the transmitted chunk.
@@ -537,10 +566,12 @@ class ResumableUploadSession:
         method, url, headers, payload = self._state.build_chunk_request(
             data=data,
             is_last_chunk=is_last,
-            content_type=self._config.content_type,
+            content_type=self._content_type,
         )
 
-        per_attempt_timeout = self._compute_chunk_timeout(data_len)
+        per_attempt_timeout = self._compute_chunk_timeout(
+            data_len, timeout_override=timeout
+        )
         try:
             t_start = _monotonic_clock()
             resp = transport.request(
@@ -636,6 +667,10 @@ class ResumableUploadSession:
         stream_obj: Union[BinaryIO, Iterable[bytes]],
         computed_size: Optional[int],
         progress_queue: Optional[List[common.UploadProgress]] = None,
+        retry: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+        timeout: Optional[float] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Transmits chunks until transfer completes, yielding buffered progress updates.
 
@@ -644,6 +679,8 @@ class ResumableUploadSession:
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
             progress_queue: Optional list buffering UploadProgress snapshots.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
 
         Yields:
             UploadProgress snapshots for each transmission milestone.
@@ -685,6 +722,7 @@ class ResumableUploadSession:
                         stream_obj,
                         computed_size,
                         progress_queue=progress_queue,
+                        timeout=timeout,
                     )
                 except Exception as exc:
                     is_recoverable = (
@@ -710,8 +748,8 @@ class ResumableUploadSession:
                     yield progress_queue.pop(0)
 
         try:
-            retry = self._get_streaming_retry()
-            retryable_stream = retry(attempt_stream)
+            retry_policy = self._get_streaming_retry(retry_override=retry)
+            retryable_stream = retry_policy(attempt_stream)
             yield from retryable_stream()
         except requests.exceptions.Timeout as exc:
             self._enrich_exception(exc)
@@ -733,6 +771,12 @@ class ResumableUploadSession:
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Any:
         """Executes the resumable upload from start to completion.
 
@@ -741,6 +785,10 @@ class ResumableUploadSession:
             request_body: Initial metadata payload sent with the start request.
             size: Total stream size in bytes, if known.
             transport: Optional requests session.
+            content_type: Optional MIME type of the stream payload.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             The final server response payload or deserialized response message.
@@ -750,7 +798,14 @@ class ResumableUploadSession:
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
         for _ in self.iter_upload(
-            stream=stream, request_body=request_body, size=size, transport=transport
+            stream=stream,
+            request_body=request_body,
+            size=size,
+            transport=transport,
+            content_type=content_type,
+            retry=retry,
+            timeout=timeout,
+            on_progress=on_progress,
         ):
             pass
         return self._response
@@ -761,6 +816,12 @@ class ResumableUploadSession:
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
+        content_type: Optional[str] = None,
+        retry: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Streams upload execution, yielding UploadProgress snapshots (PEP 255).
 
@@ -769,6 +830,10 @@ class ResumableUploadSession:
             request_body: Initial metadata payload sent with the start request.
             size: Total stream size in bytes, if known.
             transport: Optional requests session.
+            content_type: Optional MIME type of the stream payload.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Yields:
             UploadProgress snapshots for each chunk transmission milestone.
@@ -778,6 +843,10 @@ class ResumableUploadSession:
             GoogleAPICallError: If an unrecoverable API error occurs.
         """
         sess = self._get_transport(transport)
+        if content_type is not None:
+            self._content_type = content_type
+        if on_progress is not None:
+            self._on_progress = on_progress
         progress_queue: List[common.UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
@@ -788,7 +857,12 @@ class ResumableUploadSession:
                 progress_queue=progress_queue,
             )
             yield from self._transmit_all_chunks(
-                sess, stream_obj, computed_size, progress_queue=progress_queue
+                sess,
+                stream_obj,
+                computed_size,
+                progress_queue=progress_queue,
+                retry=retry,
+                timeout=timeout,
             )
         except Exception as exc:
             self._enrich_exception(exc)
@@ -801,6 +875,11 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
+        retry: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Any:
         """Resumes an existing upload from a saved upload URL.
 
@@ -810,6 +889,9 @@ class ResumableUploadSession:
             size: Total size of the payload in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional requests session.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             The final server response payload or deserialized response message.
@@ -824,6 +906,9 @@ class ResumableUploadSession:
             size=size,
             chunk_size=chunk_size,
             transport=transport,
+            retry=retry,
+            timeout=timeout,
+            on_progress=on_progress,
         ):
             pass
         return self._response
@@ -835,6 +920,11 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
+        retry: Optional[
+            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
+        ] = None,
+        timeout: Optional[float] = None,
+        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Streams resumption of an upload, yielding UploadProgress snapshots.
 
@@ -844,6 +934,9 @@ class ResumableUploadSession:
             size: Total size of the payload in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional requests session.
+            retry: Optional retry policy override for chunk transmission.
+            timeout: Optional per-attempt timeout ceiling in seconds.
+            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Yields:
             UploadProgress snapshots for each chunk transmission milestone.
@@ -861,6 +954,8 @@ class ResumableUploadSession:
 
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
+        if on_progress is not None:
+            self._on_progress = on_progress
 
         self._state._resumable_url = actual_url
         progress_queue: List[common.UploadProgress] = []
@@ -868,7 +963,12 @@ class ResumableUploadSession:
             stream_obj, computed_size = self._prepare_stream(stream, size)
             self._recover(sess, stream_obj, progress_queue=progress_queue)
             yield from self._transmit_all_chunks(
-                sess, stream_obj, computed_size, progress_queue=progress_queue
+                sess,
+                stream_obj,
+                computed_size,
+                progress_queue=progress_queue,
+                retry=retry,
+                timeout=timeout,
             )
         except Exception as exc:
             self._enrich_exception(exc)
@@ -934,4 +1034,4 @@ class ResumableUploadSession:
         Returns:
             Deserialized protobuf message or the raw response object.
         """
-        return _format_response_payload(response, self._config.response_type)
+        return _format_response_payload(response, self._response_type)

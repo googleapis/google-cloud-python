@@ -14,7 +14,7 @@
 
 import datetime
 import io
-from typing import Union
+from typing import List, Union
 from unittest import mock
 
 import pytest
@@ -270,35 +270,19 @@ def test_resumable_upload_config_defaults():
     assert config.chunk_size == 10 * 1024 * 1024
     assert config.stall_minimum_rate == 64 * 1024
     assert config.stall_timeout == 120.0
-    assert config.start_timeout is None
-    assert config.start_retry is None
     assert config.headers is None
     assert config.deadline is None
 
 
-def test_resumable_upload_config_fallbacks_and_headers():
-    retry1 = mock.Mock()
+def test_resumable_upload_config_headers():
     config1 = ResumableUploadConfig(
-        start_timeout=45.0,
-        retry=retry1,
         headers={"X-Test": "1"},
     )
-    assert config1.timeout == 45.0
-    assert config1.start_timeout == 45.0
-    assert config1.retry is retry1
-    assert config1.start_retry is retry1
     assert config1.start_headers == [("X-Test", "1")]
 
-    retry2 = mock.Mock()
     config2 = ResumableUploadConfig(
-        timeout=30.0,
-        start_retry=retry2,
         headers=[("X-Test", "2")],
     )
-    assert config2.timeout == 30.0
-    assert config2.start_timeout == 30.0
-    assert config2.retry is retry2
-    assert config2.start_retry is retry2
     assert config2.start_headers == [("X-Test", "2")]
 
 
@@ -328,11 +312,10 @@ def test_sync_upload_direct_execution():
 
     session_transport.request.side_effect = [start_resp, chunk_resp]
 
-    config = ResumableUploadConfig(response_type=DummyResponse)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=config,
         transport=session_transport,
+        response_type=DummyResponse,
     )
 
     payload = b"Hello world"
@@ -372,11 +355,12 @@ def test_sync_upload_iterative_progress():
 
     session_transport.request.side_effect = [start_resp, chunk1_resp, chunk2_resp]
 
-    config = ResumableUploadConfig(chunk_size=4, response_type=DummyResponse)
+    config = ResumableUploadConfig(chunk_size=4)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
         transport=session_transport,
+        response_type=DummyResponse,
     )
 
     progress_events = list(session.iter_upload(stream=b"12345678"))
@@ -412,8 +396,7 @@ def test_sync_resume():
     )
     session_transport.request.side_effect = [query_resp, chunk_resp]
 
-    config = ResumableUploadConfig(response_type=DummyResponse)
-    session = ResumableUploadSession(config=config)
+    session = ResumableUploadSession(response_type=DummyResponse)
 
     stream = io.BytesIO(b"0123456789")
     resp = session.resume(
@@ -448,8 +431,7 @@ def test_sync_iter_resume():
     )
     session_transport.request.side_effect = [query_resp, chunk_resp]
 
-    config = ResumableUploadConfig(response_type=DummyResponse)
-    session = ResumableUploadSession(config=config)
+    session = ResumableUploadSession(response_type=DummyResponse)
 
     stream = io.BytesIO(b"0123456789")
     progress_list = list(
@@ -514,7 +496,7 @@ def test_sync_recoverable_status_code_triggers_offset_recovery():
 
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=DummyResponse),
+        response_type=DummyResponse,
         transport=session_transport,
     )
 
@@ -656,7 +638,7 @@ def test_sync_response_type_proto_message():
 
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=EchoResponse),
+        response_type=EchoResponse,
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
@@ -684,7 +666,7 @@ def test_sync_response_type_protobuf_message():
 
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=empty_pb2.Empty),
+        response_type=empty_pb2.Empty,
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
@@ -711,7 +693,7 @@ def test_sync_response_type_callable():
 
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=lambda c: c.decode("utf-8").upper()),
+        response_type=lambda c: c.decode("utf-8").upper(),
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
@@ -738,7 +720,7 @@ def test_sync_response_type_raw_response():
 
     session = ResumableUploadSession(
         upload_url="https://api.example.com/start",
-        config=ResumableUploadConfig(response_type=None),
+        response_type=None,
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
@@ -956,20 +938,7 @@ def test_sync_prepare_stream_seekable_and_iterable():
     assert custom.tell() == 2
 
 
-def test_sync_config_fallbacks_and_headers():
-    cfg1 = ResumableUploadConfig(start_timeout=15.0)
-    assert cfg1.timeout == 15.0
-
-    cfg2 = ResumableUploadConfig(timeout=25.0)
-    assert cfg2.start_timeout == 25.0
-
-    ret = mock.Mock(spec=google.api_core.retry.Retry)
-    cfg3 = ResumableUploadConfig(start_retry=ret)
-    assert cfg3.retry is ret
-
-    cfg4 = ResumableUploadConfig(retry=ret)
-    assert cfg4.start_retry is ret
-
+def test_sync_config_headers():
     cfg_dict = ResumableUploadConfig(headers={"X-Key": "Val"})
     assert cfg_dict.start_headers == [("X-Key", "Val")]
 
@@ -1030,11 +999,10 @@ def test_sync_resume_chunk_size_override():
 
 def test_sync_on_progress_and_capture():
     callback_mock = mock.Mock()
-    config = ResumableUploadConfig(on_progress=callback_mock)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
-        config=config,
     )
+    session._on_progress = callback_mock
     session._state._resumable_url = "https://api.example.com/init"
     progress_queue = []
     session._notify_progress(
@@ -1058,32 +1026,30 @@ def test_sync_naive_deadline_tz():
     assert session._get_start_timeout() <= rem
 
 
-def test_sync_get_retry_start_and_fallback():
+def test_sync_get_retry_start_and_override():
     ret_start = mock.Mock(spec=google.api_core.retry.Retry)
-    ret_fallback = mock.Mock(spec=google.api_core.retry.Retry)
-    config = ResumableUploadConfig(start_retry=ret_start, retry=ret_fallback)
+    ret_override = mock.Mock(spec=google.api_core.retry.Retry)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
-        config=config,
+        start_retry=ret_start,
     )
-    assert session._get_retry(is_start=True) is ret_start
-    assert session._get_retry() is ret_fallback
+    assert session._get_retry() is ret_start
+    assert session._get_retry(retry_override=ret_override) is ret_override
 
 
 def test_sync_stall_control_with_deadline():
     import time
 
-    # 1. compute_chunk_timeout with fallback timeout and stall control active
+    # 1. compute_chunk_timeout with timeout_override and stall control active
     config = ResumableUploadConfig(
         stall_minimum_rate=1024,
         stall_timeout=10.0,
-        timeout=15.0,
     )
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=config,
     )
-    t1 = session._compute_chunk_timeout(512)
+    t1 = session._compute_chunk_timeout(512, timeout_override=15.0)
     assert t1 <= 15.0
 
     # 2. compute_chunk_timeout with deadline active
@@ -1231,7 +1197,6 @@ def test_sync_transmit_chunk_timeout_outer_exception():
 
     config = ResumableUploadConfig(
         stall_minimum_rate=0,
-        retry=google.api_core.retry.Retry(predicate=lambda e: False),
     )
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
@@ -1239,15 +1204,19 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         transport=transport,
     )
     session._state._resumable_url = "https://upload.example.com/resumable-123"
+    no_retry = google.api_core.retry.Retry(predicate=lambda e: False)
     with pytest.raises(exceptions.TransferStalledError):
-        list(session._transmit_all_chunks(transport, io.BytesIO(b"data"), 4))
+        list(
+            session._transmit_all_chunks(
+                transport, io.BytesIO(b"data"), 4, retry=no_retry
+            )
+        )
 
     # To hit outer exception handler in _transmit_all_chunks with elapsed deadline
     config_dl = ResumableUploadConfig(
         stall_minimum_rate=0,
         deadline=datetime.datetime.now(datetime.timezone.utc)
         + datetime.timedelta(seconds=5),
-        retry=google.api_core.retry.Retry(predicate=lambda e: False),
     )
     session_dl = ResumableUploadSession(
         upload_url="https://api.example.com/init",
@@ -1259,7 +1228,11 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         side_effect=[5.0, 5.0, exceptions.DeadlineExceeded("Deadline exceeded")]
     )
     with pytest.raises(exceptions.DeadlineExceeded):
-        list(session_dl._transmit_all_chunks(transport, io.BytesIO(b"data"), 4))
+        list(
+            session_dl._transmit_all_chunks(
+                transport, io.BytesIO(b"data"), 4, retry=no_retry
+            )
+        )
 
 
 def test_sync_recover_failure():
@@ -1654,13 +1627,13 @@ def test_sync_partial_chunk_recovery_does_not_prematurely_finalize():
         predicate=ResumableUploadSession()._get_retry_predicate(),
         initial=0.001,
     )
-    config = ResumableUploadConfig(chunk_size=4, retry=retry_cfg)
+    config = ResumableUploadConfig(chunk_size=4)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=config,
     )
 
-    session.upload(stream=b"012345", transport=session_transport)
+    session.upload(stream=b"012345", transport=session_transport, retry=retry_cfg)
 
     # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
     assert bytes(server_received_bytes) == b"012345"
@@ -1705,17 +1678,78 @@ def test_sync_streaming_retry_and_recovery_final():
         predicate=ResumableUploadSession()._get_retry_predicate(),
         initial=0.001,
     )
-    config = ResumableUploadConfig(
-        response_type=DummyResponse,
-        retry=streaming_retry,
-    )
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
-        config=config,
+        response_type=DummyResponse,
     )
-    assert session._get_streaming_retry() is streaming_retry
+    assert (
+        session._get_streaming_retry(retry_override=streaming_retry) is streaming_retry
+    )
 
-    result = session.upload(stream=b"data", transport=session_transport)
+    result = session.upload(
+        stream=b"data", transport=session_transport, retry=streaming_retry
+    )
     assert isinstance(result, DummyResponse)
     assert result.name == "already_done.txt"
     assert session.finished is True
+
+
+def test_sync_method_override_arguments() -> None:
+    """Verifies content_type and on_progress overrides on initiate, upload, and resume."""
+    # 1. initiate with content_type override
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/123",
+        },
+        content=b"",
+    )
+    transport1 = mock.Mock(spec=requests.Session)
+    transport1.request.return_value = start_resp
+    session1 = ResumableUploadSession(upload_url="https://api.example.com/start")
+    session1.initiate(transport=transport1, content_type="text/plain")
+    assert session1._content_type == "text/plain"
+
+    # 2. upload with content_type and on_progress overrides
+    progress_events: List[UploadProgress] = []
+    chunk_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b"{}",
+    )
+    transport2 = mock.Mock(spec=requests.Session)
+    transport2.request.side_effect = [start_resp, chunk_resp]
+    session2 = ResumableUploadSession(upload_url="https://api.example.com/start")
+    session2.upload(
+        stream=b"data",
+        transport=transport2,
+        content_type="text/csv",
+        on_progress=lambda p: progress_events.append(p),
+    )
+    assert session2._content_type == "text/csv"
+    assert len(progress_events) == 2
+
+    # 3. resume with on_progress override
+    resume_events: List[UploadProgress] = []
+    query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "0",
+        },
+        content=b"",
+    )
+    transport3 = mock.Mock(spec=requests.Session)
+    transport3.request.side_effect = [query_resp, chunk_resp]
+    session3 = ResumableUploadSession()
+    session3.resume(
+        upload_url="https://upload.example.com/123",
+        stream=b"data",
+        transport=transport3,
+        on_progress=lambda p: resume_events.append(p),
+    )
+    assert len(resume_events) == 2

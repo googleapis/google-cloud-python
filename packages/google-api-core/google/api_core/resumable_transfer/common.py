@@ -17,13 +17,11 @@
 import dataclasses
 import datetime
 import enum
-from typing import Any, Callable, Mapping, Optional, Sequence, Tuple, Union
+from typing import Any, Mapping, Optional, Sequence, Tuple, Union
 
 import google.protobuf.message
 import proto
 from google.protobuf import json_format
-
-import google.api_core.retry
 
 # Default chunk size: 10 MiB
 DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024
@@ -102,63 +100,17 @@ class ResumableUploadConfig:
 
     Attributes:
         chunk_size: Size in bytes for each uploaded data chunk. Defaults to 10 MiB.
-        start_timeout: Local per-request timeout in seconds for start request.
-        start_retry: Custom retry policy for the start request.
         stall_minimum_rate: Minimum transfer rate in bytes per second. Defaults to 64 KiB/s.
         stall_timeout: Stall duration threshold in seconds. Defaults to 120s.
         headers: Additional HTTP headers dispatched exclusively with start request.
         deadline: Overall global deadline for the upload process.
-        timeout: Fallback per-request timeout.
-        retry: Fallback retry policy.
-        on_progress: Callback function receiving UploadProgress notifications.
-        response_type: Optional message class (proto.Message or google.protobuf.message.Message),
-            callable deserializer, or None to return raw response.
-        content_type: MIME type of the stream payload.
     """
 
     chunk_size: int = DEFAULT_CHUNK_SIZE
-    start_timeout: Optional[float] = None
-    start_retry: Optional[
-        Union[google.api_core.retry.Retry, google.api_core.retry.AsyncRetry]
-    ] = None
     stall_minimum_rate: int = 64 * 1024
     stall_timeout: float = 120.0
     headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None
     deadline: Optional[datetime.datetime] = None
-    timeout: Optional[float] = None
-    retry: Optional[
-        Union[
-            google.api_core.retry.Retry,
-            google.api_core.retry.StreamingRetry,
-            google.api_core.retry.AsyncRetry,
-            google.api_core.retry.AsyncStreamingRetry,
-        ]
-    ] = None
-    on_progress: Optional[Callable[[UploadProgress], None]] = None
-    response_type: Optional[Any] = None
-    content_type: Optional[str] = None
-
-    def __post_init__(self) -> None:
-        """Normalizes fallback timeouts and retry policies."""
-        if self.start_timeout is not None and self.timeout is None:
-            self.timeout = self.start_timeout
-        elif self.timeout is not None and self.start_timeout is None:
-            self.start_timeout = self.timeout
-
-        if self.start_retry is not None and self.retry is None:
-            self.retry = self.start_retry
-        elif (
-            self.start_retry is None
-            and self.retry is not None
-            and not isinstance(
-                self.retry,
-                (
-                    google.api_core.retry.StreamingRetry,
-                    google.api_core.retry.AsyncStreamingRetry,
-                ),
-            )
-        ):
-            self.start_retry = self.retry
 
     @property
     def start_headers(self) -> Optional[Sequence[Tuple[str, str]]]:
