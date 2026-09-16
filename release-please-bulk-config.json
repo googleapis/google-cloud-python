@@ -529,9 +529,15 @@
       "extra-files": [
         "google/cloud/backupdr/gapic_version.py",
         "google/cloud/backupdr_v1/gapic_version.py",
+        "google/cloud/backupdr_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.backupdr.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.backupdr.v1beta.json",
           "type": "json"
         }
       ]

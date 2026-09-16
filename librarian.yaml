@@ -499,6 +499,7 @@ libraries:
     version: 0.10.1
     apis:
       - path: google/cloud/backupdr/v1
+      - path: google/cloud/backupdr/v1beta
     python:
       metadata_name_override: backupdr
       default_version: v1
