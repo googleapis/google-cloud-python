@@ -132,6 +132,7 @@ class BaseClient(ClientWithProject):
         database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
+        decode_bson: bool = False,
     ) -> None:
         database = database or DEFAULT_DATABASE
         # NOTE: This API has no use for the _http argument, but sending it
@@ -165,6 +166,7 @@ class BaseClient(ClientWithProject):
         self._client_options = client_options
 
         self._database = database
+        self._decode_bson: bool = decode_bson
 
     def _firestore_api_helper(self, transport, client_class, client_module) -> Any:
         """Lazy-loading getter GAPIC Firestore API.

@@ -706,6 +706,43 @@ def test_decode_dict_w_many_types():
     assert decode_dict(value_fields, mock.sentinel.client) == expected
 
 
+def test_decode_dict_w_bson_types():
+    from google.cloud.firestore_v1._helpers import decode_dict, encode_dict
+    from google.cloud.firestore_v1.bson import (
+        BSONBinary,
+        BSONDecimal128,
+        BSONInt32,
+        BSONMaxKey,
+        BSONMinKey,
+        BSONObjectId,
+        BSONRegex,
+        BSONTimestamp,
+    )
+
+    original_dict = {
+        "oid": BSONObjectId("507f191e810c19729de860ea"),
+        "min_k": BSONMinKey(),
+        "max_k": BSONMaxKey(),
+        "int32_v": BSONInt32(42),
+        "bin_sub0": b"hello",
+        "bin_sub0_empty": b"",
+        "bin_sub128": BSONBinary(b"world", subtype=128),
+        "ts_v": BSONTimestamp(1700000000, 1),
+        "regex_v": BSONRegex("^hello.*$", options="i"),
+        "dec_v": BSONDecimal128("123.45"),
+    }
+
+    pb_fields = encode_dict(original_dict)
+    # Default (decode_bson=False) returns raw dict
+    raw_decoded = decode_dict(pb_fields, mock.sentinel.client)
+    assert raw_decoded != original_dict
+    assert raw_decoded["oid"] == {"__oid__": "507f191e810c19729de860ea"}
+
+    # decode_bson=True returns deserialized BSON objects
+    decoded = decode_dict(pb_fields, mock.sentinel.client, decode_bson=True)
+    assert decoded == original_dict
+
+
 def _dummy_ref_string(collection_id):
     from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
 
