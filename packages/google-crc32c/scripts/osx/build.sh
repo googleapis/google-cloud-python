@@ -16,6 +16,7 @@
 set -e -x
 echo "BUILDING FOR OSX"
 
+export CRC32C_PURE_PYTHON=0
 # set deployment target
 export MACOSX_DEPLOYMENT_TARGET=12
 

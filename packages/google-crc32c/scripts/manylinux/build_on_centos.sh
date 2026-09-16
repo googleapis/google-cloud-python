@@ -14,6 +14,7 @@
 # limitations under the License.
 
 set -e -x
+export CRC32C_PURE_PYTHON=0
 MAIN_PYTHON_BIN="/opt/python/cp39-cp39/bin/"
 echo "BUILD_PYTHON: ${BUILD_PYTHON}"
 REPO_ROOT=/var/code/python-crc32c/
