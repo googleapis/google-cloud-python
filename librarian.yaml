@@ -1585,9 +1585,12 @@ libraries:
     version: 0.10.2
     apis:
       - path: google/cloud/networkservices/v1
+      - path: google/cloud/networkservices/v1beta1
     python:
       opt_args_by_api:
         google/cloud/networkservices/v1:
+          - python-gapic-name=network_services
+        google/cloud/networkservices/v1beta1:
           - python-gapic-name=network_services
       metadata_name_override: networkservices
       default_version: v1
