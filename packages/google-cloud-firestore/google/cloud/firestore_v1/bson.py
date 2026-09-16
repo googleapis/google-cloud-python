@@ -32,6 +32,7 @@ __all__ = [
     "BSONObjectId",
     "BSONMinKey",
     "BSONMaxKey",
+    "BSONInt32",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -156,3 +157,60 @@ class BSONMaxKey(_BSONType):
 
     def __hash__(self) -> int:
         return hash(type(self))
+
+
+class BSONInt32(_BSONType):
+    """Represents a 32-bit signed integer value container for Firestore BSON.
+
+    Args:
+        value (int): A 32-bit signed integer value.
+
+    Raises:
+        TypeError: If value is not an integer or is a boolean.
+        ValueError: If value is outside the 32-bit signed range (-2147483648 to 2147483647).
+
+    Example:
+        >>> int_val = BSONInt32(42)
+        >>> int_val.value
+        42
+    """
+
+    __slots__ = ("_value",)
+
+    _MIN_INT32: int = -(1 << 31)
+    _MAX_INT32: int = (1 << 31) - 1
+
+    def __init__(self, value: int):
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise TypeError("BSONInt32 requires an int.")
+        if not (self._MIN_INT32 <= value <= self._MAX_INT32):
+            raise ValueError(
+                f"BSONInt32 value must be between {self._MIN_INT32} and {self._MAX_INT32}."
+            )
+        self._value: int = value
+
+    @property
+    def value(self) -> int:
+        """int: The 32-bit signed integer value."""
+        return self._value
+
+    def _to_map_value(self) -> Dict[str, int]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__int__": self._value}
+
+    def __repr__(self) -> str:
+        return f"BSONInt32({self._value})"
+
+    def __str__(self) -> str:
+        return str(self._value)
+
+    def __int__(self) -> int:
+        return self._value
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONInt32):
+            return self._value == other._value
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._value))
