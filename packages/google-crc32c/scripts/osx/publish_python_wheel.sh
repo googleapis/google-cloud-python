@@ -28,7 +28,18 @@ python -m venv "${PUBLISH_VENV}"
 "${PUBLISH_VENV}/bin/python" -m pip install "setuptools<71"
 "${PUBLISH_VENV}/bin/python" -m pip install --require-hashes -r "${REPO_ROOT}/scripts/release-requirements.txt"
 
+echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
+
+for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml"); do
+    SHORT="${VER:0:4}"
+    ABI="cp${SHORT//.}-cp${SHORT//.}"
+    ls "${REPO_ROOT}/wheels/"*${ABI}*.whl >/dev/null || {
+        echo "ERROR: Missing macOS wheel for ${ABI}!"
+        exit 1
+    }
+done
+
 "${PUBLISH_VENV}/bin/python" -m twine check "${REPO_ROOT}/wheels/"*
 
 if [[ "${PUBLISH_WHEELS}" == "true" ]]; then

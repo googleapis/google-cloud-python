@@ -80,6 +80,19 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     echo "Finished with Python version %P"
 )
 
+echo "Built wheels in wheels/ directory:"
+dir wheels\*.whl || goto :error
+
+for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
+    set py_ver=%%P
+    set py_short=!py_ver:~0,4!
+    set py_tag=cp!py_short:.=!
+    dir wheels\*!py_tag!*.whl >nul || (
+        echo "ERROR: Missing Windows wheel for !py_tag!!"
+        goto :error
+    )
+)
+
 echo "Validating built wheels with twine check"
 py -3.12-64 -m pip install twine || goto :error
 py -3.12-64 -m twine check wheels/* || goto :error
