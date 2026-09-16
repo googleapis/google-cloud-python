@@ -98,7 +98,7 @@ jobs:
           PACKAGE_LIST: ${{ steps.get-packages.outputs.packages }}
           NOXFORCEPYTHON: ${{ env.PY_VERSION }}
           CONTINUE_ON_ERROR: "true"
-          PARALLEL_WORKERS: "4"
+          PARALLEL_WORKERS: "1"
         run: |
           ci/run_conditional_tests.sh
 
