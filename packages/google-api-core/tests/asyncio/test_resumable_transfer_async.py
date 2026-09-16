@@ -1773,3 +1773,87 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
 
     # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
     assert bytes(server_received_bytes) == b"012345"
+
+
+@pytest.mark.asyncio
+async def test_async_upload_progress_cancellation_and_base_exception() -> None:
+    """Ensure progress() does not hang if the background task is cancelled or raises BaseException."""
+
+    class CustomBaseException(BaseException):
+        pass
+
+    # 1. Task cancelled while awaiting progress()
+    slow_event = asyncio.Event()
+
+    class HangingTransport:
+        def request(self, *args: Any, **kwargs: Any) -> Any:
+            class HangingCtx:
+                async def __aenter__(self) -> Any:
+                    await slow_event.wait()
+                    return DummyAsyncResponse(status=200, headers={}, body=b"")
+
+                async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
+                    pass
+
+            return HangingCtx()
+
+    session_cancel = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=HangingTransport(),
+    )
+    op_cancel = session_cancel.upload(stream=b"data")
+
+    async def cancel_soon() -> None:
+        await asyncio.sleep(0.01)
+        op_cancel._task.cancel()
+
+    cancel_task = asyncio.create_task(cancel_soon())
+    with pytest.raises(asyncio.CancelledError):
+        async for _ in op_cancel.progress():
+            pass
+    await cancel_task
+
+    # 2. Task raises BaseException subclass
+    class BaseExceptionTransport:
+        def request(self, *args: Any, **kwargs: Any) -> Any:
+            class BaseExceptionCtx:
+                async def __aenter__(self) -> Any:
+                    raise CustomBaseException("fatal error")
+
+                async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
+                    pass
+
+            return BaseExceptionCtx()
+
+    session_base_exc = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=BaseExceptionTransport(),
+    )
+    op_base_exc = session_base_exc.upload(stream=b"data")
+    with pytest.raises(CustomBaseException, match="fatal error"):
+        async for _ in op_base_exc.progress():
+            pass
+
+    # 3. Multiple progress() iterations after completion do not hang
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    final_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"{}",
+    )
+    session_ok = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=DummyAsyncSession([start_resp, final_resp]),
+    )
+    op_ok = session_ok.upload(stream=b"data")
+    first_pass = [p async for p in op_ok.progress()]
+    assert len(first_pass) == 2
+    second_pass = [p async for p in op_ok.progress()]
+    assert second_pass == []

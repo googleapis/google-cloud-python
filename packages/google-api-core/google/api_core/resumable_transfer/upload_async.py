@@ -91,6 +91,17 @@ class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
         self._task = task
         self._session = session
         self._progress_queue = progress_queue
+        self._task.add_done_callback(self._on_task_done)
+
+    def _on_task_done(self, task: asyncio.Task) -> None:
+        """Ensures progress queue unblocks when background task terminates."""
+        if task.cancelled():
+            self._progress_queue.put_nowait(asyncio.CancelledError())
+        else:
+            exc = task.exception()
+            if exc is not None:
+                self._progress_queue.put_nowait(exc)
+        self._progress_queue.put_nowait(_DONE_SENTINEL)
 
     def __await__(self) -> Generator[Any, None, ResponseProto]:
         """Awaits completion of the upload task and returns the server response."""
@@ -103,13 +114,14 @@ class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
             UploadProgress snapshots for each progress transition.
 
         Raises:
-            Exception: Re-raises any exception encountered during the background transfer.
+            BaseException: Re-raises any exception or cancellation encountered during the background transfer.
         """
         while True:
             item = await self._progress_queue.get()
             if item is _DONE_SENTINEL:
+                self._progress_queue.put_nowait(_DONE_SENTINEL)
                 break
-            if isinstance(item, Exception):
+            if isinstance(item, BaseException):
                 raise item
             yield item
 
@@ -799,11 +811,9 @@ class AsyncResumableUploadSession:
 
                 _, _, body_bytes = final_resp_tuple
                 self._response = self._format_response(body_bytes)
-                progress_queue.put_nowait(_DONE_SENTINEL)
                 return self._response
-            except Exception as exc:
+            except BaseException as exc:
                 self._enrich_exception(exc)
-                progress_queue.put_nowait(exc)
                 raise
 
         task = asyncio.create_task(_run())
@@ -861,11 +871,9 @@ class AsyncResumableUploadSession:
 
                 _, _, body_bytes = final_resp_tuple
                 self._response = self._format_response(body_bytes)
-                progress_queue.put_nowait(_DONE_SENTINEL)
                 return self._response
-            except Exception as exc:
+            except BaseException as exc:
                 self._enrich_exception(exc)
-                progress_queue.put_nowait(exc)
                 raise
 
         task = asyncio.create_task(_run())
