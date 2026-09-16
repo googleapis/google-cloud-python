@@ -55,6 +55,13 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
+# Check once at module load time whether google-api-core's wrap_method supports
+# OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
+# to avoid recurring inspect.signature latency during client instantiation.
+_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+)
+
 
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
@@ -152,10 +159,7 @@ class {{ service.name }}Transport(abc.ABC):
         self._host = host
 
         self._client_options = client_options
-        # Check whether google-api-core's wrap_method supports OpenTelemetry tracing arguments
-        # (such as client_options, method_name, is_streaming, kind) to ensure backward compatibility
-        # with older versions of google-api-core.
-        self._wrap_with_tracing = "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+        self._wrap_with_tracing = _WRAP_METHOD_SUPPORTS_TRACING
 
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
@@ -168,15 +172,19 @@ class {{ service.name }}Transport(abc.ABC):
             kwargs["client_options"] = self._client_options
             try:
                 kwargs["kind"] = self.kind
-            # Base transport raises NotImplementedError for abstract kind property.
-            # Concrete transport subclasses override kind, so this branch is unreachable during live calls.
+            # The abstract BaseTransport class raises NotImplementedError for the kind property.
+            # Concrete transport subclasses (gRPC, REST) override kind, so this exception handler
+            # is unreachable during normal execution. Excluded from coverage check.
             except NotImplementedError:  # pragma: NO COVER
                 pass
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
-        # Remove tracing-specific arguments if older google-api-core is installed
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:
-            kwargs.pop(k, None)
-        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed (which does not accept client_options, etc.).
+        # Excluded from coverage because our CI and testing environments always install
+        # a modern version of google-api-core that supports tracing.
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+            kwargs.pop(k, None)  # pragma: NO COVER
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
