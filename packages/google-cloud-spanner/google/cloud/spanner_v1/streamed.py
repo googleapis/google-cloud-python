@@ -162,19 +162,20 @@ class StreamedResultSet(object):
     def _merge_values(self, values):
         """Merge values into rows.
 
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check.
+
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set."""
         if not values:
             return
-
         width = len(self.fields)
         if width == 0:
             return
-
         values_offset = 0
         total_values = len(values)
-
-        # 1. Complete pending partial row from previous chunk (if any)
         if self._current_row:
             needed = width - len(self._current_row)
             fill_count = min(needed, total_values)
@@ -185,22 +186,16 @@ class StreamedResultSet(object):
                 self._current_row = []
             else:
                 return
-
         remaining_values = total_values - values_offset
         if remaining_values == 0:
             return
-
         row_count = remaining_values // width
         full_values_count = row_count * width
         batch_end = values_offset + full_values_count
-
-        # 2. Batch-decode complete rows
         if self._lazy_decode:
             self._decode_lazy_rows(values, values_offset, batch_end, width)
         else:
             self._decode_eager_rows(values, values_offset, batch_end, width)
-
-        # 3. Buffer trailing partial row remainder for the next chunk (if any)
         if remaining_values > full_values_count:
             self._append_to_current_row(values[batch_end:])
 
@@ -241,8 +236,7 @@ class StreamedResultSet(object):
            The array that is returned by this function is the same as the array
            that would have been returned by the rows iterator if ``lazy_decoding=False``.
 
-        :returns: an array containing the decoded values of all the columns in the given row
-        """
+        :returns: an array containing the decoded values of all the columns in the given row"""
         if not hasattr(row, "__len__"):
             raise TypeError("row", "row must be an array of protobuf values")
         decoders = self._decoders
