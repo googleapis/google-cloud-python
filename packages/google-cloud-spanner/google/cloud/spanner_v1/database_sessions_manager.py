@@ -130,7 +130,6 @@ class DatabaseSessionsManager(object):
         session = self._multiplexed_session
         if session is not None:
             return session
-
         with self._init_lock:
             if self._multiplexed_session_lock is None:
                 self._multiplexed_session_lock = CrossSync._Sync_Impl.Lock()
@@ -188,23 +187,19 @@ class DatabaseSessionsManager(object):
         """Rotates the multiplexed session by building and swapping in a new session.
 
         :rtype: bool
-        :returns: True if the session was successfully refreshed, False otherwise.
-        """
+        :returns: True if the session was successfully refreshed, False otherwise."""
         try:
             new_session = self._build_multiplexed_session()
         except Exception:
             return False
-
         with self._multiplexed_session_lock:
             old_session = self._multiplexed_session
             self._multiplexed_session = new_session
-
         if old_session is not None:
             try:
                 CrossSync._Sync_Impl.run_if_async(old_session.delete)
             except Exception:
                 pass
-
         return True
 
     @staticmethod
@@ -239,11 +234,9 @@ class DatabaseSessionsManager(object):
                     session_created_time = time.monotonic()
                     manager = None
                     continue
-
             manager = None
             CrossSync._Sync_Impl.event_wait(
-                terminate_event,
-                timeout=polling_interval_seconds,
+                terminate_event, timeout=polling_interval_seconds
             )
 
     @classmethod
