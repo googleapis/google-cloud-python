@@ -350,7 +350,18 @@ def reference_value_to_document(reference_value, client) -> Any:
 def decode_value(
     value, client
 ) -> Union[
-    None, bool, int, float, list, datetime.datetime, str, bytes, dict, GeoPoint, Vector
+    None,
+    bool,
+    int,
+    float,
+    list,
+    datetime.datetime,
+    str,
+    bytes,
+    dict,
+    GeoPoint,
+    Vector,
+    _BSONType,
 ]:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
