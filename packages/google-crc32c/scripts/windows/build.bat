@@ -15,6 +15,8 @@
 
 setlocal ENABLEDELAYEDEXPANSION
 
+cd /d "%~dp0..\.." || goto :error
+
 set CRC32C_PURE_PYTHON=0
 set CMAKE_GENERATOR="Visual Studio 17 2022"
 set CONFIGURATION=RelWithDebInfo
@@ -44,8 +46,8 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
 
     @rem Add directory as safe to avoid "detected dubious ownership" fatal issue
     git config --global --add safe.directory *
-    git submodule update --init --recursive
-    pushd google_crc32c
+    git submodule update --init --recursive || goto :error
+    pushd google_crc32c || goto :error
     @rem reset hard to cleanup any changes done by a previous build.
     git reset --hard
     git clean -fxd
