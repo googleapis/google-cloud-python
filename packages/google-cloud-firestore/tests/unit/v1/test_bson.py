@@ -21,6 +21,7 @@ import pickle
 import pytest
 
 from google.cloud.firestore_v1.bson import (
+    BSONInt32,
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
@@ -195,3 +196,63 @@ def test_bson_maxkey_copy():
 def test_bson_maxkey_pickle():
     key = BSONMaxKey()
     assert pickle.loads(pickle.dumps(key)) == key
+
+
+def test_bson_int32_valid():
+    val = BSONInt32(42)
+    assert val.value == 42
+    assert int(val) == 42
+    assert str(val) == "42"
+    assert repr(val) == "BSONInt32(42)"
+    assert val._to_map_value() == {"__int__": 42}
+
+
+def test_bson_int32_boundaries():
+    min_val = BSONInt32(-2147483648)
+    max_val = BSONInt32(2147483647)
+    assert min_val.value == -2147483648
+    assert max_val.value == 2147483647
+
+
+@pytest.mark.parametrize(
+    "invalid_input, exc_type, match_msg",
+    [
+        (2147483648, ValueError, "must be between"),
+        (-2147483649, ValueError, "must be between"),
+        (True, TypeError, "requires an int"),
+        (False, TypeError, "requires an int"),
+        ("42", TypeError, "requires an int"),
+        (42.0, TypeError, "requires an int"),
+        (None, TypeError, "requires an int"),
+    ],
+)
+def test_bson_int32_invalid_inputs(invalid_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONInt32(invalid_input)
+
+
+def test_bson_int32_equality():
+    val1 = BSONInt32(42)
+    val2 = BSONInt32(42)
+    val3 = BSONInt32(100)
+    assert val1 == val2
+    assert val1 != val3
+    assert val1 != 42
+
+
+def test_bson_int32_hash_and_dict_key():
+    val1 = BSONInt32(42)
+    val2 = BSONInt32(42)
+    assert hash(val1) == hash(val2)
+    assert len({val1, val2}) == 1
+
+
+def test_bson_int32_copy():
+    val = BSONInt32(42)
+    assert copy.copy(val) == val
+    assert copy.deepcopy(val) == val
+
+
+def test_bson_int32_pickle():
+    val = BSONInt32(42)
+    assert pickle.loads(pickle.dumps(val)) == val
