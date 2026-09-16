@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: prerelease
+name: prerelease-deps
 
 on:
   pull_request:
     paths:
-      - '.github/workflows/prerelease.yml'
+      - '.github/workflows/prerelease-deps.yml'
       - 'ci/**'
   schedule:
     # Run daily at midnight UTC
@@ -41,12 +41,15 @@ env:
 
 jobs:
   prerelease:
-    name: prerelease (3.15)
     runs-on: ubuntu-22.04
     # Never fail the workflow run; errors are reported via a single consolidated GitHub issue instead
     continue-on-error: true
+    strategy:
+      matrix:
+        python: ["3.15"]
+    name: Nightly Pre-release Dependency Issue Reporter (${{ matrix.python }})
     env:
-      PY_VERSION: "3.15"
+      PY_VERSION: ${{ matrix.python }}
       FAILURE_LOG_DIR: "/tmp/test_failures"
     steps:
       - name: Checkout
