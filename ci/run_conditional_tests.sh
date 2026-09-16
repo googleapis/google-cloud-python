@@ -82,8 +82,8 @@ run_test_in_dir() {
     local worker_build_dir="/tmp/build_${PY_VERSION}_${pkg_name_clean}"
     local dist_cfg="/tmp/dist_cfg_${PY_VERSION}_${pkg_name_clean}.cfg"
     mkdir -p "${worker_build_dir}"
-    printf "[build]\nbuild_base = %s/build\n[bdist_wheel]\nbdist_dir = %s/bdist\n" \
-        "${worker_build_dir}" "${worker_build_dir}" > "${dist_cfg}"
+    printf "[build]\nbuild_base = %s/build\n[bdist_wheel]\nbdist_dir = %s/bdist\n[egg_info]\negg_base = %s\n" \
+        "${worker_build_dir}" "${worker_build_dir}" "${worker_build_dir}" > "${dist_cfg}"
     export DIST_EXTRA_CONFIG="${dist_cfg}"
 
     local div="============================================================"
