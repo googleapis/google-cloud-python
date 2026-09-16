@@ -47,6 +47,7 @@ from google.cloud.firestore_v1.base_pipeline import SubPipeline
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.bson import (
+    BSONBinary,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
@@ -153,6 +154,7 @@ __all__: List[str] = [
     "async_transactional",
     "AsyncTransaction",
     "AsyncWriteBatch",
+    "BSONBinary",
     "BSONInt32",
     "BSONMaxKey",
     "BSONMinKey",
