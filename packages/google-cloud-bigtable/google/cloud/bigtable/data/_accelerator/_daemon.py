@@ -25,7 +25,6 @@ from __future__ import annotations
 
 import os
 import shutil
-import signal
 import socket
 import subprocess
 import tempfile
@@ -197,6 +196,10 @@ class AcceleratorDaemon:
                 close_fds=True,
             )
         except OSError as exc:
+            try:
+                log_file.close()
+            except OSError:
+                pass
             self._cleanup_tempdir()
             raise RuntimeError(
                 f"Failed to spawn accelerator daemon at {self._binary_path}: {exc}"
@@ -260,6 +263,10 @@ class AcceleratorDaemon:
                     f"(exit code {exit_code}). log: {log_tail!r}"
                 )
             if os.path.exists(self._uds_path):
+                if not hasattr(socket, "AF_UNIX"):
+                    raise OSError(
+                        "Unix domain sockets (AF_UNIX) are not supported on this platform."
+                    )
                 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
                     probe.settimeout(0.25)
                     try:
@@ -316,7 +323,7 @@ class AcceleratorDaemon:
         if self._proc is None or self._proc.poll() is not None:
             return
         try:
-            self._proc.send_signal(signal.SIGKILL)
+            self._proc.kill()
         except (OSError, ProcessLookupError):
             pass
         try:
@@ -330,3 +337,4 @@ class AcceleratorDaemon:
             shutil.rmtree(self._tempdir, ignore_errors=True)
         self._tempdir = None
         self._uds_path = None
+        self._log_path = None
