@@ -563,7 +563,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 "client_info": client_info,
                 "always_use_jwt_access": True,
                 "api_audience": self._client_options.api_audience,
-                **({"client_options": client_options} if client_options else {}),
+                **({"client_options": client_options} if client_options is not None else {}),
             }
             self._transport = transport_init(**transport_kwargs)
 
