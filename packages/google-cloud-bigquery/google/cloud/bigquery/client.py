@@ -48,9 +48,11 @@ import google.api_core.client_options
 import google.api_core.exceptions as core_exceptions
 import google.cloud._helpers  # type: ignore
 import requests
+from google import resumable_media  # type: ignore
 from google.api_core import page_iterator
 from google.api_core import retry as retries
 from google.api_core.iam import Policy
+from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import (
     ClientWithProject,  # type: ignore  # pytype: disable=import-error
 )
@@ -58,9 +60,6 @@ from google.resumable_media.requests import (
     MultipartUpload,  # type: ignore
     ResumableUpload,
 )
-
-from google import resumable_media  # type: ignore
-from google.cloud import exceptions  # pytype: disable=import-error
 
 try:
     from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
@@ -71,7 +70,6 @@ except ImportError:
 
 
 from google.auth.credentials import Credentials
-
 from google.cloud.bigquery import (
     _job_helpers,
     _pandas_helpers,
@@ -133,7 +131,9 @@ from google.cloud.bigquery.table import (
 )
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
-pandas = _versions_helpers.PANDAS_VERSIONS.try_import()  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
+pandas = (
+    _versions_helpers.PANDAS_VERSIONS.try_import()
+)  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
 
 
 ResumableTimeoutType = Union[
