@@ -4494,6 +4494,7 @@ def test_create_device_session_rest_call_success(request_type):
             "locale": "locale_value",
             "orientation": "orientation_value",
         },
+        "client_info": {"client": "client_value", "version": "version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5101,6 +5102,7 @@ def test_update_device_session_rest_call_success(request_type):
             "locale": "locale_value",
             "orientation": "orientation_value",
         },
+        "client_info": {"client": "client_value", "version": "version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

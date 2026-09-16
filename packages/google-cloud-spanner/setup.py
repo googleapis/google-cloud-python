@@ -64,6 +64,7 @@ dependencies = [
 ]
 extras = {
     "libcst": "libcst >= 0.2.5",
+    "omni": ["cryptography >= 44.0.0"],
     "test": [
         "pytest",
         "mock",

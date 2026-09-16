@@ -42,9 +42,7 @@ from google.cloud.spanner_admin_database_v1 import (
     RestoreDatabaseRequest,
     UpdateDatabaseDdlRequest,
 )
-from google.cloud.spanner_admin_database_v1 import (
-    Database as DatabasePB,
-)
+from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_admin_database_v1.types import DatabaseDialect
 from google.cloud.spanner_v1._helpers import (
     _augment_errors_with_request_id,
@@ -149,8 +147,7 @@ class Database(object):
         has drop protection enabled or not.
     :type proto_descriptors: bytes
     :param proto_descriptors: (Optional) Proto descriptors used by CREATE/ALTER PROTO BUNDLE
-                              statements in 'ddl_statements' above.
-    """
+                              statements in 'ddl_statements' above."""
 
     _spanner_api: SpannerClient = None
     __transport_lock = threading.Lock()
@@ -452,6 +449,7 @@ class Database(object):
                     client._ca_certificate,
                     client._client_certificate,
                     client._client_key,
+                    credentials=client.credentials,
                 )
                 self._spanner_api = SpannerClient(
                     client_info=client_info,
@@ -720,8 +718,7 @@ class Database(object):
         """Drop this database.
 
         See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase
-        """
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase"""
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
         api.drop_database(
@@ -1114,8 +1111,7 @@ class Database(object):
         """Test whether this database is ready for use.
 
         :rtype: bool
-        :returns: True if the database state is READY_OPTIMIZING or READY, else False.
-        """
+        :returns: True if the database state is READY_OPTIMIZING or READY, else False."""
         return (
             self.state == DatabasePB.State.READY_OPTIMIZING
             or self.state == DatabasePB.State.READY

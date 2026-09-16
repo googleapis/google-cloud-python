@@ -54,7 +54,7 @@ import google.cloud.bigquery.retry
 import google.cloud.bigquery.table
 from google.api_core import client_info
 from google.cloud import bigquery
-from google.cloud.bigquery import ParquetOptions, exceptions
+from google.cloud.bigquery import ParquetOptions, exceptions, version
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.enums import DatasetView, TimestampPrecision, UpdateMode
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
@@ -840,6 +840,9 @@ class TestClient(unittest.TestCase):
         self.assertIs(kwargs["client_options"], mock.sentinel.client_options)
         self.assertIn("test-agent", kwargs["client_info"].user_agent)
         self.assertIn("pandas-gbq", kwargs["client_info"].user_agent)
+        self.assertIn(
+            f"legacy-gcb/{version.__version__}", kwargs["client_info"].user_agent
+        )
 
     def test_ensure_bqstorage_client_pandas_gbq_installed(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
@@ -857,15 +860,17 @@ class TestClient(unittest.TestCase):
         mock_pandas = mock.Mock()
         mock_pandas.__version__ = "0.13.0"
 
-        with mock.patch(
-            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
-        ), mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas}):
+        with (
+            mock.patch("google.cloud.bigquery_storage.BigQueryReadClient", mock_client),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas}),
+        ):
             client._ensure_bqstorage_client(client_info=client_info)
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
         self.assertEqual(
-            kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.13.0"
+            kwargs["client_info"].user_agent,
+            f"app-agent legacy-gcb/{version.__version__} pandas-gbq/0.13.0",
         )
 
     def test_ensure_bqstorage_client_pandas_gbq_not_installed(self):
@@ -881,14 +886,18 @@ class TestClient(unittest.TestCase):
             user_agent="app-agent"
         )
 
-        with mock.patch(
-            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
-        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+        with (
+            mock.patch("google.cloud.bigquery_storage.BigQueryReadClient", mock_client),
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
+        ):
             client._ensure_bqstorage_client(client_info=client_info)
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.0.0")
+        self.assertEqual(
+            kwargs["client_info"].user_agent,
+            f"app-agent legacy-gcb/{version.__version__} pandas-gbq/0.0.0",
+        )
 
     def test_ensure_bqstorage_client_client_info_none(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
@@ -898,14 +907,18 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
 
-        with mock.patch(
-            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
-        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+        with (
+            mock.patch("google.cloud.bigquery_storage.BigQueryReadClient", mock_client),
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
+        ):
             client._ensure_bqstorage_client(client_info=None)
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
+        self.assertEqual(
+            kwargs["client_info"].user_agent,
+            f"legacy-gcb/{version.__version__} pandas-gbq/0.0.0",
+        )
 
     def test_ensure_bqstorage_client_client_info_user_agent_none(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
@@ -919,14 +932,18 @@ class TestClient(unittest.TestCase):
 
         client_info = google.api_core.gapic_v1.client_info.ClientInfo(user_agent=None)
 
-        with mock.patch(
-            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
-        ), mock.patch.dict(sys.modules, {"pandas_gbq": None}):
+        with (
+            mock.patch("google.cloud.bigquery_storage.BigQueryReadClient", mock_client),
+            mock.patch.dict(sys.modules, {"pandas_gbq": None}),
+        ):
             client._ensure_bqstorage_client(client_info=client_info)
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
+        self.assertEqual(
+            kwargs["client_info"].user_agent,
+            f"legacy-gcb/{version.__version__} pandas-gbq/0.0.0",
+        )
 
     def test_ensure_bqstorage_client_missing_dependency(self):
         creds = _make_credentials()
@@ -9157,9 +9174,10 @@ class TestClientUpload(object):
             SchemaField("unknown_col", "BYTES"),
         )
         job_config = job.LoadJobConfig(schema=schema)
-        with load_patch as load_table_from_file, pytest.raises(
-            ValueError
-        ) as exc_context:
+        with (
+            load_patch as load_table_from_file,
+            pytest.raises(ValueError) as exc_context,
+        ):
             client.load_table_from_dataframe(
                 dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
             )
@@ -9429,9 +9447,13 @@ class TestClientUpload(object):
         get_table_patch = mock.patch(
             "google.cloud.bigquery.client.Client.get_table", autospec=True
         )
-        with load_patch, get_table_patch, pytest.warns(
-            PendingDeprecationWarning,
-            match="Loading DataFrames via google-cloud-bigquery is deprecated",
+        with (
+            load_patch,
+            get_table_patch,
+            pytest.warns(
+                PendingDeprecationWarning,
+                match="Loading DataFrames via google-cloud-bigquery is deprecated",
+            ),
         ):
             client.load_table_from_dataframe(dataframe, self.TABLE_REF)
 
@@ -9853,7 +9875,7 @@ class TestClientUpload(object):
 
         client = self._make_client()
 
-        emoji = "\U0001F3E6"
+        emoji = "\U0001f3e6"
         json_row = {"emoji": emoji}
         json_rows = [json_row]
 
