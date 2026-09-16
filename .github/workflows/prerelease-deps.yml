@@ -42,8 +42,6 @@ env:
 jobs:
   prerelease:
     runs-on: ubuntu-22.04
-    # Never fail the workflow run; errors are reported via a single consolidated GitHub issue instead
-    continue-on-error: true
     strategy:
       matrix:
         python: ["3.15"]
@@ -92,6 +90,7 @@ jobs:
 
       - name: Run prerelease_deps across handwritten packages
         id: run-tests
+        # Do not fail the job when pre-release tests fail; instead, report via GitHub issue below.
         continue-on-error: true
         env:
           BUILD_TYPE: continuous
@@ -104,7 +103,7 @@ jobs:
           ci/run_conditional_tests.sh
 
       - name: Prepare issue body on failure
-        if: ${{ steps.run-tests.outcome == 'failure' || failure() }}
+        if: ${{ steps.run-tests.outcome == 'failure' }}
         id: issue-body
         run: |
           shopt -s nullglob
@@ -152,6 +151,17 @@ jobs:
             DETAILS=""
             TRUNCATED_NOTE=""
           fi
+
+          echo "::warning title=Pre-release Dependency Failures::Detected pre-release test failures in ${COUNT} package(s). See job summary or GitHub issues for details."
+
+          {
+            echo "### ⚠️ Pre-release Dependency Failures (${COUNT} packages)"
+            echo ""
+            echo "The pre-release check detected failures on Python \`${PY_VERSION}\`:"
+            echo ""
+            printf "%s" "${PKG_LIST}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
           {
             echo "body<<EOF_ISSUE_BODY"
             echo "The [pre-release check](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) failed for **${COUNT}** handwritten package(s) on Python \`${PY_VERSION}\`."
@@ -168,8 +178,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create issue on failure
-        if: ${{ (steps.run-tests.outcome == 'failure' || failure()) && github.repository == 'googleapis/google-cloud-python' }}
-        continue-on-error: true
+        if: ${{ steps.run-tests.outcome == 'failure' && github.repository == 'googleapis/google-cloud-python' }}
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "prerelease_deps check failed"
