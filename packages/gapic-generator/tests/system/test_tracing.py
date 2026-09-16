@@ -36,6 +36,7 @@ if not HAS_OPENTELEMETRY:
 from google import showcase
 from google.api_core import exceptions
 from google.api_core import retry as retries
+from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
 from google.rpc import code_pb2
@@ -65,115 +66,140 @@ def otel_echo_client(span_exporter, use_mtls):
     """Constructs an EchoClient wired with an in-memory TracerProvider."""
     exporter, provider = span_exporter
     options = ClientOptions(
-        tracing_enabled=True,
         tracer_provider=provider,
     )
-    client = construct_client(
-        EchoClient,
-        use_mtls,
-        client_options=options,
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    return client, exporter
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        yield client, exporter
 
 
 def test_sync_unary_tracing(otel_echo_client):
-    """Verifies that a synchronous unary RPC generates a trace span with expected attributes."""
+    """Verifies that a synchronous unary RPC generates trace spans with expected attributes."""
     client, exporter = otel_echo_client
 
-    response = client.echo(showcase.EchoRequest(content="hello world"))
-    assert response.content == "hello world"
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        response = client.echo(showcase.EchoRequest(content="hello world"))
+        assert response.content == "hello world"
 
     spans = exporter.get_finished_spans()
-    assert len(spans) == 1
+    # Synchronous unary calls generate both a Tier 2 method span and a Tier 4 wire span
+    assert len(spans) == 2
 
-    span = spans[0]
-    assert span.name == "google.showcase.v1beta1.Echo/Echo"
-    assert span.attributes.get("rpc.system.name") == "grpc"
-    assert span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
-    assert span.attributes.get("rpc.response.status_code") == "OK"
-    assert span.attributes.get("url.domain") == "googleapis.com"
-    assert span.kind == trace.SpanKind.CLIENT
+    for span in spans:
+        assert span.name == "google.showcase.v1beta1.Echo/Echo"
+        assert span.attributes.get("rpc.system.name") == "grpc"
+        assert span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
+        assert span.attributes.get("rpc.response.status_code") == "OK"
+        assert span.kind == trace.SpanKind.CLIENT
+
+    # Verify that the transport wire span captures url.domain
+    wire_spans = [s for s in spans if "url.domain" in s.attributes]
+    assert len(wire_spans) == 1
+    assert wire_spans[0].attributes["url.domain"] == "googleapis.com"
 
 
 def test_unary_retries_tracing(span_exporter, use_mtls):
     """Verifies that each attempt of a retried RPC generates a separate span."""
     exporter, provider = span_exporter
     options = ClientOptions(
-        tracing_enabled=True,
         tracer_provider=provider,
     )
-    client = construct_client(
-        EchoClient,
-        use_mtls,
-        client_options=options,
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Configure a custom retry policy with 2 attempts on DeadlineExceeded
-    custom_retry = retries.Retry(
-        predicate=retries.if_exception_type(exceptions.DeadlineExceeded),
-        initial=0.05,
-        maximum=0.1,
-        multiplier=1.0,
-        deadline=0.3,
-    )
-
-    with pytest.raises((exceptions.DeadlineExceeded, exceptions.RetryError)):
-        client.echo(
-            {
-                "error": {
-                    "code": code_pb2.Code.Value("DEADLINE_EXCEEDED"),
-                    "message": "Simulated deadline exceeded error for retry testing.",
-                },
-            },
-            retry=custom_retry,
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
-    spans = exporter.get_finished_spans()
-    # At least two attempts should have been made and recorded
-    assert len(spans) >= 2
-    for span in spans:
-        assert span.name == "google.showcase.v1beta1.Echo/Echo"
-        assert span.attributes.get("rpc.system.name") == "grpc"
-        assert span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
-        # Non-successful attempt should not have rpc.response.status_code == "OK"
-        assert span.attributes.get("rpc.response.status_code") != "OK"
+        # Configure a custom retry policy with 2 attempts on DeadlineExceeded
+        custom_retry = retries.Retry(
+            predicate=retries.if_exception_type(exceptions.DeadlineExceeded),
+            initial=0.05,
+            maximum=0.1,
+            multiplier=1.0,
+            deadline=0.3,
+        )
+
+        with pytest.raises((exceptions.DeadlineExceeded, exceptions.RetryError)):
+            client.echo(
+                {
+                    "error": {
+                        "code": code_pb2.Code.Value("DEADLINE_EXCEEDED"),
+                        "message": "Simulated deadline exceeded error for retry testing.",
+                    },
+                },
+                retry=custom_retry,
+            )
+
+        spans = exporter.get_finished_spans()
+        # At least two attempts should have been made and recorded
+        assert len(spans) >= 2
+        for span in spans:
+            assert span.name == "google.showcase.v1beta1.Echo/Echo"
+            assert span.attributes.get("rpc.system.name") == "grpc"
+            assert (
+                span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
+            )
+            # Non-successful attempt should not have rpc.response.status_code == "OK"
+            assert span.attributes.get("rpc.response.status_code") != "OK"
 
 
 def test_tracing_disabled_default(use_mtls):
     """Verifies that default client options emit zero spans (zero overhead guarantee).
 
-    Ensures that configuring a `TracerProvider` in `ClientOptions` without explicitly
-    enabling tracing (via `tracing_enabled=True` or the environment variable
-    `GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED`) records zero spans and incurs
-    no tracing overhead.
-
-    An active `TracerProvider` with an in-memory exporter is passed to the client.
-    The test executes an actual unary RPC and asserts that no finished spans are
-    recorded.
+    Ensures that without setting GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED=true,
+    even if an ambient TracerProvider is active, zero spans are recorded and no
+    tracing overhead is incurred. Also verifies that passing tracer_provider without
+    the environment variable fails fast by raising FeatureGatingError.
     """
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
     provider.add_span_processor(SimpleSpanProcessor(exporter))
 
-    # Provide the provider, but leave tracing_enabled=False / unset
-    options = ClientOptions(
-        tracing_enabled=False,
+    # Providing a tracer_provider without enabling the experimental env var fails fast
+    options_with_provider = ClientOptions(
         tracer_provider=provider,
     )
-    client = construct_client(
-        EchoClient,
-        use_mtls,
-        client_options=options,
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "false"}
+    ):
+        with pytest.raises(FeatureGatingError):
+            construct_client(
+                EchoClient,
+                use_mtls,
+                client_options=options_with_provider,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
 
-    response = client.echo(showcase.EchoRequest(content="no tracing"))
-    assert response.content == "no tracing"
+    # Default client options emit zero spans
+    options = ClientOptions()
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "false"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
 
-    # Zero spans must be emitted when tracing is disabled
-    assert len(exporter.get_finished_spans()) == 0
+        response = client.echo(showcase.EchoRequest(content="no tracing"))
+        assert response.content == "no tracing"
+
+        # Zero spans must be emitted when tracing is disabled
+        assert len(exporter.get_finished_spans()) == 0
 
 
 def test_custom_tracer_provider(use_mtls):
@@ -201,21 +227,23 @@ def test_custom_tracer_provider(use_mtls):
     trace.set_tracer_provider(global_provider)
     try:
         options = ClientOptions(
-            tracing_enabled=True,
             tracer_provider=custom_provider,
         )
-        client = construct_client(
-            EchoClient,
-            use_mtls,
-            client_options=options,
-            credentials=ga_credentials.AnonymousCredentials(),
-        )
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+        ):
+            client = construct_client(
+                EchoClient,
+                use_mtls,
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
 
-        response = client.echo(showcase.EchoRequest(content="isolated trace"))
-        assert response.content == "isolated trace"
+            response = client.echo(showcase.EchoRequest(content="isolated trace"))
+            assert response.content == "isolated trace"
 
-        assert len(custom_exporter.get_finished_spans()) == 1
-        assert len(global_exporter.get_finished_spans()) == 0
+            assert len(custom_exporter.get_finished_spans()) == 2
+            assert len(global_exporter.get_finished_spans()) == 0
     finally:
         trace.set_tracer_provider(original_provider)
 
@@ -235,27 +263,30 @@ def test_direct_client_initialization_tracing(span_exporter):
     """
     exporter, provider = span_exporter
     options = ClientOptions(
-        tracing_enabled=True,
         tracer_provider=provider,
     )
 
-    with mock.patch.object(
-        EchoClient.get_transport_class("grpc"),
-        "create_channel",
-        side_effect=lambda host, **kwargs: grpc.insecure_channel("localhost:7469"),
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
     ):
-        # Client constructs the transport and wires interceptors itself
-        client = EchoClient(
-            client_options=options,
-            credentials=ga_credentials.AnonymousCredentials(),
-        )
-        response = client.echo(showcase.EchoRequest(content="direct client wiring"))
-        assert response.content == "direct client wiring"
+        with mock.patch.object(
+            EchoClient.get_transport_class("grpc"),
+            "create_channel",
+            side_effect=lambda host, **kwargs: grpc.insecure_channel("localhost:7469"),
+        ):
+            # Client constructs the transport and wires interceptors itself
+            client = EchoClient(
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+            response = client.echo(showcase.EchoRequest(content="direct client wiring"))
+            assert response.content == "direct client wiring"
 
-        spans = exporter.get_finished_spans()
-        assert len(spans) == 1
-        assert spans[0].name == "google.showcase.v1beta1.Echo/Echo"
-        assert spans[0].attributes.get("rpc.system.name") == "grpc"
+            spans = exporter.get_finished_spans()
+            assert len(spans) == 2
+            for span in spans:
+                assert span.name == "google.showcase.v1beta1.Echo/Echo"
+                assert span.attributes.get("rpc.system.name") == "grpc"
 
 
 def test_env_var_opt_in(span_exporter, use_mtls):
@@ -280,5 +311,6 @@ def test_env_var_opt_in(span_exporter, use_mtls):
         assert response.content == "env opt in"
 
         spans = exporter.get_finished_spans()
-        assert len(spans) == 1
-        assert spans[0].name == "google.showcase.v1beta1.Echo/Echo"
+        assert len(spans) == 2
+        for span in spans:
+            assert span.name == "google.showcase.v1beta1.Echo/Echo"

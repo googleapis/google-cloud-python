@@ -178,16 +178,13 @@ def construct_client(
         if transport_name in ["grpc", "grpc_asyncio"]:
             # TODO(gapic-generator-python/issues/1914): Need to test grpc transports without a channel_creator
             assert channel_creator
-            interceptors = []
-            if _observability is not None and transport_name == "grpc":
-                otel_interceptor = _observability.get_otel_interceptor(client_options)
-                if otel_interceptor is not None:
-                    interceptors.append(otel_interceptor)
-            transport = transport_cls(
-                credentials=credentials,
-                channel=channel_creator(transport_endpoint),
-                interceptors=interceptors if interceptors else None,
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "channel": channel_creator(transport_endpoint),
+            }
+            if transport_name == "grpc":
+                transport_kwargs["client_options"] = client_options
+            transport = transport_cls(**transport_kwargs)
         elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
             transport = transport_cls(
