@@ -250,15 +250,19 @@ if [ ${retval} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
     pkg_name=$(basename "$(pwd)")
     for pip_bin in "${NOX_ENVDIR:-.nox}"/*/bin/pip; do
         if [ -x "$pip_bin" ]; then
-            "$pip_bin" list > "${FAILURE_LOG_DIR}/${pkg_name}.pip.txt" 2>/dev/null || true
+            pip_out=$("$pip_bin" list 2>/dev/null || true)
+            if echo "$pip_out" | grep -qvE "^(Package|-+|pip|setuptools|wheel)[[:space:]]"; then
+                echo "$pip_out" > "${FAILURE_LOG_DIR}/${pkg_name}.pip.txt"
+            fi
             break
         fi
     done
 fi
 
-# Clean up `__pycache__` and `.nox` directories to avoid error
-# `No space left on device` seen when running tests in Github Actions
+# Clean up `__pycache__`, `.nox`, and build artifact directories to avoid error
+# `No space left on device` and prevent leftover build/ files from polluting
+# downstream local dependency builds.
 find . | grep -E "(__pycache__)" | xargs rm -rf
-rm -rf .nox
+rm -rf .nox build *.egg-info
 
 exit ${retval}

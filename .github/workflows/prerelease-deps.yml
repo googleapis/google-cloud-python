@@ -117,7 +117,7 @@ jobs:
               pkg=$(basename "$log_file" .log.txt)
               pip_file="${FAILURE_LOG_DIR}/${pkg}.pip.txt"
               log_tail=$(cat "$log_file" 2>/dev/null || echo "Unavailable")
-              pip_list=$(cat "$pip_file" 2>/dev/null || echo "Unavailable")
+              pip_list=$(cat "$pip_file" 2>/dev/null || echo "No dependencies installed (failed during build)")
               PKG_LIST="${PKG_LIST}- \`${pkg}\`"$'\n'
 
               entry=$(cat <<EOF
