@@ -88,6 +88,8 @@ jobs:
           python3 ci/get_package_shards.py
 
       - name: Run prerelease_deps across handwritten packages
+        id: run-tests
+        continue-on-error: true
         env:
           BUILD_TYPE: continuous
           TEST_TYPE: prerelease
@@ -99,7 +101,7 @@ jobs:
           ci/run_conditional_tests.sh
 
       - name: Prepare issue body on failure
-        if: ${{ failure() }}
+        if: ${{ steps.run-tests.outcome == 'failure' || failure() }}
         id: issue-body
         run: |
           shopt -s nullglob
@@ -163,7 +165,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create issue on failure
-        if: ${{ failure() && github.repository == 'googleapis/google-cloud-python' }}
+        if: ${{ (steps.run-tests.outcome == 'failure' || failure()) && github.repository == 'googleapis/google-cloud-python' }}
         continue-on-error: true
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
