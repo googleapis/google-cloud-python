@@ -184,6 +184,14 @@ class BigtableInstanceAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_memory_layer(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_memory_layer(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_app_profiles(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -229,6 +237,14 @@ class BigtableInstanceAdminRestInterceptor:
                 return request, metadata
 
             def post_list_materialized_views(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_memory_layers(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_memory_layers(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -301,6 +317,14 @@ class BigtableInstanceAdminRestInterceptor:
                 return request, metadata
 
             def post_update_materialized_view(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_memory_layer(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_memory_layer(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -917,6 +941,55 @@ class BigtableInstanceAdminRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_memory_layer(
+        self,
+        request: bigtable_instance_admin.GetMemoryLayerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        bigtable_instance_admin.GetMemoryLayerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_memory_layer
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableInstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_get_memory_layer(
+        self, response: instance.MemoryLayer
+    ) -> instance.MemoryLayer:
+        """Post-rpc interceptor for get_memory_layer
+
+        DEPRECATED. Please use the `post_get_memory_layer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BigtableInstanceAdmin server but before
+        it is returned to user code. This `post_get_memory_layer` interceptor runs
+        before the `post_get_memory_layer_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_memory_layer_with_metadata(
+        self,
+        response: instance.MemoryLayer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.MemoryLayer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_memory_layer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BigtableInstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_memory_layer_with_metadata`
+        interceptor in new development instead of the `post_get_memory_layer` interceptor.
+        When both interceptors are used, this `post_get_memory_layer_with_metadata` interceptor runs after the
+        `post_get_memory_layer` interceptor. The (possibly modified) response returned by
+        `post_get_memory_layer` will be passed to
+        `post_get_memory_layer_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_app_profiles(
         self,
         request: bigtable_instance_admin.ListAppProfilesRequest,
@@ -1226,6 +1299,58 @@ class BigtableInstanceAdminRestInterceptor:
         `post_list_materialized_views` interceptor. The (possibly modified) response returned by
         `post_list_materialized_views` will be passed to
         `post_list_materialized_views_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_memory_layers(
+        self,
+        request: bigtable_instance_admin.ListMemoryLayersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        bigtable_instance_admin.ListMemoryLayersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_memory_layers
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableInstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_list_memory_layers(
+        self, response: bigtable_instance_admin.ListMemoryLayersResponse
+    ) -> bigtable_instance_admin.ListMemoryLayersResponse:
+        """Post-rpc interceptor for list_memory_layers
+
+        DEPRECATED. Please use the `post_list_memory_layers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BigtableInstanceAdmin server but before
+        it is returned to user code. This `post_list_memory_layers` interceptor runs
+        before the `post_list_memory_layers_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_memory_layers_with_metadata(
+        self,
+        response: bigtable_instance_admin.ListMemoryLayersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        bigtable_instance_admin.ListMemoryLayersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_memory_layers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BigtableInstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_memory_layers_with_metadata`
+        interceptor in new development instead of the `post_list_memory_layers` interceptor.
+        When both interceptors are used, this `post_list_memory_layers_with_metadata` interceptor runs after the
+        `post_list_memory_layers` interceptor. The (possibly modified) response returned by
+        `post_list_memory_layers` will be passed to
+        `post_list_memory_layers_with_metadata`.
         """
         return response, metadata
 
@@ -1659,6 +1784,55 @@ class BigtableInstanceAdminRestInterceptor:
         `post_update_materialized_view` interceptor. The (possibly modified) response returned by
         `post_update_materialized_view` will be passed to
         `post_update_materialized_view_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_memory_layer(
+        self,
+        request: bigtable_instance_admin.UpdateMemoryLayerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        bigtable_instance_admin.UpdateMemoryLayerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_memory_layer
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BigtableInstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_update_memory_layer(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_memory_layer
+
+        DEPRECATED. Please use the `post_update_memory_layer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BigtableInstanceAdmin server but before
+        it is returned to user code. This `post_update_memory_layer` interceptor runs
+        before the `post_update_memory_layer_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_memory_layer_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_memory_layer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BigtableInstanceAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_update_memory_layer_with_metadata`
+        interceptor in new development instead of the `post_update_memory_layer` interceptor.
+        When both interceptors are used, this `post_update_memory_layer_with_metadata` interceptor runs after the
+        `post_update_memory_layer` interceptor. The (possibly modified) response returned by
+        `post_update_memory_layer` will be passed to
+        `post_update_memory_layer_with_metadata`.
         """
         return response, metadata
 
@@ -4078,6 +4252,157 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                 )
             return resp
 
+    class _GetMemoryLayer(
+        _BaseBigtableInstanceAdminRestTransport._BaseGetMemoryLayer,
+        BigtableInstanceAdminRestStub,
+    ):
+        def __hash__(self):
+            return hash("BigtableInstanceAdminRestTransport.GetMemoryLayer")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: bigtable_instance_admin.GetMemoryLayerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> instance.MemoryLayer:
+            r"""Call the get memory layer method over HTTP.
+
+            Args:
+                request (~.bigtable_instance_admin.GetMemoryLayerRequest):
+                    The request object. Request message for
+                BigtableInstanceAdmin.GetMemoryLayer.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.instance.MemoryLayer:
+                    The memory layer of a cluster. A
+                memory layer serves reads from memory
+                without hitting the backing persistent
+                data store.
+
+            """
+
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseGetMemoryLayer._get_http_options()
+            request, metadata = self._interceptor.pre_get_memory_layer(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseGetMemoryLayer,
+                    "_BaseGetMemoryLayer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.bigtable.admin_v2.BigtableInstanceAdminClient.GetMemoryLayer",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "GetMemoryLayer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BigtableInstanceAdminRestTransport._GetMemoryLayer._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = instance.MemoryLayer()
+            pb_resp = instance.MemoryLayer.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_memory_layer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_memory_layer_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = instance.MemoryLayer.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.bigtable.admin_v2.BigtableInstanceAdminClient.get_memory_layer",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "GetMemoryLayer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListAppProfiles(
         _BaseBigtableInstanceAdminRestTransport._BaseListAppProfiles,
         BigtableInstanceAdminRestStub,
@@ -4986,6 +5311,161 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
                         "rpcName": "ListMaterializedViews",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListMemoryLayers(
+        _BaseBigtableInstanceAdminRestTransport._BaseListMemoryLayers,
+        BigtableInstanceAdminRestStub,
+    ):
+        def __hash__(self):
+            return hash("BigtableInstanceAdminRestTransport.ListMemoryLayers")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: bigtable_instance_admin.ListMemoryLayersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> bigtable_instance_admin.ListMemoryLayersResponse:
+            r"""Call the list memory layers method over HTTP.
+
+            Args:
+                request (~.bigtable_instance_admin.ListMemoryLayersRequest):
+                    The request object. Request message for
+                BigtableInstanceAdmin.ListMemoryLayers.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.bigtable_instance_admin.ListMemoryLayersResponse:
+                    Response message for
+                BigtableInstanceAdmin.ListMemoryLayers.
+
+            """
+
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseListMemoryLayers._get_http_options()
+            request, metadata = self._interceptor.pre_list_memory_layers(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseListMemoryLayers,
+                    "_BaseListMemoryLayers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.bigtable.admin_v2.BigtableInstanceAdminClient.ListMemoryLayers",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "ListMemoryLayers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                BigtableInstanceAdminRestTransport._ListMemoryLayers._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = bigtable_instance_admin.ListMemoryLayersResponse()
+            pb_resp = bigtable_instance_admin.ListMemoryLayersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_memory_layers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_memory_layers_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        bigtable_instance_admin.ListMemoryLayersResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.bigtable.admin_v2.BigtableInstanceAdminClient.list_memory_layers",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "ListMemoryLayers",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6428,6 +6908,158 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
                 )
             return resp
 
+    class _UpdateMemoryLayer(
+        _BaseBigtableInstanceAdminRestTransport._BaseUpdateMemoryLayer,
+        BigtableInstanceAdminRestStub,
+    ):
+        def __hash__(self):
+            return hash("BigtableInstanceAdminRestTransport.UpdateMemoryLayer")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: bigtable_instance_admin.UpdateMemoryLayerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update memory layer method over HTTP.
+
+            Args:
+                request (~.bigtable_instance_admin.UpdateMemoryLayerRequest):
+                    The request object. Request message for
+                BigtableInstanceAdmin.UpdateMemoryLayer.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseBigtableInstanceAdminRestTransport._BaseUpdateMemoryLayer._get_http_options()
+            request, metadata = self._interceptor.pre_update_memory_layer(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseBigtableInstanceAdminRestTransport._BaseUpdateMemoryLayer,
+                    "_BaseUpdateMemoryLayer__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.bigtable.admin_v2.BigtableInstanceAdminClient.UpdateMemoryLayer",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "UpdateMemoryLayer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                BigtableInstanceAdminRestTransport._UpdateMemoryLayer._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_memory_layer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_memory_layer_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.bigtable.admin_v2.BigtableInstanceAdminClient.update_memory_layer",
+                    extra={
+                        "serviceName": "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "rpcName": "UpdateMemoryLayer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_app_profile(
         self,
@@ -6578,6 +7210,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
         return self._GetMaterializedView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_memory_layer(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.GetMemoryLayerRequest], instance.MemoryLayer
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetMemoryLayer(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_app_profiles(
         self,
     ) -> Callable[
@@ -6642,6 +7284,17 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMaterializedViews(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_memory_layers(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.ListMemoryLayersRequest],
+        bigtable_instance_admin.ListMemoryLayersResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListMemoryLayers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def partial_update_cluster(
@@ -6726,6 +7379,16 @@ class BigtableInstanceAdminRestTransport(_BaseBigtableInstanceAdminRestTransport
         return self._UpdateMaterializedView(
             self._session, self._host, self._interceptor
         )  # type: ignore
+
+    @property
+    def update_memory_layer(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.UpdateMemoryLayerRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateMemoryLayer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

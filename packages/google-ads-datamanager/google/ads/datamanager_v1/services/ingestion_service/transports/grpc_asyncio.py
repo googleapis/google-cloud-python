@@ -526,12 +526,32 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
         self._wrapped_methods = {
             self.ingest_audience_members: self._wrap_method(
                 self.ingest_audience_members,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.remove_audience_members: self._wrap_method(
                 self.remove_audience_members,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.remove_all_audience_members: self._wrap_method(
@@ -541,7 +561,17 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
             ),
             self.ingest_events: self._wrap_method(
                 self.ingest_events,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.ingest_ad_events: self._wrap_method(
@@ -551,7 +581,17 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
             ),
             self.retrieve_request_status: self._wrap_method(
                 self.retrieve_request_status,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=5.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }
