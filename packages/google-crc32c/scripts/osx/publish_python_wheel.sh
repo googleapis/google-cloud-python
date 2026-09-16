@@ -21,8 +21,7 @@ if ! pyenv versions --bare | grep -qE "^3\.10(\.|$)"; then
 fi
 pyenv shell 3.10
 
-python -m pip install "setuptools<71"
-python -m pip install --require-hashes -r "${REPO_ROOT}/scripts/release-requirements.txt"
+python -m pip install "setuptools<71" twine wheel
 
 echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
@@ -40,6 +39,7 @@ python -m twine check "${REPO_ROOT}/wheels/"*
 
 if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
     # Start the releasetool reporter
+    python -m pip install gcp-releasetool
     python -m releasetool publish-reporter-script > /tmp/publisher-script
     source /tmp/publisher-script
 
