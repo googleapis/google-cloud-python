@@ -377,6 +377,7 @@ class AssetServiceTransport(abc.ABC):
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
          }
 

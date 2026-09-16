@@ -224,6 +224,7 @@ class {{ service.name }}Transport(abc.ABC):
                 self.{{ method_name|snake_case }},
                 default_timeout=None,
                 client_info=client_info,
+                method_name="{{ api.mixin_api_signatures[method_name].rpc_name }}",
             ),
             {% endfor %} {# method_name in api.mixin_api_methods.keys() #}
         }
