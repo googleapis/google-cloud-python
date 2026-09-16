@@ -51,7 +51,7 @@ from test__helpers import (
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.bson import BSONObjectId
+from google.cloud.firestore_v1.bson import BSONMaxKey, BSONMinKey, BSONObjectId
 from google.cloud.firestore_v1.query_profile import (
     ExecutionStats,
     ExplainMetrics,
@@ -1257,13 +1257,19 @@ async def test_async_bson_document_writes(client, cleanup, database):
 
     bson_payload = {
         "user_id": BSONObjectId("507f191e810c19729de860ea"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
     }
 
     await doc_ref.set(bson_payload)
 
     snapshot = await doc_ref.get()
     assert snapshot.exists
-    assert snapshot.to_dict() == {"user_id": {"__oid__": "507f191e810c19729de860ea"}}
+    assert snapshot.to_dict() == {
+        "user_id": {"__oid__": "507f191e810c19729de860ea"},
+        "min_key": {"__min__": None},
+        "max_key": {"__max__": None},
+    }
 
 
 @pytest_asyncio.fixture(scope="module")
