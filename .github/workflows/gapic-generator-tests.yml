@@ -127,7 +127,9 @@ jobs:
           # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
           GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
           MATRIX_PYTHON: ${{ matrix.python }}
-        run: nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
+        run: |
+          cd packages/gapic-generator
+          nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
       - name: Install System Deps & Protoc
         run: |
           sudo apt-get update && sudo apt-get install -y curl pandoc unzip
