@@ -199,6 +199,64 @@ def test_order_all_value_present():
         assert type_order in _TYPE_ORDER_MAP
 
 
+def test_order_bson_type_ordering():
+    from google.cloud.firestore_v1._helpers import encode_value
+    from google.cloud.firestore_v1.bson import (
+        BSONBinary,
+        BSONDecimal128,
+        BSONInt32,
+        BSONMaxKey,
+        BSONMinKey,
+        BSONObjectId,
+        BSONRegex,
+        BSONTimestamp,
+    )
+    from google.cloud.firestore_v1.order import Order
+
+    min_k = encode_value(BSONMinKey())
+    max_k = encode_value(BSONMaxKey())
+    null_v = nullValue()
+    int32_v = encode_value(BSONInt32(10))
+    int64_v = _int_value(10)
+    dec_v = encode_value(BSONDecimal128("10.0"))
+    ts_bson = encode_value(BSONTimestamp(100, 1))
+    ts_native = _timestamp_value(100, 0)
+    bin_b = encode_value(BSONBinary(b"xyz", subtype=1))
+    bytes_native = _blob_value(b"xyz")
+    ref_v = _reference_value("projects/p1/databases/d1/documents/c1/doc1")
+    oid_v = encode_value(BSONObjectId("507f191e810c19729de860ea"))
+    geo_v = _geoPoint_value(0, 0)
+    regex_v = encode_value(BSONRegex("abc"))
+    arr_v = _array_value()
+    map_v = _object_value({"a": 1})
+
+    # Test 16-rank ordering bounds
+    target = Order()
+    assert target.compare(null_v, min_k) == -1
+    assert target.compare(min_k, null_v) == 1
+
+    assert target.compare(max_k, map_v) == 1
+    assert target.compare(map_v, max_k) == -1
+
+    # Test numbers comparison equality across int32, int64, decimal128
+    assert target.compare(int32_v, int64_v) == 0
+    assert target.compare(int32_v, dec_v) == 0
+
+    # Test timestamp comparison (native timestamp < BSON timestamp with increment)
+    assert target.compare(ts_native, ts_bson) == -1
+
+    # Test BSON binary > bytes
+    assert target.compare(bytes_native, bin_b) == -1
+
+    # Test ObjectId rank (REF < OID < GEO_POINT)
+    assert target.compare(ref_v, oid_v) == -1
+    assert target.compare(oid_v, geo_v) == -1
+
+    # Test Regex rank (GEO_POINT < REGEX < ARRAY)
+    assert target.compare(geo_v, regex_v) == -1
+    assert target.compare(regex_v, arr_v) == -1
+
+
 def test_order_compare_w_objects_different_keys():
     left = _object_value({"foo": 0})
     right = _object_value({"bar": 0})

@@ -36,10 +36,16 @@ class TypeOrder(Enum):
     ARRAY = 8
     OBJECT = 9
     VECTOR = 10
+    BSON_MIN_KEY = 11
+    BSON_MAX_KEY = 12
+    BSON_OBJECT_ID = 13
+    BSON_BINARY = 14
+    BSON_REGEX = 15
 
     @staticmethod
     def from_value(value) -> Any:
-        v = value._pb.WhichOneof("value_type")
+        value_pb = getattr(value, "_pb", value)
+        v = value_pb.WhichOneof("value_type")
         lut = {
             "null_value": TypeOrder.NULL,
             "boolean_value": TypeOrder.BOOLEAN,
@@ -58,10 +64,24 @@ class TypeOrder(Enum):
             raise ValueError(f"Could not detect value type for {v}")
 
         if v == "map_value":
-            if (
-                "__type__" in value.map_value.fields
-                and value.map_value.fields["__type__"].string_value == "__vector__"
-            ):
+            fields = value_pb.map_value.fields
+            if len(fields) == 1:
+                key = next(iter(fields))
+                if key == "__min__":
+                    return TypeOrder.BSON_MIN_KEY
+                if key == "__max__":
+                    return TypeOrder.BSON_MAX_KEY
+                if key == "__oid__":
+                    return TypeOrder.BSON_OBJECT_ID
+                if key in ("__int__", "__decimal128__"):
+                    return TypeOrder.NUMBER
+                if key == "__binary__":
+                    return TypeOrder.BSON_BINARY
+                if key == "__regex__":
+                    return TypeOrder.BSON_REGEX
+                if key == "__request_timestamp__":
+                    return TypeOrder.TIMESTAMP
+            if "__type__" in fields and fields["__type__"].string_value == "__vector__":
                 return TypeOrder.VECTOR
         return lut[v]
 
@@ -69,16 +89,21 @@ class TypeOrder(Enum):
 # NOTE: This order is defined by the backend and cannot be changed.
 _TYPE_ORDER_MAP = {
     TypeOrder.NULL: 0,
-    TypeOrder.BOOLEAN: 1,
-    TypeOrder.NUMBER: 2,
-    TypeOrder.TIMESTAMP: 3,
-    TypeOrder.STRING: 4,
-    TypeOrder.BLOB: 5,
-    TypeOrder.REF: 6,
-    TypeOrder.GEO_POINT: 7,
-    TypeOrder.ARRAY: 8,
-    TypeOrder.VECTOR: 9,
-    TypeOrder.OBJECT: 10,
+    TypeOrder.BSON_MIN_KEY: 1,
+    TypeOrder.BOOLEAN: 2,
+    TypeOrder.NUMBER: 3,
+    TypeOrder.TIMESTAMP: 4,
+    TypeOrder.STRING: 5,
+    TypeOrder.BLOB: 6,
+    TypeOrder.BSON_BINARY: 7,
+    TypeOrder.REF: 8,
+    TypeOrder.BSON_OBJECT_ID: 9,
+    TypeOrder.GEO_POINT: 10,
+    TypeOrder.BSON_REGEX: 11,
+    TypeOrder.ARRAY: 12,
+    TypeOrder.VECTOR: 13,
+    TypeOrder.OBJECT: 14,
+    TypeOrder.BSON_MAX_KEY: 15,
 }
 
 
@@ -102,8 +127,12 @@ class Order(object):
             else:
                 return 1
 
-        if leftType == TypeOrder.NULL:
-            return 0  # nulls are all equal
+        if (
+            leftType == TypeOrder.NULL
+            or leftType == TypeOrder.BSON_MIN_KEY
+            or leftType == TypeOrder.BSON_MAX_KEY
+        ):
+            return 0  # sentinels are equal
         elif leftType == TypeOrder.BOOLEAN:
             return cls._compare_to(left.boolean_value, right.boolean_value)
         elif leftType == TypeOrder.NUMBER:
@@ -114,10 +143,16 @@ class Order(object):
             return cls._compare_to(left.string_value, right.string_value)
         elif leftType == TypeOrder.BLOB:
             return cls.compare_blobs(left, right)
+        elif leftType == TypeOrder.BSON_BINARY:
+            return cls.compare_bson_binaries(left, right)
         elif leftType == TypeOrder.REF:
             return cls.compare_resource_paths(left, right)
+        elif leftType == TypeOrder.BSON_OBJECT_ID:
+            return cls.compare_bson_object_ids(left, right)
         elif leftType == TypeOrder.GEO_POINT:
             return cls.compare_geo_points(left, right)
+        elif leftType == TypeOrder.BSON_REGEX:
+            return cls.compare_bson_regexes(left, right)
         elif leftType == TypeOrder.ARRAY:
             return cls.compare_arrays(left, right)
         elif leftType == TypeOrder.VECTOR:
@@ -136,15 +171,68 @@ class Order(object):
         return Order._compare_to(left_bytes, right_bytes)
 
     @staticmethod
-    def compare_timestamps(left, right) -> Any:
-        left = left._pb.timestamp_value
-        right = right._pb.timestamp_value
+    def compare_bson_binaries(left, right) -> int:
+        l_bin = left.map_value.fields["__binary__"].bytes_value
+        r_bin = right.map_value.fields["__binary__"].bytes_value
 
-        seconds = Order._compare_to(left.seconds or 0, right.seconds or 0)
+        l_subtype = l_bin[0] if l_bin else 0
+        r_subtype = r_bin[0] if r_bin else 0
+
+        cmp_subtype = Order._compare_to(l_subtype, r_subtype)
+        if cmp_subtype != 0:
+            return cmp_subtype
+
+        return Order._compare_to(
+            l_bin[1:] if l_bin else b"", r_bin[1:] if r_bin else b""
+        )
+
+    @staticmethod
+    def compare_bson_object_ids(left, right) -> int:
+        l_oid = left.map_value.fields["__oid__"].string_value
+        r_oid = right.map_value.fields["__oid__"].string_value
+        return Order._compare_to(l_oid, r_oid)
+
+    @staticmethod
+    def compare_bson_regexes(left, right) -> int:
+        l_regex = left.map_value.fields["__regex__"].map_value.fields
+        r_regex = right.map_value.fields["__regex__"].map_value.fields
+
+        l_pattern = l_regex["pattern"].string_value if "pattern" in l_regex else ""
+        r_pattern = r_regex["pattern"].string_value if "pattern" in r_regex else ""
+        cmp_pat = Order._compare_to(l_pattern, r_pattern)
+        if cmp_pat != 0:
+            return cmp_pat
+
+        l_options = l_regex["options"].string_value if "options" in l_regex else ""
+        r_options = r_regex["options"].string_value if "options" in r_regex else ""
+        return Order._compare_to(l_options, r_options)
+
+    @staticmethod
+    def compare_timestamps(left, right) -> Any:
+        left_pb = getattr(left, "_pb", left)
+        right_pb = getattr(right, "_pb", right)
+
+        if left_pb.WhichOneof("value_type") == "map_value":
+            l_ts = left_pb.map_value.fields["__request_timestamp__"].map_value.fields
+            l_sec = l_ts["seconds"].integer_value if "seconds" in l_ts else 0
+            l_inc = l_ts["increment"].integer_value if "increment" in l_ts else 0
+        else:
+            l_sec = left_pb.timestamp_value.seconds
+            l_inc = left_pb.timestamp_value.nanos
+
+        if right_pb.WhichOneof("value_type") == "map_value":
+            r_ts = right_pb.map_value.fields["__request_timestamp__"].map_value.fields
+            r_sec = r_ts["seconds"].integer_value if "seconds" in r_ts else 0
+            r_inc = r_ts["increment"].integer_value if "increment" in r_ts else 0
+        else:
+            r_sec = right_pb.timestamp_value.seconds
+            r_inc = right_pb.timestamp_value.nanos
+
+        seconds = Order._compare_to(l_sec, r_sec)
         if seconds != 0:
             return seconds
 
-        return Order._compare_to(left.nanos or 0, right.nanos or 0)
+        return Order._compare_to(l_inc, r_inc)
 
     @staticmethod
     def compare_geo_points(left, right) -> Any:
@@ -231,9 +319,13 @@ class Order(object):
 
     @staticmethod
     def compare_numbers(left, right) -> int:
-        left_value = decode_value(left, None)
-        right_value = decode_value(right, None)
-        return Order.compare_doubles(left_value, right_value)
+        left_val = decode_value(left, None, decode_bson=True)
+        right_val = decode_value(right, None, decode_bson=True)
+        if hasattr(left_val, "value"):
+            left_val = left_val.value
+        if hasattr(right_val, "value"):
+            right_val = right_val.value
+        return Order.compare_doubles(float(left_val), float(right_val))
 
     @staticmethod
     def compare_doubles(left, right) -> int:
