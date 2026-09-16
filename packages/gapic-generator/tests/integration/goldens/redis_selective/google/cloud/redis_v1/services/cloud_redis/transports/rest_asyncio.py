@@ -728,8 +728,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             pb_resp = resp
             content = await response.read()
-            if content and content.strip():
-                json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
@@ -861,8 +860,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             pb_resp = resp
             content = await response.read()
-            if content and content.strip():
-                json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
@@ -991,8 +989,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = cloud_redis.Instance()
             pb_resp = cloud_redis.Instance.pb(resp)
             content = await response.read()
-            if content and content.strip():
-                json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
@@ -1123,8 +1120,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = cloud_redis.ListInstancesResponse()
             pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
             content = await response.read()
-            if content and content.strip():
-                json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
@@ -1257,8 +1253,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             pb_resp = resp
             content = await response.read()
-            if content and content.strip():
-                json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_update_instance_with_metadata(resp, response_metadata)

@@ -57,8 +57,8 @@ from .grpc import {{ service.name }}GrpcTransport
 {% if service.has_resumable_upload_methods %}
 try:
     from .rest_asyncio import Async{{ service.name }}RestTransport
-    HAS_ASYNC_REST = True
-except ImportError:
+    HAS_ASYNC_REST = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
     HAS_ASYNC_REST = False
 {% endif %}
 
@@ -372,14 +372,14 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                         "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
                     )
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _error_stub
-            elif HAS_ASYNC_REST:
+            elif HAS_ASYNC_REST:  # pragma: NO COVER
                 rest_transport = Async{{ service.name }}RestTransport(
                     host=self._host,
                     credentials=self._credentials,
                     client_info=self._client_info,
                 )
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = rest_transport.{{ method.transport_safe_name|snake_case }}
-            else:
+            else:  # pragma: NO COVER
                 async def _unsupported_stub(*args, **kwargs):
                     raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _unsupported_stub

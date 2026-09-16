@@ -977,8 +977,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = cloud_redis.Instance()
             pb_resp = cloud_redis.Instance.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1105,8 +1104,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = cloud_redis.ListInstancesResponse()
             pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
