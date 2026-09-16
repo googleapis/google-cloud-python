@@ -48,11 +48,9 @@ import google.api_core.client_options
 import google.api_core.exceptions as core_exceptions
 import google.cloud._helpers  # type: ignore
 import requests
-from google import resumable_media  # type: ignore
 from google.api_core import page_iterator
 from google.api_core import retry as retries
 from google.api_core.iam import Policy
-from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import (
     ClientWithProject,  # type: ignore  # pytype: disable=import-error
 )
@@ -60,6 +58,9 @@ from google.resumable_media.requests import (
     MultipartUpload,  # type: ignore
     ResumableUpload,
 )
+
+from google import resumable_media  # type: ignore
+from google.cloud import exceptions  # pytype: disable=import-error
 
 try:
     from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
@@ -70,6 +71,7 @@ except ImportError:
 
 
 from google.auth.credentials import Credentials
+
 from google.cloud.bigquery import (
     _job_helpers,
     _pandas_helpers,
@@ -78,6 +80,9 @@ from google.cloud.bigquery import (
     job,
 )
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import (
+    version as bq_version,
+)
 from google.cloud.bigquery._helpers import (
     _DEFAULT_HOST,
     _DEFAULT_HOST_TEMPLATE,
@@ -128,9 +133,7 @@ from google.cloud.bigquery.table import (
 )
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
-pandas = (
-    _versions_helpers.PANDAS_VERSIONS.try_import()
-)  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
+pandas = _versions_helpers.PANDAS_VERSIONS.try_import()  # mypy check fails because pandas import is outside module, there are type: ignore comments related to this
 
 
 ResumableTimeoutType = Union[
@@ -148,7 +151,7 @@ _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 _GENERIC_CONTENT_TYPE = "*/*"
 _READ_LESS_THAN_SIZE = (
-    "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+    "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
 )
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
@@ -641,9 +644,16 @@ class Client(ClientWithProject):
             pandas_gbq = None  # type: ignore
 
         if pandas_gbq is None:
-            user_agent = "pandas-gbq/0.0.0"
+            # Even if pandas-gbq isn't installed, attribute all
+            # to_dataframe/to_arrow usage the same as we do the recommended
+            # (pandas-gbq) code paths.
+            pandas_user_agent = "pandas-gbq/0.0.0"
         else:
-            user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+            pandas_user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+
+        # Track the google-cloud-bigquery version as "legacy" because this code
+        # path is intended to be migrated to pandas-gbq itself.
+        user_agent = f"legacy-gcb/{bq_version.__version__} {pandas_user_agent}"
 
         if client_info is None:
             amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(

@@ -20,7 +20,6 @@ import base64
 import copy
 import datetime
 import functools
-import logging
 import operator
 import typing
 import warnings
@@ -59,6 +58,7 @@ else:
 import google.api_core.exceptions
 import google.cloud._helpers  # type: ignore
 from google.api_core.page_iterator import HTTPIterator
+
 from google.cloud.bigquery import (
     _helpers,
     _pandas_helpers,
@@ -84,10 +84,10 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     import geopandas  # type: ignore
     import pandas
     import pyarrow
+
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
-_LOGGER = logging.getLogger(__name__)
 
 _NO_GEOPANDAS_ERROR = (
     "The geopandas library is not installed, please install "
@@ -573,9 +573,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["biglake_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["biglake_configuration"]] = (
+            api_repr
+        )
 
     @property
     def require_partition_filter(self):
@@ -589,9 +589,9 @@ class Table(_TableBase):
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["require_partition_filter"]
-        ] = value
+        self._properties[self._PROPERTY_TO_API_FIELD["require_partition_filter"]] = (
+            value
+        )
 
     @property
     def schema(self):
@@ -689,9 +689,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["encryption_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["encryption_configuration"]] = (
+            api_repr
+        )
 
     @property
     def created(self):
@@ -830,7 +830,7 @@ class Table(_TableBase):
             api_repr = value.to_api_repr()
         elif value is not None:
             raise ValueError(
-                "value must be google.cloud.bigquery.table.TimePartitioning " "or None"
+                "value must be google.cloud.bigquery.table.TimePartitioning or None"
             )
         self._properties[self._PROPERTY_TO_API_FIELD["time_partitioning"]] = api_repr
 
@@ -966,9 +966,9 @@ class Table(_TableBase):
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
         value_ms = google.cloud._helpers._millis_from_datetime(value)
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["expires"]
-        ] = _helpers._str_or_none(value_ms)
+        self._properties[self._PROPERTY_TO_API_FIELD["expires"]] = (
+            _helpers._str_or_none(value_ms)
+        )
 
     @property
     def friendly_name(self):
@@ -1164,9 +1164,9 @@ class Table(_TableBase):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties[
-            self._PROPERTY_TO_API_FIELD["external_data_configuration"]
-        ] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["external_data_configuration"]] = (
+            api_repr
+        )
 
     @property
     def snapshot_definition(self) -> Optional["SnapshotDefinition"]:
@@ -2993,21 +2993,6 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
-        if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
-            try:
-                client_info = getattr(
-                    getattr(self.client, "_connection", None), "_client_info", None
-                )
-                if client_info:
-                    ua = getattr(client_info, "user_agent", None) or ""
-                    if "pandas-gbq" not in ua:
-                        version = (
-                            _versions_helpers.PANDAS_GBQ_VERSIONS.installed_version
-                        )
-                        client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
-            except Exception as exc:
-                _LOGGER.debug("Failed to update telemetry user-agent: %s", exc)
-
         with warnings.catch_warnings():
             warnings.filterwarnings(
                 "ignore",
@@ -3203,8 +3188,7 @@ class RowIterator(HTTPIterator):
         )
         if not geography_columns:
             raise TypeError(
-                "There must be at least one GEOGRAPHY column"
-                " to create a GeoDataFrame"
+                "There must be at least one GEOGRAPHY column to create a GeoDataFrame"
             )
 
         if geography_column:
