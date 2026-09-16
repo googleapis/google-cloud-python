@@ -64,6 +64,9 @@ if [[ -z ${BUILD_PYTHON} ]]; then
         elif [[ "${PYTHON_BIN}" == *"314"* && "${PYTHON_BIN}" != *"314t"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
+        elif [[ "${PYTHON_BIN}" == *"315"* && "${PYTHON_BIN}" != *"315t"* ]]; then
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
+            continue
         else
             echo "Ignoring unsupported version: ${PYTHON_BIN}"
             echo "====================================="
@@ -94,20 +97,21 @@ done
 
 # Install and test wheels
 for PYTHON_BIN in ${PYTHON_VERSIONS}; do
-    # Identify the short python version e.g. "39", "310"
-                    # Get the ABI tag from the Python binary's path, e.g., "cp310-cp310"
-                    ABI_TAG=$(basename $(dirname ${PYTHON_BIN}))
-                    ARCH=$(uname -m)
-                    # Create a virtual environment to install and test the wheel
-                    ${PYTHON_BIN}/python -m venv /tmp/venv
-                    
-                    # Find the correct wheel file using the precise ABI tag and architecture.
-                    WHEEL_FILE=$(ls ${REPO_ROOT}/wheels/google_crc32c-*-${ABI_TAG}-*manylinux*${ARCH}*.whl)    # Install the wheel
-    /tmp/venv/bin/pip install "${WHEEL_FILE}"
+    # Get the ABI tag from the Python binary's path, e.g., "cp310-cp310"
+    ABI_TAG=$(basename $(dirname ${PYTHON_BIN}))
+    ARCH=$(uname -m)
+    # Create a virtual environment to install and test the wheel
+    ${PYTHON_BIN}/python -m venv /tmp/venv
+
+    # Find the correct wheel file using the precise ABI tag and architecture.
+    WHEEL_FILE=$(ls ${REPO_ROOT}/wheels/google_crc32c-*-${ABI_TAG}-*manylinux*${ARCH}*.whl)
+    # Install the wheel and pytest
+    /tmp/venv/bin/pip install "${WHEEL_FILE}" pytest
 
     # Verify that the module is installed and peek at contents.
     /tmp/venv/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
-    
+    /tmp/venv/bin/pytest ${REPO_ROOT}/tests --junitxml="${REPO_ROOT}/${ABI_TAG}_${ARCH}_sponge_log.xml"
+
     # Clean up the virtual environment
     rm -rf /tmp/venv
 done

@@ -51,5 +51,7 @@ for PYTHON_VERSION in ${SUPPORTED_PYTHON_VERSIONS[@]}; do
     . /${OSX_DIR}/build_python_wheel.sh
 done
 
+. /${OSX_DIR}/publish_python_wheel.sh
+
 # Clean up.
 rm -fr ${CRC32C_INSTALL_PREFIX}

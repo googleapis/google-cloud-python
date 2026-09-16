@@ -83,15 +83,11 @@ ${VENV}/bin/delocate-wheel \
     --check-archs \
     ${DIST_WHEELS}/google_crc32c*${PY_TAG}*.whl
 
-if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
-    . /${OSX_DIR}/publish_python_wheel.sh
-fi
-
 # test wheel
 ${VENV}/bin/pip install \
   --no-index --find-links=${REPO_ROOT}/wheels google-crc32c --force-reinstall
 ${VENV}/bin/pip install pytest
-${VENV}/bin/py.test ${REPO_ROOT}/tests
+${VENV}/bin/py.test ${REPO_ROOT}/tests --junitxml="${REPO_ROOT}/${PY_TAG}_sponge_log.xml"
 ${VENV}/bin/python ${REPO_ROOT}/scripts/check_crc32c_extension.py
 
 ls ${REPO_ROOT}/wheels/

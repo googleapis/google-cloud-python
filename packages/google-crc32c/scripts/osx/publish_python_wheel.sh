@@ -21,14 +21,27 @@ if ! pyenv versions --bare | grep -q "^3\.10\b"; then
 fi
 pyenv shell 3.10
 
-python -m pip install "setuptools<71"
+PUBLISH_VENV="/tmp/publish_venv"
+rm -rf "${PUBLISH_VENV}"
+python -m venv "${PUBLISH_VENV}"
 
-# Start the releasetool reporter
-python -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
-python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+"${PUBLISH_VENV}/bin/python" -m pip install "setuptools<71"
+"${PUBLISH_VENV}/bin/python" -m pip install --require-hashes -r "${REPO_ROOT}/scripts/release-requirements.txt"
 
-ls ${REPO_ROOT}/wheels/
-# Disable logging
-set +x
-TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
-python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*
+ls -la "${REPO_ROOT}/wheels/"
+"${PUBLISH_VENV}/bin/python" -m twine check "${REPO_ROOT}/wheels/"*
+
+if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
+    # Start the releasetool reporter
+    "${PUBLISH_VENV}/bin/python" -m releasetool publish-reporter-script > /tmp/publisher-script
+    source /tmp/publisher-script
+
+    # Disable logging
+    set +x
+    TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
+    "${PUBLISH_VENV}/bin/python" -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" "${REPO_ROOT}/wheels/"*
+else
+    echo "PUBLISH_WHEELS is not set to 'true'. Skipping releasetool and twine upload (dry-run validation passed)."
+fi
+
+rm -rf "${PUBLISH_VENV}"

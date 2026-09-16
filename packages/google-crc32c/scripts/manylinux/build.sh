@@ -24,7 +24,7 @@ REPO_ROOT=$(dirname ${SCRIPTS_DIR})
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:deadsnakes/ppa
 sudo apt-get update
-sudo apt-get install -y python3.12
+sudo apt-get install -y python3.12 python3.12-venv
 
 cd $REPO_ROOT
 # Add directory as safe to avoid "detected dubious ownership" fatal issue1
@@ -54,6 +54,4 @@ docker run \
     quay.io/pypa/manylinux2014_aarch64 \
     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
 
-if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
-    . /${MANYLINUX_DIR}/publish_python_wheel.sh
-fi
+. /${MANYLINUX_DIR}/publish_python_wheel.sh
