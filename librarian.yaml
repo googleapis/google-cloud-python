@@ -100,7 +100,7 @@ libraries:
     python:
       library_type: OTHER
   - name: google-ads-admanager
-    version: 0.10.3
+    version: 0.10.4
     apis:
       - path: google/ads/admanager/v1
     python:
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.36.0
+    version: 2.37.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -320,7 +320,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.11.1
+    version: 0.11.2
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -569,7 +569,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.45.0
+    version: 3.45.1
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -663,7 +663,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.44.0
+    version: 2.45.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -753,7 +753,7 @@ libraries:
       metadata_name_override: cloudchannel
       default_version: v1
   - name: google-cloud-chronicle
-    version: 0.6.2
+    version: 0.6.3
     apis:
       - path: google/cloud/chronicle/v1
     python:
@@ -797,7 +797,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.52.0
+    version: 1.53.0
     preview:
       version: 1.51.0-preview.1
       apis:
@@ -808,7 +808,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.4
+    version: 0.12.5
     apis:
       - path: google/cloud/compute/v1beta
     python:
@@ -1227,7 +1227,7 @@ libraries:
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
-    version: 0.13.2
+    version: 0.13.3
     apis:
       - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
@@ -1813,7 +1813,7 @@ libraries:
       metadata_name_override: cloudresourcemanager
       default_version: v3
   - name: google-cloud-retail
-    version: 2.12.0
+    version: 2.13.0
     apis:
       - path: google/cloud/retail/v2
       - path: google/cloud/retail/v2beta
@@ -2150,7 +2150,7 @@ libraries:
       metadata_name_override: translate
       default_version: v3
   - name: google-cloud-vectorsearch
-    version: 0.11.2
+    version: 0.11.3
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta
@@ -2213,7 +2213,7 @@ libraries:
       metadata_name_override: vision
       default_version: v1
   - name: google-cloud-visionai
-    version: 0.5.1
+    version: 0.5.2
     apis:
       - path: google/cloud/visionai/v1
       - path: google/cloud/visionai/v1alpha1
