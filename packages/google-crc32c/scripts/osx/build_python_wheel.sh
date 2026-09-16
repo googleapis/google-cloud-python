@@ -41,9 +41,9 @@ install_python_pyenv() {
     version=$1
     # escapes the dot in the version number to avoid regex expansion issues.
     escaped_version="${version//./\.}"
-    if ! pyenv versions --bare | grep -q "^${escaped_version}\b"; then
+    if ! pyenv versions --bare | grep -qE "^${escaped_version}(\.|$)"; then
         echo "Python $version is not installed. Installing..."
-        pyenv install $version
+        pyenv install -s $version
         echo "Python $version installed."
     else
         echo "Python $version is already installed."

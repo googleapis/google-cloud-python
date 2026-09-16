@@ -26,15 +26,16 @@ set CRC32C_INSTALL_PREFIX=%cd%\build\%CONFIGURATION%
 @rem once, so as a workaround, we will install and then uninstall every version.
 for /f "tokens=2 delims=:" %%A in ('findstr /b "versions:" "%~dp0..\python_versions.yaml"') do set SUPPORTED_PYTHON_VERSIONS=%%A
 FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
+    set python_version=%%P
+    for /f "tokens=1,2 delims=." %%I in ("%%P") do set python_version_trimmed=%%I.%%J
 
-    echo "Installing Python version %%P"
-    choco install python --version=%%P -y --no-progress || goto :error
+    py -!python_version_trimmed!-64 --version >nul 2>&1 || (
+        echo "Installing Python version %%P"
+        choco install python --version=%%P -y --no-progress || goto :error
+    )
 
     echo "Listing available Python versions"
     py -0
-
-    set python_version=%%P
-    for /f "tokens=1,2 delims=." %%I in ("%%P") do set python_version_trimmed=%%I.%%J
 
     py -!python_version_trimmed!-64 -m pip install --upgrade pip || goto :error
 
