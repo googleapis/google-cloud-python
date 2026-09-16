@@ -467,8 +467,9 @@ async def test_async_stream_types_sync_iterable() -> None:
 def test_async_stream_types_unsupported_raises() -> None:
     """Verifies that passing an unsupported stream type raises TypeError."""
     session = AsyncResumableUploadSession(transport=DummyAsyncSession())
+    prepare_reader = getattr(session, "_prepare_async_reader")
     with pytest.raises(TypeError, match="Unsupported stream type"):
-        session._prepare_async_reader(stream=12345, size=10)  # type: ignore
+        prepare_reader(stream=12345, size=10)
 
 
 # =====================================================================
@@ -808,11 +809,23 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     )
 
     # Simulate elapsed time 10.0 seconds during 10-byte upload (rate = 1 byte/s < 100)
-    clock_vals = iter([0.0, 10.0, 10.0, 10.0])
+    clock_vals = iter([0.0, 10.0, 10.0])
     monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals))
 
     with pytest.raises(TransferStalledError, match="Upload stalled"):
         await session.upload(stream=b"0123456789")
+
+    # Verify branch where _stall_timeout_started is already set prior to chunk evaluation
+    clock_vals2 = iter([0.0, 10.0, 10.0])
+    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals2))
+    session2 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=DummyAsyncSession([start_resp, chunk_resp]),
+    )
+    session2._stall_timeout_started = 0.0
+    with pytest.raises(TransferStalledError, match="Upload stalled"):
+        await session2.upload(stream=b"0123456789")
 
 
 @pytest.mark.asyncio
@@ -1085,67 +1098,55 @@ def test_async_deadline_handling_and_start_timeout() -> None:
 
 @pytest.mark.asyncio
 async def test_async_retry_branches() -> None:
-    """Verifies retry predicate branches in _async_retry."""
+    """Verifies retry predicate and policy resolution branches in upload_async."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
     )
 
-    # MissingStatusHeaderError retries and raises on final attempt
-    attempts = 0
+    pred_start = session._get_retry_predicate(is_start=True)
+    pred_transfer = session._get_retry_predicate(is_start=False)
 
-    async def fail_missing_header():
-        nonlocal attempts
-        attempts += 1
-        raise exceptions.MissingStatusHeaderError("missing")
+    assert pred_start(exceptions.DeadlineExceeded("deadline")) is False
+    assert pred_start(exceptions.TransferStalledError("stalled")) is False
+    assert pred_start(exceptions.UploadCancelledError("cancelled")) is False
+    assert pred_start(exceptions.UnseekableStreamError("unseekable")) is False
+    assert pred_start(exceptions.MissingStatusHeaderError("missing")) is True
+    assert pred_start(aiohttp.ClientError("network error")) is True
+    assert pred_start(exceptions.from_http_status(503, "Service Unavailable")) is True
+    assert pred_start(exceptions.from_http_status(400, "Bad Request")) is False
+    assert pred_start(RuntimeError("runtime")) is False
 
-    with pytest.raises(exceptions.MissingStatusHeaderError):
-        await session._async_retry(fail_missing_header, max_attempts=2)
-    assert attempts == 2
+    # Recoverable status code 500 is retryable during transfer
+    assert pred_transfer(exceptions.from_http_status(500, "Internal Error")) is True
 
-    # Non-retryable GoogleAPICallError raises immediately
-    async def fail_400():
-        raise exceptions.from_http_status(400, "Bad Request")
+    # Default retry resolution
+    default_unary = session._get_async_retry(is_start=True)
+    assert isinstance(default_unary, google.api_core.retry.AsyncRetry)
 
-    with pytest.raises(exceptions.BadRequest):
-        await session._async_retry(fail_400, max_attempts=3)
+    default_stream = session._get_async_streaming_retry()
+    assert isinstance(default_stream, google.api_core.retry.AsyncStreamingRetry)
 
-    # Retryable GoogleAPICallError retries and raises on final attempt
-    attempts_503 = 0
+    # Custom AsyncRetry resolution
+    custom_unary = google.api_core.retry.AsyncRetry(initial=0.5)
+    session_unary = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(retry=custom_unary),
+    )
+    assert session_unary._get_async_retry(is_start=True) is custom_unary
+    converted_stream = session_unary._get_async_streaming_retry()
+    assert isinstance(converted_stream, google.api_core.retry.AsyncStreamingRetry)
+    assert converted_stream._initial == 0.5
 
-    async def fail_503():
-        nonlocal attempts_503
-        attempts_503 += 1
-        raise exceptions.from_http_status(503, "Service Unavailable")
-
-    with pytest.raises(exceptions.ServiceUnavailable):
-        await session._async_retry(fail_503, max_attempts=2)
-    assert attempts_503 == 2
-
-    # DeadlineExceeded propagates immediately (no retry)
-    async def fail_deadline():
-        raise exceptions.DeadlineExceeded("deadline")
-
-    with pytest.raises(exceptions.DeadlineExceeded):
-        await session._async_retry(fail_deadline, max_attempts=3)
-
-    # General Exception propagates on last attempt
-    attempts_runtime = 0
-
-    async def fail_runtime():
-        nonlocal attempts_runtime
-        attempts_runtime += 1
-        raise RuntimeError("runtime")
-
-    with pytest.raises(RuntimeError):
-        await session._async_retry(fail_runtime, max_attempts=2)
-    assert attempts_runtime == 2
-
-    # max_attempts=0 covers loop bypass falling through
-    async def dummy_async_func() -> int:
-        return 123
-
-    res = await session._async_retry(dummy_async_func, max_attempts=0)
-    assert res is None
+    # Custom AsyncStreamingRetry resolution
+    custom_stream = google.api_core.retry.AsyncStreamingRetry(initial=0.25)
+    session_stream = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(retry=custom_stream),
+    )
+    assert session_stream._get_async_streaming_retry() is custom_stream
+    converted_unary = session_stream._get_async_retry(is_start=False)
+    assert isinstance(converted_unary, google.api_core.retry.AsyncRetry)
+    assert converted_unary._initial == 0.25
 
 
 def test_async_transport_missing_errors() -> None:
@@ -1426,8 +1427,7 @@ async def test_async_prepare_async_reader_additional_branches() -> None:
     )
 
     # Inherit from concrete io.BytesIO so mypy recognizes these test streams as
-    # valid BinaryIO instances without requiring cast() or type: ignore (since
-    # typing.BinaryIO is an abstract class).
+    # valid BinaryIO instances natively.
     class LocalNoTellStream(io.BytesIO):
         """Simulates a stream that has read() but lacks getbuffer() and tell().
 
@@ -1469,6 +1469,12 @@ async def test_async_prepare_async_reader_additional_branches() -> None:
     stream3 = LocalCustomReadStream(b"hello")
     reader_fn3, size3, obj3 = session._prepare_async_reader(stream3, size=None)
     assert size3 is None
+
+    # 4. BinaryIO stream with explicit size (covers computed_size is not None branch)
+    reader_fn4, size4, obj4 = session._prepare_async_reader(
+        io.BytesIO(b"hello"), size=5
+    )
+    assert size4 == 5
 
 
 @pytest.mark.asyncio
@@ -1751,23 +1757,19 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
             )
 
     transport = StatefulAsyncTransport()
-    config = ResumableUploadConfig(chunk_size=4)
+    config = ResumableUploadConfig(
+        chunk_size=4,
+        retry=google.api_core.retry.AsyncStreamingRetry(
+            predicate=lambda exc: True, initial=0.001
+        ),
+    )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
         transport=transport,
     )
 
-    # Resumable uploads have two layers of retry:
-    # 1. HTTP-level retry (do_http): blindly re-sends the HTTP request on transient 503 errors.
-    # 2. Protocol-level recovery (_recover): triggered when HTTP retries exhaust; sends a "query"
-    #    command to discover committed server offset and slices the active chunk buffer.
-    # Disable HTTP-level _async_retry here so the 503 immediately triggers protocol-level _recover().
-    async def no_retry(coro_fn: Any, max_attempts: int = 1) -> Any:
-        return await coro_fn()
-
-    with mock.patch.object(session, "_async_retry", side_effect=no_retry):
-        await session.upload(stream=b"012345")
+    await session.upload(stream=b"012345")
 
     # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
     assert bytes(server_received_bytes) == b"012345"

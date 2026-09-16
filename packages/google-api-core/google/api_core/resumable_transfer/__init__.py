@@ -25,13 +25,11 @@ from google.api_core.resumable_transfer.common import (
     DEFAULT_CHUNK_SIZE,
     Command,
     ProgressState,
+    ResumableUploadConfig,
     Status,
     UploadProgress,
 )
-from google.api_core.resumable_transfer.upload import (
-    ResumableUploadConfig,
-    ResumableUploadSession,
-)
+from google.api_core.resumable_transfer.upload import ResumableUploadSession
 from google.api_core.resumable_transfer.upload_async import (
     AsyncResumableUploadSession,
     AsyncUploadOperation,

@@ -22,6 +22,7 @@ import logging
 import time
 from typing import (
     Any,
+    AsyncGenerator,
     AsyncIterable,
     AsyncIterator,
     Awaitable,
@@ -40,11 +41,12 @@ from typing import (
 try:
     import aiohttp
 except ImportError:  # pragma: NO COVER
-    aiohttp = None  # type: ignore
+    pass
 
+import google.api_core.retry
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import common, upload_state
-from google.api_core.resumable_transfer.upload import (
+from google.api_core.resumable_transfer.common import (
     ResumableUploadConfig,
     _format_response_payload,
 )
@@ -54,13 +56,16 @@ _DEFAULT_START_TIMEOUT = 60.0  # seconds for initial start request
 _DONE_SENTINEL = object()
 _monotonic_clock = time.monotonic
 
+
+def _get_buffer_size(stream: object) -> Optional[int]:
+    """Returns buffer size in bytes if stream exposes getbuffer(), else None."""
+    getbuffer_fn = getattr(stream, "getbuffer", None)
+    if callable(getbuffer_fn):
+        return int(getbuffer_fn().nbytes)
+    return None
+
+
 ResponseProto = TypeVar("ResponseProto")
-
-
-class _AsyncRecoveryRetransmit(Exception):
-    """Internal exception indicating state synchronization succeeded and chunk should retransmit."""
-
-    pass
 
 
 class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
@@ -165,6 +170,7 @@ class AsyncResumableUploadSession:
         # Stall control tracking via monotonic clock
         self._aggregate_lag: float = 0.0
         self._stall_timeout_started: Optional[float] = None
+        self._needs_recovery: bool = False
 
     @property
     def upload_url(self) -> Optional[str]:
@@ -197,7 +203,7 @@ class AsyncResumableUploadSession:
         Raises:
             ImportError: If aiohttp is not installed.
         """
-        if aiohttp is None:
+        if globals().get("aiohttp") is None:
             raise ImportError(
                 "The aiohttp library is required to use AsyncResumableUploadSession. "
                 "Please install google-api-core[async_rest]."
@@ -273,44 +279,101 @@ class AsyncResumableUploadSession:
             return min(timeout, remaining)
         return timeout
 
-    async def _async_retry(
-        self, coro_fn: Callable[[], Awaitable[Any]], max_attempts: int = 4
-    ) -> Any:
-        """Executes an asynchronous callable with exponential backoff retry logic.
+    def _get_retry_predicate(self, is_start: bool = False) -> Callable[[Any], bool]:
+        """Returns a predicate function for determining if an exception is retryable.
 
         Args:
-            coro_fn: Asynchronous nullary function to invoke and retry.
-            max_attempts: Maximum retry attempts before propagating failure.
+            is_start: If True, only transient status codes (RETRYABLE_STATUS_CODES)
+                are retried. If False (chunk transfer phase), state consistency
+                status codes (RECOVERABLE_STATUS_CODES) are also retried via recovery.
 
         Returns:
-            The successful return value of coro_fn.
+            A callable accepting an exception and returning a boolean.
         """
-        delay = 1.0
-        multiplier = 2.0
-        max_delay = 60.0
-        for attempt in range(max_attempts):
-            try:
-                return await coro_fn()
-            except (
-                exceptions.DeadlineExceeded,
-                exceptions.TransferStalledError,
-                exceptions.UploadCancelledError,
-            ):
-                raise
-            except exceptions.MissingStatusHeaderError:
-                if attempt == max_attempts - 1:
-                    raise
-            except exceptions.GoogleAPICallError as exc:
-                if exc.code not in common.RETRYABLE_STATUS_CODES:
-                    raise
-                if attempt == max_attempts - 1:
-                    raise
-            except Exception:
-                if attempt == max_attempts - 1:
-                    raise
+        allowed_codes = (
+            common.RETRYABLE_STATUS_CODES
+            if is_start
+            else (common.RECOVERABLE_STATUS_CODES + common.RETRYABLE_STATUS_CODES)
+        )
 
-            await asyncio.sleep(delay)
-            delay = min(delay * multiplier, max_delay)
+        def should_retry(exc: Any) -> bool:
+            if isinstance(
+                exc,
+                (
+                    exceptions.DeadlineExceeded,
+                    exceptions.TransferStalledError,
+                    exceptions.UploadCancelledError,
+                    exceptions.UnseekableStreamError,
+                ),
+            ):
+                return False
+            if isinstance(exc, exceptions.MissingStatusHeaderError):
+                return True
+            if globals().get("aiohttp") is not None and isinstance(
+                exc, aiohttp.ClientError
+            ):
+                return True
+            if isinstance(exc, exceptions.GoogleAPICallError):
+                return exc.code in allowed_codes
+            return False
+
+        return should_retry
+
+    def _get_async_retry(
+        self, is_start: bool = False
+    ) -> google.api_core.retry.AsyncRetry:
+        """Resolves unary AsyncRetry policy for start requests.
+
+        Args:
+            is_start: Whether this retry policy is for the start request.
+
+        Returns:
+            Configured or default unary AsyncRetry instance.
+        """
+        candidate = (
+            self._config.start_retry
+            if is_start and self._config.start_retry
+            else self._config.retry
+        )
+        if candidate is not None:
+            if isinstance(candidate, google.api_core.retry.AsyncRetry):
+                return candidate
+            return google.api_core.retry.AsyncRetry(
+                predicate=candidate._predicate,
+                initial=candidate._initial,
+                maximum=candidate._maximum,
+                multiplier=candidate._multiplier,
+                timeout=candidate._timeout,
+                on_error=candidate._on_error,
+            )
+        return google.api_core.retry.AsyncRetry(
+            predicate=self._get_retry_predicate(is_start=is_start)
+        )
+
+    def _get_async_streaming_retry(
+        self,
+    ) -> google.api_core.retry.AsyncStreamingRetry:
+        """Resolves the AsyncStreamingRetry policy for the chunk upload generator.
+
+        Returns:
+            Configured or default AsyncStreamingRetry instance.
+        """
+        if self._config.retry:
+            if isinstance(
+                self._config.retry, google.api_core.retry.AsyncStreamingRetry
+            ):
+                return self._config.retry
+            return google.api_core.retry.AsyncStreamingRetry(
+                predicate=self._config.retry._predicate,
+                initial=self._config.retry._initial,
+                maximum=self._config.retry._maximum,
+                multiplier=self._config.retry._multiplier,
+                timeout=self._config.retry._timeout,
+                on_error=self._config.retry._on_error,
+            )
+        return google.api_core.retry.AsyncStreamingRetry(
+            predicate=self._get_retry_predicate(is_start=False)
+        )
 
     async def initiate(
         self,
@@ -359,7 +422,9 @@ class AsyncResumableUploadSession:
                 )
                 return session_url
 
-        session_url = await self._async_retry(do_initiate)
+        retry = self._get_async_retry(is_start=True)
+        retryable_initiate = retry(do_initiate)
+        session_url = await retryable_initiate()
         self._notify_progress(common.ProgressState.STARTED, progress_queue)
         return session_url
 
@@ -369,7 +434,6 @@ class AsyncResumableUploadSession:
         reader_fn: Callable[[int], Awaitable[bytes]],
         size: Optional[int],
         progress_queue: Optional[asyncio.Queue] = None,
-        stream_obj: Any = None,
     ) -> Tuple[int, Mapping[str, str], bytes]:
         """Transmits the next data chunk asynchronously with stall control.
 
@@ -378,7 +442,6 @@ class AsyncResumableUploadSession:
             reader_fn: Async callable returning chunk bytes.
             size: Total stream size in bytes, if known.
             progress_queue: Optional queue to receive progress updates.
-            stream_obj: Underlying stream object for recovery seeking.
 
         Returns:
             Tuple of (status code, headers mapping, response body bytes).
@@ -386,205 +449,161 @@ class AsyncResumableUploadSession:
         Raises:
             TransferStalledError: If chunk transfer throughput stalls.
             DeadlineExceeded: If upload deadline is reached.
-            GoogleAPICallError: If chunk upload encounters an unrecoverable error.
+            GoogleAPICallError: If chunk upload encounters an error.
         """
+        chunk_size = self._state.chunk_size
 
-        async def do_transmit():
-            chunk_size = self._state.chunk_size
+        # Retain active chunk in zero-copy buffer if not present.
+        # Ensure that EOF status (_buffered_chunk_is_last) is computed once
+        # when reading from the stream and preserved across _recover() retries.
+        # On partial server commit, _recover() slices _buffered_chunk in-place
+        # to the uncommitted tail. Preserving _buffered_chunk_is_last ensures
+        # that a sliced tail smaller than chunk_size is not prematurely
+        # treated as the final chunk when unread bytes remain in the stream.
+        if self._buffered_chunk is None:
+            raw_bytes = await reader_fn(chunk_size)
+            if not raw_bytes:
+                raw_bytes = b""
+            self._buffered_chunk = memoryview(raw_bytes)
+            self._buffered_chunk_offset = self._state.bytes_uploaded
+            is_eof = len(raw_bytes) < chunk_size
+            if size is not None and self._state.bytes_uploaded + len(raw_bytes) >= size:
+                is_eof = True
+            self._buffered_chunk_is_last = is_eof
 
-            # Retain active chunk in zero-copy buffer if not present.
-            # Ensure that EOF status (_buffered_chunk_is_last) is computed once
-            # when reading from the stream and preserved across _recover() retries.
-            # On partial server commit, _recover() slices _buffered_chunk in-place
-            # to the uncommitted tail. Preserving _buffered_chunk_is_last ensures
-            # that a sliced tail smaller than chunk_size is not prematurely
-            # treated as the final chunk when unread bytes remain in the stream.
-            if self._buffered_chunk is None:
-                raw_bytes = await reader_fn(chunk_size)
-                if not raw_bytes:
-                    raw_bytes = b""
-                self._buffered_chunk = memoryview(raw_bytes)
-                self._buffered_chunk_offset = self._state.bytes_uploaded
-                is_eof = len(raw_bytes) < chunk_size
-                if (
-                    size is not None
-                    and self._state.bytes_uploaded + len(raw_bytes) >= size
-                ):
-                    is_eof = True
-                self._buffered_chunk_is_last = is_eof
+        data = self._buffered_chunk
+        data_len = len(data)
+        is_last = self._buffered_chunk_is_last
 
-            data = self._buffered_chunk
-            data_len = len(data)
-            is_last = self._buffered_chunk_is_last
+        method, url, headers, payload = self._state.build_chunk_request(
+            data=data,
+            is_last_chunk=is_last,
+            content_type=self._config.content_type,
+        )
 
-            method, url, headers, payload = self._state.build_chunk_request(
-                data=data,
-                is_last_chunk=is_last,
-                content_type=self._config.content_type,
-            )
+        rate = self._config.stall_minimum_rate
+        expected_sec = data_len / rate if rate > 0 else 60.0
+        next_chunk_timeout = max(
+            1.0,
+            expected_sec - self._aggregate_lag + self._config.stall_timeout,
+        )
+        per_attempt_timeout = max(5.0, min(next_chunk_timeout, 2.0 * expected_sec))
 
-            async def do_http():
-                rate = self._config.stall_minimum_rate
-                expected_sec = data_len / rate if rate > 0 else 60.0
-                next_chunk_timeout = max(
-                    1.0,
-                    expected_sec - self._aggregate_lag + self._config.stall_timeout,
-                )
-                per_attempt_timeout = max(
-                    5.0, min(next_chunk_timeout, 2.0 * expected_sec)
-                )
+        if self._config.timeout:
+            per_attempt_timeout = min(self._config.timeout, per_attempt_timeout)
 
-                if self._config.timeout:
-                    per_attempt_timeout = min(self._config.timeout, per_attempt_timeout)
+        remaining = self._get_deadline_remaining()
+        if remaining is not None:
+            per_attempt_timeout = min(per_attempt_timeout, remaining)
 
+        client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
+        t_start = _monotonic_clock()
+        try:
+            async with transport.request(
+                method,
+                url,
+                data=payload,
+                headers=headers,
+                timeout=client_timeout,
+            ) as resp:
+                resp_headers = dict(resp.headers)
+                resp_body = await resp.read()
+                if resp.status not in (200, 201):
+                    raise exceptions.from_http_status(
+                        resp.status, resp_body.decode("utf-8", errors="replace")
+                    )
+                status_code = resp.status
+            t_elapsed = _monotonic_clock() - t_start
+        except Exception as exc:
+            self._enrich_exception(exc)
+            if isinstance(
+                exc,
+                (
+                    asyncio.TimeoutError,
+                    aiohttp.ServerTimeoutError,
+                ),
+            ):
                 remaining = self._get_deadline_remaining()
-                if remaining is not None:
-                    per_attempt_timeout = min(per_attempt_timeout, remaining)
-
-                client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
-                try:
-                    async with transport.request(
-                        method,
-                        url,
-                        data=payload,
-                        headers=headers,
-                        timeout=client_timeout,
-                    ) as resp:
-                        resp_headers = dict(resp.headers)
-                        resp_body = await resp.read()
-                        if resp.status not in (200, 201):
-                            raise exceptions.from_http_status(
-                                resp.status, resp_body.decode("utf-8", errors="replace")
-                            )
-                        return resp.status, resp_headers, resp_body
-                except asyncio.TimeoutError as exc:
-                    if self._config.stall_minimum_rate and self._config.stall_timeout:
-                        remaining = self._get_deadline_remaining()
-                        if remaining is not None and remaining <= 0:
-                            raise exceptions.DeadlineExceeded(
-                                f"Resumable upload deadline {self._config.deadline} exceeded."
-                            ) from exc
-                        raise exceptions.TransferStalledError(
-                            f"Upload stalled: chunk transfer timed out ({exc}).",
-                            upload_url=self.upload_url,
-                            chunk_size=self.chunk_size,
-                        ) from exc
-                    raise
-
-            try:
-                t_start = _monotonic_clock()
-                status_code, resp_headers, resp_body = await self._async_retry(do_http)
-                t_elapsed = _monotonic_clock() - t_start
-
-                # Evaluate stall control lag & timer
+                if remaining is not None and remaining <= 0:
+                    raise exceptions.DeadlineExceeded(
+                        "Resumable upload deadline exceeded during chunk transfer."
+                    ) from exc
                 if self._config.stall_minimum_rate and self._config.stall_timeout:
-                    rate = self._config.stall_minimum_rate
-                    expected_sec = data_len / rate if rate > 0 else 0.0
-                    current_lag = t_elapsed - expected_sec
-                    self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
-                    if self._aggregate_lag > 0.0:
-                        if self._stall_timeout_started is None:
-                            self._stall_timeout_started = t_start
-                        if (
-                            _monotonic_clock() - self._stall_timeout_started
-                            >= self._config.stall_timeout
-                        ):
-                            self._get_deadline_remaining()
-                            raise exceptions.TransferStalledError(
-                                f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
-                                upload_url=self.upload_url,
-                                chunk_size=self.chunk_size,
-                            )
-                    else:
-                        self._stall_timeout_started = None
-
-                self._state.process_chunk_response(status_code, resp_headers, data_len)
-                self._buffered_chunk = None
-                self._notify_progress(
-                    common.ProgressState.FINALIZED
-                    if self._state.finished
-                    else common.ProgressState.UPLOADING,
-                    progress_queue,
-                )
-                return status_code, resp_headers, resp_body
-            except Exception as exc:
-                self._enrich_exception(exc)
-                if isinstance(exc, exceptions.DeadlineExceeded):
-                    raise
-                if isinstance(
-                    exc,
-                    (
-                        asyncio.TimeoutError,
-                        aiohttp.ServerTimeoutError if aiohttp else (),
-                    ),
-                ):
-                    remaining = self._get_deadline_remaining()
-                    if remaining is not None and remaining <= 0:
-                        raise exceptions.DeadlineExceeded(
-                            f"Resumable upload deadline {self._config.deadline} exceeded."
-                        ) from exc
                     raise exceptions.TransferStalledError(
                         f"Upload stalled: chunk transfer timed out ({exc}).",
                         upload_url=self.upload_url,
                         chunk_size=self.chunk_size,
                     ) from exc
+            raise
 
-                is_recoverable = (
-                    isinstance(exc, exceptions.GoogleAPICallError)
-                    and exc.code
-                    in (common.RECOVERABLE_STATUS_CODES + common.RETRYABLE_STATUS_CODES)
-                ) or isinstance(exc, exceptions.MissingStatusHeaderError)
-
-                if is_recoverable:
-                    _LOGGER.info(
-                        "Recoverable error %s during async chunk upload. Querying server offset.",
-                        exc,
+        # Evaluate stall control lag & timer
+        if self._config.stall_minimum_rate and self._config.stall_timeout:
+            rate = self._config.stall_minimum_rate
+            expected_sec = data_len / rate if rate > 0 else 0.0
+            current_lag = t_elapsed - expected_sec
+            self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
+            if self._aggregate_lag > 0.0:
+                if self._stall_timeout_started is None:
+                    self._stall_timeout_started = t_start
+                if (
+                    _monotonic_clock() - self._stall_timeout_started
+                    >= self._config.stall_timeout
+                ):
+                    self._get_deadline_remaining()
+                    raise exceptions.TransferStalledError(
+                        f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
+                        upload_url=self.upload_url,
+                        chunk_size=self.chunk_size,
                     )
-                    self._notify_progress(
-                        common.ProgressState.RECOVERING, progress_queue
-                    )
-                    await self._recover(transport, stream_obj)
-                    raise _AsyncRecoveryRetransmit()
-                raise
+            else:
+                self._stall_timeout_started = None
 
-        while True:
-            try:
-                return await do_transmit()
-            except _AsyncRecoveryRetransmit:
-                continue
+        self._state.process_chunk_response(status_code, resp_headers, data_len)
+        self._buffered_chunk = None
+        self._notify_progress(
+            common.ProgressState.FINALIZED
+            if self._state.finished
+            else common.ProgressState.UPLOADING,
+            progress_queue,
+        )
+        return status_code, resp_headers, resp_body
 
-    async def _recover(self, transport: Any, stream_obj: Any = None) -> int:
+    async def _recover(
+        self,
+        transport: Any,
+        stream_obj: Optional[object] = None,
+        progress_queue: Optional[asyncio.Queue] = None,
+    ) -> Tuple[int, Mapping[str, str], bytes]:
         """Queries server for committed byte offset and adjusts buffer.
 
         Args:
             transport: The aiohttp client session.
             stream_obj: Underlying stream object to rewind if seekable.
+            progress_queue: Optional queue to receive progress updates.
 
         Returns:
-            The confirmed server byte offset.
+            Tuple of (status code, headers mapping, response body bytes).
 
         Raises:
             exceptions.UnseekableStreamError: If server offset precedes buffer and stream cannot be rewound.
             exceptions.GoogleAPICallError: If query request fails on the server.
         """
         method, url, headers, payload = self._state.build_query_request()
+        timeout_sec = self._get_start_timeout()
+        client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
+        async with transport.request(
+            method, url, data=payload, headers=headers, timeout=client_timeout
+        ) as resp:
+            resp_headers = dict(resp.headers)
+            body = await resp.read()
+            if resp.status not in (200, 201):
+                raise exceptions.from_http_status(
+                    resp.status, body.decode("utf-8", errors="replace")
+                )
+            status_code = resp.status
 
-        async def do_query():
-            timeout_sec = self._get_start_timeout()
-            client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
-            async with transport.request(
-                method, url, data=payload, headers=headers, timeout=client_timeout
-            ) as resp:
-                resp_headers = dict(resp.headers)
-                body = await resp.read()
-                if resp.status not in (200, 201):
-                    raise exceptions.from_http_status(
-                        resp.status, body.decode("utf-8", errors="replace")
-                    )
-                return resp.status, resp_headers
-
-        status_code, resp_headers = await self._async_retry(do_query)
         received = self._state.process_query_response(status_code, resp_headers)
+        self._notify_progress(common.ProgressState.OFFSET_RECEIVED, progress_queue)
 
         if self._buffered_chunk is not None:
             chunk_start = self._buffered_chunk_offset
@@ -593,19 +612,21 @@ class AsyncResumableUploadSession:
                 discard_len = received - chunk_start
                 self._buffered_chunk = self._buffered_chunk[discard_len:]
                 self._buffered_chunk_offset = received
-                return received
+                return status_code, resp_headers, body
 
         self._buffered_chunk = None
-        if stream_obj is not None and hasattr(stream_obj, "seek"):
-            if hasattr(stream_obj, "seekable") and not stream_obj.seekable():
+        seek_fn = getattr(stream_obj, "seek", None)
+        if callable(seek_fn):
+            seekable_fn = getattr(stream_obj, "seekable", None)
+            if callable(seekable_fn) and not seekable_fn():
                 raise exceptions.UnseekableStreamError(
                     f"Stream is not seekable. Cannot recover upload to offset {received}.",
                     upload_url=self.upload_url,
                     chunk_size=self.chunk_size,
                 )
             try:
-                stream_obj.seek(self._start_stream_offset + received)
-                return received
+                seek_fn(self._start_stream_offset + received)
+                return status_code, resp_headers, body
             except (OSError, AttributeError) as exc:
                 raise exceptions.UnseekableStreamError(
                     f"Failed to seek stream to offset {received}: {exc}",
@@ -647,6 +668,88 @@ class AsyncResumableUploadSession:
                 )
             self._state.process_cancel_response(resp.status, resp_headers)
 
+    async def _transmit_all_chunks(
+        self,
+        transport: Any,
+        reader_fn: Callable[[int], Awaitable[bytes]],
+        computed_size: Optional[int],
+        progress_queue: Optional[asyncio.Queue] = None,
+        stream_obj: Optional[object] = None,
+    ) -> Optional[Tuple[int, Mapping[str, str], bytes]]:
+        """Transmits chunks until completion using a single outer AsyncStreamingRetry coordinator.
+
+        Args:
+            transport: The aiohttp client session.
+            reader_fn: Async callable returning chunk bytes.
+            computed_size: Total stream size in bytes, if known.
+            progress_queue: Optional queue receiving UploadProgress snapshots.
+            stream_obj: Underlying stream object for recovery seeking.
+
+        Returns:
+            Tuple of (status code, headers, body bytes) of the final server response, or None.
+        """
+        final_resp_tuple: Optional[Tuple[int, Mapping[str, str], bytes]] = None
+
+        async def attempt_stream() -> AsyncGenerator[None, None]:
+            nonlocal final_resp_tuple
+            if self._needs_recovery:
+                _LOGGER.info(
+                    "Recoverable error during async chunk upload. Querying server offset."
+                )
+                self._notify_progress(common.ProgressState.RECOVERING, progress_queue)
+                recover_tuple = await self._recover(
+                    transport, stream_obj, progress_queue=progress_queue
+                )
+                if self._state.finished:
+                    final_resp_tuple = recover_tuple
+                self._needs_recovery = False
+                yield
+
+            while not self._state.finished and not self._state.invalid:
+                try:
+                    final_resp_tuple = await self._transmit_chunk(
+                        transport, reader_fn, computed_size, progress_queue
+                    )
+                except Exception as exc:
+                    is_recoverable = (
+                        isinstance(exc, exceptions.GoogleAPICallError)
+                        and exc.code
+                        in (
+                            common.RECOVERABLE_STATUS_CODES
+                            + common.RETRYABLE_STATUS_CODES
+                        )
+                    ) or isinstance(
+                        exc,
+                        (
+                            exceptions.MissingStatusHeaderError,
+                            aiohttp.ClientError,
+                        ),
+                    )
+                    if is_recoverable:
+                        self._needs_recovery = True
+                    raise
+                yield
+
+        try:
+            retry = self._get_async_streaming_retry()
+            retryable_stream = retry(attempt_stream)
+            stream_gen = await retryable_stream()
+            async for _ in stream_gen:
+                pass
+        except (
+            asyncio.TimeoutError,
+            aiohttp.ServerTimeoutError,
+        ) as exc:
+            self._enrich_exception(exc)
+            self._get_deadline_remaining()
+            raise exceptions.TransferStalledError(
+                f"Upload stalled: chunk transfer timed out ({exc}).",
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
+            ) from exc
+
+        return final_resp_tuple
+
     def upload(
         self,
         stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
@@ -685,11 +788,9 @@ class AsyncResumableUploadSession:
                     progress_queue=progress_queue,
                 )
 
-                final_resp_tuple = None
-                while not self._state.finished and not self._state.invalid:
-                    final_resp_tuple = await self._transmit_chunk(
-                        sess, reader_fn, computed_size, progress_queue, stream_obj
-                    )
+                final_resp_tuple = await self._transmit_all_chunks(
+                    sess, reader_fn, computed_size, progress_queue, stream_obj
+                )
 
                 if final_resp_tuple is None:
                     raise ValueError(
@@ -747,16 +848,11 @@ class AsyncResumableUploadSession:
 
         async def _run():
             try:
-                await self._recover(sess, stream_obj)
-                self._notify_progress(
-                    common.ProgressState.OFFSET_RECEIVED, progress_queue
-                )
+                await self._recover(sess, stream_obj, progress_queue=progress_queue)
 
-                final_resp_tuple = None
-                while not self._state.finished and not self._state.invalid:
-                    final_resp_tuple = await self._transmit_chunk(
-                        sess, reader_fn, computed_size, progress_queue, stream_obj
-                    )
+                final_resp_tuple = await self._transmit_all_chunks(
+                    sess, reader_fn, computed_size, progress_queue, stream_obj
+                )
 
                 if final_resp_tuple is None:
                     raise ValueError(
@@ -781,7 +877,11 @@ class AsyncResumableUploadSession:
         self,
         stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
         size: Optional[int],
-    ) -> Tuple[Callable[[int], Awaitable[bytes]], Optional[int], Any]:
+    ) -> Tuple[
+        Callable[[int], Awaitable[bytes]],
+        Optional[int],
+        Optional[object],
+    ]:
         """Creates an asynchronous byte reader and determines stream length.
 
         Args:
@@ -809,29 +909,31 @@ class AsyncResumableUploadSession:
 
             return reader, computed_size, bytes_io
 
-        if hasattr(stream, "read") and inspect.iscoroutinefunction(stream.read):
-            # Native async reader (e.g. asyncio.StreamReader)
-            async def reader(n: int) -> bytes:
-                return await stream.read(n)  # type: ignore
+        read_fn = getattr(stream, "read", None)
+        if callable(read_fn):
+            if inspect.iscoroutinefunction(read_fn):
+                # Native async reader (e.g. asyncio.StreamReader)
+                async def reader(n: int) -> bytes:
+                    return await read_fn(n)
 
-            return reader, computed_size, stream
+                return reader, computed_size, stream
 
-        if hasattr(stream, "read"):
-            # Synchronous binary stream: offload blocking reads to worker thread
-            sync_stream: Any = stream
-            if computed_size is None and hasattr(sync_stream, "getbuffer"):
-                computed_size = sync_stream.getbuffer().nbytes
+            # Synchronous binary stream (e.g. io.BytesIO or open file handle):
+            # offload blocking reads to worker thread via asyncio.to_thread.
+            if computed_size is None:
+                computed_size = _get_buffer_size(stream)
 
-            if hasattr(sync_stream, "tell"):
+            tell_fn = getattr(stream, "tell", None)
+            if callable(tell_fn):
                 try:
-                    self._start_stream_offset = sync_stream.tell()
+                    self._start_stream_offset = tell_fn()
                 except (OSError, AttributeError):
                     self._start_stream_offset = 0
 
             async def reader(n: int) -> bytes:
-                return await asyncio.to_thread(sync_stream.read, n)
+                return await asyncio.to_thread(read_fn, n)
 
-            return reader, computed_size, sync_stream
+            return reader, computed_size, stream
 
         if hasattr(stream, "__aiter__"):
             # Native AsyncIterable[bytes]

@@ -877,18 +877,23 @@ def test_sync_deadline_handling():
 
 
 def test_sync_retry_predicate_branches():
-    session = ResumableUploadSession(upload_url="https://api.example.com/init")
-    pred = session._get_retry_predicate()
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+    )
+    pred_transfer = session._get_retry_predicate(is_start=False)
+    pred_start = session._get_retry_predicate(is_start=True)
 
-    assert pred(exceptions.DeadlineExceeded("deadline")) is False
-    assert pred(TransferStalledError("stalled")) is False
-    assert pred(UploadCancelledError("cancelled")) is False
-    assert pred(MissingStatusHeaderError("missing")) is True
-    assert pred(requests.exceptions.ConnectionError("conn")) is True
-    assert pred(requests.exceptions.ChunkedEncodingError("chunked")) is True
-    assert pred(exceptions.from_http_status(503, "503")) is True
-    assert pred(exceptions.from_http_status(400, "400")) is False
-    assert pred(TypeError("other")) is False
+    assert pred_transfer(exceptions.DeadlineExceeded("deadline")) is False
+    assert pred_transfer(TransferStalledError("stalled")) is False
+    assert pred_transfer(UploadCancelledError("cancelled")) is False
+    assert pred_transfer(MissingStatusHeaderError("missing")) is True
+    assert pred_transfer(requests.exceptions.ConnectionError("conn")) is True
+    assert pred_transfer(requests.exceptions.ChunkedEncodingError("chunked")) is True
+    assert pred_transfer(exceptions.from_http_status(503, "503")) is True
+    assert pred_transfer(exceptions.from_http_status(400, "400")) is True
+    assert pred_start(exceptions.from_http_status(400, "400")) is False
+    assert pred_transfer(exceptions.from_http_status(403, "403")) is False
+    assert pred_transfer(TypeError("other")) is False
 
 
 def test_sync_reposition_stream_errors():
@@ -1031,14 +1036,14 @@ def test_sync_on_progress_and_capture():
         config=config,
     )
     session._state._resumable_url = "https://api.example.com/init"
-    with session._capture_progress():
-        session._notify_progress(common.ProgressState.UPLOADING)
-        assert session._captured_progress is not None
-        assert len(session._captured_progress) == 1
-        assert session._captured_progress[0].state == common.ProgressState.UPLOADING
-        assert callback_mock.called
-        assert callback_mock.call_args[0][0] is session._captured_progress[0]
-    assert session._captured_progress is None
+    progress_queue = []
+    session._notify_progress(
+        common.ProgressState.UPLOADING, progress_queue=progress_queue
+    )
+    assert len(progress_queue) == 1
+    assert progress_queue[0].state == common.ProgressState.UPLOADING
+    assert callback_mock.called
+    assert callback_mock.call_args[0][0] is progress_queue[0]
 
 
 def test_sync_naive_deadline_tz():
@@ -1213,7 +1218,9 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active():
         transport=transport,
     )
     session_dl._state._resumable_url = "https://upload.example.com/resumable-123"
-    session_dl._get_deadline_remaining = mock.Mock(side_effect=[5.0, -1.0])
+    session_dl._get_deadline_remaining = mock.Mock(
+        side_effect=[5.0, exceptions.DeadlineExceeded("Deadline exceeded")]
+    )
     with pytest.raises(exceptions.DeadlineExceeded):
         session_dl._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
 
@@ -1233,9 +1240,9 @@ def test_sync_transmit_chunk_timeout_outer_exception():
     )
     session._state._resumable_url = "https://upload.example.com/resumable-123"
     with pytest.raises(exceptions.TransferStalledError):
-        session._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
+        list(session._transmit_all_chunks(transport, io.BytesIO(b"data"), 4))
 
-    # To hit line 554-558 (outer exception handler with elapsed deadline)
+    # To hit outer exception handler in _transmit_all_chunks with elapsed deadline
     config_dl = ResumableUploadConfig(
         stall_minimum_rate=0,
         deadline=datetime.datetime.now(datetime.timezone.utc)
@@ -1248,9 +1255,11 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         transport=transport,
     )
     session_dl._state._resumable_url = "https://upload.example.com/resumable-123"
-    session_dl._get_deadline_remaining = mock.Mock(side_effect=[5.0, -1.0])
+    session_dl._get_deadline_remaining = mock.Mock(
+        side_effect=[5.0, 5.0, exceptions.DeadlineExceeded("Deadline exceeded")]
+    )
     with pytest.raises(exceptions.DeadlineExceeded):
-        session_dl._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
+        list(session_dl._transmit_all_chunks(transport, io.BytesIO(b"data"), 4))
 
 
 def test_sync_recover_failure():
@@ -1488,11 +1497,14 @@ def test_sync_transmit_all_chunks_captured_empty():
     )
     session._state._resumable_url = "https://upload.example.com/resumable-123"
 
-    session._captured_progress = None
     stream_obj = io.BytesIO(b"data")
 
     # Consume the generator
-    list(session._transmit_all_chunks(session_transport, stream_obj, 4))
+    list(
+        session._transmit_all_chunks(
+            session_transport, stream_obj, 4, progress_queue=None
+        )
+    )
 
 
 def test_sync_upload_multiple_chunks():
@@ -1636,12 +1648,12 @@ def test_sync_partial_chunk_recovery_does_not_prematurely_finalize():
     session_transport = mock.create_autospec(requests.Session, instance=True)
     session_transport.request.side_effect = handle_request
 
-    # Resumable uploads have two layers of retry:
-    # 1. HTTP-level retry (do_http): blindly re-sends the HTTP request on transient 503 errors.
-    # 2. Protocol-level recovery (_recover): triggered when HTTP retries exhaust; sends a "query"
-    #    command to discover committed server offset and slices the active chunk buffer.
-    # Disable HTTP-level retry here so the 503 immediately triggers protocol-level _recover().
-    retry_cfg = google.api_core.retry.Retry(predicate=lambda exc: False)
+    # Ensure that the unified outer StreamingRetry coordinates backoff and
+    # triggers protocol-level _recover() on retryable errors before retransmitting.
+    retry_cfg = google.api_core.retry.Retry(
+        predicate=ResumableUploadSession()._get_retry_predicate(),
+        initial=0.001,
+    )
     config = ResumableUploadConfig(chunk_size=4, retry=retry_cfg)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
@@ -1652,3 +1664,58 @@ def test_sync_partial_chunk_recovery_does_not_prematurely_finalize():
 
     # Verify no data loss occurred: server must receive all 6 bytes (b"012345"), not truncated b"0123"
     assert bytes(server_received_bytes) == b"012345"
+
+
+def test_sync_streaming_retry_and_recovery_final():
+    """Ensure that StreamingRetry configuration and recovery returning 'final' status are handled properly."""
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-123",
+        },
+    )
+    err503_resp = mock.Mock(
+        ok=False,
+        status_code=503,
+        headers={},
+    )
+    err503_resp.json.return_value = {"error": {"code": 503, "message": "Unavailable"}}
+    err503_resp.text = '{"error": {"code": 503, "message": "Unavailable"}}'
+    err503_resp.content = err503_resp.text.encode("utf-8")
+
+    # Recovery query reports that the upload already reached 'final' status on the server
+    query_final_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "already_done.txt", "size": 4}',
+    )
+
+    session_transport.request.side_effect = [
+        start_resp,
+        err503_resp,
+        query_final_resp,
+    ]
+
+    streaming_retry = google.api_core.retry.StreamingRetry(
+        predicate=ResumableUploadSession()._get_retry_predicate(),
+        initial=0.001,
+    )
+    config = ResumableUploadConfig(
+        response_type=DummyResponse,
+        retry=streaming_retry,
+    )
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=config,
+    )
+    assert session._get_streaming_retry() is streaming_retry
+
+    result = session.upload(stream=b"data", transport=session_transport)
+    assert isinstance(result, DummyResponse)
+    assert result.name == "already_done.txt"
+    assert session.finished is True
