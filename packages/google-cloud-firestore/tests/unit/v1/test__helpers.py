@@ -46,6 +46,36 @@ def test_geopoint_to_protobuf():
     assert result == geo_pt_pb
 
 
+def test_encode_value_pymongo_duck_typing():
+    from google.cloud.firestore_v1._helpers import encode_value
+
+    class ObjectId:
+        def __init__(self, val):
+            self.val = val
+            self.binary = b"12bytes_raw_"
+
+        def __str__(self):
+            return self.val
+
+    class Decimal128:
+        def __init__(self, val):
+            self.val = val
+
+        def to_decimal(self):
+            return self.val
+
+        def __str__(self):
+            return self.val
+
+    oid_obj = ObjectId("507f191e810c19729de860ea")
+    oid_pb = encode_value(oid_obj)
+    assert oid_pb.map_value.fields["__oid__"].string_value == "507f191e810c19729de860ea"
+
+    dec_obj = Decimal128("123.45")
+    dec_pb = encode_value(dec_obj)
+    assert dec_pb.map_value.fields["__decimal128__"].string_value == "123.45"
+
+
 def test_geopoint___eq__w_same_value():
     lat = 0.015625
     lng = 20.03125
