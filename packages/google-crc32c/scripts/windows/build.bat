@@ -34,7 +34,7 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     py -0
 
     set python_version=%%P
-    set python_version_trimmed=!python_version:~0,4!
+    for /f "tokens=1,2 delims=." %%I in ("%%P") do set python_version_trimmed=%%I.%%J
 
     py -!python_version_trimmed!-64 -m pip install --upgrade pip || goto :error
 
@@ -84,9 +84,7 @@ echo "Built wheels in wheels/ directory:"
 dir wheels\*.whl || goto :error
 
 for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
-    set py_ver=%%P
-    set py_short=!py_ver:~0,4!
-    set py_tag=cp!py_short:.=!
+    for /f "tokens=1,2 delims=." %%I in ("%%P") do set py_tag=cp%%I%%J
     dir wheels\*!py_tag!*.whl >nul || (
         echo "ERROR: Missing Windows wheel for !py_tag!!"
         goto :error
@@ -94,8 +92,8 @@ for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
 )
 
 echo "Validating built wheels with twine check"
-py -3.12-64 -m pip install twine || goto :error
-py -3.12-64 -m twine check wheels/* || goto :error
+py -3 -m pip install twine || goto :error
+py -3 -m twine check wheels/* || goto :error
 
 goto :EOF
 

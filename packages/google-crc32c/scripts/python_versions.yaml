@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # Single source of truth for supported Python versions across CI and release builds.
-# (Specify 3-part versions when required by Chocolatey on Windows;
-#  Linux and macOS automatically trim to major.minor, e.g. 3.13).
+# (Specify 3-part versions when required by Chocolatey on Windows or pyenv on macOS;
+#  ABI tags and binary names automatically extract major.minor, e.g. 3.13).
 versions: 3.10 3.11 3.12 3.13.1 3.14.0

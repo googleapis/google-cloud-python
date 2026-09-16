@@ -17,7 +17,10 @@ set -eo pipefail
 
 PUBLISH_VENV="/tmp/publish_venv"
 rm -rf "${PUBLISH_VENV}"
-python3.12 -m venv "${PUBLISH_VENV}"
+if ! python3.12 -m venv "${PUBLISH_VENV}"; then
+    python3.12 -m venv --without-pip "${PUBLISH_VENV}"
+    curl -sS https://bootstrap.pypa.io/get-pip.py | "${PUBLISH_VENV}/bin/python"
+fi
 
 "${PUBLISH_VENV}/bin/python" -m pip install --upgrade pip "setuptools<71"
 "${PUBLISH_VENV}/bin/python" -m pip install --require-hashes -r "${REPO_ROOT}/scripts/release-requirements.txt"
@@ -26,7 +29,7 @@ echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
 
 for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml"); do
-    SHORT="${VER:0:4}"
+    SHORT=$(echo "$VER" | cut -d. -f1,2)
     ABI="cp${SHORT//.}-cp${SHORT//.}"
     for ARCH in x86_64 aarch64; do
         ls "${REPO_ROOT}/wheels/"*${ABI}*${ARCH}*.whl >/dev/null || {

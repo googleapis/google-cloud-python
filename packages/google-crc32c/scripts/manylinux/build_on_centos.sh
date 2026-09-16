@@ -47,7 +47,7 @@ make all install
 PYTHON_VERSIONS=""
 if [[ -z ${BUILD_PYTHON} ]]; then
     for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml"); do
-        SHORT="${VER:0:4}"
+        SHORT=$(echo "$VER" | cut -d. -f1,2)
         ABI="cp${SHORT//.}-cp${SHORT//.}"
         PYTHON_BIN="/opt/python/${ABI}/bin"
         if [[ -d "${PYTHON_BIN}" ]]; then

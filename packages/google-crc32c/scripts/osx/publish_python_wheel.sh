@@ -32,7 +32,7 @@ echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
 
 for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml"); do
-    SHORT="${VER:0:4}"
+    SHORT=$(echo "$VER" | cut -d. -f1,2)
     ABI="cp${SHORT//.}-cp${SHORT//.}"
     ls "${REPO_ROOT}/wheels/"*${ABI}*.whl >/dev/null || {
         echo "ERROR: Missing macOS wheel for ${ABI}!"

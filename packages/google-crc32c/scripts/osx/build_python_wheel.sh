@@ -50,7 +50,7 @@ install_python_pyenv() {
     fi
     pyenv shell $version
 }
-install_python_pyenv ${PY_BIN}
+install_python_pyenv ${PY_VERSION:-${PY_BIN}}
 
 
 # Rely on the REPO_ROOT already provided by the parent script

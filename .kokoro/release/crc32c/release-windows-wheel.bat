@@ -22,17 +22,17 @@ if "%PUBLISH_WHEELS%"=="" set PUBLISH_WHEELS=true
 call scripts\windows\build.bat || goto :error
 
 @echo "Ensure that we have the latest versions of Twine, Wheel, and Setuptools."
-call py -3.12-64 -m pip install --upgrade twine wheel setuptools || goto :error
+call py -3 -m pip install --upgrade twine wheel setuptools || goto :error
 
 @echo "Build the source distribution (sdist) and validate with twine check"
-call py -3.12-64 setup.py sdist || goto :error
-call py -3.12-64 -m twine check dist/* wheels/google_crc32c* || goto :error
+call py -3 setup.py sdist || goto :error
+call py -3 -m twine check dist/* wheels/google_crc32c* || goto :error
 
 if "%PUBLISH_WHEELS%"=="true" (
     @echo "Start the releasetool reporter"
-    call py -3.12-64 -m pip install gcp-releasetool || goto :error
+    call py -3 -m pip install gcp-releasetool || goto :error
     if not exist C:\temp mkdir C:\temp
-    call py -3.12-64 -m releasetool publish-reporter-script > C:\temp\publisher-script || goto :error
+    call py -3 -m releasetool publish-reporter-script > C:\temp\publisher-script || goto :error
 
     @echo "Disable buffering, so that the logs stream through."
     set PYTHONUNBUFFERED=1
@@ -41,7 +41,7 @@ if "%PUBLISH_WHEELS%"=="true" (
     @echo "## Uploading Wheels and sdist ##"
 
     set /p TWINE_PASSWORD=<%KOKORO_KEYSTORE_DIR%/73713_google-cloud-pypi-token-keystore-3
-    call py -3.12-64 -m twine upload --skip-existing --username __token__ --password "%TWINE_PASSWORD%" dist/* wheels/google_crc32c* || goto :error
+    call py -3 -m twine upload --skip-existing --username __token__ --password "%TWINE_PASSWORD%" dist/* wheels/google_crc32c* || goto :error
     dir wheels
     dir dist
 ) else (

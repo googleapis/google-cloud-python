@@ -43,9 +43,10 @@ rm -rf /Users/kbuilder/.pyenv
 git clone https://github.com/pyenv/pyenv.git /Users/kbuilder/.pyenv
 
 for VER in $(awk -F': ' '/^versions:/ {print $2}' "${SCRIPTS_DIR}/python_versions.yaml"); do
-    PYTHON_VERSION="${VER:0:4}"
-    echo "Build wheel for Python ${PYTHON_VERSION}"
-    export PY_BIN=$PYTHON_VERSION
+    PYTHON_VERSION=$(echo "$VER" | cut -d. -f1,2)
+    echo "Build wheel for Python ${VER} (${PYTHON_VERSION})"
+    export PY_VERSION="${VER}"
+    export PY_BIN="${PYTHON_VERSION}"
     export PY_TAG="cp${PYTHON_VERSION//.}-cp${PYTHON_VERSION//.}"
     . /${OSX_DIR}/build_python_wheel.sh
 done
