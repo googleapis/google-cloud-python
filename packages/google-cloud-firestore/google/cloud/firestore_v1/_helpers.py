@@ -44,7 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import _BSONType
+from google.cloud.firestore_v1.bson import _BSON_DECODERS, _BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -347,11 +347,7 @@ def reference_value_to_document(reference_value, client) -> Any:
     return document
 
 
-def decode_value(
-    value, client
-) -> Union[
-    None, bool, int, float, list, datetime.datetime, str, bytes, dict, GeoPoint, Vector
-]:
+def decode_value(value, client=None, decode_bson: Optional[bool] = None) -> Any:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
     Args:
@@ -359,15 +355,10 @@ def decode_value(
             Firestore protobuf to be decoded / parsed / converted.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
+        decode_bson (Optional[bool]): Whether to decode BSON extended types.
 
     Returns:
-        Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]: A native
-        Python value converted from the ``value``.
-
-    Raises:
-        NotImplementedError: If the ``value_type`` is ``reference_value``.
-        ValueError: If the ``value_type`` is unknown.
+        Any: A native Python value converted from the ``value``.
     """
     value_pb = getattr(value, "_pb", value)
     value_type = value_pb.WhichOneof("value_type")
@@ -394,15 +385,45 @@ def decode_value(
         )
     elif value_type == "array_value":
         return [
-            decode_value(element, client) for element in value_pb.array_value.values
+            decode_value(element, client, decode_bson=decode_bson)
+            for element in value_pb.array_value.values
         ]
     elif value_type == "map_value":
-        return decode_dict(value_pb.map_value.fields, client)
+        return decode_dict(value_pb.map_value.fields, client, decode_bson=decode_bson)
     else:
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client) -> Union[dict, Vector]:
+def _decode_bson_dict(data: dict) -> Optional[_BSONType]:
+    """Decode a single-key wire map dictionary if registered."""
+    if len(data) == 1:
+        key, val = next(iter(data.items()))
+        decoder = _BSON_DECODERS.get(key)
+        if decoder is not None:
+            try:
+                return decoder(val)
+            except Exception:
+                pass
+    return None
+
+
+def _decode_bson_dict_recursive(data: Any) -> Any:
+    """Recursively decodes BSON wire map dictionaries."""
+    if isinstance(data, dict):
+        decoded = _decode_bson_dict(data)
+        if decoded is not None:
+            return decoded
+        return {k: _decode_bson_dict_recursive(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [_decode_bson_dict_recursive(item) for item in data]
+    return data
+
+
+def decode_dict(
+    value_fields,
+    client=None,
+    decode_bson: Optional[bool] = None,
+) -> Union[dict, Vector, _BSONType]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -410,20 +431,34 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
             protobuf map of Firestore ``Value``-s.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
+        decode_bson (Optional[bool]): Whether to decode BSON extended types.
 
     Returns:
-        Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
-        of native Python values converted from the ``value_fields``.
+        Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson._BSONType]: A dictionary of native \
+        Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
-    res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
+    res = {
+        key: decode_value(value, client, decode_bson=decode_bson)
+        for key, value in value_fields_pb.items()
+    }
 
     if res.get("__type__", None) == "__vector__":
         # Vector data type is represented as mapping.
         # {"__type__":"__vector__", "value": [1.0, 2.0, 3.0]}.
         values = cast(Sequence[float], res["value"])
         return Vector(values)
+
+    should_decode = (
+        decode_bson
+        if decode_bson is not None
+        else getattr(client, "_decode_bson", False)
+    )
+    if should_decode:
+        decoded = _decode_bson_dict(res)
+        if decoded is not None:
+            return decoded
 
     return res
 
