@@ -21,6 +21,8 @@ import pickle
 import pytest
 
 from google.cloud.firestore_v1.bson import (
+    BSONMaxKey,
+    BSONMinKey,
     BSONObjectId,
     _BSONType,
 )
@@ -125,3 +127,71 @@ def test_bson_object_id_pickle():
     unpickled = pickle.loads(pickle.dumps(oid))
     assert unpickled == oid
     assert unpickled.value == oid.value
+
+
+def test_bson_minkey_to_map_value():
+    assert BSONMinKey()._to_map_value() == {"__min__": None}
+
+
+def test_bson_minkey_equality():
+    key1 = BSONMinKey()
+    key2 = BSONMinKey()
+    assert key1 == key2
+    assert key1 != BSONMaxKey()
+    assert key1 != "min"
+
+
+def test_bson_minkey_hash_and_dict_key():
+    key1 = BSONMinKey()
+    key2 = BSONMinKey()
+    assert hash(key1) == hash(key2)
+    assert len({key1, key2}) == 1
+
+
+def test_bson_minkey_repr():
+    assert repr(BSONMinKey()) == "BSONMinKey()"
+
+
+def test_bson_minkey_copy():
+    key = BSONMinKey()
+    assert copy.copy(key) == key
+    assert copy.deepcopy(key) == key
+
+
+def test_bson_minkey_pickle():
+    key = BSONMinKey()
+    assert pickle.loads(pickle.dumps(key)) == key
+
+
+def test_bson_maxkey_to_map_value():
+    assert BSONMaxKey()._to_map_value() == {"__max__": None}
+
+
+def test_bson_maxkey_equality():
+    key1 = BSONMaxKey()
+    key2 = BSONMaxKey()
+    assert key1 == key2
+    assert key1 != BSONMinKey()
+    assert key1 != "max"
+
+
+def test_bson_maxkey_hash_and_dict_key():
+    key1 = BSONMaxKey()
+    key2 = BSONMaxKey()
+    assert hash(key1) == hash(key2)
+    assert len({key1, key2}) == 1
+
+
+def test_bson_maxkey_repr():
+    assert repr(BSONMaxKey()) == "BSONMaxKey()"
+
+
+def test_bson_maxkey_copy():
+    key = BSONMaxKey()
+    assert copy.copy(key) == key
+    assert copy.deepcopy(key) == key
+
+
+def test_bson_maxkey_pickle():
+    key = BSONMaxKey()
+    assert pickle.loads(pickle.dumps(key)) == key

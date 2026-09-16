@@ -30,6 +30,8 @@ from typing import Any, Dict, Union
 
 __all__ = [
     "BSONObjectId",
+    "BSONMinKey",
+    "BSONMaxKey",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -115,3 +117,57 @@ class BSONObjectId(_BSONType):
 
     def __hash__(self) -> int:
         return hash(self._value)
+
+
+class BSONMinKey(_BSONType):
+    """Represents the BSON MinKey sentinel value for query range boundaries.
+
+    Example:
+        >>> min_key = BSONMinKey()
+        >>> min_key
+        BSONMinKey()
+    """
+
+    __slots__ = ()
+
+    def _to_map_value(self) -> Dict[str, None]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__min__": None}
+
+    def __repr__(self) -> str:
+        return "BSONMinKey()"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONMinKey):
+            return True
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash("BSONMinKey")
+
+
+class BSONMaxKey(_BSONType):
+    """Represents the BSON MaxKey sentinel value for query range boundaries.
+
+    Example:
+        >>> max_key = BSONMaxKey()
+        >>> max_key
+        BSONMaxKey()
+    """
+
+    __slots__ = ()
+
+    def _to_map_value(self) -> Dict[str, None]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__max__": None}
+
+    def __repr__(self) -> str:
+        return "BSONMaxKey()"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONMaxKey):
+            return True
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash("BSONMaxKey")
