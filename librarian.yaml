@@ -2000,6 +2000,10 @@ libraries:
           - python-gapic-name=spanner
       metadata_name_override: spanner
       default_version: v1
+  - name: google-cloud-spanner-dbapi-driver
+    version: 0.0.0
+    python:
+      library_type: INTEGRATION
   - name: google-cloud-speech
     version: 2.40.0
     apis:
