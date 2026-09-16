@@ -217,7 +217,7 @@ async def test_async_cancel_missing_transport_raises() -> None:
 
 def test_async_ensure_aiohttp_missing(monkeypatch: pytest.MonkeyPatch) -> None:
     """Verifies that _ensure_aiohttp raises ImportError when aiohttp is unavailable."""
-    monkeypatch.setattr(upload_async, "aiohttp", None)
+    monkeypatch.setattr(upload_async, "_HAS_AIOHTTP", False)
     session = AsyncResumableUploadSession()
     with pytest.raises(ImportError, match="google-api-core\\[async_rest\\]"):
         session._ensure_aiohttp()

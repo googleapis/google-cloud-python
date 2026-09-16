@@ -40,8 +40,10 @@ from typing import (
 
 try:
     import aiohttp
+
+    _HAS_AIOHTTP = True
 except ImportError:  # pragma: NO COVER
-    pass
+    _HAS_AIOHTTP = False
 
 import google.api_core.retry
 from google.api_core import exceptions
@@ -215,7 +217,7 @@ class AsyncResumableUploadSession:
         Raises:
             ImportError: If aiohttp is not installed.
         """
-        if globals().get("aiohttp") is None:
+        if not _HAS_AIOHTTP:
             raise ImportError(
                 "The aiohttp library is required to use AsyncResumableUploadSession. "
                 "Please install google-api-core[async_rest]."
@@ -321,9 +323,7 @@ class AsyncResumableUploadSession:
                 return False
             if isinstance(exc, exceptions.MissingStatusHeaderError):
                 return True
-            if globals().get("aiohttp") is not None and isinstance(
-                exc, aiohttp.ClientError
-            ):
+            if _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError):
                 return True
             if isinstance(exc, exceptions.GoogleAPICallError):
                 return exc.code in allowed_codes
