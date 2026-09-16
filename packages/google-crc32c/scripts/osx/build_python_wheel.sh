@@ -37,20 +37,29 @@ fi
 eval "$(pyenv init -)"
 eval "$(pyenv init --path)"
 
+export PYTHON_BUILD_CURL_OPTS="--retry 5 --retry-delay 5"
+
 install_python_pyenv() {
-    version=$1
-    # escapes the dot in the version number to avoid regex expansion issues.
-    escaped_version="${version//./\.}"
-    if ! pyenv versions --bare | grep -qE "^${escaped_version}(\.|$)"; then
-        echo "Python $version is not installed. Installing..."
-        pyenv install -s $version
-        echo "Python $version installed."
+    target_version=$1
+    short_version=$2
+    escaped_short="${short_version//./\.}"
+    if ! pyenv versions --bare | grep -qE "^${escaped_short}(\.|$)"; then
+        echo "Python ${short_version} is not installed. Installing ${target_version}..."
+        for attempt in 1 2 3; do
+            if pyenv install -s "${target_version}"; then
+                break
+            fi
+            echo "pyenv install ${target_version} failed (attempt ${attempt}/3); retrying in 5s..."
+            sleep 5
+        done
+        echo "Python ${target_version} installed."
     else
-        echo "Python $version is already installed."
+        echo "Python ${short_version} is already installed."
     fi
-    pyenv shell $version
+    installed_ver=$(pyenv versions --bare | grep -E "^${escaped_short}(\.|$)" | head -n 1)
+    pyenv shell "${installed_ver}"
 }
-install_python_pyenv ${PY_VERSION:-${PY_BIN}}
+install_python_pyenv "${PY_VERSION:-${PY_BIN}}" "${PY_BIN}"
 
 
 # Rely on the REPO_ROOT already provided by the parent script

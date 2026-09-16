@@ -19,7 +19,8 @@ if ! pyenv versions --bare | grep -qE "^3\.10(\.|$)"; then
     echo "Python 3.10 is not installed. Installing..."
     pyenv install -s 3.10
 fi
-pyenv shell 3.10
+installed_310=$(pyenv versions --bare | grep -E "^3\.10(\.|$)" | head -n 1)
+pyenv shell "${installed_310}"
 
 python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 

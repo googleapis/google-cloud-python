@@ -38,9 +38,17 @@ git submodule update --init --recursive
 
 ${OSX_DIR}/build_c_lib.sh
 
-# reinstall pyenv
+# Update pyenv while preserving any pre-installed Python versions on the host
+if [[ -d /Users/kbuilder/.pyenv/versions ]]; then
+    rm -rf /tmp/pyenv_versions_backup
+    mv /Users/kbuilder/.pyenv/versions /tmp/pyenv_versions_backup
+fi
 rm -rf /Users/kbuilder/.pyenv
 git clone https://github.com/pyenv/pyenv.git /Users/kbuilder/.pyenv
+if [[ -d /tmp/pyenv_versions_backup ]]; then
+    rm -rf /Users/kbuilder/.pyenv/versions
+    mv /tmp/pyenv_versions_backup /Users/kbuilder/.pyenv/versions
+fi
 
 for VER in $(awk -F': ' '/^versions:/ {print $2}' "${SCRIPTS_DIR}/python_versions.yaml"); do
     PYTHON_VERSION=$(echo "$VER" | cut -d. -f1,2)
