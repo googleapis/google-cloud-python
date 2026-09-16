@@ -21,8 +21,8 @@ if "%PUBLISH_WHEELS%"=="" set PUBLISH_WHEELS=true
 @echo "Build and Test Wheels"
 call scripts\windows\build.bat || goto :error
 
-@echo "Ensure that we have the latest versions of Twine, Wheel, and Setuptools."
-call py -3 -m pip install --upgrade twine wheel setuptools || goto :error
+@echo "Ensure that we have the latest versions of Twine, Wheel, Setuptools, and pkginfo."
+call py -3 -m pip install --upgrade twine wheel setuptools pkginfo || goto :error
 
 @echo "Build the source distribution (sdist) and validate with twine check"
 call py -3 setup.py sdist || goto :error

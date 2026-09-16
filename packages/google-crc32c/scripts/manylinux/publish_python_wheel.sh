@@ -15,7 +15,7 @@
 
 set -eo pipefail
 
-python -m pip install "setuptools<71" twine wheel
+python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
 echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
@@ -35,7 +35,7 @@ python -m twine check "${REPO_ROOT}/wheels/"*
 
 if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
     # Start the releasetool reporter
-    python -m pip install gcp-releasetool
+    python -m pip install --upgrade gcp-releasetool
     python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
 
     # Disable logging

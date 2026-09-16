@@ -95,7 +95,7 @@ for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
 )
 
 echo "Validating built wheels with twine check"
-py -3 -m pip install twine || goto :error
+py -3 -m pip install --upgrade twine wheel pkginfo || goto :error
 py -3 -m twine check wheels/* || goto :error
 
 goto :EOF
