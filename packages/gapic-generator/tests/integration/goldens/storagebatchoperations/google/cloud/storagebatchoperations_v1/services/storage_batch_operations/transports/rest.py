@@ -739,8 +739,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             resp = storage_batch_operations.CancelJobResponse()
             pb_resp = storage_batch_operations.CancelJobResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1083,8 +1082,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             resp = storage_batch_operations_types.BucketOperation()
             pb_resp = storage_batch_operations_types.BucketOperation.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_bucket_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1210,8 +1208,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             resp = storage_batch_operations_types.Job()
             pb_resp = storage_batch_operations_types.Job.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1338,8 +1335,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             resp = storage_batch_operations.ListBucketOperationsResponse()
             pb_resp = storage_batch_operations.ListBucketOperationsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_bucket_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -1463,8 +1459,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             resp = storage_batch_operations.ListJobsResponse()
             pb_resp = storage_batch_operations.ListJobsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]

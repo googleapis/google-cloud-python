@@ -10,7 +10,9 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+{% if service.has_resumable_upload_methods %}
 from google.api_core import exceptions as core_exceptions
+{% endif %}
 from google.api_core import grpc_helpers
 {% if service.has_lro %}
 from google.api_core import operations_v1

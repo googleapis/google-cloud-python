@@ -462,8 +462,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = common.GenerateAccessTokenResponse()
             pb_resp = common.GenerateAccessTokenResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -588,8 +587,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = common.GenerateIdTokenResponse()
             pb_resp = common.GenerateIdTokenResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_id_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -714,8 +712,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = common.SignBlobResponse()
             pb_resp = common.SignBlobResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_sign_blob(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -840,8 +837,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = common.SignJwtResponse()
             pb_resp = common.SignJwtResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_sign_jwt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]

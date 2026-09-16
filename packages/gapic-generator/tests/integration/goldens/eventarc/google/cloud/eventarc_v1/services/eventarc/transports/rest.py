@@ -4029,8 +4029,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = channel.Channel()
             pb_resp = channel.Channel.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4162,8 +4161,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = channel_connection.ChannelConnection()
             pb_resp = channel_connection.ChannelConnection.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4294,8 +4292,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = enrollment.Enrollment()
             pb_resp = enrollment.Enrollment.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4423,8 +4420,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = google_api_source.GoogleApiSource()
             pb_resp = google_api_source.GoogleApiSource.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_google_api_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4557,8 +4553,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = google_channel_config.GoogleChannelConfig()
             pb_resp = google_channel_config.GoogleChannelConfig.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4691,8 +4686,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = message_bus.MessageBus()
             pb_resp = message_bus.MessageBus.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_message_bus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4819,8 +4813,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = pipeline.Pipeline()
             pb_resp = pipeline.Pipeline.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -4947,8 +4940,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = discovery.Provider()
             pb_resp = discovery.Provider.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_provider(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5075,8 +5067,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = trigger.Trigger()
             pb_resp = trigger.Trigger.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5203,8 +5194,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListChannelConnectionsResponse()
             pb_resp = eventarc.ListChannelConnectionsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_channel_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5329,8 +5319,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListChannelsResponse()
             pb_resp = eventarc.ListChannelsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5455,8 +5444,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListEnrollmentsResponse()
             pb_resp = eventarc.ListEnrollmentsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_enrollments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5583,8 +5571,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListGoogleApiSourcesResponse()
             pb_resp = eventarc.ListGoogleApiSourcesResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_google_api_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5712,8 +5699,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListMessageBusEnrollmentsResponse()
             pb_resp = eventarc.ListMessageBusEnrollmentsResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_message_bus_enrollments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5840,8 +5826,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListMessageBusesResponse()
             pb_resp = eventarc.ListMessageBusesResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_message_buses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -5968,8 +5953,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListPipelinesResponse()
             pb_resp = eventarc.ListPipelinesResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_pipelines(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -6094,8 +6078,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListProvidersResponse()
             pb_resp = eventarc.ListProvidersResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_providers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -6220,8 +6203,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = eventarc.ListTriggersResponse()
             pb_resp = eventarc.ListTriggersResponse.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_triggers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
@@ -6737,8 +6719,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = gce_google_channel_config.GoogleChannelConfig()
             pb_resp = gce_google_channel_config.GoogleChannelConfig.pb(resp)
 
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
