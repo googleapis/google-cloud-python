@@ -50,6 +50,7 @@ from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.bson import (
     BSONBinary,
+    BSONDecimal128,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
@@ -1298,6 +1299,7 @@ def test_bson_document_writes(client, cleanup, database):
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
         "timestamp_val": BSONTimestamp(1700000000, 1),
         "regex_val": BSONRegex("^hello.*$", options="i"),
+        "decimal128_val": BSONDecimal128("123.45"),
     }
 
     doc_ref.set(bson_payload)
@@ -1322,6 +1324,7 @@ def test_bson_document_writes(client, cleanup, database):
                 "options": "i",
             }
         },
+        "decimal128_val": {"__decimal128__": "123.45"},
     }
 
 

@@ -16,6 +16,7 @@
 """Unit tests for google.cloud.firestore_v1.bson classes."""
 
 import copy
+import decimal
 import pickle
 import re
 
@@ -23,6 +24,7 @@ import pytest
 
 from google.cloud.firestore_v1.bson import (
     BSONBinary,
+    BSONDecimal128,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
@@ -482,3 +484,98 @@ def test_bson_regex_copy():
 def test_bson_regex_pickle():
     rx = BSONRegex("^abc", options="i")
     assert pickle.loads(pickle.dumps(rx)) == rx
+
+
+def test_bson_decimal128_valid():
+    dec1 = BSONDecimal128("123.45")
+    assert dec1.value == "123.45"
+    assert dec1.to_decimal == decimal.Decimal("123.45")
+    assert dec1._to_map_value() == {"__decimal128__": "123.45"}
+    assert repr(dec1) == "BSONDecimal128('123.45')"
+    assert str(dec1) == "123.45"
+
+    dec2 = BSONDecimal128(42)
+    assert dec2.value == "42"
+
+    dec3 = BSONDecimal128(1.5)
+    assert dec3.value == "1.5"
+
+    dec4 = BSONDecimal128(decimal.Decimal("99.99"))
+    assert dec4.value == "99.99"
+
+    dec5 = BSONDecimal128(dec1)
+    assert dec5.value == "123.45"
+
+
+def test_bson_decimal128_special_values():
+    nan_dec = BSONDecimal128("NaN")
+    assert nan_dec.value == "NaN"
+    assert nan_dec._to_map_value() == {"__decimal128__": "NaN"}
+
+    inf_dec = BSONDecimal128("Infinity")
+    assert inf_dec.value == "Infinity"
+
+    neg_inf_dec = BSONDecimal128("-Infinity")
+    assert neg_inf_dec.value == "-Infinity"
+
+
+@pytest.mark.parametrize(
+    "val_input, exc_type, match_msg",
+    [
+        (True, TypeError, "value must be a Decimal, str, int, or float"),
+        (False, TypeError, "value must be a Decimal, str, int, or float"),
+        ([1, 2], TypeError, "value must be a Decimal, str, int, or float"),
+    ],
+)
+def test_bson_decimal128_invalid_inputs(val_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONDecimal128(val_input)
+
+
+def test_bson_decimal128_equality():
+    d1 = BSONDecimal128("123.45")
+    d2 = BSONDecimal128("123.45")
+    d3 = BSONDecimal128("678.90")
+    assert d1 == d2
+    assert d1 != d3
+    assert d1 == decimal.Decimal("123.45")
+    assert d1 != "123.45"
+
+    # Transitivity test: BSONDecimal128("1.0") == Decimal("1") == BSONDecimal128("1")
+    d_trail = BSONDecimal128("1.0")
+    d_int = BSONDecimal128("1")
+    dec_int = decimal.Decimal("1")
+    assert d_trail == dec_int
+    assert d_int == dec_int
+    assert d_trail == d_int  # Transitivity enforced!
+
+    nan1 = BSONDecimal128("NaN")
+    nan2 = BSONDecimal128("NaN")
+    assert nan1 == nan2
+
+
+def test_bson_decimal128_hash_and_dict_key():
+    d1 = BSONDecimal128("123.45")
+    d2 = BSONDecimal128("123.45")
+    dec_val = decimal.Decimal("123.45")
+
+    # Hash invariant test: if a == b, then hash(a) == hash(b)
+    assert hash(d1) == hash(d2)
+    assert hash(d1) == hash(dec_val)
+    assert len({d1, d2, dec_val}) == 1
+
+    nan1 = BSONDecimal128("NaN")
+    nan2 = BSONDecimal128("NaN")
+    assert hash(nan1) == hash(nan2)
+    assert len({nan1, nan2}) == 1
+
+
+def test_bson_decimal128_copy():
+    d = BSONDecimal128("123.45")
+    assert copy.copy(d) == d
+    assert copy.deepcopy(d) == d
+
+
+def test_bson_decimal128_pickle():
+    d = BSONDecimal128("123.45")
+    assert pickle.loads(pickle.dumps(d)) == d

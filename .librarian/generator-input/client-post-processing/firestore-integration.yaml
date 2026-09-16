@@ -71,6 +71,7 @@ replacements:
       from google.cloud.firestore_v1.batch import WriteBatch
       from google.cloud.firestore_v1.bson import (
           BSONBinary,
+          BSONDecimal128,
           BSONInt32,
           BSONMaxKey,
           BSONMinKey,
@@ -180,6 +181,7 @@ replacements:
           "AsyncTransaction",
           "AsyncWriteBatch",
           "BSONBinary",
+          "BSONDecimal128",
           "BSONInt32",
           "BSONMaxKey",
           "BSONMinKey",
@@ -259,6 +261,7 @@ replacements:
           AsyncTransaction,
           AsyncWriteBatch,
           BSONBinary,
+          BSONDecimal128,
           BSONInt32,
           BSONMaxKey,
           BSONMinKey,
@@ -323,6 +326,7 @@ replacements:
           "AsyncTransaction",
           "AsyncWriteBatch",
           "BSONBinary",
+          "BSONDecimal128",
           "BSONInt32",
           "BSONMaxKey",
           "BSONMinKey",
