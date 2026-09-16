@@ -60,8 +60,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
 
-    :raises ValueError: if session has an existing transaction
-    """
+    :raises ValueError: if session has an existing transaction"""
 
     exclude_txn_from_change_streams: bool = False
     isolation_level: TransactionOptions.IsolationLevel = (
@@ -686,8 +685,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         """Update the transaction for the given execute batch DML response.
 
         :type response_pb: :class:`~google.cloud.spanner_v1.types.ExecuteBatchDmlResponse`
-        :param response_pb: The execute batch DML response to update the transaction with.
-        """
+        :param response_pb: The execute batch DML response to update the transaction with."""
         if len(response_pb.result_sets) > 0:
             self._update_for_result_set_pb(response_pb.result_sets[0])
 
