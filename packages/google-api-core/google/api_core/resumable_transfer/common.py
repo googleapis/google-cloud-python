@@ -103,7 +103,12 @@ class ResumableUploadConfig:
         stall_minimum_rate: Minimum transfer rate in bytes per second. Defaults to 64 KiB/s.
         stall_timeout: Stall duration threshold in seconds. Defaults to 120s.
         headers: Additional HTTP headers dispatched exclusively with start request.
-        deadline: Overall global deadline for the upload process.
+        deadline: Optional overall wall-clock deadline for the entire upload process.
+            When set, each HTTP request timeout is trimmed to the remaining time before
+            the deadline, and DeadlineExceeded is raised immediately when the deadline
+            elapses (even on healthy streams). When None (default), transfer duration is
+            governed by stall control (stall_minimum_rate and stall_timeout), allowing
+            healthy streams transferring above the minimum rate to continue indefinitely.
     """
 
     chunk_size: int = DEFAULT_CHUNK_SIZE
