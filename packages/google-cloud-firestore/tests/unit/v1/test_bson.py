@@ -17,6 +17,7 @@
 
 import copy
 import pickle
+import re
 
 import pytest
 
@@ -26,6 +27,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
     BSONTimestamp,
     _BSONType,
 )
@@ -411,3 +413,72 @@ def test_bson_timestamp_copy():
 def test_bson_timestamp_pickle():
     ts = BSONTimestamp(100, 1)
     assert pickle.loads(pickle.dumps(ts)) == ts
+
+
+def test_bson_regex_valid():
+    rx = BSONRegex("^hello.*$", options="i")
+    assert rx.pattern == "^hello.*$"
+    assert rx.options == "i"
+    assert rx._to_map_value() == {
+        "__regex__": {
+            "pattern": "^hello.*$",
+            "options": "i",
+        }
+    }
+    assert repr(rx) == "BSONRegex('^hello.*$', options='i')"
+
+
+def test_bson_regex_options_sorting_and_deduplication():
+    rx1 = BSONRegex("foo", options="msi")
+    assert rx1.options == "ims"
+
+    rx2 = BSONRegex("foo", options="mmiis")
+    assert rx2.options == "ims"
+
+
+def test_bson_regex_options_from_re_flags():
+    rx = BSONRegex("foo", options=re.IGNORECASE | re.MULTILINE)
+    assert rx.options == "im"
+
+
+@pytest.mark.parametrize(
+    "pattern_input, options_input, exc_type, match_msg",
+    [
+        (123, "i", TypeError, "pattern must be a str"),
+        (None, "i", TypeError, "pattern must be a str"),
+        ("foo", True, TypeError, "options must be a str or re flag integer"),
+        ("foo", [1, 2], TypeError, "options must be a str or re flag integer"),
+    ],
+)
+def test_bson_regex_invalid_inputs(pattern_input, options_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONRegex(pattern_input, options_input)
+
+
+def test_bson_regex_equality():
+    rx1 = BSONRegex("^abc", options="i")
+    rx2 = BSONRegex("^abc", options="i")
+    rx3 = BSONRegex("^abc", options="m")
+    rx4 = BSONRegex("^xyz", options="i")
+    assert rx1 == rx2
+    assert rx1 != rx3
+    assert rx1 != rx4
+    assert rx1 != "^abc"
+
+
+def test_bson_regex_hash_and_dict_key():
+    rx1 = BSONRegex("^abc", options="i")
+    rx2 = BSONRegex("^abc", options="i")
+    assert hash(rx1) == hash(rx2)
+    assert len({rx1, rx2}) == 1
+
+
+def test_bson_regex_copy():
+    rx = BSONRegex("^abc", options="i")
+    assert copy.copy(rx) == rx
+    assert copy.deepcopy(rx) == rx
+
+
+def test_bson_regex_pickle():
+    rx = BSONRegex("^abc", options="i")
+    assert pickle.loads(pickle.dumps(rx)) == rx
