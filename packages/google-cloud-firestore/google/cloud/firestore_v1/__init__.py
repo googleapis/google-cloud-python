@@ -52,6 +52,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
     BSONTimestamp,
 )
 from google.cloud.firestore_v1.client import Client
@@ -160,6 +161,7 @@ __all__: List[str] = [
     "BSONMaxKey",
     "BSONMinKey",
     "BSONObjectId",
+    "BSONRegex",
     "BSONTimestamp",
     "Client",
     "CountAggregation",

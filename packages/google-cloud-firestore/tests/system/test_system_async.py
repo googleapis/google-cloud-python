@@ -57,6 +57,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
     BSONTimestamp,
 )
 from google.cloud.firestore_v1.query_profile import (
@@ -1269,6 +1270,7 @@ async def test_async_bson_document_writes(client, cleanup, database):
         "int32_val": BSONInt32(42),
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
         "timestamp_val": BSONTimestamp(1700000000, 1),
+        "regex_val": BSONRegex("^hello.*$", options="i"),
     }
 
     await doc_ref.set(bson_payload)
@@ -1285,6 +1287,12 @@ async def test_async_bson_document_writes(client, cleanup, database):
             "__request_timestamp__": {
                 "seconds": 1700000000,
                 "increment": 1,
+            }
+        },
+        "regex_val": {
+            "__regex__": {
+                "pattern": "^hello.*$",
+                "options": "i",
             }
         },
     }

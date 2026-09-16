@@ -35,6 +35,7 @@ __all__ = [
     "BSONInt32",
     "BSONBinary",
     "BSONTimestamp",
+    "BSONRegex",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -342,3 +343,85 @@ class BSONTimestamp(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._seconds, self._increment))
+
+
+class BSONRegex(_BSONType):
+    """Represents a BSON Regular Expression container for Firestore.
+
+    Args:
+        pattern (str): The regular expression pattern string.
+        options (Union[str, re.RegexFlag, int], optional): BSON regex option flags
+            as a string (e.g. "i", "m", "s") or Python `re` flag integer (e.g. `re.I | re.M`).
+            Defaults to "".
+
+    Raises:
+        TypeError: If pattern is not a string or options is invalid type.
+
+    Example:
+        >>> regex = BSONRegex("^hello.*$", options="i")
+        >>> regex.pattern
+        '^hello.*$'
+        >>> regex.options
+        'i'
+    """
+
+    __slots__ = ("_pattern", "_options")
+
+    _FLAG_TO_OPTION: Dict[int, str] = {
+        re.IGNORECASE: "i",
+        re.LOCALE: "l",
+        re.MULTILINE: "m",
+        re.DOTALL: "s",
+        re.UNICODE: "u",
+        re.VERBOSE: "x",
+    }
+
+    def __init__(self, pattern: str, options: Union[str, re.RegexFlag, int] = ""):
+        if not isinstance(pattern, str):
+            raise TypeError("BSONRegex pattern must be a str.")
+
+        if isinstance(options, bool):
+            raise TypeError("BSONRegex options must be a str or re flag integer.")
+
+        if isinstance(options, str):
+            self._options: str = "".join(sorted(set(options)))
+        elif isinstance(options, int):
+            opts = []
+            for flag, char in self._FLAG_TO_OPTION.items():
+                if options & flag:
+                    opts.append(char)
+            self._options = "".join(sorted(opts))
+        else:
+            raise TypeError("BSONRegex options must be a str or re flag integer.")
+
+        self._pattern: str = pattern
+
+    @property
+    def pattern(self) -> str:
+        """str: The regular expression pattern string."""
+        return self._pattern
+
+    @property
+    def options(self) -> str:
+        """str: The normalized BSON regex option flags sorted alphabetically."""
+        return self._options
+
+    def _to_map_value(self) -> Dict[str, Dict[str, str]]:
+        """Returns map dictionary representation for wire serialization."""
+        return {
+            "__regex__": {
+                "pattern": self._pattern,
+                "options": self._options,
+            }
+        }
+
+    def __repr__(self) -> str:
+        return f"BSONRegex({self._pattern!r}, options={self._options!r})"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONRegex):
+            return self._pattern == other._pattern and self._options == other._options
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._pattern, self._options))
