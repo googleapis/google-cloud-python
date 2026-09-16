@@ -154,13 +154,13 @@ jobs:
           fi
           {
             echo "body<<EOF_ISSUE_BODY"
-            echo "The [pre-release check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed for **${COUNT}** handwritten package(s) on Python \`${{ env.PY_VERSION }}\`."
+            echo "The [pre-release check](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}) failed for **${COUNT}** handwritten package(s) on Python \`${PY_VERSION}\`."
             echo ""
             echo "### Failed Packages"
             printf "%s" "${PKG_LIST}"
             echo ""
-            echo "- **Python Version:** \`${{ env.PY_VERSION }}\`"
-            echo "- **Workflow Run:** [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo "- **Python Version:** \`${PY_VERSION}\`"
+            echo "- **Workflow Run:** [${GITHUB_RUN_ID}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})"
             echo ""
             echo "### Failure Details"
             echo "${DETAILS}${TRUNCATED_NOTE}"

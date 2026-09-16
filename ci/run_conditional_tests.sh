@@ -117,7 +117,7 @@ run_test_in_dir() {
     if [ ${ret} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
         mkdir -p "${FAILURE_LOG_DIR}"
         local pkg_name=$(basename "${d}")
-        tail -n 50 "${log_file}" 2>/dev/null | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' > "${FAILURE_LOG_DIR}/${pkg_name}.log.txt" || true
+        tail -n 50 "${log_file}" 2>/dev/null | sed $'s/\x1b\\[[0-9;]*[a-zA-Z]//g' > "${FAILURE_LOG_DIR}/${pkg_name}.log.txt" || true
     fi
 
     rm -f "${log_file}"

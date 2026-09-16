@@ -248,7 +248,7 @@ case ${TEST_TYPE} in
 if [ ${retval} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
     mkdir -p "${FAILURE_LOG_DIR}"
     pkg_name=$(basename "$(pwd)")
-    for pip_bin in ${NOX_ENVDIR:-.nox}/*/bin/pip; do
+    for pip_bin in "${NOX_ENVDIR:-.nox}"/*/bin/pip; do
         if [ -x "$pip_bin" ]; then
             "$pip_bin" list > "${FAILURE_LOG_DIR}/${pkg_name}.pip.txt" 2>/dev/null || true
             break
