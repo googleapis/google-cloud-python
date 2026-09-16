@@ -28,18 +28,18 @@ for /f "tokens=2 delims=:" %%A in ('findstr /b "versions:" "%~dp0..\python_versi
 FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
 
     echo "Installing Python version %%P"
-    choco install python --version=%%P -y --no-progress
+    choco install python --version=%%P -y --no-progress || goto :error
 
-    echo "Listing available Python versions'
+    echo "Listing available Python versions"
     py -0
 
     set python_version=%%P
     set python_version_trimmed=!python_version:~0,4!
 
-    py -!python_version_trimmed!-64 -m pip install --upgrade pip
+    py -!python_version_trimmed!-64 -m pip install --upgrade pip || goto :error
 
     echo "Installing cmake for Python %%P"
-    py -!python_version_trimmed!-64 -m pip install cmake
+    py -!python_version_trimmed!-64 -m pip install cmake || goto :error
 
     @rem Add directory as safe to avoid "detected dubious ownership" fatal issue
     git config --global --add safe.directory *
@@ -57,22 +57,22 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
 
     echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: x64, Install Prefix: %CRC32C_INSTALL_PREFIX%"
 
-    py -!python_version_trimmed!-64 -m cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.12 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH="%CRC32C_INSTALL_PREFIX%" ..
+    py -!python_version_trimmed!-64 -m cmake -G "Visual Studio 17 2022" -A x64 -DCMAKE_POLICY_VERSION_MINIMUM=3.12 -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH="%CRC32C_INSTALL_PREFIX%" .. || goto :error
 
-    py -!python_version_trimmed!-64 -m cmake --build . --config "%CONFIGURATION%" --target install
+    py -!python_version_trimmed!-64 -m cmake --build . --config "%CONFIGURATION%" --target install || goto :error
 
     dir %CRC32C_INSTALL_PREFIX% /b /s
     popd
 
     dir  %CRC32C_INSTALL_PREFIX%\bin
     echo "Copying Binary to root: %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll"
-    copy %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll .
+    copy %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll . || goto :error
 
-    py -!python_version_trimmed!-64 -m pip install --upgrade pip setuptools wheel
+    py -!python_version_trimmed!-64 -m pip install --upgrade pip setuptools wheel || goto :error
     echo "Building C extension"
-    py -!python_version_trimmed!-64 setup.py build_ext -v --include-dirs=%CRC32C_INSTALL_PREFIX%\include --library-dirs=%CRC32C_INSTALL_PREFIX%\lib
+    py -!python_version_trimmed!-64 setup.py build_ext -v --include-dirs=%CRC32C_INSTALL_PREFIX%\include --library-dirs=%CRC32C_INSTALL_PREFIX%\lib || goto :error
     echo "Building Wheel"
-    py -!python_version_trimmed!-64 -m pip wheel . --wheel-dir wheels/
+    py -!python_version_trimmed!-64 -m pip wheel . --wheel-dir wheels/ || goto :error
 
     echo "Built wheel, now running tests."
     call %~dp0/test.bat !python_version_trimmed! || goto :error
