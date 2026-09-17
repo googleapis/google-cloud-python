@@ -15,7 +15,32 @@ name: docs
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  NOX_DEFAULT_VENV_BACKEND: "uv"
+  UV_VENV_SEED: "1"
+  PARALLEL_WORKERS: "4"
+
 jobs:
+  check_changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      run_docfx: ${{ steps.filter.outputs.docfx }}
+    steps:
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      with:
+        persist-credentials: false
+    - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+      id: filter
+      with:
+        filters: |
+          docfx:
+            - '.github/workflows/docs.yml'
+
   docs:
     runs-on: ubuntu-latest
     steps:
@@ -34,19 +59,35 @@ jobs:
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
+        python -m pip install nox uv
     - name: Run docs
       env:
-        BUILD_TYPE: presubmit
+        BUILD_TYPE: ${{ github.event_name == 'push' && 'continuous' || 'presubmit' }}
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docs
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
+        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
+          if ! git diff --quiet "origin/${TARGET_BRANCH}..." -- .github/workflows/docs.yml && git diff --quiet "origin/${TARGET_BRANCH}..." -- packages/ preview-packages/; then
+            echo "Workflow modified with no package changes; testing packages/google-cloud-core."
+            export PACKAGE_LIST="packages/google-cloud-core"
+          fi
+        fi
         ci/run_conditional_tests.sh
+
   docfx:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [check_changes]
+    if: >-
+      always() && (
+        (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+        needs.check_changes.outputs.run_docfx == 'true'
+      )
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -63,13 +104,56 @@ jobs:
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel
-        python -m pip install nox
+        python -m pip install nox uv
     - name: Run docfx
       env:
-        BUILD_TYPE: presubmit
+        BUILD_TYPE: ${{ github.event_name == 'push' && 'continuous' || 'presubmit' }}
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docfx
+        CONTINUE_ON_ERROR: "true"
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
+        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
+          if ! git diff --quiet "origin/${TARGET_BRANCH}..." -- .github/workflows/docs.yml && git diff --quiet "origin/${TARGET_BRANCH}..." -- packages/ preview-packages/; then
+            echo "Workflow modified with no package changes; testing packages/google-cloud-core."
+            export PACKAGE_LIST="packages/google-cloud-core"
+          fi
+        fi
         ci/run_conditional_tests.sh
+    - name: Create issue on failure
+      if: ${{ failure() && github.event_name == 'push' && github.repository == 'googleapis/google-cloud-python' }}
+      uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
+      with:
+        title: "docfx check failed"
+        labels: "priority: p1,type: bug"
+        body: |
+          The post-submit [docfx check](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) failed on commit `${{ github.sha }}`.
+
+          Please investigate the workflow logs to see which package(s) failed to build DocFX YAML.
+
+  docfx-release-blocker:
+    name: docfx release blocker
+    if: "github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'autorelease: pending')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      issues: read
+    steps:
+    - name: Check post-submit docfx health
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        ISSUE_URL=$(gh issue list --repo "${GITHUB_REPOSITORY}" --state open --search '"docfx check failed" in:title' --json url --jq '.[0].url')
+        if [ -n "${ISSUE_URL}" ]; then
+          echo "::error::Release blocked due to open docfx failure issue: ${ISSUE_URL}"
+          exit 1
+        fi
+
+        LATEST_RUN=$(gh run list --repo "${GITHUB_REPOSITORY}" --workflow=docs.yml --branch=main --event=push --status=completed --limit=1 --json conclusion,url --jq '.[0]')
+        if [ "$(echo "$LATEST_RUN" | jq -r '.conclusion')" = "failure" ]; then
+          echo "::error::Release blocked because latest post-submit docs workflow on main failed: $(echo "$LATEST_RUN" | jq -r '.url')"
+          exit 1
+        fi
