@@ -15,14 +15,9 @@
 
 set -eo pipefail
 
-if ! pyenv versions --bare | grep -qE "^3\.10(\.|$)"; then
-    echo "Python 3.10 is not installed. Installing..."
-    pyenv install -s 3.10
-fi
-installed_310=$(pyenv versions --bare | grep -E "^3\.10(\.|$)" | head -n 1)
-pyenv shell "${installed_310}"
+PYTHON_EXE="$(brew --prefix python@3.12)/bin/python3.12"
 
-python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
+"${PYTHON_EXE}" -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
 echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
@@ -36,18 +31,18 @@ for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_v
     }
 done
 
-python -m twine check "${REPO_ROOT}/wheels/"*
+"${PYTHON_EXE}" -m twine check "${REPO_ROOT}/wheels/"*
 
 if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
     # Start the releasetool reporter
-    python -m pip install --upgrade gcp-releasetool
-    python -m releasetool publish-reporter-script > /tmp/publisher-script
+    "${PYTHON_EXE}" -m pip install --upgrade gcp-releasetool
+    "${PYTHON_EXE}" -m releasetool publish-reporter-script > /tmp/publisher-script
     source /tmp/publisher-script
 
     # Disable logging
     set +x
     TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
-    python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" "${REPO_ROOT}/wheels/"*
+    "${PYTHON_EXE}" -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" "${REPO_ROOT}/wheels/"*
 else
     echo "PUBLISH_WHEELS is not set to 'true'. Skipping releasetool and twine upload (dry-run validation passed)."
 fi

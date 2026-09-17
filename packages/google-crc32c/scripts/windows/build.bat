@@ -31,10 +31,16 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     set python_version=%%P
     for /f "tokens=1,2 delims=." %%I in ("%%P") do set python_version_trimmed=%%I.%%J
 
-    py -!python_version_trimmed!-64 --version >nul 2>&1 || (
-        echo "Installing Python version %%P"
-        choco install python --version=%%P -y --no-progress || goto :error
+    for /L %%R in (1,1,5) do (
+        py -!python_version_trimmed!-64 --version >nul 2>&1 || (
+            echo "Installing Python version %%P (attempt %%R/5)"
+            choco install python --version=%%P -y --no-progress || (
+                echo "choco install %%P failed; retrying in 15s..."
+                py -3 -c "import time; time.sleep(15)"
+            )
+        )
     )
+    py -!python_version_trimmed!-64 --version >nul 2>&1 || goto :error
 
     echo "Listing available Python versions"
     py -0

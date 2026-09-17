@@ -33,43 +33,26 @@ if [[ -z "${PY_TAG}" ]]; then
     exit 1
 fi
 
-# set up pyenv & shell environment for switching across python versions
-eval "$(pyenv init -)"
-eval "$(pyenv init --path)"
-
-export PYTHON_BUILD_CURL_OPTS="--retry 5 --retry-delay 5"
-
-install_python_pyenv() {
-    target_version=$1
-    short_version=$2
-    escaped_short="${short_version//./\.}"
-    if ! pyenv versions --bare | grep -qE "^${escaped_short}(\.|$)"; then
-        echo "Python ${short_version} is not installed. Installing ${target_version}..."
-        for attempt in 1 2 3; do
-            if pyenv install -s "${target_version}"; then
-                break
-            fi
-            echo "pyenv install ${target_version} failed (attempt ${attempt}/3); retrying in 5s..."
-            sleep 5
-        done
-        echo "Python ${target_version} installed."
-    else
-        echo "Python ${short_version} is already installed."
-    fi
-    installed_ver=$(pyenv versions --bare | grep -E "^${escaped_short}(\.|$)" | head -n 1)
-    pyenv shell "${installed_ver}"
-}
-install_python_pyenv "${PY_VERSION:-${PY_BIN}}" "${PY_BIN}"
-
+if ! brew list "python@${PY_BIN}" >/dev/null 2>&1; then
+    echo "Installing python@${PY_BIN} via Homebrew..."
+    for attempt in 1 2 3; do
+        if HOMEBREW_NO_AUTO_UPDATE=1 brew install "python@${PY_BIN}"; then
+            break
+        fi
+        echo "brew install python@${PY_BIN} failed (attempt ${attempt}/3); retrying in 5s..."
+        sleep 5
+    done
+fi
+PYTHON_EXE="$(brew --prefix "python@${PY_BIN}")/bin/python${PY_BIN}"
 
 # Rely on the REPO_ROOT already provided by the parent script
 OSX_DIR="${REPO_ROOT}/scripts/osx"
 
 # Create a virtualenv where we can install Python build dependencies.
 VENV=${REPO_ROOT}/venv${PY_BIN}
-"python${PY_BIN}" -m venv ${VENV}
+"${PYTHON_EXE}" -m venv ${VENV}
 
-curl https://bootstrap.pypa.io/pip/3.9/get-pip.py | ${VENV}/bin/python
+${VENV}/bin/python -m pip install --upgrade pip
 ${VENV}/bin/python -m pip install \
     --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
 
