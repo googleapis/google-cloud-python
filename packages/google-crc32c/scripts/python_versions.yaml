@@ -13,6 +13,10 @@
 # limitations under the License.
 
 # Single source of truth for supported Python versions across CI and release builds.
-# (Specify 3-part versions when required by Chocolatey on Windows or pyenv on macOS;
-#  ABI tags and binary names automatically extract major.minor, e.g. 3.13).
-versions: 3.10 3.11 3.12 3.13.1 3.14.0
+#
+# Use full 3-part versions. They must correspond to a real CPython release, since
+# macOS downloads the matching official installer from
+# https://www.python.org/ftp/python/<version>/python-<version>-macos11.pkg
+# and Windows installs the matching Chocolatey package.
+# Linux (manylinux) and the wheel ABI tags only use the major.minor part.
+versions: 3.10.11 3.11.9 3.12.10 3.13.15 3.14.7

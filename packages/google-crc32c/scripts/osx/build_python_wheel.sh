@@ -33,17 +33,33 @@ if [[ -z "${PY_TAG}" ]]; then
     exit 1
 fi
 
-if ! brew list "python@${PY_BIN}" >/dev/null 2>&1; then
-    echo "Installing python@${PY_BIN} via Homebrew..."
-    for attempt in 1 2 3; do
-        if HOMEBREW_NO_AUTO_UPDATE=1 brew install "python@${PY_BIN}"; then
-            break
-        fi
-        echo "brew install python@${PY_BIN} failed (attempt ${attempt}/3); retrying in 5s..."
-        sleep 5
-    done
+if [[ -z "${PY_VERSION}" ]]; then
+    echo "PY_VERSION environment variable should be set by the caller."
+    exit 1
 fi
-PYTHON_EXE="$(brew --prefix "python@${PY_BIN}")/bin/python${PY_BIN}"
+
+# Install the official python.org universal2 build if it isn't already present.
+# These are pre-compiled, so (unlike pyenv) we never build CPython from source,
+# and they are configured with a macOS 11 deployment target, which keeps our
+# wheels compatible with older macOS releases.
+PYTHON_EXE="/Library/Frameworks/Python.framework/Versions/${PY_BIN}/bin/python${PY_BIN}"
+if [[ ! -x "${PYTHON_EXE}" ]]; then
+    PKG_NAME="python-${PY_VERSION}-macos11.pkg"
+    echo "Installing Python ${PY_VERSION} from python.org (${PKG_NAME})..."
+    curl --fail --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
+        --output "/tmp/${PKG_NAME}" \
+        "https://www.python.org/ftp/python/${PY_VERSION}/${PKG_NAME}"
+    sudo installer -pkg "/tmp/${PKG_NAME}" -target /
+    rm -f "/tmp/${PKG_NAME}"
+fi
+"${PYTHON_EXE}" --version
+
+# The python.org builds are universal2. Pin the build to the host architecture so
+# we keep publishing separate x86_64 and arm64 wheels (one per Kokoro macOS job)
+# rather than two identical universal2 wheels.
+ARCH=$(uname -m)
+export ARCHFLAGS="-arch ${ARCH}"
+export _PYTHON_HOST_PLATFORM="macosx-${MACOSX_DEPLOYMENT_TARGET}.0-${ARCH}"
 
 # Rely on the REPO_ROOT already provided by the parent script
 OSX_DIR="${REPO_ROOT}/scripts/osx"

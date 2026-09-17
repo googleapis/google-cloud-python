@@ -38,11 +38,10 @@ git submodule update --init --recursive
 
 ${OSX_DIR}/build_c_lib.sh
 
-brew update
-
 for VER in $(awk -F': ' '/^versions:/ {print $2}' "${SCRIPTS_DIR}/python_versions.yaml"); do
     PYTHON_VERSION=$(echo "$VER" | cut -d. -f1,2)
-    echo "Build wheel for Python ${PYTHON_VERSION}"
+    echo "Build wheel for Python ${VER} (${PYTHON_VERSION})"
+    export PY_VERSION="${VER}"
     export PY_BIN="${PYTHON_VERSION}"
     export PY_TAG="cp${PYTHON_VERSION//.}-cp${PYTHON_VERSION//.}"
     . /${OSX_DIR}/build_python_wheel.sh

@@ -15,7 +15,10 @@
 
 set -eo pipefail
 
-PYTHON_EXE="$(brew --prefix python@3.12)/bin/python3.12"
+# Reuse the first Python from python_versions.yaml, which build.sh has already
+# installed from python.org into /Library/Frameworks.
+PUBLISH_PY=$(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml" | awk '{print $1}' | cut -d. -f1,2)
+PYTHON_EXE="/Library/Frameworks/Python.framework/Versions/${PUBLISH_PY}/bin/python${PUBLISH_PY}"
 
 "${PYTHON_EXE}" -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
