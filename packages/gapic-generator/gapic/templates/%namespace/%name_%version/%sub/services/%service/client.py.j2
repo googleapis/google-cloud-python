@@ -547,7 +547,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 and _observability.is_otel_capabilities_enabled(self._client_options)
                 and (
                     not isinstance(transport_init, type)
-                    or issubclass(transport_init, {{ service.grpc_transport_name }})
+                    or issubclass(
+                        transport_init,
+                        (
+                            {{ service.grpc_transport_name }},
+                            {{ service.grpc_asyncio_transport_name }},
+                        ),
+                    )
                 )
             ):
                 client_options = self._client_options

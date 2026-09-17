@@ -178,6 +178,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
             ) -> None:
         """Instantiate the transport.
 
@@ -229,6 +230,8 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            interceptors (Optional[Sequence[aio.ClientInterceptor]]):
+                Additional interceptors to apply to the gRPC channel.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -303,6 +306,13 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+
+        apply_interceptors = getattr(
+            grpc_helpers_async,
+            "apply_channel_interceptors",
+            lambda channel, interceptors: channel,
+        )
+        self._grpc_channel = apply_interceptors(self._grpc_channel, interceptors)
 
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)

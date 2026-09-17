@@ -737,9 +737,74 @@ def test_create_channel(grpc_secure_channel):
     credentials.with_scopes.assert_called_once_with(scopes, default_scopes=None)
 
 
+@mock.patch("grpc.aio.secure_channel")
+def test_create_channel_with_interceptors(grpc_secure_channel):
+    target = "example.com:443"
+    mock_interceptor = mock.Mock()
+    credentials = mock.create_autospec(google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = False
+
+    grpc_helpers_async.create_channel(
+        target,
+        credentials=credentials,
+        interceptors=[mock_interceptor],
+    )
+    grpc_secure_channel.assert_called_once_with(
+        target,
+        mock.ANY,
+        compression=None,
+        interceptors=[mock_interceptor],
+    )
+
+
 @pytest.mark.asyncio
 async def test_fake_stream_unary_call():
     fake_call = grpc_helpers_async.FakeStreamUnaryCall()
     await fake_call.wait_for_connection()
     response = await fake_call
     assert fake_call.response == response
+
+
+def test_apply_channel_interceptors_none_or_empty():
+    channel = mock.Mock(spec=aio.Channel)
+    assert grpc_helpers_async.apply_channel_interceptors(channel) is channel
+    assert grpc_helpers_async.apply_channel_interceptors(channel, []) is channel
+
+
+def test_apply_channel_interceptors_with_classes():
+    channel = mock.Mock(spec=aio.Channel)
+    channel._unary_unary_interceptors = []
+    channel._unary_stream_interceptors = []
+    channel._stream_unary_interceptors = []
+    channel._stream_stream_interceptors = []
+
+    uu_interceptor = mock.Mock(spec=aio.UnaryUnaryClientInterceptor)
+    us_interceptor = mock.Mock(spec=aio.UnaryStreamClientInterceptor)
+    su_interceptor = mock.Mock(spec=aio.StreamUnaryClientInterceptor)
+    ss_interceptor = mock.Mock(spec=aio.StreamStreamClientInterceptor)
+
+    res = grpc_helpers_async.apply_channel_interceptors(
+        channel,
+        [uu_interceptor, us_interceptor, su_interceptor, ss_interceptor],
+    )
+    assert res is channel
+    assert channel._unary_unary_interceptors == [uu_interceptor]
+    assert channel._unary_stream_interceptors == [us_interceptor]
+    assert channel._stream_unary_interceptors == [su_interceptor]
+    assert channel._stream_stream_interceptors == [ss_interceptor]
+
+
+def test_apply_channel_interceptors_with_callable():
+    channel = mock.Mock(spec=aio.Channel)
+    modified_channel = mock.Mock(spec=aio.Channel)
+    callable_interceptor = mock.Mock(return_value=modified_channel)
+
+    res = grpc_helpers_async.apply_channel_interceptors(channel, [callable_interceptor])
+    assert res is modified_channel
+    callable_interceptor.assert_called_once_with(channel)
+
+
+def test_apply_channel_interceptors_invalid_type():
+    channel = mock.Mock(spec=aio.Channel)
+    with pytest.raises(TypeError, match="Expected ClientInterceptor or Callable"):
+        grpc_helpers_async.apply_channel_interceptors(channel, [123])

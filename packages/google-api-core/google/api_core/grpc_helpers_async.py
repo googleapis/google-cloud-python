@@ -21,7 +21,17 @@ functions. This module is implementing the same surface with AsyncIO semantics.
 import asyncio
 import functools
 import warnings
-from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
+from typing import (
+    AsyncGenerator,
+    Callable,
+    Generic,
+    Iterator,
+    Optional,
+    Sequence,
+    TypeVar,
+    Union,
+    cast,
+)
 
 import grpc
 from grpc import aio
@@ -219,6 +229,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
+    interceptors: Optional[Sequence[grpc.aio.ClientInterceptor]] = None,
     **kwargs,
 ):
     """Create an AsyncIO secure channel with credentials.
@@ -270,6 +281,8 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+        interceptors (Optional[Sequence[grpc.aio.ClientInterceptor]]): An optional
+            sequence of :class:`grpc.aio.ClientInterceptor` objects to be applied to the channel.
 
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
@@ -302,6 +315,9 @@ def create_channel(
 
     if attempt_direct_path:
         target = grpc_helpers._modify_target_for_direct_path(target)
+
+    if interceptors is not None:
+        kwargs["interceptors"] = interceptors
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
@@ -345,3 +361,71 @@ class FakeStreamUnaryCall(_WrappedStreamUnaryCall):
 
     async def wait_for_connection(self):
         pass
+
+
+_ASYNC_CLIENT_INTERCEPTOR_CLASSES = (
+    aio.ClientInterceptor,
+    aio.UnaryUnaryClientInterceptor,
+    aio.UnaryStreamClientInterceptor,
+    aio.StreamUnaryClientInterceptor,
+    aio.StreamStreamClientInterceptor,
+)
+
+
+def apply_channel_interceptors(
+    channel: aio.Channel,
+    interceptors: Optional[
+        Sequence[Union[aio.ClientInterceptor, Callable[[aio.Channel], aio.Channel]]]
+    ] = None,
+) -> aio.Channel:
+    """Applies async client interceptors or channel-intercepting callables to a gRPC AsyncIO channel.
+
+    Args:
+        channel (aio.Channel): The channel to intercept.
+        interceptors (Optional[Sequence[Union[aio.ClientInterceptor, Callable[[aio.Channel], aio.Channel]]]]):
+            Additional interceptors (or callables that apply interceptors) to apply to the gRPC AsyncIO channel.
+
+    Returns:
+        aio.Channel: The intercepted channel, or the original channel if no
+            interceptors were provided.
+
+    Raises:
+        TypeError: If an item in ``interceptors`` is neither a gRPC aio.ClientInterceptor
+            nor a Callable[[aio.Channel], aio.Channel].
+    """
+    if not interceptors:
+        return channel
+
+    modified_channel = channel
+    for interceptor in interceptors:
+        if isinstance(interceptor, _ASYNC_CLIENT_INTERCEPTOR_CLASSES):
+            matched = False
+            if isinstance(interceptor, aio.UnaryUnaryClientInterceptor):
+                if hasattr(modified_channel, "_unary_unary_interceptors"):
+                    modified_channel._unary_unary_interceptors.append(interceptor)
+                    matched = True
+            if isinstance(interceptor, aio.UnaryStreamClientInterceptor):
+                if hasattr(modified_channel, "_unary_stream_interceptors"):
+                    modified_channel._unary_stream_interceptors.append(interceptor)
+                    matched = True
+            if isinstance(interceptor, aio.StreamUnaryClientInterceptor):
+                if hasattr(modified_channel, "_stream_unary_interceptors"):
+                    modified_channel._stream_unary_interceptors.append(interceptor)
+                    matched = True
+            if isinstance(interceptor, aio.StreamStreamClientInterceptor):
+                if hasattr(modified_channel, "_stream_stream_interceptors"):
+                    modified_channel._stream_stream_interceptors.append(interceptor)
+                    matched = True
+            if not matched and hasattr(modified_channel, "_interceptors"):
+                modified_channel._interceptors.append(interceptor)
+        elif callable(interceptor):
+            interceptor_callable = cast(
+                Callable[[aio.Channel], aio.Channel], interceptor
+            )
+            modified_channel = interceptor_callable(modified_channel)
+        else:
+            raise TypeError(
+                f"Expected ClientInterceptor or Callable[[aio.Channel], aio.Channel], got {type(interceptor).__name__}"
+            )
+
+    return modified_channel
