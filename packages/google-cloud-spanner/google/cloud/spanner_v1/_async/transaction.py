@@ -543,49 +543,50 @@ class Transaction(_SnapshotBase, _BatchBase):
             is_inline_begin = True
             await self._lock.acquire()
 
-        execute_sql_request = ExecuteSqlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            sql=dml,
-            params=params_pb,
-            param_types=param_types,
-            query_mode=query_mode,
-            query_options=query_options,
-            seqno=seqno,
-            request_options=request_options,
-            last_statement=last_statement,
-        )
-
-        nth_request = database._next_nth_request
-        attempt = AtomicCounter(0)
-
-        async def wrapped_method(*args, **kwargs):
-            attempt.increment()
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt.value, metadata
+        try:
+            execute_sql_request = ExecuteSqlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                sql=dml,
+                params=params_pb,
+                param_types=param_types,
+                query_mode=query_mode,
+                query_options=query_options,
+                seqno=seqno,
+                request_options=request_options,
+                last_statement=last_statement,
             )
-            execute_sql_method = functools.partial(
-                api.execute_sql,
-                request=execute_sql_request,
-                metadata=call_metadata,
-                retry=retry,
-                timeout=timeout,
+
+            nth_request = database._next_nth_request
+            attempt = AtomicCounter(0)
+
+            async def wrapped_method(*args, **kwargs):
+                attempt.increment()
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt.value, metadata
+                )
+                execute_sql_method = functools.partial(
+                    api.execute_sql,
+                    request=execute_sql_request,
+                    metadata=call_metadata,
+                    retry=retry,
+                    timeout=timeout,
+                )
+                with error_augmenter:
+                    return await execute_sql_method(*args, **kwargs)
+
+            result_set_pb: ResultSet = await self._execute_request(
+                wrapped_method,
+                execute_sql_request,
+                metadata,
+                f"CloudSpanner.{type(self).__name__}.execute_update",
+                trace_attributes,
             )
-            with error_augmenter:
-                return await execute_sql_method(*args, **kwargs)
 
-        result_set_pb: ResultSet = await self._execute_request(
-            wrapped_method,
-            execute_sql_request,
-            metadata,
-            f"CloudSpanner.{type(self).__name__}.execute_update",
-            trace_attributes,
-        )
-
-        self._update_for_result_set_pb(result_set_pb)
-
-        if is_inline_begin:
-            self._lock.release()
+            self._update_for_result_set_pb(result_set_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
 
         if result_set_pb._pb.HasField("precommit_token"):
             await self._update_for_precommit_token_pb(result_set_pb.precommit_token)
@@ -703,45 +704,46 @@ class Transaction(_SnapshotBase, _BatchBase):
             is_inline_begin = True
             await self._lock.acquire()
 
-        execute_batch_dml_request = ExecuteBatchDmlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            statements=parsed,
-            seqno=seqno,
-            request_options=request_options,
-            last_statements=last_statement,
-        )
-
-        nth_request = database._next_nth_request
-        attempt = AtomicCounter(0)
-
-        async def wrapped_method(*args, **kwargs):
-            attempt.increment()
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt.value, metadata
+        try:
+            execute_batch_dml_request = ExecuteBatchDmlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                statements=parsed,
+                seqno=seqno,
+                request_options=request_options,
+                last_statements=last_statement,
             )
-            execute_batch_dml_method = functools.partial(
-                api.execute_batch_dml,
-                request=execute_batch_dml_request,
-                metadata=call_metadata,
-                retry=retry,
-                timeout=timeout,
+
+            nth_request = database._next_nth_request
+            attempt = AtomicCounter(0)
+
+            async def wrapped_method(*args, **kwargs):
+                attempt.increment()
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt.value, metadata
+                )
+                execute_batch_dml_method = functools.partial(
+                    api.execute_batch_dml,
+                    request=execute_batch_dml_request,
+                    metadata=call_metadata,
+                    retry=retry,
+                    timeout=timeout,
+                )
+                with error_augmenter:
+                    return await execute_batch_dml_method(*args, **kwargs)
+
+            response_pb: ExecuteBatchDmlResponse = await self._execute_request(
+                wrapped_method,
+                execute_batch_dml_request,
+                metadata,
+                "CloudSpanner.DMLTransaction",
+                trace_attributes,
             )
-            with error_augmenter:
-                return await execute_batch_dml_method(*args, **kwargs)
 
-        response_pb: ExecuteBatchDmlResponse = await self._execute_request(
-            wrapped_method,
-            execute_batch_dml_request,
-            metadata,
-            "CloudSpanner.DMLTransaction",
-            trace_attributes,
-        )
-
-        self._update_for_execute_batch_dml_response_pb(response_pb)
-
-        if is_inline_begin:
-            self._lock.release()
+            self._update_for_execute_batch_dml_response_pb(response_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
 
         if (
             len(response_pb.result_sets) > 0
