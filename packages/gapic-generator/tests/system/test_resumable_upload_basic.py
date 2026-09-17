@@ -27,32 +27,7 @@ from google.showcase import (
 )
 
 
-def resume_resumable_upload(
-    transport,
-    upload_url,
-    stream,
-    size=None,
-    config=None,
-    **kwargs,
-):
-    if config is None:
-        config = ResumableUploadConfig(**kwargs)
-    elif kwargs:
-        for k, v in kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-
-    session = ResumableUploadSession(
-        config=config,
-        resumable_url=upload_url,
-        transport=transport,
-    )
-    return session.resume(
-        upload_url=upload_url,
-        stream=stream,
-        size=size,
-        transport=transport,
-    )
+from conftest import resume_resumable_upload
 
 
 def test_resumable_upload_start(intercepted_resumable_upload_rest):
@@ -162,13 +137,13 @@ def test_resumable_upload_session_direct_execution(intercepted_resumable_upload_
     payload = b"Direct execution payload using ResumableUploadSession!"
 
     config = ResumableUploadConfig(
-        response_type=UploadMediaResponse,
         chunk_size=256,
     )
     session = ResumableUploadSession(
         upload_url=initial_url,
         config=config,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     response = session.upload(
@@ -195,11 +170,12 @@ def test_resumable_upload_session_raw_bytes_payload(intercepted_resumable_upload
     initial_url = f"{client.transport._host}/resumable/upload/v1beta1/media/upload"
     payload = b"Raw bytes payload directly passed to upload() method"
 
-    config = ResumableUploadConfig(response_type=UploadMediaResponse)
+    config = ResumableUploadConfig()
     session = ResumableUploadSession(
         upload_url=initial_url,
         config=config,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     response = session.upload(

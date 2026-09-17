@@ -24,33 +24,7 @@ from google.api_core.resumable_transfer import (
 from google.showcase import UploadMediaResponse
 
 
-def make_resumable_upload(
-    transport,
-    request_body,
-    stream,
-    upload_url,
-    size=None,
-    config=None,
-    **kwargs,
-):
-    if config is None:
-        config = ResumableUploadConfig(**kwargs)
-    elif kwargs:
-        for k, v in kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-
-    session = ResumableUploadSession(
-        upload_url=upload_url,
-        config=config,
-        transport=transport,
-    )
-    return session.upload(
-        stream=stream,
-        request_body=request_body,
-        size=size,
-        transport=transport,
-    )
+from conftest import make_resumable_upload
 
 
 def test_make_resumable_upload_end_to_end(intercepted_resumable_upload_rest):
@@ -90,7 +64,6 @@ def test_resumable_upload_callback_progress_tracking(intercepted_resumable_uploa
     scenario_headers = [("X-Goog-Test-Scenario", "chunk_granularity")]
     config = ResumableUploadConfig(
         chunk_size=256,
-        on_progress=on_progress,
         headers=scenario_headers,
     )
 
@@ -100,6 +73,7 @@ def test_resumable_upload_callback_progress_tracking(intercepted_resumable_uploa
         stream=stream,
         upload_url=initial_url,
         config=config,
+        on_progress=on_progress,
     )
     assert response.status_code == 200
 
@@ -122,13 +96,13 @@ def test_resumable_upload_generator_progress_tracking(intercepted_resumable_uplo
     scenario_headers = [("X-Goog-Test-Scenario", "chunk_granularity")]
     config = ResumableUploadConfig(
         chunk_size=256,
-        response_type=UploadMediaResponse,
         headers=scenario_headers,
     )
     session = ResumableUploadSession(
         upload_url=initial_url,
         config=config,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     progress_list = []

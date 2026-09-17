@@ -16,40 +16,10 @@ import io
 import pytest
 
 from google.api_core import exceptions as core_exceptions
-from google.api_core.resumable_transfer import (
-    ResumableUploadConfig,
-    ResumableUploadSession,
-)
 from google.showcase import UploadMediaResponse
 
 
-def make_resumable_upload(
-    transport,
-    request_body,
-    stream,
-    upload_url,
-    size=None,
-    config=None,
-    **kwargs,
-):
-    if config is None:
-        config = ResumableUploadConfig(**kwargs)
-    elif kwargs:
-        for k, v in kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-
-    session = ResumableUploadSession(
-        upload_url=upload_url,
-        config=config,
-        transport=transport,
-    )
-    return session.upload(
-        stream=stream,
-        request_body=request_body,
-        size=size,
-        transport=transport,
-    )
+from conftest import make_resumable_upload
 
 
 def test_resumable_upload_scenario_non_fatal_start_error(intercepted_resumable_upload_rest):

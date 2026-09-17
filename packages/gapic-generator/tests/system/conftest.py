@@ -575,3 +575,93 @@ def intercepted_resumable_upload_rest(use_mtls, use_tls):
 
     return ResumableUploadServiceClient(transport=transport), interceptor
 
+
+try:
+    from google.api_core.resumable_transfer import (
+        ResumableUploadConfig,
+        ResumableUploadSession,
+    )
+except ImportError:
+    ResumableUploadConfig = None
+    ResumableUploadSession = None
+
+
+def make_resumable_upload(
+    transport,
+    request_body,
+    stream,
+    upload_url,
+    size=None,
+    config=None,
+    **kwargs,
+):
+    content_type = kwargs.pop("content_type", "application/octet-stream")
+    response_type = kwargs.pop("response_type", None)
+    on_progress = kwargs.pop("on_progress", None)
+    retry = kwargs.pop("retry", None)
+    timeout = kwargs.pop("timeout", None)
+
+    if config is None:
+        config = ResumableUploadConfig(**kwargs)
+    elif kwargs:
+        for k, v in kwargs.items():
+            if hasattr(config, k):
+                setattr(config, k, v)
+
+    session = ResumableUploadSession(
+        upload_url=upload_url,
+        config=config,
+        content_type=content_type,
+        response_type=response_type,
+        transport=transport,
+    )
+    return session.upload(
+        stream=stream,
+        request_body=request_body,
+        content_type=content_type,
+        size=size,
+        on_progress=on_progress,
+        transport=transport,
+        retry=retry,
+        timeout=timeout,
+    )
+
+
+def resume_resumable_upload(
+    transport,
+    upload_url,
+    stream,
+    size=None,
+    config=None,
+    **kwargs,
+):
+    content_type = kwargs.pop("content_type", None)
+    response_type = kwargs.pop("response_type", None)
+    on_progress = kwargs.pop("on_progress", None)
+    retry = kwargs.pop("retry", None)
+    timeout = kwargs.pop("timeout", None)
+
+    if config is None:
+        config = ResumableUploadConfig(**kwargs)
+    elif kwargs:
+        for k, v in kwargs.items():
+            if hasattr(config, k):
+                setattr(config, k, v)
+
+    session = ResumableUploadSession(
+        config=config,
+        resumable_url=upload_url,
+        transport=transport,
+        content_type=content_type,
+        response_type=response_type,
+    )
+    return session.resume(
+        upload_url=upload_url,
+        stream=stream,
+        size=size,
+        transport=transport,
+        retry=retry,
+        timeout=timeout,
+        on_progress=on_progress,
+    )
+

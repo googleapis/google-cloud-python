@@ -23,32 +23,7 @@ from google.api_core.resumable_transfer import (
 from google.showcase import UploadMediaResponse
 
 
-def resume_resumable_upload(
-    transport,
-    upload_url,
-    stream,
-    size=None,
-    config=None,
-    **kwargs,
-):
-    if config is None:
-        config = ResumableUploadConfig(**kwargs)
-    elif kwargs:
-        for k, v in kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-
-    session = ResumableUploadSession(
-        config=config,
-        resumable_url=upload_url,
-        transport=transport,
-    )
-    return session.resume(
-        upload_url=upload_url,
-        stream=stream,
-        size=size,
-        transport=transport,
-    )
+from conftest import resume_resumable_upload
 
 
 def test_resumable_upload_resume_direct(intercepted_resumable_upload_rest):
@@ -66,12 +41,12 @@ def test_resumable_upload_resume_direct(intercepted_resumable_upload_rest):
     config1 = ResumableUploadConfig(
         chunk_size=512,
         headers=scenario_headers,
-        response_type=UploadMediaResponse,
     )
     session1 = ResumableUploadSession(
         upload_url=initial_url,
         config=config1,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
     session1.initiate(
         transport=client.transport._session,
@@ -89,11 +64,11 @@ def test_resumable_upload_resume_direct(intercepted_resumable_upload_rest):
     # Session 2: Fresh session simulating resumption across process boundaries
     config2 = ResumableUploadConfig(
         chunk_size=512,
-        response_type=UploadMediaResponse,
     )
     session2 = ResumableUploadSession(
         config=config2,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     # Rewind stream to simulate providing full file stream on resume
@@ -126,12 +101,12 @@ def test_resumable_upload_iter_resume_generator(intercepted_resumable_upload_res
     config1 = ResumableUploadConfig(
         chunk_size=512,
         headers=scenario_headers,
-        response_type=UploadMediaResponse,
     )
     session1 = ResumableUploadSession(
         upload_url=initial_url,
         config=config1,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
     session1.initiate(
         transport=client.transport._session,
@@ -148,11 +123,11 @@ def test_resumable_upload_iter_resume_generator(intercepted_resumable_upload_res
     # Session 2: Resuming with PEP 255 generator iter_resume
     config2 = ResumableUploadConfig(
         chunk_size=512,
-        response_type=UploadMediaResponse,
     )
     session2 = ResumableUploadSession(
         config=config2,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     stream.seek(0)
@@ -196,12 +171,12 @@ def test_resumable_upload_resume_chunk_size_override(intercepted_resumable_uploa
     config1 = ResumableUploadConfig(
         chunk_size=256,
         headers=scenario_headers,
-        response_type=UploadMediaResponse,
     )
     session1 = ResumableUploadSession(
         upload_url=initial_url,
         config=config1,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
     session1.initiate(
         transport=client.transport._session,
@@ -217,11 +192,11 @@ def test_resumable_upload_resume_chunk_size_override(intercepted_resumable_uploa
     # Session 2: Resumes overriding chunk_size to 512 (valid multiple of 256)
     config2 = ResumableUploadConfig(
         chunk_size=512,
-        response_type=UploadMediaResponse,
     )
     session2 = ResumableUploadSession(
         config=config2,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     stream.seek(0)
@@ -271,13 +246,13 @@ def test_resumable_upload_resume_helper_with_raw_bytes(intercepted_resumable_upl
     # Resume directly using resume_resumable_upload helper with raw bytes
     config2 = ResumableUploadConfig(
         chunk_size=512,
-        response_type=UploadMediaResponse,
     )
     final_response = resume_resumable_upload(
         transport=client.transport._session,
         upload_url=saved_url,
         stream=data,
         config=config2,
+        response_type=UploadMediaResponse,
     )
 
     assert isinstance(final_response, UploadMediaResponse)
