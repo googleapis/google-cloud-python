@@ -97,6 +97,13 @@ def _deprecate_threads_param(func):
     return convert_threads_or_raise
 
 
+def _process_pool_terminate_workers(executor):
+    """Terminate a ProcessPoolExecutor's worker processes, if any."""
+    # executor.terminate_workers() is only supported on Python >= 3.14
+    for process in (getattr(executor, "_processes", None) or {}).values():
+        process.terminate()
+
+
 @_deprecate_threads_param
 def upload_many(
     file_blob_pairs,
@@ -213,7 +220,11 @@ def upload_many(
 
     pool_class, needs_pickling = _get_pool_class_and_requirements(worker_type)
 
-    with pool_class(max_workers=max_workers) as executor:
+    # The executor is managed explicitly rather than via a context manager.
+    # The context manager's implicit shutdown(wait=True) prevents correct implementation
+    # of deadline.
+    executor = pool_class(max_workers=max_workers)
+    try:
         futures = []
         for path_or_file, blob in file_blob_pairs:
             # File objects are only supported by the THREAD worker because they can't
@@ -236,9 +247,19 @@ def upload_many(
                     **upload_kwargs,
                 )
             )
-        concurrent.futures.wait(
+        _, not_done = concurrent.futures.wait(
             futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
         )
+        if not_done:
+            # Deadline exceeded. If using process mode, kill the workers.
+            if isinstance(executor, concurrent.futures.ProcessPoolExecutor):
+                _process_pool_terminate_workers(executor)
+            raise concurrent.futures.TimeoutError(
+                "Deadline of {} second(s) exceeded while waiting for uploads "
+                "to complete.".format(deadline)
+            )
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
 
     results = []
     for future in futures:
