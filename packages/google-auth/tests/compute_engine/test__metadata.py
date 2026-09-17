@@ -487,6 +487,17 @@ def test_get_failure_bad_json():
     )
 
 
+def test_get_body_with_get_method_raises_value_error():
+    request = make_request("{}")
+
+    with pytest.raises(
+        ValueError, match="Request body cannot be specified with GET method."
+    ):
+        _metadata.get(request, PATH, method="GET", body=b"some_body")
+
+    request.assert_not_called()
+
+
 def test_get_project_id():
     project = "example-project"
     request = make_request(project, headers={"content-type": "text/plain"})

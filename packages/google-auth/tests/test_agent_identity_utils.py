@@ -648,6 +648,40 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_success(
+        self, mock_get_path, tmpdir, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        cert_file = tmpdir.join("cert.pem")
+        cert_file.write_binary(NON_AGENT_IDENTITY_CERT_BYTES)
+        mock_get_path.return_value = str(cert_file)
+
+        cert, cert_bytes = (
+            _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        )
+
+        assert isinstance(cert, x509.Certificate)
+        assert cert_bytes == NON_AGENT_IDENTITY_CERT_BYTES
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_opted_out(
+        self, mock_get_path, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "false",
+        )
+        cert, cert_bytes = (
+            _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        )
+        assert cert is None
+        assert cert_bytes is None
+        mock_get_path.assert_not_called()
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_and_parse_agent_identity_certificate_opted_out(
         self, mock_get_path, monkeypatch
     ):

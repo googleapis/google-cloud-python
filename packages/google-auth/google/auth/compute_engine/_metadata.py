@@ -292,8 +292,12 @@ def get(
         google.auth.exceptions.MutualTLSChannelError: if using mtls and the environment
             configuration is invalid for mTLS (for example, the metadata host
             has been overridden in strict mTLS mode).
+        ValueError: if a request body is specified with the GET method.
 
     """
+    if body is not None and method.upper() == "GET":
+        raise ValueError("Request body cannot be specified with GET method.")
+
     use_mtls = _mtls.should_use_mds_mtls()
     # Prepare the request object for mTLS if needed.
     # This will create a new request object with the mTLS session.
