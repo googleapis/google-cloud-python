@@ -3234,7 +3234,7 @@ def test_metrics_service_v2_base_transport_wrap_method():
             assert "client_options" not in mock_wrap.call_args.kwargs
             assert "kind" not in mock_wrap.call_args.kwargs
 
-            # Test without kind (e.g. abstract base transport)
+            # Test for correct handling of abstract base transport NotImplementedError
             mock_wrap.reset_mock()
             mock_kind.side_effect = NotImplementedError
             transport._wrap_with_tracing = True
