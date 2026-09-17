@@ -52,7 +52,7 @@ class Options:
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
     gapic_version: str = "0.0.0"
     resource_name_aliases: Dict[str, str] = dataclasses.field(default_factory=dict)
-    resumable_upload_prefix: str = ""
+    resumable_upload_prefix: str = "resumable/upload"
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -225,7 +225,7 @@ class Options:
                     "Expected format is 'resource.path/Name:AliasName'."
                 )
 
-        resumable_upload_prefix = opts.pop("resumable-upload-prefix", [""])[0]
+        resumable_upload_prefix = opts.pop("resumable-upload-prefix", ["resumable/upload"])[0]
 
         answer = Options(
             name=opts.pop("name", [""]).pop(),

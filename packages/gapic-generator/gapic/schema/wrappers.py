@@ -1499,7 +1499,7 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
-    resumable_upload_prefix: str = ""
+    resumable_upload_prefix: str = "resumable/upload"
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
