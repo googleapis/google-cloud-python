@@ -207,34 +207,94 @@ class TestAgentIdentityUtils:
 
         assert fingerprint == expected_fingerprint
 
-    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
-    def test_should_request_bound_token(self, mock_is_agent, monkeypatch):
-        # Agent cert, default env var (opt-in)
-        mock_is_agent.return_value = True
+    def test_is_bound_token_opted_out(self, monkeypatch):
+        # Default (both unset) -> not opted out
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            raising=False,
+        )
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
             raising=False,
         )
-        assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        assert not _agent_identity_utils._is_bound_token_opted_out()
 
-        # Agent cert, explicit opt-in
+        # Explicit opt-in / non-false values on primary -> not opted out
+        for val in ("true", "TRUE", "1", "invalid", ""):
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+                val,
+            )
+            assert not _agent_identity_utils._is_bound_token_opted_out()
+
+        # Explicit opt-out via primary -> opted out
+        for val in ("false", "FALSE"):
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+                val,
+            )
+            assert _agent_identity_utils._is_bound_token_opted_out()
+
+        # Primary overrides fallback (primary false, fallback true -> opted out)
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "false",
+        )
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
             "true",
         )
-        assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        assert _agent_identity_utils._is_bound_token_opted_out()
 
-        # Agent cert, explicit opt-out
+        # Primary overrides fallback (primary true, fallback false -> not opted out)
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
             "false",
         )
-        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        assert not _agent_identity_utils._is_bound_token_opted_out()
 
-        # Non-agent cert, opt-in
-        mock_is_agent.return_value = False
+        # Fallback when primary is unset
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            raising=False,
+        )
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            "false",
+        )
+        assert _agent_identity_utils._is_bound_token_opted_out()
+
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            "true",
+        )
+        assert not _agent_identity_utils._is_bound_token_opted_out()
+
+    @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
+    def test_should_request_bound_token(self, mock_is_agent, monkeypatch):
+        # Agent cert, opted in
+        mock_is_agent.return_value = True
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+        # Agent cert, opted out
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "false",
+        )
+        assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+
+        # Non-agent cert, opted in
+        mock_is_agent.return_value = False
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "true",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
@@ -381,9 +441,8 @@ class TestAgentIdentityUtils:
             _agent_identity_utils.get_agent_identity_certificate_path()
 
         assert "not found after multiple retries" in str(excinfo.value)
-        assert (
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
-            in str(excinfo.value)
+        assert environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN in str(
+            excinfo.value
         )
         assert mock_sleep.call_count == len(_agent_identity_utils._POLLING_INTERVALS)
 
@@ -593,7 +652,7 @@ class TestAgentIdentityUtils:
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "false",
         )
         result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
@@ -605,7 +664,7 @@ class TestAgentIdentityUtils:
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "true",
         )
         mock_get_path.return_value = None
@@ -619,7 +678,7 @@ class TestAgentIdentityUtils:
         self, mock_get_path, mock_parse_certificate, monkeypatch
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "true",
         )
         mock_get_path.return_value = "/fake/cert.pem"
@@ -661,7 +720,7 @@ class TestAgentIdentityUtils:
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "true",
         )
         mock_get_path.return_value = "/fake/cert.pem"

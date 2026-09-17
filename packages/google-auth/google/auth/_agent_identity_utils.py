@@ -182,7 +182,7 @@ def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
     raise exceptions.RefreshError(
         "Certificate config or certificate file not found after multiple retries. "
         f"Token binding protection is failing. You can turn off this protection by setting "
-        f"{environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES} to false "
+        f"{environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN} to false "
         "to fall back to unbound tokens."
     )
 
@@ -220,6 +220,20 @@ def _parse_cert_path_from_config(cert_config_path):
 
     return workload_config["cert_path"]
 
+def _is_bound_token_opted_out():
+    """Returns True only if bound tokens are explicitly disabled via env vars."""
+    val = os.environ.get(environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN)
+    if val is not None:
+        return val.lower() == "false"
+
+    # Fall back to the deprecated env var for backward compatibility
+    return (
+        os.environ.get(
+            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            "true",
+        ).lower()
+        == "false"
+    )
 
 def get_agent_identity_certificate_and_bytes():
     """Gets and parses the agent identity certificate if not opted out.
@@ -232,14 +246,7 @@ def get_agent_identity_certificate_and_bytes():
     """
     # If the user has opted out of cert bound tokens, there is no need to
     # look up the certificate.
-    is_opted_out = (
-        os.environ.get(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
-            "true",
-        ).lower()
-        == "false"
-    )
-    if is_opted_out:
+    if _is_bound_token_opted_out():
         return None, None
 
     # Respect explicit opt-out of mTLS / client certs
@@ -363,8 +370,9 @@ def calculate_certificate_fingerprint(cert):
 def should_request_bound_token(cert):
     """Determines if a bound token should be requested.
 
-    This is based on the GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
-    environment variable and whether the certificate is an agent identity cert.
+    This is based on the GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN env var
+    (falls back to the deprecated GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
+    if unset) and whether the certificate is an agent identity cert.
 
     Args:
         cert (cryptography.x509.Certificate): The parsed certificate object.
@@ -373,14 +381,7 @@ def should_request_bound_token(cert):
         bool: True if a bound token should be requested, False otherwise.
     """
     is_agent_cert = _is_agent_identity_certificate(cert)
-    is_opted_in = (
-        os.environ.get(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
-            "true",
-        ).lower()
-        == "true"
-    )
-    if not (is_agent_cert and is_opted_in):
+    if not is_agent_cert or _is_bound_token_opted_out():
         return False
 
     # Respect explicit opt-out of mTLS / client certs
