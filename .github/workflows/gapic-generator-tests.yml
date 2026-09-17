@@ -80,6 +80,22 @@ jobs:
           # Follow https://github.com/grpc/grpc/issues/41010 for updates.
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
+      - name: Install System Deps & Protoc
+        run: |
+          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
+          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
+          cd /usr/src/protoc/ && unzip protoc.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run Nox
+        env:
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+          MATRIX_PYTHON: ${{ matrix.python }}
+        run: |
+          pip install nox
+          cd packages/gapic-generator
+          nox -s showcase_unit${{ matrix.variant }}-${MATRIX_PYTHON}
+
   showcase:
     needs: python_config
     strategy:
@@ -130,21 +146,6 @@ jobs:
         run: |
           cd packages/gapic-generator
           nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
-      - name: Install System Deps & Protoc
-        run: |
-          sudo apt-get update && sudo apt-get install -y curl pandoc unzip
-          sudo mkdir -p /usr/src/protoc/ && sudo chown -R ${USER} /usr/src/
-          curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc.zip
-          cd /usr/src/protoc/ && unzip protoc.zip
-          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Run Nox
-        env:
-          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
-          MATRIX_PYTHON: ${{ matrix.python }}
-        run: |
-          pip install nox
-          cd packages/gapic-generator
-          nox -s showcase_unit${{ matrix.variant }}-${MATRIX_PYTHON}
 
   showcase-mypy:
     needs: python_config
