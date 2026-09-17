@@ -50,12 +50,10 @@ export FILE_SIZE_MIB="${FILE_SIZE_MIB}"
 export CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB}"
 export ROUNDS="${ROUNDS}"
 export BUCKET_TYPE="${BUCKET_TYPE}"
-export USE_PRESEEDED_BENCHMARK_OBJECTS="1"
 
-# Determine script directory and repository root
+# Navigate to package directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-cd "${REPO_ROOT}/packages/google-cloud-storage" 2>/dev/null || cd "$(pwd)"
+cd "${SCRIPT_DIR}/.."
 
 echo "--- 1. Setting up Python environment ---"
 # Ensure python3-pip and python3-venv are present on the VM
@@ -81,9 +79,12 @@ fi
 
 echo "--- 2. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
 rm -f "${OUTPUT_JSON_PATH}" 2>/dev/null || true
+set +e
 python3 -m pytest --benchmark-json="${OUTPUT_JSON_PATH}" \
   -rA \
   tests/perf/microbenchmarks/time_based/reads/test_reads.py
+TEST_EXIT_CODE=$?
+set -e
 
 if [ -s "${OUTPUT_JSON_PATH}" ]; then
   DISPLAY_SCRIPT="${SCRIPT_DIR}/display_benchmark_results.py"
@@ -100,3 +101,4 @@ if [ -s "${OUTPUT_JSON_PATH}" ]; then
 fi
 
 echo "--- Benchmark Run Complete ---"
+exit $TEST_EXIT_CODE

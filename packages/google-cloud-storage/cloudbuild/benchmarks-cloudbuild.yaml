@@ -63,6 +63,9 @@ steps:
           set +e
           echo "Stopping VM ${_VM_NAME}..."
           gcloud compute instances stop "${_VM_NAME}" --zone="${_ZONE}" --quiet
+          echo "Removing temporary build SSH key from OS Login profile..."
+          gcloud compute os-login ssh-keys remove \
+            --key-file=/workspace/gcb_ssh_key.pub || true
         }
         trap cleanup EXIT
 
@@ -83,10 +86,8 @@ steps:
           exit 1
         fi
 
-        echo "Copying package archive and runner scripts to VM over internal IP..."
+        echo "Copying package archive to VM over internal IP..."
         gcloud compute scp /workspace/google-cloud-storage.tar.gz \
-          packages/google-cloud-storage/cloudbuild/run_benchmark_tests.sh \
-          packages/google-cloud-storage/cloudbuild/display_benchmark_results.py \
           "${_VM_NAME}":~ --zone="${_ZONE}" --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
 
         echo "Executing benchmark test suite directly on VM via SSH..."
@@ -117,19 +118,6 @@ steps:
       - "/workspace/report/bench_result.json"
     waitFor:
       - "run-benchmark-on-vm"
-
-  # Step 5: Clean up SSH key from OS Login profile
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "cleanup-ssh-key"
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        echo "Removing temporary build SSH key from OS Login profile..."
-        gcloud compute os-login ssh-keys remove \
-          --key-file=/workspace/gcb_ssh_key.pub || true
-    waitFor:
-      - "display-benchmark-results"
 
 timeout: "3600s"
 
