@@ -367,22 +367,31 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
             {% if method.is_resumable_upload %}
             if not self._credentials:
-                async def _error_stub(*args, **kwargs):
-                    raise core_exceptions.GoogleAPICallError(
-                        "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
-                    )
-                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _error_stub
+                class _ErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _error():
+                            raise core_exceptions.GoogleAPICallError(
+                                "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                            )
+                        return _error()
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
             elif HAS_ASYNC_REST:  # pragma: NO COVER
                 rest_transport = Async{{ service.name }}RestTransport(
                     host=self._host,
                     credentials=self._credentials,
                     client_info=self._client_info,
                 )
-                self._stubs['{{ method.transport_safe_name|snake_case }}'] = rest_transport.{{ method.transport_safe_name|snake_case }}
+                class _AsyncRestStub:
+                    def __call__(self, *args, **kwargs):
+                        return rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()
             else:  # pragma: NO COVER
-                async def _unsupported_stub(*args, **kwargs):
-                    raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
-                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _unsupported_stub
+                class _UnsupportedStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _unsupported():
+                            raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                        return _unsupported()
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _UnsupportedStub()
             {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',

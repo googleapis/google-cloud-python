@@ -1564,7 +1564,7 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_e
         assert isinstance(response, {{ method.client_output.ident }})
 
 
-{% if opts.rest_async_io_enabled %}
+{% if rest_async_io_enabled %}
 @pytest.mark.asyncio
 async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_asyncio_start_empty_body():
     client = {{ service.async_client_name }}(

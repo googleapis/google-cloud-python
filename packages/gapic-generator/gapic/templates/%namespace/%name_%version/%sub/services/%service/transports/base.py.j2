@@ -139,6 +139,9 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
+        {% if service.has_resumable_upload_methods %}
+        self._client_info = client_info
+        {% endif %}
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:

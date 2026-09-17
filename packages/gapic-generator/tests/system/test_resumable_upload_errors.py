@@ -25,33 +25,7 @@ from google.api_core.resumable_transfer import (
 from google.showcase import UploadMediaResponse
 
 
-def make_resumable_upload(
-    transport,
-    request_body,
-    stream,
-    upload_url,
-    size=None,
-    config=None,
-    **kwargs,
-):
-    if config is None:
-        config = ResumableUploadConfig(**kwargs)
-    elif kwargs:
-        for k, v in kwargs.items():
-            if hasattr(config, k):
-                setattr(config, k, v)
-
-    session = ResumableUploadSession(
-        upload_url=upload_url,
-        config=config,
-        transport=transport,
-    )
-    return session.upload(
-        stream=stream,
-        request_body=request_body,
-        size=size,
-        transport=transport,
-    )
+from conftest import make_resumable_upload
 
 
 class StrictlyUnseekableStream(io.RawIOBase):
@@ -129,12 +103,12 @@ def test_resumable_upload_crash_recovery_flow(intercepted_resumable_upload_rest)
     config1 = ResumableUploadConfig(
         chunk_size=512,
         headers=scenario_headers,
-        response_type=UploadMediaResponse,
     )
     session1 = ResumableUploadSession(
         upload_url=initial_url,
         config=config1,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
     session1.initiate(
         transport=client.transport._session,
@@ -153,11 +127,11 @@ def test_resumable_upload_crash_recovery_flow(intercepted_resumable_upload_rest)
     # Session 2: Fresh process recovers upload from captured URL
     config2 = ResumableUploadConfig(
         chunk_size=crashed_chunk_size,
-        response_type=UploadMediaResponse,
     )
     session2 = ResumableUploadSession(
         config=config2,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
 
     # Rewind stream to beginning (full file available in new process)
@@ -189,12 +163,12 @@ def test_resumable_upload_unseekable_stream_beyond_buffer_raises(intercepted_res
     config = ResumableUploadConfig(
         chunk_size=512,
         headers=scenario_headers,
-        response_type=UploadMediaResponse,
     )
     session = ResumableUploadSession(
         upload_url=initial_url,
         config=config,
         transport=client.transport._session,
+        response_type=UploadMediaResponse,
     )
     session.initiate(
         transport=client.transport._session,
