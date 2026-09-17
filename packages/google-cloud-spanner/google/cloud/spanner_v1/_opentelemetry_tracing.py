@@ -155,4 +155,5 @@ def get_current_span():
 
 
 def add_span_event(span, event_name, event_attributes=None):
-    span.add_event(event_name, event_attributes)
+    if span and span.is_recording():
+        span.add_event(event_name, event_attributes)
