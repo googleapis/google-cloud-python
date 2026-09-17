@@ -1152,14 +1152,14 @@ def test__validate_paged_field_size_type(field_type, pb_type, expected):
 
 def test_method_is_resumable_upload():
     # Without resumable_upload_prefix, method is not resumable upload
-    method_no_prefix = make_method("UploadMedia")
+    method_no_prefix = dataclasses.replace(
+        make_method("UploadMedia"),
+        resumable_upload_prefix="",
+    )
     assert not method_no_prefix.is_resumable_upload
 
-    # With resumable_upload_prefix and UploadMedia method name
-    method_with_prefix = dataclasses.replace(
-        make_method("UploadMedia"),
-        resumable_upload_prefix="resumable/upload",
-    )
+    # With default resumable_upload_prefix and UploadMedia method name
+    method_with_prefix = make_method("UploadMedia")
     assert method_with_prefix.is_resumable_upload
 
     # Non-resumable method with prefix
