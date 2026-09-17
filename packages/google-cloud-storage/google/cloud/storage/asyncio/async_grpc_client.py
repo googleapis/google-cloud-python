@@ -76,6 +76,7 @@ class AsyncGrpcClient:
         *,
         attempt_direct_path=True,
     ):
+        self._is_async_grpc_client = True
         self._bucket_metadata_cache = BucketMetadataCache(self)
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
