@@ -35,7 +35,7 @@ class TestStaleReads(MockServerTestBase):
     def test_request_tag(self):
         from tests.mockserver_tests.tags_model import Singer
 
-        add_singer_query_result("SELECT singers.id, singers.name \n" + "FROM singers")
+        add_singer_query_result()
         engine = self.create_engine()
 
         with Session(engine.execution_options(read_only=True)) as session:
@@ -61,10 +61,8 @@ class TestStaleReads(MockServerTestBase):
     def test_transaction_tag(self):
         from tests.mockserver_tests.tags_model import Singer
 
-        add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
-        add_single_singer_query_result(
-            "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
-        )
+        add_singer_query_result()
+        add_single_singer_query_result()
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
         engine = self.create_engine()
 
@@ -129,7 +127,18 @@ def empty_singer_result_set():
     )
 
 
-def add_singer_query_result(sql: str):
+def has_column_aliases() -> bool:
+    # Older SQLAlchemy 2.0.x versions compiled ORM column selections with explicit
+    # labels (e.g., 'singers.id AS singers_id'), whereas newer 2.0.x and 2.1+ releases
+    # omit redundant column aliases in unaliased single-table queries.
+    from tests.mockserver_tests.tags_model import Singer
+
+    return "AS singers_id" in str(select(Singer))
+
+
+def add_singer_query_result():
+    sql = "SELECT singers.id, singers.name\nFROM singers"
+
     result = empty_singer_result_set()
     result.rows.extend(
         [
@@ -146,7 +155,15 @@ def add_singer_query_result(sql: str):
     add_result(sql, result)
 
 
-def add_single_singer_query_result(sql: str):
+def add_single_singer_query_result():
+    if has_column_aliases():
+        sql = (
+            "SELECT singers.id AS singers_id, singers.name AS singers_name"
+            + "\nFROM singers\nWHERE singers.id = @a0"
+        )
+    else:
+        sql = "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
+
     result = empty_singer_result_set()
     result.rows.extend(
         [
