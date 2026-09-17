@@ -34,7 +34,7 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     for /L %%R in (1,1,5) do (
         py -!python_version_trimmed!-64 --version >nul 2>&1 || (
             echo "Installing Python version %%P (attempt %%R/5)"
-            choco install python --version=%%P -y --no-progress || (
+            choco install python --version=%%P --pre -y --no-progress || (
                 echo "choco install %%P failed; retrying in 15s..."
                 py -3 -c "import time; time.sleep(15)"
             )
