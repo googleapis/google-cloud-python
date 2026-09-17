@@ -30,7 +30,7 @@ from google.api_core import datetime_helpers
 from google.api_core.exceptions import Aborted
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import DecodeError, Message
-from google.protobuf.struct_pb2 import ListValue, Value
+from google.protobuf.struct_pb2 import NULL_VALUE, ListValue, Value
 from google.rpc.error_details_pb2 import RetryInfo
 
 from google.cloud.spanner_v1.data_types import Interval, JsonObject
@@ -141,23 +141,25 @@ def _get_cloud_region() -> str:
     return _cloud_region
 
 
+def _validate_and_decode_bytes(bytestring):
+    try:
+        return bytestring.decode("utf-8")
+    except (ValueError, UnicodeDecodeError):
+        raise ValueError(
+            "Received a bytes that is not base64 encoded. "
+            "Ensure that you either send a Unicode string or a "
+            "base64-encoded bytes."
+        )
+
+
 def _try_to_coerce_bytes(bytestring):
     """Try to coerce a byte string into the right thing based on Python
     version and whether or not it is base64 encoded.
 
     Return a text string or raise ValueError.
     """
-    # Attempt to coerce using google.protobuf.Value, which will expect
-    # something that is utf-8 (and base64 consistently is).
-    try:
-        Value(string_value=bytestring)
-        return bytestring
-    except ValueError:
-        raise ValueError(
-            "Received a bytes that is not base64 encoded. "
-            "Ensure that you either send a Unicode string or a "
-            "base64-encoded bytes."
-        )
+    _validate_and_decode_bytes(bytestring)
+    return bytestring
 
 
 def _merge_query_options(base, merge):
@@ -312,8 +314,9 @@ def _assert_numeric_precision_and_scale(value):
 
     :raises NotSupportedError: If value is not within supported precision or scale of Spanner.
     """
-    scale = value.as_tuple().exponent
-    precision = len(value.as_tuple().digits)
+    decimal_tuple = value.as_tuple()
+    scale = decimal_tuple.exponent
+    precision = len(decimal_tuple.digits)
 
     if scale < -9:
         raise ValueError(NUMERIC_MAX_SCALE_ERR_MSG.format(abs(scale)))
@@ -359,6 +362,63 @@ def _datetime_to_rfc3339_nanoseconds(value):
     return "{}.{}Z".format(value.isoformat(sep="T", timespec="seconds"), nanos)
 
 
+def _make_list_value_pb(values):
+    """Construct of ListValue protobufs.
+
+    :type values: list of scalar
+    :param values: Row data
+
+    :rtype: :class:`~google.protobuf.struct_pb2.ListValue`
+    :returns: protobuf
+    """
+    return ListValue(values=[_make_value_pb(value) for value in values])
+
+
+def _encode_float(value):
+    if math.isfinite(value):
+        return Value(number_value=value)
+    if math.isnan(value):
+        return Value(string_value="NaN")
+    return Value(string_value="Infinity" if value > 0 else "-Infinity")
+
+
+def _encode_decimal(value):
+    _assert_numeric_precision_and_scale(value)
+    return Value(string_value=str(value))
+
+
+def _encode_bytes(value):
+    return Value(string_value=_validate_and_decode_bytes(value))
+
+
+def _encode_json_object(value):
+    serialized = value.serialize()
+    if serialized is None:
+        return Value(null_value=NULL_VALUE)
+    return Value(string_value=serialized)
+
+
+_TYPE_ENCODERS = {
+    str: lambda value: Value(string_value=value),
+    int: lambda value: Value(string_value=str(value)),
+    bool: lambda value: Value(bool_value=value),
+    float: _encode_float,
+    bytes: _encode_bytes,
+    datetime.date: lambda value: Value(string_value=value.isoformat()),
+    datetime.datetime: lambda value: Value(string_value=_datetime_to_rfc3339(value)),
+    datetime_helpers.DatetimeWithNanoseconds: lambda value: Value(
+        string_value=_datetime_to_rfc3339_nanoseconds(value)
+    ),
+    decimal.Decimal: _encode_decimal,
+    uuid.UUID: lambda value: Value(string_value=str(value)),
+    Interval: lambda value: Value(string_value=str(value)),
+    list: lambda value: Value(list_value=_make_list_value_pb(value)),
+    tuple: lambda value: Value(list_value=_make_list_value_pb(value)),
+    ListValue: lambda value: Value(list_value=value),
+    JsonObject: _encode_json_object,
+}
+
+
 def _make_value_pb(value):
     """Helper for :func:`_make_list_value_pbs`.
 
@@ -370,7 +430,18 @@ def _make_value_pb(value):
     :raises ValueError: if value is not of a known scalar type.
     """
     if value is None:
-        return Value(null_value="NULL_VALUE")
+        return Value(null_value=NULL_VALUE)
+
+    try:
+        encoder = _TYPE_ENCODERS[type(value)]
+    except KeyError:
+        pass
+    else:
+        return encoder(value)
+
+    # Note: The fallback isinstance chain is retained to support subclasses,
+    # custom mock/proxy objects, and dynamic AST inspection in
+    # tests/unit/spanner_dbapi/test_partition_helper.py.
     if isinstance(value, (list, tuple)):
         return Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
@@ -378,14 +449,7 @@ def _make_value_pb(value):
     if isinstance(value, int):
         return Value(string_value=str(value))
     if isinstance(value, float):
-        if math.isnan(value):
-            return Value(string_value="NaN")
-        if math.isinf(value):
-            if value > 0:
-                return Value(string_value="Infinity")
-            else:
-                return Value(string_value="-Infinity")
-        return Value(number_value=value)
+        return _encode_float(value)
     if isinstance(value, datetime_helpers.DatetimeWithNanoseconds):
         return Value(string_value=_datetime_to_rfc3339_nanoseconds(value))
     if isinstance(value, datetime.datetime):
@@ -393,45 +457,27 @@ def _make_value_pb(value):
     if isinstance(value, datetime.date):
         return Value(string_value=value.isoformat())
     if isinstance(value, bytes):
-        value = _try_to_coerce_bytes(value)
-        return Value(string_value=value)
+        return _encode_bytes(value)
     if isinstance(value, str):
         return Value(string_value=value)
     if isinstance(value, ListValue):
         return Value(list_value=value)
     if isinstance(value, decimal.Decimal):
-        _assert_numeric_precision_and_scale(value)
-        return Value(string_value=str(value))
+        return _encode_decimal(value)
     if isinstance(value, JsonObject):
-        value = value.serialize()
-        if value is None:
-            return Value(null_value="NULL_VALUE")
-        else:
-            return Value(string_value=value)
+        return _encode_json_object(value)
     if isinstance(value, Message):
-        value = value.SerializeToString()
-        if value is None:
-            return Value(null_value="NULL_VALUE")
+        serialized = value.SerializeToString()
+        if serialized is None:
+            return Value(null_value=NULL_VALUE)
         else:
-            return Value(string_value=base64.b64encode(value))
+            return Value(string_value=base64.b64encode(serialized).decode("utf-8"))
     if isinstance(value, Interval):
         return Value(string_value=str(value))
     if isinstance(value, uuid.UUID):
         return Value(string_value=str(value))
 
     raise ValueError("Unknown type: %s" % (value,))
-
-
-def _make_list_value_pb(values):
-    """Construct of ListValue protobufs.
-
-    :type values: list of scalar
-    :param values: Row data
-
-    :rtype: :class:`~google.protobuf.struct_pb2.ListValue`
-    :returns: protobuf
-    """
-    return ListValue(values=[_make_value_pb(value) for value in values])
 
 
 def _make_list_value_pbs(values):

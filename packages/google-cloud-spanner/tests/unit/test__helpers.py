@@ -152,6 +152,44 @@ class Test_get_cloud_region(unittest.TestCase):
             self.assertIn("Failed to detect GCP resource location", log.output[0])
 
 
+class Test_try_to_coerce_bytes(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _try_to_coerce_bytes
+
+        return _try_to_coerce_bytes(*args, **kw)
+
+    def test_w_valid_bytes(self):
+        valid_bytes = b"sample_bytes"
+        result = self._callFUT(valid_bytes)
+        self.assertEqual(result, valid_bytes)
+
+    def test_w_invalid_bytes(self):
+        invalid_bytes = b"\xff\xfe"
+        with self.assertRaises(ValueError):
+            self._callFUT(invalid_bytes)
+
+
+class Test_validate_and_decode_bytes(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _validate_and_decode_bytes
+
+        return _validate_and_decode_bytes(*args, **kw)
+
+    def test_w_valid_bytes(self):
+        valid_bytes = b"sample_bytes"
+        result = self._callFUT(valid_bytes)
+        self.assertEqual(result, "sample_bytes")
+        self.assertIsInstance(result, str)
+
+    def test_w_invalid_bytes(self):
+        invalid_bytes = b"\xff\xfe"
+        with self.assertRaises(ValueError) as context:
+            self._callFUT(invalid_bytes)
+        self.assertIn(
+            "Received a bytes that is not base64 encoded", str(context.exception)
+        )
+
+
 class Test_make_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):
         from google.cloud.spanner_v1._helpers import _make_value_pb
@@ -166,10 +204,12 @@ class Test_make_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
 
         BYTES = b"BYTES"
-        expected = Value(string_value=BYTES)
+        expected = Value(string_value="BYTES")
         value_pb = self._callFUT(BYTES)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb, expected)
+        self.assertIsInstance(value_pb.string_value, str)
+        self.assertEqual(value_pb.string_value, "BYTES")
 
     def test_w_invalid_bytes(self):
         BYTES = b"\xff\xfe\x03&"
@@ -420,10 +460,15 @@ class Test_make_value_pb(unittest.TestCase):
         from .testdata import singer_pb2
 
         singer_info = singer_pb2.SingerInfo()
-        expected = Value(string_value=base64.b64encode(singer_info.SerializeToString()))
+        expected = Value(
+            string_value=base64.b64encode(singer_info.SerializeToString()).decode(
+                "utf-8"
+            )
+        )
         value_pb = self._callFUT(singer_info)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb, expected)
+        self.assertIsInstance(value_pb.string_value, str)
 
     def test_w_proto_enum(self):
         from google.protobuf.struct_pb2 import Value
@@ -433,6 +478,140 @@ class Test_make_value_pb(unittest.TestCase):
         value_pb = self._callFUT(singer_pb2.Genre.ROCK)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, "3")
+
+    def test_w_json_object(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import JsonObject
+
+        value = JsonObject({"key": "value"})
+        value_pb = self._callFUT(value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, '{"key":"value"}')
+
+    def test_w_uuid(self):
+        import uuid
+
+        from google.protobuf.struct_pb2 import Value
+
+        unique_id = uuid.uuid4()
+        value_pb = self._callFUT(unique_id)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, str(unique_id))
+
+    def test_w_interval(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1.data_types import Interval
+
+        interval = Interval(months=1, days=2, nanos=3000)
+        value_pb = self._callFUT(interval)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, str(interval))
+
+    def test_w_proto_message_none(self):
+        from unittest.mock import MagicMock
+
+        from google.protobuf.message import Message
+
+        mock_message = MagicMock(spec=Message)
+        mock_message.SerializeToString.return_value = None
+        value_pb = self._callFUT(mock_message)
+        self.assertTrue(value_pb.HasField("null_value"))
+
+    def test_w_subclass_fallback(self):
+        import decimal
+        import uuid
+        from unittest.mock import MagicMock
+
+        from google.api_core import datetime_helpers
+        from google.protobuf.struct_pb2 import ListValue
+
+        from google.cloud.spanner_v1 import JsonObject
+        from google.cloud.spanner_v1.data_types import Interval
+
+        class CustomList(list):
+            pass
+
+        class CustomTuple(tuple):
+            pass
+
+        class CustomInt(int):
+            pass
+
+        class CustomFloat(float):
+            pass
+
+        class CustomDate(datetime.date):
+            pass
+
+        class CustomDatetime(datetime.datetime):
+            pass
+
+        class CustomDatetimeNanos(datetime_helpers.DatetimeWithNanoseconds):
+            pass
+
+        class CustomBytes(bytes):
+            pass
+
+        class CustomStr(str):
+            pass
+
+        class CustomDecimal(decimal.Decimal):
+            pass
+
+        class CustomJsonObject(JsonObject):
+            pass
+
+        class CustomInterval(Interval):
+            pass
+
+        class CustomUUID(uuid.UUID):
+            pass
+
+        mock_bool = MagicMock(spec=bool)
+        mock_list_value = MagicMock(spec=ListValue)
+        mock_list_value.__getitem__.side_effect = IndexError
+
+        fallback_cases = [
+            (CustomList([1]), "list_value"),
+            (CustomTuple((1,)), "list_value"),
+            (CustomInt(42), "string_value"),
+            (CustomFloat(3.14), "number_value"),
+            (CustomFloat(float("nan")), "string_value"),
+            (CustomFloat(float("inf")), "string_value"),
+            (CustomDate(2023, 5, 10), "string_value"),
+            (
+                CustomDatetime(2023, 5, 10, 12, 0, tzinfo=datetime.timezone.utc),
+                "string_value",
+            ),
+            (
+                CustomDatetimeNanos(
+                    2023, 5, 10, 12, 0, nanosecond=500, tzinfo=datetime.timezone.utc
+                ),
+                "string_value",
+            ),
+            (CustomBytes(b"custom_bytes"), "string_value"),
+            (CustomStr("custom_str"), "string_value"),
+            (CustomDecimal("99.95"), "string_value"),
+            (CustomJsonObject({"a": 1}), "string_value"),
+            (CustomJsonObject(None), "null_value"),
+            (CustomInterval(months=2), "string_value"),
+            (
+                CustomUUID("12345678-1234-5678-1234-567812345678"),
+                "string_value",
+            ),
+            (mock_bool, "bool_value"),
+            (mock_list_value, "list_value"),
+        ]
+
+        for value, field in fallback_cases:
+            with self.subTest(val_type=type(value).__name__):
+                result = self._callFUT(value)
+                self.assertTrue(
+                    result.HasField(field),
+                    f"Expected field {field} for {type(value)}, got {result}",
+                )
 
 
 class Test_make_list_value_pb(unittest.TestCase):
@@ -913,7 +1092,9 @@ class Test_parse_value_pb(unittest.TestCase):
         VALUE = singer_pb2.SingerInfo()
         field_type = Type(code=TypeCode.PROTO)
         field_name = "proto_message_column"
-        value_pb = Value(string_value=base64.b64encode(VALUE.SerializeToString()))
+        value_pb = Value(
+            string_value=base64.b64encode(VALUE.SerializeToString()).decode("utf-8")
+        )
         column_info = {"proto_message_column": singer_pb2.SingerInfo()}
 
         self.assertEqual(
