@@ -261,19 +261,28 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_enable_metrics(self):
         PROJECT = "PROJECT"
-        client = self._make_one(project=PROJECT, enable_metrics=True)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_metrics=True
+        )
         self.assertTrue(client._enable_metrics)
 
     def test_ctor_w_enable_advanced_metrics(self):
         PROJECT = "PROJECT"
-        client = self._make_one(project=PROJECT, enable_advanced_metrics=True)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_advanced_metrics=True
+        )
         self.assertTrue(client._enable_advanced_metrics)
 
     def test_client_metrics_enabled_property(self):
         from google.cloud.storage import _opentelemetry_metrics
 
         PROJECT = "PROJECT"
-        client = self._make_one(project=PROJECT, enable_metrics=True)
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_metrics=True
+        )
 
         with mock.patch.object(
             _opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True
@@ -289,8 +298,12 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage import _opentelemetry_metrics
 
         PROJECT = "PROJECT"
+        credentials = _make_credentials()
         client = self._make_one(
-            project=PROJECT, enable_metrics=True, enable_advanced_metrics=True
+            project=PROJECT,
+            credentials=credentials,
+            enable_metrics=True,
+            enable_advanced_metrics=True,
         )
 
         with mock.patch.object(

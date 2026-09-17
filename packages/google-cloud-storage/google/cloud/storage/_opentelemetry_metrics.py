@@ -99,9 +99,7 @@ def is_advanced_metrics_enabled(client_setting: Optional[bool] = None) -> bool:
     if client_setting is not None:
         return bool(client_setting)
 
-    return _parse_bool_env(
-        ENABLE_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS
-    )
+    return _parse_bool_env(ENABLE_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS)
 
 
 # ---------------------------------------------------------------------------

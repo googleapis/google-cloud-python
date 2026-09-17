@@ -41,7 +41,9 @@ def test_parse_bool_env(monkeypatch, env_val, default, expected):
 def test_parse_bool_env_default(monkeypatch):
     monkeypatch.delenv("TEST_BOOL_ENV_MISSING", raising=False)
     assert _opentelemetry_metrics._parse_bool_env("TEST_BOOL_ENV_MISSING", True) is True
-    assert _opentelemetry_metrics._parse_bool_env("TEST_BOOL_ENV_MISSING", False) is False
+    assert (
+        _opentelemetry_metrics._parse_bool_env("TEST_BOOL_ENV_MISSING", False) is False
+    )
 
 
 def test_dev_gate_locked_disables_metrics(monkeypatch):
