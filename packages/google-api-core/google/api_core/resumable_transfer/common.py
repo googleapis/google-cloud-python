@@ -87,11 +87,11 @@ class UploadProgress:
     state: ProgressState
 
 
-# HTTP status codes indicating transient retryable errors
+# HTTP status codes indicating transient retryable errors (Category 1)
 RETRYABLE_STATUS_CODES = (408, 429, 500, 502, 503, 504)
 
-# HTTP status codes indicating state consistency errors requiring recovery
-RECOVERABLE_STATUS_CODES = (400, 409, 412, 416)
+# HTTP status codes indicating state consistency errors requiring recovery (Category 2)
+RECOVERABLE_STATUS_CODES = (400, 412, 416)
 
 
 @dataclasses.dataclass

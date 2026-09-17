@@ -869,11 +869,18 @@ def test_sync_retry_predicate_branches():
     assert pred_transfer(TransferStalledError("stalled")) is False
     assert pred_transfer(UploadCancelledError("cancelled")) is False
     assert pred_transfer(MissingStatusHeaderError("missing")) is True
+    assert pred_start(MissingStatusHeaderError("missing")) is False
     assert pred_transfer(requests.exceptions.ConnectionError("conn")) is True
     assert pred_transfer(requests.exceptions.ChunkedEncodingError("chunked")) is True
     assert pred_transfer(exceptions.from_http_status(503, "503")) is True
     assert pred_transfer(exceptions.from_http_status(400, "400")) is True
+    assert pred_transfer(exceptions.from_http_status(412, "412")) is True
+    assert pred_transfer(exceptions.from_http_status(416, "416")) is True
     assert pred_start(exceptions.from_http_status(400, "400")) is False
+    assert pred_start(exceptions.from_http_status(412, "412")) is False
+    assert pred_start(exceptions.from_http_status(416, "416")) is False
+    assert pred_transfer(exceptions.from_http_status(409, "409")) is False
+    assert pred_start(exceptions.from_http_status(409, "409")) is False
     assert pred_transfer(exceptions.from_http_status(403, "403")) is False
     assert pred_transfer(TypeError("other")) is False
 
@@ -1027,14 +1034,90 @@ def test_sync_naive_deadline_tz():
 
 
 def test_sync_get_retry_start_and_override():
-    ret_start = mock.Mock(spec=google.api_core.retry.Retry)
-    ret_override = mock.Mock(spec=google.api_core.retry.Retry)
+    """Verifies how user-supplied Retry objects are resolved and wrapped."""
+
+    class CustomApiError(Exception):
+        """Example API-specific transient exception provided by a caller."""
+
+    # -------------------------------------------------------------------------
+    # Scenario 1: User provides a custom predicate to retry an API-specific error
+    # -------------------------------------------------------------------------
+    custom_start_retry = google.api_core.retry.Retry(
+        initial=0.5,
+        predicate=lambda exc: isinstance(exc, CustomApiError),
+    )
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
-        start_retry=ret_start,
+        start_retry=custom_start_retry,
     )
-    assert session._get_retry() is ret_start
-    assert session._get_retry(retry_override=ret_override) is ret_override
+    resolved_start = session._get_retry()
+
+    # Backoff settings (0.5s initial delay) are preserved
+    assert resolved_start._initial == 0.5
+    # The user's custom exception is retried, while unrelated errors are not
+    assert resolved_start._predicate(CustomApiError("rate limit")) is True
+    assert resolved_start._predicate(ValueError("invalid input")) is False
+
+    # -------------------------------------------------------------------------
+    # Scenario 2: Terminal errors are blocked even if custom predicate returns True
+    # -------------------------------------------------------------------------
+    overly_broad_retry = google.api_core.retry.Retry(
+        initial=0.25,
+        predicate=lambda exc: True,
+    )
+    resolved_override = session._get_retry(retry_override=overly_broad_retry)
+
+    assert resolved_override._initial == 0.25
+    # Terminal transfer errors must never be retried, preventing infinite loops
+    assert (
+        resolved_override._predicate(exceptions.DeadlineExceeded("deadline expired"))
+        is False
+    )
+    assert (
+        resolved_override._predicate(exceptions.TransferStalledError("upload stalled"))
+        is False
+    )
+
+    # -------------------------------------------------------------------------
+    # Scenario 3: Category 2 recovery (400, 412, 416, MissingStatusHeaderError)
+    # is preserved during chunk transfer
+    # -------------------------------------------------------------------------
+    restrictive_chunk_retry = google.api_core.retry.StreamingRetry(
+        initial=0.1,
+        predicate=lambda exc: False,
+    )
+    resolved_chunk = session._get_streaming_retry(
+        retry_override=restrictive_chunk_retry
+    )
+
+    assert resolved_chunk._initial == 0.1
+    # Category 2 recovery triggers (400, 412, 416, and missing status header)
+    # must still return True during chunk transfer so the client can query
+    # server offset and synchronize state
+    assert (
+        resolved_chunk._predicate(exceptions.from_http_status(400, "Bad Request"))
+        is True
+    )
+    assert (
+        resolved_chunk._predicate(
+            exceptions.from_http_status(412, "Precondition Failed")
+        )
+        is True
+    )
+    assert (
+        resolved_chunk._predicate(
+            exceptions.from_http_status(416, "Range Not Satisfiable")
+        )
+        is True
+    )
+    missing_header_error = MissingStatusHeaderError("Missing X-Goog-Upload-Status")
+    assert resolved_chunk._predicate(missing_header_error) is True
+    # Unretriable HTTP status codes (such as 409 Conflict) and non-protocol errors
+    # follow the predicate and return False
+    assert (
+        resolved_chunk._predicate(exceptions.from_http_status(409, "Conflict")) is False
+    )
+    assert resolved_chunk._predicate(RuntimeError("unexpected crash")) is False
 
 
 def test_sync_stall_control_with_deadline():
@@ -1682,9 +1765,8 @@ def test_sync_streaming_retry_and_recovery_final():
         upload_url="https://api.example.com/init",
         response_type=DummyResponse,
     )
-    assert (
-        session._get_streaming_retry(retry_override=streaming_retry) is streaming_retry
-    )
+    resolved_streaming = session._get_streaming_retry(retry_override=streaming_retry)
+    assert resolved_streaming._initial == 0.001
 
     result = session.upload(
         stream=b"data", transport=session_transport, retry=streaming_retry

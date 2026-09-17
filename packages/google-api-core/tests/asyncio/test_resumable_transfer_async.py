@@ -699,8 +699,10 @@ async def test_async_recoverable_status_code_triggers_recovery() -> None:
         },
         body=b"",
     )
-    # Chunk 1 returns 409 Conflict
-    chunk_conflict = DummyAsyncResponse(status=409, headers={}, body=b"Conflict")
+    # Chunk 1 returns Category 2 recoverable error (412 Precondition Failed)
+    chunk_precondition_failed = DummyAsyncResponse(
+        status=412, headers={}, body=b"Precondition Failed"
+    )
     # Recovery query returns confirmed committed offset 0
     query_resp = DummyAsyncResponse(
         status=200,
@@ -718,7 +720,7 @@ async def test_async_recoverable_status_code_triggers_recovery() -> None:
     )
 
     async_transport = DummyAsyncSession(
-        [start_resp, chunk_conflict, query_resp, chunk_success]
+        [start_resp, chunk_precondition_failed, query_resp, chunk_success]
     )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
@@ -1110,14 +1112,28 @@ async def test_async_retry_branches() -> None:
     assert pred_start(exceptions.TransferStalledError("stalled")) is False
     assert pred_start(exceptions.UploadCancelledError("cancelled")) is False
     assert pred_start(exceptions.UnseekableStreamError("unseekable")) is False
-    assert pred_start(exceptions.MissingStatusHeaderError("missing")) is True
+    assert pred_start(exceptions.MissingStatusHeaderError("missing")) is False
+    assert pred_transfer(exceptions.MissingStatusHeaderError("missing")) is True
     assert pred_start(aiohttp.ClientError("network error")) is True
     assert pred_start(exceptions.from_http_status(503, "Service Unavailable")) is True
     assert pred_start(exceptions.from_http_status(400, "Bad Request")) is False
+    assert pred_start(exceptions.from_http_status(412, "Precondition Failed")) is False
+    assert (
+        pred_start(exceptions.from_http_status(416, "Range Not Satisfiable")) is False
+    )
+    assert pred_start(exceptions.from_http_status(409, "Conflict")) is False
     assert pred_start(RuntimeError("runtime")) is False
 
-    # Recoverable status code 500 is retryable during transfer
+    # Category 1 and Category 2 status codes are retryable during transfer
     assert pred_transfer(exceptions.from_http_status(500, "Internal Error")) is True
+    assert pred_transfer(exceptions.from_http_status(400, "Bad Request")) is True
+    assert (
+        pred_transfer(exceptions.from_http_status(412, "Precondition Failed")) is True
+    )
+    assert (
+        pred_transfer(exceptions.from_http_status(416, "Range Not Satisfiable")) is True
+    )
+    assert pred_transfer(exceptions.from_http_status(409, "Conflict")) is False
 
     # Default retry resolution
     default_unary = session._get_async_retry()
@@ -1126,25 +1142,94 @@ async def test_async_retry_branches() -> None:
     default_stream = session._get_async_streaming_retry()
     assert isinstance(default_stream, google.api_core.retry.AsyncStreamingRetry)
 
-    # Custom AsyncRetry resolution via start_retry and retry_override
-    custom_unary = google.api_core.retry.AsyncRetry(initial=0.5)
+    class CustomApiError(Exception):
+        """Example API-specific transient exception provided by a caller."""
+
+    # -------------------------------------------------------------------------
+    # Scenario 1: User provides a custom predicate to retry an API-specific error
+    # -------------------------------------------------------------------------
+    custom_unary = google.api_core.retry.AsyncRetry(
+        initial=0.5,
+        predicate=lambda exc: isinstance(exc, CustomApiError),
+    )
     session_unary = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         start_retry=custom_unary,
     )
-    assert session_unary._get_async_retry() is custom_unary
+    resolved_unary = session_unary._get_async_retry()
+
+    assert isinstance(resolved_unary, google.api_core.retry.AsyncRetry)
+    assert resolved_unary._initial == 0.5
+    # User's custom exception is retried, while unrelated errors are not
+    assert resolved_unary._predicate(CustomApiError("rate limit")) is True
+    assert resolved_unary._predicate(ValueError("invalid input")) is False
+    # Terminal errors must always return False regardless of custom predicate
+    assert (
+        resolved_unary._predicate(exceptions.DeadlineExceeded("deadline expired"))
+        is False
+    )
+
+    # -------------------------------------------------------------------------
+    # Scenario 2: Unary AsyncRetry passed to chunk transfer converts to AsyncStreamingRetry
+    # -------------------------------------------------------------------------
     converted_stream = session_unary._get_async_streaming_retry(
         retry_override=custom_unary
     )
     assert isinstance(converted_stream, google.api_core.retry.AsyncStreamingRetry)
     assert converted_stream._initial == 0.5
-
-    # Custom AsyncStreamingRetry resolution via retry_override
-    custom_stream = google.api_core.retry.AsyncStreamingRetry(initial=0.25)
-    assert (
-        session._get_async_streaming_retry(retry_override=custom_stream)
-        is custom_stream
+    assert converted_stream._predicate(CustomApiError("rate limit")) is True
+    # Category 2 recovery (400, 412, 416, MissingStatusHeaderError) is preserved during chunk transfer
+    missing_header_error = exceptions.MissingStatusHeaderError(
+        "Missing X-Goog-Upload-Status"
     )
+    assert converted_stream._predicate(missing_header_error) is True
+    assert (
+        converted_stream._predicate(
+            exceptions.from_http_status(412, "Precondition Failed")
+        )
+        is True
+    )
+
+    # -------------------------------------------------------------------------
+    # Scenario 3: Restrictive custom predicate still preserves Category 2 recovery
+    # -------------------------------------------------------------------------
+    restrictive_stream = google.api_core.retry.AsyncStreamingRetry(
+        initial=0.25,
+        predicate=lambda exc: False,
+    )
+    resolved_stream = session._get_async_streaming_retry(
+        retry_override=restrictive_stream
+    )
+    assert isinstance(resolved_stream, google.api_core.retry.AsyncStreamingRetry)
+    assert resolved_stream._initial == 0.25
+    # Category 2 errors (400, 412, 416, MissingStatusHeaderError) return True so
+    # server offset synchronization is preserved
+    assert (
+        resolved_stream._predicate(exceptions.from_http_status(400, "Bad Request"))
+        is True
+    )
+    assert (
+        resolved_stream._predicate(
+            exceptions.from_http_status(412, "Precondition Failed")
+        )
+        is True
+    )
+    assert (
+        resolved_stream._predicate(
+            exceptions.from_http_status(416, "Range Not Satisfiable")
+        )
+        is True
+    )
+    assert resolved_stream._predicate(missing_header_error) is True
+    # Unretriable HTTP status codes (such as 409 Conflict) and non-protocol errors
+    # follow the predicate and return False
+    assert (
+        resolved_stream._predicate(exceptions.from_http_status(409, "Conflict"))
+        is False
+    )
+    bad_gateway_error = exceptions.from_http_status(502, "Bad Gateway")
+    assert resolved_stream._predicate(bad_gateway_error) is False
+    assert resolved_stream._predicate(RuntimeError("unexpected crash")) is False
 
 
 def test_async_transport_missing_errors() -> None:

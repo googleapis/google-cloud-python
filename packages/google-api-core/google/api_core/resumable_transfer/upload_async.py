@@ -171,7 +171,12 @@ class AsyncResumableUploadSession:
             transport: Optional aiohttp.ClientSession.
             content_type: Optional MIME type of the stream payload.
             response_type: Optional message class, callable deserializer, or None.
-            start_retry: Optional unary AsyncRetry policy for the start request.
+            start_retry: Optional retry configuration (``google.api_core.retry.AsyncRetry``)
+                for the initial session creation request. Use this to customize
+                exponential backoff timing (such as ``AsyncRetry(initial=1.0, maximum=60.0)``)
+                or to supply a custom ``predicate`` function for API-specific transient
+                errors. Terminal errors (such as ``DeadlineExceeded`` or
+                ``TransferStalledError``) are never retried.
             start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
@@ -311,24 +316,28 @@ class AsyncResumableUploadSession:
             return min(timeout, remaining)
         return timeout
 
-    def _get_retry_predicate(self, is_start: bool = False) -> Callable[[Any], bool]:
+    def _get_retry_predicate(
+        self,
+        is_start: bool = False,
+        custom_predicate: Optional[Callable[[Exception], bool]] = None,
+    ) -> Callable[[Exception], bool]:
         """Returns a predicate function for determining if an exception is retryable.
 
         Args:
             is_start: If True, only transient status codes (RETRYABLE_STATUS_CODES)
-                are retried. If False (chunk transfer phase), state consistency
-                status codes (RECOVERABLE_STATUS_CODES) are also retried via recovery.
+                are retried. If False (transmitting and finalizing states), state
+                consistency errors (RECOVERABLE_STATUS_CODES and
+                MissingStatusHeaderError) are also retried via recovery.
+            custom_predicate: Optional callable taking an exception and returning True
+                if the error should be retried (from a user-supplied AsyncRetry instance).
+                When provided, this function is evaluated for non-terminal errors
+                while automatically preserving resumable upload state recovery.
 
         Returns:
             A callable accepting an exception and returning a boolean.
         """
-        allowed_codes = (
-            common.RETRYABLE_STATUS_CODES
-            if is_start
-            else (common.RECOVERABLE_STATUS_CODES + common.RETRYABLE_STATUS_CODES)
-        )
 
-        def should_retry(exc: Any) -> bool:
+        def should_retry(exc: Exception) -> bool:
             if isinstance(
                 exc,
                 (
@@ -339,12 +348,23 @@ class AsyncResumableUploadSession:
                 ),
             ):
                 return False
-            if isinstance(exc, exceptions.MissingStatusHeaderError):
+            if not is_start and (
+                isinstance(exc, exceptions.MissingStatusHeaderError)
+                or (
+                    isinstance(exc, exceptions.GoogleAPICallError)
+                    and exc.code in common.RECOVERABLE_STATUS_CODES
+                )
+            ):
                 return True
+            if (
+                custom_predicate is not None
+                and custom_predicate is not google.api_core.retry.if_transient_error
+            ):
+                return bool(custom_predicate(exc))
             if _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError):
                 return True
             if isinstance(exc, exceptions.GoogleAPICallError):
-                return exc.code in allowed_codes
+                return exc.code in common.RETRYABLE_STATUS_CODES
             return False
 
         return should_retry
@@ -362,7 +382,11 @@ class AsyncResumableUploadSession:
         """
         candidate = retry_override or self._start_retry
         if candidate is not None:
-            return candidate
+            return candidate.with_predicate(
+                self._get_retry_predicate(
+                    is_start=True, custom_predicate=candidate._predicate
+                )
+            )
         return google.api_core.retry.AsyncRetry(
             predicate=self._get_retry_predicate(is_start=True)
         )
@@ -385,10 +409,13 @@ class AsyncResumableUploadSession:
             Configured or default AsyncStreamingRetry instance.
         """
         if retry_override is not None:
+            wrapped_pred = self._get_retry_predicate(
+                is_start=False, custom_predicate=retry_override._predicate
+            )
             if isinstance(retry_override, google.api_core.retry.AsyncStreamingRetry):
-                return retry_override
+                return retry_override.with_predicate(wrapped_pred)
             return google.api_core.retry.AsyncStreamingRetry(
-                predicate=retry_override._predicate,
+                predicate=wrapped_pred,
                 initial=retry_override._initial,
                 maximum=retry_override._maximum,
                 multiplier=retry_override._multiplier,
@@ -417,7 +444,9 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             progress_queue: Optional queue to receive progress event.
             content_type: Optional MIME type override of the payload.
-            retry: Optional unary AsyncRetry policy override for the start request.
+            retry: Optional retry configuration (``AsyncRetry``) for this session
+                initiation call. Overrides ``start_retry`` if provided. Use this to
+                customize backoff timing or add custom retryable exceptions.
             timeout: Optional per-request timeout override in seconds.
 
         Returns:
@@ -733,6 +762,7 @@ class AsyncResumableUploadSession:
             Tuple of (status code, headers, body bytes) of the final server response, or None.
         """
         final_resp_tuple: Optional[Tuple[int, Mapping[str, str], bytes]] = None
+        retry_policy = self._get_async_streaming_retry(retry_override=retry)
 
         async def attempt_stream() -> AsyncGenerator[None, None]:
             nonlocal final_resp_tuple
@@ -759,27 +789,12 @@ class AsyncResumableUploadSession:
                         timeout=timeout,
                     )
                 except Exception as exc:
-                    is_recoverable = (
-                        isinstance(exc, exceptions.GoogleAPICallError)
-                        and exc.code
-                        in (
-                            common.RECOVERABLE_STATUS_CODES
-                            + common.RETRYABLE_STATUS_CODES
-                        )
-                    ) or isinstance(
-                        exc,
-                        (
-                            exceptions.MissingStatusHeaderError,
-                            aiohttp.ClientError,
-                        ),
-                    )
-                    if is_recoverable:
+                    if retry_policy._predicate(exc):
                         self._needs_recovery = True
                     raise
                 yield
 
         try:
-            retry_policy = self._get_async_streaming_retry(retry_override=retry)
             retryable_stream = retry_policy(attempt_stream)
             stream_gen = await retryable_stream()
             async for _ in stream_gen:
@@ -822,7 +837,14 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             transport: Optional aiohttp client session.
             content_type: Optional MIME type of the stream payload.
-            retry: Optional retry policy override for chunk transmission.
+            retry: Optional retry configuration (``AsyncRetry`` or
+                ``AsyncStreamingRetry``) for chunk upload requests. Use this to
+                customize exponential backoff timing between chunk retries or to
+                supply a custom ``predicate`` for API-specific transient errors.
+                Protocol recovery (such as server offset synchronization on
+                missing status headers) is preserved automatically, and terminal
+                errors (such as ``DeadlineExceeded`` or ``TransferStalledError``)
+                are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -905,7 +927,14 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional aiohttp client session.
-            retry: Optional retry policy override for chunk transmission.
+            retry: Optional retry configuration (``AsyncRetry`` or
+                ``AsyncStreamingRetry``) for chunk upload requests. Use this to
+                customize exponential backoff timing between chunk retries or to
+                supply a custom ``predicate`` for API-specific transient errors.
+                Protocol recovery (such as server offset synchronization on
+                missing status headers) is preserved automatically, and terminal
+                errors (such as ``DeadlineExceeded`` or ``TransferStalledError``)
+                are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
