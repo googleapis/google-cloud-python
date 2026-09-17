@@ -54,6 +54,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.custom_targeting_value_service",
     "google.ads.admanager_v1.services.dai_authentication_key_service",
     "google.ads.admanager_v1.services.dai_encoding_profile_service",
+    "google.ads.admanager_v1.services.dai_session_service",
     "google.ads.admanager_v1.services.device_capability_service",
     "google.ads.admanager_v1.services.device_category_service",
     "google.ads.admanager_v1.services.device_manufacturer_service",
@@ -186,6 +187,9 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.dai_encoding_profile_enums",
     "google.ads.admanager_v1.types.dai_encoding_profile_messages",
     "google.ads.admanager_v1.types.dai_encoding_profile_service",
+    "google.ads.admanager_v1.types.dai_session_enums",
+    "google.ads.admanager_v1.types.dai_session_messages",
+    "google.ads.admanager_v1.types.dai_session_service",
     "google.ads.admanager_v1.types.deal_buyer_permission_type_enum",
     "google.ads.admanager_v1.types.deal_priority_tier_enum",
     "google.ads.admanager_v1.types.delivery_enums",
@@ -348,6 +352,7 @@ from .services.custom_targeting_key_service import CustomTargetingKeyServiceClie
 from .services.custom_targeting_value_service import CustomTargetingValueServiceClient
 from .services.dai_authentication_key_service import DaiAuthenticationKeyServiceClient
 from .services.dai_encoding_profile_service import DaiEncodingProfileServiceClient
+from .services.dai_session_service import DaiSessionServiceClient
 from .services.device_capability_service import DeviceCapabilityServiceClient
 from .services.device_category_service import DeviceCategoryServiceClient
 from .services.device_manufacturer_service import DeviceManufacturerServiceClient
@@ -844,6 +849,23 @@ from .types.dai_encoding_profile_service import (
     ListDaiEncodingProfilesResponse,
     UpdateDaiEncodingProfileRequest,
 )
+from .types.dai_session_enums import (
+    AdBreakFindingTypeEnum,
+    AdRequestFindingTypeEnum,
+    AdResponseTypeEnum,
+    BreakTypeEnum,
+    CreativeFindingTypeEnum,
+    CreativeIdTypeEnum,
+    PodFindingTypeEnum,
+    PrefetchStageTypeEnum,
+    ReportingTypeEnum,
+    SessionFindingSeverityEnum,
+    SlateFindingTypeEnum,
+    StitchingTypeEnum,
+    TrackingPingFindingTypeEnum,
+)
+from .types.dai_session_messages import DaiSession
+from .types.dai_session_service import GetDaiSessionRequest
 from .types.deal_buyer_permission_type_enum import DealBuyerPermissionTypeEnum
 from .types.deal_priority_tier_enum import DealPriorityTierEnum
 from .types.delivery_enums import (
@@ -1343,12 +1365,15 @@ __all__ = (
     "ActivateDaiEncodingProfileRequest",
     "AdBreak",
     "AdBreakFillTypeEnum",
+    "AdBreakFindingTypeEnum",
     "AdBreakMarkupTypeEnum",
     "AdBreakOptimizationTypeEnum",
     "AdBreakServiceClient",
     "AdBreakStateEnum",
     "AdManagerError",
     "AdMediaDeliveryConfig",
+    "AdRequestFindingTypeEnum",
+    "AdResponseTypeEnum",
     "AdReviewCenterAd",
     "AdReviewCenterAdServiceClient",
     "AdReviewCenterAdStatusEnum",
@@ -1654,6 +1679,7 @@ __all__ = (
     "BreakTemplate",
     "BreakTemplateMember",
     "BreakTemplateServiceClient",
+    "BreakTypeEnum",
     "Browser",
     "BrowserLanguage",
     "BrowserLanguageServiceClient",
@@ -1734,6 +1760,8 @@ __all__ = (
     "CreateTeamRequest",
     "CreateViewabilityProviderRequest",
     "Creative",
+    "CreativeFindingTypeEnum",
+    "CreativeIdTypeEnum",
     "CreativePlaceholder",
     "CreativePlaceholderCompanion",
     "CreativeRotationTypeEnum",
@@ -1785,6 +1813,8 @@ __all__ = (
     "DaiIngestError",
     "DaiIngestErrorReasonEnum",
     "DaiIngestStatusEnum",
+    "DaiSession",
+    "DaiSessionServiceClient",
     "DashBridge",
     "DataSegmentTargeting",
     "DeactivateCustomTargetingValueRequest",
@@ -1852,6 +1882,7 @@ __all__ = (
     "GetCustomTargetingValueRequest",
     "GetDaiAuthenticationKeyRequest",
     "GetDaiEncodingProfileRequest",
+    "GetDaiSessionRequest",
     "GetDefaultThirdPartyDataDeclarationRequest",
     "GetDeviceCapabilityRequest",
     "GetDeviceCategoryRequest",
@@ -2079,7 +2110,9 @@ __all__ = (
     "Placement",
     "PlacementServiceClient",
     "PlacementStatusEnum",
+    "PodFindingTypeEnum",
     "PrefetchSettings",
+    "PrefetchStageTypeEnum",
     "PrerollSettings",
     "PrivateAuction",
     "PrivateAuctionDeal",
@@ -2098,6 +2131,7 @@ __all__ = (
     "ReportServiceClient",
     "ReportValue",
     "ReportVisibilityEnum",
+    "ReportingTypeEnum",
     "RequestFormatTargeting",
     "RequestPlatformEnum",
     "RequestPlatformTargeting",
@@ -2114,6 +2148,7 @@ __all__ = (
     "ScheduleOptions",
     "SearchAdReviewCenterAdsRequest",
     "SearchAdReviewCenterAdsResponse",
+    "SessionFindingSeverityEnum",
     "Site",
     "SiteApprovalStatusEnum",
     "SiteDisapprovalReasonEnum",
@@ -2122,10 +2157,12 @@ __all__ = (
     "SizeTypeEnum",
     "SkippableAdTypeEnum",
     "Slate",
+    "SlateFindingTypeEnum",
     "SlateServiceClient",
     "SlateStatusEnum",
     "SmartSizeModeEnum",
     "SourceContentConfig",
+    "StitchingTypeEnum",
     "SuggestedAdUnit",
     "SuggestedAdUnitServiceClient",
     "TargetPlatformEnum",
@@ -2151,6 +2188,7 @@ __all__ = (
     "ThirdPartyDataDeclarationTypeEnum",
     "ThirdPartyMeasurementSettings",
     "TimeUnitEnum",
+    "TrackingPingFindingTypeEnum",
     "UnitTypeEnum",
     "UpdateAdBreakRequest",
     "UpdateAdRuleRequest",

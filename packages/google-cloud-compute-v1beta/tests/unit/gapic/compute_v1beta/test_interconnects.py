@@ -4112,6 +4112,7 @@ def test_insert_rest_call_success(request_type):
         "location": "location_value",
         "macsec": {
             "fail_open": True,
+            "interconnect_key_group": "interconnect_key_group_value",
             "pre_shared_keys": [
                 {"name": "name_value", "start_time": "start_time_value"}
             ],
@@ -4565,6 +4566,7 @@ def test_patch_rest_call_success(request_type):
         "location": "location_value",
         "macsec": {
             "fail_open": True,
+            "interconnect_key_group": "interconnect_key_group_value",
             "pre_shared_keys": [
                 {"name": "name_value", "start_time": "start_time_value"}
             ],

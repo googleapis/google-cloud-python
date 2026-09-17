@@ -375,8 +375,22 @@ class Gateway(proto.Message):
             Output only. The current state of the
             Gateway.
         default_hostname (str):
-            Output only. The default API Gateway host name of the form
-            ``{gateway_id}-{hash}.{region_code}.gateway.dev``.
+            Output only. The default hostname that serves
+            traffic for this Gateway.
+        streaming_mode (google.cloud.apigateway_v1.types.Gateway.StreamingMode):
+            Optional. Immutable. Requests streaming for a new gateway.
+            An attempt to change it on update is rejected. If unset, the
+            service selects the mode. This field records only what was
+            requested and is never modified by the service; read
+            ``effective_streaming_mode`` for the mode the gateway is
+            served with.
+        effective_streaming_mode (google.cloud.apigateway_v1.types.Gateway.EffectiveStreamingMode):
+            Output only. The streaming mode this gateway is actually
+            served with, which the service resolves at creation from
+            ``streaming_mode``, the referenced API Config, and the
+            platform default at the time. Read this rather than
+            ``streaming_mode`` to determine whether a gateway supports
+            streaming.
     """
 
     class State(proto.Enum):
@@ -403,6 +417,47 @@ class Gateway(proto.Message):
         FAILED = 3
         DELETING = 4
         UPDATING = 5
+
+    class StreamingMode(proto.Enum):
+        r"""Streaming mode for a Gateway.
+        This enum is frozen. No values are expected to be added in the
+        future.
+
+        Values:
+            STREAMING_MODE_UNSPECIFIED (0):
+                Lets the service select the streaming mode.
+            STREAMING_MODE_ENABLED (1):
+                Enables streaming. The gateway supports
+                Server-Sent Events (SSE), HTTP/2 streaming, HTTP
+                chunked transfer, WebSockets, and gRPC
+                bidirectional streaming.
+        """
+
+        STREAMING_MODE_UNSPECIFIED = 0
+        STREAMING_MODE_ENABLED = 1
+
+    class EffectiveStreamingMode(proto.Enum):
+        r"""The streaming mode a Gateway is served with.
+        This enum is frozen. No values are expected to be added in the
+        future.
+
+        Values:
+            EFFECTIVE_STREAMING_MODE_UNSPECIFIED (0):
+                Indicates that the service has not resolved a mode. Every
+                gateway returned by ``GetGateway`` and ``ListGateways``
+                carries a resolved mode, so this value should not be
+                returned under normal circumstances.
+            EFFECTIVE_STREAMING_MODE_DISABLED (1):
+                Indicates that the gateway does not support
+                streaming.
+            EFFECTIVE_STREAMING_MODE_ENABLED (2):
+                Indicates that the gateway supports
+                streaming.
+        """
+
+        EFFECTIVE_STREAMING_MODE_UNSPECIFIED = 0
+        EFFECTIVE_STREAMING_MODE_DISABLED = 1
+        EFFECTIVE_STREAMING_MODE_ENABLED = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -439,6 +494,16 @@ class Gateway(proto.Message):
     default_hostname: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    streaming_mode: StreamingMode = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=StreamingMode,
+    )
+    effective_streaming_mode: EffectiveStreamingMode = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=EffectiveStreamingMode,
     )
 
 
@@ -960,9 +1025,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.

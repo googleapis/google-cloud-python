@@ -13759,8 +13759,8 @@ class ReportDefinition(proto.Message):
     class Flag(proto.Message):
         r"""A flag for a report. Flags are used show if certain thresholds are
         met. Result rows that match the filter will have the corresponding
-        [MetricValueGroup.flagValues][MetricValueGroup] index set to true.
-        For more information about flags see:
+        [ReportDataTable.MetricValueGroup.flagValues][google.ads.admanager.v1.ReportDataTable.MetricValueGroup.flag_values]
+        index set to true. For more information about flags see:
         https://support.google.com/admanager/answer/15079975
 
         Attributes:
