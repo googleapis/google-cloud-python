@@ -499,6 +499,7 @@ libraries:
     version: 0.10.1
     apis:
       - path: google/cloud/backupdr/v1
+      - path: google/cloud/backupdr/v1beta
     python:
       metadata_name_override: backupdr
       default_version: v1
@@ -1585,9 +1586,12 @@ libraries:
     version: 0.10.2
     apis:
       - path: google/cloud/networkservices/v1
+      - path: google/cloud/networkservices/v1beta1
     python:
       opt_args_by_api:
         google/cloud/networkservices/v1:
+          - python-gapic-name=network_services
+        google/cloud/networkservices/v1beta1:
           - python-gapic-name=network_services
       metadata_name_override: networkservices
       default_version: v1
@@ -2000,6 +2004,10 @@ libraries:
           - python-gapic-name=spanner
       metadata_name_override: spanner
       default_version: v1
+  - name: google-cloud-spanner-dbapi-driver
+    version: 0.0.0
+    python:
+      library_type: INTEGRATION
   - name: google-cloud-speech
     version: 2.40.0
     apis:

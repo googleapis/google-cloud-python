@@ -106,7 +106,7 @@ setup(
     long_description=long_description,
     url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth",
     packages=find_namespace_packages(
-        exclude=("tests*", "system_tests*", "docs*", "samples*")
+        exclude=("tests*", "system_tests*", "docs*", "samples*", "build*")
     ),
     package_data={"google.auth": ["py.typed"], "google.oauth2": ["py.typed"]},
     install_requires=DEPENDENCIES,

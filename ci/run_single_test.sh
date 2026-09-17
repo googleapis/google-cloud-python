@@ -65,7 +65,11 @@ case ${TEST_TYPE} in
         retval=$?
         ;;
     prerelease)
-        nox -s prerelease_deps-3.14
+        if [[ "$(pwd)" == */preview-packages/* ]]; then
+            echo "Skipping prerelease for preview package $(pwd)"
+            exit 0
+        fi
+        nox --stop-on-first-error -s prerelease_deps
         retval=$?
         ;;
     core_deps_from_source)
@@ -241,9 +245,24 @@ case ${TEST_TYPE} in
         ;;
     esac
 
-# Clean up `__pycache__` and `.nox` directories to avoid error
-# `No space left on device` seen when running tests in Github Actions
+if [ ${retval} -ne 0 ] && [ -n "${FAILURE_LOG_DIR}" ]; then
+    mkdir -p "${FAILURE_LOG_DIR}"
+    pkg_name=$(basename "$(pwd)")
+    for pip_bin in "${NOX_ENVDIR:-.nox}"/*/bin/pip; do
+        if [ -x "$pip_bin" ]; then
+            pip_out=$("$pip_bin" list 2>/dev/null || true)
+            if echo "$pip_out" | grep -qvE "^(Package|-+|pip|setuptools|wheel)[[:space:]]"; then
+                echo "$pip_out" > "${FAILURE_LOG_DIR}/${pkg_name}.pip.txt"
+            fi
+            break
+        fi
+    done
+fi
+
+# Clean up `__pycache__`, `.nox`, and build artifact directories to avoid error
+# `No space left on device` and prevent leftover build/ files from polluting
+# downstream local dependency builds.
 find . | grep -E "(__pycache__)" | xargs rm -rf
-rm -rf .nox
+rm -rf .nox build *.egg-info
 
 exit ${retval}
