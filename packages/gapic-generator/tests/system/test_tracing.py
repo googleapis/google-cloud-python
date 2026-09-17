@@ -138,6 +138,15 @@ def test_unary_retries_tracing(otel_echo_client):
         # Non-successful attempt should not have rpc.response.status_code == "OK"
         assert span.attributes.get("rpc.response.status_code") != "OK"
 
+    # Verify that the parent method span captures status.message for cross-language parity
+    parent_spans = [s for s in spans if s.parent is None]
+    assert len(parent_spans) == 1
+    assert "status.message" in parent_spans[0].attributes
+    assert (
+        "Simulated deadline exceeded error for retry testing."
+        in parent_spans[0].attributes["status.message"]
+    )
+
 
 def test_tracing_disabled_default(span_exporter, use_mtls):
     """Verifies that default client options emit zero spans (zero overhead guarantee).

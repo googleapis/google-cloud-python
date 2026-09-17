@@ -226,6 +226,15 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
         for k, v in metadata.items():
             attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
+    # 5. Extract human-readable error description for cross-language PRD parity
+    message = getattr(target_exc, "message", None)
+    if not message and hasattr(target_exc, "details") and callable(target_exc.details):
+        message = target_exc.details()
+    if not message and isinstance(target_exc, Exception):
+        message = str(target_exc)
+    if message:
+        attrs["status.message"] = str(message)
+
     return attrs
 
 

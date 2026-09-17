@@ -529,6 +529,9 @@ def test_wrap_method_otel_tracing_enabled_error(mock_otel):
         "rpc.response.status_code", "RuntimeError"
     )
     mock_otel.span.set_attribute.assert_any_call("error.type", "RuntimeError")
+    mock_otel.span.set_attribute.assert_any_call(
+        "status.message", "gRPC connection reset"
+    )
 
 
 @pytest.mark.parametrize(
@@ -562,6 +565,8 @@ def test_wrap_method_otel_tracing_error_status_code_mapping(
         "rpc.response.status_code", expected_status
     )
     mock_otel.span.set_attribute.assert_any_call("error.type", expected_status)
+    expected_msg = exc.cause.message if getattr(exc, "cause", None) else exc.message
+    mock_otel.span.set_attribute.assert_any_call("status.message", expected_msg)
 
 
 def test_wrap_method_otel_tracing_import_error(monkeypatch):
@@ -692,10 +697,10 @@ def test_extract_error_attributes_standard_exception():
     """Proves that _extract_error_attributes returns fallback error.type for exceptions without ErrorInfo."""
     assert google.api_core.gapic_v1.method._extract_error_attributes(
         ValueError("fail")
-    ) == {"error.type": "ValueError"}
+    ) == {"error.type": "ValueError", "status.message": "fail"}
     assert google.api_core.gapic_v1.method._extract_error_attributes(
         exceptions.InvalidArgument("invalid argument")
-    ) == {"error.type": "INVALID_ARGUMENT"}
+    ) == {"error.type": "INVALID_ARGUMENT", "status.message": "invalid argument"}
     assert google.api_core.gapic_v1.method._extract_error_attributes(None) == {}
 
 
@@ -749,6 +754,7 @@ def test_wrap_method_otel_tracing_records_gcp_error_attributes(mock_otel):
     mock_otel.span.set_attribute.assert_any_call(
         "gcp.errors.metadata.quota_limit", "100"
     )
+    mock_otel.span.set_attribute.assert_any_call("status.message", "quota exceeded")
 
 
 def test_extract_status_code_variations():
@@ -871,6 +877,33 @@ def test_extract_error_attributes_variations():
     )
     assert _extract_error_attributes(exc_fallback_empty) == {
         "error.type": "SimpleNamespace"
+    }
+
+    # 7. status.message extraction from .message attribute
+    exc_with_msg = types.SimpleNamespace(message="api call failed")
+    assert _extract_error_attributes(exc_with_msg) == {
+        "error.type": "SimpleNamespace",
+        "status.message": "api call failed",
+    }
+
+    # 8. status.message extraction from .details() callable (e.g. gRPC RpcError)
+    exc_with_details = types.SimpleNamespace(details=lambda: "rpc deadline exceeded")
+    assert _extract_error_attributes(exc_with_details) == {
+        "error.type": "SimpleNamespace",
+        "status.message": "rpc deadline exceeded",
+    }
+
+    # 9. status.message extraction from Exception string representation
+    exc_standard = ValueError("invalid argument passed")
+    assert _extract_error_attributes(exc_standard) == {
+        "error.type": "ValueError",
+        "status.message": "invalid argument passed",
+    }
+
+    # 10. Exception with empty message string does not populate status.message
+    exc_empty_msg = ValueError("")
+    assert _extract_error_attributes(exc_empty_msg) == {
+        "error.type": "ValueError",
     }
 
 
