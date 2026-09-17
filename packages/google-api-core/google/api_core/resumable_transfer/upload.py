@@ -119,8 +119,9 @@ class ResumableUploadSession:
                 for the initial session creation request. Use this to customize
                 exponential backoff timing (such as ``Retry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. Terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                errors. Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
@@ -280,6 +281,9 @@ class ResumableUploadSession:
                 if the error should be retried (from a user-supplied Retry instance).
                 When provided, this function is evaluated for non-terminal errors
                 while automatically preserving resumable upload state recovery.
+                Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -331,7 +335,10 @@ class ResumableUploadSession:
         """Resolves unary Retry policy for start requests.
 
         Args:
-            retry_override: Optional unary Retry policy override for the start request.
+            retry_override: Optional unary Retry policy override for the start
+                request. Terminal errors (``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
 
         Returns:
             Configured or default unary Retry instance.
@@ -357,6 +364,10 @@ class ResumableUploadSession:
 
         Args:
             retry_override: Optional retry policy override for chunk transmission.
+                Protocol recovery is preserved automatically, and terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
 
         Returns:
             Configured or default StreamingRetry instance.
@@ -511,7 +522,10 @@ class ResumableUploadSession:
             content_type: Optional MIME type override of the payload.
             retry: Optional retry configuration (``Retry``) for this session initiation
                 call. Overrides ``start_retry`` if provided. Use this to customize
-                backoff timing or add custom retryable exceptions.
+                backoff timing or add custom retryable exceptions. Terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-request timeout override in seconds.
 
         Returns:
@@ -708,7 +722,11 @@ class ResumableUploadSession:
             stream_obj: Binary stream yielding upload chunks.
             computed_size: Total payload size in bytes if known.
             progress_queue: Optional list buffering UploadProgress snapshots.
-            retry: Optional retry policy override for chunk transmission.
+            retry: Optional retry policy override for chunk transmission. Protocol
+                recovery is preserved automatically, and terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
 
         Yields:
@@ -804,8 +822,9 @@ class ResumableUploadSession:
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. Protocol recovery (such as server offset
                 synchronization on missing status headers) is preserved automatically,
-                and terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -855,8 +874,9 @@ class ResumableUploadSession:
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. Protocol recovery (such as server offset
                 synchronization on missing status headers) is preserved automatically,
-                and terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -919,8 +939,9 @@ class ResumableUploadSession:
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. Protocol recovery (such as server offset
                 synchronization on missing status headers) is preserved automatically,
-                and terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -970,8 +991,9 @@ class ResumableUploadSession:
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. Protocol recovery (such as server offset
                 synchronization on missing status headers) is preserved automatically,
-                and terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 

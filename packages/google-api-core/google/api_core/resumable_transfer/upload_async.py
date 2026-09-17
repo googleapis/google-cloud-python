@@ -175,8 +175,9 @@ class AsyncResumableUploadSession:
                 for the initial session creation request. Use this to customize
                 exponential backoff timing (such as ``AsyncRetry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. Terminal errors (such as ``DeadlineExceeded`` or
-                ``TransferStalledError``) are never retried.
+                errors. Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
@@ -332,6 +333,9 @@ class AsyncResumableUploadSession:
                 if the error should be retried (from a user-supplied AsyncRetry instance).
                 When provided, this function is evaluated for non-terminal errors
                 while automatically preserving resumable upload state recovery.
+                Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -375,7 +379,10 @@ class AsyncResumableUploadSession:
         """Resolves unary AsyncRetry policy for start requests.
 
         Args:
-            retry_override: Optional unary AsyncRetry policy override for the start request.
+            retry_override: Optional unary AsyncRetry policy override for the start
+                request. Terminal errors (``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
 
         Returns:
             Configured or default unary AsyncRetry instance.
@@ -404,6 +411,10 @@ class AsyncResumableUploadSession:
 
         Args:
             retry_override: Optional retry policy override for chunk transmission.
+                Protocol recovery is preserved automatically, and terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
 
         Returns:
             Configured or default AsyncStreamingRetry instance.
@@ -446,7 +457,10 @@ class AsyncResumableUploadSession:
             content_type: Optional MIME type override of the payload.
             retry: Optional retry configuration (``AsyncRetry``) for this session
                 initiation call. Overrides ``start_retry`` if provided. Use this to
-                customize backoff timing or add custom retryable exceptions.
+                customize backoff timing or add custom retryable exceptions. Terminal
+                errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-request timeout override in seconds.
 
         Returns:
@@ -755,7 +769,11 @@ class AsyncResumableUploadSession:
             computed_size: Total stream size in bytes, if known.
             progress_queue: Optional queue receiving UploadProgress snapshots.
             stream_obj: Underlying stream object for recovery seeking.
-            retry: Optional retry policy override for chunk transmission.
+            retry: Optional retry policy override for chunk transmission. Protocol
+                recovery is preserved automatically, and terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
 
         Returns:
@@ -843,8 +861,9 @@ class AsyncResumableUploadSession:
                 supply a custom ``predicate`` for API-specific transient errors.
                 Protocol recovery (such as server offset synchronization on
                 missing status headers) is preserved automatically, and terminal
-                errors (such as ``DeadlineExceeded`` or ``TransferStalledError``)
-                are never retried.
+                errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -933,8 +952,9 @@ class AsyncResumableUploadSession:
                 supply a custom ``predicate`` for API-specific transient errors.
                 Protocol recovery (such as server offset synchronization on
                 missing status headers) is preserved automatically, and terminal
-                errors (such as ``DeadlineExceeded`` or ``TransferStalledError``)
-                are never retried.
+                errors (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
