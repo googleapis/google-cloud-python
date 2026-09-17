@@ -48,10 +48,12 @@ if [[ ! -x "${PYTHON_EXE}" ]]; then
         PYTHON_EXE=$(command -v "python${PY_BIN}")
     else
         PKG_NAME="python-${PY_VERSION}-macos11.pkg"
+        # Pre-releases (a1/b1/rc1) are placed under the base version directory on python.org (e.g. 3.15.0a1 -> 3.15.0)
+        FTP_DIR="${PY_VERSION%%[a-z]*}"
         echo "Installing Python ${PY_VERSION} from python.org (${PKG_NAME})..."
         curl --fail --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
             --output "/tmp/${PKG_NAME}" \
-            "https://www.python.org/ftp/python/${PY_VERSION}/${PKG_NAME}"
+            "https://www.python.org/ftp/python/${FTP_DIR}/${PKG_NAME}"
         sudo installer -pkg "/tmp/${PKG_NAME}" -target /
         rm -f "/tmp/${PKG_NAME}"
     fi
