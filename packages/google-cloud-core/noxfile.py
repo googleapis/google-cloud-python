@@ -224,8 +224,6 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.error("Intentional failure to test docfx CI check")
-
     session.install("-e", ".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
