@@ -756,6 +756,7 @@ class TestTransaction(OpenTelemetryBase):
         timeout=gapic_v1.method.DEFAULT,
         begin=True,
         use_multiplexed=False,
+        transaction_tag=TRANSACTION_TAG,
     ):
         from google.protobuf.struct_pb2 import Struct
 
@@ -789,16 +790,11 @@ class TestTransaction(OpenTelemetryBase):
 
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction.transaction_tag = TRANSACTION_TAG
+        transaction.transaction_tag = transaction_tag
         transaction._execute_sql_request_count = count
 
         if begin:
             transaction._transaction_id = TRANSACTION_ID
-
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         row_count = transaction.execute_update(
             DML_QUERY_WITH_PARAM,
@@ -830,9 +826,13 @@ class TestTransaction(OpenTelemetryBase):
             expected_query_options = _merge_query_options(
                 expected_query_options, query_options
             )
-        expected_request_options = RequestOptions(request_options)
-        if request_options.request_tag:
-            expected_request_options.request_tag = request_options.request_tag
+        if request_options is not None:
+            expected_request_options = RequestOptions(request_options)
+            expected_request_options.transaction_tag = transaction_tag
+        elif transaction_tag is not None:
+            expected_request_options = RequestOptions(transaction_tag=transaction_tag)
+        else:
+            expected_request_options = None
 
         expected_request = ExecuteSqlRequest(
             session=self.SESSION_NAME,
@@ -862,8 +862,13 @@ class TestTransaction(OpenTelemetryBase):
         expected_attributes = self._build_span_attributes(
             database, **{"db.statement": DML_QUERY_WITH_PARAM}
         )
-        if request_options.request_tag:
-            expected_attributes["request.tag"] = request_options.request_tag
+        request_tag = (
+            request_options.get("request_tag")
+            if isinstance(request_options, dict)
+            else getattr(request_options, "request_tag", None)
+        )
+        if request_tag:
+            expected_attributes["request.tag"] = request_tag
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.execute_update", attributes=expected_attributes
         )
@@ -990,6 +995,13 @@ class TestTransaction(OpenTelemetryBase):
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
+    def test_execute_update_wo_request_options_and_transaction_tag(self, mock_region):
+        self._execute_update_helper(transaction_tag=None)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
     def test_execute_update_w_precommit_token(self, mock_region):
         self._execute_update_helper(use_multiplexed=True)
 
@@ -1046,6 +1058,7 @@ class TestTransaction(OpenTelemetryBase):
         timeout=gapic_v1.method.DEFAULT,
         begin=True,
         use_multiplexed=False,
+        transaction_tag=TRANSACTION_TAG,
     ):
         from google.protobuf.struct_pb2 import Struct
         from google.rpc.status_pb2 import Status
@@ -1110,16 +1123,11 @@ class TestTransaction(OpenTelemetryBase):
 
         session = _Session(database)
         transaction = self._make_one(session)
-        transaction.transaction_tag = TRANSACTION_TAG
+        transaction.transaction_tag = transaction_tag
         transaction._execute_sql_request_count = count
 
         if begin:
             transaction._transaction_id = TRANSACTION_ID
-
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
 
         status, row_counts = transaction.batch_update(
             dml_statements,
@@ -1155,8 +1163,13 @@ class TestTransaction(OpenTelemetryBase):
             ExecuteBatchDmlRequest.Statement(sql=update_dml),
             ExecuteBatchDmlRequest.Statement(sql=delete_dml),
         ]
-        expected_request_options = request_options
-        expected_request_options.transaction_tag = TRANSACTION_TAG
+        if request_options is not None:
+            expected_request_options = RequestOptions(request_options)
+            expected_request_options.transaction_tag = transaction_tag
+        elif transaction_tag is not None:
+            expected_request_options = RequestOptions(transaction_tag=transaction_tag)
+        else:
+            expected_request_options = None
 
         expected_request = ExecuteBatchDmlRequest(
             session=self.SESSION_NAME,
@@ -1191,6 +1204,13 @@ class TestTransaction(OpenTelemetryBase):
     )
     def test_batch_update_wo_begin(self, mock_region):
         self._batch_update_helper(begin=False)
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    def test_batch_update_wo_request_options_and_transaction_tag(self, mock_region):
+        self._batch_update_helper(transaction_tag=None)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

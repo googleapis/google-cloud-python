@@ -362,19 +362,19 @@ class _SnapshotBase(_SessionWrapper):
             database._instance._client._client_context, self._client_context
         )
         request_options = _merge_request_options(request_options, client_context)
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        if self._read_only:
-            request_options.transaction_tag = None
-            if (
-                directed_read_options is None
-                and database._directed_read_options is not None
-            ):
-                directed_read_options = database._directed_read_options
-        elif self.transaction_tag is not None:
-            request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            if self._read_only:
+                request_options.transaction_tag = None
+            elif self.transaction_tag is not None:
+                request_options.transaction_tag = self.transaction_tag
+        elif not self._read_only and self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
+        if (
+            self._read_only
+            and directed_read_options is None
+            and (database._directed_read_options is not None)
+        ):
+            directed_read_options = database._directed_read_options
         read_request = ReadRequest(
             session=session.name,
             table=table,
@@ -543,19 +543,19 @@ class _SnapshotBase(_SessionWrapper):
             database._instance._client._client_context, self._client_context
         )
         request_options = _merge_request_options(request_options, client_context)
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        if self._read_only:
-            request_options.transaction_tag = None
-            if (
-                directed_read_options is None
-                and database._directed_read_options is not None
-            ):
-                directed_read_options = database._directed_read_options
-        elif self.transaction_tag is not None:
-            request_options.transaction_tag = self.transaction_tag
+        if request_options is not None:
+            if self._read_only:
+                request_options.transaction_tag = None
+            elif self.transaction_tag is not None:
+                request_options.transaction_tag = self.transaction_tag
+        elif not self._read_only and self.transaction_tag is not None:
+            request_options = RequestOptions(transaction_tag=self.transaction_tag)
+        if (
+            self._read_only
+            and directed_read_options is None
+            and (database._directed_read_options is not None)
+        ):
+            directed_read_options = database._directed_read_options
         execute_sql_request = ExecuteSqlRequest(
             session=session.name,
             sql=sql,
