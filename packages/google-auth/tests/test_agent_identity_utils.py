@@ -717,10 +717,58 @@ class TestAgentIdentityUtils:
         )
         mock_get_path.return_value = str(cert_file)
 
-        (
-            cert,
-            cert_bytes,
-        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        with pytest.warns(UserWarning, match="No PEM certificate blocks found"):
+            (
+                cert,
+                cert_bytes,
+            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        assert cert is None
+        assert cert_bytes is None
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_os_error(
+        self, mock_get_path, tmpdir, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        missing_cert_file = tmpdir.join("deleted_during_rotation.pem")
+        mock_get_path.return_value = str(missing_cert_file)
+
+        with pytest.warns(
+            UserWarning, match="Failed to read agent identity certificate file"
+        ):
+            (
+                cert,
+                cert_bytes,
+            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        assert cert is None
+        assert cert_bytes is None
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_corrupt_cert_value_error(
+        self, mock_get_path, tmpdir, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        cert_file = tmpdir.join("corrupt_cert.pem")
+        cert_file.write_binary(
+            b"-----BEGIN CERTIFICATE-----\nnot_valid_base64_or_der\n-----END CERTIFICATE-----\n"
+        )
+        mock_get_path.return_value = str(cert_file)
+
+        with pytest.warns(
+            UserWarning, match="Failed to parse agent identity certificate"
+        ):
+            (
+                cert,
+                cert_bytes,
+            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
 
         assert cert is None
         assert cert_bytes is None

@@ -269,7 +269,7 @@ def get_agent_identity_certificate_and_bytes():
     try:
         with open(cert_path, "rb") as cert_file:
             raw_bytes = cert_file.read()
-    except PermissionError as e:
+    except OSError as e:
         warnings.warn(
             f"Failed to read agent identity certificate file at {cert_path}: {e}. "
             "Token binding protection cannot be enabled. Falling back to unbound tokens."
@@ -278,9 +278,21 @@ def get_agent_identity_certificate_and_bytes():
 
     cert_blocks = _CERT_REGEX.findall(raw_bytes)
     if not cert_blocks:
+        warnings.warn(
+            f"No PEM certificate blocks found in {cert_path}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
         return None, None
+
     cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
-    return parse_certificate(cert_bytes), cert_bytes
+    try:
+        return parse_certificate(cert_bytes), cert_bytes
+    except ValueError as e:
+        warnings.warn(
+            f"Failed to parse agent identity certificate at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
 
 
 def get_and_parse_agent_identity_certificate():
