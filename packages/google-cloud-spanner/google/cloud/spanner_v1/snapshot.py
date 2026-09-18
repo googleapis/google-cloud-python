@@ -187,6 +187,12 @@ class _SnapshotBase(_SessionWrapper):
 
     Allows reuse of API request methods with different transaction selector.
 
+    .. note::
+        Single-use snapshots (``multi_use=False``) are designed for a single read
+        or query operation and are thread-confined; they are not safe for concurrent
+        invocation across multiple threads. Multi-use snapshots and transactions
+        synchronize concurrent operations using internal locks.
+
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform transaction operations.
     """
@@ -194,18 +200,26 @@ class _SnapshotBase(_SessionWrapper):
     _read_only: bool = True
     _multi_use: bool = False
 
-    def __init__(self, session, client_context=None):
+    def __init__(self, session, client_context=None, multi_use: Optional[bool] = None):
         super().__init__(session)
         self._client_context = _validate_client_context(client_context)
         self._execute_sql_request_count: int = 0
         self._read_request_count: int = 0
         self._begin_request_sent: bool = False
+        if multi_use is not None:
+            self._multi_use = multi_use
         self._transaction_id: Optional[bytes] = None
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
-        self._lock: CrossSync._Sync_Impl.Lock = CrossSync._Sync_Impl.Lock()
-        self._transaction_begin_event: CrossSync._Sync_Impl.Event = (
-            CrossSync._Sync_Impl.Event()
-        )
+        if self._multi_use:
+            self._lock: Optional[CrossSync._Sync_Impl.Lock] = (
+                CrossSync._Sync_Impl.Lock()
+            )
+            self._transaction_begin_event: Optional[CrossSync._Sync_Impl.Event] = (
+                CrossSync._Sync_Impl.Event()
+            )
+        else:
+            self._lock = None
+            self._transaction_begin_event = None
 
     @property
     def _resource_info(self):
@@ -225,13 +239,20 @@ class _SnapshotBase(_SessionWrapper):
         id is available, must wait for that first request to complete instead
         of assuming that the transaction has not begun.
 
+        For single-use snapshots, this method checks and enforces sequential
+        reuse prevention without synchronization, as single-use snapshots are
+        thread-confined.
+
         :raises ValueError: if the transaction has already been used to execute
             a request, but is not a multi-use transaction, or if the concurrent
             request that began the transaction did not complete in time."""
+        if not self._multi_use:
+            if self._begin_request_sent or self._read_request_count > 0:
+                raise ValueError("Cannot re-use single-use snapshot.")
+            self._begin_request_sent = True
+            return
         with self._lock:
             if self._begin_request_sent or self._read_request_count > 0:
-                if not self._multi_use:
-                    raise ValueError("Cannot re-use single-use snapshot.")
                 wait_needed = self._transaction_id is None
             else:
                 wait_needed = False
@@ -596,7 +617,7 @@ class _SnapshotBase(_SessionWrapper):
         trace_method_name = "execute_sql" if is_execute_sql_request else "read"
         trace_name = f"CloudSpanner.{type(self).__name__}.{trace_method_name}"
         is_inline_begin = False
-        if self._transaction_id is None:
+        if self._multi_use and self._transaction_id is None:
             is_inline_begin = True
             self._lock.acquire()
         try:
@@ -882,7 +903,8 @@ class _SnapshotBase(_SessionWrapper):
         """Updates the snapshot for the given transaction."""
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
-            self._transaction_begin_event.set()
+            if self._transaction_begin_event is not None:
+                self._transaction_begin_event.set()
         if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
 
@@ -890,7 +912,10 @@ class _SnapshotBase(_SessionWrapper):
         self, precommit_token_pb: MultiplexedSessionPrecommitToken
     ) -> None:
         """Updates the snapshot for the given multiplexed session precommit token."""
-        with self._lock:
+        if self._lock is not None:
+            with self._lock:
+                self._update_for_precommit_token_pb_unsafe(precommit_token_pb)
+        else:
             self._update_for_precommit_token_pb_unsafe(precommit_token_pb)
 
     def _update_for_precommit_token_pb_unsafe(
@@ -918,7 +943,9 @@ class Snapshot(_SnapshotBase):
         transaction_id=None,
         client_context=None,
     ):
-        super(Snapshot, self).__init__(session, client_context=client_context)
+        super(Snapshot, self).__init__(
+            session, client_context=client_context, multi_use=multi_use
+        )
         opts = [read_timestamp, min_read_timestamp, max_staleness, exact_staleness]
         flagged = [opt for opt in opts if opt is not None]
         if len(flagged) > 1:
@@ -934,7 +961,6 @@ class Snapshot(_SnapshotBase):
         self._min_read_timestamp = min_read_timestamp
         self._max_staleness = max_staleness
         self._exact_staleness = exact_staleness
-        self._multi_use = multi_use
         self._transaction_id = transaction_id
 
     def _build_transaction_options_pb(self) -> TransactionOptions:
