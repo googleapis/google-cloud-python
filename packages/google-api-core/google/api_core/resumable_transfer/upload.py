@@ -36,12 +36,12 @@ import google.api_core.retry
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import common, upload_state
 from google.api_core.resumable_transfer.common import (
+    DEFAULT_START_TIMEOUT,
     ResumableUploadConfig,
     _format_response_payload,
 )
 
 _LOGGER = logging.getLogger(__name__)
-_DEFAULT_START_TIMEOUT = 60.0  # seconds for initial start request
 _monotonic_clock = time.monotonic
 
 
@@ -104,19 +104,26 @@ class ResumableUploadSession:
         content_type: Optional[str] = None,
         response_type: Optional[Any] = None,
         start_retry: Optional[google.api_core.retry.Retry] = None,
-        start_timeout: Optional[float] = None,
+        start_timeout: float = DEFAULT_START_TIMEOUT,
     ) -> None:
         """Initializes a ResumableUploadSession.
 
         Args:
-            upload_url: The initial URL for the start request.
-            config: Optional upload configuration parameters.
-            resumable_url: Pre-existing upload session URL if resuming.
-            transport: Optional requests session.
-            content_type: Optional MIME type of the stream payload.
-            response_type: Optional message class, callable deserializer, or None.
+            upload_url: The initial URL for the start request. Required unless
+                resuming an existing session via ``resumable_url``.
+            config: Optional upload configuration parameters. Defaults to
+                ``ResumableUploadConfig()`` when ``None``.
+            resumable_url: Pre-existing upload session URL if resuming. When
+                ``None``, a new session is created via ``initiate()``.
+            transport: Optional requests session. When ``None``, a transport
+                must be provided to ``initiate()``, ``upload()``, or ``resume()``.
+            content_type: Optional MIME type of the stream payload. When
+                ``None``, no content-type header is sent unless overridden.
+            response_type: Optional message class, callable deserializer, or
+                ``None``. When ``None``, raw response bytes are returned.
             start_retry: Optional retry configuration (``google.api_core.retry.Retry``)
-                for the initial session creation request. Use this to customize
+                for the initial session creation request. When ``None``, the
+                default transient retry policy is used. Use this to customize
                 exponential backoff timing (such as ``Retry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
                 errors. A custom ``predicate`` applies only to transient HTTP status
@@ -125,7 +132,8 @@ class ResumableUploadSession:
                 Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
-            start_timeout: Optional timeout in seconds for the start request.
+            start_timeout: Timeout in seconds for the start request. Defaults to
+                ``60.0`` seconds.
         """
         self._config = config or ResumableUploadConfig()
         self._transport = transport
@@ -260,9 +268,7 @@ class ResumableUploadSession:
         """
         remaining = self._get_deadline_remaining()
         timeout = (
-            timeout_override
-            if timeout_override is not None
-            else (self._start_timeout or _DEFAULT_START_TIMEOUT)
+            timeout_override if timeout_override is not None else self._start_timeout
         )
         if remaining is not None:
             return min(timeout, remaining)

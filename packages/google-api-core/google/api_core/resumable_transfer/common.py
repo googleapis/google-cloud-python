@@ -28,6 +28,9 @@ from google.api_core import exceptions
 # Default chunk size: 10 MiB
 DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024
 
+# Default timeout in seconds for the initial start request
+DEFAULT_START_TIMEOUT = 60.0
+
 # Protocol Headers
 HEADER_PROTOCOL = "X-Goog-Upload-Protocol"
 HEADER_COMMAND = "X-Goog-Upload-Command"
