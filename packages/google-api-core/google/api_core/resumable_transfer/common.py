@@ -23,6 +23,8 @@ import google.protobuf.message
 import proto
 from google.protobuf import json_format
 
+from google.api_core import exceptions
+
 # Default chunk size: 10 MiB
 DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024
 
@@ -92,6 +94,14 @@ RETRYABLE_STATUS_CODES = (408, 429, 500, 502, 503, 504)
 
 # HTTP status codes indicating state consistency errors requiring recovery (Category 2)
 RECOVERABLE_STATUS_CODES = (400, 412, 416)
+
+# Exception types indicating unrecoverable terminal conditions (Category 3)
+TERMINAL_ERRORS = (
+    exceptions.DeadlineExceeded,
+    exceptions.TransferStalledError,
+    exceptions.UploadCancelledError,
+    exceptions.UnseekableStreamError,
+)
 
 
 @dataclasses.dataclass

@@ -290,15 +290,7 @@ class ResumableUploadSession:
         """
 
         def should_retry(exc: Exception) -> bool:
-            if isinstance(
-                exc,
-                (
-                    exceptions.DeadlineExceeded,
-                    exceptions.TransferStalledError,
-                    exceptions.UploadCancelledError,
-                    exceptions.UnseekableStreamError,
-                ),
-            ):
+            if isinstance(exc, common.TERMINAL_ERRORS):
                 return False
             if not is_start and (
                 isinstance(exc, exceptions.MissingStatusHeaderError)
