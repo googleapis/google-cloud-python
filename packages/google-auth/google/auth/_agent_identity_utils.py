@@ -40,6 +40,10 @@ _AGENT_IDENTITY_SPIFFE_TRUST_DOMAIN_PATTERNS = [
 
 _WELL_KNOWN_CERT_PATH = "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
 
+_CERT_REGEX = re.compile(
+    b"-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----\r?\n?", re.DOTALL
+)
+
 # Constants for polling the certificate file.
 _FAST_POLL_CYCLES = 50
 _FAST_POLL_INTERVAL = 0.1  # 100ms
@@ -73,6 +77,19 @@ def _is_certificate_file_ready(path):
         return False
 
 
+def _is_in_well_known_dir(path):
+    """Checks if the given path is inside the well-known Agent Identity directory."""
+    if not path:
+        return False
+    well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
+    try:
+        abs_path = os.path.abspath(path)
+        abs_well_known_dir = os.path.abspath(well_known_dir)
+        return os.path.commonpath([abs_well_known_dir, abs_path]) == abs_well_known_dir
+    except ValueError:
+        return False
+
+
 def get_agent_identity_certificate_path():
     """Gets the agent certificate path from the certificate config file.
 
@@ -98,16 +115,7 @@ def get_agent_identity_certificate_path():
     # config file and the certificate file may experience a brief startup latency.
     # For all other paths, we return early to avoid introducing unnecessary startup
     # delays.
-    well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
-    try:
-        abs_cert_path = os.path.abspath(cert_config_path)
-        abs_well_known_dir = os.path.abspath(well_known_dir)
-        should_poll = (
-            os.path.commonpath([abs_well_known_dir, abs_cert_path])
-            == abs_well_known_dir
-        )
-    except ValueError:
-        should_poll = False
+    should_poll = _is_in_well_known_dir(cert_config_path)
 
     return _get_cert_path_with_optional_polling(cert_config_path, should_poll)
 
@@ -141,8 +149,9 @@ def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
             if _is_certificate_file_ready(cert_path):
                 return cert_path
 
-            # The config was parsed, but the cert file is not ready yet
-            if not should_poll:
+            # The config was parsed, but the cert file is not ready yet.
+            # Only poll if both the config path and cert path are in the well-known directory.
+            if not (should_poll and _is_in_well_known_dir(cert_path)):
                 # If polling is disabled, return early.
                 return None
 
@@ -182,7 +191,7 @@ def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
     raise exceptions.RefreshError(
         "Certificate config or certificate file not found after multiple retries. "
         f"Token binding protection is failing. You can turn off this protection by setting "
-        f"{environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES} to false "
+        f"{environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN} to false "
         "to fall back to unbound tokens."
     )
 
@@ -221,6 +230,76 @@ def _parse_cert_path_from_config(cert_config_path):
     return workload_config["cert_path"]
 
 
+def _is_bound_token_opted_out():
+    """Returns True only if bound tokens are explicitly disabled via env vars."""
+    val = os.environ.get(environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN)
+    if val is not None:
+        return val.lower() == "false"
+
+    # Fall back to the deprecated env var for backward compatibility
+    return (
+        os.environ.get(
+            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            "true",
+        ).lower()
+        == "false"
+    )
+
+
+def get_agent_identity_certificate_and_bytes():
+    """Gets and parses the agent identity certificate if not opted out.
+
+    Checks if the user has opted out of certificate-bound tokens. If not,
+    it gets the certificate path, reads the file, and parses it.
+
+    Returns:
+        A tuple of (parsed certificate object, certificate bytes) if found and not opted out, otherwise (None, None).
+    """
+    # If the user has opted out of cert bound tokens, there is no need to
+    # look up the certificate.
+    if _is_bound_token_opted_out():
+        return None, None
+
+    # Respect explicit opt-out of mTLS / client certs
+    from google.auth.transport import _mtls_helper
+
+    env_override = _mtls_helper._check_use_client_cert_env()
+    if env_override is False:
+        return None, None
+
+    cert_path = get_agent_identity_certificate_path()
+    if not cert_path:
+        return None, None
+
+    try:
+        with open(cert_path, "rb") as cert_file:
+            raw_bytes = cert_file.read()
+    except OSError as e:
+        warnings.warn(
+            f"Failed to read agent identity certificate file at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
+
+    cert_blocks = _CERT_REGEX.findall(raw_bytes)
+    if not cert_blocks:
+        warnings.warn(
+            f"No PEM certificate blocks found in {cert_path}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
+
+    cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
+    try:
+        return parse_certificate(cert_bytes), cert_bytes
+    except ValueError as e:
+        warnings.warn(
+            f"Failed to parse agent identity certificate at {cert_path}: {e}. "
+            "Token binding protection cannot be enabled. Falling back to unbound tokens."
+        )
+        return None, None
+
+
 def get_and_parse_agent_identity_certificate():
     """Gets and parses the agent identity certificate if not opted out.
 
@@ -230,55 +309,30 @@ def get_and_parse_agent_identity_certificate():
     Returns:
         The parsed certificate object if found and not opted out, otherwise None.
     """
-    # If the user has opted out of cert bound tokens, there is no need to
-    # look up the certificate.
-    is_opted_out = (
-        os.environ.get(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
-            "true",
-        ).lower()
-        == "false"
-    )
-    if is_opted_out:
-        return None
-
-    # Respect explicit opt-out of mTLS / client certs
-    from google.auth.transport import _mtls_helper
-
-    env_override = _mtls_helper._check_use_client_cert_env()
-    if env_override is False:
-        return None
-
-    cert_path = get_agent_identity_certificate_path()
-    if not cert_path:
-        return None
-
-    try:
-        with open(cert_path, "rb") as cert_file:
-            cert_bytes = cert_file.read()
-    except PermissionError as e:
-        warnings.warn(
-            f"Failed to read agent identity certificate file at {cert_path}: {e}. "
-            "Token binding protection cannot be enabled. Falling back to unbound tokens."
-        )
-        return None
-
-    return parse_certificate(cert_bytes)
+    cert, _ = get_agent_identity_certificate_and_bytes()
+    return cert
 
 
 def parse_certificate(cert_bytes):
-    """Parses a PEM-encoded certificate.
+    """Validates a PEM-encoded certificate chain and returns the leaf certificate.
 
     Args:
         cert_bytes (bytes): The PEM-encoded certificate bytes.
 
     Returns:
-        cryptography.x509.Certificate: The parsed certificate object.
+        cryptography.x509.Certificate: The leaf (first) parsed certificate object.
+
+    Raises:
+        ValueError: If no certificates are found or any certificate in the chain
+            is malformed.
     """
     try:
         from cryptography import x509
 
-        return x509.load_pem_x509_certificate(cert_bytes)
+        certs = x509.load_pem_x509_certificates(cert_bytes)
+        if not certs:
+            raise ValueError("No certificates found in PEM bytes.")
+        return certs[0]
     except ImportError as e:
         raise ImportError(CRYPTOGRAPHY_NOT_FOUND_ERROR) from e
 
@@ -350,8 +404,9 @@ def calculate_certificate_fingerprint(cert):
 def should_request_bound_token(cert):
     """Determines if a bound token should be requested.
 
-    This is based on the GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
-    environment variable and whether the certificate is an agent identity cert.
+    This is based on the GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN env var
+    (falls back to the deprecated GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
+    if unset) and whether the certificate is an agent identity cert.
 
     Args:
         cert (cryptography.x509.Certificate): The parsed certificate object.
@@ -360,14 +415,7 @@ def should_request_bound_token(cert):
         bool: True if a bound token should be requested, False otherwise.
     """
     is_agent_cert = _is_agent_identity_certificate(cert)
-    is_opted_in = (
-        os.environ.get(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
-            "true",
-        ).lower()
-        == "true"
-    )
-    if not (is_agent_cert and is_opted_in):
+    if not is_agent_cert or _is_bound_token_opted_out():
         return False
 
     # Respect explicit opt-out of mTLS / client certs
