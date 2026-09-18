@@ -259,6 +259,63 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.api_endpoint, expected_api_endpoint)
         self.assertEqual(client.universe_domain, universe_domain)
 
+    def test_ctor_w_enable_metrics(self):
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_metrics=True
+        )
+        self.assertTrue(client._enable_metrics)
+
+    def test_ctor_w_enable_advanced_metrics(self):
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_advanced_metrics=True
+        )
+        self.assertTrue(client._enable_advanced_metrics)
+
+    def test_client_metrics_enabled_property(self):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, enable_metrics=True
+        )
+
+        with mock.patch.object(
+            _opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True
+        ):
+            self.assertTrue(client.metrics_enabled)
+
+        with mock.patch.object(
+            _opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", False
+        ):
+            self.assertFalse(client.metrics_enabled)
+
+    def test_client_advanced_metrics_enabled_property(self):
+        from google.cloud.storage import _opentelemetry_metrics
+
+        PROJECT = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=PROJECT,
+            credentials=credentials,
+            enable_metrics=True,
+            enable_advanced_metrics=True,
+        )
+
+        with mock.patch.object(
+            _opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True
+        ):
+            self.assertTrue(client.advanced_metrics_enabled)
+
+        with mock.patch.object(
+            _opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", False
+        ):
+            self.assertFalse(client.advanced_metrics_enabled)
+
     def test_ctor_w_universe_domain_and_mismatched_credentials(self):
         PROJECT = "PROJECT"
         universe_domain = "example.com"

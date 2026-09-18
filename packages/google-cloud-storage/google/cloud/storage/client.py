@@ -126,6 +126,18 @@ class Client(ClientWithProject):
         (Optional) An API key. Mutually exclusive with any other credentials.
         This parameter is an alias for setting `client_options.api_key` and
         will supercede any api key set in the `client_options` parameter.
+
+    :type enable_metrics: bool or None
+    :param enable_metrics:
+        (Optional) Whether to enable OpenTelemetry metrics. If None, falls back
+        to the GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS environment variable,
+        or False if unset.
+
+    :type enable_advanced_metrics: bool or None
+    :param enable_advanced_metrics:
+        (Optional) Whether to enable advanced/debug OpenTelemetry metrics. If
+        None, falls back to the GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS
+        environment variable, or False if unset. Requires enable_metrics to be True.
     """
 
     SCOPE = (
@@ -146,6 +158,8 @@ class Client(ClientWithProject):
         extra_headers={},
         *,
         api_key=None,
+        enable_metrics=None,
+        enable_advanced_metrics=None,
     ):
         self._base_connection = None
 
@@ -293,6 +307,24 @@ class Client(ClientWithProject):
         self._connection = connection
         self._batch_stack = _LocalStack()
         self._bucket_metadata_cache = BucketMetadataCache(self)
+        self._enable_metrics = enable_metrics
+        self._enable_advanced_metrics = enable_advanced_metrics
+
+    @property
+    def metrics_enabled(self) -> bool:
+        """Returns True if metrics recording is active for this client."""
+        from google.cloud.storage import _opentelemetry_metrics
+
+        return _opentelemetry_metrics.is_metrics_enabled(self._enable_metrics)
+
+    @property
+    def advanced_metrics_enabled(self) -> bool:
+        """Returns True if advanced metrics recording is active for this client."""
+        from google.cloud.storage import _opentelemetry_metrics
+
+        return _opentelemetry_metrics.is_advanced_metrics_enabled(
+            self._enable_advanced_metrics
+        )
 
     def close(self):
         """Close the client and clear any cached metadata or active connections."""
