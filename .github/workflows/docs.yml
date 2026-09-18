@@ -135,7 +135,7 @@ jobs:
 
   docfx-release-blocker:
     name: docfx release blocker
-    if: "github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'autorelease: pending')"
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -143,6 +143,7 @@ jobs:
       issues: read
     steps:
     - name: Check post-submit docfx health
+      if: "contains(github.event.pull_request.labels.*.name, 'autorelease: pending')"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
