@@ -820,6 +820,10 @@ def test_socket_timeout_initiates_recovery():
     )
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_async_upload_cancellation_does_not_deadlock():
     """Verifies that cancelling an in-flight async upload terminates cleanly without queue deadlock.
