@@ -77,6 +77,19 @@ def _is_certificate_file_ready(path):
         return False
 
 
+def _is_in_well_known_dir(path):
+    """Checks if the given path is inside the well-known Agent Identity directory."""
+    if not path:
+        return False
+    well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
+    try:
+        abs_path = os.path.abspath(path)
+        abs_well_known_dir = os.path.abspath(well_known_dir)
+        return os.path.commonpath([abs_well_known_dir, abs_path]) == abs_well_known_dir
+    except ValueError:
+        return False
+
+
 def get_agent_identity_certificate_path():
     """Gets the agent certificate path from the certificate config file.
 
@@ -102,16 +115,7 @@ def get_agent_identity_certificate_path():
     # config file and the certificate file may experience a brief startup latency.
     # For all other paths, we return early to avoid introducing unnecessary startup
     # delays.
-    well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
-    try:
-        abs_cert_path = os.path.abspath(cert_config_path)
-        abs_well_known_dir = os.path.abspath(well_known_dir)
-        should_poll = (
-            os.path.commonpath([abs_well_known_dir, abs_cert_path])
-            == abs_well_known_dir
-        )
-    except ValueError:
-        should_poll = False
+    should_poll = _is_in_well_known_dir(cert_config_path)
 
     return _get_cert_path_with_optional_polling(cert_config_path, should_poll)
 
@@ -145,8 +149,9 @@ def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
             if _is_certificate_file_ready(cert_path):
                 return cert_path
 
-            # The config was parsed, but the cert file is not ready yet
-            if not should_poll:
+            # The config was parsed, but the cert file is not ready yet.
+            # Only poll if both the config path and cert path are in the well-known directory.
+            if not (should_poll and _is_in_well_known_dir(cert_path)):
                 # If polling is disabled, return early.
                 return None
 
@@ -309,18 +314,25 @@ def get_and_parse_agent_identity_certificate():
 
 
 def parse_certificate(cert_bytes):
-    """Parses a PEM-encoded certificate.
+    """Validates a PEM-encoded certificate chain and returns the leaf certificate.
 
     Args:
         cert_bytes (bytes): The PEM-encoded certificate bytes.
 
     Returns:
-        cryptography.x509.Certificate: The parsed certificate object.
+        cryptography.x509.Certificate: The leaf (first) parsed certificate object.
+
+    Raises:
+        ValueError: If no certificates are found or any certificate in the chain
+            is malformed.
     """
     try:
         from cryptography import x509
 
-        return x509.load_pem_x509_certificate(cert_bytes)
+        certs = x509.load_pem_x509_certificates(cert_bytes)
+        if not certs:
+            raise ValueError("No certificates found in PEM bytes.")
+        return certs[0]
     except ImportError as e:
         raise ImportError(CRYPTOGRAPHY_NOT_FOUND_ERROR) from e
 

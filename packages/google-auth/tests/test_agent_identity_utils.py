@@ -48,9 +48,37 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
 )
 
 
+# A mock PEM-encoded certificate with a valid Agent Identity SPIFFE ID.
+AGENT_IDENTITY_CERT_BYTES = (
+    b"-----BEGIN CERTIFICATE-----\n"
+    b"MIIDEjCCAfqgAwIBAgIUKZAXnXnxf8hsn+ojS1N8bN3hXrUwDQYJKoZIhvcNAQEL\n"
+    b"BQAwHjEcMBoGA1UEAwwTYWdlbnQtaWRlbnRpdHktdGVzdDAeFw0yNDAxMDEwMDAw\n"
+    b"MDBaFw0zNDAxMDEwMDAwMDBaMB4xHDAaBgNVBAMME2FnZW50LWlkZW50aXR5LXRl\n"
+    b"c3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+3eSHkp1oBj7rFehL\n"
+    b"5VJmBF9KLZ5PXQuZNYrGSpxGJ0Dx1T5ancrl8e66AfAepw9O4zdA+8Afub39PQLh\n"
+    b"wMTEY3O9Uqetch+2apkwXQ+yYpnorgMwqykY77ptApA8WPHzEOj58FPtyC4UqXJ7\n"
+    b"YKVpN92lVi1l73XBn6axo/q72KjeEdssR6UMtAd3dbGqY3af/AZNppJWRmCMWs8Z\n"
+    b"oAuxTH5LqYuxwvCDfYLpmQSbv4IJ/UBjkvjRIlzPo2zHg9PMdf/j6Bg9n3kkFaVH\n"
+    b"Oep+Zm+DtdT8JvwnG3sQ8Qn/ZCqU0z3DkT//XaElAikLwr/1MFrVHhfrYEWnDvuy\n"
+    b"9PHxAgMBAAGjSDBGMEQGA1UdEQQ9MDuGOXNwaWZmZTovL2FnZW50cy5nbG9iYWwu\n"
+    b"cHJvai0xMjM0NS5zeXN0ZW0uaWQuZ29vZy93b3JrbG9hZDANBgkqhkiG9w0BAQsF\n"
+    b"AAOCAQEAWEyBk7TbetWeQTYEdJwH/pNmiqoCzDYcqCSuNqJhrItHuLmSAlKBGCz6\n"
+    b"I6ptzY6vT7ARXoW07ivf9Ffl3TMUDLjd5Tkfn1q8JjyM1Ugbfuq7rdF2g9+5h6wg\n"
+    b"tjeV10LqAimr+fFaNvRiGsMfokuwPyUKYe/9d6x5NhcTTNgMQDG5SWnRe1JqPy94\n"
+    b"GKilWCyzDl4qzHAU5gc7lZ/6WKbYPwjJDDT4/d3AvNx1O/cQCG7Mz4veDuG2Jqh+\n"
+    b"FPUqQ4G9RL4zdPuXlbKfSknkmZWld1+adyitai6BzDCG9zkEEVJmLE2/e3XvNC93\n"
+    b"fa2asspu5y/ViCmPS0J2rzWEk7zI5w==\n"
+    b"-----END CERTIFICATE-----\n"
+)
+
+
 class TestAgentIdentityUtils:
     @pytest.fixture(autouse=True)
     def clean_env(self, monkeypatch):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
+            raising=False,
+        )
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             raising=False,
@@ -60,11 +88,37 @@ class TestAgentIdentityUtils:
             raising=False,
         )
 
-    @mock.patch("cryptography.x509.load_pem_x509_certificate")
-    def test_parse_certificate(self, mock_load_cert):
+    @mock.patch("cryptography.x509.load_pem_x509_certificates")
+    def test_parse_certificate(self, mock_load_certs):
+        mock_load_certs.return_value = [mock.sentinel.leaf_cert, mock.sentinel.ca_cert]
         result = _agent_identity_utils.parse_certificate(b"cert_bytes")
-        mock_load_cert.assert_called_once_with(b"cert_bytes")
-        assert result == mock_load_cert.return_value
+        mock_load_certs.assert_called_once_with(b"cert_bytes")
+        assert result == mock.sentinel.leaf_cert
+
+    @mock.patch("cryptography.x509.load_pem_x509_certificates", return_value=[])
+    def test_parse_certificate_empty_list_raises_value_error(self, mock_load_certs):
+        with pytest.raises(ValueError, match="No certificates found in PEM bytes."):
+            _agent_identity_utils.parse_certificate(b"")
+
+    @pytest.mark.parametrize(
+        "second_cert_block",
+        [
+            # Valid Base64, invalid ASN.1 DER
+            b"-----BEGIN CERTIFICATE-----\n"
+            + base64.b64encode(b"not valid asn1 der payload")
+            + b"\n-----END CERTIFICATE-----\n",
+            # Corrupted Base64
+            b"-----BEGIN CERTIFICATE-----\n!!!not_base64!!!\n-----END CERTIFICATE-----\n",
+            # Non-UTF-8 bytes
+            b"-----BEGIN CERTIFICATE-----\n\xff\xfe\xfd\n-----END CERTIFICATE-----\n",
+        ],
+    )
+    def test_parse_certificate_full_chain_rejects_malformed_intermediate(
+        self, second_cert_block
+    ):
+        chain_bytes = NON_AGENT_IDENTITY_CERT_BYTES + second_cert_block
+        with pytest.raises(ValueError):
+            _agent_identity_utils.parse_certificate(chain_bytes)
 
     def test_is_certificate_file_ready_empty_path(self):
         result = _agent_identity_utils._is_certificate_file_ready("")
@@ -772,6 +826,61 @@ class TestAgentIdentityUtils:
 
         assert cert is None
         assert cert_bytes is None
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_corrupt_intermediate_warns(
+        self, mock_get_path, tmpdir
+    ):
+        corrupt_intermediate = (
+            b"-----BEGIN CERTIFICATE-----\n"
+            + base64.b64encode(b"invalid_asn1_der_intermediate")
+            + b"\n-----END CERTIFICATE-----\n"
+        )
+        cert_file = tmpdir.join("chain_with_corrupt_intermediate.pem")
+        cert_file.write_binary(AGENT_IDENTITY_CERT_BYTES + corrupt_intermediate)
+        mock_get_path.return_value = str(cert_file)
+
+        with pytest.warns(
+            UserWarning, match="Failed to parse agent identity certificate"
+        ):
+            (
+                cert,
+                cert_bytes,
+            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        assert cert is None
+        assert cert_bytes is None
+
+    @mock.patch("time.sleep")
+    def test_get_agent_identity_certificate_path_well_known_config_external_missing_cert_no_poll(
+        self, mock_sleep, tmpdir, monkeypatch
+    ):
+        well_known_dir = tmpdir.mkdir("workload-spiffe-credentials")
+        external_dir = tmpdir.mkdir("external_certs")
+        monkeypatch.setattr(
+            "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
+            str(well_known_dir.join("certificates.pem")),
+        )
+        config_path = well_known_dir.join("config.json")
+        config_path.write(
+            json.dumps(
+                {
+                    "cert_configs": {
+                        "workload": {
+                            "cert_path": str(external_dir.join("missing_cert.pem"))
+                        }
+                    }
+                }
+            )
+        )
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
+        )
+
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+
+        assert result is None
+        mock_sleep.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_agent_identity_certificate_and_bytes_opted_out(

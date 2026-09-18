@@ -498,6 +498,46 @@ def test_get_body_with_get_method_raises_value_error():
     request.assert_not_called()
 
 
+@mock.patch("time.sleep", return_value=None)
+def test_get_post_retry_preserves_method_body_and_headers(mock_sleep):
+    response_503 = mock.create_autospec(transport.Response, instance=True)
+    response_503.status = http_client.SERVICE_UNAVAILABLE
+    response_503.data = _helpers.to_bytes("Service Unavailable")
+    response_503.headers = {}
+
+    response_ok = mock.create_autospec(transport.Response, instance=True)
+    response_ok.status = http_client.OK
+    response_ok.data = _helpers.to_bytes(
+        json.dumps({"access_token": "bound_token", "expires_in": 3600})
+    )
+    response_ok.headers = {"content-type": "application/json"}
+
+    request = mock.create_autospec(transport.Request)
+    request.side_effect = [
+        response_503,
+        exceptions.TransportError("transient transport error"),
+        response_ok,
+    ]
+
+    expected_body = json.dumps({"certificate_chain": "fake_pem_chain"}).encode("utf-8")
+    result = _metadata.get(
+        request,
+        PATH,
+        method="POST",
+        body=expected_body,
+        headers={"Content-Type": "application/json"},
+    )
+
+    assert result == {"access_token": "bound_token", "expires_in": 3600}
+    assert request.call_count == 3
+    for call_args in request.call_args_list:
+        _, kwargs = call_args
+        assert kwargs["method"] == "POST"
+        assert kwargs["body"] == expected_body
+        assert kwargs["headers"]["Content-Type"] == "application/json"
+        assert kwargs["headers"][_metadata._METADATA_FLAVOR_HEADER] == "Google"
+
+
 def test_get_project_id():
     project = "example-project"
     request = make_request(project, headers={"content-type": "text/plain"})
