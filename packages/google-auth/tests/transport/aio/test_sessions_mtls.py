@@ -22,8 +22,7 @@ from unittest import mock
 import pytest
 
 from google.auth import exceptions
-from google.auth.aio import credentials
-from google.auth.aio import transport
+from google.auth.aio import credentials, transport
 from google.auth.aio.transport import sessions
 from google.auth.exceptions import TimeoutError
 
@@ -42,7 +41,10 @@ VALID_WORKLOAD_CONFIG = {
 class TestSessionsMtls:
     @pytest.mark.asyncio
     async def test_configure_mtls_channel(self):
-        """Tests that the mTLS channel configures correctly when a valid workload config is mocked."""
+        """
+        Tests that the mTLS channel configures correctly when a
+        valid workload config is mocked.
+        """
         with (
             mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
             mock.patch("os.path.exists") as mock_exists,
@@ -82,7 +84,9 @@ class TestSessionsMtls:
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_disabled(self):
-        """Tests behavior when the config file does not exist."""
+        """
+        Tests behavior when the config file does not exist.
+        """
         with (
             mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
             mock.patch("os.path.exists") as mock_exists,
@@ -96,7 +100,9 @@ class TestSessionsMtls:
 
     @pytest.mark.asyncio
     async def test_configure_mtls_channel_invalid_format(self):
-        """Verifies that the MutualTLSChannelError is raised for bad formats."""
+        """
+        Verifies that the MutualTLSChannelError is raised for bad formats.
+        """
         with (
             mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
             mock.patch("os.path.exists") as mock_exists,

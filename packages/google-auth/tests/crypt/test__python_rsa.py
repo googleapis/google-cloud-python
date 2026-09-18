@@ -17,8 +17,8 @@ import json
 import os
 from unittest import mock
 
-from pyasn1_modules import pem  # type: ignore
 import pytest  # type: ignore
+from pyasn1_modules import pem  # type: ignore
 
 try:
     import rsa
@@ -26,9 +26,7 @@ except ImportError:
     pytest.skip("rsa module not available", allow_module_level=True)
 
 from google.auth import _helpers
-from google.auth.crypt import _python_rsa
-from google.auth.crypt import base
-
+from google.auth.crypt import _python_rsa, base
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 

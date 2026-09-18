@@ -14,22 +14,22 @@
 
 import asyncio
 import collections.abc
-from contextlib import asynccontextmanager
 import functools
 import http.client as http_client
 import inspect
 import logging
 import time
-from typing import Mapping, Optional, TYPE_CHECKING, Union
 import urllib.parse
 import warnings
+from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING, Mapping, Optional, Union
 
+import google.auth.transport._mtls_helper
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
-import google.auth.transport._mtls_helper
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -430,11 +430,11 @@ class AsyncAuthorizedSession:
                                                         "channel."
                                                     )
                                                     if self._mtls_init_task is not None:
-                                                        if (
-                                                            not self._mtls_init_task.done()
-                                                        ):
+                                                        if not self._mtls_init_task.done():
                                                             try:
-                                                                await self._mtls_init_task
+                                                                await (
+                                                                    self._mtls_init_task
+                                                                )
                                                             except Exception:
                                                                 pass
                                                         self._mtls_init_task = None
