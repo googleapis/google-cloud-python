@@ -119,9 +119,12 @@ class ResumableUploadConfig:
         deadline: Optional overall wall-clock deadline for the entire upload process.
             When set, each HTTP request timeout is trimmed to the remaining time before
             the deadline, and DeadlineExceeded is raised immediately when the deadline
-            elapses (even on healthy streams). When None (default), transfer duration is
-            governed by stall control (stall_minimum_rate and stall_timeout), allowing
-            healthy streams transferring above the minimum rate to continue indefinitely.
+            elapses (even on healthy streams). Timezone-aware datetimes (e.g.,
+            ``datetime.now(timezone.utc) + timedelta(...)``) are recommended;
+            timezone-naive datetimes are assumed to be in local system time. When
+            None (default), transfer duration is governed by stall control
+            (stall_minimum_rate and stall_timeout), allowing healthy streams
+            transferring above the minimum rate to continue indefinitely.
     """
 
     chunk_size: int = DEFAULT_CHUNK_SIZE
@@ -129,6 +132,10 @@ class ResumableUploadConfig:
     stall_timeout: float = 120.0
     headers: Optional[Union[Mapping[str, str], Sequence[Tuple[str, str]]]] = None
     deadline: Optional[datetime.datetime] = None
+
+    def __post_init__(self) -> None:
+        if self.deadline is not None:
+            self.deadline = self.deadline.astimezone(datetime.timezone.utc)
 
     @property
     def start_headers(self) -> Optional[Sequence[Tuple[str, str]]]:

@@ -297,9 +297,7 @@ class AsyncResumableUploadSession:
         """
         if self._config.deadline:
             now = datetime.datetime.now(datetime.timezone.utc)
-            dl = self._config.deadline
-            if dl.tzinfo is None:
-                dl = dl.replace(tzinfo=datetime.timezone.utc)
+            dl = self._config.deadline.astimezone(datetime.timezone.utc)
             remaining = (dl - now).total_seconds()
             if remaining <= 0:
                 raise exceptions.DeadlineExceeded(
