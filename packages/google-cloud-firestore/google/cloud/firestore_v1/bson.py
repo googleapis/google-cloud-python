@@ -34,6 +34,7 @@ __all__ = [
     "BSONMaxKey",
     "BSONInt32",
     "BSONBinary",
+    "BSONTimestamp",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -280,3 +281,64 @@ class BSONBinary(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._data, self._subtype))
+
+
+class BSONTimestamp(_BSONType):
+    """Container for BSON Timestamp values.
+
+    Args:
+        seconds (int): Seconds count.
+        increment (int): Increment/ordinal.
+
+    Raises:
+        TypeError: If seconds or increment is not an int or is a bool.
+
+    Example:
+        >>> ts = BSONTimestamp(1700000000, 1)
+        >>> ts.seconds
+        1700000000
+        >>> ts.increment
+        1
+    """
+
+    __slots__ = ("_seconds", "_increment")
+
+    def __init__(self, seconds: int, increment: int):
+        if isinstance(seconds, bool) or not isinstance(seconds, int):
+            raise TypeError("BSONTimestamp seconds must be an int.")
+        if isinstance(increment, bool) or not isinstance(increment, int):
+            raise TypeError("BSONTimestamp increment must be an int.")
+        self._seconds: int = seconds
+        self._increment: int = increment
+
+    @property
+    def seconds(self) -> int:
+        """int: The seconds value."""
+        return self._seconds
+
+    @property
+    def increment(self) -> int:
+        """int: The increment value."""
+        return self._increment
+
+    def _to_map_value(self) -> Dict[str, Dict[str, int]]:
+        """Returns map dictionary representation for wire serialization."""
+        return {
+            "__request_timestamp__": {
+                "seconds": self._seconds,
+                "increment": self._increment,
+            }
+        }
+
+    def __repr__(self) -> str:
+        return f"BSONTimestamp(seconds={self._seconds}, increment={self._increment})"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONTimestamp):
+            return (
+                self._seconds == other._seconds and self._increment == other._increment
+            )
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._seconds, self._increment))

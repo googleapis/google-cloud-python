@@ -54,6 +54,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONTimestamp,
 )
 from google.cloud.firestore_v1.vector import Vector
 
@@ -1294,6 +1295,7 @@ def test_bson_document_writes(client, cleanup, database):
         "max_key": BSONMaxKey(),
         "int32_val": BSONInt32(42),
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
     }
 
     doc_ref.set(bson_payload)
@@ -1306,6 +1308,12 @@ def test_bson_document_writes(client, cleanup, database):
         "max_key": {"__max__": None},
         "int32_val": {"__int__": 42},
         "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
     }
 
 
