@@ -283,7 +283,9 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
             creation failed for any reason.
     """
 
-    def __init__(self, enterprise_cert_file_path):
+    _is_mtls_offload_adapter = True
+
+    def __init__(self, enterprise_cert_file_path, **kwargs):
         import certifi
         from google.auth.transport import _custom_tls_signer
 
@@ -300,7 +302,7 @@ class _MutualTlsOffloadAdapter(requests.adapters.HTTPAdapter):
         self.signer.attach_to_ssl_context(proxymanager)
         self._ctx_proxymanager = proxymanager
 
-        super(_MutualTlsOffloadAdapter, self).__init__()
+        super(_MutualTlsOffloadAdapter, self).__init__(**kwargs)
 
     def init_poolmanager(self, *args, **kwargs):
         kwargs["ssl_context"] = self._ctx_poolmanager

@@ -46,6 +46,7 @@ from google.auth import credentials
 from google.auth import exceptions
 from google.auth import impersonated_credentials
 from google.auth import metrics
+from google.auth.transport import _mtls_helper
 from google.oauth2 import sts
 from google.oauth2 import utils
 
@@ -474,14 +475,97 @@ class Credentials(
 
         super()._maybe_start_regional_access_boundary_refresh(request, url)
 
+    def _maybe_mount_mtls_offload_adapter(self, request):
+        """Mounts the mutual TLS offload adapter on the request session if needed.
+
+        When using Enterprise Certificate Proxy (ECP) with hardware-backed keys,
+        the private key cannot be extracted to disk. Instead of injecting file paths,
+        this method auto-mounts a _MutualTlsOffloadAdapter onto the underlying
+        requests.Session so all STS token exchange calls occur over mTLS.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+
+        Raises:
+            exceptions.RefreshError: If configuring or mounting the offload
+                adapter fails.
+        """
+        target = request
+        while isinstance(target, functools.partial):
+            target = target.func
+
+        session = getattr(target, "session", None)
+        if session is None or not hasattr(session, "mount"):
+            return
+
+        from google.auth.transport.requests import _MutualTlsOffloadAdapter
+
+        current_adapter = getattr(session, "adapters", {}).get("https://")
+        is_already_mounted = False
+        try:
+            is_already_mounted = isinstance(current_adapter, _MutualTlsOffloadAdapter)
+        except TypeError:
+            pass
+
+        if not is_already_mounted:
+            is_already_mounted = (
+                getattr(current_adapter, "_is_mtls_offload_adapter", None) is True
+            )
+
+        if is_already_mounted:
+            return
+
+        config_path = _mtls_helper._get_cert_config_path(
+            getattr(self, "_certificate_config_location", None)
+        )
+
+        try:
+            adapter_kwargs = {}
+            if current_adapter is not None and hasattr(current_adapter, "max_retries"):
+                adapter_kwargs["max_retries"] = current_adapter.max_retries
+
+            adapter = _MutualTlsOffloadAdapter(config_path, **adapter_kwargs)
+            session.mount("https://", adapter)
+
+            if (
+                current_adapter is not None
+                and current_adapter is not adapter
+                and hasattr(current_adapter, "close")
+            ):
+                try:
+                    current_adapter.close()
+                except Exception:
+                    pass
+        except (
+            exceptions.MutualTLSChannelError,
+            exceptions.ClientCertError,
+            OSError,
+            ImportError,
+            ValueError,
+        ) as exc:
+            raise exceptions.RefreshError(
+                f"Failed to configure mutual TLS offload adapter for STS: {exc}"
+            ) from exc
+
     def _perform_refresh_token(self, request, cert_fingerprint=None):
         scopes = self._scopes if self._scopes is not None else self._default_scopes
 
         # Inject client certificate into request.
         if self._mtls_required():
-            request = functools.partial(
-                request, cert=self._get_mtls_cert_and_key_paths()
-            )
+            cert_path, key_path = self._get_mtls_cert_and_key_paths()
+            # Only inject file-based cert/key when a key path is available on disk.
+            # When using hardware-backed keys (ECP), the private key is held in
+            # the hardware keystore (key_path is None), so we avoid injecting
+            # invalid cert/key tuples (e.g. cert=(None, None)) into the request.
+            # Instead, the mTLS offload adapter is mounted onto the request session
+            # so the STS token exchange handshake is performed over mTLS via ECP.
+            if key_path is not None:
+                request = functools.partial(request, cert=(cert_path, key_path))
+            elif _mtls_helper.is_ecp_config(
+                getattr(self, "_certificate_config_location", None)
+            ):
+                self._maybe_mount_mtls_offload_adapter(request)
 
         if self._should_initialize_impersonated_credentials():
             with self._impersonation_lock:
@@ -536,7 +620,8 @@ class Credentials(
             self.expiry = now + lifetime
 
     def _build_regional_access_boundary_lookup_url(
-        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+        self,
+        request: "Optional[google.auth.transport.Request]" = None,  # noqa: F821
     ):
         """Builds and returns the URL for the Regional Access Boundary lookup API."""
         if getattr(self, "_impersonated_credentials", None):
@@ -746,7 +831,7 @@ class Credentials(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
             trust_boundary=info.get("trust_boundary"),
-            **kwargs
+            **kwargs,
         )
 
     @classmethod
