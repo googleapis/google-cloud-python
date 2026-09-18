@@ -476,8 +476,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = True
+        derived = _build_snapshot_derived(session, multi_use=True)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST))
         self.assertEqual(len(restart.mock_calls), 1)
@@ -506,8 +505,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = True
+        derived = _build_snapshot_derived(session, multi_use=True)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -541,8 +539,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = True
+        derived = _build_snapshot_derived(session, multi_use=True)
 
         resumable = self._call_fut(derived, restart, request, session=session)
 
@@ -685,7 +682,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
 class Test_SnapshotBase(OpenTelemetryBase):
     def test_ctor(self):
         session = build_session()
-        derived = _build_snapshot_derived(session=session)
+        derived = _Derived(session=session)
 
         # Attributes from _SessionWrapper.
         self.assertIs(derived._session, session)
@@ -698,10 +695,19 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertFalse(derived._begin_request_sent)
         self.assertIsNone(derived._transaction_id)
         self.assertIsNone(derived._precommit_token)
-        self.assertIsInstance(derived._lock, type(Lock()))
-        self.assertFalse(derived._transaction_begin_event.is_set())
+        self.assertIsNone(derived._lock)
+        self.assertIsNone(derived._transaction_begin_event)
 
         self.assertNoSpans()
+
+    def test_derived_constructor_multi_use(self):
+        session = build_session()
+        derived = _Derived(session=session, multi_use=True)
+
+        self.assertTrue(derived._read_only)
+        self.assertTrue(derived._multi_use)
+        self.assertIsInstance(derived._lock, type(Lock()))
+        self.assertFalse(derived._transaction_begin_event.is_set())
 
     def test__wait_for_transaction_begin_claims_inline_begin(self):
         derived = _build_snapshot_derived(multi_use=True)
@@ -714,6 +720,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
     def test__wait_for_transaction_begin_wo_multi_use(self):
         derived = _build_snapshot_derived(multi_use=False)
         derived._read_request_count = 1
+
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            derived._wait_for_transaction_begin()
+
+    def test__wait_for_transaction_begin_twice_wo_multi_use(self):
+        derived = _build_snapshot_derived(multi_use=False)
+        derived._wait_for_transaction_begin()
+        self.assertTrue(derived._begin_request_sent)
 
         with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
             derived._wait_for_transaction_begin()
@@ -1067,8 +1081,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.streaming_read.return_value = _MockIterator(*result_sets)
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = multi_use
+        derived = _build_snapshot_derived(session, multi_use=multi_use)
         derived._read_request_count = count
 
         if not first:
@@ -1733,8 +1746,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.partition_read.return_value = response
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = multi_use
+        derived = _build_snapshot_derived(session, multi_use=multi_use)
 
         if w_txn:
             derived._transaction_id = TXN_ID
@@ -1859,8 +1871,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         session = _Session(database)
-        derived = _build_snapshot_derived(session)
-        derived._multi_use = True
+        derived = _build_snapshot_derived(session, multi_use=True)
         derived._transaction_id = TXN_ID
 
         list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
@@ -2130,7 +2141,8 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertEqual(snapshot._read_request_count, 0)
         self.assertIsNone(snapshot._transaction_id)
         self.assertIsNone(snapshot._precommit_token)
-        self.assertIsInstance(snapshot._lock, type(Lock()))
+        self.assertIsNone(snapshot._lock)
+        self.assertIsNone(snapshot._transaction_begin_event)
 
         # Attributes from Snapshot.
         self.assertTrue(snapshot._strong)
@@ -2138,6 +2150,96 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+
+    def test_ctor_multi_use(self):
+        session = build_session()
+        snapshot = build_snapshot(session=session, multi_use=True)
+
+        self.assertIs(snapshot._session, session)
+        self.assertTrue(snapshot._read_only)
+        self.assertTrue(snapshot._multi_use)
+        self.assertIsNone(snapshot._transaction_id)
+        self.assertIsInstance(snapshot._lock, type(Lock()))
+        self.assertIsInstance(snapshot._transaction_begin_event, type(Event()))
+
+    def test_ctor_single_use_no_lock(self):
+        session = build_session()
+        snapshot = build_snapshot(session=session, multi_use=False)
+        self.assertFalse(snapshot._multi_use)
+        self.assertIsNone(snapshot._lock)
+        self.assertIsNone(snapshot._transaction_begin_event)
+
+    def test_update_for_precommit_token_pb_multi_use(self):
+        token = build_precommit_token_pb(seq_num=1)
+        snapshot = self._make_one(_Session(), multi_use=True)
+        snapshot._update_for_precommit_token_pb(token)
+        self.assertEqual(snapshot._precommit_token, token)
+
+    def test_update_for_precommit_token_pb_single_use(self):
+        token = build_precommit_token_pb(seq_num=1)
+        snapshot = self._make_one(_Session(), multi_use=False)
+        snapshot._update_for_precommit_token_pb(token)
+        self.assertEqual(snapshot._precommit_token, token)
+
+    def test__update_for_transaction_pb(self):
+        from datetime import timezone
+
+        from google.cloud.spanner_v1.types.transaction import (
+            Transaction as TransactionPB,
+        )
+
+        timestamp = datetime.now(timezone.utc)
+        snapshot = self._make_one(_Session(), multi_use=False)
+        pb = TransactionPB(id=TXN_ID, read_timestamp=timestamp)
+        snapshot._update_for_transaction_pb(pb)
+        self.assertEqual(snapshot._transaction_id, TXN_ID)
+        self.assertEqual(snapshot._transaction_read_timestamp, timestamp)
+
+    def test__update_for_transaction_pb_multi_use(self):
+        from datetime import timezone
+
+        from google.cloud.spanner_v1.types.transaction import (
+            Transaction as TransactionPB,
+        )
+
+        timestamp = datetime.now(timezone.utc)
+        snapshot = self._make_one(_Session(), multi_use=True)
+        self.assertFalse(snapshot._transaction_begin_event.is_set())
+        pb = TransactionPB(id=TXN_ID, read_timestamp=timestamp)
+        snapshot._update_for_transaction_pb(pb)
+        self.assertEqual(snapshot._transaction_id, TXN_ID)
+        self.assertEqual(snapshot._transaction_read_timestamp, timestamp)
+        self.assertTrue(snapshot._transaction_begin_event.is_set())
+
+    def test_execute_sql_twice_single_use_fails(self):
+        from google.cloud.spanner_v1 import PartialResultSet
+
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        database.spanner_api.execute_streaming_sql.return_value = _MockIterator(
+            PartialResultSet()
+        )
+        session = _Session(database)
+        snapshot = self._make_one(session=session, multi_use=False)
+        list(snapshot.execute_sql(SQL_QUERY))
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            list(snapshot.execute_sql(SQL_QUERY))
+
+    def test_read_twice_single_use_fails(self):
+        from google.cloud.spanner_v1 import PartialResultSet
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        database.spanner_api.streaming_read.return_value = _MockIterator(
+            PartialResultSet()
+        )
+        session = _Session(database)
+        snapshot = self._make_one(session=session, multi_use=False)
+        keyset = KeySet(all_=True)
+        list(snapshot.read(TABLE_NAME, COLUMNS, keyset))
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            list(snapshot.read(TABLE_NAME, COLUMNS, keyset))
 
     def test_ctor_w_multiple_options(self):
         with self.assertRaises(ValueError):
@@ -2373,8 +2475,7 @@ def _build_snapshot_derived(session=None, multi_use=False, read_only=True) -> _D
     if session.session_id is None:
         session._session_id = "session-id"
 
-    derived = _Derived(session=session)
-    derived._multi_use = multi_use
+    derived = _Derived(session=session, multi_use=multi_use)
     derived._read_only = read_only
 
     return derived
