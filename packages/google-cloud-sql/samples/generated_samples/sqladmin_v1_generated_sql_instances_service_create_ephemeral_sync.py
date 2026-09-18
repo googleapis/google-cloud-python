@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 def sample_create_ephemeral():
     # Create a client
-    client = sql_v1.SqlInstancesServiceClient()
+    client = sqladmin_v1.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1.SqlInstancesCreateEphemeralCertRequest()
+    request = sqladmin_v1.SqlInstancesCreateEphemeralCertRequest()
 
     # Make the request
     response = client.create_ephemeral(request=request)

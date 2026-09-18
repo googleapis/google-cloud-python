@@ -22,8 +22,8 @@ https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/test_perio
 
 import pandas
 import pandas._testing as tm
-from pandas.tests.extension import base
 import pytest
+from pandas.tests.extension import base
 
 import db_dtypes
 

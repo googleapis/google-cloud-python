@@ -3631,6 +3631,7 @@ def test_get_rest_call_success(request_type):
             requested_link_count=2151,
             satisfies_pzs=True,
             self_link="self_link_value",
+            self_link_with_id="self_link_with_id_value",
             state="state_value",
             subzone="subzone_value",
             wire_groups=["wire_groups_value"],
@@ -3678,6 +3679,7 @@ def test_get_rest_call_success(request_type):
     assert response.requested_link_count == 2151
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
+    assert response.self_link_with_id == "self_link_with_id_value"
     assert response.state == "state_value"
     assert response.subzone == "subzone_value"
     assert response.wire_groups == ["wire_groups_value"]
@@ -4110,6 +4112,7 @@ def test_insert_rest_call_success(request_type):
         "location": "location_value",
         "macsec": {
             "fail_open": True,
+            "interconnect_key_group": "interconnect_key_group_value",
             "pre_shared_keys": [
                 {"name": "name_value", "start_time": "start_time_value"}
             ],
@@ -4129,6 +4132,7 @@ def test_insert_rest_call_success(request_type):
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "state": "state_value",
         "subzone": "subzone_value",
         "wire_groups": ["wire_groups_value1", "wire_groups_value2"],
@@ -4562,6 +4566,7 @@ def test_patch_rest_call_success(request_type):
         "location": "location_value",
         "macsec": {
             "fail_open": True,
+            "interconnect_key_group": "interconnect_key_group_value",
             "pre_shared_keys": [
                 {"name": "name_value", "start_time": "start_time_value"}
             ],
@@ -4581,6 +4586,7 @@ def test_patch_rest_call_success(request_type):
         "requested_link_count": 2151,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "state": "state_value",
         "subzone": "subzone_value",
         "wire_groups": ["wire_groups_value1", "wire_groups_value2"],

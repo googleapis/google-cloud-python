@@ -8797,7 +8797,14 @@ def test_create_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9134,7 +9141,14 @@ def test_create_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9486,7 +9500,14 @@ def test_update_data_agent_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]
@@ -9827,7 +9848,14 @@ def test_update_data_agent_sync_rest_call_success(request_type):
                                     ],
                                 },
                             }
-                        ]
+                        ],
+                        "property_graph_references": [
+                            {
+                                "project_id": "project_id_value",
+                                "dataset_id": "dataset_id_value",
+                                "property_graph_id": "property_graph_id_value",
+                            }
+                        ],
                     },
                     "studio": {
                         "studio_references": [{"datasource_id": "datasource_id_value"}]

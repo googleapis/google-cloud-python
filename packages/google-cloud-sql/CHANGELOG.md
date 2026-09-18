@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-sql-v0.1.0...google-cloud-sql-v0.1.1) (2026-09-02)
+
+
+### Features
+
+* **sql:** configure sqladmin namespace and regenerate ([#18268](https://github.com/googleapis/google-cloud-python/issues/18268)) ([21cc934](https://github.com/googleapis/google-cloud-python/commit/21cc9349bd46b3b498821fb9b3fa6547a5306dcb))
+
 ## 0.1.0 (2026-09-02)
 
 

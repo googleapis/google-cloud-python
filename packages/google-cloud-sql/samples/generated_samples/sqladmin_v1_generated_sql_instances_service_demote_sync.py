@@ -31,20 +31,20 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 def sample_demote():
     # Create a client
-    client = sql_v1.SqlInstancesServiceClient()
+    client = sqladmin_v1.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    body = sql_v1.InstancesDemoteRequest()
+    body = sqladmin_v1.InstancesDemoteRequest()
     body.demote_context.source_representative_instance_name = (
         "source_representative_instance_name_value"
     )
 
-    request = sql_v1.SqlInstancesDemoteRequest(
+    request = sqladmin_v1.SqlInstancesDemoteRequest(
         instance="instance_value",
         project="project_value",
         body=body,

@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 def sample_get_latest_recovery_time():
     # Create a client
-    client = sql_v1.SqlInstancesServiceClient()
+    client = sqladmin_v1.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1.SqlInstancesGetLatestRecoveryTimeRequest()
+    request = sqladmin_v1.SqlInstancesGetLatestRecoveryTimeRequest()
 
     # Make the request
     response = client.get_latest_recovery_time(request=request)

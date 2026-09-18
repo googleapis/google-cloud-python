@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 async def sample_get():
     # Create a client
-    client = sql_v1beta4.SqlSslCertsServiceAsyncClient()
+    client = sqladmin_v1beta4.SqlSslCertsServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlSslCertsGetRequest()
+    request = sqladmin_v1beta4.SqlSslCertsGetRequest()
 
     # Make the request
     response = await client.get(request=request)

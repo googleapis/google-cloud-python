@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-maps-mapmanagement/#history
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapmanagement-v0.1.0...google-maps-mapmanagement-v0.1.1) (2026-09-03)
+
+
+### Features
+
+* **google/maps/mapmanagement/v2:** onboard a new library ([#18173](https://github.com/googleapis/google-cloud-python/issues/18173)) ([f0f214b](https://github.com/googleapis/google-cloud-python/commit/f0f214b120c8be2cda4f942118f6991bae226751))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapmanagement-v0.1.0...google-maps-mapmanagement-v0.1.1) (2026-09-02)
 
 

@@ -135,6 +135,22 @@ class _BaseSslPoliciesRestTransport(SslPoliciesTransport):
             ]
             return http_options
 
+    class _BaseGetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/global/sslPolicies/{resource}/getIamPolicy",
+                },
+            ]
+            return http_options
+
     class _BaseInsert:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -197,6 +213,23 @@ class _BaseSslPoliciesRestTransport(SslPoliciesTransport):
                     "method": "patch",
                     "uri": "/compute/beta/projects/{project}/global/sslPolicies/{ssl_policy}",
                     "body": "ssl_policy_resource",
+                },
+            ]
+            return http_options
+
+    class _BaseSetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/compute/beta/projects/{project}/global/sslPolicies/{resource}/setIamPolicy",
+                    "body": "global_set_policy_request_resource",
                 },
             ]
             return http_options

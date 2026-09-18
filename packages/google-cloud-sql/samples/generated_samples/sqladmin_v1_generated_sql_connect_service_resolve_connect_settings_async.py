@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 async def sample_resolve_connect_settings():
     # Create a client
-    client = sql_v1.SqlConnectServiceAsyncClient()
+    client = sqladmin_v1.SqlConnectServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1.ResolveConnectSettingsRequest(
+    request = sqladmin_v1.ResolveConnectSettingsRequest(
         dns_name="dns_name_value",
         location="location_value",
     )

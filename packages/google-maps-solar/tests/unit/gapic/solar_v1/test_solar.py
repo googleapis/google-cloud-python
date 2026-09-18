@@ -1688,6 +1688,7 @@ def test_find_closest_building_insights_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "additionalInsights",
             "exactQualityRequired",
             "experiments",
             "location",

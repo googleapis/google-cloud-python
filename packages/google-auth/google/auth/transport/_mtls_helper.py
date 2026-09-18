@@ -18,17 +18,15 @@ import contextlib
 import json
 import logging
 import os
-from os import environ, getenv, path
 import re
 import subprocess
 import sys
 import tempfile
-from typing import cast, Generator, List, Optional, Tuple, Union
+from os import environ, getenv, path
+from typing import Generator, List, Optional, Tuple, Union, cast
+from urllib.parse import urlsplit
 
-from google.auth import _agent_identity_utils
-from google.auth import _cloud_sdk
-from google.auth import environment_vars
-from google.auth import exceptions
+from google.auth import _agent_identity_utils, _cloud_sdk, environment_vars, exceptions
 
 CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 
@@ -132,9 +130,11 @@ def secure_cert_key_paths(
                     key_path is None or os.path.exists(key_path)
                 ):
                     if _can_read(cert_path) and _can_read(key_path):
-                        yield cast(str, cert_path or cert), cast(
-                            str, key_path or key
-                        ), passphrase
+                        yield (
+                            cast(str, cert_path or cert),
+                            cast(str, key_path or key),
+                            passphrase,
+                        )
                         return
         except _MemfdCreationError:
             pass  # Fallback to Tier 3 on failure.
@@ -159,9 +159,10 @@ def _encrypt_key_if_plaintext(
     returned as-is (plaintext) as a fallback. This allows the caller (underlying SSL
     context) to attempt loading the key directly and handle any failures.
     """
+    import secrets
+
     import cryptography
     from cryptography.hazmat.primitives import serialization
-    import secrets
 
     try:
         pkey = serialization.load_pem_private_key(key_bytes, password=None)
@@ -840,3 +841,50 @@ def call_client_cert_callback():
         generate_encrypted_key=True
     )
     return cert_bytes, key_bytes
+
+
+_MTLS_HOST_SUFFIXES = (
+    ".mtls.googleapis.com",
+    ".mtls.sandbox.googleapis.com",
+    ".p.googleapis.com",
+)
+_MTLS_EXACT_HOSTS = (
+    "mtls.googleapis.com",
+    "mtls.sandbox.googleapis.com",
+    "p.googleapis.com",
+)
+
+
+def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
+    """Checks if the given URL corresponds to an mTLS or Private Service Connect (PSC) endpoint.
+
+    Args:
+        url (Optional[Union[str, bytes, object]]): The request URL.
+
+    Returns:
+        bool: True if the URL targets an mTLS or PSC endpoint, False otherwise.
+    """
+    if not url:
+        return False
+    if hasattr(url, "url") and isinstance(url.url, (str, bytes)):
+        url = url.url
+    if isinstance(url, bytes):
+        try:
+            url = url.decode("utf-8")
+        except (UnicodeDecodeError, AttributeError):
+            return False
+    elif not isinstance(url, str):
+        url = str(url)
+    try:
+        hostname = urlsplit(url).hostname
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+    if not hostname:
+        return False
+
+    hostname = hostname.rstrip(".").lower()
+    if not hostname:
+        return False
+
+    return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)

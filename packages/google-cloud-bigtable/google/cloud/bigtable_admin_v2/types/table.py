@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "TieredStorageConfig",
         "TieredStorageRule",
         "ProtoSchema",
+        "AvroSchema",
         "SchemaBundle",
     },
 )
@@ -1115,7 +1116,7 @@ class TieredStorageRule(proto.Message):
 
 
 class ProtoSchema(proto.Message):
-    r"""Represents a protobuf schema.
+    r"""Represents a collection of protobuf schemas.
 
     Attributes:
         proto_descriptors (bytes):
@@ -1144,8 +1145,33 @@ class ProtoSchema(proto.Message):
     )
 
 
+class AvroSchema(proto.Message):
+    r"""Represents a collection of Avro schemas.
+
+    Attributes:
+        json_schemas (MutableSequence[str]):
+            Required. The Avro schemas in JSON format.
+            Each element must be the content of a valid,
+            self-contained Avro schema file (.avsc), as
+            described in
+            https://avro.apache.org/docs/1.8.1/spec.html.
+            Use repeated elements to include multiple Avro
+            schema files in a single bundle.
+    """
+
+    json_schemas: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
 class SchemaBundle(proto.Message):
     r"""A named collection of related schemas.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1156,6 +1182,10 @@ class SchemaBundle(proto.Message):
             ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
         proto_schema (google.cloud.bigtable_admin_v2.types.ProtoSchema):
             Schema for Protobufs.
+
+            This field is a member of `oneof`_ ``type``.
+        avro_schema (google.cloud.bigtable_admin_v2.types.AvroSchema):
+            Optional. Schema for Avros.
 
             This field is a member of `oneof`_ ``type``.
         etag (str):
@@ -1175,6 +1205,12 @@ class SchemaBundle(proto.Message):
         number=2,
         oneof="type",
         message="ProtoSchema",
+    )
+    avro_schema: "AvroSchema" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="type",
+        message="AvroSchema",
     )
     etag: str = proto.Field(
         proto.STRING,

@@ -45,10 +45,12 @@ from .services.migration_service import (
 )
 from .types.assessment_task import AssessmentFeatureHandle, AssessmentTaskDetails
 from .types.migration_entities import (
+    LineageOutput,
     MigrationSubtask,
     MigrationTask,
     MigrationTaskResult,
     MigrationWorkflow,
+    TaskOutput,
     TranslationTaskResult,
 )
 from .types.migration_error_details import (
@@ -124,6 +126,7 @@ __all__ = (
     "GetMigrationWorkflowRequest",
     "GreenplumDialect",
     "HiveQLDialect",
+    "LineageOutput",
     "ListMigrationSubtasksRequest",
     "ListMigrationSubtasksResponse",
     "ListMigrationWorkflowsRequest",
@@ -158,6 +161,7 @@ __all__ = (
     "SuggestionConfig",
     "SuggestionStep",
     "TargetSpec",
+    "TaskOutput",
     "TeradataDialect",
     "TimeInterval",
     "TimeSeries",

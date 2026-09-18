@@ -111,6 +111,11 @@ class StreamedResultSet(object):
     def _merge_values(self, values):
         """Merge values into rows.
 
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check.
+
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set."""
         decoders = self._decoders
@@ -131,10 +136,6 @@ class StreamedResultSet(object):
                     index = 0
         else:
             for value in values:
-                # Note: We manually check value.HasField("null_value") here instead of
-                # wrapping every decoder in _parse_nullable to avoid the overhead of
-                # an extra Python function call layer for every cell value decoded in this loop.
-                # If the nullable check logic is updated in _parse_nullable, update this check.
                 if value.HasField("null_value"):
                     current_row_append(None)
                 else:
@@ -168,9 +169,9 @@ class StreamedResultSet(object):
 
     def __iter__(self):
         while True:
-            iter_rows, self._rows[:] = (self._rows[:], ())
-            while iter_rows:
-                yield iter_rows.pop(0)
+            iter_rows, self._rows = (self._rows, [])
+            for row in iter_rows:
+                yield row
             if self._done:
                 return
             try:
@@ -184,8 +185,7 @@ class StreamedResultSet(object):
            The array that is returned by this function is the same as the array
            that would have been returned by the rows iterator if ``lazy_decoding=False``.
 
-        :returns: an array containing the decoded values of all the columns in the given row
-        """
+        :returns: an array containing the decoded values of all the columns in the given row"""
         if not hasattr(row, "__len__"):
             raise TypeError("row", "row must be an array of protobuf values")
         decoders = self._decoders

@@ -28,7 +28,7 @@ description = "Google Cloud Sql API client library"
 
 version = None
 
-with open(os.path.join(package_root, "google/cloud/sql/gapic_version.py")) as fp:
+with open(os.path.join(package_root, "google/cloud/sqladmin/gapic_version.py")) as fp:
     version_candidates = re.findall(
         r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
         fp.read(),

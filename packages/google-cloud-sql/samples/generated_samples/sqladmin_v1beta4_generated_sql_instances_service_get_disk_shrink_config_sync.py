@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 def sample_get_disk_shrink_config():
     # Create a client
-    client = sql_v1beta4.SqlInstancesServiceClient()
+    client = sqladmin_v1beta4.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlInstancesGetDiskShrinkConfigRequest()
+    request = sqladmin_v1beta4.SqlInstancesGetDiskShrinkConfigRequest()
 
     # Make the request
     response = client.get_disk_shrink_config(request=request)

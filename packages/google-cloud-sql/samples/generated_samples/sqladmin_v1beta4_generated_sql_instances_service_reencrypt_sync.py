@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1beta4
+from google.cloud import sqladmin_v1beta4
 
 
 def sample_reencrypt():
     # Create a client
-    client = sql_v1beta4.SqlInstancesServiceClient()
+    client = sqladmin_v1beta4.SqlInstancesServiceClient()
 
     # Initialize request argument(s)
-    request = sql_v1beta4.SqlInstancesReencryptRequest()
+    request = sqladmin_v1beta4.SqlInstancesReencryptRequest()
 
     # Make the request
     response = client.reencrypt(request=request)

@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.40.0...google-cloud-pubsub-v2.41.0) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.2...google-cloud-pubsub-v2.40.0) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
 ## [2.39.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.1...google-cloud-pubsub-v2.39.2) (2026-08-21)
 
 

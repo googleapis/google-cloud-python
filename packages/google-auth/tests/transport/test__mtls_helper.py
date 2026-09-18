@@ -18,9 +18,10 @@ import sys
 import tempfile
 from unittest import mock
 
+import pytest  # type: ignore  # type: ignore
+import urllib3.util
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
-import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -548,9 +549,7 @@ class TestGetWorkloadCertAndKey(object):
         assert actual_cert is None
         assert actual_key is None
 
-    @mock.patch(
-        "google.auth.transport._mtls_helper._load_json_file", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
@@ -559,9 +558,7 @@ class TestGetWorkloadCertAndKey(object):
         "google.auth.transport._mtls_helper._read_cert_and_key_files",
         autospec=True,
     )  # noqa: E501
-    @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
     def test_no_workload_fallback_to_home(
         self,
         mock_path_exists,
@@ -611,13 +608,9 @@ class TestGetWorkloadCertAndKey(object):
         mock_load_json_file.assert_has_calls(
             [mock.call(ecp_path), mock.call(home_path)]
         )
-        mock_read_cert_and_key_files.assert_called_once_with(
-            "cert/path", "key/path"
-        )  # noqa: E501
+        mock_read_cert_and_key_files.assert_called_once_with("cert/path", "key/path")  # noqa: E501
 
-    @mock.patch(
-        "google.auth.transport._mtls_helper._load_json_file", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
@@ -626,9 +619,7 @@ class TestGetWorkloadCertAndKey(object):
         "google.auth.transport._mtls_helper._read_cert_and_key_files",
         autospec=True,
     )  # noqa: E501
-    @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
     def test_no_workload_fallback_to_home_error(
         self,
         mock_path_exists,
@@ -669,16 +660,12 @@ class TestGetWorkloadCertAndKey(object):
         )
         mock_read_cert_and_key_files.assert_not_called()
 
-    @mock.patch(
-        "google.auth.transport._mtls_helper._load_json_file", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
     )
-    @mock.patch(
-        "google.auth.transport._mtls_helper.path.exists", autospec=True
-    )  # noqa: E501
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
     @mock.patch("os.path.normpath", autospec=True)
     def test_no_workload_fallback_avoided_same_path_normalization(
         self,
@@ -712,9 +699,7 @@ class TestGetWorkloadCertAndKey(object):
             "google.auth._cloud_sdk.get_config_path",
             return_value="C:\\Users\\User\\.config\\gcloud",
         ):
-            actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(
-                None
-            )  # noqa: E501
+            actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(None)  # noqa: E501
 
         assert actual_cert is None
         assert actual_key is None
@@ -1302,8 +1287,9 @@ class TestSecureCertKeyPaths(object):
         )
         mock_memfd_cm.return_value = mock_memfd_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()),
         ):
             with _mtls_helper.secure_cert_key_paths(
                 pytest.public_cert_bytes,
@@ -1368,9 +1354,10 @@ class TestSecureCertKeyPaths(object):
         )
         mock_tempfile_cm.return_value = mock_tempfile_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
-        ) as mock_open:
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()) as mock_open,
+        ):
             mock_open.side_effect = PermissionError("Permission denied")
 
             with _mtls_helper.secure_cert_key_paths(
@@ -1888,3 +1875,80 @@ class TestSecureWipeAndRemove(object):
         mock_fh.flush.assert_called_once()
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
+
+
+class TestIsMtlsEndpoint(object):
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://mtls.googleapis.com",
+            "https://mtls.googleapis.com/",
+            "https://mtls.googleapis.com/v1/projects",
+            "https://mtls.sandbox.googleapis.com",
+            "https://mtls.sandbox.googleapis.com/v1/projects",
+            "https://pubsub.mtls.googleapis.com",
+            "https://pubsub.mtls.googleapis.com/v1/projects/my-project",
+            "https://storage.mtls.sandbox.googleapis.com/b/my-bucket",
+            "https://my-service.us-east1.rep.mtls.googleapis.com/v1",
+            "https://my-service.us-east1.rep.mtls.sandbox.googleapis.com/v1",
+            "https://storage.p.googleapis.com/b/my-bucket",
+            "https://my-custom-endpoint.p.googleapis.com/v1",
+            "https://my-service.us-east1.p.googleapis.com/v1",
+            "HTTP://PUBSUB.MTLS.GOOGLEAPIS.COM/V1",
+            b"https://pubsub.mtls.googleapis.com",
+            b"https://storage.p.googleapis.com/b/my-bucket",
+            urllib3.util.parse_url("https://pubsub.mtls.googleapis.com/v1"),
+            urllib3.util.parse_url("https://storage.p.googleapis.com/b/my-bucket"),
+            "https://pubsub.mtls.googleapis.com.",
+            "https://storage.p.googleapis.com./b/my-bucket",
+            "https://mtls.googleapis.com.",
+            "https://pubsub.mtls.googleapis.com:443/v1",
+            "https://pubsub.mtls.googleapis.com:8443/v1",
+            "https://storage.p.googleapis.com:443/b/my-bucket",
+            "https://pubsub.mtls.googleapis.com/v1/projects?pageSize=10#frag",
+            "https://pubsub.mtls.googleapis.com:443/v1/projects?pageSize=10&filter=foo#frag",
+            "https://storage.p.googleapis.com:443/b/my-bucket?param=1#section",
+            "https://mtls.googleapis.com:443/",
+            "https://p.googleapis.com",
+            "https://p.googleapis.com/",
+            "https://p.googleapis.com:443/v1",
+            "https://p.googleapis.com.",
+        ],
+    )
+    def test_is_mtls_endpoint_true(self, url):
+        assert _mtls_helper.is_mtls_endpoint(url) is True
+
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://storage.googleapis.com",
+            "https://storage.googleapis.com.",
+            "https://storage.googleapis.com:443/b/my-bucket",
+            "https://storage.googleapis.com:443/bucket/mtls.googleapis.com?pageSize=10#frag",
+            "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://[2001:db8::1]:443/mtls.googleapis.com",
+            "https://[::1]:8443/mtls.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=mtls.sandbox.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=service.p.googleapis.com",
+            "https://example.com/mtls.googleapis.com",
+            "https://fake-mtls.googleapis.com.attacker.com/v1",
+            "https://fake-p.googleapis.com.attacker.com/v1",
+            "http://localhost:8080/",
+            "http://localhost:8080/mtls.googleapis.com",
+            b"https://storage.googleapis.com",
+            b"https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            b"\xff\xfeinvalid",
+            urllib3.util.parse_url("https://storage.googleapis.com/b/my-bucket"),
+            urllib3.util.parse_url(
+                "https://storage.googleapis.com/bucket/mtls.googleapis.com"
+            ),
+            "https://.",
+            "",
+            None,
+            123,
+            "not a url",
+        ],
+    )
+    def test_is_mtls_endpoint_false(self, url):
+        assert _mtls_helper.is_mtls_endpoint(url) is False

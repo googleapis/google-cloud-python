@@ -123,6 +123,11 @@ class StreamedResultSet(object):
     def _merge_values(self, values):
         """Merge values into rows.
 
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check.
+
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set.
         """
@@ -193,9 +198,9 @@ class StreamedResultSet(object):
     @CrossSync.convert(sync_name="__iter__")
     async def __aiter__(self):
         while True:
-            iter_rows, self._rows[:] = self._rows[:], ()
-            while iter_rows:
-                yield iter_rows.pop(0)
+            iter_rows, self._rows = self._rows, []
+            for row in iter_rows:
+                yield row
             if self._done:
                 return
             try:
