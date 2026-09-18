@@ -232,6 +232,14 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_refs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_refs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_fetch_tree(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -1428,6 +1436,56 @@ class SecureSourceManagerRestInterceptor:
         `post_fetch_blob` interceptor. The (possibly modified) response returned by
         `post_fetch_blob` will be passed to
         `post_fetch_blob_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_refs(
+        self,
+        request: secure_source_manager.FetchRefsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_refs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_fetch_refs(
+        self, response: secure_source_manager.FetchRefsResponse
+    ) -> secure_source_manager.FetchRefsResponse:
+        """Post-rpc interceptor for fetch_refs
+
+        DEPRECATED. Please use the `post_fetch_refs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_fetch_refs` interceptor runs
+        before the `post_fetch_refs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_refs_with_metadata(
+        self,
+        response: secure_source_manager.FetchRefsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_refs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_refs_with_metadata`
+        interceptor in new development instead of the `post_fetch_refs` interceptor.
+        When both interceptors are used, this `post_fetch_refs_with_metadata` interceptor runs after the
+        `post_fetch_refs` interceptor. The (possibly modified) response returned by
+        `post_fetch_refs` will be passed to
+        `post_fetch_refs_with_metadata`.
         """
         return response, metadata
 
@@ -6280,6 +6338,157 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "FetchBlob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchRefs(
+        _BaseSecureSourceManagerRestTransport._BaseFetchRefs,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.FetchRefs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.FetchRefsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.FetchRefsResponse:
+            r"""Call the fetch refs method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.FetchRefsRequest):
+                    The request object. Request message for fetching git
+                references from a repository.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.FetchRefsResponse:
+                    Response message containing a list of
+                git references.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseFetchRefs._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_fetch_refs(request, metadata)
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseSecureSourceManagerRestTransport._BaseFetchRefs,
+                    "_BaseFetchRefs__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.FetchRefs",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchRefs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._FetchRefs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.FetchRefsResponse()
+            pb_resp = secure_source_manager.FetchRefsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_refs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_refs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.FetchRefsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.fetch_refs",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchRefs",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -11580,6 +11789,17 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchBlob(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_refs(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchRefsRequest],
+        secure_source_manager.FetchRefsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchRefs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def fetch_tree(

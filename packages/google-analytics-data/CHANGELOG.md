@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-analytics-data/#history
 
+## [0.23.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.23.0...google-analytics-data-v0.23.1) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
 ## [0.23.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.22.0...google-analytics-data-v0.23.0) (2026-06-02)
 
 

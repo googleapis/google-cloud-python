@@ -539,48 +539,49 @@ class Transaction(_SnapshotBase, _BatchBase):
             is_inline_begin = True
             await self._lock.acquire()
 
-        execute_sql_request = ExecuteSqlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            sql=dml,
-            params=params_pb,
-            param_types=param_types,
-            query_mode=query_mode,
-            query_options=query_options,
-            seqno=seqno,
-            request_options=request_options,
-            last_statement=last_statement,
-        )
-
-        nth_request = database._next_nth_request
-        attempt = 0
-
-        async def wrapped_method(request=execute_sql_request, span=None):
-            nonlocal attempt
-            attempt += 1
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt, metadata, span
+        try:
+            execute_sql_request = ExecuteSqlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                sql=dml,
+                params=params_pb,
+                param_types=param_types,
+                query_mode=query_mode,
+                query_options=query_options,
+                seqno=seqno,
+                request_options=request_options,
+                last_statement=last_statement,
             )
-            with error_augmenter:
-                return await api.execute_sql(
-                    request=request,
-                    metadata=call_metadata,
-                    retry=retry,
-                    timeout=timeout,
+
+            nth_request = database._next_nth_request
+            attempt = 0
+
+            async def wrapped_method(request=execute_sql_request, span=None):
+                nonlocal attempt
+                attempt += 1
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt, metadata, span
                 )
+                with error_augmenter:
+                    return await api.execute_sql(
+                        request=request,
+                        metadata=call_metadata,
+                        retry=retry,
+                        timeout=timeout,
+                    )
 
-        result_set_pb: ResultSet = await self._execute_request(
-            wrapped_method,
-            execute_sql_request,
-            metadata,
-            f"CloudSpanner.{type(self).__name__}.execute_update",
-            trace_attributes,
-        )
+            result_set_pb: ResultSet = await self._execute_request(
+                wrapped_method,
+                execute_sql_request,
+                metadata,
+                f"CloudSpanner.{type(self).__name__}.execute_update",
+                trace_attributes,
+            )
 
-        self._update_for_result_set_pb(result_set_pb)
-
-        if is_inline_begin:
-            self._lock.release()
+            self._update_for_result_set_pb(result_set_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
 
         if result_set_pb._pb.HasField("precommit_token"):
             await self._update_for_precommit_token_pb(result_set_pb.precommit_token)
@@ -698,44 +699,45 @@ class Transaction(_SnapshotBase, _BatchBase):
             is_inline_begin = True
             await self._lock.acquire()
 
-        execute_batch_dml_request = ExecuteBatchDmlRequest(
-            session=session.name,
-            transaction=self._build_transaction_selector_pb(),
-            statements=parsed,
-            seqno=seqno,
-            request_options=request_options,
-            last_statements=last_statement,
-        )
-
-        nth_request = database._next_nth_request
-        attempt = 0
-
-        async def wrapped_method(request=execute_batch_dml_request, span=None):
-            nonlocal attempt
-            attempt += 1
-            call_metadata, error_augmenter = database.with_error_augmentation(
-                nth_request, attempt, metadata, span
+        try:
+            execute_batch_dml_request = ExecuteBatchDmlRequest(
+                session=session.name,
+                transaction=self._build_transaction_selector_pb(),
+                statements=parsed,
+                seqno=seqno,
+                request_options=request_options,
+                last_statements=last_statement,
             )
-            with error_augmenter:
-                return await api.execute_batch_dml(
-                    request=request,
-                    metadata=call_metadata,
-                    retry=retry,
-                    timeout=timeout,
+
+            nth_request = database._next_nth_request
+            attempt = 0
+
+            async def wrapped_method(request=execute_batch_dml_request, span=None):
+                nonlocal attempt
+                attempt += 1
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request, attempt, metadata, span
                 )
+                with error_augmenter:
+                    return await api.execute_batch_dml(
+                        request=request,
+                        metadata=call_metadata,
+                        retry=retry,
+                        timeout=timeout,
+                    )
 
-        response_pb: ExecuteBatchDmlResponse = await self._execute_request(
-            wrapped_method,
-            execute_batch_dml_request,
-            metadata,
-            "CloudSpanner.DMLTransaction",
-            trace_attributes,
-        )
+            response_pb: ExecuteBatchDmlResponse = await self._execute_request(
+                wrapped_method,
+                execute_batch_dml_request,
+                metadata,
+                "CloudSpanner.DMLTransaction",
+                trace_attributes,
+            )
 
-        self._update_for_execute_batch_dml_response_pb(response_pb)
-
-        if is_inline_begin:
-            self._lock.release()
+            self._update_for_execute_batch_dml_response_pb(response_pb)
+        finally:
+            if is_inline_begin:
+                self._lock.release()
 
         if (
             len(response_pb.result_sets) > 0

@@ -4399,6 +4399,9 @@ def test_insert_rest_call_success(request_type):
                 "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
+            "dynamic_compression_policy": {
+                "compression_mode": "compression_mode_value"
+            },
             "fault_injection_policy": {
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
@@ -5242,6 +5245,9 @@ def test_patch_rest_call_success(request_type):
                 "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
+            "dynamic_compression_policy": {
+                "compression_mode": "compression_mode_value"
+            },
             "fault_injection_policy": {
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
@@ -5917,6 +5923,9 @@ def test_update_rest_call_success(request_type):
                 "expose_headers": ["expose_headers_value1", "expose_headers_value2"],
                 "max_age": 722,
             },
+            "dynamic_compression_policy": {
+                "compression_mode": "compression_mode_value"
+            },
             "fault_injection_policy": {
                 "abort": {"http_status": 1219, "percentage": 0.10540000000000001},
                 "delay": {"fixed_delay": {}, "percentage": 0.10540000000000001},
@@ -6391,6 +6400,9 @@ def test_validate_rest_call_success(request_type):
                         "expose_headers_value2",
                     ],
                     "max_age": 722,
+                },
+                "dynamic_compression_policy": {
+                    "compression_mode": "compression_mode_value"
                 },
                 "fault_injection_policy": {
                     "abort": {"http_status": 1219, "percentage": 0.10540000000000001},

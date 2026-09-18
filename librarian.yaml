@@ -16,8 +16,8 @@ version: v0.42.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 5cbe99334de40143f64b32e805dd8cfe38ef11d5
-    sha256: d7703651093e08c99568de99792c2372cb595ab739d01dd6d75254563ab4d7bf
+    commit: 2820f045329fc1d000570aee6a39226c3382b2e2
+    sha256: 2c82a62b685cb73f44c78a5b91d561f83b9bac4a3057dd108e43e61b3cfc0585
 tools:
   pip:
     - name: black
@@ -100,13 +100,13 @@ libraries:
     python:
       library_type: OTHER
   - name: google-ads-admanager
-    version: 0.10.4
+    version: 0.10.5
     apis:
       - path: google/ads/admanager/v1
     python:
       default_version: v1
   - name: google-ads-datamanager
-    version: 0.9.2
+    version: 0.9.3
     apis:
       - path: google/ads/datamanager/v1
     python:
@@ -144,7 +144,7 @@ libraries:
       metadata_name_override: analyticsadmin
       default_version: v1alpha
   - name: google-analytics-data
-    version: 0.23.0
+    version: 0.23.1
     apis:
       - path: google/analytics/data/v1beta
       - path: google/analytics/data/v1alpha
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.37.0
+    version: 2.38.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -182,7 +182,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-meet
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/apps/meet/v2
       - path: google/apps/meet/v2beta
@@ -350,7 +350,7 @@ libraries:
       metadata_name_override: connectors
       default_version: v1
   - name: google-cloud-api-gateway
-    version: 1.16.0
+    version: 1.17.0
     apis:
       - path: google/cloud/apigateway/v1
     python:
@@ -476,7 +476,7 @@ libraries:
       metadata_name_override: auditlog
       default_version: apiVersion
   - name: google-cloud-auditmanager
-    version: 0.3.1
+    version: 0.3.2
     apis:
       - path: google/cloud/auditmanager/v1
     python:
@@ -496,9 +496,10 @@ libraries:
       metadata_name_override: automl
       default_version: v1
   - name: google-cloud-backupdr
-    version: 0.10.1
+    version: 0.10.2
     apis:
       - path: google/cloud/backupdr/v1
+      - path: google/cloud/backupdr/v1beta
     python:
       metadata_name_override: backupdr
       default_version: v1
@@ -569,7 +570,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.45.1
+    version: 3.45.2
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -663,7 +664,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.45.0
+    version: 2.46.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -797,7 +798,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.53.0
+    version: 1.54.0
     preview:
       version: 1.51.0-preview.1
       apis:
@@ -808,7 +809,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.5
+    version: 0.12.6
     apis:
       - path: google/cloud/compute/v1beta
     python:
@@ -1015,7 +1016,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-devicestreaming
-    version: 0.5.0
+    version: 0.5.1
     apis:
       - path: google/cloud/devicestreaming/v1
     python:
@@ -1047,7 +1048,7 @@ libraries:
       metadata_name_override: dialogflow-cx
       default_version: v3
   - name: google-cloud-discoveryengine
-    version: 0.20.3
+    version: 0.20.4
     apis:
       - path: google/cloud/discoveryengine/v1
       - path: google/cloud/discoveryengine/v1beta
@@ -1173,7 +1174,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.30.0
+    version: 2.31.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1374,7 +1375,7 @@ libraries:
       metadata_name_override: ids
       default_version: v1
   - name: google-cloud-kms
-    version: 3.16.0
+    version: 3.17.0
     apis:
       - path: google/cloud/kms/v1
     python:
@@ -1582,12 +1583,15 @@ libraries:
       metadata_name_override: networksecurity
       default_version: v1
   - name: google-cloud-network-services
-    version: 0.10.2
+    version: 0.10.3
     apis:
       - path: google/cloud/networkservices/v1
+      - path: google/cloud/networkservices/v1beta1
     python:
       opt_args_by_api:
         google/cloud/networkservices/v1:
+          - python-gapic-name=network_services
+        google/cloud/networkservices/v1beta1:
           - python-gapic-name=network_services
       metadata_name_override: networkservices
       default_version: v1
@@ -1737,7 +1741,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.40.0
+    version: 2.41.0
     apis:
       - path: google/pubsub/v1
     python:
@@ -1861,7 +1865,7 @@ libraries:
       metadata_name_override: secretmanager
       default_version: v1
   - name: google-cloud-securesourcemanager
-    version: 0.6.1
+    version: 0.6.2
     apis:
       - path: google/cloud/securesourcemanager/v1
     python:
@@ -2000,6 +2004,10 @@ libraries:
           - python-gapic-name=spanner
       metadata_name_override: spanner
       default_version: v1
+  - name: google-cloud-spanner-dbapi-driver
+    version: 0.0.0
+    python:
+      library_type: INTEGRATION
   - name: google-cloud-speech
     version: 2.40.0
     apis:
@@ -2428,7 +2436,7 @@ libraries:
       metadata_name_override: routing
       default_version: v2
   - name: google-maps-solar
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/maps/solar/v1
     python:

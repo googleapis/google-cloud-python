@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.30.0...google-cloud-firestore-v2.31.0) (2026-09-17)
+
+
+### Features
+
+* **firestore:** add BSONInt32 support ([#18388](https://github.com/googleapis/google-cloud-python/issues/18388)) ([136d4b9](https://github.com/googleapis/google-cloud-python/commit/136d4b95a6231dddfb59c76d2e2a1c5ea7fc84aa))
+* **firestore:** add BSONMinKey and BSONMaxKey support ([#18385](https://github.com/googleapis/google-cloud-python/issues/18385)) ([9a1fb24](https://github.com/googleapis/google-cloud-python/commit/9a1fb24d2b5554a8d34261dc7687b2ec8184f57d))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.29.0...google-cloud-firestore-v2.30.0) (2026-09-03)
 
 

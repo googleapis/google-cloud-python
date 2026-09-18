@@ -59,6 +59,7 @@ Services for Google Cloud Compute v1 API
     packet_mirrorings
     preview_features
     projects
+    project_views
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers

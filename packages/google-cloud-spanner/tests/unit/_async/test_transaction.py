@@ -834,6 +834,25 @@ class TestTransaction(OpenTelemetryBase):
         with pytest.raises(RuntimeError):
             await transaction.execute_update(DML_QUERY)
 
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
+    async def test_execute_update_inline_begin_error_releases_lock(self, mock_region):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_sql.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        self.assertIsNone(transaction._transaction_id)
+        self.assertFalse(transaction._lock.locked())
+
+        with pytest.raises(RuntimeError):
+            await transaction.execute_update(DML_QUERY)
+
+        self.assertFalse(transaction._lock.locked())
+
     async def _execute_update_helper(
         self,
         count=0,
@@ -1125,6 +1144,25 @@ class TestTransaction(OpenTelemetryBase):
 
         with pytest.raises(RuntimeError):
             await transaction.batch_update(statements=[DML_QUERY])
+
+    @mock.patch(
+        "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
+        return_value="global",
+    )
+    @CrossSync.pytest
+    async def test_batch_update_inline_begin_error_releases_lock(self, mock_region):
+        database = _Database()
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_batch_dml.side_effect = RuntimeError()
+        session = _Session(database)
+        transaction = self._make_one(session)
+        self.assertIsNone(transaction._transaction_id)
+        self.assertFalse(transaction._lock.locked())
+
+        with pytest.raises(RuntimeError):
+            await transaction.batch_update(statements=[DML_QUERY])
+
+        self.assertFalse(transaction._lock.locked())
 
     async def _batch_update_helper(
         self,
