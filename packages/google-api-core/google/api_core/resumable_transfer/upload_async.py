@@ -690,6 +690,12 @@ class AsyncResumableUploadSession:
                 discard_len = received - chunk_start
                 self._buffered_chunk = self._buffered_chunk[discard_len:]
                 self._buffered_chunk_offset = received
+                # When the server confirms receipt of the entire buffered chunk
+                # (received == chunk_end), slicing leaves a 0-length memoryview.
+                # Reset _buffered_chunk to None so the next upload attempt reads
+                # the next chunk from the stream instead of sending an empty buffer.
+                if len(self._buffered_chunk) == 0:
+                    self._buffered_chunk = None
                 return status_code, resp_headers, body
 
         self._buffered_chunk = None
