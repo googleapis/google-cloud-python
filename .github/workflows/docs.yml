@@ -25,23 +25,8 @@ env:
   PARALLEL_WORKERS: "4"
 
 jobs:
-  check_changes:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    outputs:
-      run_docfx: ${{ steps.filter.outputs.docfx }}
-    steps:
-    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-      with:
-        persist-credentials: false
-    - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
-      id: filter
-      with:
-        filters: |
-          docfx:
-            - '.github/workflows/docs.yml'
-
   docs:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -62,7 +47,7 @@ jobs:
         python -m pip install nox uv
     - name: Run docs
       env:
-        BUILD_TYPE: ${{ github.event_name == 'push' && 'continuous' || 'presubmit' }}
+        BUILD_TYPE: presubmit
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docs
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
@@ -71,12 +56,7 @@ jobs:
         ci/run_conditional_tests.sh
 
   docfx:
-    needs: [check_changes]
-    if: >-
-      always() && (
-        (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-        needs.check_changes.outputs.run_docfx == 'true'
-      )
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -100,7 +80,7 @@ jobs:
         python -m pip install nox uv
     - name: Run docfx
       env:
-        BUILD_TYPE: ${{ github.event_name == 'push' && 'continuous' || 'presubmit' }}
+        BUILD_TYPE: continuous
         TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docfx
         CONTINUE_ON_ERROR: "true"
