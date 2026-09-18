@@ -88,6 +88,11 @@
                 "calendar_mode"
               ]
             },
+            "CalendarModeExtension": {
+              "methods": [
+                "calendar_mode_extension"
+              ]
+            },
             "Capacity": {
               "methods": [
                 "capacity"
@@ -352,6 +357,45 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DhcpOptionsConfigs": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DhcpOptionsConfigsClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -897,6 +941,25 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "GlobalFrontendSettingsService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "GlobalFrontendSettingsServiceClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             }
           }
@@ -1663,6 +1726,11 @@
                 "get_shielded_vm_identity"
               ]
             },
+            "GetVmExtensionState": {
+              "methods": [
+                "get_vm_extension_state"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -1676,6 +1744,11 @@
             "ListReferrers": {
               "methods": [
                 "list_referrers"
+              ]
+            },
+            "ListVmExtensionStates": {
+              "methods": [
+                "list_vm_extension_states"
               ]
             },
             "PatchPartnerMetadata": {
@@ -3047,6 +3120,25 @@
         }
       }
     },
+    "OrganizationSnapshotRecycleBinPolicy": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OrganizationSnapshotRecycleBinPolicyClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            }
+          }
+        }
+      }
+    },
     "PacketMirrorings": {
       "clients": {
         "rest": {
@@ -3300,6 +3392,50 @@
             "Withdraw": {
               "methods": [
                 "withdraw"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RecoverableSnapshots": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RecoverableSnapshotsClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Recover": {
+              "methods": [
+                "recover"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }
@@ -4751,6 +4887,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -4769,6 +4910,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "TestIamPermissions": {
@@ -5055,6 +5201,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetHealth": {
+              "methods": [
+                "get_health"
               ]
             },
             "GetVersion": {
@@ -5646,6 +5797,25 @@
         }
       }
     },
+    "SnapshotRecycleBinPolicyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "SnapshotRecycleBinPolicyServiceClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SnapshotSettingsService": {
       "clients": {
         "rest": {
@@ -5683,6 +5853,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetEffectiveRecycleBinRule": {
+              "methods": [
+                "get_effective_recycle_bin_rule"
               ]
             },
             "GetIamPolicy": {
@@ -5783,6 +5958,11 @@
                 "get"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -5801,6 +5981,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "TestIamPermissions": {

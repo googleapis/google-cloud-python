@@ -224,6 +224,14 @@ class InstancesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_vm_extension_state(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_vm_extension_state(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -245,6 +253,14 @@ class InstancesRestInterceptor:
                 return request, metadata
 
             def post_list_referrers(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_vm_extension_states(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_vm_extension_states(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1433,6 +1449,55 @@ class InstancesRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_vm_extension_state(
+        self,
+        request: compute.GetVmExtensionStateInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetVmExtensionStateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_vm_extension_state
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Instances server.
+        """
+        return request, metadata
+
+    def post_get_vm_extension_state(
+        self, response: compute.VmExtensionState
+    ) -> compute.VmExtensionState:
+        """Post-rpc interceptor for get_vm_extension_state
+
+        DEPRECATED. Please use the `post_get_vm_extension_state_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Instances server but before
+        it is returned to user code. This `post_get_vm_extension_state` interceptor runs
+        before the `post_get_vm_extension_state_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_vm_extension_state_with_metadata(
+        self,
+        response: compute.VmExtensionState,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.VmExtensionState, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_vm_extension_state
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_get_vm_extension_state_with_metadata`
+        interceptor in new development instead of the `post_get_vm_extension_state` interceptor.
+        When both interceptors are used, this `post_get_vm_extension_state_with_metadata` interceptor runs after the
+        `post_get_vm_extension_state` interceptor. The (possibly modified) response returned by
+        `post_get_vm_extension_state` will be passed to
+        `post_get_vm_extension_state_with_metadata`.
+        """
+        return response, metadata
+
     def pre_insert(
         self,
         request: compute.InsertInstanceRequest,
@@ -1566,6 +1631,57 @@ class InstancesRestInterceptor:
         `post_list_referrers` interceptor. The (possibly modified) response returned by
         `post_list_referrers` will be passed to
         `post_list_referrers_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_vm_extension_states(
+        self,
+        request: compute.ListVmExtensionStatesInstancesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListVmExtensionStatesInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_vm_extension_states
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Instances server.
+        """
+        return request, metadata
+
+    def post_list_vm_extension_states(
+        self, response: compute.ListVmExtensionStatesResponse
+    ) -> compute.ListVmExtensionStatesResponse:
+        """Post-rpc interceptor for list_vm_extension_states
+
+        DEPRECATED. Please use the `post_list_vm_extension_states_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Instances server but before
+        it is returned to user code. This `post_list_vm_extension_states` interceptor runs
+        before the `post_list_vm_extension_states_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_vm_extension_states_with_metadata(
+        self,
+        response: compute.ListVmExtensionStatesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListVmExtensionStatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_vm_extension_states
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Instances server but before it is returned to user code.
+
+        We recommend only using this `post_list_vm_extension_states_with_metadata`
+        interceptor in new development instead of the `post_list_vm_extension_states` interceptor.
+        When both interceptors are used, this `post_list_vm_extension_states_with_metadata` interceptor runs after the
+        `post_list_vm_extension_states` interceptor. The (possibly modified) response returned by
+        `post_list_vm_extension_states` will be passed to
+        `post_list_vm_extension_states_with_metadata`.
         """
         return response, metadata
 
@@ -6427,6 +6543,155 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                 )
             return resp
 
+    class _GetVmExtensionState(
+        _BaseInstancesRestTransport._BaseGetVmExtensionState, InstancesRestStub
+    ):
+        def __hash__(self):
+            return hash("InstancesRestTransport.GetVmExtensionState")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.GetVmExtensionStateInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.VmExtensionState:
+            r"""Call the get vm extension state method over HTTP.
+
+            Args:
+                request (~.compute.GetVmExtensionStateInstanceRequest):
+                    The request object. A request message for
+                Instances.GetVmExtensionState. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.VmExtensionState:
+                    State of an extension on an instance.
+            """
+
+            http_options = (
+                _BaseInstancesRestTransport._BaseGetVmExtensionState._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_get_vm_extension_state(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseInstancesRestTransport._BaseGetVmExtensionState,
+                    "_BaseGetVmExtensionState__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.InstancesClient.GetVmExtensionState",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Instances",
+                        "rpcName": "GetVmExtensionState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstancesRestTransport._GetVmExtensionState._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.VmExtensionState()
+            pb_resp = compute.VmExtensionState.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_vm_extension_state(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_vm_extension_state_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.VmExtensionState.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.InstancesClient.get_vm_extension_state",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Instances",
+                        "rpcName": "GetVmExtensionState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _Insert(_BaseInstancesRestTransport._BaseInsert, InstancesRestStub):
         def __hash__(self):
             return hash("InstancesRestTransport.Insert")
@@ -6883,6 +7148,155 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                     extra={
                         "serviceName": "google.cloud.compute.v1beta.Instances",
                         "rpcName": "ListReferrers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListVmExtensionStates(
+        _BaseInstancesRestTransport._BaseListVmExtensionStates, InstancesRestStub
+    ):
+        def __hash__(self):
+            return hash("InstancesRestTransport.ListVmExtensionStates")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.ListVmExtensionStatesInstancesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.ListVmExtensionStatesResponse:
+            r"""Call the list vm extension states method over HTTP.
+
+            Args:
+                request (~.compute.ListVmExtensionStatesInstancesRequest):
+                    The request object. A request message for
+                Instances.ListVmExtensionStates. See the
+                method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.ListVmExtensionStatesResponse:
+
+            """
+
+            http_options = _BaseInstancesRestTransport._BaseListVmExtensionStates._get_http_options()
+            request, metadata = self._interceptor.pre_list_vm_extension_states(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseInstancesRestTransport._BaseListVmExtensionStates,
+                    "_BaseListVmExtensionStates__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.InstancesClient.ListVmExtensionStates",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Instances",
+                        "rpcName": "ListVmExtensionStates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstancesRestTransport._ListVmExtensionStates._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.ListVmExtensionStatesResponse()
+            pb_resp = compute.ListVmExtensionStatesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_vm_extension_states(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_vm_extension_states_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.ListVmExtensionStatesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.InstancesClient.list_vm_extension_states",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.Instances",
+                        "rpcName": "ListVmExtensionStates",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -13051,6 +13465,16 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
         return self._GetShieldedVmIdentity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_vm_extension_state(
+        self,
+    ) -> Callable[
+        [compute.GetVmExtensionStateInstanceRequest], compute.VmExtensionState
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetVmExtensionState(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def insert(self) -> Callable[[compute.InsertInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -13071,6 +13495,17 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReferrers(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_vm_extension_states(
+        self,
+    ) -> Callable[
+        [compute.ListVmExtensionStatesInstancesRequest],
+        compute.ListVmExtensionStatesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListVmExtensionStates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def patch_partner_metadata(
