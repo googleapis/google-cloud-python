@@ -119,9 +119,12 @@ class ResumableUploadSession:
                 for the initial session creation request. Use this to customize
                 exponential backoff timing (such as ``Retry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                errors. Custom ``predicate`` functions apply only to transient API
+                errors (such as ``RETRYABLE_STATUS_CODES``); transport errors
+                (``ConnectionError``, ``ChunkedEncodingError``, ``Timeout``) always
+                retry, and terminal errors (``TERMINAL_ERRORS``: ``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
             start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
@@ -279,11 +282,17 @@ class ResumableUploadSession:
                 MissingStatusHeaderError) are also retried via recovery.
             custom_predicate: Optional callable taking an exception and returning True
                 if the error should be retried (from a user-supplied Retry instance).
-                When provided, this function is evaluated for non-terminal errors
-                while automatically preserving resumable upload state recovery.
-                Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                Custom predicates apply only to transient API errors (such as
+                ``RETRYABLE_STATUS_CODES``) and are evaluated after protocol-enforced
+                rules:
+                1. Terminal errors (``TERMINAL_ERRORS``: ``DeadlineExceeded``,
+                   ``TransferStalledError``, ``UploadCancelledError``, and
+                   ``UnseekableStreamError``) always return ``False``.
+                2. Protocol-recoverable errors during chunk transfer
+                   (``RECOVERABLE_STATUS_CODES`` and ``MissingStatusHeaderError``)
+                   and transport errors (``ConnectionError``,
+                   ``ChunkedEncodingError``, ``Timeout``) always return ``True`` so
+                   the session can query server state and recover.
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -300,11 +309,6 @@ class ResumableUploadSession:
                 )
             ):
                 return True
-            if (
-                custom_predicate is not None
-                and custom_predicate is not google.api_core.retry.if_transient_error
-            ):
-                return bool(custom_predicate(exc))
             if isinstance(exc, requests.exceptions.RequestException):
                 if isinstance(
                     exc,
@@ -315,6 +319,11 @@ class ResumableUploadSession:
                     ),
                 ):
                     return True
+            if (
+                custom_predicate is not None
+                and custom_predicate is not google.api_core.retry.if_transient_error
+            ):
+                return bool(custom_predicate(exc))
             if isinstance(exc, exceptions.GoogleAPICallError):
                 return exc.code in common.RETRYABLE_STATUS_CODES
             return False
@@ -771,14 +780,22 @@ class ResumableUploadSession:
         try:
             retryable_stream = retry_policy(attempt_stream)
             yield from retryable_stream()
-        except requests.exceptions.Timeout as exc:
-            self._enrich_exception(exc)
+        except (requests.exceptions.Timeout, exceptions.RetryError) as exc:
+            timeout_exc = (
+                exc.__cause__
+                if isinstance(exc, exceptions.RetryError)
+                and isinstance(exc.__cause__, requests.exceptions.Timeout)
+                else exc
+            )
+            if not isinstance(timeout_exc, requests.exceptions.Timeout):
+                raise
+            self._enrich_exception(timeout_exc)
             self._get_deadline_remaining()
             raise exceptions.TransferStalledError(
-                f"Upload stalled: chunk transfer timed out ({exc}).",
+                f"Upload stalled: chunk transfer timed out ({timeout_exc}).",
                 upload_url=self.upload_url,
                 chunk_size=self.chunk_size,
-            ) from exc
+            ) from timeout_exc
 
         if final_resp is None:
             raise ValueError("Upload completed without receiving a final response.")
@@ -809,9 +826,12 @@ class ResumableUploadSession:
             retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. Protocol recovery (such as server offset
-                synchronization on missing status headers) is preserved automatically,
-                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                API-specific transient errors. Custom ``predicate`` functions apply
+                only to transient API errors (such as ``RETRYABLE_STATUS_CODES``);
+                protocol-recoverable errors (``RECOVERABLE_STATUS_CODES``: 400, 412,
+                416; ``MissingStatusHeaderError``; and transport errors) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
@@ -861,9 +881,12 @@ class ResumableUploadSession:
             retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. Protocol recovery (such as server offset
-                synchronization on missing status headers) is preserved automatically,
-                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                API-specific transient errors. Custom ``predicate`` functions apply
+                only to transient API errors (such as ``RETRYABLE_STATUS_CODES``);
+                protocol-recoverable errors (``RECOVERABLE_STATUS_CODES``: 400, 412,
+                416; ``MissingStatusHeaderError``; and transport errors) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
@@ -926,9 +949,12 @@ class ResumableUploadSession:
             retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. Protocol recovery (such as server offset
-                synchronization on missing status headers) is preserved automatically,
-                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                API-specific transient errors. Custom ``predicate`` functions apply
+                only to transient API errors (such as ``RETRYABLE_STATUS_CODES``);
+                protocol-recoverable errors (``RECOVERABLE_STATUS_CODES``: 400, 412,
+                416; ``MissingStatusHeaderError``; and transport errors) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
@@ -978,9 +1004,12 @@ class ResumableUploadSession:
             retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. Protocol recovery (such as server offset
-                synchronization on missing status headers) is preserved automatically,
-                and terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                API-specific transient errors. Custom ``predicate`` functions apply
+                only to transient API errors (such as ``RETRYABLE_STATUS_CODES``);
+                protocol-recoverable errors (``RECOVERABLE_STATUS_CODES``: 400, 412,
+                416; ``MissingStatusHeaderError``; and transport errors) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.

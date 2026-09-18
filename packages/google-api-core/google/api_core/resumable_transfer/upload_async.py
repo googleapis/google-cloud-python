@@ -175,7 +175,10 @@ class AsyncResumableUploadSession:
                 for the initial session creation request. Use this to customize
                 exponential backoff timing (such as ``AsyncRetry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
+                errors. Custom ``predicate`` functions apply only to transient errors
+                (such as ``RETRYABLE_STATUS_CODES``); transport connection drops
+                (``aiohttp.ClientError``) always retry, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             start_timeout: Optional timeout in seconds for the start request.
@@ -331,11 +334,16 @@ class AsyncResumableUploadSession:
                 MissingStatusHeaderError) are also retried via recovery.
             custom_predicate: Optional callable taking an exception and returning True
                 if the error should be retried (from a user-supplied AsyncRetry instance).
-                When provided, this function is evaluated for non-terminal errors
-                while automatically preserving resumable upload state recovery.
-                Terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                Custom predicates apply only to transient errors (such as
+                ``RETRYABLE_STATUS_CODES``) and are evaluated after protocol-enforced
+                rules:
+                1. Terminal errors (``TERMINAL_ERRORS``: ``DeadlineExceeded``,
+                   ``TransferStalledError``, ``UploadCancelledError``, and
+                   ``UnseekableStreamError``) always return ``False``.
+                2. Protocol-recoverable errors during chunk transfer
+                   (``RECOVERABLE_STATUS_CODES`` and ``MissingStatusHeaderError``)
+                   and transport connection drops (``aiohttp.ClientError``) always
+                   return ``True`` so the session can query server state and recover.
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -352,13 +360,13 @@ class AsyncResumableUploadSession:
                 )
             ):
                 return True
+            if _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError):
+                return True
             if (
                 custom_predicate is not None
                 and custom_predicate is not google.api_core.retry.if_transient_error
             ):
                 return bool(custom_predicate(exc))
-            if _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError):
-                return True
             if isinstance(exc, exceptions.GoogleAPICallError):
                 return exc.code in common.RETRYABLE_STATUS_CODES
             return False
@@ -844,9 +852,12 @@ class AsyncResumableUploadSession:
                 ``AsyncStreamingRetry``) for chunk upload requests. Use this to
                 customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                Protocol recovery (such as server offset synchronization on
-                missing status headers) is preserved automatically, and terminal
-                errors (``DeadlineExceeded``, ``TransferStalledError``,
+                Custom ``predicate`` functions apply only to transient errors (such
+                as ``RETRYABLE_STATUS_CODES``); protocol-recoverable errors
+                (``RECOVERABLE_STATUS_CODES``: 400, 412, 416;
+                ``MissingStatusHeaderError``; and transport connection drops) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
@@ -935,9 +946,12 @@ class AsyncResumableUploadSession:
                 ``AsyncStreamingRetry``) for chunk upload requests. Use this to
                 customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                Protocol recovery (such as server offset synchronization on
-                missing status headers) is preserved automatically, and terminal
-                errors (``DeadlineExceeded``, ``TransferStalledError``,
+                Custom ``predicate`` functions apply only to transient errors (such
+                as ``RETRYABLE_STATUS_CODES``); protocol-recoverable errors
+                (``RECOVERABLE_STATUS_CODES``: 400, 412, 416;
+                ``MissingStatusHeaderError``; and transport connection drops) always
+                initiate server offset recovery, and terminal errors
+                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.

@@ -617,15 +617,14 @@ def test_single_layer_backoff_coordination():
 
 
 def test_connection_recovery_with_custom_retry_predicate():
-    """Verifies that Category 2 protocol errors initiate an offset query even with a custom retry predicate.
+    """Verifies that network connection drops initiate an offset query when a custom retry is set.
 
     Why this test is needed:
         Callers often supply a narrow custom retry predicate (such as retrying only
-        ``ServiceUnavailable``) to control Category 1 transient retries. However, Category 2
-        resumable upload state-consistency errors (``400``, ``412``, ``416``, and missing
-        status headers) require mandatory server offset synchronization (``query``) to
-        keep client and server offsets aligned. ``_get_retry_predicate`` must preserve
-        Category 2 protocol recovery even when a restrictive custom predicate is active.
+        ``ServiceUnavailable``) to control transient HTTP status retries. When a TCP
+        connection resets mid-chunk, the client cannot tell how many bytes the server
+        persisted and must issue an ``X-Goog-Upload-Command: query`` offset check.
+        Transport connection drops must remain recoverable even when a custom predicate is set.
     """
     transport = mock.Mock()
     start_resp = mock.Mock(
@@ -635,14 +634,6 @@ def test_connection_recovery_with_custom_retry_predicate():
             "X-Goog-Upload-Status": "active",
             "X-Goog-Upload-URL": "https://upload.example.com/s1",
         },
-    )
-    resp_412 = mock.Mock(
-        ok=False,
-        status_code=412,
-        text="Precondition Failed",
-        content=b"Precondition Failed",
-        headers={},
-        json=lambda: {},
     )
     query_resp = mock.Mock(
         ok=True,
@@ -661,7 +652,7 @@ def test_connection_recovery_with_custom_retry_predicate():
 
     transport.request.side_effect = [
         start_resp,
-        resp_412,
+        requests.exceptions.ConnectionError("TCP connection reset by peer"),
         query_resp,
         final_resp,
     ]
@@ -687,7 +678,7 @@ def test_connection_recovery_with_custom_retry_predicate():
         == "query"
     ]
     assert len(query_calls) >= 1, (
-        "Expected Category 2 protocol error to initiate an offset query to reconcile server state."
+        "Expected transport connection drop to initiate an offset query to reconcile server state."
     )
 
 
