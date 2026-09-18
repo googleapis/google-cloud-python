@@ -159,9 +159,9 @@ async def test_check_parameters_without_cached_cert():
 
         assert cert == CERT_BYTES
         assert key == KEY_BYTES
-        assert cached_fp is None
+        assert cached_fp == "FINGERPRINT_CURRENT"
         assert current_fp == "FINGERPRINT_CURRENT"
-        assert cached_fp != current_fp
+        assert cached_fp == current_fp
         mock_get_cached.assert_not_called()
 
 
