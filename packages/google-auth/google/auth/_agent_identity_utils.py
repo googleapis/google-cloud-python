@@ -40,6 +40,10 @@ _AGENT_IDENTITY_SPIFFE_TRUST_DOMAIN_PATTERNS = [
 
 _WELL_KNOWN_CERT_PATH = "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
 
+_CERT_REGEX = re.compile(
+    b"-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----\r?\n?", re.DOTALL
+)
+
 # Constants for polling the certificate file.
 _FAST_POLL_CYCLES = 50
 _FAST_POLL_INTERVAL = 0.1  # 100ms
@@ -220,6 +224,7 @@ def _parse_cert_path_from_config(cert_config_path):
 
     return workload_config["cert_path"]
 
+
 def _is_bound_token_opted_out():
     """Returns True only if bound tokens are explicitly disabled via env vars."""
     val = os.environ.get(environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN)
@@ -234,6 +239,7 @@ def _is_bound_token_opted_out():
         ).lower()
         == "false"
     )
+
 
 def get_agent_identity_certificate_and_bytes():
     """Gets and parses the agent identity certificate if not opted out.
@@ -262,7 +268,7 @@ def get_agent_identity_certificate_and_bytes():
 
     try:
         with open(cert_path, "rb") as cert_file:
-            cert_bytes = cert_file.read()
+            raw_bytes = cert_file.read()
     except PermissionError as e:
         warnings.warn(
             f"Failed to read agent identity certificate file at {cert_path}: {e}. "
@@ -270,6 +276,10 @@ def get_agent_identity_certificate_and_bytes():
         )
         return None, None
 
+    cert_blocks = _CERT_REGEX.findall(raw_bytes)
+    if not cert_blocks:
+        return None, None
+    cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
     return parse_certificate(cert_bytes), cert_bytes
 
 

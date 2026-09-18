@@ -659,12 +659,71 @@ class TestAgentIdentityUtils:
         cert_file.write_binary(NON_AGENT_IDENTITY_CERT_BYTES)
         mock_get_path.return_value = str(cert_file)
 
-        cert, cert_bytes = (
-            _agent_identity_utils.get_agent_identity_certificate_and_bytes()
-        )
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
 
         assert isinstance(cert, x509.Certificate)
         assert cert_bytes == NON_AGENT_IDENTITY_CERT_BYTES
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_combined_bundle(
+        self, mock_get_path, tmpdir, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        non_utf8_bag_attrs = b"Bag Attributes\n    friendlyName: \xff\xfe\n"
+        private_key_pem = (
+            b"-----BEGIN PRIVATE KEY-----\n"
+            b"MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3\n"
+            b"-----END PRIVATE KEY-----\n"
+        )
+        combined_bundle = (
+            non_utf8_bag_attrs
+            + NON_AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n")
+            + b"   \n"
+            + private_key_pem
+            + NON_AGENT_IDENTITY_CERT_BYTES
+        )
+        cert_file = tmpdir.join("credentialbundle.pem")
+        cert_file.write_binary(combined_bundle)
+        mock_get_path.return_value = str(cert_file)
+
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        expected_certs = NON_AGENT_IDENTITY_CERT_BYTES + NON_AGENT_IDENTITY_CERT_BYTES
+        assert isinstance(cert, x509.Certificate)
+        assert cert_bytes == expected_certs
+        assert b"PRIVATE KEY" not in cert_bytes
+        assert cert_bytes.decode("utf-8") == expected_certs.decode("utf-8")
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_no_cert_blocks(
+        self, mock_get_path, tmpdir, monkeypatch
+    ):
+        monkeypatch.setenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            "true",
+        )
+        cert_file = tmpdir.join("empty_or_key_only.pem")
+        cert_file.write_binary(
+            b"-----BEGIN PRIVATE KEY-----\nMIIB\n-----END PRIVATE KEY-----\n"
+        )
+        mock_get_path.return_value = str(cert_file)
+
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        assert cert is None
+        assert cert_bytes is None
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
     def test_get_agent_identity_certificate_and_bytes_opted_out(
@@ -674,9 +733,10 @@ class TestAgentIdentityUtils:
             environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "false",
         )
-        cert, cert_bytes = (
-            _agent_identity_utils.get_agent_identity_certificate_and_bytes()
-        )
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
         assert cert is None
         assert cert_bytes is None
         mock_get_path.assert_not_called()
@@ -716,13 +776,13 @@ class TestAgentIdentityUtils:
             "true",
         )
         mock_get_path.return_value = "/fake/cert.pem"
-        mock_open = mock.mock_open(read_data=b"cert_bytes")
+        mock_open = mock.mock_open(read_data=NON_AGENT_IDENTITY_CERT_BYTES)
 
         with mock.patch("builtins.open", mock_open):
             result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
 
         mock_open.assert_called_once_with("/fake/cert.pem", "rb")
-        mock_parse_certificate.assert_called_once_with(b"cert_bytes")
+        mock_parse_certificate.assert_called_once_with(NON_AGENT_IDENTITY_CERT_BYTES)
         assert result == mock_parse_certificate.return_value
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
