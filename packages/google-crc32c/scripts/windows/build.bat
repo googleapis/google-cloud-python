@@ -27,6 +27,8 @@ set CRC32C_INSTALL_PREFIX=%cd%\build\%CONFIGURATION%
 @rem installer seems to have some problems with installing multiple versions at
 @rem once, so as a workaround, we will install and then uninstall every version.
 for /f "tokens=2 delims=:" %%A in ('findstr /b "versions:" "%~dp0..\python_versions.yaml"') do set SUPPORTED_PYTHON_VERSIONS=%%A
+@rem Set PY_PYTHON3 to the first (lowest supported) version in python_versions.yaml so py -3 uses a stable version.
+for /f "tokens=1 delims= " %%V in ("%SUPPORTED_PYTHON_VERSIONS%") do for /f "tokens=1,2 delims=." %%I in ("%%V") do set PY_PYTHON3=%%I.%%J
 FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     set python_version=%%P
     for /f "tokens=1,2 delims=." %%I in ("%%P") do set python_version_trimmed=%%I.%%J
@@ -106,8 +108,8 @@ for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
 )
 
 echo "Validating built wheels with twine check"
-py -3.14 -m pip install --upgrade twine wheel pkginfo || goto :error
-py -3.14 -m twine check wheels/* || goto :error
+py -3 -m pip install --upgrade twine wheel pkginfo || goto :error
+py -3 -m twine check wheels/* || goto :error
 
 goto :EOF
 
