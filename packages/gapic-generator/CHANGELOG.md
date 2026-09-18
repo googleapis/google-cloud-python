@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.39.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.39.0...gapic-generator-v1.39.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* **bazel:** allow CustomProtoInfo in gapic_compat_proto_library ([#18417](https://github.com/googleapis/google-cloud-python/issues/18417)) ([11bdf92](https://github.com/googleapis/google-cloud-python/commit/11bdf928710031cd3dd279215d1be2bd7d73e18f))
+
 ## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.38.0...gapic-generator-v1.39.0) (2026-08-21)
 
 

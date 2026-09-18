@@ -92,7 +92,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.39.0
+    version: 1.39.1
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -1174,7 +1174,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.31.0
+    version: 2.32.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
