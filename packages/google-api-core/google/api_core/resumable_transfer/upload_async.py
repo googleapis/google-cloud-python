@@ -175,12 +175,11 @@ class AsyncResumableUploadSession:
                 for the initial session creation request. Use this to customize
                 exponential backoff timing (such as ``AsyncRetry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. Custom ``predicate`` functions apply only to transient errors
-                (such as ``RETRYABLE_STATUS_CODES``); transport connection drops
-                (``aiohttp.ClientError``) always retry, and terminal errors
-                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                errors. A custom ``predicate`` applies only to transient HTTP status
+                errors. Transport errors (``aiohttp.ClientError``) are always
+                retried. Terminal errors (``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
             start_timeout: Optional timeout in seconds for the start request.
         """
         self._config = config or ResumableUploadConfig()
@@ -852,14 +851,12 @@ class AsyncResumableUploadSession:
                 ``AsyncStreamingRetry``) for chunk upload requests. Use this to
                 customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                Custom ``predicate`` functions apply only to transient errors (such
-                as ``RETRYABLE_STATUS_CODES``); protocol-recoverable errors
-                (``RECOVERABLE_STATUS_CODES``: 400, 412, 416;
-                ``MissingStatusHeaderError``; and transport connection drops) always
-                initiate server offset recovery, and terminal errors
-                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                A custom ``predicate`` applies only to transient HTTP status errors.
+                Transport errors and protocol recovery errors (HTTP 400, 412, 416,
+                and ``MissingStatusHeaderError``) always initiate server offset
+                recovery. Terminal errors (``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
@@ -946,14 +943,12 @@ class AsyncResumableUploadSession:
                 ``AsyncStreamingRetry``) for chunk upload requests. Use this to
                 customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                Custom ``predicate`` functions apply only to transient errors (such
-                as ``RETRYABLE_STATUS_CODES``); protocol-recoverable errors
-                (``RECOVERABLE_STATUS_CODES``: 400, 412, 416;
-                ``MissingStatusHeaderError``; and transport connection drops) always
-                initiate server offset recovery, and terminal errors
-                (``TERMINAL_ERRORS``: ``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
+                A custom ``predicate`` applies only to transient HTTP status errors.
+                Transport errors and protocol recovery errors (HTTP 400, 412, 416,
+                and ``MissingStatusHeaderError``) always initiate server offset
+                recovery. Terminal errors (``DeadlineExceeded``,
+                ``TransferStalledError``, ``UploadCancelledError``, and
+                ``UnseekableStreamError``) are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
             on_progress: Optional callback function receiving UploadProgress notifications.
 
