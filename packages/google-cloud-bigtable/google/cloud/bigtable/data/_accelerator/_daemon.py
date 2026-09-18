@@ -171,6 +171,10 @@ class AcceleratorDaemon:
         """
         if self._proc is not None:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
+        if not hasattr(socket, "AF_UNIX"):
+            raise OSError(
+                "Unix domain sockets (AF_UNIX) are not supported on this platform."
+            )
         self._tempdir = tempfile.mkdtemp(prefix="bt-accel-")
         self._uds_path = os.path.join(self._tempdir, "sock")
         # Redirect the daemon's stdout/stderr to a log file rather than
@@ -185,9 +189,10 @@ class AcceleratorDaemon:
         # The log file handle only needs to live long enough for Popen to dup
         # it into the child, so it stays local to start() rather than being an
         # attribute. Startup failures read the tail back from the path.
-        log_file = open(self._log_path, "wb")
         argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
+        log_file = None
         try:
+            log_file = open(self._log_path, "wb")
             self._proc = subprocess.Popen(
                 argv,
                 stdin=subprocess.PIPE,
@@ -196,10 +201,6 @@ class AcceleratorDaemon:
                 close_fds=True,
             )
         except OSError as exc:
-            try:
-                log_file.close()
-            except OSError:
-                pass
             self._cleanup_tempdir()
             raise RuntimeError(
                 f"Failed to spawn accelerator daemon at {self._binary_path}: {exc}"
@@ -208,10 +209,11 @@ class AcceleratorDaemon:
             # Whether or not the spawn succeeded, the parent no longer needs its
             # copy of the log fd: on success the child holds its own dup, and on
             # failure there is nothing to keep open.
-            try:
-                log_file.close()
-            except OSError:
-                pass
+            if log_file is not None:
+                try:
+                    log_file.close()
+                except OSError:
+                    pass
         try:
             self._wait_until_ready(self._startup_timeout)
         except BaseException:
@@ -235,11 +237,17 @@ class AcceleratorDaemon:
                         pass
                 if not self._wait_for_exit(_STDIN_GRACE_SECONDS):
                     # Step 2: SIGTERM.
-                    proc.terminate()
+                    try:
+                        proc.terminate()
+                    except OSError:
+                        pass
                     if not self._wait_for_exit(_SIGTERM_GRACE_SECONDS):
                         # Step 3: SIGKILL. Bounded wait so teardown can't hang
                         # forever if the process is stuck unreapable.
-                        proc.kill()
+                        try:
+                            proc.kill()
+                        except OSError:
+                            pass
                         self._wait_for_exit(_SIGKILL_GRACE_SECONDS)
         finally:
             self._proc = None
@@ -263,10 +271,6 @@ class AcceleratorDaemon:
                     f"(exit code {exit_code}). log: {log_tail!r}"
                 )
             if os.path.exists(self._uds_path):
-                if not hasattr(socket, "AF_UNIX"):
-                    raise OSError(
-                        "Unix domain sockets (AF_UNIX) are not supported on this platform."
-                    )
                 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as probe:
                     probe.settimeout(0.25)
                     try:
