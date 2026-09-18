@@ -206,10 +206,13 @@ def _crc32c(request):
 
         return python
     elif request.param == "cext":
-        from google_crc32c import cext
+        try:
+            from google_crc32c import cext
 
-        return cext
-    else:
+            return cext  # pragma: NO COVER
+        except ImportError:  # pragma: NO COVER
+            pytest.skip("C extension not compiled")  # pragma: NO COVER
+    else:  # pragma: NO COVER
         raise ValueError("invalid internal test config")
 
 
