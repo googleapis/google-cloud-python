@@ -14,13 +14,11 @@
 
 import asyncio
 import collections.abc
-from contextlib import asynccontextmanager
 import functools
 import http.client as http_client
 import inspect
 import logging
 import time
-from typing import Mapping, Optional, TYPE_CHECKING, Union
 import urllib.parse
 import warnings
 from contextlib import asynccontextmanager
@@ -432,11 +430,11 @@ class AsyncAuthorizedSession:
                                                         "channel."
                                                     )
                                                     if self._mtls_init_task is not None:
-                                                        if (
-                                                            not self._mtls_init_task.done()
-                                                        ):
+                                                        if not self._mtls_init_task.done():
                                                             try:
-                                                                await self._mtls_init_task
+                                                                await (
+                                                                    self._mtls_init_task
+                                                                )
                                                             except Exception:
                                                                 pass
                                                         self._mtls_init_task = None
