@@ -515,8 +515,6 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         progress_queue: Optional[List[common.UploadProgress]] = None,
         content_type: Optional[str] = None,
-        retry: Optional[google.api_core.retry.Retry] = None,
-        timeout: Optional[float] = None,
     ) -> str:
         """Initiates the upload session by sending the start command.
 
@@ -526,13 +524,6 @@ class ResumableUploadSession:
             size: Total size of payload in bytes, if known.
             progress_queue: Optional list buffering UploadProgress snapshots.
             content_type: Optional MIME type override of the payload.
-            retry: Optional retry configuration (``Retry``) for this session initiation
-                call. Overrides ``start_retry`` if provided. Use this to customize
-                backoff timing or add custom retryable exceptions. Terminal errors
-                (``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
-            timeout: Optional per-request timeout override in seconds.
 
         Returns:
             The upload session URL.
@@ -548,7 +539,7 @@ class ResumableUploadSession:
         )
 
         def do_initiate() -> str:
-            req_timeout = self._get_start_timeout(timeout_override=timeout)
+            req_timeout = self._get_start_timeout()
             response = transport.request(
                 method, url, data=payload, headers=headers, timeout=req_timeout
             )
@@ -559,7 +550,7 @@ class ResumableUploadSession:
             )
             return session_url
 
-        retry_policy = self._get_retry(retry_override=retry)
+        retry_policy = self._get_retry()
         retryable_initiate = retry_policy(do_initiate)
         session_url = retryable_initiate()
         self._notify_progress(

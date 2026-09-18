@@ -444,31 +444,18 @@ class AsyncResumableUploadSession:
         size: Optional[int] = None,
         progress_queue: Optional[asyncio.Queue] = None,
         content_type: Optional[str] = None,
-        retry: Optional[google.api_core.retry.AsyncRetry] = None,
-        timeout: Optional[float] = None,
     ) -> str:
-        """Initiates the upload session by sending the start command asynchronously.
+        """Initiates the upload session asynchronously.
 
         Args:
             transport: The aiohttp client session.
-            request_body: Initial metadata payload sent with start command.
+            request_body: Initial metadata payload sent with start request.
             size: Total stream size in bytes, if known.
             progress_queue: Optional queue to receive progress event.
             content_type: Optional MIME type override of the payload.
-            retry: Optional retry configuration (``AsyncRetry``) for this session
-                initiation call. Overrides ``start_retry`` if provided. Use this to
-                customize backoff timing or add custom retryable exceptions. Terminal
-                errors (``DeadlineExceeded``, ``TransferStalledError``,
-                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
-                retried.
-            timeout: Optional per-request timeout override in seconds.
 
         Returns:
-            The upload session URL.
-
-        Raises:
-            GoogleAPICallError: If the server rejects the start request.
-            MissingStatusHeaderError: If the server response lacks status header.
+            The negotiated upload session URL.
         """
         self._ensure_aiohttp()
         if content_type is not None:
@@ -481,8 +468,8 @@ class AsyncResumableUploadSession:
             size=size,
         )
 
-        async def do_initiate():
-            timeout_sec = self._get_start_timeout(timeout_override=timeout)
+        async def do_initiate() -> str:
+            timeout_sec = self._get_start_timeout()
             client_timeout = aiohttp.ClientTimeout(total=timeout_sec)
             async with transport.request(
                 method, url, data=payload, headers=headers, timeout=client_timeout
@@ -498,7 +485,7 @@ class AsyncResumableUploadSession:
                 )
                 return session_url
 
-        retry_policy = self._get_async_retry(retry_override=retry)
+        retry_policy = self._get_async_retry()
         retryable_initiate = retry_policy(do_initiate)
         session_url = await retryable_initiate()
         self._notify_progress(common.ProgressState.STARTED, progress_queue)
