@@ -15,6 +15,7 @@
 #
 from collections import OrderedDict
 from http import HTTPStatus
+import inspect
 import json
 import logging as std_logging
 import os
@@ -46,6 +47,13 @@ try:
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
+
+# Optional: OpenTelemetry tracing capabilities for grpc channel injection
+# Note: _observability was added in google-api-core 2.36.0+; guard for older versions
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
 
 _LOGGER = std_logging.getLogger(__name__)
 
@@ -469,18 +477,33 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., LoggingServiceV2Transport], transport)
             )
+            # When OpenTelemetry tracing is enabled, pass client_options to the transport
+            # so it can wire tracing interceptors and method spans.
+            client_options = None
+            if (
+                _observability is not None
+                and _observability.is_otel_capabilities_enabled(self._client_options)
+                and (
+                    not isinstance(transport_init, type)
+                    or issubclass(transport_init, LoggingServiceV2GrpcTransport)
+                )
+            ):
+                client_options = self._client_options
+
             # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "credentials_file": self._client_options.credentials_file,
+                "host": self._api_endpoint,
+                "scopes": self._client_options.scopes,
+                "client_cert_source_for_mtls": self._client_cert_source,
+                "quota_project_id": self._client_options.quota_project_id,
+                "client_info": client_info,
+                "always_use_jwt_access": True,
+                "api_audience": self._client_options.api_audience,
+                **({"client_options": client_options} if client_options is not None else {}),
+            }
+            self._transport = transport_init(**transport_kwargs)
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER

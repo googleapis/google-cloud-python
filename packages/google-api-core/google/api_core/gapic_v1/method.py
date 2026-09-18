@@ -216,10 +216,24 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     reason = getattr(source, "reason", None)
     if reason:
         attrs["error.type"] = reason
+    else:
+        # Fallback per OpenTelemetry Semantic Conventions: every failed span should record
+        # a low-cardinality error.type. Use canonical status code name or exception class name.
+        status_code = _extract_status_code(target_exc)
+        attrs["error.type"] = status_code or target_exc.__class__.__name__
     metadata = getattr(source, "metadata", None)
     if metadata:
         for k, v in metadata.items():
             attrs[f"gcp.errors.metadata.{k}"] = str(v)
+
+    # 5. Extract human-readable error description for cross-language PRD parity
+    message = getattr(target_exc, "message", None)
+    if not message and hasattr(target_exc, "details") and callable(target_exc.details):
+        message = target_exc.details()
+    if not message and isinstance(target_exc, Exception):
+        message = str(target_exc)
+    if message:
+        attrs["status.message"] = str(message)
 
     return attrs
 
