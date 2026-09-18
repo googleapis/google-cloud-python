@@ -405,19 +405,14 @@ class AsyncResumableUploadSession:
 
     def _get_async_streaming_retry(
         self,
-        retry_override: Optional[
-            Union[
-                google.api_core.retry.AsyncRetry,
-                google.api_core.retry.AsyncStreamingRetry,
-            ]
-        ] = None,
+        retry_override: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
     ) -> google.api_core.retry.AsyncStreamingRetry:
         """Resolves the AsyncStreamingRetry policy for the chunk upload generator.
 
         Args:
-            retry_override: Optional retry policy override for chunk transmission.
-                Protocol recovery is preserved automatically, and terminal errors
-                (``DeadlineExceeded``, ``TransferStalledError``,
+            retry_override: Optional AsyncStreamingRetry policy override for chunk
+                transmission. Protocol recovery is preserved automatically, and
+                terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
 
@@ -428,16 +423,7 @@ class AsyncResumableUploadSession:
             wrapped_pred = self._get_retry_predicate(
                 is_start=False, custom_predicate=retry_override._predicate
             )
-            if isinstance(retry_override, google.api_core.retry.AsyncStreamingRetry):
-                return retry_override.with_predicate(wrapped_pred)
-            return google.api_core.retry.AsyncStreamingRetry(
-                predicate=wrapped_pred,
-                initial=retry_override._initial,
-                maximum=retry_override._maximum,
-                multiplier=retry_override._multiplier,
-                timeout=retry_override._timeout,
-                on_error=retry_override._on_error,
-            )
+            return retry_override.with_predicate(wrapped_pred)
         return google.api_core.retry.AsyncStreamingRetry(
             predicate=self._get_retry_predicate(is_start=False)
         )
@@ -751,12 +737,7 @@ class AsyncResumableUploadSession:
         computed_size: Optional[int],
         progress_queue: Optional[asyncio.Queue] = None,
         stream_obj: Optional[object] = None,
-        retry: Optional[
-            Union[
-                google.api_core.retry.AsyncRetry,
-                google.api_core.retry.AsyncStreamingRetry,
-            ]
-        ] = None,
+        retry: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
         timeout: Optional[float] = None,
     ) -> Optional[Tuple[int, Mapping[str, str], bytes]]:
         """Transmits chunks until completion using a single outer AsyncStreamingRetry coordinator.
@@ -836,12 +817,7 @@ class AsyncResumableUploadSession:
         size: Optional[int] = None,
         transport: Optional[Any] = None,
         content_type: Optional[str] = None,
-        retry: Optional[
-            Union[
-                google.api_core.retry.AsyncRetry,
-                google.api_core.retry.AsyncStreamingRetry,
-            ]
-        ] = None,
+        retry: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
@@ -853,9 +829,8 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             transport: Optional aiohttp client session.
             content_type: Optional MIME type of the stream payload.
-            retry: Optional retry configuration (``AsyncRetry`` or
-                ``AsyncStreamingRetry``) for chunk upload requests. Use this to
-                customize exponential backoff timing between chunk retries or to
+            retry: Optional retry configuration (``AsyncStreamingRetry``) for
+                chunk upload requests. Use this to customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
                 A custom ``predicate`` applies only to transient HTTP status errors.
                 Transport errors and protocol recovery errors (HTTP 400, 412, 416,
@@ -928,12 +903,7 @@ class AsyncResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[Any] = None,
-        retry: Optional[
-            Union[
-                google.api_core.retry.AsyncRetry,
-                google.api_core.retry.AsyncStreamingRetry,
-            ]
-        ] = None,
+        retry: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
@@ -945,9 +915,8 @@ class AsyncResumableUploadSession:
             size: Total stream size in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional aiohttp client session.
-            retry: Optional retry configuration (``AsyncRetry`` or
-                ``AsyncStreamingRetry``) for chunk upload requests. Use this to
-                customize exponential backoff timing between chunk retries or to
+            retry: Optional retry configuration (``AsyncStreamingRetry``) for
+                chunk upload requests. Use this to customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
                 A custom ``predicate`` applies only to transient HTTP status errors.
                 Transport errors and protocol recovery errors (HTTP 400, 412, 416,

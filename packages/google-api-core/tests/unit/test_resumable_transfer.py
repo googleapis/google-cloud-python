@@ -1287,7 +1287,9 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         transport=transport,
     )
     session._state._resumable_url = "https://upload.example.com/resumable-123"
-    no_retry = google.api_core.retry.Retry(predicate=lambda e: False, timeout=0)
+    no_retry = google.api_core.retry.StreamingRetry(
+        predicate=lambda e: False, timeout=0
+    )
     with pytest.raises(exceptions.TransferStalledError):
         list(
             session._transmit_all_chunks(
@@ -1724,7 +1726,7 @@ def test_sync_partial_chunk_recovery_does_not_prematurely_finalize():
 
     # Ensure that the unified outer StreamingRetry coordinates backoff and
     # triggers protocol-level _recover() on retryable errors before retransmitting.
-    retry_cfg = google.api_core.retry.Retry(
+    retry_cfg = google.api_core.retry.StreamingRetry(
         predicate=ResumableUploadSession()._get_retry_predicate(),
         initial=0.001,
     )

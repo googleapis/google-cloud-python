@@ -1170,10 +1170,14 @@ async def test_async_retry_branches() -> None:
     )
 
     # -------------------------------------------------------------------------
-    # Scenario 2: Unary AsyncRetry passed to chunk transfer converts to AsyncStreamingRetry
+    # Scenario 2: Custom AsyncStreamingRetry preserves Category 2 recovery
     # -------------------------------------------------------------------------
+    custom_stream = google.api_core.retry.AsyncStreamingRetry(
+        initial=0.5,
+        predicate=google.api_core.retry.if_exception_type(CustomApiError),
+    )
     converted_stream = session_unary._get_async_streaming_retry(
-        retry_override=custom_unary
+        retry_override=custom_stream
     )
     assert isinstance(converted_stream, google.api_core.retry.AsyncStreamingRetry)
     assert converted_stream._initial == 0.5

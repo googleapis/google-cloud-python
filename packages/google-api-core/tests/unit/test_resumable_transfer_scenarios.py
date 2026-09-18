@@ -393,13 +393,13 @@ async def test_sync_async_custom_retry_parity():
     """Verifies that user-configured retry policies are applied in both sync and async sessions.
 
     Why this test is needed:
-        Callers may pass a unary ``Retry`` / ``AsyncRetry`` override to ``upload(retry=...)``
-        to customize backoff timing (e.g. ``initial`` delay). Both sync and async sessions
-        must adapt unary retry configurations into their streaming chunk retry policies
-        while preserving the caller's configured backoff parameters.
+        Callers may pass a ``StreamingRetry`` / ``AsyncStreamingRetry`` override to
+        ``upload(retry=...)`` to customize backoff timing (e.g. ``initial`` delay).
+        Both sync and async sessions must apply the caller's configured backoff
+        parameters while wrapping the predicate with protocol recovery rules.
     """
-    sync_retry = google.api_core.retry.Retry(initial=0.25)
-    async_retry = google.api_core.retry.AsyncRetry(initial=0.25)
+    sync_retry = google.api_core.retry.StreamingRetry(initial=0.25)
+    async_retry = google.api_core.retry.AsyncStreamingRetry(initial=0.25)
 
     # Sync
     transport_sync = mock.Mock()
@@ -657,7 +657,7 @@ def test_connection_recovery_with_custom_retry_predicate():
         final_resp,
     ]
 
-    user_retry = google.api_core.retry.Retry(
+    user_retry = google.api_core.retry.StreamingRetry(
         predicate=google.api_core.retry.if_exception_type(
             google.api_core.exceptions.ServiceUnavailable
         )
@@ -731,7 +731,7 @@ def test_precondition_failed_response_triggers_offset_query():
         final_resp,
     ]
 
-    user_retry = google.api_core.retry.Retry(
+    user_retry = google.api_core.retry.StreamingRetry(
         maximum=0.01,
         deadline=0.05,
     )

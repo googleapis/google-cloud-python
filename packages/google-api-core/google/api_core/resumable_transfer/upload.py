@@ -363,16 +363,14 @@ class ResumableUploadSession:
 
     def _get_streaming_retry(
         self,
-        retry_override: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry_override: Optional[google.api_core.retry.StreamingRetry] = None,
     ) -> google.api_core.retry.StreamingRetry:
         """Resolves the StreamingRetry policy for the chunk upload generator.
 
         Args:
-            retry_override: Optional retry policy override for chunk transmission.
-                Protocol recovery is preserved automatically, and terminal errors
-                (``DeadlineExceeded``, ``TransferStalledError``,
+            retry_override: Optional StreamingRetry policy override for chunk
+                transmission. Protocol recovery is preserved automatically, and
+                terminal errors (``DeadlineExceeded``, ``TransferStalledError``,
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
 
@@ -383,16 +381,7 @@ class ResumableUploadSession:
             wrapped_pred = self._get_retry_predicate(
                 is_start=False, custom_predicate=retry_override._predicate
             )
-            if isinstance(retry_override, google.api_core.retry.StreamingRetry):
-                return retry_override.with_predicate(wrapped_pred)
-            return google.api_core.retry.StreamingRetry(
-                predicate=wrapped_pred,
-                initial=retry_override._initial,
-                maximum=retry_override._maximum,
-                multiplier=retry_override._multiplier,
-                timeout=retry_override._timeout,
-                on_error=retry_override._on_error,
-            )
+            return retry_override.with_predicate(wrapped_pred)
         return google.api_core.retry.StreamingRetry(
             predicate=self._get_retry_predicate(is_start=False)
         )
@@ -714,9 +703,7 @@ class ResumableUploadSession:
         stream_obj: Union[BinaryIO, Iterable[bytes]],
         computed_size: Optional[int],
         progress_queue: Optional[List[common.UploadProgress]] = None,
-        retry: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
     ) -> Generator[common.UploadProgress, None, None]:
         """Transmits chunks until transfer completes, yielding buffered progress updates.
@@ -812,9 +799,7 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
         content_type: Optional[str] = None,
-        retry: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Any:
@@ -826,7 +811,7 @@ class ResumableUploadSession:
             size: Total stream size in bytes, if known.
             transport: Optional requests session.
             content_type: Optional MIME type of the stream payload.
-            retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
+            retry: Optional retry configuration (``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. A custom ``predicate`` applies only to
@@ -866,9 +851,7 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
         content_type: Optional[str] = None,
-        retry: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
@@ -880,7 +863,7 @@ class ResumableUploadSession:
             size: Total stream size in bytes, if known.
             transport: Optional requests session.
             content_type: Optional MIME type of the stream payload.
-            retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
+            retry: Optional retry configuration (``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. A custom ``predicate`` applies only to
@@ -933,9 +916,7 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
-        retry: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Any:
@@ -947,7 +928,7 @@ class ResumableUploadSession:
             size: Total size of the payload in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional requests session.
-            retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
+            retry: Optional retry configuration (``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. A custom ``predicate`` applies only to
@@ -987,9 +968,7 @@ class ResumableUploadSession:
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
-        retry: Optional[
-            Union[google.api_core.retry.Retry, google.api_core.retry.StreamingRetry]
-        ] = None,
+        retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
         on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
     ) -> Generator[common.UploadProgress, None, None]:
@@ -1001,7 +980,7 @@ class ResumableUploadSession:
             size: Total size of the payload in bytes, if known.
             chunk_size: Optional chunk size override in bytes.
             transport: Optional requests session.
-            retry: Optional retry configuration (``Retry`` or ``StreamingRetry``) for
+            retry: Optional retry configuration (``StreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff
                 timing between chunk retries or to supply a custom ``predicate`` for
                 API-specific transient errors. A custom ``predicate`` applies only to
