@@ -37,6 +37,14 @@ from google.api_core.resumable_transfer.upload_async import (
     AsyncResumableUploadSession,
 )
 
+try:
+    import aiohttp  # noqa: F401
+    import google.auth.aio.transport  # noqa: F401
+
+    GOOGLE_AUTH_AIO_INSTALLED = True
+except ImportError:
+    GOOGLE_AUTH_AIO_INSTALLED = False
+
 
 class _MockAiohttpResp:
     """Mock for aiohttp response context manager."""
@@ -131,6 +139,10 @@ def test_full_chunk_recovery_transmits_subsequent_chunks_sync():
     )
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_full_chunk_recovery_transmits_subsequent_chunks_async():
     """Async counterpart verifying subsequent chunks continue transmitting after full chunk recovery.
@@ -247,6 +259,10 @@ def test_partial_chunk_recovery_does_not_finalize_prematurely_sync():
     )
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_partial_chunk_recovery_does_not_finalize_prematurely_async():
     """Async counterpart verifying partial chunk retransmission does not prematurely finalize.
@@ -299,6 +315,10 @@ async def test_partial_chunk_recovery_does_not_finalize_prematurely_async():
 # ==============================================================================
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_sync_async_return_type_parity():
     """Verifies consistent return types between sync and async when response_type is set.
@@ -364,6 +384,10 @@ async def test_sync_async_return_type_parity():
     )
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_sync_async_custom_retry_parity():
     """Verifies that user-configured retry policies are applied in both sync and async sessions.
@@ -427,6 +451,10 @@ async def test_sync_async_custom_retry_parity():
     assert resolved_sync._initial == resolved_async._initial == 0.25
 
 
+@pytest.mark.skipif(
+    not GOOGLE_AUTH_AIO_INSTALLED,
+    reason="Skipped because google-api-core[async_rest] is not installed",
+)
 @pytest.mark.asyncio
 async def test_sync_async_error_retry_parity():
     """Verifies that non-retriable exceptions (e.g. ValueError) fail fast without retries in both.
