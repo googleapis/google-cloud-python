@@ -68,13 +68,6 @@ jobs:
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
-          if ! git diff --quiet "origin/${TARGET_BRANCH}..." -- .github/workflows/docs.yml && git diff --quiet "origin/${TARGET_BRANCH}..." -- packages/ preview-packages/; then
-            echo "Workflow modified with no package changes; testing packages/google-cloud-core."
-            export PACKAGE_LIST="packages/google-cloud-core"
-          fi
-        fi
         ci/run_conditional_tests.sh
 
   docfx:
@@ -114,13 +107,6 @@ jobs:
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
-          if ! git diff --quiet "origin/${TARGET_BRANCH}..." -- .github/workflows/docs.yml && git diff --quiet "origin/${TARGET_BRANCH}..." -- packages/ preview-packages/; then
-            echo "Workflow modified with no package changes; testing packages/google-cloud-core."
-            export PACKAGE_LIST="packages/google-cloud-core"
-          fi
-        fi
         ci/run_conditional_tests.sh
     - name: Create issue on failure
       if: ${{ failure() && github.event_name == 'push' && github.repository == 'googleapis/google-cloud-python' }}
