@@ -21,6 +21,7 @@ import pickle
 import pytest
 
 from google.cloud.firestore_v1.bson import (
+    BSONBinary,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
@@ -266,4 +267,81 @@ def test_bson_int32_copy():
 
 def test_bson_int32_pickle():
     val = BSONInt32(42)
+    assert pickle.loads(pickle.dumps(val)) == val
+
+
+def test_bson_binary_custom_subtype():
+    val = BSONBinary(bytearray(b"world"), subtype=128)
+    assert val.data == b"world"
+    assert val.subtype == 128
+
+
+def test_bson_binary_to_map_value():
+    assert BSONBinary(b"world", subtype=128)._to_map_value() == {
+        "__binary__": b"\x80world"
+    }
+
+
+def test_bson_binary_bytes_coercion():
+    assert bytes(BSONBinary(b"hello", subtype=1)) == b"hello"
+
+
+def test_bson_binary_repr():
+    assert (
+        repr(BSONBinary(b"world", subtype=128)) == "BSONBinary(b'world', subtype=128)"
+    )
+
+
+def test_bson_binary_boundaries():
+    bin_min = BSONBinary(b"test", subtype=1)
+    bin_max = BSONBinary(b"test", subtype=255)
+    assert bin_min.subtype == 1
+    assert bin_max.subtype == 255
+
+
+@pytest.mark.parametrize(
+    "data_input, subtype_input, exc_type, match_msg",
+    [
+        ("not bytes", 1, TypeError, "must be bytes or bytearray"),
+        (123, 1, TypeError, "must be bytes or bytearray"),
+        (None, 1, TypeError, "must be bytes or bytearray"),
+        (b"data", 256, ValueError, "must be between"),
+        (b"data", 0, ValueError, "must be between"),
+        (b"data", -1, ValueError, "must be between"),
+        (b"data", True, TypeError, "subtype must be an int"),
+        (b"data", False, TypeError, "subtype must be an int"),
+        (b"data", "1", TypeError, "subtype must be an int"),
+    ],
+)
+def test_bson_binary_invalid_inputs(data_input, subtype_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONBinary(data_input, subtype=subtype_input)
+
+
+def test_bson_binary_equality():
+    bin1 = BSONBinary(b"abc", subtype=1)
+    bin2 = BSONBinary(b"abc", subtype=1)
+    bin3 = BSONBinary(b"abc", subtype=2)
+    bin4 = BSONBinary(b"xyz", subtype=1)
+    assert bin1 == bin2
+    assert bin1 != bin3
+    assert bin1 != bin4
+    assert bin1 != b"abc"
+
+
+def test_bson_binary_hash_and_dict_key():
+    bin1 = BSONBinary(b"abc", subtype=1)
+    bin2 = BSONBinary(b"abc", subtype=1)
+    assert hash(bin1) == hash(bin2)
+    assert len({bin1, bin2}) == 1
+
+
+def test_bson_binary_copy():
+    val = BSONBinary(b"hello", subtype=5)
+    assert copy.copy(val) == val
+    assert copy.deepcopy(val) == val
+
+
+def test_bson_binary_pickle():
+    val = BSONBinary(b"hello", subtype=5)
     assert pickle.loads(pickle.dumps(val)) == val

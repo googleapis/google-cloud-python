@@ -33,6 +33,7 @@ __all__ = [
     "BSONMinKey",
     "BSONMaxKey",
     "BSONInt32",
+    "BSONBinary",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -214,3 +215,68 @@ class BSONInt32(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._value))
+
+
+class BSONBinary(_BSONType):
+    """Represents a BSON binary data container with a subtype for Firestore.
+
+    Args:
+        data (Union[bytes, bytearray]): The binary byte payload.
+        subtype (int): A 1-byte BSON binary subtype tag (1 to 255).
+
+    Raises:
+        TypeError: If data is not bytes/bytearray or subtype is not an integer/is a boolean.
+        ValueError: If subtype is outside the 1-byte range (1 to 255).
+
+    Example:
+        >>> binary = BSONBinary(b"hello world", subtype=128)
+        >>> binary.data
+        b'hello world'
+        >>> binary.subtype
+        128
+    """
+
+    __slots__ = ("_data", "_subtype")
+
+    _MIN_SUBTYPE: int = 1
+    _MAX_SUBTYPE: int = 255
+
+    def __init__(self, data: Union[bytes, bytearray], subtype: int):
+        if not isinstance(data, (bytes, bytearray)):
+            raise TypeError("BSONBinary data must be bytes or bytearray.")
+        if isinstance(subtype, bool) or not isinstance(subtype, int):
+            raise TypeError("BSONBinary subtype must be an int.")
+        if not (self._MIN_SUBTYPE <= subtype <= self._MAX_SUBTYPE):
+            raise ValueError(
+                f"BSONBinary subtype must be between {self._MIN_SUBTYPE} and {self._MAX_SUBTYPE}."
+            )
+        self._data: bytes = bytes(data)
+        self._subtype: int = subtype
+
+    @property
+    def data(self) -> bytes:
+        """bytes: The binary byte payload."""
+        return self._data
+
+    @property
+    def subtype(self) -> int:
+        """int: The BSON binary subtype tag (1 to 255)."""
+        return self._subtype
+
+    def _to_map_value(self) -> Union[bytes, Dict[str, bytes]]:
+        """Returns representation for wire serialization."""
+        return {"__binary__": bytes([self._subtype]) + self._data}
+
+    def __repr__(self) -> str:
+        return f"BSONBinary({self._data!r}, subtype={self._subtype})"
+
+    def __bytes__(self) -> bytes:
+        return self._data
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONBinary):
+            return self._data == other._data and self._subtype == other._subtype
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._data, self._subtype))
