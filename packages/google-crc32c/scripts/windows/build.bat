@@ -34,7 +34,12 @@ FOR %%P IN (%SUPPORTED_PYTHON_VERSIONS%) DO (
     for /L %%R in (1,1,5) do (
         py -!python_version_trimmed!-64 --version >nul 2>&1 || (
             echo "Installing Python version %%P (attempt %%R/5)"
-            choco install python --version=%%P --pre -y --no-progress || (
+            @rem Format pre-release version for Chocolatey (e.g. 3.15.0a1 -> 3.15.0-a1)
+            set CHOCO_VER=%%P
+            set CHOCO_VER=!CHOCO_VER:0a=0-a!
+            set CHOCO_VER=!CHOCO_VER:0b=0-b!
+            set CHOCO_VER=!CHOCO_VER:0rc=0-rc!
+            choco install python --version=!CHOCO_VER! --pre -y --no-progress || (
                 echo "choco install %%P failed; retrying in 15s..."
                 py -3 -c "import time; time.sleep(15)"
             )
