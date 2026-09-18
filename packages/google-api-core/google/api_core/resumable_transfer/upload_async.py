@@ -67,14 +67,15 @@ def _get_buffer_size(stream: object) -> Optional[int]:
     return None
 
 
-ResponseProto = TypeVar("ResponseProto")
+ResponseType = TypeVar("ResponseType")
 
 
-class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
+class AsyncUploadOperation(Generic[ResponseType], Awaitable[ResponseType]):
     """Handle representing an active asynchronous upload operation.
 
-    Implements Awaitable[ResponseProto] so awaiting the operation directly
-    returns the deserialized response upon transfer completion.
+    Implements Awaitable[ResponseType] so awaiting the operation directly
+    returns the deserialized response (or raw bytes when response_type is None)
+    upon transfer completion.
     """
 
     def __init__(
@@ -105,7 +106,7 @@ class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
                 self._progress_queue.put_nowait(exc)
         self._progress_queue.put_nowait(_DONE_SENTINEL)
 
-    def __await__(self) -> Generator[Any, None, ResponseProto]:
+    def __await__(self) -> Generator[Any, None, ResponseType]:
         """Awaits completion of the upload task and returns the server response."""
         return self._task.__await__()
 
@@ -128,8 +129,8 @@ class AsyncUploadOperation(Generic[ResponseProto], Awaitable[ResponseProto]):
             yield item
 
     @property
-    def response(self) -> Optional[ResponseProto]:
-        """The deserialized protobuf response message, or None if in progress."""
+    def response(self) -> Optional[ResponseType]:
+        """The deserialized response message (or raw bytes), or None if in progress."""
         return self._session.response
 
     @property
@@ -883,7 +884,9 @@ class AsyncResumableUploadSession:
                     )
 
                 _, _, body_bytes = final_resp_tuple
-                self._response = self._format_response(body_bytes)
+                self._response = _format_response_payload(
+                    body_bytes, self._response_type
+                )
                 return self._response
             except BaseException as exc:
                 self._enrich_exception(exc)
@@ -965,7 +968,9 @@ class AsyncResumableUploadSession:
                     )
 
                 _, _, body_bytes = final_resp_tuple
-                self._response = self._format_response(body_bytes)
+                self._response = _format_response_payload(
+                    body_bytes, self._response_type
+                )
                 return self._response
             except BaseException as exc:
                 self._enrich_exception(exc)
@@ -1080,14 +1085,3 @@ class AsyncResumableUploadSession:
             return reader, computed_size, None
 
         raise TypeError(f"Unsupported stream type: {type(stream)}")
-
-    def _format_response(self, response_bytes: bytes) -> Any:
-        """Formats response bytes into protobuf message type if provided.
-
-        Args:
-            response_bytes: Raw HTTP response body bytes from final chunk.
-
-        Returns:
-            Deserialized protobuf message or the raw bytes response.
-        """
-        return _format_response_payload(response_bytes, self._response_type)

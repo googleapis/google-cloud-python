@@ -788,7 +788,7 @@ class ResumableUploadSession:
         if final_resp is None:
             raise ValueError("Upload completed without receiving a final response.")
 
-        self._response = self._format_response(final_resp)
+        self._response = _format_response_payload(final_resp, self._response_type)
 
     def upload(
         self,
@@ -1077,14 +1077,3 @@ class ResumableUploadSession:
                 self._start_stream_offset = 0
 
         return stream_obj, computed_size
-
-    def _format_response(self, response: requests.Response) -> Any:
-        """Formats response into protobuf message type if provided.
-
-        Args:
-            response: HTTP response object from final chunk.
-
-        Returns:
-            Deserialized protobuf message or the raw response object.
-        """
-        return _format_response_payload(response, self._response_type)

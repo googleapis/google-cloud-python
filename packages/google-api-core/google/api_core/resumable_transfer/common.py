@@ -159,11 +159,9 @@ def _format_response_payload(
             google.protobuf.message.Message class or instance.
 
     Returns:
-        Deserialized protobuf message or the raw response object / bytes.
+        Deserialized protobuf message, or raw response bytes if
+        ``response_type`` is ``None``.
     """
-    if response_type is None:
-        return response
-
     content: bytes
     if isinstance(response, bytes):
         content = response
@@ -171,6 +169,9 @@ def _format_response_payload(
         content = response.content
     else:
         content = bytes(response)
+
+    if response_type is None:
+        return content
 
     from_json_fn = getattr(response_type, "from_json", None)
     if callable(from_json_fn):
@@ -187,4 +188,4 @@ def _format_response_payload(
     if callable(response_type):
         return response_type(content)
 
-    return response
+    return content

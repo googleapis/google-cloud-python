@@ -724,7 +724,7 @@ def test_sync_response_type_raw_response():
         transport=session_transport,
     )
     resp = session.upload(stream=b"payload")
-    assert resp is chunk_resp
+    assert resp == b"raw_content"
 
 
 def test_sync_retry_predicate_allows_timeout_with_stall_control():
@@ -1405,7 +1405,7 @@ def test_sync_format_response_payload_custom_inputs():
             return b"custom_bytes"
 
     res = _format_response_payload(CustomBytesConvertible(), response_type=None)
-    assert isinstance(res, CustomBytesConvertible)
+    assert res == b"custom_bytes"
 
     res_parsed = _format_response_payload(
         CustomBytesConvertible(), response_type=lambda x: x + b"_extra"
@@ -1616,7 +1616,7 @@ def test_sync_upload_multiple_chunks():
     )
 
     res = session.upload(stream=b"0123456789", transport=session_transport)
-    assert res is chunk2_resp
+    assert res == chunk2_resp.content
     assert session.bytes_uploaded == 10
     assert session_transport.request.call_count == 3
 
