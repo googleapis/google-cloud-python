@@ -108,8 +108,31 @@ for %%P in (%SUPPORTED_PYTHON_VERSIONS%) do (
 )
 
 echo "Validating built wheels with twine check"
-py -3 -m pip install --upgrade twine wheel pkginfo || goto :error
-py -3 -m twine check wheels/* || goto :error
+py -3 -m pip install --upgrade twine wheel setuptools pkginfo || goto :error
+
+echo "Build the source distribution (sdist) and validate with twine check"
+py -3 setup.py sdist || goto :error
+py -3 -m twine check dist/* wheels/* || goto :error
+
+if "%PUBLISH_WHEELS%"=="true" (
+    echo "Start the releasetool reporter"
+    py -3 -m pip install gcp-releasetool || goto :error
+    if not exist C:\temp mkdir C:\temp
+    py -3 -m releasetool publish-reporter-script > C:\temp\publisher-script || goto :error
+
+    echo "Disable buffering, so that the logs stream through."
+    set PYTHONUNBUFFERED=1
+
+    echo "## RELEASE WORKFLOW SUCCESSFUL ##"
+    echo "## Uploading Wheels and sdist ##"
+
+    set /p TWINE_PASSWORD=<%KOKORO_KEYSTORE_DIR%/73713_google-cloud-pypi-token-keystore-3
+    py -3 -m twine upload --skip-existing --username __token__ --password "%TWINE_PASSWORD%" dist/* wheels/* || goto :error
+    dir wheels
+    dir dist
+) else (
+    echo "PUBLISH_WHEELS is '%PUBLISH_WHEELS%'. Skipping PyPI upload after sdist and wheel validation."
+)
 
 goto :EOF
 
