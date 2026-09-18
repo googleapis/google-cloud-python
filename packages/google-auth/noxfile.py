@@ -33,9 +33,8 @@ MYPY_CONFIG_FILE = next(
 
 
 CLICK_VERSION = "click"
-BLACK_VERSION = "black==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
-BLACK_PATHS = [
+LINT_PATHS = [
     "google",
     "tests",
     "tests_async",
@@ -93,7 +92,7 @@ def lint(session):
         "I",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
     # 2. Check formatting
     session.run(
@@ -102,7 +101,7 @@ def lint(session):
         "--check",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
     session.run(
         "flake8",
@@ -124,15 +123,20 @@ def lint_setup_py(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
-    Format code to uniform standard.
-    The Python version should be consistent with what is
-    supplied in the Python Owlbot postprocessor.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
-    """
-    session.install(CLICK_VERSION, BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -152,7 +156,7 @@ def format(session):
         "--fix",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
     # 3. Run Ruff to format code
@@ -161,7 +165,7 @@ def format(session):
         "format",
         f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
 
 
