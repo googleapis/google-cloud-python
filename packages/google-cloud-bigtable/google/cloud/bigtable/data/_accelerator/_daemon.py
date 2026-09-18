@@ -31,11 +31,6 @@ import tempfile
 import time
 from typing import Sequence
 
-# Environment variable that overrides the bundled binary location. Primarily
-# for development against a locally-built daemon, and for tests pointing at a
-# fake binary.
-_BIN_ENV_VAR = "BIGTABLE_ACCELERATOR_BIN"
-
 # Wheels ship the binary at this path relative to the `_accelerator/` package.
 _DEFAULT_BIN_RELATIVE_PATH = "bin/accelerator"
 
@@ -49,34 +44,12 @@ _SIGTERM_GRACE_SECONDS = 2.0
 _SIGKILL_GRACE_SECONDS = 2.0
 
 
-def _resolve_binary_path(explicit_path: str | None = None) -> str:
-    """Resolve the daemon binary path, validating that it is a regular file.
-
-    Precedence: an explicit ``binary_path`` argument, then the
-    ``BIGTABLE_ACCELERATOR_BIN`` env var, then the binary bundled in the wheel.
-    An explicit path or env override that does not point at a regular file is a
-    hard error (a caller who named a path meant it); a missing bundled binary
-    reports how to supply one.
-    """
-    if explicit_path is not None:
-        if not os.path.isfile(explicit_path):
-            raise FileNotFoundError(
-                f"binary_path={explicit_path!r} does not point at a regular file"
-            )
-        return explicit_path
-    override = os.environ.get(_BIN_ENV_VAR)
-    if override:
-        if not os.path.isfile(override):
-            raise FileNotFoundError(
-                f"{_BIN_ENV_VAR}={override!r} does not point at a regular file"
-            )
-        return override
+def _resolve_binary_path() -> str:
+    """Return the path of the bundled daemon binary, raising if it is absent."""
     bundled = os.path.join(os.path.dirname(__file__), _DEFAULT_BIN_RELATIVE_PATH)
     if not os.path.isfile(bundled):
         raise FileNotFoundError(
-            "No accelerator binary found. Set the "
-            f"{_BIN_ENV_VAR} env var to a daemon binary path, or install a "
-            "wheel that bundles the binary."
+            "Accelerator binary not found. Install a wheel that bundles the binary."
         )
     return bundled
 
@@ -103,7 +76,6 @@ class AcceleratorDaemon:
         self,
         cli_flags: Sequence[str] = (),
         *,
-        binary_path: str | None = None,
         startup_timeout: float = _DEFAULT_STARTUP_TIMEOUT,
     ):
         """Resolve the binary and pick the UDS path (does not spawn anything).
@@ -111,17 +83,13 @@ class AcceleratorDaemon:
         Args:
             cli_flags: extra arguments appended after ``--uds-path`` when
                 spawning the daemon (e.g. ``--project``/``--instance``).
-            binary_path: explicit path to the daemon binary. When omitted, the
-                path is resolved from the ``BIGTABLE_ACCELERATOR_BIN`` env var
-                and then the binary bundled in the wheel.
             startup_timeout: seconds ``start()`` waits for the daemon's UDS to
                 become connectable before raising.
 
         Raises:
-            FileNotFoundError: no binary could be resolved, or an explicit
-                ``binary_path``/env override does not point at a regular file.
+            FileNotFoundError: the bundled binary is not present in this wheel.
         """
-        self._binary_path = _resolve_binary_path(binary_path)
+        self._binary_path = _resolve_binary_path()
         self._cli_flags = list(cli_flags)
         self._startup_timeout = startup_timeout
         self._tempdir: str | None = None
