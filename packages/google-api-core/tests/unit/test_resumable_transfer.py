@@ -1215,7 +1215,7 @@ def test_sync_initiate_failure():
         transport=transport,
     )
     with pytest.raises(exceptions.GoogleAPICallError):
-        session.initiate(transport=transport)
+        session._initiate(transport=transport)
 
 
 def test_sync_transmit_empty_stream():
@@ -1314,6 +1314,24 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         list(
             session_dl._transmit_all_chunks(
                 transport, io.BytesIO(b"data"), 4, retry=no_retry
+            )
+        )
+
+    # Non-timeout RetryError re-raises RetryError rather than TransferStalledError
+    transport_conn = mock.create_autospec(requests.Session, instance=True)
+    transport_conn.request.side_effect = requests.exceptions.ConnectionError(
+        "Connection dropped"
+    )
+    session_conn = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=config,
+        transport=transport_conn,
+    )
+    session_conn._state._resumable_url = "https://upload.example.com/resumable-123"
+    with pytest.raises(exceptions.RetryError):
+        list(
+            session_conn._transmit_all_chunks(
+                transport_conn, io.BytesIO(b"data"), 4, retry=no_retry
             )
         )
 
@@ -1791,7 +1809,7 @@ def test_sync_method_override_arguments() -> None:
     transport1 = mock.Mock(spec=requests.Session)
     transport1.request.return_value = start_resp
     session1 = ResumableUploadSession(upload_url="https://api.example.com/start")
-    session1.initiate(transport=transport1, content_type="text/plain")
+    session1._initiate(transport=transport1, content_type="text/plain")
     assert session1._content_type == "text/plain"
 
     # 2. upload with content_type and on_progress overrides

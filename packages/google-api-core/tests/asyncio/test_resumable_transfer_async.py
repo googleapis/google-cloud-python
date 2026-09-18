@@ -1314,7 +1314,7 @@ async def test_async_initiate_and_recover_failures() -> None:
         transport=sess_transport,
     )
     with pytest.raises(exceptions.BadRequest):
-        await session.initiate(transport=sess_transport)
+        await session._initiate(transport=sess_transport)
 
     err_resp2 = DummyAsyncResponse(status=400, headers={}, body=b"Query Failed")
     sess_transport2 = DummyAsyncSession([err_resp2])
@@ -1733,7 +1733,7 @@ async def test_async_upload_already_finished_raises_value_error() -> None:
     session._state._finished = True
     session._state._resumable_url = "https://upload.example.com/resumable-async"
 
-    with mock.patch.object(session, "initiate", new_callable=mock.AsyncMock):
+    with mock.patch.object(session, "_initiate", new_callable=mock.AsyncMock):
         sess_transport = DummyAsyncSession([])
         with pytest.raises(
             ValueError, match="Upload completed without receiving a final response"
@@ -1963,7 +1963,7 @@ async def test_async_method_override_arguments() -> None:
 
     # 1. initiate with content_type override
     session1 = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
-    await session1.initiate(
+    await session1._initiate(
         transport=DummyAsyncSession([start_resp]), content_type="text/plain"
     )
     assert session1._content_type == "text/plain"

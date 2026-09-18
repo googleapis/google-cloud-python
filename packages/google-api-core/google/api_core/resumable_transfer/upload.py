@@ -114,9 +114,9 @@ class ResumableUploadSession:
             config: Optional upload configuration parameters. Defaults to
                 ``ResumableUploadConfig()`` when ``None``.
             resumable_url: Pre-existing upload session URL if resuming. When
-                ``None``, a new session is created via ``initiate()``.
+                ``None``, a new session is created during ``upload()``.
             transport: Optional requests session. When ``None``, a transport
-                must be provided to ``initiate()``, ``upload()``, or ``resume()``.
+                must be provided to ``upload()`` or ``resume()``.
             content_type: Optional MIME type of the stream payload. When
                 ``None``, no content-type header is sent unless overridden.
             response_type: Optional message class, callable deserializer, or
@@ -515,7 +515,7 @@ class ResumableUploadSession:
 
         return received
 
-    def initiate(
+    def _initiate(
         self,
         transport: requests.Session,
         request_body: Union[str, bytes] = "",
@@ -788,10 +788,7 @@ class ResumableUploadSession:
             yield from retryable_stream()
         except (requests.exceptions.Timeout, exceptions.RetryError) as exc:
             timeout_exc = (
-                exc.__cause__
-                if isinstance(exc, exceptions.RetryError)
-                and isinstance(exc.__cause__, requests.exceptions.Timeout)
-                else exc
+                exc.__cause__ if isinstance(exc, exceptions.RetryError) else exc
             )
             if not isinstance(timeout_exc, requests.exceptions.Timeout):
                 raise
@@ -911,7 +908,7 @@ class ResumableUploadSession:
         progress_queue: List[common.UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
-            self.initiate(
+            self._initiate(
                 transport=sess,
                 request_body=request_body,
                 size=computed_size,
