@@ -83,9 +83,12 @@ def _is_in_well_known_dir(path):
         return False
     well_known_dir = os.path.dirname(_WELL_KNOWN_CERT_PATH)
     try:
-        abs_path = os.path.abspath(path)
-        abs_well_known_dir = os.path.abspath(well_known_dir)
-        return os.path.commonpath([abs_well_known_dir, abs_path]) == abs_well_known_dir
+        real_path = os.path.realpath(path)
+        real_well_known_dir = os.path.realpath(well_known_dir)
+        return (
+            os.path.commonpath([real_well_known_dir, real_path])
+            == real_well_known_dir
+        )
     except ValueError:
         return False
 
@@ -253,7 +256,9 @@ def get_agent_identity_certificate_and_bytes():
     it gets the certificate path, reads the file, and parses it.
 
     Returns:
-        A tuple of (parsed certificate object, certificate bytes) if found and not opted out, otherwise (None, None).
+        Tuple[Optional[cryptography.x509.Certificate], Optional[bytes]]: A tuple
+            of (parsed certificate object, certificate bytes) if found and not
+            opted out, otherwise (None, None).
     """
     # If the user has opted out of cert bound tokens, there is no need to
     # look up the certificate.
@@ -300,19 +305,6 @@ def get_agent_identity_certificate_and_bytes():
         return None, None
 
 
-def get_and_parse_agent_identity_certificate():
-    """Gets and parses the agent identity certificate if not opted out.
-
-    Checks if the user has opted out of certificate-bound tokens. If not,
-    it gets the certificate path, reads the file, and parses it.
-
-    Returns:
-        The parsed certificate object if found and not opted out, otherwise None.
-    """
-    cert, _ = get_agent_identity_certificate_and_bytes()
-    return cert
-
-
 def parse_certificate(cert_bytes):
     """Validates a PEM-encoded certificate chain and returns the leaf certificate.
 
@@ -325,6 +317,7 @@ def parse_certificate(cert_bytes):
     Raises:
         ValueError: If no certificates are found or any certificate in the chain
             is malformed.
+        ImportError: If the cryptography library is not installed.
     """
     try:
         from cryptography import x509

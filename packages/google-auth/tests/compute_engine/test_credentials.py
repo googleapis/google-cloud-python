@@ -13,6 +13,7 @@
 # limitations under the License.
 import base64
 import datetime
+import json
 import re
 from unittest import mock
 
@@ -22,6 +23,7 @@ import responses  # type: ignore
 from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import jwt
+from google.auth import metrics
 from google.auth import transport
 from google.auth.compute_engine import credentials
 from google.auth.transport import requests
@@ -488,8 +490,6 @@ class TestCredentials(object):
         mock_get_cert_and_bytes,
         mock_metadata_get,
     ):
-        import json
-
         mock_cert = mock.sentinel.cert
         mock_cert_bytes = b"cert_content"
         mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
@@ -896,10 +896,6 @@ class TestIDTokenCredentials(object):
         mock_should_request,
         mock_get_cert_and_bytes,
     ):
-        import json
-        import base64
-        from google.auth import metrics
-
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
             base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
@@ -952,9 +948,6 @@ class TestIDTokenCredentials(object):
         mock_should_request,
         mock_get_cert_and_bytes,
     ):
-        import base64
-        from google.auth import metrics
-
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
             base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
@@ -999,9 +992,6 @@ class TestIDTokenCredentials(object):
         mock_metadata_get,
         mock_get_cert_and_bytes,
     ):
-        import base64
-        from google.auth import metrics
-
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
             base64.b64encode(b'{"exp": 3210}').decode("utf-8"),

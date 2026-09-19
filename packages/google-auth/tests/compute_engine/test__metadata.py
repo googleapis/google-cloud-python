@@ -806,14 +806,14 @@ def test_get_service_account_token_with_scopes_string(
 def test_get_service_account_token_with_bound_token(
     utcnow,
     mock_metrics_header_value,
-    mock_get_and_parse,
+    mock_get_cert_and_bytes,
     mock_should_request,
 ):
     # Test the successful path where a certificate is found and a bound token
     # is requested.
     mock_cert = mock.sentinel.cert
     mock_cert_bytes = b"fake_cert_bytes"
-    mock_get_and_parse.return_value = (mock_cert, mock_cert_bytes)
+    mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
     mock_should_request.return_value = True
 
     token_response = json.dumps({"access_token": "token", "expires_in": 3600})
@@ -821,7 +821,7 @@ def test_get_service_account_token_with_bound_token(
 
     _metadata.get_service_account_token(request)
 
-    mock_get_and_parse.assert_called_once()
+    mock_get_cert_and_bytes.assert_called_once()
     mock_should_request.assert_called_once_with(mock_cert)
 
     request.assert_called_once()
@@ -836,9 +836,9 @@ def test_get_service_account_token_with_bound_token(
 @mock.patch(
     "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
 )
-def test_get_service_account_token_no_cert(mock_get_and_parse):
-    # Test that no fingerprint is added when no certificate is found.
-    mock_get_and_parse.return_value = (None, None)
+def test_get_service_account_token_no_cert(mock_get_cert_and_bytes):
+    # Test that a standard GET request with body=None is sent when no certificate is found.
+    mock_get_cert_and_bytes.return_value = (None, None)
     token_response = json.dumps({"access_token": "token", "expires_in": 3600})
     request = make_request(token_response, headers={"content-type": "application/json"})
 
@@ -855,10 +855,10 @@ def test_get_service_account_token_no_cert(mock_get_and_parse):
     "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
 )
 def test_get_service_account_token_should_not_bind(
-    mock_get_and_parse, mock_should_request
+    mock_get_cert_and_bytes, mock_should_request
 ):
-    # Test that no fingerprint is added when a cert is found but should not be used.
-    mock_get_and_parse.return_value = (mock.sentinel.cert, b"fake_cert_bytes")
+    # Test that a standard GET request with body=None is sent when a cert is found but should not be used.
+    mock_get_cert_and_bytes.return_value = (mock.sentinel.cert, b"fake_cert_bytes")
     mock_should_request.return_value = False
     token_response = json.dumps({"access_token": "token", "expires_in": 3600})
     request = make_request(token_response, headers={"content-type": "application/json"})

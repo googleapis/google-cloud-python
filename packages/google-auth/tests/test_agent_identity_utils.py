@@ -87,6 +87,14 @@ class TestAgentIdentityUtils:
             environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
             raising=False,
         )
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+            raising=False,
+        )
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+            raising=False,
+        )
 
     @mock.patch("cryptography.x509.load_pem_x509_certificate")
     def test_parse_certificate(self, mock_load_cert):
@@ -126,6 +134,31 @@ class TestAgentIdentityUtils:
 
     def test_is_in_well_known_dir_empty_path(self):
         assert _agent_identity_utils._is_in_well_known_dir("") is False
+
+    def test_is_in_well_known_dir_resolves_symlinks(self, tmpdir, monkeypatch):
+        real_run_dir = tmpdir.mkdir("run")
+        var_dir = tmpdir.mkdir("var")
+        symlink_var_run = var_dir.join("run")
+        os.symlink(str(real_run_dir), str(symlink_var_run))
+
+        well_known_via_symlink = os.path.join(
+            str(symlink_var_run),
+            "secrets",
+            "workload-spiffe-credentials",
+            "certificates.pem",
+        )
+        monkeypatch.setattr(
+            "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
+            well_known_via_symlink,
+        )
+
+        resolved_cert_path = os.path.join(
+            str(real_run_dir),
+            "secrets",
+            "workload-spiffe-credentials",
+            "certificates.pem",
+        )
+        assert _agent_identity_utils._is_in_well_known_dir(resolved_cert_path) is True
 
     def test_get_agent_identity_certificate_path_empty_env(self, monkeypatch):
         monkeypatch.delenv(
@@ -890,19 +923,7 @@ class TestAgentIdentityUtils:
         mock_get_path.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_opted_out(
-        self, mock_get_path, monkeypatch
-    ):
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
-            "false",
-        )
-        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-        assert result is None
-        mock_get_path.assert_not_called()
-
-    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_no_path(
+    def test_get_agent_identity_certificate_and_bytes_no_path(
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
@@ -910,69 +931,45 @@ class TestAgentIdentityUtils:
             "true",
         )
         mock_get_path.return_value = None
-        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-        assert result is None
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        assert cert is None
+        assert cert_bytes is None
         mock_get_path.assert_called_once()
 
-    @mock.patch("google.auth._agent_identity_utils.parse_certificate")
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_success(
-        self, mock_get_path, mock_parse_certificate, monkeypatch
-    ):
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
-            "true",
-        )
-        mock_get_path.return_value = "/fake/cert.pem"
-        mock_open = mock.mock_open(read_data=NON_AGENT_IDENTITY_CERT_BYTES)
-
-        with mock.patch("builtins.open", mock_open):
-            result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-
-        mock_open.assert_called_once_with("/fake/cert.pem", "rb")
-        mock_parse_certificate.assert_called_once_with(NON_AGENT_IDENTITY_CERT_BYTES)
-        assert result == mock_parse_certificate.return_value
-
-    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_use_client_cert_false(
+    def test_get_agent_identity_certificate_and_bytes_use_client_cert_false(
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             "false",
         )
-        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-        assert result is None
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        assert cert is None
+        assert cert_bytes is None
         mock_get_path.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_use_client_cert_invalid(
+    def test_get_agent_identity_certificate_and_bytes_use_client_cert_invalid(
         self, mock_get_path, monkeypatch
     ):
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
             "foo",
         )
-        result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-        assert result is None
+        (
+            cert,
+            cert_bytes,
+        ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+        assert cert is None
+        assert cert_bytes is None
         mock_get_path.assert_not_called()
-
-    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_and_parse_agent_identity_certificate_file_read_error(
-        self, mock_get_path, monkeypatch
-    ):
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
-            "true",
-        )
-        mock_get_path.return_value = "/fake/cert.pem"
-        mock_open = mock.mock_open()
-        mock_open.side_effect = PermissionError("Permission denied")
-
-        with mock.patch("builtins.open", mock_open):
-            result = _agent_identity_utils.get_and_parse_agent_identity_certificate()
-
-        assert result is None
 
     def test_get_cached_cert_fingerprint_no_cert(self):
         with pytest.raises(ValueError, match="mTLS connection is not configured."):

@@ -277,9 +277,9 @@ def get(
         headers (Optional[Mapping[str, str]]): Headers for the request.
         return_none_for_not_found_error (Optional[bool]): If True, returns None
             for 404 error instead of throwing an exception.
+        timeout (int): How long to wait, in seconds for the metadata server to respond.
         method (str): The HTTP method to use for the request. Defaults to "GET".
         body (Optional[bytes]): The HTTP request body payload to send. Defaults to None.
-        timeout (int): How long to wait, in seconds for the metadata server to respond.
 
     Returns:
         Union[Mapping, str]: If the metadata server returns JSON, a mapping of
