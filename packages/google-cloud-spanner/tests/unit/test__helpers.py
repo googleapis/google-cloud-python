@@ -95,6 +95,307 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
+class Test_as_raw_pb(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _as_raw_pb
+
+        return _as_raw_pb(*args, **kw)
+
+    def test_proto_plus_message_is_unwrapped(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        request_options = RequestOptions(request_tag="tag-1")
+        result = self._callFUT(request_options, RequestOptions)
+        self.assertIs(type(result), RequestOptions.pb())
+        self.assertEqual(result, RequestOptions.pb(request_options))
+
+    def test_raw_protobuf_message_is_returned_unchanged(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        request_options_pb = RequestOptions.pb(RequestOptions(request_tag="tag-1"))
+        self.assertIs(
+            self._callFUT(request_options_pb, RequestOptions), request_options_pb
+        )
+
+    def test_dict_is_converted(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        result = self._callFUT({"request_tag": "tag-1"}, RequestOptions)
+        self.assertIs(type(result), RequestOptions.pb())
+        self.assertEqual(result.request_tag, "tag-1")
+
+    def test_dict_containing_a_proto_plus_message_is_converted(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions
+
+        # The raw protobuf constructor rejects a proto-plus message used as a
+        # dict value, so dicts must be routed through proto-plus instead.
+        include_replicas = DirectedReadOptions.IncludeReplicas(
+            auto_failover_disabled=True
+        )
+        result = self._callFUT(
+            {"include_replicas": include_replicas}, DirectedReadOptions
+        )
+        self.assertIs(type(result), DirectedReadOptions.pb())
+        self.assertTrue(result.include_replicas.auto_failover_disabled)
+
+    def test_none_is_returned_unchanged(self):
+        from google.cloud.spanner_v1 import RequestOptions
+
+        self.assertIsNone(self._callFUT(None, RequestOptions))
+
+
+class Test_make_execute_sql_request(unittest.TestCase):
+    SESSION_NAME = "projects/p/instances/i/databases/d/sessions/s"
+    SQL = "SELECT * FROM Singers WHERE SingerId = @singer_id"
+
+    def _callFUT(self, **kw):
+        from google.cloud.spanner_v1._helpers import _make_execute_sql_request
+
+        return _make_execute_sql_request(
+            session_name=self.SESSION_NAME, sql=self.SQL, seqno=1, **kw
+        )
+
+    def _assert_matches_proto_plus(self, **kw):
+        """Assert the fast builder matches the proto-plus constructor exactly.
+
+        Comparing serialized bytes as well as message equality is what pins
+        field presence: an explicitly set but empty sub-message is a different
+        request on the wire than an absent one.
+        """
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # The builder names this argument `partition`, matching `execute_sql`,
+        # while the proto field is `partition_token`.
+        partition = kw.pop("partition", None)
+
+        expected = ExecuteSqlRequest(
+            session=self.SESSION_NAME,
+            sql=self.SQL,
+            seqno=1,
+            partition_token=partition,
+            **kw,
+        )
+        result = self._callFUT(partition=partition, **kw)
+
+        self.assertIsInstance(result, ExecuteSqlRequest)
+        self.assertEqual(result, expected)
+        self.assertEqual(
+            ExecuteSqlRequest.serialize(result),
+            ExecuteSqlRequest.serialize(expected),
+        )
+        return result
+
+    def test_minimal(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        result = self._assert_matches_proto_plus()
+        self.assertEqual(result.session, self.SESSION_NAME)
+        self.assertEqual(result.sql, self.SQL)
+        self.assertEqual(result.seqno, 1)
+        self.assertFalse(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_all_fields_proto_plus(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1 import DirectedReadOptions, ExecuteSqlRequest
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1.types import RequestOptions, Type, TypeCode
+
+        self._assert_matches_proto_plus(
+            params=Struct(fields={"singer_id": _make_value_pb(42)}),
+            param_types={"singer_id": Type(code=TypeCode.INT64)},
+            query_mode=ExecuteSqlRequest.QueryMode.PROFILE,
+            partition=b"partition-token",
+            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="1"),
+            request_options=RequestOptions(
+                priority=RequestOptions.Priority.PRIORITY_HIGH,
+                request_tag="tag-1",
+                transaction_tag="transaction-tag-1",
+            ),
+            last_statement=True,
+            data_boost_enabled=True,
+            directed_read_options=DirectedReadOptions(
+                include_replicas=DirectedReadOptions.IncludeReplicas(
+                    replica_selections=[
+                        DirectedReadOptions.ReplicaSelection(
+                            location="us-central1",
+                            type_=DirectedReadOptions.ReplicaSelection.Type.READ_ONLY,
+                        )
+                    ],
+                    auto_failover_disabled=True,
+                )
+            ),
+        )
+
+    def test_all_fields_as_dicts(self):
+        from google.cloud.spanner_v1.types import TypeCode
+
+        self._assert_matches_proto_plus(
+            params={"singer_id": 42},
+            param_types={"singer_id": {"code": TypeCode.INT64}},
+            query_mode="PROFILE",
+            partition=b"partition-token",
+            query_options={"optimizer_version": "1"},
+            request_options={"request_tag": "tag-1"},
+            last_statement=True,
+            data_boost_enabled=True,
+            directed_read_options={
+                "include_replicas": {"auto_failover_disabled": True}
+            },
+        )
+
+    def test_all_fields_as_raw_protobuf(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions, ExecuteSqlRequest
+        from google.cloud.spanner_v1.types import RequestOptions, Type, TypeCode
+
+        self._assert_matches_proto_plus(
+            param_types={"singer_id": Type.pb(Type(code=TypeCode.INT64))},
+            query_options=ExecuteSqlRequest.QueryOptions.pb(
+                ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+            ),
+            request_options=RequestOptions.pb(RequestOptions(request_tag="tag-1")),
+            directed_read_options=DirectedReadOptions.pb(
+                DirectedReadOptions(
+                    include_replicas=DirectedReadOptions.IncludeReplicas(
+                        auto_failover_disabled=True
+                    )
+                )
+            ),
+        )
+
+    def test_query_mode_accepts_name_and_value(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        profile = ExecuteSqlRequest.QueryMode.PROFILE
+        for query_mode in ("PROFILE", profile, profile.value):
+            with self.subTest(query_mode=query_mode):
+                result = self._assert_matches_proto_plus(query_mode=query_mode)
+                self.assertEqual(result.query_mode, profile)
+
+    def test_invalid_query_mode_name_raises_key_error(self):
+        # Matches what the proto-plus constructor raises today.
+        with self.assertRaises(KeyError):
+            self._callFUT(query_mode="NOT_A_QUERY_MODE")
+
+    def test_empty_params_preserves_field_presence(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # `execute_sql` passes `{}` rather than `None` when a query has no
+        # parameters, which sets the `params` field to an explicit empty Struct.
+        result = self._assert_matches_proto_plus(params={})
+        self.assertTrue(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_empty_struct_params_preserves_field_presence(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        result = self._assert_matches_proto_plus(params=Struct())
+        self.assertTrue(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_params_none_leaves_field_unset(self):
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # The proto-plus constructor rejects `params=None`, so this case has no
+        # counterpart to compare against.
+        result = self._callFUT(params=None)
+        self.assertFalse(ExecuteSqlRequest.pb(result).HasField("params"))
+
+    def test_empty_param_types_leaves_map_empty(self):
+        for param_types in (None, {}):
+            with self.subTest(param_types=param_types):
+                result = self._assert_matches_proto_plus(param_types=param_types)
+                self.assertEqual(len(result.param_types), 0)
+
+    def test_dicts_containing_proto_plus_messages(self):
+        from google.cloud.spanner_v1 import DirectedReadOptions
+        from google.cloud.spanner_v1.types import Type, TypeCode
+
+        # `directed_read_options` and `param_types` are passed straight from
+        # user input, so a dict holding a proto-plus message is reachable from
+        # the public API and must behave exactly like the proto-plus
+        # constructor.
+        self._assert_matches_proto_plus(
+            param_types={
+                "ids": {
+                    "code": TypeCode.ARRAY,
+                    "array_element_type": Type(code=TypeCode.INT64),
+                }
+            },
+            directed_read_options={
+                "include_replicas": DirectedReadOptions.IncludeReplicas(
+                    auto_failover_disabled=True
+                )
+            },
+        )
+
+    def test_params_dict_of_value_messages_is_not_supported(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+
+        # This is the one documented difference from the proto-plus
+        # constructor. It is unreachable from `execute_sql`, which always
+        # builds an already-encoded `Struct`, and it cannot be supported
+        # without re-encoding the parameter values by hand -- which would risk
+        # encoding them differently than `Struct` does.
+        params = {"singer_id": Value(string_value="42")}
+
+        ExecuteSqlRequest(
+            session=self.SESSION_NAME, sql=self.SQL, seqno=1, params=params
+        )
+        with self.assertRaises(ValueError):
+            self._callFUT(params=params)
+
+    def test_inputs_are_copied_not_aliased(self):
+        from google.protobuf.struct_pb2 import Struct
+
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+        from google.cloud.spanner_v1.types import RequestOptions
+
+        request_options = RequestOptions(request_tag="tag-1")
+        params = Struct(fields={"singer_id": _make_value_pb(42)})
+
+        expected_request_options = RequestOptions(request_tag="tag-1")
+        expected_params = Struct()
+        expected_params.CopyFrom(params)
+
+        result = self._callFUT(request_options=request_options, params=params)
+        result.request_options.request_tag = "mutated"
+        result.params["singer_id"] = "mutated"
+
+        # The mutations must land on the result...
+        self.assertEqual(result.request_options.request_tag, "mutated")
+        self.assertEqual(result.params["singer_id"], "mutated")
+        # ...and must not be visible through the caller's objects.
+        self.assertEqual(request_options, expected_request_options)
+        self.assertEqual(params, expected_params)
+
+    def test_builder_covers_every_request_field(self):
+        import inspect
+
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
+        from google.cloud.spanner_v1._helpers import _make_execute_sql_request
+
+        fields = {field.name for field in ExecuteSqlRequest.pb().DESCRIPTOR.fields}
+        parameters = set(inspect.signature(_make_execute_sql_request).parameters)
+        self.assertEqual(
+            fields - parameters,
+            {
+                # Renamed to match `execute_sql`'s public keyword arguments.
+                "session",
+                "partition_token",
+                # Set by the retry layer in `_restart_on_unavailable`.
+                "transaction",
+                "resume_token",
+                # Not surfaced by the handwritten layer.
+                "routing_hint",
+            },
+            "ExecuteSqlRequest gained or lost a field; thread it through "
+            "_make_execute_sql_request (or add it to this exclusion list).",
+        )
+
+
 class Test_get_cloud_region(unittest.TestCase):
     def setUp(self):
         _helpers._cloud_region = None
