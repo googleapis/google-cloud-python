@@ -662,18 +662,12 @@ class TestExclusiveWSGIServer(object):
             server.server_bind()
             assert server._ipv6_socket is None
 
-            # 2. Ignored when bind(("::1", ...)) raises EADDRNOTAVAIL
+            # 2. Non-fatal when bind(("::1", ...)) fails but no listener is present
             mock_socket.socket.side_effect = None
             mock_socket.socket.return_value.bind.side_effect = OSError(
-                errno.EADDRNOTAVAIL, "IPv6 loopback unavailable"
+                errno.EADDRINUSE, "Held by non-listening socket"
             )
             server.server_bind()
             assert server._ipv6_socket is None
 
-            # 3. Re-raised when port is in use on ::1 (EADDRINUSE)
-            mock_socket.socket.return_value.bind.side_effect = OSError(
-                errno.EADDRINUSE, "Address in use"
-            )
-            with pytest.raises(OSError):
-                server.server_bind()
 

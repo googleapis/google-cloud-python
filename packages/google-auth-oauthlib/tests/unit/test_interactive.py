@@ -60,17 +60,28 @@ def test_is_port_open_ipv6_checks(monkeypatch):
     from google_auth_oauthlib import interactive as module_under_test
 
     sock4 = mock.create_autospec(socket.socket, instance=True)
-    sock6 = mock.create_autospec(socket.socket, instance=True)
+    sock6 = mock.MagicMock()
+
+    def make_sock(family, type_):
+        if family == socket.AF_INET6:
+            return sock6
+        return sock4
+
+    monkeypatch.setattr(socket, "socket", make_sock)
+
+    sock6.__enter__.return_value.connect_ex.return_value = 0
+    assert not module_under_test.is_port_open(8085)
+
+    sock6.side_effect = OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
     monkeypatch.setattr(
         socket,
         "socket",
-        lambda family, type_: sock6 if family == socket.AF_INET6 else sock4,
+        lambda family, type_: (_ for _ in ()).throw(
+            OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
+        )
+        if family == socket.AF_INET6
+        else sock4,
     )
-
-    sock6.bind.side_effect = OSError(errno.EADDRINUSE, "Address in use")
-    assert not module_under_test.is_port_open(8085)
-
-    sock6.bind.side_effect = OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
     assert module_under_test.is_port_open(8085)
 
 

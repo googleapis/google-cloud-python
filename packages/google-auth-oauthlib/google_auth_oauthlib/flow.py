@@ -48,11 +48,11 @@ Here's an example of using :class:`InstalledAppFlow`::
     https://developers.google.com/identity/protocols/oauth2
 
 """
-from base64 import urlsafe_b64encode
 import errno
 import hashlib
 import json
 import logging
+from base64 import urlsafe_b64encode
 
 try:
     from secrets import SystemRandom
@@ -60,11 +60,11 @@ except ImportError:  # pragma: NO COVER
     from random import SystemRandom
 
 import socket
-from string import ascii_letters, digits
 import sys
 import webbrowser
 import wsgiref.simple_server
 import wsgiref.util
+from string import ascii_letters, digits
 
 import google.auth.transport.requests
 import google.oauth2.credentials
@@ -497,13 +497,6 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
 
     allow_reuse_address = False
 
-    _IPV6_UNAVAILABLE_ERRNOS = {
-        errno.EAFNOSUPPORT,
-        errno.EADDRNOTAVAIL,
-        getattr(errno, "WSAEAFNOSUPPORT", 10047),
-        getattr(errno, "WSAEADDRNOTAVAIL", 10049),
-    }
-
     @staticmethod
     def _is_listener_present(family, addr, port):
         """Return True if a TCP listener already accepts connections on (addr, port).
@@ -522,17 +515,13 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
             return False
 
     def server_bind(self):
-        host, port = self.server_address[:2]
+        host = self.server_address[0]
         if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
-        bound_port = getattr(self, "server_port", port)
-        if (
-            host in ("localhost", "127.0.0.1")
-            and bound_port
-            and hasattr(socket, "AF_INET6")
-        ):
-            if self._is_listener_present(socket.AF_INET6, "::1", bound_port):
+        port = self.server_address[1]
+        if host == "localhost" and port and hasattr(socket, "AF_INET6"):
+            if self._is_listener_present(socket.AF_INET6, "::1", port):
                 self.socket.close()
                 raise OSError(errno.EADDRINUSE, "Address already in use")
             self._ipv6_socket = None
@@ -542,14 +531,11 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
                     self._ipv6_socket.setsockopt(
                         socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1
                     )
-                self._ipv6_socket.bind(("::1", bound_port))
-            except OSError as exc:
+                self._ipv6_socket.bind(("::1", port))
+            except OSError:
                 if self._ipv6_socket is not None:
                     self._ipv6_socket.close()
                     self._ipv6_socket = None
-                if exc.errno not in self._IPV6_UNAVAILABLE_ERRNOS:
-                    self.socket.close()
-                    raise
 
     def server_close(self):
         if getattr(self, "_ipv6_socket", None) is not None:
