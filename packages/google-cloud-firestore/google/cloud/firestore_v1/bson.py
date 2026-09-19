@@ -25,6 +25,7 @@ Example:
 """
 
 import abc
+import decimal
 import re
 from typing import Any, Dict, Union
 
@@ -36,6 +37,7 @@ __all__ = [
     "BSONBinary",
     "BSONTimestamp",
     "BSONRegex",
+    "BSONDecimal128",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -425,3 +427,84 @@ class BSONRegex(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._pattern, self._options))
+
+
+class BSONDecimal128(_BSONType):
+    """Represents a BSON 128-bit Decimal container for Firestore.
+
+    Args:
+        value (Union[str, int, float, decimal.Decimal, BSONDecimal128]):
+            The decimal value as a string, integer, float, decimal.Decimal,
+            or BSONDecimal128 instance.
+
+    Raises:
+        TypeError: If value is a boolean or unsupported type.
+        ValueError: If value cannot be parsed as a valid decimal number.
+
+    Example:
+        >>> dec = BSONDecimal128("123.45")
+        >>> dec.value
+        '123.45'
+        >>> dec.to_decimal
+        Decimal('123.45')
+    """
+
+    __slots__ = ("_value",)
+
+    def __init__(
+        self,
+        value: Union[str, int, float, decimal.Decimal, "BSONDecimal128"],
+    ):
+        if isinstance(value, BSONDecimal128):
+            self._value: str = value._value
+        elif isinstance(value, (str, int, float, decimal.Decimal)) and not isinstance(
+            value, bool
+        ):
+            self._value = str(value)
+        else:
+            raise TypeError(
+                "BSONDecimal128 value must be a Decimal, str, int, or float."
+            )
+
+    @property
+    def value(self) -> str:
+        """str: The string representation of the 128-bit decimal value."""
+        return self._value
+
+    @property
+    def to_decimal(self) -> decimal.Decimal:
+        """decimal.Decimal: Convert to Python standard library Decimal instance."""
+        return decimal.Decimal(self._value)
+
+    def _to_map_value(self) -> Dict[str, str]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__decimal128__": self._value}
+
+    def __repr__(self) -> str:
+        return f"BSONDecimal128({self._value!r})"
+
+    def __str__(self) -> str:
+        return self._value
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONDecimal128):
+            if self._value.upper() == "NAN" and other._value.upper() == "NAN":
+                return True
+            try:
+                return self.to_decimal == other.to_decimal
+            except decimal.InvalidOperation:
+                return self._value == other._value
+        if isinstance(other, decimal.Decimal):
+            try:
+                return self.to_decimal == other
+            except decimal.InvalidOperation:
+                return False
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        if self._value.upper() == "NAN":
+            return hash((type(self), "NAN"))
+        try:
+            return hash(self.to_decimal)
+        except decimal.InvalidOperation:
+            return hash((type(self), self._value))
