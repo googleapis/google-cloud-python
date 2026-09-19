@@ -1927,6 +1927,12 @@ class TestIsMtlsEndpoint(object):
             "https://p.googleapis.com/",
             "https://p.googleapis.com:443/v1",
             "https://p.googleapis.com.",
+            "https://mtls.run.app",
+            "https://mtls.run.app/",
+            "https://my-service-123456.us-central1.mtls.run.app",
+            "https://my-service-123456.us-central1.mtls.run.app/v1/invocations",
+            "https://tag---my-service-123456.us-central1.mtls.run.app.",
+            b"https://my-service-123456.us-central1.mtls.run.app",
         ],
     )
     def test_is_mtls_endpoint_true(self, url):
@@ -1940,6 +1946,11 @@ class TestIsMtlsEndpoint(object):
             "https://storage.googleapis.com:443/b/my-bucket",
             "https://storage.googleapis.com:443/bucket/mtls.googleapis.com?pageSize=10#frag",
             "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://my-service-xyz-uc.a.run.app",
+            "https://my-service-123456.us-central1.run.app",
+            "https://my-service-xyz-uc.a.run.app/mtls.run.app",
+            "https://fake-mtls.run.app/v1",
+            "https://fake-mtls.run.app.attacker.com/v1",
             "https://[2001:db8::1]:443/mtls.googleapis.com",
             "https://[::1]:8443/mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
@@ -1958,6 +1969,7 @@ class TestIsMtlsEndpoint(object):
                 "https://storage.googleapis.com/bucket/mtls.googleapis.com"
             ),
             "https://.",
+            "https://[::1",
             "",
             None,
             123,

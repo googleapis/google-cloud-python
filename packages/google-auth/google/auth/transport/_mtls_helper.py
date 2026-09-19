@@ -847,16 +847,19 @@ _MTLS_HOST_SUFFIXES = (
     ".mtls.googleapis.com",
     ".mtls.sandbox.googleapis.com",
     ".p.googleapis.com",
+    ".mtls.run.app",
 )
 _MTLS_EXACT_HOSTS = (
     "mtls.googleapis.com",
     "mtls.sandbox.googleapis.com",
     "p.googleapis.com",
+    "mtls.run.app",
 )
 
 
 def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
-    """Checks if the given URL corresponds to an mTLS or Private Service Connect (PSC) endpoint.
+    """Checks if the given URL corresponds to an mTLS (Google APIs or Cloud Run)
+    or Private Service Connect (PSC) endpoint.
 
     Args:
         url (Optional[Union[str, bytes, object]]): The request URL.
