@@ -1254,6 +1254,7 @@ def test_mutations_batcher_threading(data_table, rows_to_delete):
 def test_mutations_batcher_exceptions(data_table, rows_to_delete):
     """Test the mutations batcher exception handling"""
     import mock
+    from google.api_core import exceptions as core_exceptions
     from google.rpc import code_pb2, status_pb2
 
     from google.cloud.bigtable.batcher import MutationsBatcher, MutationsBatchError
@@ -1317,6 +1318,29 @@ def test_mutations_batcher_exceptions(data_table, rows_to_delete):
 
         with pytest.raises(MutationsBatchError):
             batcher.close()
+
+    # Test RPC-level error.
+    with pytest.raises(MutationsBatchError) as exc_info:
+        with mock.patch.object(
+            data_table._instance._client.table_data_client, "mutate_rows"
+        ) as mutate_mock:
+            mutate_mock.side_effect = core_exceptions.InternalServerError(
+                "Test RPC error"
+            )
+            with MutationsBatcher(
+                data_table,
+                flush_count=10,
+                flush_interval=1,
+            ) as batcher:
+                for i in range(num_sent):
+                    row = data_table.direct_row("row{}".format(i))
+                    row.set_cell(
+                        COLUMN_FAMILY_ID1, COL_NAME1, "val{}".format(i).encode("utf-8")
+                    )
+                    rows_to_delete.append(row)
+                    batcher.mutate(row)
+                batcher.flush()
+    assert len(exc_info.value.exc) == num_sent
 
 
 def test_mutations_batcher_manual_flush(data_table, rows_to_delete):
