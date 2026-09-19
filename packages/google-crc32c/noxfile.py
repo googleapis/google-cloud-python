@@ -177,9 +177,9 @@ def lint_setup_py(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add prerelease deps tests
-    session.skip("prerelease deps tests are not yet supported")
+    session.skip(
+        "prerelease_deps session is not applicable as google-crc32c has no runtime dependencies"
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -187,9 +187,9 @@ def core_deps_from_source(session):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+    session.skip(
+        "core_deps_from_source session is not applicable as google-crc32c has no core dependencies"
+    )
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
