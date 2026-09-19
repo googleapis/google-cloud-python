@@ -1310,6 +1310,25 @@ def test_bson_document_read_and_write(client, cleanup, database):
     assert snapshot.to_dict(decode_bson=True) == bson_payload
 
 
+def test_bson_query_ordering(client, cleanup, database):
+    """Test server query ordering for BSON types."""
+    collection_id = "bson_ordering_" + UNIQUE_RESOURCE_ID
+    coll_ref = client.collection(collection_id)
+
+    doc1 = coll_ref.document("doc1")
+    doc2 = coll_ref.document("doc2")
+    doc3 = coll_ref.document("doc3")
+    cleanup.extend([doc1.delete, doc2.delete, doc3.delete])
+
+    doc1.set({"val": BSONMinKey()})
+    doc2.set({"val": BSONInt32(10)})
+    doc3.set({"val": BSONMaxKey()})
+
+    query = coll_ref.order_by("val")
+    results = [doc.to_dict(decode_bson=True)["val"] for doc in query.stream()]
+    assert results == [BSONMinKey(), BSONInt32(10), BSONMaxKey()]
+
+
 @pytest.fixture(scope="module")
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
