@@ -512,11 +512,16 @@ class DocumentSnapshot(object):
         nested_data = field_path_module.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
-    def to_dict(self) -> Union[Dict[str, Any], None]:
+    def to_dict(
+        self, decode_bson: Optional[bool] = None
+    ) -> Union[Dict[str, Any], None]:
         """Retrieve the data contained in this snapshot.
 
         A copy is returned since the data may contain mutable values,
         but the data stored in the snapshot must remain immutable.
+
+        Args:
+            decode_bson (Optional[bool]): Whether to decode BSON extended types.
 
         Returns:
             Dict[str, Any] or None:
@@ -525,7 +530,16 @@ class DocumentSnapshot(object):
         """
         if not self._exists:
             return None
-        return copy.deepcopy(self._data)
+        data = copy.deepcopy(self._data)
+        client = self._reference._client if self._reference is not None else None
+        should_decode = (
+            decode_bson
+            if decode_bson is not None
+            else getattr(client, "_decode_bson", False)
+        )
+        if should_decode:
+            return _helpers._decode_bson_dict_recursive(data)
+        return data
 
     def _to_protobuf(self) -> Optional[Document]:
         return _helpers.document_snapshot_to_protobuf(self)

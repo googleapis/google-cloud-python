@@ -1285,9 +1285,9 @@ def test_unicode_doc(client, cleanup, database):
 
 
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
-def test_bson_document_writes(client, cleanup, database):
-    """Test write operations for BSON types on Enterprise DB."""
-    collection_id = "bson_type_writes_" + UNIQUE_RESOURCE_ID
+def test_bson_document_read_and_write(client, cleanup, database):
+    """Test read and write operations for BSON types on Enterprise DB."""
+    collection_id = "bson_type_read_write_" + UNIQUE_RESOURCE_ID
     doc_ref = client.collection(collection_id).document("bson_doc")
     cleanup(doc_ref.delete)
 
@@ -1296,6 +1296,7 @@ def test_bson_document_writes(client, cleanup, database):
         "min_key": BSONMinKey(),
         "max_key": BSONMaxKey(),
         "int32_val": BSONInt32(42),
+        "binary_val_sub0": b"hello",
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
         "timestamp_val": BSONTimestamp(1700000000, 1),
         "regex_val": BSONRegex("^hello.*$", options="i"),
@@ -1306,26 +1307,7 @@ def test_bson_document_writes(client, cleanup, database):
 
     snapshot = doc_ref.get()
     assert snapshot.exists
-    assert snapshot.to_dict() == {
-        "user_id": {"__oid__": "507f191e810c19729de860ea"},
-        "min_key": {"__min__": None},
-        "max_key": {"__max__": None},
-        "int32_val": {"__int__": 42},
-        "binary_val_sub128": {"__binary__": b"\x80world"},
-        "timestamp_val": {
-            "__request_timestamp__": {
-                "seconds": 1700000000,
-                "increment": 1,
-            }
-        },
-        "regex_val": {
-            "__regex__": {
-                "pattern": "^hello.*$",
-                "options": "i",
-            }
-        },
-        "decimal128_val": {"__decimal128__": "123.45"},
-    }
+    assert snapshot.to_dict(decode_bson=True) == bson_payload
 
 
 @pytest.fixture(scope="module")
