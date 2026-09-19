@@ -214,6 +214,32 @@ def encode_value(value) -> types.document.Value:
     if isinstance(value, _BSONType):
         return encode_value(value._to_map_value())
 
+    # Duck-type native PyMongo / third-party BSON objects
+    if hasattr(value, "__class__"):
+        cls_name = value.__class__.__name__
+        if cls_name == "ObjectId" and hasattr(value, "binary"):
+            return encode_value({"__oid__": str(value).lower()})
+        if cls_name == "Decimal128" and hasattr(value, "to_decimal"):
+            return encode_value({"__decimal128__": str(value)})
+        if cls_name == "Regex" and hasattr(value, "pattern"):
+            opts = getattr(value, "flags", "") or getattr(value, "options", "")
+            return encode_value(
+                {"__regex__": {"pattern": value.pattern, "options": str(opts)}}
+            )
+        if cls_name == "Timestamp" and hasattr(value, "time") and hasattr(value, "inc"):
+            return encode_value(
+                {
+                    "__request_timestamp__": {
+                        "seconds": value.time,
+                        "increment": value.inc,
+                    }
+                }
+            )
+        if cls_name == "MinKey":
+            return encode_value({"__min__": None})
+        if cls_name == "MaxKey":
+            return encode_value({"__max__": None})
+
     if isinstance(value, GeoPoint):
         return document.Value(geo_point_value=value.to_protobuf())
 
