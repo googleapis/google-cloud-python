@@ -50,6 +50,18 @@ def is_port_open(port):
             is_open = False
         else:
             is_open = True
+    if is_open and hasattr(socket, "AF_INET6"):
+        with contextlib.closing(
+            socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+        ) as sock6:
+            try:
+                sock6.bind(("::1", port))
+            except socket.error as exc:
+                if (
+                    exc.errno
+                    not in google_auth_oauthlib.flow._ExclusiveWSGIServer._IPV6_UNAVAILABLE_ERRNOS
+                ):
+                    is_open = False
     return is_open
 
 

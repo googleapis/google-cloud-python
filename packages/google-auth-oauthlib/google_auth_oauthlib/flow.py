@@ -49,6 +49,7 @@ Here's an example of using :class:`InstalledAppFlow`::
 
 """
 from base64 import urlsafe_b64encode
+import errno
 import hashlib
 import json
 import logging
@@ -487,7 +488,8 @@ class InstalledAppFlow(Flow):
 class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     """Custom WSGIServer.
 
-    Enforces exclusive address binding on Windows.
+    Enforces exclusive address binding on Windows and reserves the matching
+    IPv6 loopback address (`::1`) when binding to localhost.
     Setting `WSGIServer.allow_reuse_address` is not enough, since it sets `SO_REUSEADDR`
     and not `SO_EXCLUSIVEADDRUSE`. `SO_REUSEADDR` alone allows other processes to bind
     to the same address and port on Windows.
@@ -495,10 +497,65 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
 
     allow_reuse_address = False
 
+    _IPV6_UNAVAILABLE_ERRNOS = {
+        errno.EAFNOSUPPORT,
+        errno.EADDRNOTAVAIL,
+        getattr(errno, "WSAEAFNOSUPPORT", 10047),
+        getattr(errno, "WSAEADDRNOTAVAIL", 10049),
+    }
+
+    @staticmethod
+    def _is_listener_present(family, addr, port):
+        """Return True if a TCP listener already accepts connections on (addr, port).
+
+        On Windows (same user account), SO_EXCLUSIVEADDRUSE on `::1` does not
+        fail when another process already holds a wildcard `[::]` listener with
+        default flags, and a bound-non-listening `::1` socket does not intercept
+        incoming SYNs. Probing via connect_ex detects pre-existing `[::]`
+        listeners before binding.
+        """
+        try:
+            with socket.socket(family, socket.SOCK_STREAM) as probe:
+                probe.settimeout(0.1)
+                return probe.connect_ex((addr, port)) == 0
+        except OSError:
+            return False
+
     def server_bind(self):
+        host, port = self.server_address[:2]
         if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
+        bound_port = getattr(self, "server_port", port)
+        if (
+            host in ("localhost", "127.0.0.1")
+            and bound_port
+            and hasattr(socket, "AF_INET6")
+        ):
+            if self._is_listener_present(socket.AF_INET6, "::1", bound_port):
+                self.socket.close()
+                raise OSError(errno.EADDRINUSE, "Address already in use")
+            self._ipv6_socket = None
+            try:
+                self._ipv6_socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+                    self._ipv6_socket.setsockopt(
+                        socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1
+                    )
+                self._ipv6_socket.bind(("::1", bound_port))
+            except OSError as exc:
+                if self._ipv6_socket is not None:
+                    self._ipv6_socket.close()
+                    self._ipv6_socket = None
+                if exc.errno not in self._IPV6_UNAVAILABLE_ERRNOS:
+                    self.socket.close()
+                    raise
+
+    def server_close(self):
+        if getattr(self, "_ipv6_socket", None) is not None:
+            self._ipv6_socket.close()
+            self._ipv6_socket = None
+        super().server_close()
 
 
 class _WSGIRequestHandler(wsgiref.simple_server.WSGIRequestHandler):

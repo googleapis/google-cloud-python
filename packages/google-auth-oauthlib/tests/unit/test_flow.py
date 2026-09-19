@@ -571,9 +571,15 @@ class TestExclusiveWSGIServer(object):
         ) as mock_socket:
             mock_socket.SOL_SOCKET = socket.SOL_SOCKET
             mock_socket.SO_EXCLUSIVEADDRUSE = getattr(socket, "SO_EXCLUSIVEADDRUSE", 1)
+            mock_socket.AF_INET = socket.AF_INET
+            mock_socket.AF_INET6 = socket.AF_INET6
+            mock_socket.SOCK_STREAM = socket.SOCK_STREAM
+            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = (
+                1
+            )
 
             server = flow._ExclusiveWSGIServer(
-                ("localhost", 0), flow._WSGIRequestHandler, bind_and_activate=False
+                ("localhost", 8085), flow._WSGIRequestHandler, bind_and_activate=False
             )
             server.socket = mock.Mock()
 
@@ -582,6 +588,12 @@ class TestExclusiveWSGIServer(object):
                 server.socket.setsockopt.assert_called_once_with(
                     mock_socket.SOL_SOCKET, mock_socket.SO_EXCLUSIVEADDRUSE, 1
                 )
+                server._ipv6_socket.setsockopt.assert_called_once_with(
+                    mock_socket.SOL_SOCKET, mock_socket.SO_EXCLUSIVEADDRUSE, 1
+                )
+                server._ipv6_socket.bind.assert_called_once_with(("::1", 8085))
+                server.server_close()
+                assert server._ipv6_socket is None
 
     def test_exclusive_wsgi_server_bind_non_windows(self):
         with mock.patch("sys.platform", "linux"):
@@ -593,3 +605,75 @@ class TestExclusiveWSGIServer(object):
             with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
                 server.server_bind()
                 server.socket.setsockopt.assert_not_called()
+                server.server_close()
+
+    def test_exclusive_wsgi_server_detects_existing_listeners(self):
+        with mock.patch("sys.platform", "win32"), mock.patch(
+            "google_auth_oauthlib.flow.socket"
+        ) as mock_socket:
+            mock_socket.SOL_SOCKET = socket.SOL_SOCKET
+            mock_socket.SO_EXCLUSIVEADDRUSE = 1
+            mock_socket.AF_INET = socket.AF_INET
+            mock_socket.AF_INET6 = socket.AF_INET6
+            mock_socket.SOCK_STREAM = socket.SOCK_STREAM
+
+            server = flow._ExclusiveWSGIServer(
+                ("localhost", 8085), flow._WSGIRequestHandler, bind_and_activate=False
+            )
+            server.socket = mock.Mock()
+
+            # 1. Pre-existing IPv6 listener on ::1 / [::]
+            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = (
+                0
+            )
+            with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
+                with pytest.raises(OSError):
+                    server.server_bind()
+            server.socket.close.assert_called_once()
+
+            # 2. _is_listener_present returns False when socket() raises OSError
+            mock_socket.socket.side_effect = OSError("socket error")
+            assert not flow._ExclusiveWSGIServer._is_listener_present(
+                socket.AF_INET6, "::1", 8085
+            )
+
+    def test_exclusive_wsgi_server_ipv6_bind_errors(self):
+        import errno
+
+        server = flow._ExclusiveWSGIServer(
+            ("localhost", 8085), flow._WSGIRequestHandler, bind_and_activate=False
+        )
+        server.socket = mock.Mock()
+
+        with mock.patch.object(
+            wsgiref.simple_server.WSGIServer, "server_bind"
+        ), mock.patch.object(
+            flow._ExclusiveWSGIServer, "_is_listener_present", return_value=False
+        ), mock.patch(
+            "google_auth_oauthlib.flow.socket"
+        ) as mock_socket:
+            mock_socket.AF_INET6 = socket.AF_INET6
+            mock_socket.SOCK_STREAM = socket.SOCK_STREAM
+
+            # 1. Ignored when socket(AF_INET6) itself raises EAFNOSUPPORT
+            mock_socket.socket.side_effect = OSError(
+                errno.EAFNOSUPPORT, "IPv6 disabled in kernel"
+            )
+            server.server_bind()
+            assert server._ipv6_socket is None
+
+            # 2. Ignored when bind(("::1", ...)) raises EADDRNOTAVAIL
+            mock_socket.socket.side_effect = None
+            mock_socket.socket.return_value.bind.side_effect = OSError(
+                errno.EADDRNOTAVAIL, "IPv6 loopback unavailable"
+            )
+            server.server_bind()
+            assert server._ipv6_socket is None
+
+            # 3. Re-raised when port is in use on ::1 (EADDRINUSE)
+            mock_socket.socket.return_value.bind.side_effect = OSError(
+                errno.EADDRINUSE, "Address in use"
+            )
+            with pytest.raises(OSError):
+                server.server_bind()
+
