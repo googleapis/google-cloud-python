@@ -28,7 +28,10 @@ dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/google-cloud-python/blob/main/packages/gapic-generator/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 2.25.0, < 3.0.0",
+    # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18352 is merged
+    "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git@feat/resumable-transfer-api-core#subdirectory=packages/google-api-core",
+    # TODO: Uncomment the line below
+    # "google-api-core[grpc] >= 2.25.0, < 3.0.0",
     "googleapis-common-protos >= 1.69.2, < 2.0.0",
     "grpcio >= 1.59.0, < 2.0.0",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`

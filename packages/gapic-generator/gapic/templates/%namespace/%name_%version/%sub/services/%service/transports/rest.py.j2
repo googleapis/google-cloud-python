@@ -264,7 +264,13 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             pb_resp = resp
             {% endif %}
 
+            {% if method.is_resumable_upload %}
+            # Resumable upload start responses return session metadata in headers with an empty body.
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            {% else %}
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            {% endif %}
             {% endif %}{# method.lro #}
             {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
