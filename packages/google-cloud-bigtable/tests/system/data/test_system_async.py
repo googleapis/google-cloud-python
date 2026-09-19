@@ -532,8 +532,8 @@ class TestSystemAsync(SystemTestRunner):
         callback = mock.Mock()
 
         new_value = uuid.uuid4().hex.encode()
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
         flush_interval = 0.1
@@ -546,7 +546,7 @@ class TestSystemAsync(SystemTestRunner):
             assert len(batcher._staged_entries) == 0
             callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
             # ensure cell is updated
-            assert (await self._retrieve_cell_value(target, row_key)) == new_value
+            assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
