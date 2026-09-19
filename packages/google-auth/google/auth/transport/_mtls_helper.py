@@ -37,7 +37,7 @@ CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
 _CERT_REGEX = re.compile(
-    b"-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----\r?\n?", re.DOTALL
+    b"-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----\r?\n?", re.DOTALL
 )
 
 # support various format of key files, e.g.
@@ -46,7 +46,7 @@ _CERT_REGEX = re.compile(
 # "-----BEGIN RSA PRIVATE KEY-----..."
 # "-----BEGIN ENCRYPTED PRIVATE KEY-----"
 _KEY_REGEX = re.compile(
-    b"-----BEGIN [A-Z ]*PRIVATE KEY-----.+-----END [A-Z ]*PRIVATE KEY-----\r?\n?",
+    b"-----BEGIN [A-Z ]*PRIVATE KEY-----.+?-----END [A-Z ]*PRIVATE KEY-----\r?\n?",
     re.DOTALL,
 )
 
@@ -534,13 +534,16 @@ def _read_cert_file(cert_path):
         cert_data = cert_file.read()
 
     cert_match = re.findall(_CERT_REGEX, cert_data)
-    if len(cert_match) != 1:
+    if not cert_match:
         raise exceptions.ClientCertError(
-            "Certificate file {} is in an invalid format, a single PEM formatted certificate is expected".format(
+            "Certificate file {} is in an invalid format, at least one PEM formatted certificate is expected".format(
                 cert_path
             )
         )
-    return cert_match[0]
+    return b"".join(
+        m if m.endswith(b"\n") or i == len(cert_match) - 1 else m + b"\n"
+        for i, m in enumerate(cert_match)
+    )
 
 
 def _read_key_file(key_path):
@@ -591,8 +594,12 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
 
     # Extract certificate (chain), key and passphrase.
     cert_match = re.findall(_CERT_REGEX, stdout)
-    if len(cert_match) != 1:
+    if not cert_match:
         raise exceptions.ClientCertError("Client SSL certificate is missing or invalid")
+    cert_chain = b"".join(
+        m if m.endswith(b"\n") or i == len(cert_match) - 1 else m + b"\n"
+        for i, m in enumerate(cert_match)
+    )
     key_match = re.findall(_KEY_REGEX, stdout)
     if len(key_match) != 1:
         raise exceptions.ClientCertError("Client SSL key is missing or invalid")
@@ -603,13 +610,13 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
             raise exceptions.ClientCertError("Passphrase is missing or invalid")
         if b"ENCRYPTED" not in key_match[0]:
             raise exceptions.ClientCertError("Encrypted private key is expected")
-        return cert_match[0], key_match[0], passphrase_match[0].strip()
+        return cert_chain, key_match[0], passphrase_match[0].strip()
 
     if b"ENCRYPTED" in key_match[0]:
         raise exceptions.ClientCertError("Encrypted private key is not expected")
     if len(passphrase_match) > 0:
         raise exceptions.ClientCertError("Passphrase is not expected")
-    return cert_match[0], key_match[0], None
+    return cert_chain, key_match[0], None
 
 
 def get_client_ssl_credentials(

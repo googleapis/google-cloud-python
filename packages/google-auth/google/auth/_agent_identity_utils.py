@@ -40,10 +40,6 @@ _AGENT_IDENTITY_SPIFFE_TRUST_DOMAIN_PATTERNS = [
 
 _WELL_KNOWN_CERT_PATH = "/var/run/secrets/workload-spiffe-credentials/certificates.pem"
 
-_CERT_REGEX = re.compile(
-    b"-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----\r?\n?", re.DOTALL
-)
-
 # Constants for polling the certificate file.
 _FAST_POLL_CYCLES = 50
 _FAST_POLL_INTERVAL = 0.1  # 100ms
@@ -285,7 +281,7 @@ def get_agent_identity_certificate_and_bytes():
         )
         return None, None
 
-    cert_blocks = _CERT_REGEX.findall(raw_bytes)
+    cert_blocks = _mtls_helper._CERT_REGEX.findall(raw_bytes)
     if not cert_blocks:
         warnings.warn(
             f"No PEM certificate blocks found in {cert_path}. "
@@ -320,8 +316,9 @@ def parse_certificate(cert_bytes):
     """
     try:
         from cryptography import x509
+        from google.auth.transport import _mtls_helper
 
-        cert_blocks = _CERT_REGEX.findall(cert_bytes)
+        cert_blocks = _mtls_helper._CERT_REGEX.findall(cert_bytes)
         if not cert_blocks:
             return x509.load_pem_x509_certificate(cert_bytes)
         certs = [x509.load_pem_x509_certificate(block) for block in cert_blocks]

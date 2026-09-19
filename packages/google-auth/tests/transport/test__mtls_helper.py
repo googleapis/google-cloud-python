@@ -56,7 +56,7 @@ def check_cert_and_key(content, expected_cert, expected_key):
     success = True
 
     cert_match = re.findall(_mtls_helper._CERT_REGEX, content)
-    success = success and len(cert_match) == 1 and cert_match[0] == expected_cert
+    success = success and len(cert_match) >= 1 and b"".join(cert_match) == expected_cert
 
     key_match = re.findall(_mtls_helper._KEY_REGEX, content)
     success = success and len(key_match) == 1 and key_match[0] == expected_key
@@ -67,28 +67,36 @@ def check_cert_and_key(content, expected_cert, expected_key):
 class TestCertAndKeyRegex(object):
     def test_cert_and_key(self):
         # Test single cert and single key
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + pytest.private_key_bytes,
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.private_key_bytes + pytest.public_cert_bytes,
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
 
         # Test cert chain and single key
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes
             + pytest.public_cert_bytes
             + pytest.private_key_bytes,
             pytest.public_cert_bytes + pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.private_key_bytes
             + pytest.public_cert_bytes
+            + pytest.public_cert_bytes,
+            pytest.public_cert_bytes + pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        # Test interleaved key between certificates in a combined bundle
+        assert check_cert_and_key(
+            pytest.public_cert_bytes
+            + pytest.private_key_bytes
             + pytest.public_cert_bytes,
             pytest.public_cert_bytes + pytest.public_cert_bytes,
             pytest.private_key_bytes,
@@ -109,13 +117,13 @@ class TestCertAndKeyRegex(object):
         /fy3ZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQAB
         -----END EC PRIVATE KEY-----"""
 
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + KEY, pytest.public_cert_bytes, KEY
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + RSA_KEY, pytest.public_cert_bytes, RSA_KEY
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + EC_KEY, pytest.public_cert_bytes, EC_KEY
         )
 
@@ -794,6 +802,26 @@ class TestReadCertAndKeyFile(object):
         key_path = os.path.join(pytest.data_dir, "public_cert.pem")
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
+
+    def test_combined_bundle_with_interleaved_key(self, tmp_path):
+        bundle_file = tmp_path / "credentialbundle.pem"
+        bundle_file.write_bytes(
+            pytest.public_cert_bytes
+            + pytest.private_key_bytes
+            + pytest.public_cert_bytes
+        )
+        actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
+            str(bundle_file), str(bundle_file)
+        )
+        assert actual_cert == pytest.public_cert_bytes + pytest.public_cert_bytes
+        assert actual_key == pytest.private_key_bytes
+
+    def test_multiple_keys_raises_error(self, tmp_path):
+        cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
+        key_file = tmp_path / "two_keys.pem"
+        key_file.write_bytes(pytest.private_key_bytes + pytest.private_key_bytes)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
 
 
 class TestGetCertConfigPath(object):
