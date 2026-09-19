@@ -1,0 +1,80 @@
+name: GCS DirectPath Read Benchmark
+
+on:
+  pull_request:
+    paths:
+      - 'packages/google-cloud-storage/**'
+      - '.github/workflows/storage-benchmark.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  run-benchmark:
+    name: "GCS Read Microbenchmark"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        if: env.HAS_GCP_SECRET == 'true'
+        env:
+          HAS_GCP_SECRET: ${{ secrets.GCP_SA_KEY != '' }}
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        if: env.HAS_GCP_SECRET == 'true'
+        env:
+          HAS_GCP_SECRET: ${{ secrets.GCP_SA_KEY != '' }}
+
+      - name: Package Source Archive
+        run: |
+          tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' \
+            -czf /tmp/source.tar.gz -C packages google-cloud-storage
+          ls -lh /tmp/source.tar.gz
+
+      - name: Run Cloud Build Benchmark on High-Bandwidth VM
+        if: env.HAS_GCP_SECRET == 'true'
+        env:
+          HAS_GCP_SECRET: ${{ secrets.GCP_SA_KEY != '' }}
+        run: |
+          BUILD_OUTPUT=$(gcloud builds submit /tmp/source.tar.gz \
+            --project="vaibhavpratap-sdk-test" \
+            --region="us-west4" \
+            --config="packages/google-cloud-storage/cloudbuild/benchmarks-cloudbuild.yaml" \
+            --substitutions=COMMIT_SHA="${{ github.event.pull_request.head.sha || github.sha }}",_PR_NUMBER="${{ github.event.pull_request.number }}",_REPO="${{ github.repository }}" \
+            --format="value(id)")
+          echo "BUILD_ID=$BUILD_OUTPUT" >> $GITHUB_ENV
+          echo "Successfully triggered Cloud Build $BUILD_OUTPUT"
+
+      - name: Fetch Benchmark JSON Result
+        if: env.HAS_GCP_SECRET == 'true'
+        env:
+          HAS_GCP_SECRET: ${{ secrets.GCP_SA_KEY != '' }}
+        run: |
+          mkdir -p /tmp/report
+          gcloud storage cp "gs://vaibhavpratap-sdk-test_cloudbuild/build_results/result_${{ env.BUILD_ID }}.json" /tmp/report/bench_result.json 2>/dev/null || true
+
+      - name: Publish Benchmark Results to PR and Checks Tab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 packages/google-cloud-storage/cloudbuild/publish_check_run.py \
+            --result-file="/tmp/report/bench_result.json" \
+            --repo="${{ github.repository }}" \
+            --pr-number="${{ github.event.pull_request.number }}" \
+            --commit-sha="${{ github.event.pull_request.head.sha || github.sha }}" \
+            --output-markdown="$GITHUB_STEP_SUMMARY"
