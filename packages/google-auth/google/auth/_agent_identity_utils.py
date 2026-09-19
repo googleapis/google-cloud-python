@@ -86,8 +86,7 @@ def _is_in_well_known_dir(path):
         real_path = os.path.realpath(path)
         real_well_known_dir = os.path.realpath(well_known_dir)
         return (
-            os.path.commonpath([real_well_known_dir, real_path])
-            == real_well_known_dir
+            os.path.commonpath([real_well_known_dir, real_path]) == real_well_known_dir
         )
     except ValueError:
         return False

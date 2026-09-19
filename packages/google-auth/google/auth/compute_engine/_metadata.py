@@ -27,6 +27,7 @@ from urllib.parse import urljoin
 
 import requests
 
+from google.auth import _agent_identity_utils
 from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -479,6 +480,32 @@ def get_service_account_info(request, service_account="default"):
     return get(request, path, params={"recursive": "true"})
 
 
+def _get_token_request_params(metrics_header_value):
+    """Returns (method, body, headers) for a metadata server token request.
+
+    Defaults to a standard GET request with the x-goog-api-client metrics header.
+    Upgrades to a POST request with a JSON certificate_chain body and
+    Content-Type header if an Agent Identity certificate is present and bound
+    tokens are enabled.
+
+    Args:
+        metrics_header_value (str): Value for the x-goog-api-client header.
+
+    Returns:
+        Tuple[str, Optional[bytes], Mapping[str, str]]: A tuple of
+            (HTTP method, request body bytes, request headers).
+    """
+    headers = {metrics.API_CLIENT_HEADER: metrics_header_value}
+    cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+    if cert and _agent_identity_utils.should_request_bound_token(cert):
+        headers["Content-Type"] = "application/json"
+        body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
+            "utf-8"
+        )
+        return "POST", body, headers
+    return "GET", None, headers
+
+
 def get_service_account_token(request, service_account="default", scopes=None):
     """Get the OAuth 2.0 access token for a service account.
 
@@ -497,28 +524,15 @@ def get_service_account_token(request, service_account="default", scopes=None):
         google.auth.exceptions.TransportError: if an error occurred while
             retrieving metadata.
     """
-    from google.auth import _agent_identity_utils
-
     params = {}
     if scopes:
         if not isinstance(scopes, str):
             scopes = ",".join(scopes)
         params["scopes"] = scopes
 
-    headers = {metrics.API_CLIENT_HEADER: metrics.token_request_access_token_mds()}
-
-    # Default to standard GET. We conditionally upgrade to POST (bound token)
-    # if certificate is found and conditions for bound token are met.
-    method = "GET"
-    body = None
-
-    cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
-    if cert and _agent_identity_utils.should_request_bound_token(cert):
-        method = "POST"
-        body = json.dumps({"certificate_chain": cert_bytes.decode("utf-8")}).encode(
-            "utf-8"
-        )
-        headers["Content-Type"] = "application/json"
+    method, body, headers = _get_token_request_params(
+        metrics.token_request_access_token_mds()
+    )
 
     path = "instance/service-accounts/{0}/token".format(service_account)
     token_json = get(

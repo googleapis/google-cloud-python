@@ -20,7 +20,6 @@ Compute Engine using the Compute Engine metadata server.
 """
 
 import datetime
-import json
 import logging
 from typing import Optional, TYPE_CHECKING
 
@@ -527,27 +526,11 @@ class IDTokenCredentials(
             ValueError: If extracting expiry from the obtained ID token fails.
         """
         try:
-            from google.auth import _agent_identity_utils
-
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            headers = {metrics.API_CLIENT_HEADER: metrics.token_request_id_token_mds()}
-
-            # Default to standard GET. We conditionally upgrade to POST (bound token)
-            # if certificate is found and conditions for bound token are met.
-            method = "GET"
-            body = None
-
-            (
-                cert,
-                cert_bytes,
-            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
-            if cert and _agent_identity_utils.should_request_bound_token(cert):
-                method = "POST"
-                body = json.dumps(
-                    {"certificate_chain": cert_bytes.decode("utf-8")}
-                ).encode("utf-8")
-                headers["Content-Type"] = "application/json"
+            method, body, headers = _metadata._get_token_request_params(
+                metrics.token_request_id_token_mds()
+            )
 
             id_token = _metadata.get(
                 request,
