@@ -35,6 +35,7 @@ CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 
 # Default gcloud config path, to be used with path.expanduser for cross-platform compatibility.
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
+_GKE_CREDENTIAL_BUNDLE_PATH = "/var/run/secrets/workload-spiffe-credentials/x509.credential-bundle.private-key.pem"
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
 _CERT_REGEX = re.compile(
     b"-----BEGIN CERTIFICATE-----.+?-----END CERTIFICATE-----\r?\n?", re.DOTALL
@@ -367,12 +368,38 @@ def _load_json_file(path):
     return json_data
 
 
+def _has_explicit_cert_config_env(include_context_aware=True):
+    """Returns True if an explicit certificate config environment variable is set."""
+    env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
+    if env_path is not None and env_path != "":
+        return True
+    if include_context_aware:
+        ca_env_path = environ.get(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+        )
+        if ca_env_path is not None and ca_env_path != "":
+            return True
+    return False
+
+
+def _has_gke_credential_bundle(config_file_path=None, include_context_aware=True):
+    """Returns True if GKE workload credential bundle should be used as fallback."""
+    return (
+        config_file_path is None
+        and not _has_explicit_cert_config_env(include_context_aware)
+        and path.exists(_GKE_CREDENTIAL_BUNDLE_PATH)
+    )
+
+
 def _get_workload_cert_and_key(
     certificate_config_path=None, include_context_aware=True
 ):
     """Read the workload identity cert and key files specified in the certificate config provided.
     If no config path is provided, check the environment variable: "GOOGLE_API_CERTIFICATE_CONFIG"
-    first, then the well known gcloud location: "~/.config/gcloud/certificate_config.json".
+    first, then the well known gcloud location: "~/.config/gcloud/certificate_config.json",
+    and finally fall back to the GKE workload credential bundle at
+    "/var/run/secrets/workload-spiffe-credentials/x509.credential-bundle.private-key.pem"
+    when no explicit or implicit certificate_config.json is present.
 
     Args:
         certificate_config_path (string): The certificate config path. If no path is provided,
@@ -389,11 +416,15 @@ def _get_workload_cert_and_key(
         the certificate or key information.
     """
 
-    cert_path, key_path = _get_workload_cert_and_key_paths(
+    cert_path, key_path, config_file_path = _resolve_workload_cert_and_key_paths(
         certificate_config_path, include_context_aware
     )
 
     if cert_path is None and key_path is None:
+        if certificate_config_path is None and _has_gke_credential_bundle(
+            config_file_path, include_context_aware
+        ):
+            return _read_credential_bundle_file(_GKE_CREDENTIAL_BUNDLE_PATH)
         return None, None
 
     return _read_cert_and_key_files(cert_path, key_path)
@@ -453,10 +484,10 @@ def _get_cert_config_path(certificate_config_path=None, include_context_aware=Tr
     return certificate_config_path
 
 
-def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
+def _resolve_workload_cert_and_key_paths(config_path=None, include_context_aware=True):
     absolute_path = _get_cert_config_path(config_path, include_context_aware)
     if absolute_path is None:
-        return None, None
+        return None, None, None
 
     data = _load_json_file(absolute_path)
 
@@ -503,7 +534,7 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
                 pass
 
     if not isinstance(cert_configs, dict) or "workload" not in cert_configs:
-        return None, None
+        return None, None, absolute_path
     workload = cert_configs["workload"]
 
     if (
@@ -519,7 +550,23 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     cert_path = workload["cert_path"]
     key_path = workload["key_path"]
 
+    return cert_path, key_path, absolute_path
+
+
+def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
+    cert_path, key_path, _ = _resolve_workload_cert_and_key_paths(
+        config_path, include_context_aware
+    )
     return cert_path, key_path
+
+
+def _read_credential_bundle_file(bundle_path):
+    """Reads a combined PEM credential bundle containing certificate(s) and a private key."""
+    try:
+        return _read_cert_and_key_files(bundle_path, bundle_path)
+    except OSError as caught_exc:
+        new_exc = exceptions.ClientCertError(caught_exc)
+        raise new_exc from caught_exc
 
 
 def _read_cert_and_key_files(cert_path, key_path):
@@ -775,7 +822,9 @@ def check_use_client_cert():
     as True (auto-enabled) if a workload config file exists (pointed at by
     GOOGLE_API_CERTIFICATE_CONFIG or CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
     or the default path like ~/.config/gcloud/certificate_config.json)
-    containing a "workload" section.
+    containing a "workload" section, or if no certificate config file is
+    configured/present and the GKE credential bundle exists at
+    /var/run/secrets/workload-spiffe-credentials/x509.credential-bundle.private-key.pem.
     Otherwise, it returns False.
 
     Returns:
@@ -813,7 +862,9 @@ def check_use_client_cert():
             "mTLS auto-enablement failed: Certificate configuration file at %s is missing the required ['cert_configs']['workload'] section.",
             cert_path,
         )
-    return False
+        return False
+
+    return _has_gke_credential_bundle(cert_path, include_context_aware=True)
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

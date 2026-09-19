@@ -43,10 +43,25 @@ def has_default_client_cert_source(include_context_aware=True):
     Returns:
         bool: indicating if the default client cert source exists.
     """
-    cert_path = _mtls_helper._get_cert_config_path(
-        include_context_aware=include_context_aware
-    )
-    if cert_path is not None:
+    try:
+        (
+            cert_path,
+            key_path,
+            config_file_path,
+        ) = _mtls_helper._resolve_workload_cert_and_key_paths(
+            None, include_context_aware=include_context_aware
+        )
+    except (exceptions.ClientCertError, OSError):
+        cert_path, key_path, config_file_path = None, None, ""
+
+    if cert_path is not None and key_path is not None:
+        return True
+    if (
+        _mtls_helper._check_use_client_cert_env() is not False
+        and _mtls_helper._has_gke_credential_bundle(
+            config_file_path, include_context_aware=include_context_aware
+        )
+    ):
         return True
     if (
         include_context_aware
