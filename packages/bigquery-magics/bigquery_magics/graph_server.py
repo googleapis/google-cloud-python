@@ -17,11 +17,17 @@ import http.server
 import json
 import socketserver
 import threading
+import urllib.parse
 from typing import Any, Dict, List
 
 from google.cloud import bigquery
 
 from bigquery_magics import core
+
+# The graph widget only ever reaches this server over the loopback interface.
+# Requests carrying any other Host are cross-site (e.g. a DNS-rebinding page in
+# the notebook user's browser) and are refused.
+_LOOPBACK_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
 
 
 def execute_node_expansion(params, request):
@@ -354,6 +360,39 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+    def _is_request_safe(self):
+        """Return True if the request targets and originates from loopback.
+
+        The Host header guards against DNS rebinding: legitimate widget traffic
+        always carries a loopback name even though the notebook page and this
+        server live on different ports. Origin and Referer, when present, are
+        checked too so a page on a non-loopback site cannot drive the server
+        with a direct cross-site request; their port differs from ours but the
+        hostname is still loopback for real traffic.
+        """
+        host = self.headers.get("Host")
+        if not host:
+            return False
+        try:
+            hostname = urllib.parse.urlsplit(f"//{host.strip()}").hostname
+        except ValueError:
+            return False
+        if hostname not in _LOOPBACK_HOSTS:
+            return False
+
+        for header_name in ("Origin", "Referer"):
+            value = self.headers.get(header_name)
+            if not value:
+                continue
+            try:
+                origin_hostname = urllib.parse.urlsplit(value.strip()).hostname
+            except ValueError:
+                return False
+            if origin_hostname and origin_hostname not in _LOOPBACK_HOSTS:
+                return False
+
+        return True
+
     def do_json_response(self, data):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -406,10 +445,16 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
         )
 
     def do_GET(self):
+        if not self._is_request_safe():
+            self.send_error(403, "Forbidden")
+            return
         assert self.path == GraphServer.endpoints["get_ping"]
         self.handle_get_ping()
 
     def do_POST(self):
+        if not self._is_request_safe():
+            self.send_error(403, "Forbidden")
+            return
         if self.path == GraphServer.endpoints["post_ping"]:
             self.handle_post_ping()
         elif self.path == GraphServer.endpoints["post_node_expansion"]:
