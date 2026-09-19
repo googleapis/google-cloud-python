@@ -137,6 +137,8 @@ class MutationsBatcher(object):
                 # defensively fall back to error itself if __cause__ is None.
                 cause = error.__cause__ if error.__cause__ is not None else error
                 self._exceptions.put(cause)
+        except Exception as exc:
+            self._exceptions.put(exc)
 
     def __enter__(self):
         """Starting the MutationsBatcher as a context manager"""
