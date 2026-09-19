@@ -22,9 +22,9 @@ import logging
 import ssl
 from typing import Optional
 
+import google.auth.transport.mtls
 from google.auth import _agent_identity_utils, exceptions
 from google.auth.transport._mtls_helper import secure_cert_key_paths
-import google.auth.transport.mtls
 
 _LOGGER = logging.getLogger(__name__)
 

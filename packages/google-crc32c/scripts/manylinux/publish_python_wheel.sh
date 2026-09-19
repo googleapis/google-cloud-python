@@ -20,7 +20,16 @@ python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
 
-for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml"); do
+# If BUILD_PYTHON is specified (single version build), only validate wheels for that version.
+# Otherwise, validate wheels for all versions listed in python_versions.yaml.
+VERSIONS_TO_CHECK=""
+if [[ -n "${BUILD_PYTHON}" ]]; then
+    VERSIONS_TO_CHECK="${BUILD_PYTHON}"
+else
+    VERSIONS_TO_CHECK=$(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml")
+fi
+
+for VER in ${VERSIONS_TO_CHECK}; do
     SHORT=$(echo "$VER" | cut -d. -f1,2)
     ABI="cp${SHORT//.}-cp${SHORT//.}"
     for ARCH in x86_64 aarch64; do

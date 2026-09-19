@@ -44,13 +44,19 @@ fi
 # wheels compatible with older macOS releases.
 PYTHON_EXE="/Library/Frameworks/Python.framework/Versions/${PY_BIN}/bin/python${PY_BIN}"
 if [[ ! -x "${PYTHON_EXE}" ]]; then
-    PKG_NAME="python-${PY_VERSION}-macos11.pkg"
-    echo "Installing Python ${PY_VERSION} from python.org (${PKG_NAME})..."
-    curl --fail --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
-        --output "/tmp/${PKG_NAME}" \
-        "https://www.python.org/ftp/python/${PY_VERSION}/${PKG_NAME}"
-    sudo installer -pkg "/tmp/${PKG_NAME}" -target /
-    rm -f "/tmp/${PKG_NAME}"
+    if command -v "python${PY_BIN}" >/dev/null 2>&1; then
+        PYTHON_EXE=$(command -v "python${PY_BIN}")
+    else
+        PKG_NAME="python-${PY_VERSION}-macos11.pkg"
+        # Pre-releases (a1/b1/rc1) are placed under the base version directory on python.org (e.g. 3.15.0a1 -> 3.15.0)
+        FTP_DIR="${PY_VERSION%%[a-z]*}"
+        echo "Installing Python ${PY_VERSION} from python.org (${PKG_NAME})..."
+        curl --fail --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
+            --output "/tmp/${PKG_NAME}" \
+            "https://www.python.org/ftp/python/${FTP_DIR}/${PKG_NAME}"
+        sudo installer -pkg "/tmp/${PKG_NAME}" -target /
+        rm -f "/tmp/${PKG_NAME}"
+    fi
 fi
 "${PYTHON_EXE}" --version
 
