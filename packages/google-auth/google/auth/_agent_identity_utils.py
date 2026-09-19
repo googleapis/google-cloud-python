@@ -329,9 +329,10 @@ def parse_certificate(cert_bytes):
     try:
         from cryptography import x509
 
-        certs = x509.load_pem_x509_certificates(cert_bytes)
-        if not certs:
-            raise ValueError("No certificates found in PEM bytes.")
+        cert_blocks = _CERT_REGEX.findall(cert_bytes)
+        if not cert_blocks:
+            return x509.load_pem_x509_certificate(cert_bytes)
+        certs = [x509.load_pem_x509_certificate(block) for block in cert_blocks]
         return certs[0]
     except ImportError as e:
         raise ImportError(CRYPTOGRAPHY_NOT_FOUND_ERROR) from e

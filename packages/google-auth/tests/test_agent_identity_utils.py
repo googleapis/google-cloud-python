@@ -88,16 +88,15 @@ class TestAgentIdentityUtils:
             raising=False,
         )
 
-    @mock.patch("cryptography.x509.load_pem_x509_certificates")
-    def test_parse_certificate(self, mock_load_certs):
-        mock_load_certs.return_value = [mock.sentinel.leaf_cert, mock.sentinel.ca_cert]
+    @mock.patch("cryptography.x509.load_pem_x509_certificate")
+    def test_parse_certificate(self, mock_load_cert):
+        mock_load_cert.return_value = mock.sentinel.cert
         result = _agent_identity_utils.parse_certificate(b"cert_bytes")
-        mock_load_certs.assert_called_once_with(b"cert_bytes")
-        assert result == mock.sentinel.leaf_cert
+        mock_load_cert.assert_called_once_with(b"cert_bytes")
+        assert result == mock.sentinel.cert
 
-    @mock.patch("cryptography.x509.load_pem_x509_certificates", return_value=[])
-    def test_parse_certificate_empty_list_raises_value_error(self, mock_load_certs):
-        with pytest.raises(ValueError, match="No certificates found in PEM bytes."):
+    def test_parse_certificate_empty_bytes_raises_value_error(self):
+        with pytest.raises(ValueError):
             _agent_identity_utils.parse_certificate(b"")
 
     @pytest.mark.parametrize(
@@ -114,8 +113,9 @@ class TestAgentIdentityUtils:
         ],
     )
     def test_parse_certificate_full_chain_rejects_malformed_intermediate(
-        self, second_cert_block
+        self, second_cert_block, monkeypatch
     ):
+        monkeypatch.delattr(x509, "load_pem_x509_certificates", raising=False)
         chain_bytes = NON_AGENT_IDENTITY_CERT_BYTES + second_cert_block
         with pytest.raises(ValueError):
             _agent_identity_utils.parse_certificate(chain_bytes)
@@ -123,6 +123,9 @@ class TestAgentIdentityUtils:
     def test_is_certificate_file_ready_empty_path(self):
         result = _agent_identity_utils._is_certificate_file_ready("")
         assert result is False
+
+    def test_is_in_well_known_dir_empty_path(self):
+        assert _agent_identity_utils._is_in_well_known_dir("") is False
 
     def test_get_agent_identity_certificate_path_empty_env(self, monkeypatch):
         monkeypatch.delenv(
@@ -525,9 +528,8 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_fail_fast_cert_missing(
-        self, mock_exists, mock_sleep, tmpdir, monkeypatch
+        self, mock_sleep, tmpdir, monkeypatch
     ):
         # Simulate config path outside well-known dir where config is valid but cert is missing.
         well_known_path = tmpdir.mkdir("well_known_cert").join("certificates.pem")
@@ -547,20 +549,14 @@ class TestAgentIdentityUtils:
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
         )
 
-        def exists_side_effect(path):
-            return path == str(config_path)
-
-        mock_exists.side_effect = exists_side_effect
-
         result = _agent_identity_utils.get_agent_identity_certificate_path()
 
         assert result is None
         mock_sleep.assert_not_called()
 
     @mock.patch("time.sleep")
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists")
     def test_get_agent_identity_certificate_path_cert_not_found(
-        self, mock_exists, mock_sleep, tmpdir, monkeypatch
+        self, mock_sleep, tmpdir, monkeypatch
     ):
         monkeypatch.setattr(
             "google.auth._agent_identity_utils._WELL_KNOWN_CERT_PATH",
@@ -574,11 +570,6 @@ class TestAgentIdentityUtils:
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_path)
         )
-
-        def exists_side_effect(path):
-            return path == str(config_path)
-
-        mock_exists.side_effect = exists_side_effect
 
         with pytest.raises(exceptions.RefreshError):
             _agent_identity_utils.get_agent_identity_certificate_path()
