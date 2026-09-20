@@ -1036,6 +1036,54 @@ def test_apply_channel_interceptors_invalid_type_raises():
 
 
 @pytest.mark.parametrize(
+    "env_value,attempt_interconnect,expected_result",
+    [
+        ("true", False, True),
+        ("true", None, True),
+        ("false", True, False),
+        ("false", None, False),
+        (None, True, True),
+        (None, False, False),
+        (None, None, False),
+    ],
+)
+def test__resolve_direct_path_interconnect(
+    monkeypatch, env_value, attempt_interconnect, expected_result
+):
+    if env_value is None:
+        monkeypatch.delenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, raising=False)
+    else:
+        monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, env_value)
+    assert (
+        grpc_helpers._resolve_direct_path_interconnect(attempt_interconnect)
+        is expected_result
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+@mock.patch("google.auth.transport.grpc.AuthMetadataPlugin")
+def test__composite_credentials_auth_metadata_plugin_type_error_fallback(
+    auth_metadata_plugin, request, compute_engine_creds
+):
+    fallback_plugin = mock.sentinel.fallback_plugin
+    auth_metadata_plugin.side_effect = [
+        TypeError("unexpected keyword"),
+        fallback_plugin,
+    ]
+    credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    credentials.requires_scopes = False
+
+    grpc_helpers._create_composite_credentials(
+        credentials, default_host="storage.googleapis.com"
+    )
+
+    assert auth_metadata_plugin.call_count == 2
+
+
+@pytest.mark.parametrize(
     "target,attempt_interconnect,expected_target",
     [
         (
