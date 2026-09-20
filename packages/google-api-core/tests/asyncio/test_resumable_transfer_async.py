@@ -1446,9 +1446,12 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
         transport=TimeoutAsyncSession(),
     )
     session._state._resumable_url = "https://upload.example.com/resumable-async"
+    no_retry = google.api_core.retry.AsyncStreamingRetry(
+        predicate=lambda e: False, timeout=0
+    )
 
     with pytest.raises(exceptions.TransferStalledError):
-        await session.upload(stream=b"data")
+        await session.upload(stream=b"data", retry=no_retry)
 
     # 2. TimeoutError raises DeadlineExceeded when remaining <= 0
     past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
@@ -1667,9 +1670,12 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
         transport=TimeoutAsyncSession(),
     )
     session._state._resumable_url = "https://upload.example.com/resumable-async"
+    no_retry = google.api_core.retry.AsyncStreamingRetry(
+        predicate=lambda e: False, timeout=0
+    )
 
     with pytest.raises(exceptions.TransferStalledError):
-        await session.upload(stream=b"data")
+        await session.upload(stream=b"data", retry=no_retry)
 
     # 2. TimeoutError raises DeadlineExceeded when remaining <= 0 and no stall control
     past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
@@ -1689,6 +1695,78 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
     with mock.patch.object(session2, "_get_deadline_remaining", return_value=-5.0):
         with pytest.raises(exceptions.DeadlineExceeded):
             await session2.upload(stream=b"data")
+
+
+@pytest.mark.asyncio
+async def test_async_per_attempt_timeout_retries_before_stall_timeout(
+    monkeypatch,
+) -> None:
+    """Verifies that hitting per_attempt_timeout (5s) in async uploads retries via recovery rather
+    than prematurely raising TransferStalledError when stall_timeout (120s) has not elapsed."""
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    query_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "0",
+        },
+        body=b"",
+    )
+    final_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b'{"status": "completed"}',
+    )
+
+    class RecoverAfterTimeoutSession:
+        def __init__(self):
+            self.calls = 0
+
+        def request(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                return start_resp
+            if self.calls == 2:
+
+                class TimeoutContext:
+                    async def __aenter__(self):
+                        raise aiohttp.ServerTimeoutError("Per-attempt 5s timeout")
+
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+
+                return TimeoutContext()
+            if self.calls == 3:
+                return query_resp
+            return final_resp
+
+    transport = RecoverAfterTimeoutSession()
+    config = ResumableUploadConfig(
+        stall_minimum_rate=1024,
+        stall_timeout=120.0,
+    )
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=transport,
+    )
+
+    clock_vals = iter([0.0, 5.0, 5.0, 5.0, 6.0, 6.0])
+    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals))
+
+    result = await session.upload(
+        stream=b"test data",
+        retry=google.api_core.retry.AsyncStreamingRetry(initial=0.01, maximum=0.01),
+    )
+    assert result == b'{"status": "completed"}'
+    assert transport.calls == 4
 
 
 @pytest.mark.asyncio

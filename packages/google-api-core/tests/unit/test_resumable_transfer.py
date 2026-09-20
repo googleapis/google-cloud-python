@@ -36,6 +36,7 @@ from google.api_core.resumable_transfer import (
     UploadCancelledError,
     UploadProgress,
     common,
+    upload,
     upload_state,
 )
 from tests.helpers import EchoResponse
@@ -572,7 +573,7 @@ def test_sync_unseekable_stream_error_on_preceding_offset():
     assert exc_info.value.upload_url == "https://upload.example.com/resumable-123"
 
 
-def test_sync_stall_control_timeout():
+def test_sync_stall_timeout(monkeypatch):
     session_transport = mock.create_autospec(requests.Session, instance=True)
 
     start_resp = mock.Mock(
@@ -598,6 +599,9 @@ def test_sync_stall_control_timeout():
         config=config,
         transport=session_transport,
     )
+
+    clock_vals = iter([0.0, 0.5, 0.5])
+    monkeypatch.setattr(upload, "_monotonic_clock", lambda: next(clock_vals))
 
     with pytest.raises(TransferStalledError) as exc_info:
         session.upload(stream=b"test data")
@@ -1237,7 +1241,7 @@ def test_sync_transmit_empty_stream():
     assert result is resp
 
 
-def test_sync_transmit_chunk_timeout_with_stall_control_active():
+def test_sync_transmit_chunk_timeout_with_stall_control_active(monkeypatch):
     transport = mock.create_autospec(requests.Session, instance=True)
     transport.request.side_effect = requests.exceptions.Timeout("Read timeout")
 
@@ -1252,6 +1256,13 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active():
     )
     session._state._resumable_url = "https://upload.example.com/resumable-123"
 
+    # Attempt 1 times out at 5.0s (< stall_timeout=10.0s): re-raises Timeout so retry/recovery can run
+    clock_vals = iter([0.0, 5.0, 5.0, 5.0, 10.0, 10.0, 10.0, 10.0])
+    monkeypatch.setattr(upload, "_monotonic_clock", lambda: next(clock_vals))
+    with pytest.raises(requests.exceptions.Timeout):
+        session._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
+
+    # Attempt 2 reaches elapsed stall duration of 10.0s (>= stall_timeout=10.0s): raises TransferStalledError
     with pytest.raises(exceptions.TransferStalledError):
         session._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
 
@@ -1272,6 +1283,62 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active():
     )
     with pytest.raises(exceptions.DeadlineExceeded):
         session_dl._transmit_chunk(transport, io.BytesIO(b"data"), size=4)
+
+
+def test_sync_per_attempt_timeout_retries_before_stall_timeout(monkeypatch):
+    """Verifies that hitting per_attempt_timeout (5s) retries via recovery rather
+    than prematurely raising TransferStalledError when stall_timeout (120s) has not elapsed."""
+    transport = mock.create_autospec(requests.Session, instance=True)
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-123",
+        },
+    )
+    query_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-Size-Received": "0",
+        },
+    )
+    final_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"status": "completed"}',
+    )
+    transport.request.side_effect = [
+        start_resp,
+        requests.exceptions.Timeout("Per-attempt 5s timeout"),
+        query_resp,
+        final_resp,
+    ]
+
+    # Configure stall control with 120s stall_timeout; per_attempt_timeout is 5.0s
+    config = ResumableUploadConfig(
+        stall_minimum_rate=1024,
+        stall_timeout=120.0,
+    )
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=transport,
+    )
+
+    # First attempt times out after 5.0s (< 120.0s stall_timeout); retry succeeds at 6.0s
+    clock_vals = iter([0.0, 5.0, 5.0, 5.0, 6.0, 6.0])
+    monkeypatch.setattr(upload, "_monotonic_clock", lambda: next(clock_vals))
+
+    result = session.upload(
+        stream=b"test data",
+        retry=google.api_core.retry.StreamingRetry(initial=0.01, maximum=0.01),
+    )
+    assert result == b'{"status": "completed"}'
+    assert transport.request.call_count == 4
 
 
 def test_sync_transmit_chunk_timeout_outer_exception():

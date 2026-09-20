@@ -578,40 +578,16 @@ class AsyncResumableUploadSession:
                     aiohttp.ServerTimeoutError,
                 ),
             ):
+                t_elapsed = _monotonic_clock() - t_start
                 remaining = self._get_deadline_remaining()
                 if remaining is not None and remaining <= 0:
                     raise exceptions.DeadlineExceeded(
                         "Resumable upload deadline exceeded during chunk transfer."
                     ) from exc
-                if self._config.stall_minimum_rate and self._config.stall_timeout:
-                    raise exceptions.TransferStalledError(
-                        f"Upload stalled: chunk transfer timed out ({exc}).",
-                        upload_url=self.upload_url,
-                        chunk_size=self.chunk_size,
-                    ) from exc
+                self._update_stall_control(0, t_start, t_elapsed)
             raise
 
-        # Evaluate stall control lag & timer
-        if self._config.stall_minimum_rate and self._config.stall_timeout:
-            rate = self._config.stall_minimum_rate
-            expected_sec = data_len / rate if rate > 0 else 0.0
-            current_lag = t_elapsed - expected_sec
-            self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
-            if self._aggregate_lag > 0.0:
-                if self._stall_timeout_started is None:
-                    self._stall_timeout_started = t_start
-                if (
-                    _monotonic_clock() - self._stall_timeout_started
-                    >= self._config.stall_timeout
-                ):
-                    self._get_deadline_remaining()
-                    raise exceptions.TransferStalledError(
-                        f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
-                        upload_url=self.upload_url,
-                        chunk_size=self.chunk_size,
-                    )
-            else:
-                self._stall_timeout_started = None
+        self._update_stall_control(data_len, t_start, t_elapsed)
 
         self._state.process_chunk_response(status_code, resp_headers, data_len)
         self._buffered_chunk = None
@@ -622,6 +598,43 @@ class AsyncResumableUploadSession:
             progress_queue,
         )
         return status_code, resp_headers, resp_body
+
+    def _update_stall_control(
+        self, data_len: int, t_start: float, t_elapsed: float
+    ) -> None:
+        """Updates aggregate transfer rate lag and enforces stall timeout and deadlines.
+
+        Args:
+            data_len: Length of the transmitted chunk in bytes.
+            t_start: Monotonic timestamp before chunk transmission began.
+            t_elapsed: Elapsed duration in seconds for chunk transmission.
+
+        Raises:
+            exceptions.DeadlineExceeded: If upload deadline is exceeded.
+            exceptions.TransferStalledError: If transfer throughput stalls past configured timeout.
+        """
+        if not (self._config.stall_minimum_rate and self._config.stall_timeout):
+            return
+
+        rate = self._config.stall_minimum_rate
+        expected_sec = data_len / rate if rate > 0 else 0.0
+        current_lag = t_elapsed - expected_sec
+        self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
+        if self._aggregate_lag > 0.0:
+            if self._stall_timeout_started is None:
+                self._stall_timeout_started = t_start
+            if (
+                _monotonic_clock() - self._stall_timeout_started
+                >= self._config.stall_timeout
+            ):
+                self._get_deadline_remaining()
+                raise exceptions.TransferStalledError(
+                    f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
+                    upload_url=self.upload_url,
+                    chunk_size=self.chunk_size,
+                )
+        else:
+            self._stall_timeout_started = None
 
     async def _recover(
         self,

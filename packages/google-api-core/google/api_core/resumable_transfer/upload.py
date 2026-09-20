@@ -619,14 +619,10 @@ class ResumableUploadSession:
             if not resp.ok:
                 raise exceptions.from_http_response(resp)
         except requests.exceptions.Timeout as exc:
+            t_elapsed = _monotonic_clock() - t_start
             self._enrich_exception(exc)
             self._get_deadline_remaining()
-            if self._config.stall_minimum_rate and self._config.stall_timeout:
-                raise exceptions.TransferStalledError(
-                    f"Upload stalled: chunk transfer timed out ({exc}).",
-                    upload_url=self.upload_url,
-                    chunk_size=self.chunk_size,
-                ) from exc
+            self._update_stall_control(0, t_start, t_elapsed)
             raise
         except Exception as exc:
             self._enrich_exception(exc)
