@@ -38,6 +38,7 @@ from google.api_core.resumable_transfer import common, upload_state
 from google.api_core.resumable_transfer.common import (
     DEFAULT_START_TIMEOUT,
     ResumableUploadConfig,
+    UploadProgress,
     _format_response_payload,
 )
 
@@ -141,7 +142,7 @@ class ResumableUploadSession:
         self._response_type = response_type
         self._start_retry = start_retry
         self._start_timeout = start_timeout
-        self._on_progress: Optional[Callable[[common.UploadProgress], None]] = None
+        self._on_progress: Optional[Callable[[UploadProgress], None]] = None
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
@@ -214,7 +215,7 @@ class ResumableUploadSession:
     def _notify_progress(
         self,
         state: common.ProgressState,
-        progress_queue: Optional[List[common.UploadProgress]] = None,
+        progress_queue: Optional[List[UploadProgress]] = None,
     ) -> None:
         """Notifies registered callback and optional progress queue with current upload status.
 
@@ -223,7 +224,7 @@ class ResumableUploadSession:
             progress_queue: Optional list buffering UploadProgress snapshots for generator consumers.
         """
         if self.upload_url:
-            progress = common.UploadProgress(
+            progress = UploadProgress(
                 upload_url=self.upload_url,
                 chunk_size=self.chunk_size,
                 bytes_uploaded=self._state.bytes_uploaded,
@@ -507,7 +508,7 @@ class ResumableUploadSession:
         transport: requests.Session,
         request_body: Union[str, bytes] = "",
         size: Optional[int] = None,
-        progress_queue: Optional[List[common.UploadProgress]] = None,
+        progress_queue: Optional[List[UploadProgress]] = None,
         content_type: Optional[str] = None,
     ) -> str:
         """Initiates the upload session by sending the start command.
@@ -557,7 +558,7 @@ class ResumableUploadSession:
         transport: requests.Session,
         stream: Union[BinaryIO, Iterable[bytes]],
         size: Optional[int],
-        progress_queue: Optional[List[common.UploadProgress]] = None,
+        progress_queue: Optional[List[UploadProgress]] = None,
         timeout: Optional[float] = None,
     ) -> requests.Response:
         """Transmits a single data chunk attempt with stall control.
@@ -643,7 +644,7 @@ class ResumableUploadSession:
         self,
         transport: requests.Session,
         stream: Union[BinaryIO, Iterable[bytes]],
-        progress_queue: Optional[List[common.UploadProgress]] = None,
+        progress_queue: Optional[List[UploadProgress]] = None,
     ) -> requests.Response:
         """Queries server for committed byte offset and adjusts buffer / stream.
 
@@ -696,10 +697,10 @@ class ResumableUploadSession:
         transport: requests.Session,
         stream_obj: Union[BinaryIO, Iterable[bytes]],
         computed_size: Optional[int],
-        progress_queue: Optional[List[common.UploadProgress]] = None,
+        progress_queue: Optional[List[UploadProgress]] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-    ) -> Generator[common.UploadProgress, None, None]:
+    ) -> Generator[UploadProgress, None, None]:
         """Transmits chunks until transfer completes, yielding buffered progress updates.
 
         Args:
@@ -729,7 +730,7 @@ class ResumableUploadSession:
         final_resp: Optional[requests.Response] = None
         retry_policy = self._get_streaming_retry(retry_override=retry)
 
-        def attempt_stream() -> Generator[common.UploadProgress, None, None]:
+        def attempt_stream() -> Generator[UploadProgress, None, None]:
             nonlocal final_resp
             if self._needs_recovery:
                 _LOGGER.info(
@@ -795,7 +796,7 @@ class ResumableUploadSession:
         content_type: Optional[str] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Any:
         """Executes the resumable upload from start to completion.
 
@@ -847,8 +848,8 @@ class ResumableUploadSession:
         content_type: Optional[str] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
-    ) -> Generator[common.UploadProgress, None, None]:
+        on_progress: Optional[Callable[[UploadProgress], None]] = None,
+    ) -> Generator[UploadProgress, None, None]:
         """Streams upload execution, yielding UploadProgress snapshots (PEP 255).
 
         Args:
@@ -882,7 +883,7 @@ class ResumableUploadSession:
             self._content_type = content_type
         if on_progress is not None:
             self._on_progress = on_progress
-        progress_queue: List[common.UploadProgress] = []
+        progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
             self._initiate(
@@ -912,7 +913,7 @@ class ResumableUploadSession:
         transport: Optional[requests.Session] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
+        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Any:
         """Resumes an existing upload from a saved upload URL.
 
@@ -964,8 +965,8 @@ class ResumableUploadSession:
         transport: Optional[requests.Session] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[common.UploadProgress], None]] = None,
-    ) -> Generator[common.UploadProgress, None, None]:
+        on_progress: Optional[Callable[[UploadProgress], None]] = None,
+    ) -> Generator[UploadProgress, None, None]:
         """Streams resumption of an upload, yielding UploadProgress snapshots.
 
         Args:
@@ -1007,7 +1008,7 @@ class ResumableUploadSession:
             self._on_progress = on_progress
 
         self._state._resumable_url = actual_url
-        progress_queue: List[common.UploadProgress] = []
+        progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
             self._recover(sess, stream_obj, progress_queue=progress_queue)

@@ -857,6 +857,6 @@ async def test_async_upload_cancellation_does_not_deadlock():
     progress_iterator = upload_operation.progress()
     consume_task = asyncio.create_task(progress_iterator.__anext__())
     await transport.started.wait()
-    upload_operation._task.cancel()
+    consume_task.cancel()
     with pytest.raises((asyncio.CancelledError, StopAsyncIteration)):
         await asyncio.wait_for(consume_task, timeout=5)

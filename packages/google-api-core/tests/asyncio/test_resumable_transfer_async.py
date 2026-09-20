@@ -1067,10 +1067,10 @@ def test_async_notify_progress_branches() -> None:
     session._notify_progress(common.ProgressState.UPLOADING, queue=None)
     assert len(called) == 1
 
-    q: asyncio.Queue = asyncio.Queue()
+    q: List[UploadProgress] = []
     session._notify_progress(common.ProgressState.UPLOADING, queue=q)
     assert len(called) == 2
-    assert q.qsize() == 1
+    assert len(q) == 1
 
 
 def test_async_deadline_handling_and_start_timeout() -> None:
@@ -1839,7 +1839,7 @@ async def test_async_resume_already_finished_raises_value_error() -> None:
         )
         with pytest.raises(
             ValueError,
-            match="Upload resumed but completed without receiving a final response",
+            match="Upload completed without receiving a final response",
         ):
             await op
 
@@ -1970,15 +1970,15 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
     )
     op_cancel = session_cancel.upload(stream=b"data")
 
-    async def cancel_soon() -> None:
-        await asyncio.sleep(0.01)
-        op_cancel._task.cancel()
-
-    cancel_task = asyncio.create_task(cancel_soon())
-    with pytest.raises(asyncio.CancelledError):
+    async def consume_progress() -> None:
         async for _ in op_cancel.progress():
             pass
-    await cancel_task
+
+    progress_task = asyncio.create_task(consume_progress())
+    await asyncio.sleep(0.01)
+    progress_task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await progress_task
 
     # 2. Task raises BaseException subclass
     class BaseExceptionTransport:
@@ -2020,7 +2020,7 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
         transport=DummyAsyncSession([start_resp, final_resp]),
     )
     op_ok = session_ok.upload(stream=b"data")
-    first_pass = [p async for p in op_ok.progress()]
+    first_pass = [p async for p in op_ok]
     assert len(first_pass) == 2
     second_pass = [p async for p in op_ok.progress()]
     assert second_pass == []
