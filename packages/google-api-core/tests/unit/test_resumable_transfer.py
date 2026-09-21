@@ -1009,11 +1009,9 @@ def test_sync_resume_chunk_size_override():
 
 
 def test_sync_on_progress_and_capture():
-    callback_mock = mock.Mock()
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
     )
-    session._on_progress = callback_mock
     session._state._resumable_url = "https://api.example.com/init"
     progress_queue = []
     session._notify_progress(
@@ -1021,8 +1019,6 @@ def test_sync_on_progress_and_capture():
     )
     assert len(progress_queue) == 1
     assert progress_queue[0].state == common.ProgressState.UPLOADING
-    assert callback_mock.called
-    assert callback_mock.call_args[0][0] is progress_queue[0]
 
 
 def test_sync_naive_deadline_tz():
@@ -1881,8 +1877,7 @@ def test_sync_method_override_arguments() -> None:
     session1._initiate(transport=transport1, content_type="text/plain")
     assert session1._content_type == "text/plain"
 
-    # 2. upload with content_type and on_progress overrides
-    progress_events: List[UploadProgress] = []
+    # 2. upload with content_type override
     chunk_resp = mock.Mock(
         ok=True,
         status_code=200,
@@ -1896,13 +1891,10 @@ def test_sync_method_override_arguments() -> None:
         stream=b"data",
         transport=transport2,
         content_type="text/csv",
-        on_progress=lambda p: progress_events.append(p),
     )
     assert session2._content_type == "text/csv"
-    assert len(progress_events) == 2
 
-    # 3. resume with on_progress override
-    resume_events: List[UploadProgress] = []
+    # 3. resume with chunk_size override
     query_resp = mock.Mock(
         ok=True,
         status_code=200,
@@ -1919,6 +1911,4 @@ def test_sync_method_override_arguments() -> None:
         upload_url="https://upload.example.com/123",
         stream=b"data",
         transport=transport3,
-        on_progress=lambda p: resume_events.append(p),
     )
-    assert len(resume_events) == 2

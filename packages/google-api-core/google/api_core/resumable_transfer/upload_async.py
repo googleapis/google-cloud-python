@@ -205,7 +205,6 @@ class AsyncResumableUploadSession:
         self._response_type = response_type
         self._start_retry = start_retry
         self._start_timeout = start_timeout
-        self._on_progress: Optional[Callable[[UploadProgress], Any]] = None
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
@@ -275,7 +274,7 @@ class AsyncResumableUploadSession:
         state: common.ProgressState,
         queue: Optional[List[UploadProgress]] = None,
     ) -> None:
-        """Notifies registered progress callback and list with current upload status.
+        """Appends current upload status to the optional progress queue.
 
         Args:
             state: ProgressState transition milestone.
@@ -289,11 +288,6 @@ class AsyncResumableUploadSession:
                 total_bytes=self._state.total_bytes,
                 state=state,
             )
-            if self._on_progress:
-                try:
-                    self._on_progress(progress)
-                except Exception:  # pragma: NO COVER
-                    pass
             if queue is not None:
                 queue.append(progress)
 
@@ -847,7 +841,6 @@ class AsyncResumableUploadSession:
         content_type: Optional[str] = None,
         retry: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
         """Initiates and executes upload asynchronously, returning an AsyncUploadOperation.
 
@@ -867,7 +860,6 @@ class AsyncResumableUploadSession:
                 ``TransferStalledError``, ``UploadCancelledError``, and
                 ``UnseekableStreamError``) are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             An AsyncUploadOperation handle representing the transfer.
@@ -882,8 +874,6 @@ class AsyncResumableUploadSession:
 
         if content_type is not None:
             self._content_type = content_type
-        if on_progress is not None:
-            self._on_progress = on_progress
 
         progress_queue: List[UploadProgress] = []
         reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
@@ -924,7 +914,6 @@ class AsyncResumableUploadSession:
         transport: Optional[Any] = None,
         retry: Optional[google.api_core.retry.AsyncStreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], Any]] = None,
     ) -> AsyncUploadOperation:
         """Resumes an existing upload asynchronously, returning an AsyncUploadOperation.
 
@@ -944,7 +933,6 @@ class AsyncResumableUploadSession:
                 ``TransferStalledError``, ``UploadCancelledError``, and
                 ``UnseekableStreamError``) are never retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             An AsyncUploadOperation handle representing the resumed transfer.
@@ -959,8 +947,6 @@ class AsyncResumableUploadSession:
 
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
-        if on_progress is not None:
-            self._on_progress = on_progress
 
         self._state._resumable_url = upload_url
         progress_queue: List[UploadProgress] = []

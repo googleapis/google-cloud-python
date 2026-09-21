@@ -1051,25 +1051,20 @@ def test_async_enrich_exception() -> None:
 
 
 def test_async_notify_progress_branches() -> None:
-    """Verifies progress notification callbacks and queues."""
-    called = []
+    """Verifies progress notification queue capture."""
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
     )
-    session._on_progress = lambda p: called.append(p)
     # When upload_url is None
     session._notify_progress(common.ProgressState.UPLOADING)
-    assert len(called) == 0
 
     # When upload_url is established on state
     session._state._resumable_url = "https://upload.example.com/resumable-async"
     # Call with queue=None
     session._notify_progress(common.ProgressState.UPLOADING, queue=None)
-    assert len(called) == 1
 
     q: List[UploadProgress] = []
     session._notify_progress(common.ProgressState.UPLOADING, queue=q)
-    assert len(called) == 2
     assert len(q) == 1
 
 
@@ -2050,8 +2045,7 @@ async def test_async_method_override_arguments() -> None:
     )
     assert session1._content_type == "text/plain"
 
-    # 2. upload with content_type and on_progress overrides
-    progress_events: List[UploadProgress] = []
+    # 2. upload with content_type override
     session2 = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         transport=DummyAsyncSession([start_resp, chunk_resp]),
@@ -2059,12 +2053,10 @@ async def test_async_method_override_arguments() -> None:
     await session2.upload(
         stream=b"data",
         content_type="text/csv",
-        on_progress=lambda p: progress_events.append(p),
     )
     assert session2._content_type == "text/csv"
-    assert len(progress_events) == 2
 
-    # 3. resume with on_progress override
+    # 3. resume with chunk_size override
     query_resp = DummyAsyncResponse(
         status=200,
         headers={
@@ -2073,13 +2065,10 @@ async def test_async_method_override_arguments() -> None:
         },
         body=b"",
     )
-    resume_events: List[UploadProgress] = []
     session3 = AsyncResumableUploadSession(
         transport=DummyAsyncSession([query_resp, chunk_resp])
     )
     await session3.resume(
         upload_url="https://upload.example.com/123",
         stream=b"data",
-        on_progress=lambda p: resume_events.append(p),
     )
-    assert len(resume_events) == 2

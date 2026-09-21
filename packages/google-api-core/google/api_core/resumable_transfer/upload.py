@@ -142,7 +142,6 @@ class ResumableUploadSession:
         self._response_type = response_type
         self._start_retry = start_retry
         self._start_timeout = start_timeout
-        self._on_progress: Optional[Callable[[UploadProgress], None]] = None
         self._response: Optional[Any] = None
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
@@ -217,7 +216,7 @@ class ResumableUploadSession:
         state: common.ProgressState,
         progress_queue: Optional[List[UploadProgress]] = None,
     ) -> None:
-        """Notifies registered callback and optional progress queue with current upload status.
+        """Appends current upload status to the optional progress queue.
 
         Args:
             state: ProgressState transition milestone.
@@ -233,8 +232,6 @@ class ResumableUploadSession:
             )
             if progress_queue is not None:
                 progress_queue.append(progress)
-            if self._on_progress:
-                self._on_progress(progress)
 
     def _get_deadline_remaining(self) -> Optional[float]:
         """Calculates remaining seconds until the configured upload deadline.
@@ -796,7 +793,6 @@ class ResumableUploadSession:
         content_type: Optional[str] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Any:
         """Executes the resumable upload from start to completion.
 
@@ -817,7 +813,6 @@ class ResumableUploadSession:
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             The final server response payload or deserialized response message.
@@ -834,7 +829,6 @@ class ResumableUploadSession:
             content_type=content_type,
             retry=retry,
             timeout=timeout,
-            on_progress=on_progress,
         ):
             pass
         return self._response
@@ -848,7 +842,6 @@ class ResumableUploadSession:
         content_type: Optional[str] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Generator[UploadProgress, None, None]:
         """Streams upload execution, yielding UploadProgress snapshots (PEP 255).
 
@@ -869,7 +862,6 @@ class ResumableUploadSession:
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Yields:
             UploadProgress snapshots for each chunk transmission milestone.
@@ -881,8 +873,6 @@ class ResumableUploadSession:
         sess = self._get_transport(transport)
         if content_type is not None:
             self._content_type = content_type
-        if on_progress is not None:
-            self._on_progress = on_progress
         progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
@@ -913,7 +903,6 @@ class ResumableUploadSession:
         transport: Optional[requests.Session] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Any:
         """Resumes an existing upload from a saved upload URL.
 
@@ -934,7 +923,6 @@ class ResumableUploadSession:
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Returns:
             The final server response payload or deserialized response message.
@@ -951,7 +939,6 @@ class ResumableUploadSession:
             transport=transport,
             retry=retry,
             timeout=timeout,
-            on_progress=on_progress,
         ):
             pass
         return self._response
@@ -965,7 +952,6 @@ class ResumableUploadSession:
         transport: Optional[requests.Session] = None,
         retry: Optional[google.api_core.retry.StreamingRetry] = None,
         timeout: Optional[float] = None,
-        on_progress: Optional[Callable[[UploadProgress], None]] = None,
     ) -> Generator[UploadProgress, None, None]:
         """Streams resumption of an upload, yielding UploadProgress snapshots.
 
@@ -986,7 +972,6 @@ class ResumableUploadSession:
                 ``UploadCancelledError``, and ``UnseekableStreamError``) are never
                 retried.
             timeout: Optional per-attempt timeout ceiling in seconds.
-            on_progress: Optional callback function receiving UploadProgress notifications.
 
         Yields:
             UploadProgress snapshots for each chunk transmission milestone.
@@ -1004,8 +989,6 @@ class ResumableUploadSession:
 
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
-        if on_progress is not None:
-            self._on_progress = on_progress
 
         self._state._resumable_url = actual_url
         progress_queue: List[UploadProgress] = []
