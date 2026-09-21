@@ -44,7 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import _BSON_DECODERS, _BSONType
+from google.cloud.firestore_v1.bson import _BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -347,7 +347,22 @@ def reference_value_to_document(reference_value, client) -> Any:
     return document
 
 
-def decode_value(value, client=None) -> Any:
+def decode_value(
+    value, client=None
+) -> Union[
+    None,
+    bool,
+    int,
+    float,
+    list,
+    datetime.datetime,
+    str,
+    bytes,
+    dict,
+    GeoPoint,
+    Vector,
+    _BSONType,
+]:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
     Args:
@@ -357,10 +372,15 @@ def decode_value(value, client=None) -> Any:
             A client that has a document factory.
 
     Returns:
-        Any: A native Python value converted from the ``value``.
+        Union[NoneType, bool, int, float, datetime.datetime, \
+            str, bytes, dict, ~google.cloud.Firestore.GeoPoint, \
+            ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson._BSONType]: A native \
+        Python value converted from the ``value``.
 
     Raises:
-        ValueError: If ``value_type`` is unknown or unsupported.
+        NotImplementedError: If the ``value_type`` is ``reference_value``.
+        ValueError: If the ``value_type`` is unknown.
     """
     value_pb = getattr(value, "_pb", value)
     value_type = value_pb.WhichOneof("value_type")
