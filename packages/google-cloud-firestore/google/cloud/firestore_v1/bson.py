@@ -425,7 +425,7 @@ class BSONDecimal128(_BSONType):
         >>> dec = BSONDecimal128("123.45")
         >>> dec.value
         '123.45'
-        >>> dec.to_decimal
+        >>> dec.to_decimal()
         Decimal('123.45')
     """
 
@@ -451,7 +451,6 @@ class BSONDecimal128(_BSONType):
         """str: The string representation of the 128-bit decimal value."""
         return self._value
 
-    @property
     def to_decimal(self) -> decimal.Decimal:
         """decimal.Decimal: Convert to Python standard library Decimal instance."""
         return decimal.Decimal(self._value)
@@ -466,25 +465,38 @@ class BSONDecimal128(_BSONType):
     def __str__(self) -> str:
         return self._value
 
+    def __float__(self) -> float:
+        """float: Convert decimal value to float."""
+        return float(self._value)
+
+    def __int__(self) -> int:
+        """int: Convert decimal value to integer."""
+        return int(self.to_decimal())
+
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, BSONDecimal128):
-            if self._value.upper() == "NAN" and other._value.upper() == "NAN":
-                return True
             try:
-                return self.to_decimal == other.to_decimal
+                d1, d2 = self.to_decimal(), other.to_decimal()
+                if d1.is_nan() and d2.is_nan():
+                    return True
+                return d1 == d2
             except decimal.InvalidOperation:
                 return self._value == other._value
         if isinstance(other, decimal.Decimal):
             try:
-                return self.to_decimal == other
+                d1 = self.to_decimal()
+                if d1.is_nan() and other.is_nan():
+                    return True
+                return d1 == other
             except decimal.InvalidOperation:
                 return False
         return NotImplemented
 
     def __hash__(self) -> int:
-        if self._value.upper() == "NAN":
-            return hash((type(self), "NAN"))
         try:
-            return hash(self.to_decimal)
+            d = self.to_decimal()
+            if d.is_nan():
+                return hash((type(self), "NAN"))
+            return hash(d)
         except decimal.InvalidOperation:
             return hash((type(self), self._value))

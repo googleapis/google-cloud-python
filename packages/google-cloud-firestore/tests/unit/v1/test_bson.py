@@ -17,6 +17,7 @@
 
 import copy
 import decimal
+import math
 import pickle
 
 import pytest
@@ -487,7 +488,7 @@ def test_bson_regex_pickle():
 def test_bson_decimal128_valid():
     dec1 = BSONDecimal128("123.45")
     assert dec1.value == "123.45"
-    assert dec1.to_decimal == decimal.Decimal("123.45")
+    assert dec1.to_decimal() == decimal.Decimal("123.45")
     assert dec1._to_map_value() == {"__decimal128__": "123.45"}
     assert repr(dec1) == "BSONDecimal128('123.45')"
     assert str(dec1) == "123.45"
@@ -505,16 +506,40 @@ def test_bson_decimal128_valid():
     assert dec5.value == "123.45"
 
 
-def test_bson_decimal128_special_values():
-    nan_dec = BSONDecimal128("NaN")
-    assert nan_dec.value == "NaN"
-    assert nan_dec._to_map_value() == {"__decimal128__": "NaN"}
+def test_bson_decimal128_float_and_int():
+    dec = BSONDecimal128("123.45")
+    assert float(dec) == 123.45
+    assert int(dec) == 123
 
-    inf_dec = BSONDecimal128("Infinity")
-    assert inf_dec.value == "Infinity"
 
-    neg_inf_dec = BSONDecimal128("-Infinity")
-    assert neg_inf_dec.value == "-Infinity"
+@pytest.mark.parametrize(
+    "special_val",
+    [
+        "inf",
+        "-inf",
+        "Infinity",
+        "-Infinity",
+        "NaN",
+        "-NaN",
+        "sNaN",
+        "-sNaN",
+        float("inf"),
+        float("-inf"),
+        float("nan"),
+    ],
+)
+def test_bson_decimal128_special_values(special_val):
+    dec1 = BSONDecimal128(special_val)
+    dec2 = BSONDecimal128(special_val)
+    assert dec1.value == str(special_val)
+    assert dec1._to_map_value() == {"__decimal128__": str(special_val)}
+    assert dec1 == dec2
+    assert hash(dec1) == hash(dec2)
+
+    if "inf" in str(special_val).lower():
+        assert math.isinf(float(dec1))
+    elif "nan" in str(special_val).lower():
+        assert math.isnan(float(dec1))
 
 
 @pytest.mark.parametrize(
