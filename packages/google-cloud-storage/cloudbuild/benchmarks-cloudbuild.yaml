@@ -40,18 +40,7 @@ steps:
           -czf /workspace/google-cloud-storage.tar.gz -C /workspace/packages google-cloud-storage
     waitFor: ["-"]
 
-  # Step 2: Start the standing high-bandwidth VM
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "start-vm"
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        echo "Starting standing VM ${_VM_NAME} in zone ${_ZONE}..."
-        gcloud compute instances start "${_VM_NAME}" --zone="${_ZONE}"
-    waitFor: ["-"]
-
-  # Step 3: Run the benchmark directly on the VM via private internal IP SSH, fetch results, and stop the VM
+  # Step 2: Start VM, run benchmark directly via private internal IP SSH, fetch results, and clean up
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     id: "run-benchmark-on-vm"
     entrypoint: "bash"
@@ -68,6 +57,9 @@ steps:
             --key-file=/workspace/gcb_ssh_key.pub || true
         }
         trap cleanup EXIT
+
+        echo "Starting standing VM ${_VM_NAME} in zone ${_ZONE}..."
+        gcloud compute instances start "${_VM_NAME}" --zone="${_ZONE}"
 
         echo "Waiting for VM ${_VM_NAME} to become accessible over internal SSH..."
         SSH_READY=0
@@ -105,7 +97,6 @@ steps:
 
         exit $$TEST_EXIT_CODE
     waitFor:
-      - "start-vm"
       - "generate-ssh-key"
       - "package-code"
 

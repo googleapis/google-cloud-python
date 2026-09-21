@@ -23,7 +23,10 @@ if [ -n "${TARGET_BUCKET:-}" ]; then
     ZONAL_BUCKET="${TARGET_BUCKET}"
   fi
 fi
-OUTPUT_JSON_PATH="${OUTPUT_JSON_PATH:-${OUT_JSON:-${HOME:-/tmp}/bench_result.json}}"
+# Ensure HOME is exported for gRPC / ALTS Application Default Credentials
+export HOME="${HOME:-/root}"
+OUTPUT_JSON_PATH="${OUTPUT_JSON_PATH:-${OUT_JSON:-${HOME}/bench_result.json}}"
+rm -f "${OUTPUT_JSON_PATH}" 2>/dev/null || true
 UPLOAD_GCS_PREFIX="${UPLOAD_GCS_PREFIX:-}"
 
 echo "========================================================================"
@@ -40,8 +43,6 @@ echo " Output JSON Path: ${OUTPUT_JSON_PATH}"
 echo " Upload GCS Path:  ${UPLOAD_GCS_PREFIX:-None}"
 echo "========================================================================"
 
-# Ensure HOME is exported for gRPC / ALTS Application Default Credentials
-export HOME="${HOME:-/root}"
 export DEFAULT_RAPID_ZONAL_BUCKET="${ZONAL_BUCKET}"
 export DEFAULT_STANDARD_BUCKET="${REGIONAL_BUCKET}"
 export PROCESSES="${PROCESSES}"
@@ -78,7 +79,6 @@ if ! python3 -c "import pytest, psutil, yaml, google.cloud.storage" 2>/dev/null;
 fi
 
 echo "--- 2. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
-rm -f "${OUTPUT_JSON_PATH}" 2>/dev/null || true
 set +e
 python3 -m pytest --benchmark-json="${OUTPUT_JSON_PATH}" \
   -rA \
