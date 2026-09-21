@@ -36,6 +36,15 @@ import warnings
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
+from google.api_core import client_options as client_options_lib
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
 from .rest_base import _Base{{ service.name }}RestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
@@ -97,6 +106,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             url_scheme: str = 'https',
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -142,6 +153,9 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -153,7 +167,9 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -266,7 +282,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
-            {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
+            {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)

@@ -159,8 +159,6 @@ class {{ service.name }}Transport(abc.ABC):
         self._host = host
 
         self._client_options = client_options
-        self._wrap_with_tracing = _WRAP_METHOD_SUPPORTS_TRACING
-
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
@@ -168,15 +166,10 @@ class {{ service.name }}Transport(abc.ABC):
         return self._host
 
     def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_tracing:
+        if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
-            try:
+            if self.kind:
                 kwargs["kind"] = self.kind
-            # The abstract BaseTransport class raises NotImplementedError for the kind property.
-            # Concrete transport subclasses (gRPC, REST) override kind, so this exception handler
-            # is unreachable during normal execution. Excluded from coverage check.
-            except NotImplementedError:  # pragma: NO COVER
-                pass
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
@@ -410,7 +403,7 @@ class {{ service.name }}Transport(abc.ABC):
 
     @property
     def kind(self) -> str:
-        raise NotImplementedError()
+        return ""
 
     {% for operations_service in api.get_extended_operations_services(service)|sort(attribute="name") %}
     @property

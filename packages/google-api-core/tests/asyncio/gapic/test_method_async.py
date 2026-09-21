@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import datetime
 
 try:
@@ -26,6 +27,9 @@ try:
 except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
+from google.api_core import (
+    client_options as client_options_lib,
+)
 from google.api_core import (
     exceptions,
     gapic_v1,
@@ -274,3 +278,278 @@ async def test_wrap_method_without_wrap_errors():
         await wrapped_method()
 
         method.assert_not_called()
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "kwargs,capabilities_enabled",
+    [
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets"
+            },
+            False,
+        ),
+        ({}, True),
+        (
+            {
+                "method_name": "/google.cloud.secretmanager.v1.SecretManagerService/StreamingRead",
+                "is_streaming": True,
+            },
+            True,
+        ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "unsupported_transport",
+            },
+            True,
+        ),
+    ],
+    ids=[
+        "disabled_by_flag",
+        "omitted_method_name",
+        "streaming_skipped",
+        "unsupported_kind_skipped",
+    ],
+)
+async def test_wrap_method_async_otel_tracing_skips_span(
+    monkeypatch, kwargs, capabilities_enabled
+):
+    """Proves that under various gating conditions, no async Tier 3 span is created."""
+    mock_target = mock.AsyncMock(return_value="success")
+    mock_trace = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+        ),
+        mock.patch.dict(
+            "sys.modules",
+            {
+                "opentelemetry": mock.Mock(trace=mock_trace),
+                "opentelemetry.trace": mock_trace,
+            },
+        ),
+    ):
+        wrapped = gapic_v1.method_async.wrap_method(mock_target, **kwargs)
+        result = await wrapped()
+
+    assert result == "success"
+    mock_trace.get_tracer.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
+    """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started and awaited."""
+    mock_target = mock.AsyncMock(return_value="async_success")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        default_timeout=60,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="grpc_asyncio",
+    )
+    result = await wrapped()
+
+    assert result == "async_success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        },
+    )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("kind", ["rest", "rest_asyncio"])
+async def test_wrap_method_async_otel_tracing_enabled_rest_transports(mock_otel, kind):
+    """Proves that when kind is 'rest' or 'rest_asyncio', a T3 client span is started."""
+    mock_target = mock.AsyncMock(return_value="rest_success")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        default_timeout=60,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind=kind,
+    )
+    result = await wrapped()
+
+    assert result == "rest_success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        },
+    )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_coroutine_duration(mock_otel):
+    """Proves that the span remains active across asynchronous awaits and closes only after completion."""
+    span_open_during_call = False
+
+    async def delayed_target(*args, **kwargs):
+        nonlocal span_open_during_call
+        span_open_during_call = (
+            mock_otel.tracer.start_as_current_span.return_value.__enter__.called
+            and not mock_otel.tracer.start_as_current_span.return_value.__exit__.called
+        )
+        await asyncio.sleep(0.01)
+        return "delayed_result"
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        delayed_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = await wrapped()
+
+    assert result == "delayed_result"
+    assert span_open_during_call is True
+    assert mock_otel.tracer.start_as_current_span.return_value.__exit__.called is True
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
+    """Proves that providing client_options with a custom tracer_provider uses that provider."""
+    mock_target = mock.AsyncMock(return_value="success")
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_otel.tracer
+
+    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        client_options=client_options,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = await wrapped()
+
+    assert result == "success"
+    mock_provider.get_tracer.assert_called_once_with("google.api_core")
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_dict_client_options(mock_otel):
+    """Proves that providing a dict with tracer_provider uses that provider."""
+    mock_target = mock.AsyncMock(return_value="success")
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_otel.tracer
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        client_options={"tracer_provider": mock_provider},
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = await wrapped()
+
+    assert result == "success"
+    mock_provider.get_tracer.assert_called_once_with("google.api_core")
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_enabled_error(mock_otel):
+    """Proves that on async error, status code and error attributes are recorded and exception is raised."""
+    error = exceptions.NotFound("Secret not found")
+    mock_target = mock.AsyncMock(side_effect=error)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound):
+        await wrapped()
+
+    mock_otel.span.set_attribute.assert_any_call(
+        "rpc.response.status_code", "NOT_FOUND"
+    )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_records_gcp_error_attributes(mock_otel):
+    """Proves that GCP error attributes (domain, reason, metadata) are recorded on the span."""
+    error_info = mock.Mock(
+        domain="googleapis.com",
+        reason="RESOURCE_NOT_FOUND",
+        metadata={"service": "secretmanager"},
+    )
+    error = exceptions.GoogleAPICallError("Resource not found")
+    error._error_info = error_info
+    mock_target = mock.AsyncMock(side_effect=error)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.GoogleAPICallError):
+        await wrapped()
+
+    mock_otel.span.set_attribute.assert_any_call("gcp.errors.domain", "googleapis.com")
+    mock_otel.span.set_attribute.assert_any_call("error.type", "RESOURCE_NOT_FOUND")
+    mock_otel.span.set_attribute.assert_any_call(
+        "gcp.errors.metadata.service", "secretmanager"
+    )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_import_error(monkeypatch):
+    """Proves that if opentelemetry fails to import, method execution proceeds gracefully without tracing."""
+    mock_target = mock.AsyncMock(return_value="graceful_success")
+
+    with (
+        mock.patch(
+            "google.api_core._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ),
+        mock.patch.dict("sys.modules", {"opentelemetry": None}),
+    ):
+        wrapped = gapic_v1.method_async.wrap_method(
+            mock_target,
+            method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        )
+        result = await wrapped()
+
+    assert result == "graceful_success"
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_start_span_error_bypasses_tracing(
+    mock_otel,
+):
+    """Proves that if tracer.start_as_current_span throws an exception, the call executes cleanly."""
+    mock_otel.tracer.start_as_current_span.side_effect = RuntimeError("Tracing broken")
+    mock_target = mock.AsyncMock(return_value="resilient_success")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    )
+    result = await wrapped()
+
+    assert result == "resilient_success"

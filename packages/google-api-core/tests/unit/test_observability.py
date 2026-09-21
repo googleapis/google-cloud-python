@@ -568,3 +568,110 @@ def test_get_otel_interceptor_sentinel_attribute(monkeypatch):
     interceptor = _observability.get_otel_interceptor(client_options=options)
     assert callable(interceptor)
     assert getattr(interceptor, "_is_otel_interceptor", None) is True
+
+
+def test_start_http_span_disabled():
+    """Proves that start_http_span yields None when tracing is disabled."""
+    request = mock.Mock(method="GET", url="https://example.com/api", headers={})
+    with _observability.start_http_span(
+        request, client_options=ClientOptions()
+    ) as span:
+        assert span is None
+
+
+def test_start_http_span_active(monkeypatch):
+    """Proves that start_http_span creates a span, sets attributes, and injects W3C headers."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_tracer
+
+    mock_otel = mock.MagicMock()
+    mock_propagator = mock.Mock()
+    mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions(
+        api_endpoint="custom.googleapis.com:8443",
+        tracer_provider=mock_provider,
+    )
+    headers = {}
+    request = mock.Mock(
+        method="POST",
+        url="https://custom.googleapis.com:8443/v1/test",
+        headers=headers,
+        body=b"test-body",
+    )
+
+    with _observability.start_http_span(
+        request, url_template="/v1/test", client_options=options
+    ) as span:
+        assert span is mock_span
+
+    mock_tracer.start_as_current_span.assert_called_once()
+    call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
+    assert call_args[0] == "POST"
+    attrs = call_kwargs["attributes"]
+    assert attrs["http.request.method"] == "POST"
+    assert attrs["server.address"] == "custom.googleapis.com"
+    assert attrs["server.port"] == 8443
+    assert attrs["url.template"] == "/v1/test"
+    assert attrs["http.request.body.size"] == 9
+    mock_propagator.inject.assert_called_once_with(headers)
+
+
+def test_record_http_response_success(monkeypatch):
+    """Proves that record_http_response records status code and size attributes."""
+    mock_span = mock.Mock()
+    response = mock.Mock(status_code=200, headers={"Content-Length": "42"})
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_response(mock_span, response)
+    mock_span.set_attribute.assert_any_call("http.response.status_code", 200)
+    mock_span.set_attribute.assert_any_call("http.response.body.size", 42)
+
+
+def test_record_http_response_error_status(monkeypatch):
+    """Proves that record_http_response sets error status on 4xx/5xx responses."""
+    mock_span = mock.Mock()
+    response = mock.Mock(status_code=503, headers={})
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_response(mock_span, response)
+    mock_span.set_attribute.assert_any_call("http.response.status_code", 503)
+    mock_span.set_status.assert_called_once()
+
+
+def test_record_http_error(monkeypatch):
+    """Proves that record_http_error records exception and error attributes."""
+    mock_span = mock.Mock()
+    exc = ValueError("Network failure")
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_error(mock_span, exc)
+    mock_span.record_exception.assert_called_once_with(exc)
+    mock_span.set_status.assert_called_once()
+    mock_span.set_attribute.assert_any_call("error.type", "ValueError")
+    mock_span.set_attribute.assert_any_call("status.message", "Network failure")

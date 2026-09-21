@@ -57,11 +57,22 @@ from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
+from google.api_core import client_options as client_options_lib
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
 from .rest_base import _Base{{ service.name }}RestTransport
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
+import asyncio
+import inspect
 import logging
 
 try:
@@ -71,6 +82,10 @@ except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
+
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -111,6 +126,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             interceptor: Optional[Async{{ service.name }}RestInterceptor] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -138,6 +155,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 "http" can be specified.
             interceptor (Optional[Async{{ service.name }}RestInterceptor]): Interceptor used
                 to manipulate requests, request metadata, and responses.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         super().__init__(
@@ -146,7 +166,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info=client_info,
             always_use_jwt_access=False,
             url_scheme=url_scheme,
-            api_audience=None
+            api_audience=None,
+            client_options=client_options,
+            **kwargs,
         )
         {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
@@ -154,7 +176,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         #}
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or Async{{ service.name }}RestInterceptor()
-        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
@@ -260,7 +281,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             return resp
 
             {% endif %}{# method.void #}
-         
+
          {% else %}
                 raise NotImplementedError(
                     "Method {{ method.name }} is not available over REST transport"
@@ -325,7 +346,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
 
     {% endfor %}
-    {% for name, sig in api.mixin_api_signatures.items() %} 
+    {% for name, sig in api.mixin_api_signatures.items() %}
     {{ shared_macros.generate_mixin_call_method(service, api, name, sig, is_async=True) | indent(4) }}
     {% endfor %}
 
@@ -335,5 +356,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     async def close(self):
         await self._session.close()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
 
 {% endblock %}

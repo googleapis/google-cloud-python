@@ -18,6 +18,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import urllib.parse
 from typing import TYPE_CHECKING, Any, Callable, Sequence
 
@@ -280,3 +281,163 @@ def get_otel_async_interceptor(
         request_hook=request_hook,
         response_hook=_grpc_client_response_hook,
     )
+
+
+@contextlib.contextmanager
+def start_http_span(
+    request: Any,
+    url_template: str | None = None,
+    client_options: ClientOptions | dict[str, Any] | None = None,
+):
+    """Context manager for tracing an HTTP wire request with OpenTelemetry.
+
+    Injects W3C traceparent headers into request.headers and attaches standard
+    semantic attributes. If tracing is disabled or OpenTelemetry is not installed,
+    yields None.
+
+    Args:
+        request: The HTTP request object (e.g. requests.PreparedRequest or similar).
+        url_template: Optional low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        client_options: Client options used for feature gating and tracer extraction.
+
+    Yields:
+        Optional[Span]: The active OpenTelemetry span or None.
+    """
+    if not is_otel_capabilities_enabled(client_options):
+        yield None
+        return
+
+    try:
+        from opentelemetry import trace
+        from opentelemetry.trace.propagation.tracecontext import (  # type: ignore[import-not-found]
+            TraceContextTextMapPropagator,
+        )
+
+        tracer_provider = _get_tracer_provider(client_options)
+        if tracer_provider is not None:
+            tracer = tracer_provider.get_tracer("google.api_core")
+        else:
+            tracer = trace.get_tracer("google.api_core")
+
+        method = getattr(request, "method", "HTTP") or "HTTP"
+        url = getattr(request, "url", "") or ""
+        endpoint_attrs = _extract_endpoint_attributes(client_options)
+
+        server_address = endpoint_attrs.get("server.address")
+        server_port = endpoint_attrs.get("server.port")
+        if not server_address and url:
+            try:
+                parsed = urllib.parse.urlsplit(url)
+                server_address = parsed.hostname
+                if not server_port and parsed.port:
+                    server_port = parsed.port
+            except Exception:
+                pass
+
+        span_name = method
+        span_attributes: dict[str, Any] = {
+            "http.request.method": method,
+            "server.address": server_address or "",
+            "server.port": server_port or 443,
+            "url.domain": endpoint_attrs.get("url.domain", "googleapis.com"),
+        }
+        if url_template:
+            span_attributes["url.template"] = url_template
+        if url:
+            span_attributes["url.full"] = url
+
+        body = getattr(request, "body", None)
+        if body is not None and isinstance(body, (bytes, str)):
+            span_attributes["http.request.body.size"] = len(body)
+
+        with tracer.start_as_current_span(
+            span_name,
+            kind=trace.SpanKind.CLIENT,
+            attributes=span_attributes,
+        ) as span:
+            headers = getattr(request, "headers", None)
+            if headers is not None and hasattr(headers, "__setitem__"):
+                try:
+                    TraceContextTextMapPropagator().inject(headers)
+                except Exception:
+                    pass
+
+            yield span
+    except Exception:
+        yield None
+
+
+def record_http_response(span: Any, response: Any) -> None:
+    """Record HTTP response attributes on the wire span.
+
+    Args:
+        span: The active OpenTelemetry span.
+        response: The HTTP response object (e.g. requests.Response).
+    """
+    if span is None or not hasattr(span, "set_attribute"):
+        return
+
+    try:
+        from opentelemetry.trace.status import (  # type: ignore[import-not-found]
+            Status,
+            StatusCode,
+        )
+
+        status_code = getattr(response, "status_code", None)
+        if status_code is not None:
+            span.set_attribute("http.response.status_code", int(status_code))
+            if int(status_code) >= 400:
+                span.set_status(Status(StatusCode.ERROR))
+            else:
+                span.set_status(Status(StatusCode.OK))
+
+        headers = getattr(response, "headers", None)
+        if headers and "Content-Length" in headers:
+            try:
+                span.set_attribute(
+                    "http.response.body.size", int(headers["Content-Length"])
+                )
+            except (ValueError, TypeError):
+                pass
+        elif hasattr(response, "_content") and response._content is not None:
+            try:
+                span.set_attribute("http.response.body.size", len(response._content))
+            except Exception:
+                pass
+    except Exception:
+        pass
+
+
+def record_http_error(span: Any, exc: Exception) -> None:
+    """Record an HTTP error/exception on the wire span.
+
+    Args:
+        span: The active OpenTelemetry span.
+        exc: The exception raised during dispatch.
+    """
+    if span is None:
+        return
+
+    try:
+        from opentelemetry.trace.status import (  # type: ignore[import-not-found]
+            Status,
+            StatusCode,
+        )
+
+        if hasattr(span, "record_exception"):
+            span.record_exception(exc)
+        if hasattr(span, "set_status"):
+            span.set_status(Status(StatusCode.ERROR))
+        if hasattr(span, "set_attribute"):
+            status_code = getattr(exc, "code", None) or getattr(
+                exc, "status_code", None
+            )
+            if status_code:
+                span.set_attribute("error.type", str(status_code))
+            else:
+                span.set_attribute("error.type", exc.__class__.__name__)
+            msg = str(exc)
+            if msg:
+                span.set_attribute("status.message", msg)
+    except Exception:
+        pass

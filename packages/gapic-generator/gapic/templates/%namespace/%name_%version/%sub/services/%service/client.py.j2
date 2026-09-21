@@ -11,7 +11,6 @@ from collections import OrderedDict
 import functools
 {% endif %}
 from http import HTTPStatus
-import inspect
 import json
 import logging as std_logging
 import os
@@ -518,10 +517,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                     raise core_exceptions.AsyncRestUnsupportedParameterError(  # type: ignore
                         f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
                     )
+                client_options = None
+                if _observability is not None and _observability.is_otel_capabilities_enabled(self._client_options):
+                    client_options = self._client_options
                 self._transport = transport_init(
                     credentials=credentials,
                     host=self._api_endpoint,
                     client_info=client_info,
+                    **({"client_options": client_options} if client_options is not None else {}),
                 )
                 return
 
@@ -545,10 +548,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             if (
                 _observability is not None
                 and _observability.is_otel_capabilities_enabled(self._client_options)
-                and (
-                    not isinstance(transport_init, type)
-                    or issubclass(transport_init, {{ service.grpc_transport_name }})
-                )
             ):
                 client_options = self._client_options
 

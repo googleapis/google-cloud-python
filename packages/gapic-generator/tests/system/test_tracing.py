@@ -39,13 +39,30 @@ from google.api_core import retry as retries
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
-from google.rpc import code_pb2
+from google.protobuf import any_pb2
+from google.rpc import code_pb2, error_details_pb2
 from google.showcase import EchoClient
 
 try:
     from .conftest import construct_client
+    from .span_contract import (
+        T3_ERROR_CONTRACT,
+        T3_SUCCESS_CONTRACT,
+        T4_GRPC_ERROR_CONTRACT,
+        T4_GRPC_SUCCESS_CONTRACT,
+        SpanContract,
+        assert_span_contract,
+    )
 except (ImportError, ValueError):
     from conftest import construct_client
+    from span_contract import (
+        T3_ERROR_CONTRACT,
+        T3_SUCCESS_CONTRACT,
+        T4_GRPC_ERROR_CONTRACT,
+        T4_GRPC_SUCCESS_CONTRACT,
+        SpanContract,
+        assert_span_contract,
+    )
 
 
 @pytest.fixture
@@ -81,31 +98,58 @@ def otel_echo_client(span_exporter, use_mtls):
 
 
 def test_sync_unary_tracing(otel_echo_client):
-    """Verifies that a synchronous unary RPC generates trace spans with expected attributes."""
+    """Verifies that a synchronous unary RPC generates trace spans conforming to semantic contracts."""
     client, exporter = otel_echo_client
 
     response = client.echo(showcase.EchoRequest(content="hello world"))
     assert response.content == "hello world"
 
     spans = exporter.get_finished_spans()
-    # Synchronous unary calls generate both a Tier 2 method span and a Tier 4 wire span
+    # Synchronous unary calls generate both a Tier 3 method span and a Tier 4 wire span
     assert len(spans) == 2
 
-    for span in spans:
-        assert span.name == "google.showcase.v1beta1.Echo/Echo"
-        assert span.attributes.get("rpc.system.name") == "grpc"
-        assert span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
-        assert span.attributes.get("rpc.response.status_code") == "OK"
-        assert span.kind == trace.SpanKind.CLIENT
+    # Separate Tier 3 method span (root) and Tier 4 wire span (child)
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+    assert len(t3_spans) == 1
+    assert len(t4_spans) == 1
 
-    # Verify that the transport wire span captures url.domain
-    wire_spans = [s for s in spans if "url.domain" in s.attributes]
-    assert len(wire_spans) == 1
-    assert wire_spans[0].attributes["url.domain"] == "googleapis.com"
+    method_span = t3_spans[0]
+    wire_span = t4_spans[0]
+
+    # Validate Tier 3 (Client API Method Span) semantic contract (strict floor & ceiling)
+    assert_span_contract(
+        method_span,
+        T3_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+        },
+        label="T3 Sync Unary Method Span",
+    )
+    assert method_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert method_span.kind == trace.SpanKind.CLIENT
+
+    # Validate Tier 4 (Transport Wire Span) semantic contract (strict floor & open ceiling)
+    assert_span_contract(
+        wire_span,
+        T4_GRPC_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+            "url.domain": "googleapis.com",
+        },
+        label="T4 Sync Unary Wire Span",
+    )
+    assert wire_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert wire_span.kind == trace.SpanKind.CLIENT
+    assert wire_span.parent.span_id == method_span.context.span_id
 
 
 def test_unary_retries_tracing(otel_echo_client):
-    """Verifies that each attempt of a retried RPC generates a separate span."""
+    """Verifies that each attempt of a retried RPC generates a separate span satisfying contracts."""
     client, exporter = otel_echo_client
 
     # Configure a custom retry policy with 2 attempts on DeadlineExceeded
@@ -131,21 +175,149 @@ def test_unary_retries_tracing(otel_echo_client):
     spans = exporter.get_finished_spans()
     # At least two attempts should have been made and recorded
     assert len(spans) >= 2
-    for span in spans:
-        assert span.name == "google.showcase.v1beta1.Echo/Echo"
-        assert span.attributes.get("rpc.system.name") == "grpc"
-        assert span.attributes.get("rpc.method") == "google.showcase.v1beta1.Echo/Echo"
-        # Non-successful attempt should not have rpc.response.status_code == "OK"
-        assert span.attributes.get("rpc.response.status_code") != "OK"
 
-    # Verify that the parent method span captures status.message for cross-language parity
+    # Separate Tier 3 method span (root) and Tier 4 attempt wire spans (children)
     parent_spans = [s for s in spans if s.parent is None]
+    child_spans = [s for s in spans if s.parent is not None]
     assert len(parent_spans) == 1
-    assert "status.message" in parent_spans[0].attributes
-    assert (
-        "Simulated deadline exceeded error for retry testing."
-        in parent_spans[0].attributes["status.message"]
+    assert len(child_spans) >= 1
+
+    parent_span = parent_spans[0]
+
+    # Validate Tier 3 Parent Method Span Contract (Error)
+    assert_span_contract(
+        parent_span,
+        T3_ERROR_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "DEADLINE_EXCEEDED",
+            "error.type": "DEADLINE_EXCEEDED",
+        },
+        custom_validators={
+            "status.message": lambda msg: "Simulated deadline exceeded error" in msg,
+        },
+        label="T3 Unary Retries Parent Error Span",
     )
+
+    # Validate each child T4 Wire Span
+    for idx, child_span in enumerate(child_spans):
+        assert_span_contract(
+            child_span,
+            T4_GRPC_ERROR_CONTRACT,
+            exact_values={
+                "rpc.system.name": "grpc",
+                "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+                "url.domain": "googleapis.com",
+            },
+            label=f"T4 Unary Retry Wire Attempt {idx + 1}",
+        )
+        assert child_span.parent.span_id == parent_span.context.span_id
+
+
+def test_unretryable_error_tracing_contract(otel_echo_client):
+    """Verifies that an unretryable error with rich ErrorInfo satisfies T3 and T4 semantic contracts."""
+    client, exporter = otel_echo_client
+
+    err_info = error_details_pb2.ErrorInfo(
+        reason="RESOURCE_PROJECT_INVALID",
+        domain="googleapis.com",
+        metadata={"service": "echo.googleapis.com", "quota_limit": "100"},
+    )
+    detail_any = any_pb2.Any()
+    detail_any.Pack(err_info)
+
+    with pytest.raises(exceptions.InvalidArgument):
+        client.echo(
+            {
+                "error": {
+                    "code": code_pb2.Code.Value("INVALID_ARGUMENT"),
+                    "message": "Simulated unretryable invalid argument error.",
+                    "details": [detail_any],
+                },
+            },
+        )
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+    assert len(t3_spans) == 1
+    assert len(t4_spans) == 1
+
+    method_span = t3_spans[0]
+    wire_span = t4_spans[0]
+
+    # Validate Tier 3 method span with complete set of rich ErrorInfo attributes
+    assert_span_contract(
+        method_span,
+        T3_ERROR_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "INVALID_ARGUMENT",
+            "error.type": "RESOURCE_PROJECT_INVALID",
+            "gcp.errors.domain": "googleapis.com",
+            "gcp.errors.metadata.service": "echo.googleapis.com",
+            "gcp.errors.metadata.quota_limit": "100",
+        },
+        custom_validators={
+            "status.message": lambda msg: "Simulated unretryable invalid argument error."
+            in msg,
+        },
+        label="T3 Unretryable Error with ErrorInfo",
+    )
+
+    # Validate Tier 4 wire span
+    assert_span_contract(
+        wire_span,
+        T4_GRPC_ERROR_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "url.domain": "googleapis.com",
+        },
+        label="T4 Unretryable Error Wire Span",
+    )
+    assert wire_span.parent.span_id == method_span.context.span_id
+
+
+def test_span_contract_validator_diagnostics():
+    """Verifies that assert_span_contract detects missing, forbidden, and weirdo attributes."""
+    sample_contract = SpanContract(
+        required={"rpc.system.name", "rpc.method"},
+        optional={"optional.tag"},
+        allowed_prefixes=("gcp.errors.metadata.",),
+        forbidden={"rpc.system"},
+        strict_ceiling=True,
+    )
+
+    # Valid span attributes
+    valid_attrs = {
+        "rpc.system.name": "grpc",
+        "rpc.method": "Showcase/Echo",
+        "optional.tag": "val",
+        "gcp.errors.metadata.key": "123",
+    }
+    assert_span_contract(valid_attrs, sample_contract)
+
+    # Missing required attribute triggers floor violation
+    missing_attrs = {"rpc.method": "Showcase/Echo"}
+    with pytest.raises(AssertionError, match="missing required attributes"):
+        assert_span_contract(missing_attrs, sample_contract)
+
+    # Forbidden attribute triggers forbidden violation
+    forbidden_attrs = dict(valid_attrs, **{"rpc.system": "grpc"})
+    with pytest.raises(AssertionError, match="found disallowed attributes"):
+        assert_span_contract(forbidden_attrs, sample_contract)
+
+    # Unexpected 'weirdo' attribute triggers ceiling violation
+    weirdo_attrs = dict(valid_attrs, **{"untracked.weirdo": "oops"})
+    with pytest.raises(
+        AssertionError, match="unrecognized / untracked attributes detected"
+    ):
+        assert_span_contract(weirdo_attrs, sample_contract)
 
 
 def test_tracing_disabled_default(span_exporter, use_mtls):

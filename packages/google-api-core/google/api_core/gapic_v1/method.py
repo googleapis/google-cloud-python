@@ -305,7 +305,7 @@ class _GapicCallable(object):
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind == "grpc"
+            and kind in ("grpc", "rest")
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -372,7 +372,7 @@ class _GapicCallable(object):
         elif self._default_metadata:
             kwargs["metadata"] = self._default_metadata
 
-        if self._compression is not None:
+        if compression is not None:
             kwargs["compression"] = compression
 
         span_cm = contextlib.nullcontext()

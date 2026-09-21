@@ -1027,6 +1027,73 @@ def test_{{ service.name|snake_case }}_grpc_transport_custom_channel_interceptor
         assert transport.grpc_channel == mock_custom_channel
 
 
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with mock.patch.object(
+        transports.{{ service.grpc_asyncio_transport_name }},
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        call_kwargs = mock_create_channel.call_args.kwargs
+        assert "interceptors" in call_kwargs
+        assert mock_interceptor in call_kwargs["interceptors"]
+        assert transport.grpc_channel == mock_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.transports.grpc_asyncio._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.{{ service.grpc_asyncio_transport_name }},
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
+        assert mock_create_channel.call_count == 1
+        call_kwargs = mock_create_channel.call_args.kwargs
+        assert "interceptors" in call_kwargs
+        assert mock_otel_interceptor in call_kwargs["interceptors"]
+        assert transport.grpc_channel == mock_channel
+
+
+def test_{{ service.name|snake_case }}_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.{{ service.grpc_asyncio_transport_name }},
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.{{ service.grpc_asyncio_transport_name }}(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
+
+
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", grpc_helpers),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", grpc_helpers_async),
@@ -1332,13 +1399,7 @@ def test_{{ service.name|snake_case }}_base_transport():
         transport.operations_client
     {% endif %}
 
-    # Catch all for all remaining methods and properties
-    remainder = [
-        'kind',
-    ]
-    for r in remainder:
-        with pytest.raises(NotImplementedError):
-            getattr(transport, r)()
+    assert transport.kind == ""
 
 
 def test_{{ service.name|snake_case }}_base_transport_with_credentials_file():
@@ -1382,23 +1443,24 @@ def test_{{ service.name|snake_case }}_base_transport_wrap_method():
             mock_kind.return_value = "grpc"
 
             # Test modern google-api-core with tracing support
-            transport._wrap_with_tracing = True
             func = mock.Mock()
             transport._wrap_method(func)
             assert mock_wrap.call_args.kwargs.get("client_options") == options
             assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
 
             # Test older google-api-core without tracing support
-            mock_wrap.reset_mock()
-            transport._wrap_with_tracing = False
-            transport._wrap_method(func, client_options=options, kind="grpc")
-            assert "client_options" not in mock_wrap.call_args.kwargs
-            assert "kind" not in mock_wrap.call_args.kwargs
+            with mock.patch(
+                "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_method(func, client_options=options, kind="grpc")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
 
-            # Test for correct handling of abstract base transport NotImplementedError
+            # Test for default/empty kind on base transport
             mock_wrap.reset_mock()
-            mock_kind.side_effect = NotImplementedError
-            transport._wrap_with_tracing = True
+            mock_kind.return_value = ""
             transport._wrap_method(func)
             assert mock_wrap.call_args.kwargs.get("client_options") == options
             assert "kind" not in mock_wrap.call_args.kwargs
