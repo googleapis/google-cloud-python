@@ -553,3 +553,30 @@ async def test_wrap_method_async_otel_tracing_start_span_error_bypasses_tracing(
     result = await wrapped()
 
     assert result == "resilient_success"
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_synchronous_return_value():
+    """Proves that wrap_method handles callables returning synchronous non-awaitable values."""
+
+    def sync_callable(*args, **kwargs):
+        return "synchronous_result"
+
+    wrapped = gapic_v1.method_async.wrap_method(sync_callable, kind="rest_asyncio")
+    result = await wrapped(mock.sentinel.request)
+    assert result == "synchronous_result"
+
+
+@pytest.mark.asyncio
+async def test_invoke_wrapped_method_with_metadata_and_no_client_info():
+    """Proves that wrap_method handles user metadata without client info and without metrics header."""
+    fake_call = grpc_helpers_async.FakeUnaryUnaryCall()
+    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
+
+    wrapped_method = gapic_v1.method_async.wrap_method(method, client_info=None)
+
+    await wrapped_method(mock.sentinel.request, metadata=[("custom-header", "val")])
+
+    method.assert_called_once_with(
+        mock.sentinel.request, metadata=[("custom-header", "val")]
+    )

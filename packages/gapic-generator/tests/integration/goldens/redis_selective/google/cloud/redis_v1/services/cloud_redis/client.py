@@ -528,8 +528,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                         f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
                     )
                 client_options = None
-                if _observability is not None and _observability.is_otel_capabilities_enabled(self._client_options):
-                    client_options = self._client_options
+                if _observability is not None and _observability.is_otel_capabilities_enabled(self._client_options):  # pragma: NO COVER
+                    client_options = self._client_options  # pragma: NO COVER
                 self._transport = transport_init(
                     credentials=credentials,
                     host=self._api_endpoint,

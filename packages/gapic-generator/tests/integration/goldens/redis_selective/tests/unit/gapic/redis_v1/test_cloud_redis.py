@@ -6687,7 +6687,13 @@ def test_unsupported_parameter_rest_asyncio():
             credentials=async_anonymous_credentials(),
             transport="rest_asyncio",
             client_options=options
-    )
+        )
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
+        client = CloudRedisClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest_asyncio",
+            client_options=options
+        )
 
 
 def test_transport_grpc_default():
@@ -8513,6 +8519,11 @@ async def test_transport_close_rest_asyncio():
     )
     with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        async with client.transport:
             close.assert_not_called()
         close.assert_called_once()
 
