@@ -2273,7 +2273,7 @@ class Service:
         # Get the shortname from the host
         # Real APIs are expected to have format:
         # "{api_shortname}.googleapis.com"
-        return self.host.split(".")[0]
+        return self.host.split(".")[0].split(":")[0]
 
     @property
     def oauth_scopes(self) -> Sequence[str]:

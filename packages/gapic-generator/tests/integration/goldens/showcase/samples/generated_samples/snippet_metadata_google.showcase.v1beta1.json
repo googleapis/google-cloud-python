@@ -50,10 +50,10 @@
         "shortName": "get_enum"
       },
       "description": "Sample for GetEnum",
-      "file": "localhost:7469_v1beta1_generated_compliance_get_enum_async.py",
+      "file": "localhost_v1beta1_generated_compliance_get_enum_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_GetEnum_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_GetEnum_async",
       "segments": [
         {
           "end": 50,
@@ -86,7 +86,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_get_enum_async.py"
+      "title": "localhost_v1beta1_generated_compliance_get_enum_async.py"
     },
     {
       "canonical": true,
@@ -126,10 +126,10 @@
         "shortName": "get_enum"
       },
       "description": "Sample for GetEnum",
-      "file": "localhost:7469_v1beta1_generated_compliance_get_enum_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_get_enum_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_GetEnum_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_GetEnum_sync",
       "segments": [
         {
           "end": 50,
@@ -162,7 +162,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_get_enum_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_get_enum_sync.py"
     },
     {
       "canonical": true,
@@ -203,10 +203,10 @@
         "shortName": "repeat_data_body_info"
       },
       "description": "Sample for RepeatDataBodyInfo",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_info_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_info_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyInfo_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyInfo_async",
       "segments": [
         {
           "end": 50,
@@ -239,7 +239,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_info_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_info_async.py"
     },
     {
       "canonical": true,
@@ -279,10 +279,10 @@
         "shortName": "repeat_data_body_info"
       },
       "description": "Sample for RepeatDataBodyInfo",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_info_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_info_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyInfo_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyInfo_sync",
       "segments": [
         {
           "end": 50,
@@ -315,7 +315,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_info_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_info_sync.py"
     },
     {
       "canonical": true,
@@ -356,10 +356,10 @@
         "shortName": "repeat_data_body_patch"
       },
       "description": "Sample for RepeatDataBodyPatch",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_patch_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_patch_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyPatch_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyPatch_async",
       "segments": [
         {
           "end": 50,
@@ -392,7 +392,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_patch_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_patch_async.py"
     },
     {
       "canonical": true,
@@ -432,10 +432,10 @@
         "shortName": "repeat_data_body_patch"
       },
       "description": "Sample for RepeatDataBodyPatch",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_patch_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_patch_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyPatch_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyPatch_sync",
       "segments": [
         {
           "end": 50,
@@ -468,7 +468,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_patch_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_patch_sync.py"
     },
     {
       "canonical": true,
@@ -509,10 +509,10 @@
         "shortName": "repeat_data_body_put"
       },
       "description": "Sample for RepeatDataBodyPut",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_put_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_put_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyPut_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyPut_async",
       "segments": [
         {
           "end": 50,
@@ -545,7 +545,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_put_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_put_async.py"
     },
     {
       "canonical": true,
@@ -585,10 +585,10 @@
         "shortName": "repeat_data_body_put"
       },
       "description": "Sample for RepeatDataBodyPut",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_put_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_put_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBodyPut_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBodyPut_sync",
       "segments": [
         {
           "end": 50,
@@ -621,7 +621,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_put_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_put_sync.py"
     },
     {
       "canonical": true,
@@ -662,10 +662,10 @@
         "shortName": "repeat_data_body"
       },
       "description": "Sample for RepeatDataBody",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBody_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBody_async",
       "segments": [
         {
           "end": 50,
@@ -698,7 +698,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_async.py"
     },
     {
       "canonical": true,
@@ -738,10 +738,10 @@
         "shortName": "repeat_data_body"
       },
       "description": "Sample for RepeatDataBody",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_body_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataBody_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataBody_sync",
       "segments": [
         {
           "end": 50,
@@ -774,7 +774,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_body_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_body_sync.py"
     },
     {
       "canonical": true,
@@ -815,10 +815,10 @@
         "shortName": "repeat_data_path_resource"
       },
       "description": "Sample for RepeatDataPathResource",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_resource_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_path_resource_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataPathResource_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataPathResource_async",
       "segments": [
         {
           "end": 50,
@@ -851,7 +851,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_resource_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_path_resource_async.py"
     },
     {
       "canonical": true,
@@ -891,10 +891,10 @@
         "shortName": "repeat_data_path_resource"
       },
       "description": "Sample for RepeatDataPathResource",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_resource_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_path_resource_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataPathResource_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataPathResource_sync",
       "segments": [
         {
           "end": 50,
@@ -927,7 +927,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_resource_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_path_resource_sync.py"
     },
     {
       "canonical": true,
@@ -968,10 +968,10 @@
         "shortName": "repeat_data_path_trailing_resource"
       },
       "description": "Sample for RepeatDataPathTrailingResource",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_trailing_resource_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_path_trailing_resource_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataPathTrailingResource_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataPathTrailingResource_async",
       "segments": [
         {
           "end": 50,
@@ -1004,7 +1004,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_trailing_resource_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_path_trailing_resource_async.py"
     },
     {
       "canonical": true,
@@ -1044,10 +1044,10 @@
         "shortName": "repeat_data_path_trailing_resource"
       },
       "description": "Sample for RepeatDataPathTrailingResource",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_trailing_resource_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_path_trailing_resource_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataPathTrailingResource_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataPathTrailingResource_sync",
       "segments": [
         {
           "end": 50,
@@ -1080,7 +1080,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_path_trailing_resource_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_path_trailing_resource_sync.py"
     },
     {
       "canonical": true,
@@ -1121,10 +1121,10 @@
         "shortName": "repeat_data_query"
       },
       "description": "Sample for RepeatDataQuery",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_query_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_query_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataQuery_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataQuery_async",
       "segments": [
         {
           "end": 50,
@@ -1157,7 +1157,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_query_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_query_async.py"
     },
     {
       "canonical": true,
@@ -1197,10 +1197,10 @@
         "shortName": "repeat_data_query"
       },
       "description": "Sample for RepeatDataQuery",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_query_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_query_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataQuery_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataQuery_sync",
       "segments": [
         {
           "end": 50,
@@ -1233,7 +1233,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_query_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_query_sync.py"
     },
     {
       "canonical": true,
@@ -1274,10 +1274,10 @@
         "shortName": "repeat_data_simple_path"
       },
       "description": "Sample for RepeatDataSimplePath",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_simple_path_async.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_simple_path_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataSimplePath_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataSimplePath_async",
       "segments": [
         {
           "end": 50,
@@ -1310,7 +1310,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_simple_path_async.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_simple_path_async.py"
     },
     {
       "canonical": true,
@@ -1350,10 +1350,10 @@
         "shortName": "repeat_data_simple_path"
       },
       "description": "Sample for RepeatDataSimplePath",
-      "file": "localhost:7469_v1beta1_generated_compliance_repeat_data_simple_path_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_repeat_data_simple_path_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_RepeatDataSimplePath_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_RepeatDataSimplePath_sync",
       "segments": [
         {
           "end": 50,
@@ -1386,7 +1386,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_repeat_data_simple_path_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_repeat_data_simple_path_sync.py"
     },
     {
       "canonical": true,
@@ -1427,10 +1427,10 @@
         "shortName": "verify_enum"
       },
       "description": "Sample for VerifyEnum",
-      "file": "localhost:7469_v1beta1_generated_compliance_verify_enum_async.py",
+      "file": "localhost_v1beta1_generated_compliance_verify_enum_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_VerifyEnum_async",
+      "regionTag": "localhost_v1beta1_generated_Compliance_VerifyEnum_async",
       "segments": [
         {
           "end": 50,
@@ -1463,7 +1463,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_verify_enum_async.py"
+      "title": "localhost_v1beta1_generated_compliance_verify_enum_async.py"
     },
     {
       "canonical": true,
@@ -1503,10 +1503,10 @@
         "shortName": "verify_enum"
       },
       "description": "Sample for VerifyEnum",
-      "file": "localhost:7469_v1beta1_generated_compliance_verify_enum_sync.py",
+      "file": "localhost_v1beta1_generated_compliance_verify_enum_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Compliance_VerifyEnum_sync",
+      "regionTag": "localhost_v1beta1_generated_Compliance_VerifyEnum_sync",
       "segments": [
         {
           "end": 50,
@@ -1539,7 +1539,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_compliance_verify_enum_sync.py"
+      "title": "localhost_v1beta1_generated_compliance_verify_enum_sync.py"
     },
     {
       "canonical": true,
@@ -1580,10 +1580,10 @@
         "shortName": "block"
       },
       "description": "Sample for Block",
-      "file": "localhost:7469_v1beta1_generated_echo_block_async.py",
+      "file": "localhost_v1beta1_generated_echo_block_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Block_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Block_async",
       "segments": [
         {
           "end": 50,
@@ -1616,7 +1616,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_block_async.py"
+      "title": "localhost_v1beta1_generated_echo_block_async.py"
     },
     {
       "canonical": true,
@@ -1656,10 +1656,10 @@
         "shortName": "block"
       },
       "description": "Sample for Block",
-      "file": "localhost:7469_v1beta1_generated_echo_block_sync.py",
+      "file": "localhost_v1beta1_generated_echo_block_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Block_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Block_sync",
       "segments": [
         {
           "end": 50,
@@ -1692,7 +1692,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_block_sync.py"
+      "title": "localhost_v1beta1_generated_echo_block_sync.py"
     },
     {
       "canonical": true,
@@ -1733,10 +1733,10 @@
         "shortName": "chat"
       },
       "description": "Sample for Chat",
-      "file": "localhost:7469_v1beta1_generated_echo_chat_async.py",
+      "file": "localhost_v1beta1_generated_echo_chat_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Chat_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Chat_async",
       "segments": [
         {
           "end": 62,
@@ -1769,7 +1769,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_chat_async.py"
+      "title": "localhost_v1beta1_generated_echo_chat_async.py"
     },
     {
       "canonical": true,
@@ -1809,10 +1809,10 @@
         "shortName": "chat"
       },
       "description": "Sample for Chat",
-      "file": "localhost:7469_v1beta1_generated_echo_chat_sync.py",
+      "file": "localhost_v1beta1_generated_echo_chat_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Chat_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Chat_sync",
       "segments": [
         {
           "end": 62,
@@ -1845,7 +1845,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_chat_sync.py"
+      "title": "localhost_v1beta1_generated_echo_chat_sync.py"
     },
     {
       "canonical": true,
@@ -1886,10 +1886,10 @@
         "shortName": "collect"
       },
       "description": "Sample for Collect",
-      "file": "localhost:7469_v1beta1_generated_echo_collect_async.py",
+      "file": "localhost_v1beta1_generated_echo_collect_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Collect_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Collect_async",
       "segments": [
         {
           "end": 61,
@@ -1922,7 +1922,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_collect_async.py"
+      "title": "localhost_v1beta1_generated_echo_collect_async.py"
     },
     {
       "canonical": true,
@@ -1962,10 +1962,10 @@
         "shortName": "collect"
       },
       "description": "Sample for Collect",
-      "file": "localhost:7469_v1beta1_generated_echo_collect_sync.py",
+      "file": "localhost_v1beta1_generated_echo_collect_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Collect_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Collect_sync",
       "segments": [
         {
           "end": 61,
@@ -1998,7 +1998,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_collect_sync.py"
+      "title": "localhost_v1beta1_generated_echo_collect_sync.py"
     },
     {
       "canonical": true,
@@ -2039,10 +2039,10 @@
         "shortName": "echo_error_details"
       },
       "description": "Sample for EchoErrorDetails",
-      "file": "localhost:7469_v1beta1_generated_echo_echo_error_details_async.py",
+      "file": "localhost_v1beta1_generated_echo_echo_error_details_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_EchoErrorDetails_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_EchoErrorDetails_async",
       "segments": [
         {
           "end": 50,
@@ -2075,7 +2075,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_echo_error_details_async.py"
+      "title": "localhost_v1beta1_generated_echo_echo_error_details_async.py"
     },
     {
       "canonical": true,
@@ -2115,10 +2115,10 @@
         "shortName": "echo_error_details"
       },
       "description": "Sample for EchoErrorDetails",
-      "file": "localhost:7469_v1beta1_generated_echo_echo_error_details_sync.py",
+      "file": "localhost_v1beta1_generated_echo_echo_error_details_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_EchoErrorDetails_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_EchoErrorDetails_sync",
       "segments": [
         {
           "end": 50,
@@ -2151,7 +2151,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_echo_error_details_sync.py"
+      "title": "localhost_v1beta1_generated_echo_echo_error_details_sync.py"
     },
     {
       "canonical": true,
@@ -2192,10 +2192,10 @@
         "shortName": "echo"
       },
       "description": "Sample for Echo",
-      "file": "localhost:7469_v1beta1_generated_echo_echo_async.py",
+      "file": "localhost_v1beta1_generated_echo_echo_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Echo_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Echo_async",
       "segments": [
         {
           "end": 51,
@@ -2228,7 +2228,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_echo_async.py"
+      "title": "localhost_v1beta1_generated_echo_echo_async.py"
     },
     {
       "canonical": true,
@@ -2268,10 +2268,10 @@
         "shortName": "echo"
       },
       "description": "Sample for Echo",
-      "file": "localhost:7469_v1beta1_generated_echo_echo_sync.py",
+      "file": "localhost_v1beta1_generated_echo_echo_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Echo_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Echo_sync",
       "segments": [
         {
           "end": 51,
@@ -2304,7 +2304,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_echo_sync.py"
+      "title": "localhost_v1beta1_generated_echo_echo_sync.py"
     },
     {
       "canonical": true,
@@ -2353,10 +2353,10 @@
         "shortName": "expand"
       },
       "description": "Sample for Expand",
-      "file": "localhost:7469_v1beta1_generated_echo_expand_async.py",
+      "file": "localhost_v1beta1_generated_echo_expand_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Expand_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Expand_async",
       "segments": [
         {
           "end": 51,
@@ -2389,7 +2389,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_expand_async.py"
+      "title": "localhost_v1beta1_generated_echo_expand_async.py"
     },
     {
       "canonical": true,
@@ -2437,10 +2437,10 @@
         "shortName": "expand"
       },
       "description": "Sample for Expand",
-      "file": "localhost:7469_v1beta1_generated_echo_expand_sync.py",
+      "file": "localhost_v1beta1_generated_echo_expand_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Expand_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Expand_sync",
       "segments": [
         {
           "end": 51,
@@ -2473,7 +2473,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_expand_sync.py"
+      "title": "localhost_v1beta1_generated_echo_expand_sync.py"
     },
     {
       "canonical": true,
@@ -2514,10 +2514,10 @@
         "shortName": "fail_echo_with_details"
       },
       "description": "Sample for FailEchoWithDetails",
-      "file": "localhost:7469_v1beta1_generated_echo_fail_echo_with_details_async.py",
+      "file": "localhost_v1beta1_generated_echo_fail_echo_with_details_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_FailEchoWithDetails_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_FailEchoWithDetails_async",
       "segments": [
         {
           "end": 50,
@@ -2550,7 +2550,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_fail_echo_with_details_async.py"
+      "title": "localhost_v1beta1_generated_echo_fail_echo_with_details_async.py"
     },
     {
       "canonical": true,
@@ -2590,10 +2590,10 @@
         "shortName": "fail_echo_with_details"
       },
       "description": "Sample for FailEchoWithDetails",
-      "file": "localhost:7469_v1beta1_generated_echo_fail_echo_with_details_sync.py",
+      "file": "localhost_v1beta1_generated_echo_fail_echo_with_details_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_FailEchoWithDetails_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_FailEchoWithDetails_sync",
       "segments": [
         {
           "end": 50,
@@ -2626,7 +2626,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_fail_echo_with_details_sync.py"
+      "title": "localhost_v1beta1_generated_echo_fail_echo_with_details_sync.py"
     },
     {
       "canonical": true,
@@ -2667,10 +2667,10 @@
         "shortName": "paged_expand_legacy_mapped"
       },
       "description": "Sample for PagedExpandLegacyMapped",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_mapped_async.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_legacy_mapped_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpandLegacyMapped_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpandLegacyMapped_async",
       "segments": [
         {
           "end": 52,
@@ -2703,7 +2703,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_mapped_async.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_legacy_mapped_async.py"
     },
     {
       "canonical": true,
@@ -2743,10 +2743,10 @@
         "shortName": "paged_expand_legacy_mapped"
       },
       "description": "Sample for PagedExpandLegacyMapped",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_mapped_sync.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_legacy_mapped_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpandLegacyMapped_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpandLegacyMapped_sync",
       "segments": [
         {
           "end": 52,
@@ -2779,7 +2779,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_mapped_sync.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_legacy_mapped_sync.py"
     },
     {
       "canonical": true,
@@ -2820,10 +2820,10 @@
         "shortName": "paged_expand_legacy"
       },
       "description": "Sample for PagedExpandLegacy",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_async.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_legacy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpandLegacy_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpandLegacy_async",
       "segments": [
         {
           "end": 52,
@@ -2856,7 +2856,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_async.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_legacy_async.py"
     },
     {
       "canonical": true,
@@ -2896,10 +2896,10 @@
         "shortName": "paged_expand_legacy"
       },
       "description": "Sample for PagedExpandLegacy",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_sync.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_legacy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpandLegacy_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpandLegacy_sync",
       "segments": [
         {
           "end": 52,
@@ -2932,7 +2932,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_legacy_sync.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_legacy_sync.py"
     },
     {
       "canonical": true,
@@ -2973,10 +2973,10 @@
         "shortName": "paged_expand"
       },
       "description": "Sample for PagedExpand",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_async.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpand_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpand_async",
       "segments": [
         {
           "end": 52,
@@ -3009,7 +3009,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_async.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_async.py"
     },
     {
       "canonical": true,
@@ -3049,10 +3049,10 @@
         "shortName": "paged_expand"
       },
       "description": "Sample for PagedExpand",
-      "file": "localhost:7469_v1beta1_generated_echo_paged_expand_sync.py",
+      "file": "localhost_v1beta1_generated_echo_paged_expand_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_PagedExpand_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_PagedExpand_sync",
       "segments": [
         {
           "end": 52,
@@ -3085,7 +3085,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_paged_expand_sync.py"
+      "title": "localhost_v1beta1_generated_echo_paged_expand_sync.py"
     },
     {
       "canonical": true,
@@ -3126,10 +3126,10 @@
         "shortName": "wait"
       },
       "description": "Sample for Wait",
-      "file": "localhost:7469_v1beta1_generated_echo_wait_async.py",
+      "file": "localhost_v1beta1_generated_echo_wait_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Wait_async",
+      "regionTag": "localhost_v1beta1_generated_Echo_Wait_async",
       "segments": [
         {
           "end": 54,
@@ -3162,7 +3162,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_wait_async.py"
+      "title": "localhost_v1beta1_generated_echo_wait_async.py"
     },
     {
       "canonical": true,
@@ -3202,10 +3202,10 @@
         "shortName": "wait"
       },
       "description": "Sample for Wait",
-      "file": "localhost:7469_v1beta1_generated_echo_wait_sync.py",
+      "file": "localhost_v1beta1_generated_echo_wait_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Echo_Wait_sync",
+      "regionTag": "localhost_v1beta1_generated_Echo_Wait_sync",
       "segments": [
         {
           "end": 54,
@@ -3238,7 +3238,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_echo_wait_sync.py"
+      "title": "localhost_v1beta1_generated_echo_wait_sync.py"
     },
     {
       "canonical": true,
@@ -3303,10 +3303,10 @@
         "shortName": "create_user"
       },
       "description": "Sample for CreateUser",
-      "file": "localhost:7469_v1beta1_generated_identity_create_user_async.py",
+      "file": "localhost_v1beta1_generated_identity_create_user_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_CreateUser_async",
+      "regionTag": "localhost_v1beta1_generated_Identity_CreateUser_async",
       "segments": [
         {
           "end": 50,
@@ -3339,7 +3339,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_create_user_async.py"
+      "title": "localhost_v1beta1_generated_identity_create_user_async.py"
     },
     {
       "canonical": true,
@@ -3403,10 +3403,10 @@
         "shortName": "create_user"
       },
       "description": "Sample for CreateUser",
-      "file": "localhost:7469_v1beta1_generated_identity_create_user_sync.py",
+      "file": "localhost_v1beta1_generated_identity_create_user_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_CreateUser_sync",
+      "regionTag": "localhost_v1beta1_generated_Identity_CreateUser_sync",
       "segments": [
         {
           "end": 50,
@@ -3439,7 +3439,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_create_user_sync.py"
+      "title": "localhost_v1beta1_generated_identity_create_user_sync.py"
     },
     {
       "canonical": true,
@@ -3483,10 +3483,10 @@
         "shortName": "delete_user"
       },
       "description": "Sample for DeleteUser",
-      "file": "localhost:7469_v1beta1_generated_identity_delete_user_async.py",
+      "file": "localhost_v1beta1_generated_identity_delete_user_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_DeleteUser_async",
+      "regionTag": "localhost_v1beta1_generated_Identity_DeleteUser_async",
       "segments": [
         {
           "end": 49,
@@ -3517,7 +3517,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_delete_user_async.py"
+      "title": "localhost_v1beta1_generated_identity_delete_user_async.py"
     },
     {
       "canonical": true,
@@ -3560,10 +3560,10 @@
         "shortName": "delete_user"
       },
       "description": "Sample for DeleteUser",
-      "file": "localhost:7469_v1beta1_generated_identity_delete_user_sync.py",
+      "file": "localhost_v1beta1_generated_identity_delete_user_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_DeleteUser_sync",
+      "regionTag": "localhost_v1beta1_generated_Identity_DeleteUser_sync",
       "segments": [
         {
           "end": 49,
@@ -3594,7 +3594,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_delete_user_sync.py"
+      "title": "localhost_v1beta1_generated_identity_delete_user_sync.py"
     },
     {
       "canonical": true,
@@ -3639,10 +3639,10 @@
         "shortName": "get_user"
       },
       "description": "Sample for GetUser",
-      "file": "localhost:7469_v1beta1_generated_identity_get_user_async.py",
+      "file": "localhost_v1beta1_generated_identity_get_user_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_GetUser_async",
+      "regionTag": "localhost_v1beta1_generated_Identity_GetUser_async",
       "segments": [
         {
           "end": 51,
@@ -3675,7 +3675,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_get_user_async.py"
+      "title": "localhost_v1beta1_generated_identity_get_user_async.py"
     },
     {
       "canonical": true,
@@ -3719,10 +3719,10 @@
         "shortName": "get_user"
       },
       "description": "Sample for GetUser",
-      "file": "localhost:7469_v1beta1_generated_identity_get_user_sync.py",
+      "file": "localhost_v1beta1_generated_identity_get_user_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_GetUser_sync",
+      "regionTag": "localhost_v1beta1_generated_Identity_GetUser_sync",
       "segments": [
         {
           "end": 51,
@@ -3755,7 +3755,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_get_user_sync.py"
+      "title": "localhost_v1beta1_generated_identity_get_user_sync.py"
     },
     {
       "canonical": true,
@@ -3796,10 +3796,10 @@
         "shortName": "list_users"
       },
       "description": "Sample for ListUsers",
-      "file": "localhost:7469_v1beta1_generated_identity_list_users_async.py",
+      "file": "localhost_v1beta1_generated_identity_list_users_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_ListUsers_async",
+      "regionTag": "localhost_v1beta1_generated_Identity_ListUsers_async",
       "segments": [
         {
           "end": 51,
@@ -3832,7 +3832,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_list_users_async.py"
+      "title": "localhost_v1beta1_generated_identity_list_users_async.py"
     },
     {
       "canonical": true,
@@ -3872,10 +3872,10 @@
         "shortName": "list_users"
       },
       "description": "Sample for ListUsers",
-      "file": "localhost:7469_v1beta1_generated_identity_list_users_sync.py",
+      "file": "localhost_v1beta1_generated_identity_list_users_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_ListUsers_sync",
+      "regionTag": "localhost_v1beta1_generated_Identity_ListUsers_sync",
       "segments": [
         {
           "end": 51,
@@ -3908,7 +3908,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_list_users_sync.py"
+      "title": "localhost_v1beta1_generated_identity_list_users_sync.py"
     },
     {
       "canonical": true,
@@ -3949,10 +3949,10 @@
         "shortName": "update_user"
       },
       "description": "Sample for UpdateUser",
-      "file": "localhost:7469_v1beta1_generated_identity_update_user_async.py",
+      "file": "localhost_v1beta1_generated_identity_update_user_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_UpdateUser_async",
+      "regionTag": "localhost_v1beta1_generated_Identity_UpdateUser_async",
       "segments": [
         {
           "end": 50,
@@ -3985,7 +3985,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_update_user_async.py"
+      "title": "localhost_v1beta1_generated_identity_update_user_async.py"
     },
     {
       "canonical": true,
@@ -4025,10 +4025,10 @@
         "shortName": "update_user"
       },
       "description": "Sample for UpdateUser",
-      "file": "localhost:7469_v1beta1_generated_identity_update_user_sync.py",
+      "file": "localhost_v1beta1_generated_identity_update_user_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Identity_UpdateUser_sync",
+      "regionTag": "localhost_v1beta1_generated_Identity_UpdateUser_sync",
       "segments": [
         {
           "end": 50,
@@ -4061,7 +4061,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_identity_update_user_sync.py"
+      "title": "localhost_v1beta1_generated_identity_update_user_sync.py"
     },
     {
       "canonical": true,
@@ -4102,10 +4102,10 @@
         "shortName": "connect"
       },
       "description": "Sample for Connect",
-      "file": "localhost:7469_v1beta1_generated_messaging_connect_async.py",
+      "file": "localhost_v1beta1_generated_messaging_connect_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_Connect_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_Connect_async",
       "segments": [
         {
           "end": 61,
@@ -4138,7 +4138,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_connect_async.py"
+      "title": "localhost_v1beta1_generated_messaging_connect_async.py"
     },
     {
       "canonical": true,
@@ -4178,10 +4178,10 @@
         "shortName": "connect"
       },
       "description": "Sample for Connect",
-      "file": "localhost:7469_v1beta1_generated_messaging_connect_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_connect_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_Connect_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_Connect_sync",
       "segments": [
         {
           "end": 61,
@@ -4214,7 +4214,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_connect_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_connect_sync.py"
     },
     {
       "canonical": true,
@@ -4271,10 +4271,10 @@
         "shortName": "create_blurb"
       },
       "description": "Sample for CreateBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_create_blurb_async.py",
+      "file": "localhost_v1beta1_generated_messaging_create_blurb_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_CreateBlurb_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_CreateBlurb_async",
       "segments": [
         {
           "end": 51,
@@ -4307,7 +4307,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_create_blurb_async.py"
+      "title": "localhost_v1beta1_generated_messaging_create_blurb_async.py"
     },
     {
       "canonical": true,
@@ -4363,10 +4363,10 @@
         "shortName": "create_blurb"
       },
       "description": "Sample for CreateBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_create_blurb_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_create_blurb_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_CreateBlurb_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_CreateBlurb_sync",
       "segments": [
         {
           "end": 51,
@@ -4399,7 +4399,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_create_blurb_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_create_blurb_sync.py"
     },
     {
       "canonical": true,
@@ -4448,10 +4448,10 @@
         "shortName": "create_room"
       },
       "description": "Sample for CreateRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_create_room_async.py",
+      "file": "localhost_v1beta1_generated_messaging_create_room_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_CreateRoom_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_CreateRoom_async",
       "segments": [
         {
           "end": 50,
@@ -4484,7 +4484,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_create_room_async.py"
+      "title": "localhost_v1beta1_generated_messaging_create_room_async.py"
     },
     {
       "canonical": true,
@@ -4532,10 +4532,10 @@
         "shortName": "create_room"
       },
       "description": "Sample for CreateRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_create_room_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_create_room_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_CreateRoom_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_CreateRoom_sync",
       "segments": [
         {
           "end": 50,
@@ -4568,7 +4568,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_create_room_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_create_room_sync.py"
     },
     {
       "canonical": true,
@@ -4612,10 +4612,10 @@
         "shortName": "delete_blurb"
       },
       "description": "Sample for DeleteBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_delete_blurb_async.py",
+      "file": "localhost_v1beta1_generated_messaging_delete_blurb_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_DeleteBlurb_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_DeleteBlurb_async",
       "segments": [
         {
           "end": 49,
@@ -4646,7 +4646,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_delete_blurb_async.py"
+      "title": "localhost_v1beta1_generated_messaging_delete_blurb_async.py"
     },
     {
       "canonical": true,
@@ -4689,10 +4689,10 @@
         "shortName": "delete_blurb"
       },
       "description": "Sample for DeleteBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_delete_blurb_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_delete_blurb_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_DeleteBlurb_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_DeleteBlurb_sync",
       "segments": [
         {
           "end": 49,
@@ -4723,7 +4723,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_delete_blurb_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_delete_blurb_sync.py"
     },
     {
       "canonical": true,
@@ -4767,10 +4767,10 @@
         "shortName": "delete_room"
       },
       "description": "Sample for DeleteRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_delete_room_async.py",
+      "file": "localhost_v1beta1_generated_messaging_delete_room_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_DeleteRoom_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_DeleteRoom_async",
       "segments": [
         {
           "end": 49,
@@ -4801,7 +4801,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_delete_room_async.py"
+      "title": "localhost_v1beta1_generated_messaging_delete_room_async.py"
     },
     {
       "canonical": true,
@@ -4844,10 +4844,10 @@
         "shortName": "delete_room"
       },
       "description": "Sample for DeleteRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_delete_room_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_delete_room_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_DeleteRoom_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_DeleteRoom_sync",
       "segments": [
         {
           "end": 49,
@@ -4878,7 +4878,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_delete_room_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_delete_room_sync.py"
     },
     {
       "canonical": true,
@@ -4923,10 +4923,10 @@
         "shortName": "get_blurb"
       },
       "description": "Sample for GetBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_get_blurb_async.py",
+      "file": "localhost_v1beta1_generated_messaging_get_blurb_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_GetBlurb_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_GetBlurb_async",
       "segments": [
         {
           "end": 51,
@@ -4959,7 +4959,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_get_blurb_async.py"
+      "title": "localhost_v1beta1_generated_messaging_get_blurb_async.py"
     },
     {
       "canonical": true,
@@ -5003,10 +5003,10 @@
         "shortName": "get_blurb"
       },
       "description": "Sample for GetBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_get_blurb_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_get_blurb_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_GetBlurb_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_GetBlurb_sync",
       "segments": [
         {
           "end": 51,
@@ -5039,7 +5039,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_get_blurb_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_get_blurb_sync.py"
     },
     {
       "canonical": true,
@@ -5084,10 +5084,10 @@
         "shortName": "get_room"
       },
       "description": "Sample for GetRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_get_room_async.py",
+      "file": "localhost_v1beta1_generated_messaging_get_room_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_GetRoom_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_GetRoom_async",
       "segments": [
         {
           "end": 51,
@@ -5120,7 +5120,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_get_room_async.py"
+      "title": "localhost_v1beta1_generated_messaging_get_room_async.py"
     },
     {
       "canonical": true,
@@ -5164,10 +5164,10 @@
         "shortName": "get_room"
       },
       "description": "Sample for GetRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_get_room_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_get_room_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_GetRoom_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_GetRoom_sync",
       "segments": [
         {
           "end": 51,
@@ -5200,7 +5200,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_get_room_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_get_room_sync.py"
     },
     {
       "canonical": true,
@@ -5245,10 +5245,10 @@
         "shortName": "list_blurbs"
       },
       "description": "Sample for ListBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_list_blurbs_async.py",
+      "file": "localhost_v1beta1_generated_messaging_list_blurbs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_ListBlurbs_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_ListBlurbs_async",
       "segments": [
         {
           "end": 52,
@@ -5281,7 +5281,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_list_blurbs_async.py"
+      "title": "localhost_v1beta1_generated_messaging_list_blurbs_async.py"
     },
     {
       "canonical": true,
@@ -5325,10 +5325,10 @@
         "shortName": "list_blurbs"
       },
       "description": "Sample for ListBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_list_blurbs_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_list_blurbs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_ListBlurbs_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_ListBlurbs_sync",
       "segments": [
         {
           "end": 52,
@@ -5361,7 +5361,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_list_blurbs_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_list_blurbs_sync.py"
     },
     {
       "canonical": true,
@@ -5402,10 +5402,10 @@
         "shortName": "list_rooms"
       },
       "description": "Sample for ListRooms",
-      "file": "localhost:7469_v1beta1_generated_messaging_list_rooms_async.py",
+      "file": "localhost_v1beta1_generated_messaging_list_rooms_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_ListRooms_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_ListRooms_async",
       "segments": [
         {
           "end": 51,
@@ -5438,7 +5438,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_list_rooms_async.py"
+      "title": "localhost_v1beta1_generated_messaging_list_rooms_async.py"
     },
     {
       "canonical": true,
@@ -5478,10 +5478,10 @@
         "shortName": "list_rooms"
       },
       "description": "Sample for ListRooms",
-      "file": "localhost:7469_v1beta1_generated_messaging_list_rooms_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_list_rooms_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_ListRooms_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_ListRooms_sync",
       "segments": [
         {
           "end": 51,
@@ -5514,7 +5514,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_list_rooms_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_list_rooms_sync.py"
     },
     {
       "canonical": true,
@@ -5563,10 +5563,10 @@
         "shortName": "search_blurbs"
       },
       "description": "Sample for SearchBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_search_blurbs_async.py",
+      "file": "localhost_v1beta1_generated_messaging_search_blurbs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_SearchBlurbs_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_SearchBlurbs_async",
       "segments": [
         {
           "end": 55,
@@ -5599,7 +5599,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_search_blurbs_async.py"
+      "title": "localhost_v1beta1_generated_messaging_search_blurbs_async.py"
     },
     {
       "canonical": true,
@@ -5647,10 +5647,10 @@
         "shortName": "search_blurbs"
       },
       "description": "Sample for SearchBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_search_blurbs_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_search_blurbs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_SearchBlurbs_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_SearchBlurbs_sync",
       "segments": [
         {
           "end": 55,
@@ -5683,7 +5683,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_search_blurbs_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_search_blurbs_sync.py"
     },
     {
       "canonical": true,
@@ -5724,10 +5724,10 @@
         "shortName": "send_blurbs"
       },
       "description": "Sample for SendBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_send_blurbs_async.py",
+      "file": "localhost_v1beta1_generated_messaging_send_blurbs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_SendBlurbs_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_SendBlurbs_async",
       "segments": [
         {
           "end": 61,
@@ -5760,7 +5760,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_send_blurbs_async.py"
+      "title": "localhost_v1beta1_generated_messaging_send_blurbs_async.py"
     },
     {
       "canonical": true,
@@ -5800,10 +5800,10 @@
         "shortName": "send_blurbs"
       },
       "description": "Sample for SendBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_send_blurbs_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_send_blurbs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_SendBlurbs_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_SendBlurbs_sync",
       "segments": [
         {
           "end": 61,
@@ -5836,7 +5836,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_send_blurbs_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_send_blurbs_sync.py"
     },
     {
       "canonical": true,
@@ -5877,10 +5877,10 @@
         "shortName": "stream_blurbs"
       },
       "description": "Sample for StreamBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_stream_blurbs_async.py",
+      "file": "localhost_v1beta1_generated_messaging_stream_blurbs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_StreamBlurbs_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_StreamBlurbs_async",
       "segments": [
         {
           "end": 52,
@@ -5913,7 +5913,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_stream_blurbs_async.py"
+      "title": "localhost_v1beta1_generated_messaging_stream_blurbs_async.py"
     },
     {
       "canonical": true,
@@ -5953,10 +5953,10 @@
         "shortName": "stream_blurbs"
       },
       "description": "Sample for StreamBlurbs",
-      "file": "localhost:7469_v1beta1_generated_messaging_stream_blurbs_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_stream_blurbs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_StreamBlurbs_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_StreamBlurbs_sync",
       "segments": [
         {
           "end": 52,
@@ -5989,7 +5989,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_stream_blurbs_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_stream_blurbs_sync.py"
     },
     {
       "canonical": true,
@@ -6030,10 +6030,10 @@
         "shortName": "update_blurb"
       },
       "description": "Sample for UpdateBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_update_blurb_async.py",
+      "file": "localhost_v1beta1_generated_messaging_update_blurb_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_UpdateBlurb_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_UpdateBlurb_async",
       "segments": [
         {
           "end": 50,
@@ -6066,7 +6066,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_update_blurb_async.py"
+      "title": "localhost_v1beta1_generated_messaging_update_blurb_async.py"
     },
     {
       "canonical": true,
@@ -6106,10 +6106,10 @@
         "shortName": "update_blurb"
       },
       "description": "Sample for UpdateBlurb",
-      "file": "localhost:7469_v1beta1_generated_messaging_update_blurb_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_update_blurb_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_UpdateBlurb_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_UpdateBlurb_sync",
       "segments": [
         {
           "end": 50,
@@ -6142,7 +6142,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_update_blurb_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_update_blurb_sync.py"
     },
     {
       "canonical": true,
@@ -6183,10 +6183,10 @@
         "shortName": "update_room"
       },
       "description": "Sample for UpdateRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_update_room_async.py",
+      "file": "localhost_v1beta1_generated_messaging_update_room_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_UpdateRoom_async",
+      "regionTag": "localhost_v1beta1_generated_Messaging_UpdateRoom_async",
       "segments": [
         {
           "end": 50,
@@ -6219,7 +6219,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_update_room_async.py"
+      "title": "localhost_v1beta1_generated_messaging_update_room_async.py"
     },
     {
       "canonical": true,
@@ -6259,10 +6259,10 @@
         "shortName": "update_room"
       },
       "description": "Sample for UpdateRoom",
-      "file": "localhost:7469_v1beta1_generated_messaging_update_room_sync.py",
+      "file": "localhost_v1beta1_generated_messaging_update_room_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Messaging_UpdateRoom_sync",
+      "regionTag": "localhost_v1beta1_generated_Messaging_UpdateRoom_sync",
       "segments": [
         {
           "end": 50,
@@ -6295,7 +6295,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_messaging_update_room_sync.py"
+      "title": "localhost_v1beta1_generated_messaging_update_room_sync.py"
     },
     {
       "canonical": true,
@@ -6336,10 +6336,10 @@
         "shortName": "upload_media"
       },
       "description": "Sample for UploadMedia",
-      "file": "localhost:7469_v1beta1_generated_resumable_upload_service_upload_media_async.py",
+      "file": "localhost_v1beta1_generated_resumable_upload_service_upload_media_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_ResumableUploadService_UploadMedia_async",
+      "regionTag": "localhost_v1beta1_generated_ResumableUploadService_UploadMedia_async",
       "segments": [
         {
           "end": 151,
@@ -6370,7 +6370,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_resumable_upload_service_upload_media_async.py"
+      "title": "localhost_v1beta1_generated_resumable_upload_service_upload_media_async.py"
     },
     {
       "canonical": true,
@@ -6410,10 +6410,10 @@
         "shortName": "upload_media"
       },
       "description": "Sample for UploadMedia",
-      "file": "localhost:7469_v1beta1_generated_resumable_upload_service_upload_media_sync.py",
+      "file": "localhost_v1beta1_generated_resumable_upload_service_upload_media_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_ResumableUploadService_UploadMedia_sync",
+      "regionTag": "localhost_v1beta1_generated_ResumableUploadService_UploadMedia_sync",
       "segments": [
         {
           "end": 151,
@@ -6444,7 +6444,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_resumable_upload_service_upload_media_sync.py"
+      "title": "localhost_v1beta1_generated_resumable_upload_service_upload_media_sync.py"
     },
     {
       "canonical": true,
@@ -6488,10 +6488,10 @@
         "shortName": "attempt_sequence"
       },
       "description": "Sample for AttemptSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_attempt_sequence_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_attempt_sequence_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_AttemptSequence_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_AttemptSequence_async",
       "segments": [
         {
           "end": 49,
@@ -6522,7 +6522,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_attempt_sequence_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_attempt_sequence_async.py"
     },
     {
       "canonical": true,
@@ -6565,10 +6565,10 @@
         "shortName": "attempt_sequence"
       },
       "description": "Sample for AttemptSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_attempt_sequence_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_attempt_sequence_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_AttemptSequence_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_AttemptSequence_sync",
       "segments": [
         {
           "end": 49,
@@ -6599,7 +6599,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_attempt_sequence_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_attempt_sequence_sync.py"
     },
     {
       "canonical": true,
@@ -6644,10 +6644,10 @@
         "shortName": "attempt_streaming_sequence"
       },
       "description": "Sample for AttemptStreamingSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_attempt_streaming_sequence_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_attempt_streaming_sequence_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_AttemptStreamingSequence_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_AttemptStreamingSequence_async",
       "segments": [
         {
           "end": 52,
@@ -6680,7 +6680,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_attempt_streaming_sequence_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_attempt_streaming_sequence_async.py"
     },
     {
       "canonical": true,
@@ -6724,10 +6724,10 @@
         "shortName": "attempt_streaming_sequence"
       },
       "description": "Sample for AttemptStreamingSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_attempt_streaming_sequence_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_attempt_streaming_sequence_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_AttemptStreamingSequence_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_AttemptStreamingSequence_sync",
       "segments": [
         {
           "end": 52,
@@ -6760,7 +6760,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_attempt_streaming_sequence_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_attempt_streaming_sequence_sync.py"
     },
     {
       "canonical": true,
@@ -6805,10 +6805,10 @@
         "shortName": "create_sequence"
       },
       "description": "Sample for CreateSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_create_sequence_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_create_sequence_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_CreateSequence_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_CreateSequence_async",
       "segments": [
         {
           "end": 50,
@@ -6841,7 +6841,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_create_sequence_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_create_sequence_async.py"
     },
     {
       "canonical": true,
@@ -6885,10 +6885,10 @@
         "shortName": "create_sequence"
       },
       "description": "Sample for CreateSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_create_sequence_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_create_sequence_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_CreateSequence_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_CreateSequence_sync",
       "segments": [
         {
           "end": 50,
@@ -6921,7 +6921,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_create_sequence_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_create_sequence_sync.py"
     },
     {
       "canonical": true,
@@ -6966,10 +6966,10 @@
         "shortName": "create_streaming_sequence"
       },
       "description": "Sample for CreateStreamingSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_create_streaming_sequence_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_create_streaming_sequence_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_CreateStreamingSequence_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_CreateStreamingSequence_async",
       "segments": [
         {
           "end": 50,
@@ -7002,7 +7002,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_create_streaming_sequence_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_create_streaming_sequence_async.py"
     },
     {
       "canonical": true,
@@ -7046,10 +7046,10 @@
         "shortName": "create_streaming_sequence"
       },
       "description": "Sample for CreateStreamingSequence",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_create_streaming_sequence_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_create_streaming_sequence_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_CreateStreamingSequence_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_CreateStreamingSequence_sync",
       "segments": [
         {
           "end": 50,
@@ -7082,7 +7082,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_create_streaming_sequence_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_create_streaming_sequence_sync.py"
     },
     {
       "canonical": true,
@@ -7127,10 +7127,10 @@
         "shortName": "get_sequence_report"
       },
       "description": "Sample for GetSequenceReport",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_get_sequence_report_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_get_sequence_report_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_GetSequenceReport_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_GetSequenceReport_async",
       "segments": [
         {
           "end": 51,
@@ -7163,7 +7163,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_get_sequence_report_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_get_sequence_report_async.py"
     },
     {
       "canonical": true,
@@ -7207,10 +7207,10 @@
         "shortName": "get_sequence_report"
       },
       "description": "Sample for GetSequenceReport",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_get_sequence_report_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_get_sequence_report_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_GetSequenceReport_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_GetSequenceReport_sync",
       "segments": [
         {
           "end": 51,
@@ -7243,7 +7243,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_get_sequence_report_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_get_sequence_report_sync.py"
     },
     {
       "canonical": true,
@@ -7288,10 +7288,10 @@
         "shortName": "get_streaming_sequence_report"
       },
       "description": "Sample for GetStreamingSequenceReport",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_get_streaming_sequence_report_async.py",
+      "file": "localhost_v1beta1_generated_sequence_service_get_streaming_sequence_report_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_GetStreamingSequenceReport_async",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_GetStreamingSequenceReport_async",
       "segments": [
         {
           "end": 51,
@@ -7324,7 +7324,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_get_streaming_sequence_report_async.py"
+      "title": "localhost_v1beta1_generated_sequence_service_get_streaming_sequence_report_async.py"
     },
     {
       "canonical": true,
@@ -7368,10 +7368,10 @@
         "shortName": "get_streaming_sequence_report"
       },
       "description": "Sample for GetStreamingSequenceReport",
-      "file": "localhost:7469_v1beta1_generated_sequence_service_get_streaming_sequence_report_sync.py",
+      "file": "localhost_v1beta1_generated_sequence_service_get_streaming_sequence_report_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_SequenceService_GetStreamingSequenceReport_sync",
+      "regionTag": "localhost_v1beta1_generated_SequenceService_GetStreamingSequenceReport_sync",
       "segments": [
         {
           "end": 51,
@@ -7404,7 +7404,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_sequence_service_get_streaming_sequence_report_sync.py"
+      "title": "localhost_v1beta1_generated_sequence_service_get_streaming_sequence_report_sync.py"
     },
     {
       "canonical": true,
@@ -7445,10 +7445,10 @@
         "shortName": "create_session"
       },
       "description": "Sample for CreateSession",
-      "file": "localhost:7469_v1beta1_generated_testing_create_session_async.py",
+      "file": "localhost_v1beta1_generated_testing_create_session_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_CreateSession_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_CreateSession_async",
       "segments": [
         {
           "end": 50,
@@ -7481,7 +7481,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_create_session_async.py"
+      "title": "localhost_v1beta1_generated_testing_create_session_async.py"
     },
     {
       "canonical": true,
@@ -7521,10 +7521,10 @@
         "shortName": "create_session"
       },
       "description": "Sample for CreateSession",
-      "file": "localhost:7469_v1beta1_generated_testing_create_session_sync.py",
+      "file": "localhost_v1beta1_generated_testing_create_session_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_CreateSession_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_CreateSession_sync",
       "segments": [
         {
           "end": 50,
@@ -7557,7 +7557,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_create_session_sync.py"
+      "title": "localhost_v1beta1_generated_testing_create_session_sync.py"
     },
     {
       "canonical": true,
@@ -7597,10 +7597,10 @@
         "shortName": "delete_session"
       },
       "description": "Sample for DeleteSession",
-      "file": "localhost:7469_v1beta1_generated_testing_delete_session_async.py",
+      "file": "localhost_v1beta1_generated_testing_delete_session_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_DeleteSession_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_DeleteSession_async",
       "segments": [
         {
           "end": 48,
@@ -7631,7 +7631,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_delete_session_async.py"
+      "title": "localhost_v1beta1_generated_testing_delete_session_async.py"
     },
     {
       "canonical": true,
@@ -7670,10 +7670,10 @@
         "shortName": "delete_session"
       },
       "description": "Sample for DeleteSession",
-      "file": "localhost:7469_v1beta1_generated_testing_delete_session_sync.py",
+      "file": "localhost_v1beta1_generated_testing_delete_session_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_DeleteSession_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_DeleteSession_sync",
       "segments": [
         {
           "end": 48,
@@ -7704,7 +7704,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_delete_session_sync.py"
+      "title": "localhost_v1beta1_generated_testing_delete_session_sync.py"
     },
     {
       "canonical": true,
@@ -7744,10 +7744,10 @@
         "shortName": "delete_test"
       },
       "description": "Sample for DeleteTest",
-      "file": "localhost:7469_v1beta1_generated_testing_delete_test_async.py",
+      "file": "localhost_v1beta1_generated_testing_delete_test_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_DeleteTest_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_DeleteTest_async",
       "segments": [
         {
           "end": 48,
@@ -7778,7 +7778,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_delete_test_async.py"
+      "title": "localhost_v1beta1_generated_testing_delete_test_async.py"
     },
     {
       "canonical": true,
@@ -7817,10 +7817,10 @@
         "shortName": "delete_test"
       },
       "description": "Sample for DeleteTest",
-      "file": "localhost:7469_v1beta1_generated_testing_delete_test_sync.py",
+      "file": "localhost_v1beta1_generated_testing_delete_test_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_DeleteTest_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_DeleteTest_sync",
       "segments": [
         {
           "end": 48,
@@ -7851,7 +7851,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_delete_test_sync.py"
+      "title": "localhost_v1beta1_generated_testing_delete_test_sync.py"
     },
     {
       "canonical": true,
@@ -7892,10 +7892,10 @@
         "shortName": "get_session"
       },
       "description": "Sample for GetSession",
-      "file": "localhost:7469_v1beta1_generated_testing_get_session_async.py",
+      "file": "localhost_v1beta1_generated_testing_get_session_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_GetSession_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_GetSession_async",
       "segments": [
         {
           "end": 50,
@@ -7928,7 +7928,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_get_session_async.py"
+      "title": "localhost_v1beta1_generated_testing_get_session_async.py"
     },
     {
       "canonical": true,
@@ -7968,10 +7968,10 @@
         "shortName": "get_session"
       },
       "description": "Sample for GetSession",
-      "file": "localhost:7469_v1beta1_generated_testing_get_session_sync.py",
+      "file": "localhost_v1beta1_generated_testing_get_session_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_GetSession_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_GetSession_sync",
       "segments": [
         {
           "end": 50,
@@ -8004,7 +8004,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_get_session_sync.py"
+      "title": "localhost_v1beta1_generated_testing_get_session_sync.py"
     },
     {
       "canonical": true,
@@ -8045,10 +8045,10 @@
         "shortName": "list_sessions"
       },
       "description": "Sample for ListSessions",
-      "file": "localhost:7469_v1beta1_generated_testing_list_sessions_async.py",
+      "file": "localhost_v1beta1_generated_testing_list_sessions_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ListSessions_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_ListSessions_async",
       "segments": [
         {
           "end": 51,
@@ -8081,7 +8081,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_list_sessions_async.py"
+      "title": "localhost_v1beta1_generated_testing_list_sessions_async.py"
     },
     {
       "canonical": true,
@@ -8121,10 +8121,10 @@
         "shortName": "list_sessions"
       },
       "description": "Sample for ListSessions",
-      "file": "localhost:7469_v1beta1_generated_testing_list_sessions_sync.py",
+      "file": "localhost_v1beta1_generated_testing_list_sessions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ListSessions_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_ListSessions_sync",
       "segments": [
         {
           "end": 51,
@@ -8157,7 +8157,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_list_sessions_sync.py"
+      "title": "localhost_v1beta1_generated_testing_list_sessions_sync.py"
     },
     {
       "canonical": true,
@@ -8198,10 +8198,10 @@
         "shortName": "list_tests"
       },
       "description": "Sample for ListTests",
-      "file": "localhost:7469_v1beta1_generated_testing_list_tests_async.py",
+      "file": "localhost_v1beta1_generated_testing_list_tests_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ListTests_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_ListTests_async",
       "segments": [
         {
           "end": 51,
@@ -8234,7 +8234,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_list_tests_async.py"
+      "title": "localhost_v1beta1_generated_testing_list_tests_async.py"
     },
     {
       "canonical": true,
@@ -8274,10 +8274,10 @@
         "shortName": "list_tests"
       },
       "description": "Sample for ListTests",
-      "file": "localhost:7469_v1beta1_generated_testing_list_tests_sync.py",
+      "file": "localhost_v1beta1_generated_testing_list_tests_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ListTests_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_ListTests_sync",
       "segments": [
         {
           "end": 51,
@@ -8310,7 +8310,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_list_tests_sync.py"
+      "title": "localhost_v1beta1_generated_testing_list_tests_sync.py"
     },
     {
       "canonical": true,
@@ -8351,10 +8351,10 @@
         "shortName": "report_session"
       },
       "description": "Sample for ReportSession",
-      "file": "localhost:7469_v1beta1_generated_testing_report_session_async.py",
+      "file": "localhost_v1beta1_generated_testing_report_session_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ReportSession_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_ReportSession_async",
       "segments": [
         {
           "end": 50,
@@ -8387,7 +8387,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_report_session_async.py"
+      "title": "localhost_v1beta1_generated_testing_report_session_async.py"
     },
     {
       "canonical": true,
@@ -8427,10 +8427,10 @@
         "shortName": "report_session"
       },
       "description": "Sample for ReportSession",
-      "file": "localhost:7469_v1beta1_generated_testing_report_session_sync.py",
+      "file": "localhost_v1beta1_generated_testing_report_session_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_ReportSession_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_ReportSession_sync",
       "segments": [
         {
           "end": 50,
@@ -8463,7 +8463,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_report_session_sync.py"
+      "title": "localhost_v1beta1_generated_testing_report_session_sync.py"
     },
     {
       "canonical": true,
@@ -8504,10 +8504,10 @@
         "shortName": "verify_test"
       },
       "description": "Sample for VerifyTest",
-      "file": "localhost:7469_v1beta1_generated_testing_verify_test_async.py",
+      "file": "localhost_v1beta1_generated_testing_verify_test_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_VerifyTest_async",
+      "regionTag": "localhost_v1beta1_generated_Testing_VerifyTest_async",
       "segments": [
         {
           "end": 50,
@@ -8540,7 +8540,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_verify_test_async.py"
+      "title": "localhost_v1beta1_generated_testing_verify_test_async.py"
     },
     {
       "canonical": true,
@@ -8580,10 +8580,10 @@
         "shortName": "verify_test"
       },
       "description": "Sample for VerifyTest",
-      "file": "localhost:7469_v1beta1_generated_testing_verify_test_sync.py",
+      "file": "localhost_v1beta1_generated_testing_verify_test_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "localhost:7469_v1beta1_generated_Testing_VerifyTest_sync",
+      "regionTag": "localhost_v1beta1_generated_Testing_VerifyTest_sync",
       "segments": [
         {
           "end": 50,
@@ -8616,7 +8616,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "localhost:7469_v1beta1_generated_testing_verify_test_sync.py"
+      "title": "localhost_v1beta1_generated_testing_verify_test_sync.py"
     }
   ]
 }
