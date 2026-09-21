@@ -229,6 +229,14 @@ class TestChecksum(object):
         assert helper._crc == google_crc32c.value(chunk)
 
     @staticmethod
+    def test_ctor_array(_crc32c):
+        import array
+
+        chunk = array.array("B", b"DEADBEEF")
+        helper = google_crc32c.Checksum(chunk)
+        assert helper._crc == google_crc32c.value(b"DEADBEEF")
+
+    @staticmethod
     def test_update(_crc32c):
         chunk = b"DEADBEEF"
         helper = google_crc32c.Checksum()
@@ -290,3 +298,18 @@ class TestChecksum(object):
         assert found == expected
         for call in stream.read.call_args_list:
             assert call == mock.call(chunksize)
+
+
+def test_common_checksum():
+    from google_crc32c._checksum import CommonChecksum
+
+    class DummyChecksum(CommonChecksum):
+        __slots__ = ("_crc",)
+
+    checksum = DummyChecksum()
+    assert checksum._crc == 0
+    with pytest.raises(NotImplementedError):
+        checksum.update(b"data")
+
+    with pytest.raises(NotImplementedError):
+        DummyChecksum(b"foo")

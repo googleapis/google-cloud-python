@@ -196,11 +196,9 @@ def core_deps_from_source(session):
 def unit(session):
     """Run all unit tests."""
     session.env["CRC32C_PURE_PYTHON"] = "1"
+    session.env["PYTHONPATH"] = "src"
     session.install("pytest", "pytest-cov")
-    session.install("-e", ".")
-    session.run(
-        "pytest", "--cov=google_crc32c", "--cov=tests", "tests", *session.posargs
-    )
+    session.run("pytest", "--cov=src/google_crc32c", "tests", *session.posargs)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
