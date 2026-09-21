@@ -42,8 +42,8 @@ def test_resumable_upload_scenario_non_fatal_start_error(intercepted_resumable_u
         chunk_size=256,
         headers=scenario_headers,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "retry_start_upload.txt"
     assert final_response.size == len(stream.getvalue())
 
@@ -70,6 +70,7 @@ def test_resumable_upload_scenario_fatal_start_error(intercepted_resumable_uploa
         )
 
 
+@pytest.mark.skip(reason="https://github.com/googleapis/gapic-showcase/issues/1685")
 def test_resumable_upload_scenario_missing_status_header_start_retry(intercepted_resumable_upload_rest):
     client, _ = intercepted_resumable_upload_rest
     initial_url = f"{client.transport._host}/resumable/upload/v1beta1/media/upload"
@@ -98,9 +99,9 @@ def test_resumable_upload_scenario_missing_status_header_start_retry(intercepted
             stream=stream,
             upload_url=initial_url,
         )
-        assert response.status_code == 200
+        assert isinstance(response, bytes)
         assert attempt_count[0] >= 2  # Verified that start was retried upon missing status header
-        final_response = UploadMediaResponse.from_json(response.content)
+        final_response = UploadMediaResponse.from_json(response)
         assert final_response.name == "missing_status_header_upload.txt"
         assert final_response.size == len(stream.getvalue())
     finally:
@@ -127,8 +128,8 @@ def test_resumable_upload_scenario_non_fatal_chunk_error(intercepted_resumable_u
         chunk_size=512,
         headers=scenario_headers,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "recovered_chunk_upload.txt"
     assert final_response.size == len(stream.getvalue())
 
@@ -154,8 +155,8 @@ def test_resumable_upload_partial_commit_recovery(intercepted_resumable_upload_r
         chunk_size=256,
         headers=scenario_headers,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "partial_commit_upload.txt"
     assert final_response.size == len(data)
 
@@ -180,7 +181,7 @@ def test_resumable_upload_chunk_granularity_alignment(intercepted_resumable_uplo
         chunk_size=300,  # Request unaligned chunk size (300) -> state machine aligns up to 512
         headers=scenario_headers,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "granularity_upload.txt"
     assert final_response.size == len(data)

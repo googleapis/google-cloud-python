@@ -156,16 +156,16 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         self._interceptor = interceptor or Async{{ service.name }}RestInterceptor()
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
-        {% if service.has_lro %}
+        {% if service.has_lro and rest_async_io_enabled %}
         self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
         {% endif %}
 
 
-    {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
+    {{ shared_macros.prep_wrapped_messages_async_method(api, service, is_rest_asyncio=True)|indent(4) }}
 
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
-    {% for method in service.methods.values()|sort(attribute="name") %}
+    {% for method in service.methods.values()|sort(attribute="name") if rest_async_io_enabled or method.is_resumable_upload %}
     class {{ method.name|make_private }}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):
         def __hash__(self):
             return hash("Async{{service.name}}RestTransport.{{method.name}}")
@@ -275,7 +275,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     {% endfor %}
 
-    {% if service.has_lro %}
+    {% if service.has_lro and rest_async_io_enabled %}
 
     @property
     def operations_client(self) -> AsyncOperationsRestClient:
@@ -322,7 +322,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         return self._operations_client
     {% endif %}
 
-    {% for method in service.methods.values()|sort(attribute="name") %}
+    {% for method in service.methods.values()|sort(attribute="name") if rest_async_io_enabled or method.is_resumable_upload %}
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2154): Remove `type:  ignore`. #}
     @property
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
@@ -331,9 +331,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
 
     {% endfor %}
+    {% if rest_async_io_enabled %}
     {% for name, sig in api.mixin_api_signatures.items() %} 
     {{ shared_macros.generate_mixin_call_method(service, api, name, sig, is_async=True) | indent(4) }}
     {% endfor %}
+    {% endif %}
 
     @property
     def kind(self) -> str:

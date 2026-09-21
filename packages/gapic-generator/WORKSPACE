@@ -21,6 +21,15 @@ http_archive(
     urls = ["https://github.com/googleapis/googleapis/archive/{0}.zip".format(_googleapis_sha256)],
 )
 
+# Load com_google_gapic_showcase used for testing
+_gapic_showcase_sha256 = "5158967e8a41c751b15776142d190428ddb7e99f"
+http_archive(
+    name = "com_google_gapic_showcase",
+    build_file = "//tests/integration:showcase.BUILD.bazel",
+    strip_prefix = "gapic-showcase-{}".format(_gapic_showcase_sha256),
+    urls = ["https://github.com/googleapis/gapic-showcase/archive/{}.zip".format(_gapic_showcase_sha256)],
+)
+
 # Load rules_gapic v1.0.0. We patch rules_gapic's .bzl files to inject the
 # explicit load for Starlark ProtoInfo from @rules_proto to maintain symbol
 # resolution under rules_proto / Protobuf 35.1.
@@ -163,4 +172,9 @@ switched_rules_by_language(
     name = "com_google_googleapis_imports",
     gapic = True,
     grpc = True,
+)
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+python_register_toolchains(
+    name = "python311",
+    python_version = "3.11",
 )

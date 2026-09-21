@@ -48,7 +48,7 @@ def test_resumable_upload_resume_direct(intercepted_resumable_upload_rest):
         transport=client.transport._session,
         response_type=UploadMediaResponse,
     )
-    session1.initiate(
+    session1._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),
@@ -108,7 +108,7 @@ def test_resumable_upload_iter_resume_generator(intercepted_resumable_upload_res
         transport=client.transport._session,
         response_type=UploadMediaResponse,
     )
-    session1.initiate(
+    session1._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),
@@ -178,7 +178,7 @@ def test_resumable_upload_resume_chunk_size_override(intercepted_resumable_uploa
         transport=client.transport._session,
         response_type=UploadMediaResponse,
     )
-    session1.initiate(
+    session1._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),
@@ -232,7 +232,7 @@ def test_resumable_upload_resume_helper_with_raw_bytes(intercepted_resumable_upl
         ),
         transport=client.transport._session,
     )
-    session1.initiate(
+    session1._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),

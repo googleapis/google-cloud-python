@@ -110,7 +110,7 @@ def test_resumable_upload_crash_recovery_flow(intercepted_resumable_upload_rest)
         transport=client.transport._session,
         response_type=UploadMediaResponse,
     )
-    session1.initiate(
+    session1._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),
@@ -170,7 +170,7 @@ def test_resumable_upload_unseekable_stream_beyond_buffer_raises(intercepted_res
         transport=client.transport._session,
         response_type=UploadMediaResponse,
     )
-    session.initiate(
+    session._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),
@@ -206,7 +206,7 @@ def test_resumable_upload_session_cancellation(intercepted_resumable_upload_rest
         config=ResumableUploadConfig(chunk_size=512, headers=scenario_headers),
         transport=client.transport._session,
     )
-    session.initiate(
+    session._initiate(
         transport=client.transport._session,
         request_body=request_body,
         size=len(data),

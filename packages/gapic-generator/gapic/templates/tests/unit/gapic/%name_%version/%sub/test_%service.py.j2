@@ -1,7 +1,7 @@
 {% extends "_base.py.j2" %}
 {% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled or service.has_resumable_upload_methods %}
 {% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
@@ -1567,8 +1567,10 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_e
 {% if rest_async_io_enabled %}
 @pytest.mark.asyncio
 async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
     client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
     )
     with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:

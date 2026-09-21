@@ -376,18 +376,18 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                         return _error()
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
             elif HAS_ASYNC_REST:  # pragma: NO COVER
-                rest_transport = Async{{ service.name }}RestTransport(
-                    host=self._host,
-                    credentials=self._credentials,
-                    client_info=self._client_info,
-                )
-                class _AsyncRestStub:
-                    def __call__(self, *args, **kwargs):
+                class _AsyncRestStub:  # pragma: NO COVER
+                    def __call__(_self, *args, **kwargs):  # pragma: NO COVER
+                        rest_transport = Async{{ service.name }}RestTransport(
+                            host=self._host,
+                            credentials=self._credentials,
+                            client_info=self._client_info,
+                        )
                         return rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()
             else:  # pragma: NO COVER
-                class _UnsupportedStub:
-                    def __call__(self, *args, **kwargs):
+                class _UnsupportedStub:  # pragma: NO COVER
+                    def __call__(self, *args, **kwargs):  # pragma: NO COVER
                         async def _unsupported():
                             raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
                         return _unsupported()

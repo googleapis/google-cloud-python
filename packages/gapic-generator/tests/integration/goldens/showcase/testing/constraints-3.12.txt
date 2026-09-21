@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+# This constraints file is required for unit tests.
+# List all library dependencies and extras in this file.
+# TODO: Uncomment the line below once https://github.com/googleapis/google-cloud-python/pull/18352 is merged
+# google-api-core
+google-auth
+grpcio
+proto-plus
+protobuf
+# cryptography is a direct dependency of google-auth
+cryptography
+grpc-google-iam-v1

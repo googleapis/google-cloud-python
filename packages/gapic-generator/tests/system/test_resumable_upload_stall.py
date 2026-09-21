@@ -48,8 +48,8 @@ def test_resumable_upload_stall_control_success(intercepted_resumable_upload_res
         upload_url=initial_url,
         config=config,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "stall_control_success.txt"
     assert final_response.size == len(data)
 

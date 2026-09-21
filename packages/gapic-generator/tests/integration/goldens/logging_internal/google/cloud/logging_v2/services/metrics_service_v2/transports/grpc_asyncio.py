@@ -527,16 +527,19 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                kind='rest',
             ),
             self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                kind='rest',
             ),
             self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                kind='rest',
             ),
         }
 

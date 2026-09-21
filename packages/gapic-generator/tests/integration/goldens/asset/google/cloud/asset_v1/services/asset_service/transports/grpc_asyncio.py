@@ -1244,6 +1244,7 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                kind='rest',
             ),
         }
 

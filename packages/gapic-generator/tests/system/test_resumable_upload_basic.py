@@ -85,10 +85,10 @@ def test_resumable_upload_finalize_response(intercepted_resumable_upload_rest):
         upload_url=upload_url,
         stream=stream,
     )
-    assert finalize_response.status_code == 200
+    assert isinstance(finalize_response, bytes)
 
     # 3. Deserialize backend response proto
-    final_response = UploadMediaResponse.from_json(finalize_response.content)
+    final_response = UploadMediaResponse.from_json(finalize_response)
 
     # Verify that the backend service returned the resource name and size matching the request
     assert final_response.name == "test_file.txt"
@@ -121,10 +121,10 @@ def test_resumable_upload_different_content_types(
         stream=payload,
         content_type=content_type,
     )
-    assert finalize_response.status_code == 200
+    assert isinstance(finalize_response, bytes)
 
     # 3. Deserialize and verify response name and size
-    final_response = UploadMediaResponse.from_json(finalize_response.content)
+    final_response = UploadMediaResponse.from_json(finalize_response)
     assert final_response.name == "test_upload"
     assert final_response.size == len(payload)
 

@@ -42,49 +42,11 @@ def test_make_resumable_upload_end_to_end(intercepted_resumable_upload_rest):
         upload_url=initial_url,
         chunk_size=256,
     )
-    assert response.status_code == 200
+    assert isinstance(response, bytes)
 
-    final_response = UploadMediaResponse.from_json(response.content)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "full_e2e_upload.txt"
     assert final_response.size == len(stream.getvalue())
-
-
-def test_resumable_upload_callback_progress_tracking(intercepted_resumable_upload_rest):
-    client, _ = intercepted_resumable_upload_rest
-    initial_url = f"{client.transport._host}/resumable/upload/v1beta1/media/upload"
-    request_body = '{"name": "progress_tracked_upload.txt"}'
-    payload = b"0123456789" * 100
-    stream = io.BytesIO(payload)
-
-    progress_events = []
-
-    def on_progress(p):
-        progress_events.append((p.bytes_uploaded, p.state.value, p.upload_url, p.chunk_size))
-
-    scenario_headers = [("X-Goog-Test-Scenario", "chunk_granularity")]
-    config = ResumableUploadConfig(
-        chunk_size=256,
-        headers=scenario_headers,
-    )
-
-    response = make_resumable_upload(
-        transport=client.transport._session,
-        request_body=request_body,
-        stream=stream,
-        upload_url=initial_url,
-        config=config,
-        on_progress=on_progress,
-    )
-    assert response.status_code == 200
-
-    # Verify progress notifications occurred in order
-    assert len(progress_events) >= 3
-    assert progress_events[0][1] == "started"
-    assert progress_events[-1][1] == "finalized"
-    assert progress_events[-1][0] == len(payload)
-    for bytes_up, state, u, chunk_sz in progress_events:
-        assert "sid=" in u
-        assert chunk_sz == 256
 
 
 def test_resumable_upload_generator_progress_tracking(intercepted_resumable_upload_rest):
@@ -152,10 +114,11 @@ def test_resumable_upload_unseekable_stream_recovery(intercepted_resumable_uploa
         request_body=request_body,
         stream=stream,
         upload_url=initial_url,
+        size=len(data),
         chunk_size=512,
         headers=scenario_headers,
     )
-    assert response.status_code == 200
-    final_response = UploadMediaResponse.from_json(response.content)
+    assert isinstance(response, bytes)
+    final_response = UploadMediaResponse.from_json(response)
     assert final_response.name == "unseekable_stream_upload.txt"
     assert final_response.size == len(data)

@@ -597,7 +597,6 @@ def make_resumable_upload(
 ):
     content_type = kwargs.pop("content_type", "application/octet-stream")
     response_type = kwargs.pop("response_type", None)
-    on_progress = kwargs.pop("on_progress", None)
     retry = kwargs.pop("retry", None)
     timeout = kwargs.pop("timeout", None)
 
@@ -620,7 +619,6 @@ def make_resumable_upload(
         request_body=request_body,
         content_type=content_type,
         size=size,
-        on_progress=on_progress,
         transport=transport,
         retry=retry,
         timeout=timeout,
@@ -637,7 +635,6 @@ def resume_resumable_upload(
 ):
     content_type = kwargs.pop("content_type", None)
     response_type = kwargs.pop("response_type", None)
-    on_progress = kwargs.pop("on_progress", None)
     retry = kwargs.pop("retry", None)
     timeout = kwargs.pop("timeout", None)
 
@@ -662,6 +659,5 @@ def resume_resumable_upload(
         transport=transport,
         retry=retry,
         timeout=timeout,
-        on_progress=on_progress,
     )
 
