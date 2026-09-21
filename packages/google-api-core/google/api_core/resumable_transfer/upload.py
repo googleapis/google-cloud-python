@@ -100,7 +100,6 @@ class ResumableUploadSession:
         self,
         upload_url: Optional[str] = None,
         config: Optional[ResumableUploadConfig] = None,
-        resumable_url: Optional[str] = None,
         transport: Optional[requests.Session] = None,
         content_type: Optional[str] = None,
         response_type: Optional[Any] = None,
@@ -110,12 +109,10 @@ class ResumableUploadSession:
         """Initializes a ResumableUploadSession.
 
         Args:
-            upload_url: The initial URL for the start request. Required unless
-                resuming an existing session via ``resumable_url``.
+            upload_url: The initial URL for the start request when starting a
+                new upload, or the pre-existing upload session URL when resuming.
             config: Optional upload configuration parameters. Defaults to
                 ``ResumableUploadConfig()`` when ``None``.
-            resumable_url: Pre-existing upload session URL if resuming. When
-                ``None``, a new session is created during ``upload()``.
             transport: Optional requests session. When ``None``, a transport
                 must be provided to ``upload()`` or ``resume()``.
             content_type: Optional MIME type of the stream payload. When
@@ -146,7 +143,6 @@ class ResumableUploadSession:
         self._state = upload_state.ProtocolState(
             upload_url=upload_url,
             chunk_size=self._config.chunk_size,
-            resumable_url=resumable_url,
         )
 
         # In-memory zero-copy buffer (never discard chunk until confirmed)
@@ -163,7 +159,7 @@ class ResumableUploadSession:
     @property
     def upload_url(self) -> Optional[str]:
         """Optional[str]: The unique upload URL for this session."""
-        return self._state.resumable_url
+        return self._state.upload_url
 
     @property
     def chunk_size(self) -> int:
@@ -990,7 +986,7 @@ class ResumableUploadSession:
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
 
-        self._state._resumable_url = actual_url
+        self._state._upload_url = actual_url
         progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)

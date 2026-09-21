@@ -162,7 +162,7 @@ def test_protocol_state_process_start_response():
     }
     url = state.process_start_response(200, headers)
     assert url == "https://upload.example.com/resumable-id"
-    assert state.resumable_url == "https://upload.example.com/resumable-id"
+    assert state.upload_url == "https://upload.example.com/resumable-id"
     assert state._chunk_granularity == 262144
 
 
@@ -189,9 +189,7 @@ def test_protocol_state_granularity_alignment():
 
 
 def test_protocol_state_chunk_request_and_response():
-    state = upload_state.ProtocolState(
-        resumable_url="https://upload.example.com/session"
-    )
+    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
 
     # First chunk: not last
     method, url, headers, payload = state.build_chunk_request(
@@ -219,26 +217,20 @@ def test_protocol_state_chunk_request_and_response():
 
 
 def test_protocol_state_chunk_missing_status_header():
-    state = upload_state.ProtocolState(
-        resumable_url="https://upload.example.com/session"
-    )
+    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
     with pytest.raises(MissingStatusHeaderError):
         state.process_chunk_response(200, {}, 10)
 
 
 def test_protocol_state_chunk_cancelled_status():
-    state = upload_state.ProtocolState(
-        resumable_url="https://upload.example.com/session"
-    )
+    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
     with pytest.raises(UploadCancelledError):
         state.process_chunk_response(200, {"X-Goog-Upload-Status": "cancelled"}, 10)
     assert state.invalid
 
 
 def test_protocol_state_query_and_cancel():
-    state = upload_state.ProtocolState(
-        resumable_url="https://upload.example.com/session"
-    )
+    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
     method, url, headers, payload = state.build_query_request()
     assert headers["X-Goog-Upload-Command"] == "query"
 
@@ -249,9 +241,7 @@ def test_protocol_state_query_and_cancel():
     assert state.bytes_uploaded == 1024
 
     # query with unknown status
-    state2 = upload_state.ProtocolState(
-        resumable_url="https://upload.example.com/session"
-    )
+    state2 = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
     received2 = state2.process_query_response(200, {"X-Goog-Upload-Status": "unknown"})
     assert received2 == 0
 
@@ -615,7 +605,7 @@ def test_sync_cancel():
     session_transport.request.return_value = cancel_resp
 
     session = ResumableUploadSession(
-        resumable_url="https://upload.example.com/resumable-123",
+        upload_url="https://upload.example.com/resumable-123",
         transport=session_transport,
     )
     session.cancel()
@@ -755,7 +745,7 @@ def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
 def test_upload_state_properties():
     state = upload_state.ProtocolState("https://api.example.com/init", chunk_size=500)
     assert state.initial_url == "https://api.example.com/init"
-    assert state.resumable_url is None
+    assert state.upload_url == "https://api.example.com/init"
     assert state.bytes_uploaded == 0
     assert state.total_bytes is None
     assert state.finished is False
@@ -780,7 +770,7 @@ def test_upload_state_start_errors():
 
 
 def test_upload_state_chunk_and_query_errors():
-    state = upload_state.ProtocolState("https://api.example.com/init")
+    state = upload_state.ProtocolState()
     with pytest.raises(ValueError, match="Upload session URL not established"):
         state.build_chunk_request(b"data", is_last_chunk=True)
 
@@ -818,7 +808,7 @@ def test_sync_upload_session_properties_and_enrichment():
         transport=session_transport,
     )
     assert session._get_transport(None) is session_transport
-    assert session._state.resumable_url is None
+    assert session._state.upload_url == "https://api.example.com/init"
     assert session.bytes_uploaded == 0
     assert session._state.total_bytes is None
     assert session.finished is False
@@ -971,7 +961,7 @@ def test_sync_cancel_failure_raises():
     session_transport.request.return_value = err_resp
 
     session = ResumableUploadSession(
-        resumable_url="https://upload.example.com/resumable-123",
+        upload_url="https://upload.example.com/resumable-123",
         transport=session_transport,
     )
     with pytest.raises(exceptions.GoogleAPICallError):
@@ -1012,7 +1002,7 @@ def test_sync_on_progress_and_capture():
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
     )
-    session._state._resumable_url = "https://api.example.com/init"
+    session._state._upload_url = "https://api.example.com/init"
     progress_queue = []
     session._notify_progress(
         common.ProgressState.UPLOADING, progress_queue=progress_queue
@@ -1172,7 +1162,7 @@ def test_sync_stall_control_with_deadline():
         upload_url="https://api.example.com/init",
         config=config4,
     )
-    session4._state._resumable_url = "https://api.example.com/init"
+    session4._state._upload_url = "https://api.example.com/init"
     with pytest.raises(exceptions.TransferStalledError):
         session4._update_stall_control(512, time.monotonic() - 15.0, 15.0)
 
@@ -1232,7 +1222,7 @@ def test_sync_transmit_empty_stream():
         transport=transport,
     )
     stream = io.BytesIO(b"")
-    session._state._resumable_url = "https://upload.example.com/resumable-123"
+    session._state._upload_url = "https://upload.example.com/resumable-123"
     result = session._transmit_chunk(transport, stream, size=0)
     assert result is resp
 
@@ -1250,7 +1240,7 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active(monkeypatch):
         config=config,
         transport=transport,
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-123"
+    session._state._upload_url = "https://upload.example.com/resumable-123"
 
     # Attempt 1 times out at 5.0s (< stall_timeout=10.0s): re-raises Timeout so retry/recovery can run
     clock_vals = iter([0.0, 5.0, 5.0, 5.0, 10.0, 10.0, 10.0, 10.0])
@@ -1273,7 +1263,7 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active(monkeypatch):
         config=config_dl,
         transport=transport,
     )
-    session_dl._state._resumable_url = "https://upload.example.com/resumable-123"
+    session_dl._state._upload_url = "https://upload.example.com/resumable-123"
     session_dl._get_deadline_remaining = mock.Mock(
         side_effect=[5.0, exceptions.DeadlineExceeded("Deadline exceeded")]
     )
@@ -1349,7 +1339,7 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         config=config,
         transport=transport,
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-123"
+    session._state._upload_url = "https://upload.example.com/resumable-123"
     no_retry = google.api_core.retry.StreamingRetry(
         predicate=lambda e: False, timeout=0
     )
@@ -1371,7 +1361,7 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         config=config_dl,
         transport=transport,
     )
-    session_dl._state._resumable_url = "https://upload.example.com/resumable-123"
+    session_dl._state._upload_url = "https://upload.example.com/resumable-123"
     session_dl._get_deadline_remaining = mock.Mock(
         side_effect=[5.0, 5.0, exceptions.DeadlineExceeded("Deadline exceeded")]
     )
@@ -1392,7 +1382,7 @@ def test_sync_transmit_chunk_timeout_outer_exception():
         config=config,
         transport=transport_conn,
     )
-    session_conn._state._resumable_url = "https://upload.example.com/resumable-123"
+    session_conn._state._upload_url = "https://upload.example.com/resumable-123"
     with pytest.raises(exceptions.RetryError):
         list(
             session_conn._transmit_all_chunks(
@@ -1417,7 +1407,7 @@ def test_sync_recover_failure():
         upload_url="https://api.example.com/init",
         transport=transport,
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-123"
+    session._state._upload_url = "https://upload.example.com/resumable-123"
     with pytest.raises(exceptions.GoogleAPICallError):
         session._recover(transport, io.BytesIO(b"data"))
 
@@ -1509,8 +1499,7 @@ class CustomReadStream:
 
 def test_sync_enrich_exception():
     session = ResumableUploadSession(
-        upload_url="https://api.example.com/init",
-        resumable_url="https://upload.example.com/resumable-123",
+        upload_url="https://upload.example.com/resumable-123",
         transport=mock.sentinel.transport,
     )
     exc = RuntimeError("test error")
@@ -1521,7 +1510,6 @@ def test_sync_enrich_exception():
 def test_sync_notify_progress_no_upload_url():
     session = ResumableUploadSession(
         upload_url=None,
-        resumable_url=None,
         transport=mock.sentinel.transport,
     )
     session._notify_progress(common.ProgressState.STARTED)
@@ -1634,7 +1622,7 @@ def test_sync_transmit_all_chunks_captured_empty():
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-123"
+    session._state._upload_url = "https://upload.example.com/resumable-123"
 
     stream_obj = io.BytesIO(b"data")
 

@@ -189,7 +189,7 @@ class NonSeekableBytesIO(io.BytesIO):
 def test_async_session_initialization_defaults() -> None:
     """Validates default attribute values of an uninitiated async session."""
     session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
-    assert session.upload_url is None
+    assert session.upload_url == "https://api.example.com/start"
     assert session.chunk_size == common.DEFAULT_CHUNK_SIZE
     assert session.response is None
     assert session.bytes_uploaded == 0
@@ -591,7 +591,7 @@ async def test_async_cancel_success() -> None:
     async_transport = DummyAsyncSession([cancel_resp])
 
     session = AsyncResumableUploadSession(
-        resumable_url="https://upload.example.com/resumable-async",
+        upload_url="https://upload.example.com/resumable-async",
         transport=async_transport,
     )
     await session.cancel()
@@ -1042,8 +1042,7 @@ def test_async_resume_rejects_invalid_stream_types(invalid_stream: Any) -> None:
 def test_async_enrich_exception() -> None:
     """Verifies that _enrich_exception attaches upload_url and chunk_size."""
     session = AsyncResumableUploadSession(
-        upload_url="https://api.example.com/start",
-        resumable_url="https://upload.example.com/resumable-async",
+        upload_url="https://upload.example.com/resumable-async",
     )
     exc = RuntimeError("test error")
     session._enrich_exception(exc)
@@ -1053,13 +1052,13 @@ def test_async_enrich_exception() -> None:
 def test_async_notify_progress_branches() -> None:
     """Verifies progress notification queue capture."""
     session = AsyncResumableUploadSession(
-        upload_url="https://api.example.com/start",
+        upload_url=None,
     )
     # When upload_url is None
     session._notify_progress(common.ProgressState.UPLOADING)
 
     # When upload_url is established on state
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
     # Call with queue=None
     session._notify_progress(common.ProgressState.UPLOADING, queue=None)
 
@@ -1251,7 +1250,7 @@ def test_async_transport_missing_errors() -> None:
 async def test_async_cancel_missing_transport_and_error() -> None:
     """Verifies cancel method with missing transport and server error."""
     session = AsyncResumableUploadSession(
-        resumable_url="https://upload.example.com/123",
+        upload_url="https://upload.example.com/123",
     )
     with pytest.raises(
         ValueError, match="An aiohttp.ClientSession transport must be provided"
@@ -1261,7 +1260,7 @@ async def test_async_cancel_missing_transport_and_error() -> None:
     err_resp = DummyAsyncResponse(status=500, headers={}, body=b"Cancel Error")
     sess_transport = DummyAsyncSession([err_resp])
     session2 = AsyncResumableUploadSession(
-        resumable_url="https://upload.example.com/123",
+        upload_url="https://upload.example.com/123",
         transport=sess_transport,
     )
     with pytest.raises(exceptions.GoogleAPICallError):
@@ -1320,7 +1319,7 @@ async def test_async_initiate_and_recover_failures() -> None:
     session2 = AsyncResumableUploadSession(
         transport=sess_transport2,
     )
-    session2._state._resumable_url = "https://upload.example.com/123"
+    session2._state._upload_url = "https://upload.example.com/123"
     with pytest.raises(exceptions.BadRequest):
         await session2._recover(sess_transport2)
 
@@ -1337,7 +1336,7 @@ async def test_async_recover_stream_errors() -> None:
     session = AsyncResumableUploadSession(
         transport=sess_transport,
     )
-    session._state._resumable_url = "https://upload.example.com/123"
+    session._state._upload_url = "https://upload.example.com/123"
 
     # Stream whose seekable() returns False
     unseekable = mock.Mock()
@@ -1350,7 +1349,7 @@ async def test_async_recover_stream_errors() -> None:
     session2 = AsyncResumableUploadSession(
         transport=sess_transport2,
     )
-    session2._state._resumable_url = "https://upload.example.com/123"
+    session2._state._upload_url = "https://upload.example.com/123"
     failing_seek = mock.Mock()
     failing_seek.seekable.return_value = True
     failing_seek.seek.side_effect = OSError("Seek error")
@@ -1383,7 +1382,7 @@ async def test_async_upload_with_timeout_and_deadline() -> None:
         config=config,
         transport=sess_transport,
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
 
     # Run the upload
     res = await session.upload(stream=b"data", timeout=30.0)
@@ -1440,7 +1439,7 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
         config=config,
         transport=TimeoutAsyncSession(),
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
     no_retry = google.api_core.retry.AsyncStreamingRetry(
         predicate=lambda e: False, timeout=0.001
     )
@@ -1456,7 +1455,7 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
         config=config2,
         transport=TimeoutAsyncSession(),
     )
-    session2._state._resumable_url = "https://upload.example.com/resumable-async"
+    session2._state._upload_url = "https://upload.example.com/resumable-async"
 
     with mock.patch.object(
         session2,
@@ -1509,7 +1508,7 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
         config=config,
         transport=ConnectionErrorAsyncSession(),
     )
-    session3._state._resumable_url = "https://upload.example.com/resumable-async"
+    session3._state._upload_url = "https://upload.example.com/resumable-async"
 
     with pytest.raises(exceptions.RetryError):
         await session3.upload(stream=b"data", retry=no_retry)
@@ -1548,7 +1547,7 @@ async def test_async_upload_multiple_chunks_async_iterable() -> None:
         config=config,
         transport=sess_transport,
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
 
     res = await session.upload(stream=async_gen())
     assert res == b"{}"
@@ -1713,7 +1712,7 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
         config=config,
         transport=TimeoutAsyncSession(),
     )
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
     no_retry = google.api_core.retry.AsyncStreamingRetry(
         predicate=lambda e: False, timeout=0.001
     )
@@ -1731,7 +1730,7 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
         config=config2,
         transport=TimeoutAsyncSession(),
     )
-    session2._state._resumable_url = "https://upload.example.com/resumable-async"
+    session2._state._upload_url = "https://upload.example.com/resumable-async"
 
     with mock.patch.object(
         session2,
@@ -1817,7 +1816,7 @@ async def test_async_per_attempt_timeout_retries_before_stall_timeout(
 @pytest.mark.asyncio
 async def test_async_recover_buffered_chunk_out_of_bounds() -> None:
     session = AsyncResumableUploadSession()
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
     session._buffered_chunk = memoryview(b"data")
     session._buffered_chunk_offset = 0
 
@@ -1840,7 +1839,7 @@ async def test_async_recover_buffered_chunk_out_of_bounds() -> None:
 @pytest.mark.asyncio
 async def test_async_recover_stream_obj_none() -> None:
     session = AsyncResumableUploadSession()
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
     session._buffered_chunk = None
 
     query_resp = DummyAsyncResponse(
@@ -1858,7 +1857,7 @@ async def test_async_recover_stream_obj_none() -> None:
 async def test_async_upload_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
     session._state._finished = True
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
 
     with mock.patch.object(session, "_initiate", new_callable=mock.AsyncMock):
         sess_transport = DummyAsyncSession([])
@@ -1872,7 +1871,7 @@ async def test_async_upload_already_finished_raises_value_error() -> None:
 async def test_async_resume_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
     session._state._finished = True
-    session._state._resumable_url = "https://upload.example.com/resumable-async"
+    session._state._upload_url = "https://upload.example.com/resumable-async"
 
     sess_transport = DummyAsyncSession([])
     with mock.patch.object(session, "_recover", new_callable=mock.AsyncMock):

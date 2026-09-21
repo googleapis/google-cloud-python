@@ -30,18 +30,17 @@ class ProtocolState(object):
         self,
         upload_url: Optional[str] = None,
         chunk_size: int = common.DEFAULT_CHUNK_SIZE,
-        resumable_url: Optional[str] = None,
     ) -> None:
         """Initializes the protocol state machine.
 
         Args:
-            upload_url: The initial endpoint URL for starting the upload.
+            upload_url: The initial endpoint URL for starting the upload, or
+                the established upload session URL when resuming.
             chunk_size: Desired chunk size in bytes.
-            resumable_url: Established upload session URL if resuming.
         """
         self._initial_url = upload_url or ""
         self._chunk_size = chunk_size
-        self._resumable_url = resumable_url
+        self._upload_url: Optional[str] = upload_url
         self._chunk_granularity: Optional[int] = None
         self._bytes_uploaded = 0
         self._total_bytes: Optional[int] = None
@@ -54,9 +53,9 @@ class ProtocolState(object):
         return self._initial_url
 
     @property
-    def resumable_url(self) -> Optional[str]:
+    def upload_url(self) -> Optional[str]:
         """The established upload session URL, or None if not established."""
-        return self._resumable_url
+        return self._upload_url
 
     @property
     def bytes_uploaded(self) -> int:
@@ -106,6 +105,7 @@ class ProtocolState(object):
         Returns:
             A tuple of (HTTP method, URL, headers dict, payload bytes).
         """
+        self._upload_url = None
         self._total_bytes = size
         req_headers: Dict[str, str] = {}
 
@@ -153,17 +153,17 @@ class ProtocolState(object):
                 f"Missing {common.HEADER_STATUS} header in start response"
             )
 
-        resumable_url = headers_lower.get(common.HEADER_URL.lower())
-        if not resumable_url:
+        upload_url = headers_lower.get(common.HEADER_URL.lower())
+        if not upload_url:
             self._invalid = True
             raise ValueError(f"Server did not return {common.HEADER_URL} header")
 
-        self._resumable_url = resumable_url
+        self._upload_url = upload_url
         granularity = headers_lower.get(common.HEADER_CHUNK_GRANULARITY.lower())
         if granularity:
             self._chunk_granularity = int(granularity)
 
-        return self._resumable_url
+        return self._upload_url
 
     def build_chunk_request(
         self,
@@ -184,7 +184,7 @@ class ProtocolState(object):
         Raises:
             ValueError: If upload session URL is not established.
         """
-        if not self._resumable_url:
+        if not self._upload_url:
             raise ValueError("Upload session URL not established.")
 
         command = (
@@ -201,7 +201,7 @@ class ProtocolState(object):
             headers["Content-Type"] = content_type
 
         payload = bytes(data) if isinstance(data, memoryview) else data
-        return "POST", self._resumable_url, headers, payload
+        return "POST", self._upload_url, headers, payload
 
     def process_chunk_response(
         self, status_code: int, headers: Mapping[str, str], chunk_bytes_sent: int
@@ -247,11 +247,11 @@ class ProtocolState(object):
         Raises:
             ValueError: If upload session URL is not established.
         """
-        if not self._resumable_url:
+        if not self._upload_url:
             raise ValueError("Upload session URL not established.")
 
         headers = {common.HEADER_COMMAND: common.Command.QUERY.value}
-        return "POST", self._resumable_url, headers, b""
+        return "POST", self._upload_url, headers, b""
 
     def process_query_response(
         self, status_code: int, headers: Mapping[str, str]
@@ -298,11 +298,11 @@ class ProtocolState(object):
         Raises:
             ValueError: If upload session URL is not established.
         """
-        if not self._resumable_url:
+        if not self._upload_url:
             raise ValueError("Upload session URL not established.")
 
         headers = {common.HEADER_COMMAND: common.Command.CANCEL.value}
-        return "POST", self._resumable_url, headers, b""
+        return "POST", self._upload_url, headers, b""
 
     def process_cancel_response(
         self, status_code: int, headers: Mapping[str, str]
