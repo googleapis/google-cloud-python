@@ -335,29 +335,31 @@ class Order(object):
         def _to_number(val):
             num = decode_value(val, None)
             to_decimal = getattr(num, "to_decimal", None)
-            return (
-                to_decimal()
-                if callable(to_decimal)
-                else getattr(num, "value", num)
-            )
+            return to_decimal() if callable(to_decimal) else getattr(num, "value", num)
 
-        l = _to_number(left)
-        r = _to_number(right)
+        left_val = _to_number(left)
+        right_val = _to_number(right)
 
-        l_nan = l.is_nan() if hasattr(l, "is_nan") else math.isnan(l)
-        r_nan = r.is_nan() if hasattr(r, "is_nan") else math.isnan(r)
-        if l_nan or r_nan:
-            return 0 if (l_nan and r_nan) else (-1 if l_nan else 1)
+        left_nan = (
+            left_val.is_nan() if hasattr(left_val, "is_nan") else math.isnan(left_val)
+        )
+        right_nan = (
+            right_val.is_nan()
+            if hasattr(right_val, "is_nan")
+            else math.isnan(right_val)
+        )
+        if left_nan or right_nan:
+            return 0 if (left_nan and right_nan) else (-1 if left_nan else 1)
 
         # Python raises TypeError when comparing Decimal with float directly,
         # but allows comparing Decimal with int. Convert float to Decimal
         # to ensure safe cross-type comparison without float overflow.
-        if isinstance(l, decimal.Decimal) and isinstance(r, float):
-            r = decimal.Decimal(str(r))
-        elif isinstance(r, decimal.Decimal) and isinstance(l, float):
-            l = decimal.Decimal(str(l))
+        if isinstance(left_val, decimal.Decimal) and isinstance(right_val, float):
+            right_val = decimal.Decimal(str(right_val))
+        elif isinstance(right_val, decimal.Decimal) and isinstance(left_val, float):
+            left_val = decimal.Decimal(str(left_val))
 
-        return Order._compare_to(l, r)
+        return Order._compare_to(left_val, right_val)
 
     @staticmethod
     def compare_doubles(left, right) -> int:
