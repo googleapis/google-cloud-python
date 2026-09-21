@@ -14,17 +14,20 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from google.api_core.client_options import ClientOptions
+
+from google.protobuf import json_format
+from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.api_core import gapic_v1, path_template
-from google.api_core.client_options import ClientOptions
-from google.cloud.asset_v1.types import asset_service
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
 
-from .base import DEFAULT_CLIENT_INFO, AssetServiceTransport
+from google.cloud.asset_v1.types import asset_service
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 
 class _BaseAssetServiceRestTransport(AssetServiceTransport):
@@ -40,18 +43,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "cloudasset.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-        client_options: Optional[Union[ClientOptions, dict]] = None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'cloudasset.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            client_options: Optional[Union[ClientOptions, dict]] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -78,9 +79,7 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -100,17 +99,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "analysisQuery": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "analysisQuery" : {},        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{analysis_query.scope=*/*}:analyzeIamPolicy",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicy',
+            },
             ]
             return http_options
 
@@ -118,16 +115,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{analysis_query.scope=*/*}:analyzeIamPolicyLongrunning",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicyLongrunning',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -135,17 +132,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "destinationParent": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "destinationParent" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=*/*}:analyzeMove",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{resource=*/*}:analyzeMove',
+            },
             ]
             return http_options
 
@@ -153,17 +148,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "constraint": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "constraint" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}:analyzeOrgPolicies",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}:analyzeOrgPolicies',
+            },
             ]
             return http_options
 
@@ -171,17 +164,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "constraint": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "constraint" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}:analyzeOrgPolicyGovernedAssets",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedAssets',
+            },
             ]
             return http_options
 
@@ -189,17 +180,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "constraint": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "constraint" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}:analyzeOrgPolicyGovernedContainers",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedContainers',
+            },
             ]
             return http_options
 
@@ -207,15 +196,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=*/*}:batchGetAssetsHistory",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=*/*}:batchGetAssetsHistory',
+            },
             ]
             return http_options
 
@@ -223,17 +212,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "names": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "names" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}/effectiveIamPolicies:batchGet",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}/effectiveIamPolicies:batchGet',
+            },
             ]
             return http_options
 
@@ -241,16 +228,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=*/*}/feeds",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=*/*}/feeds',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -258,18 +245,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "savedQueryId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "savedQueryId" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=*/*}/savedQueries",
-                    "body": "saved_query",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=*/*}/savedQueries',
+                'body': 'saved_query',
+            },
             ]
             return http_options
 
@@ -277,15 +262,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=*/*/feeds/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=*/*/feeds/*}',
+            },
             ]
             return http_options
 
@@ -293,15 +278,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=*/*/savedQueries/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=*/*/savedQueries/*}',
+            },
             ]
             return http_options
 
@@ -309,16 +294,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=*/*}:exportAssets",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=*/*}:exportAssets',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -326,15 +311,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=*/*/feeds/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=*/*/feeds/*}',
+            },
             ]
             return http_options
 
@@ -342,15 +327,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=*/*/savedQueries/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=*/*/savedQueries/*}',
+            },
             ]
             return http_options
 
@@ -358,15 +343,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=*/*}/assets",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=*/*}/assets',
+            },
             ]
             return http_options
 
@@ -374,15 +359,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=*/*}/feeds",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=*/*}/feeds',
+            },
             ]
             return http_options
 
@@ -390,15 +375,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=*/*}/savedQueries",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=*/*}/savedQueries',
+            },
             ]
             return http_options
 
@@ -406,16 +391,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=*/*}:queryAssets",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=*/*}:queryAssets',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -423,15 +408,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}:searchAllIamPolicies",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}:searchAllIamPolicies',
+            },
             ]
             return http_options
 
@@ -439,15 +424,15 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{scope=*/*}:searchAllResources",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{scope=*/*}:searchAllResources',
+            },
             ]
             return http_options
 
@@ -455,16 +440,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{feed.name=*/*/feeds/*}",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1/{feed.name=*/*/feeds/*}',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -472,18 +457,16 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "updateMask" : {},        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{saved_query.name=*/*/savedQueries/*}",
-                    "body": "saved_query",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1/{saved_query.name=*/*/savedQueries/*}',
+                'body': 'saved_query',
+            },
             ]
             return http_options
 
@@ -493,13 +476,14 @@ class _BaseAssetServiceRestTransport(AssetServiceTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=*/*/operations/*/**}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=*/*/operations/*/**}',
+            },
             ]
             return http_options
 
 
-__all__ = ("_BaseAssetServiceRestTransport",)
+__all__=(
+    '_BaseAssetServiceRestTransport',
+)

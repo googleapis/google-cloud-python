@@ -15,16 +15,17 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import client_options as client_options_lib
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
-
+from google.api_core import operations_v1
+from google.api_core import client_options as client_options_lib
 # The _observability module was introduced in google-api-core 2.36.0+.
 # On older versions of google-api-core or when type-checking against them,
 # mypy may flag attr-defined or assignment errors when fallback to None occurs.
@@ -32,27 +33,25 @@ try:
     from google.api_core import _observability  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
     _observability = None  # type: ignore[assignment]
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.storagebatchoperations_v1.types import (
-    storage_batch_operations,
-    storage_batch_operations_types,
-)
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
+
+import grpc                        # type: ignore
+import proto                       # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO, StorageBatchOperationsTransport
+from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.storagebatchoperations_v1.types import storage_batch_operations
+from google.cloud.storagebatchoperations_v1.types import storage_batch_operations_types
+from google.longrunning import operations_pb2 # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from .base import StorageBatchOperationsTransport, DEFAULT_CLIENT_INFO
 from .grpc import StorageBatchOperationsGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -63,13 +62,9 @@ _ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
 )
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -90,7 +85,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -101,11 +96,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -120,7 +111,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.storagebatchoperations.v1.StorageBatchOperations",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -151,15 +142,13 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "storagebatchoperations.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'storagebatchoperations.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -190,29 +179,27 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "storagebatchoperations.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'storagebatchoperations.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -357,30 +344,12 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
 
             if interceptors:
                 for interceptor in interceptors:
-                    if isinstance(
-                        interceptor, aio.UnaryStreamClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_unary_stream_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif isinstance(
-                        interceptor, aio.StreamUnaryClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_stream_unary_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif isinstance(
-                        interceptor, aio.StreamStreamClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_stream_stream_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
+                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
                     else:
                         self._grpc_channel._unary_unary_interceptors.append(interceptor)
 
@@ -389,73 +358,22 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
             # Verified end-to-end in Showcase system tracing tests.
             if (
                 _observability is not None
-                and (
-                    otel_interceptors := _observability.get_otel_async_interceptor(
-                        self._client_options
-                    )
-                )
-                is not None
+                and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
             ):  # pragma: NO COVER
-                otel_list = (
-                    otel_interceptors
-                    if isinstance(otel_interceptors, (list, tuple))
-                    else [otel_interceptors]
-                )  # pragma: NO COVER
+                otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
                 for interceptor in otel_list:  # pragma: NO COVER
-                    if (
-                        isinstance(interceptor, aio.UnaryStreamClientInterceptor)
-                        and hasattr(self._grpc_channel, "_unary_stream_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._unary_stream_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif (
-                        isinstance(interceptor, aio.StreamUnaryClientInterceptor)
-                        and hasattr(self._grpc_channel, "_stream_unary_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._stream_unary_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif (
-                        isinstance(interceptor, aio.StreamStreamClientInterceptor)
-                        and hasattr(self._grpc_channel, "_stream_stream_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._stream_stream_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif hasattr(
-                        self._grpc_channel, "_unary_unary_interceptors"
-                    ) and not any(
-                        getattr(i, "_is_otel_interceptor", None) is True
-                        for i in self._grpc_channel._unary_unary_interceptors
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._unary_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
+                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_stream_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_unary_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_stream_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif hasattr(self._grpc_channel, "_unary_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_unary_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._unary_unary_interceptors.append(interceptor)  # pragma: NO COVER
 
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
@@ -488,12 +406,9 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         return self._operations_client
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.ListJobsRequest],
-        Awaitable[storage_batch_operations.ListJobsResponse],
-    ]:
+    def list_jobs(self) -> Callable[
+            [storage_batch_operations.ListJobsRequest],
+            Awaitable[storage_batch_operations.ListJobsResponse]]:
         r"""Return a callable for the list jobs method over gRPC.
 
         Lists Jobs in a given project.
@@ -508,21 +423,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_jobs" not in self._stubs:
-            self._stubs["list_jobs"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListJobs",
+        if 'list_jobs' not in self._stubs:
+            self._stubs['list_jobs'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListJobs',
                 request_serializer=storage_batch_operations.ListJobsRequest.serialize,
                 response_deserializer=storage_batch_operations.ListJobsResponse.deserialize,
             )
-        return self._stubs["list_jobs"]
+        return self._stubs['list_jobs']
 
     @property
-    def get_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.GetJobRequest],
-        Awaitable[storage_batch_operations_types.Job],
-    ]:
+    def get_job(self) -> Callable[
+            [storage_batch_operations.GetJobRequest],
+            Awaitable[storage_batch_operations_types.Job]]:
         r"""Return a callable for the get job method over gRPC.
 
         Gets a batch job.
@@ -537,20 +449,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_job" not in self._stubs:
-            self._stubs["get_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetJob",
+        if 'get_job' not in self._stubs:
+            self._stubs['get_job'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetJob',
                 request_serializer=storage_batch_operations.GetJobRequest.serialize,
                 response_deserializer=storage_batch_operations_types.Job.deserialize,
             )
-        return self._stubs["get_job"]
+        return self._stubs['get_job']
 
     @property
-    def create_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.CreateJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_job(self) -> Callable[
+            [storage_batch_operations.CreateJobRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create job method over gRPC.
 
         Creates a batch job.
@@ -565,20 +475,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_job" not in self._stubs:
-            self._stubs["create_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CreateJob",
+        if 'create_job' not in self._stubs:
+            self._stubs['create_job'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CreateJob',
                 request_serializer=storage_batch_operations.CreateJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_job"]
+        return self._stubs['create_job']
 
     @property
-    def delete_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.DeleteJobRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_job(self) -> Callable[
+            [storage_batch_operations.DeleteJobRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete job method over gRPC.
 
         Deletes a batch job.
@@ -593,21 +501,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_job" not in self._stubs:
-            self._stubs["delete_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/DeleteJob",
+        if 'delete_job' not in self._stubs:
+            self._stubs['delete_job'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/DeleteJob',
                 request_serializer=storage_batch_operations.DeleteJobRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_job"]
+        return self._stubs['delete_job']
 
     @property
-    def cancel_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.CancelJobRequest],
-        Awaitable[storage_batch_operations.CancelJobResponse],
-    ]:
+    def cancel_job(self) -> Callable[
+            [storage_batch_operations.CancelJobRequest],
+            Awaitable[storage_batch_operations.CancelJobResponse]]:
         r"""Return a callable for the cancel job method over gRPC.
 
         Cancels a batch job.
@@ -622,21 +527,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "cancel_job" not in self._stubs:
-            self._stubs["cancel_job"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CancelJob",
+        if 'cancel_job' not in self._stubs:
+            self._stubs['cancel_job'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CancelJob',
                 request_serializer=storage_batch_operations.CancelJobRequest.serialize,
                 response_deserializer=storage_batch_operations.CancelJobResponse.deserialize,
             )
-        return self._stubs["cancel_job"]
+        return self._stubs['cancel_job']
 
     @property
-    def list_bucket_operations(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.ListBucketOperationsRequest],
-        Awaitable[storage_batch_operations.ListBucketOperationsResponse],
-    ]:
+    def list_bucket_operations(self) -> Callable[
+            [storage_batch_operations.ListBucketOperationsRequest],
+            Awaitable[storage_batch_operations.ListBucketOperationsResponse]]:
         r"""Return a callable for the list bucket operations method over gRPC.
 
         Lists BucketOperations in a given project and job.
@@ -651,21 +553,18 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_bucket_operations" not in self._stubs:
-            self._stubs["list_bucket_operations"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListBucketOperations",
+        if 'list_bucket_operations' not in self._stubs:
+            self._stubs['list_bucket_operations'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListBucketOperations',
                 request_serializer=storage_batch_operations.ListBucketOperationsRequest.serialize,
                 response_deserializer=storage_batch_operations.ListBucketOperationsResponse.deserialize,
             )
-        return self._stubs["list_bucket_operations"]
+        return self._stubs['list_bucket_operations']
 
     @property
-    def get_bucket_operation(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.GetBucketOperationRequest],
-        Awaitable[storage_batch_operations_types.BucketOperation],
-    ]:
+    def get_bucket_operation(self) -> Callable[
+            [storage_batch_operations.GetBucketOperationRequest],
+            Awaitable[storage_batch_operations_types.BucketOperation]]:
         r"""Return a callable for the get bucket operation method over gRPC.
 
         Gets a BucketOperation.
@@ -680,16 +579,16 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_bucket_operation" not in self._stubs:
-            self._stubs["get_bucket_operation"] = self._logged_channel.unary_unary(
-                "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetBucketOperation",
+        if 'get_bucket_operation' not in self._stubs:
+            self._stubs['get_bucket_operation'] = self._logged_channel.unary_unary(
+                '/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetBucketOperation',
                 request_serializer=storage_batch_operations.GetBucketOperationRequest.serialize,
                 response_deserializer=storage_batch_operations_types.BucketOperation.deserialize,
             )
-        return self._stubs["get_bucket_operation"]
+        return self._stubs['get_bucket_operation']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_jobs: self._wrap_method(
                 self.list_jobs,
@@ -818,25 +717,14 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
 
     def _wrap_method(self, func, *args, **kwargs):
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
-            kwargs["client_options"] = getattr(
-                self, "_client_options", None
-            )  # pragma: NO COVER
+            kwargs["client_options"] = getattr(self, "_client_options", None)  # pragma: NO COVER
             kwargs["kind"] = self.kind  # pragma: NO COVER
-            return gapic_v1.method_async.wrap_method(
-                func, *args, **kwargs
-            )  # pragma: NO COVER
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed.
-        for k in [
-            "client_options",
-            "method_name",
-            "is_streaming",
-            "kind",
-        ]:  # pragma: NO COVER
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(
-            func, *args, **kwargs
-        )  # pragma: NO COVER
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
     def close(self):
         return self._logged_channel.close()
@@ -849,7 +737,8 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
-        r"""Return a callable for the delete_operation method over gRPC."""
+        r"""Return a callable for the delete_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -866,7 +755,8 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -883,7 +773,8 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -899,10 +790,9 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -918,10 +808,9 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
-        r"""Return a callable for the list locations method over gRPC."""
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
+        r"""Return a callable for the list locations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -938,7 +827,8 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
     def get_location(
         self,
     ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC."""
+        r"""Return a callable for the list locations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -952,4 +842,6 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
         return self._stubs["get_location"]
 
 
-__all__ = ("StorageBatchOperationsGrpcAsyncIOTransport",)
+__all__ = (
+    'StorageBatchOperationsGrpcAsyncIOTransport',
+)

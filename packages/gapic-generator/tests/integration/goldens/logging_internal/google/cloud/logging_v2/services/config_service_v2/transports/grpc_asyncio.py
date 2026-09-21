@@ -15,16 +15,17 @@
 #
 import inspect
 import json
-import logging as std_logging
 import pickle
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import client_options as client_options_lib
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
-
+from google.api_core import operations_v1
+from google.api_core import client_options as client_options_lib
 # The _observability module was introduced in google-api-core 2.36.0+.
 # On older versions of google-api-core or when type-checking against them,
 # mypy may flag attr-defined or assignment errors when fallback to None occurs.
@@ -32,23 +33,23 @@ try:
     from google.api_core import _observability  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
     _observability = None  # type: ignore[assignment]
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.logging_v2.types import logging_config
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
+
+import grpc                        # type: ignore
+import proto                       # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from .base import DEFAULT_CLIENT_INFO, ConfigServiceV2Transport
+from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2 # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from .base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import ConfigServiceV2GrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -59,13 +60,9 @@ _ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
 )
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -86,7 +83,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra={
+                extra = {
                     "serviceName": "google.logging.v2.ConfigServiceV2",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -97,11 +94,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -116,7 +109,7 @@ class _LoggingClientAIOInterceptor(
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra={
+                extra = {
                     "serviceName": "google.logging.v2.ConfigServiceV2",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -143,15 +136,13 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "logging.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'logging.googleapis.com',
+                       credentials: Optional[ga_credentials.Credentials] = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -182,29 +173,27 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "logging.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-        api_mtls_endpoint: Optional[str] = None,
-        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'logging.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+            api_mtls_endpoint: Optional[str] = None,
+            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -349,30 +338,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
             if interceptors:
                 for interceptor in interceptors:
-                    if isinstance(
-                        interceptor, aio.UnaryStreamClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_unary_stream_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif isinstance(
-                        interceptor, aio.StreamUnaryClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_stream_unary_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif isinstance(
-                        interceptor, aio.StreamStreamClientInterceptor
-                    ) and hasattr(
-                        self._grpc_channel, "_stream_stream_interceptors"
-                    ):  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
+                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors"):  # pragma: NO COVER
+                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
                     else:
                         self._grpc_channel._unary_unary_interceptors.append(interceptor)
 
@@ -381,73 +352,22 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             # Verified end-to-end in Showcase system tracing tests.
             if (
                 _observability is not None
-                and (
-                    otel_interceptors := _observability.get_otel_async_interceptor(
-                        self._client_options
-                    )
-                )
-                is not None
+                and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
             ):  # pragma: NO COVER
-                otel_list = (
-                    otel_interceptors
-                    if isinstance(otel_interceptors, (list, tuple))
-                    else [otel_interceptors]
-                )  # pragma: NO COVER
+                otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
                 for interceptor in otel_list:  # pragma: NO COVER
-                    if (
-                        isinstance(interceptor, aio.UnaryStreamClientInterceptor)
-                        and hasattr(self._grpc_channel, "_unary_stream_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._unary_stream_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif (
-                        isinstance(interceptor, aio.StreamUnaryClientInterceptor)
-                        and hasattr(self._grpc_channel, "_stream_unary_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._stream_unary_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif (
-                        isinstance(interceptor, aio.StreamStreamClientInterceptor)
-                        and hasattr(self._grpc_channel, "_stream_stream_interceptors")
-                        and not any(
-                            getattr(i, "_is_otel_interceptor", None) is True
-                            for i in self._grpc_channel._stream_stream_interceptors
-                        )
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
-                    elif hasattr(
-                        self._grpc_channel, "_unary_unary_interceptors"
-                    ) and not any(
-                        getattr(i, "_is_otel_interceptor", None) is True
-                        for i in self._grpc_channel._unary_unary_interceptors
-                    ):  # pragma: NO COVER
-                        setattr(
-                            interceptor, "_is_otel_interceptor", True
-                        )  # pragma: NO COVER
-                        self._grpc_channel._unary_unary_interceptors.append(
-                            interceptor
-                        )  # pragma: NO COVER
+                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_stream_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_unary_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_stream_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
+                    elif hasattr(self._grpc_channel, "_unary_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_unary_interceptors):  # pragma: NO COVER
+                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
+                        self._grpc_channel._unary_unary_interceptors.append(interceptor)  # pragma: NO COVER
 
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
@@ -480,12 +400,9 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._operations_client
 
     @property
-    def list_buckets(
-        self,
-    ) -> Callable[
-        [logging_config.ListBucketsRequest],
-        Awaitable[logging_config.ListBucketsResponse],
-    ]:
+    def list_buckets(self) -> Callable[
+            [logging_config.ListBucketsRequest],
+            Awaitable[logging_config.ListBucketsResponse]]:
         r"""Return a callable for the list buckets method over gRPC.
 
         Lists log buckets.
@@ -500,20 +417,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_buckets" not in self._stubs:
-            self._stubs["list_buckets"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/ListBuckets",
+        if 'list_buckets' not in self._stubs:
+            self._stubs['list_buckets'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListBuckets',
                 request_serializer=logging_config.ListBucketsRequest.serialize,
                 response_deserializer=logging_config.ListBucketsResponse.deserialize,
             )
-        return self._stubs["list_buckets"]
+        return self._stubs['list_buckets']
 
     @property
-    def get_bucket(
-        self,
-    ) -> Callable[
-        [logging_config.GetBucketRequest], Awaitable[logging_config.LogBucket]
-    ]:
+    def get_bucket(self) -> Callable[
+            [logging_config.GetBucketRequest],
+            Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the get bucket method over gRPC.
 
         Gets a log bucket.
@@ -528,20 +443,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_bucket" not in self._stubs:
-            self._stubs["get_bucket"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetBucket",
+        if 'get_bucket' not in self._stubs:
+            self._stubs['get_bucket'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetBucket',
                 request_serializer=logging_config.GetBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
             )
-        return self._stubs["get_bucket"]
+        return self._stubs['get_bucket']
 
     @property
-    def create_bucket_async(
-        self,
-    ) -> Callable[
-        [logging_config.CreateBucketRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_bucket_async(self) -> Callable[
+            [logging_config.CreateBucketRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create bucket async method over gRPC.
 
         Creates a log bucket asynchronously that can be used
@@ -559,20 +472,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_bucket_async" not in self._stubs:
-            self._stubs["create_bucket_async"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateBucketAsync",
+        if 'create_bucket_async' not in self._stubs:
+            self._stubs['create_bucket_async'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateBucketAsync',
                 request_serializer=logging_config.CreateBucketRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_bucket_async"]
+        return self._stubs['create_bucket_async']
 
     @property
-    def update_bucket_async(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateBucketRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_bucket_async(self) -> Callable[
+            [logging_config.UpdateBucketRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update bucket async method over gRPC.
 
         Updates a log bucket asynchronously.
@@ -593,20 +504,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_bucket_async" not in self._stubs:
-            self._stubs["update_bucket_async"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateBucketAsync",
+        if 'update_bucket_async' not in self._stubs:
+            self._stubs['update_bucket_async'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateBucketAsync',
                 request_serializer=logging_config.UpdateBucketRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["update_bucket_async"]
+        return self._stubs['update_bucket_async']
 
     @property
-    def create_bucket(
-        self,
-    ) -> Callable[
-        [logging_config.CreateBucketRequest], Awaitable[logging_config.LogBucket]
-    ]:
+    def create_bucket(self) -> Callable[
+            [logging_config.CreateBucketRequest],
+            Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the create bucket method over gRPC.
 
         Creates a log bucket that can be used to store log
@@ -623,20 +532,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_bucket" not in self._stubs:
-            self._stubs["create_bucket"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateBucket",
+        if 'create_bucket' not in self._stubs:
+            self._stubs['create_bucket'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateBucket',
                 request_serializer=logging_config.CreateBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
             )
-        return self._stubs["create_bucket"]
+        return self._stubs['create_bucket']
 
     @property
-    def update_bucket(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateBucketRequest], Awaitable[logging_config.LogBucket]
-    ]:
+    def update_bucket(self) -> Callable[
+            [logging_config.UpdateBucketRequest],
+            Awaitable[logging_config.LogBucket]]:
         r"""Return a callable for the update bucket method over gRPC.
 
         Updates a log bucket.
@@ -657,18 +564,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_bucket" not in self._stubs:
-            self._stubs["update_bucket"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateBucket",
+        if 'update_bucket' not in self._stubs:
+            self._stubs['update_bucket'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateBucket',
                 request_serializer=logging_config.UpdateBucketRequest.serialize,
                 response_deserializer=logging_config.LogBucket.deserialize,
             )
-        return self._stubs["update_bucket"]
+        return self._stubs['update_bucket']
 
     @property
-    def delete_bucket(
-        self,
-    ) -> Callable[[logging_config.DeleteBucketRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_bucket(self) -> Callable[
+            [logging_config.DeleteBucketRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete bucket method over gRPC.
 
         Deletes a log bucket.
@@ -688,18 +595,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_bucket" not in self._stubs:
-            self._stubs["delete_bucket"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/DeleteBucket",
+        if 'delete_bucket' not in self._stubs:
+            self._stubs['delete_bucket'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteBucket',
                 request_serializer=logging_config.DeleteBucketRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_bucket"]
+        return self._stubs['delete_bucket']
 
     @property
-    def undelete_bucket(
-        self,
-    ) -> Callable[[logging_config.UndeleteBucketRequest], Awaitable[empty_pb2.Empty]]:
+    def undelete_bucket(self) -> Callable[
+            [logging_config.UndeleteBucketRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the undelete bucket method over gRPC.
 
         Undeletes a log bucket. A bucket that has been
@@ -716,20 +623,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "undelete_bucket" not in self._stubs:
-            self._stubs["undelete_bucket"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UndeleteBucket",
+        if 'undelete_bucket' not in self._stubs:
+            self._stubs['undelete_bucket'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UndeleteBucket',
                 request_serializer=logging_config.UndeleteBucketRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["undelete_bucket"]
+        return self._stubs['undelete_bucket']
 
     @property
-    def list_views(
-        self,
-    ) -> Callable[
-        [logging_config.ListViewsRequest], Awaitable[logging_config.ListViewsResponse]
-    ]:
+    def list_views(self) -> Callable[
+            [logging_config.ListViewsRequest],
+            Awaitable[logging_config.ListViewsResponse]]:
         r"""Return a callable for the list views method over gRPC.
 
         Lists views on a log bucket.
@@ -744,18 +649,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_views" not in self._stubs:
-            self._stubs["list_views"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/ListViews",
+        if 'list_views' not in self._stubs:
+            self._stubs['list_views'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListViews',
                 request_serializer=logging_config.ListViewsRequest.serialize,
                 response_deserializer=logging_config.ListViewsResponse.deserialize,
             )
-        return self._stubs["list_views"]
+        return self._stubs['list_views']
 
     @property
-    def get_view(
-        self,
-    ) -> Callable[[logging_config.GetViewRequest], Awaitable[logging_config.LogView]]:
+    def get_view(self) -> Callable[
+            [logging_config.GetViewRequest],
+            Awaitable[logging_config.LogView]]:
         r"""Return a callable for the get view method over gRPC.
 
         Gets a view on a log bucket..
@@ -770,20 +675,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_view" not in self._stubs:
-            self._stubs["get_view"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetView",
+        if 'get_view' not in self._stubs:
+            self._stubs['get_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetView',
                 request_serializer=logging_config.GetViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs["get_view"]
+        return self._stubs['get_view']
 
     @property
-    def create_view(
-        self,
-    ) -> Callable[
-        [logging_config.CreateViewRequest], Awaitable[logging_config.LogView]
-    ]:
+    def create_view(self) -> Callable[
+            [logging_config.CreateViewRequest],
+            Awaitable[logging_config.LogView]]:
         r"""Return a callable for the create view method over gRPC.
 
         Creates a view over log entries in a log bucket. A
@@ -799,20 +702,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_view" not in self._stubs:
-            self._stubs["create_view"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateView",
+        if 'create_view' not in self._stubs:
+            self._stubs['create_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateView',
                 request_serializer=logging_config.CreateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs["create_view"]
+        return self._stubs['create_view']
 
     @property
-    def update_view(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateViewRequest], Awaitable[logging_config.LogView]
-    ]:
+    def update_view(self) -> Callable[
+            [logging_config.UpdateViewRequest],
+            Awaitable[logging_config.LogView]]:
         r"""Return a callable for the update view method over gRPC.
 
         Updates a view on a log bucket. This method replaces the
@@ -831,18 +732,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_view" not in self._stubs:
-            self._stubs["update_view"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateView",
+        if 'update_view' not in self._stubs:
+            self._stubs['update_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateView',
                 request_serializer=logging_config.UpdateViewRequest.serialize,
                 response_deserializer=logging_config.LogView.deserialize,
             )
-        return self._stubs["update_view"]
+        return self._stubs['update_view']
 
     @property
-    def delete_view(
-        self,
-    ) -> Callable[[logging_config.DeleteViewRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_view(self) -> Callable[
+            [logging_config.DeleteViewRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete view method over gRPC.
 
         Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
@@ -860,20 +761,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_view" not in self._stubs:
-            self._stubs["delete_view"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/DeleteView",
+        if 'delete_view' not in self._stubs:
+            self._stubs['delete_view'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteView',
                 request_serializer=logging_config.DeleteViewRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_view"]
+        return self._stubs['delete_view']
 
     @property
-    def list_sinks(
-        self,
-    ) -> Callable[
-        [logging_config.ListSinksRequest], Awaitable[logging_config.ListSinksResponse]
-    ]:
+    def list_sinks(self) -> Callable[
+            [logging_config.ListSinksRequest],
+            Awaitable[logging_config.ListSinksResponse]]:
         r"""Return a callable for the list sinks method over gRPC.
 
         Lists sinks.
@@ -888,18 +787,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_sinks" not in self._stubs:
-            self._stubs["list_sinks"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/ListSinks",
+        if 'list_sinks' not in self._stubs:
+            self._stubs['list_sinks'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListSinks',
                 request_serializer=logging_config.ListSinksRequest.serialize,
                 response_deserializer=logging_config.ListSinksResponse.deserialize,
             )
-        return self._stubs["list_sinks"]
+        return self._stubs['list_sinks']
 
     @property
-    def get_sink(
-        self,
-    ) -> Callable[[logging_config.GetSinkRequest], Awaitable[logging_config.LogSink]]:
+    def get_sink(self) -> Callable[
+            [logging_config.GetSinkRequest],
+            Awaitable[logging_config.LogSink]]:
         r"""Return a callable for the get sink method over gRPC.
 
         Gets a sink.
@@ -914,20 +813,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_sink" not in self._stubs:
-            self._stubs["get_sink"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetSink",
+        if 'get_sink' not in self._stubs:
+            self._stubs['get_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetSink',
                 request_serializer=logging_config.GetSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs["get_sink"]
+        return self._stubs['get_sink']
 
     @property
-    def create_sink(
-        self,
-    ) -> Callable[
-        [logging_config.CreateSinkRequest], Awaitable[logging_config.LogSink]
-    ]:
+    def create_sink(self) -> Callable[
+            [logging_config.CreateSinkRequest],
+            Awaitable[logging_config.LogSink]]:
         r"""Return a callable for the create sink method over gRPC.
 
         Creates a sink that exports specified log entries to a
@@ -946,20 +843,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_sink" not in self._stubs:
-            self._stubs["create_sink"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateSink",
+        if 'create_sink' not in self._stubs:
+            self._stubs['create_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateSink',
                 request_serializer=logging_config.CreateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs["create_sink"]
+        return self._stubs['create_sink']
 
     @property
-    def update_sink(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateSinkRequest], Awaitable[logging_config.LogSink]
-    ]:
+    def update_sink(self) -> Callable[
+            [logging_config.UpdateSinkRequest],
+            Awaitable[logging_config.LogSink]]:
         r"""Return a callable for the update sink method over gRPC.
 
         Updates a sink. This method replaces the following fields in the
@@ -979,18 +874,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_sink" not in self._stubs:
-            self._stubs["update_sink"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateSink",
+        if 'update_sink' not in self._stubs:
+            self._stubs['update_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateSink',
                 request_serializer=logging_config.UpdateSinkRequest.serialize,
                 response_deserializer=logging_config.LogSink.deserialize,
             )
-        return self._stubs["update_sink"]
+        return self._stubs['update_sink']
 
     @property
-    def delete_sink(
-        self,
-    ) -> Callable[[logging_config.DeleteSinkRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_sink(self) -> Callable[
+            [logging_config.DeleteSinkRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete sink method over gRPC.
 
         Deletes a sink. If the sink has a unique ``writer_identity``,
@@ -1006,20 +901,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_sink" not in self._stubs:
-            self._stubs["delete_sink"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/DeleteSink",
+        if 'delete_sink' not in self._stubs:
+            self._stubs['delete_sink'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteSink',
                 request_serializer=logging_config.DeleteSinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_sink"]
+        return self._stubs['delete_sink']
 
     @property
-    def create_link(
-        self,
-    ) -> Callable[
-        [logging_config.CreateLinkRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_link(self) -> Callable[
+            [logging_config.CreateLinkRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create link method over gRPC.
 
         Asynchronously creates a linked dataset in BigQuery
@@ -1037,20 +930,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_link" not in self._stubs:
-            self._stubs["create_link"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateLink",
+        if 'create_link' not in self._stubs:
+            self._stubs['create_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateLink',
                 request_serializer=logging_config.CreateLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_link"]
+        return self._stubs['create_link']
 
     @property
-    def delete_link(
-        self,
-    ) -> Callable[
-        [logging_config.DeleteLinkRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_link(self) -> Callable[
+            [logging_config.DeleteLinkRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete link method over gRPC.
 
         Deletes a link. This will also delete the
@@ -1066,20 +957,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_link" not in self._stubs:
-            self._stubs["delete_link"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/DeleteLink",
+        if 'delete_link' not in self._stubs:
+            self._stubs['delete_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteLink',
                 request_serializer=logging_config.DeleteLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["delete_link"]
+        return self._stubs['delete_link']
 
     @property
-    def list_links(
-        self,
-    ) -> Callable[
-        [logging_config.ListLinksRequest], Awaitable[logging_config.ListLinksResponse]
-    ]:
+    def list_links(self) -> Callable[
+            [logging_config.ListLinksRequest],
+            Awaitable[logging_config.ListLinksResponse]]:
         r"""Return a callable for the list links method over gRPC.
 
         Lists links.
@@ -1094,18 +983,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_links" not in self._stubs:
-            self._stubs["list_links"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/ListLinks",
+        if 'list_links' not in self._stubs:
+            self._stubs['list_links'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListLinks',
                 request_serializer=logging_config.ListLinksRequest.serialize,
                 response_deserializer=logging_config.ListLinksResponse.deserialize,
             )
-        return self._stubs["list_links"]
+        return self._stubs['list_links']
 
     @property
-    def get_link(
-        self,
-    ) -> Callable[[logging_config.GetLinkRequest], Awaitable[logging_config.Link]]:
+    def get_link(self) -> Callable[
+            [logging_config.GetLinkRequest],
+            Awaitable[logging_config.Link]]:
         r"""Return a callable for the get link method over gRPC.
 
         Gets a link.
@@ -1120,21 +1009,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_link" not in self._stubs:
-            self._stubs["get_link"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetLink",
+        if 'get_link' not in self._stubs:
+            self._stubs['get_link'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetLink',
                 request_serializer=logging_config.GetLinkRequest.serialize,
                 response_deserializer=logging_config.Link.deserialize,
             )
-        return self._stubs["get_link"]
+        return self._stubs['get_link']
 
     @property
-    def list_exclusions(
-        self,
-    ) -> Callable[
-        [logging_config.ListExclusionsRequest],
-        Awaitable[logging_config.ListExclusionsResponse],
-    ]:
+    def list_exclusions(self) -> Callable[
+            [logging_config.ListExclusionsRequest],
+            Awaitable[logging_config.ListExclusionsResponse]]:
         r"""Return a callable for the list exclusions method over gRPC.
 
         Lists all the exclusions on the \_Default sink in a parent
@@ -1150,20 +1036,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_exclusions" not in self._stubs:
-            self._stubs["list_exclusions"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/ListExclusions",
+        if 'list_exclusions' not in self._stubs:
+            self._stubs['list_exclusions'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/ListExclusions',
                 request_serializer=logging_config.ListExclusionsRequest.serialize,
                 response_deserializer=logging_config.ListExclusionsResponse.deserialize,
             )
-        return self._stubs["list_exclusions"]
+        return self._stubs['list_exclusions']
 
     @property
-    def get_exclusion(
-        self,
-    ) -> Callable[
-        [logging_config.GetExclusionRequest], Awaitable[logging_config.LogExclusion]
-    ]:
+    def get_exclusion(self) -> Callable[
+            [logging_config.GetExclusionRequest],
+            Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the get exclusion method over gRPC.
 
         Gets the description of an exclusion in the \_Default sink.
@@ -1178,20 +1062,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_exclusion" not in self._stubs:
-            self._stubs["get_exclusion"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetExclusion",
+        if 'get_exclusion' not in self._stubs:
+            self._stubs['get_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetExclusion',
                 request_serializer=logging_config.GetExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs["get_exclusion"]
+        return self._stubs['get_exclusion']
 
     @property
-    def create_exclusion(
-        self,
-    ) -> Callable[
-        [logging_config.CreateExclusionRequest], Awaitable[logging_config.LogExclusion]
-    ]:
+    def create_exclusion(self) -> Callable[
+            [logging_config.CreateExclusionRequest],
+            Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the create exclusion method over gRPC.
 
         Creates a new exclusion in the \_Default sink in a specified
@@ -1208,20 +1090,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_exclusion" not in self._stubs:
-            self._stubs["create_exclusion"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CreateExclusion",
+        if 'create_exclusion' not in self._stubs:
+            self._stubs['create_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CreateExclusion',
                 request_serializer=logging_config.CreateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs["create_exclusion"]
+        return self._stubs['create_exclusion']
 
     @property
-    def update_exclusion(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateExclusionRequest], Awaitable[logging_config.LogExclusion]
-    ]:
+    def update_exclusion(self) -> Callable[
+            [logging_config.UpdateExclusionRequest],
+            Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the update exclusion method over gRPC.
 
         Changes one or more properties of an existing exclusion in the
@@ -1237,18 +1117,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_exclusion" not in self._stubs:
-            self._stubs["update_exclusion"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateExclusion",
+        if 'update_exclusion' not in self._stubs:
+            self._stubs['update_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateExclusion',
                 request_serializer=logging_config.UpdateExclusionRequest.serialize,
                 response_deserializer=logging_config.LogExclusion.deserialize,
             )
-        return self._stubs["update_exclusion"]
+        return self._stubs['update_exclusion']
 
     @property
-    def delete_exclusion(
-        self,
-    ) -> Callable[[logging_config.DeleteExclusionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_exclusion(self) -> Callable[
+            [logging_config.DeleteExclusionRequest],
+            Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete exclusion method over gRPC.
 
         Deletes an exclusion in the \_Default sink.
@@ -1263,20 +1143,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_exclusion" not in self._stubs:
-            self._stubs["delete_exclusion"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/DeleteExclusion",
+        if 'delete_exclusion' not in self._stubs:
+            self._stubs['delete_exclusion'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/DeleteExclusion',
                 request_serializer=logging_config.DeleteExclusionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["delete_exclusion"]
+        return self._stubs['delete_exclusion']
 
     @property
-    def get_cmek_settings(
-        self,
-    ) -> Callable[
-        [logging_config.GetCmekSettingsRequest], Awaitable[logging_config.CmekSettings]
-    ]:
+    def get_cmek_settings(self) -> Callable[
+            [logging_config.GetCmekSettingsRequest],
+            Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the get cmek settings method over gRPC.
 
         Gets the Logging CMEK settings for the given resource.
@@ -1300,21 +1178,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_cmek_settings" not in self._stubs:
-            self._stubs["get_cmek_settings"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetCmekSettings",
+        if 'get_cmek_settings' not in self._stubs:
+            self._stubs['get_cmek_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetCmekSettings',
                 request_serializer=logging_config.GetCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
             )
-        return self._stubs["get_cmek_settings"]
+        return self._stubs['get_cmek_settings']
 
     @property
-    def update_cmek_settings(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateCmekSettingsRequest],
-        Awaitable[logging_config.CmekSettings],
-    ]:
+    def update_cmek_settings(self) -> Callable[
+            [logging_config.UpdateCmekSettingsRequest],
+            Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the update cmek settings method over gRPC.
 
         Updates the Log Router CMEK settings for the given resource.
@@ -1343,20 +1218,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_cmek_settings" not in self._stubs:
-            self._stubs["update_cmek_settings"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateCmekSettings",
+        if 'update_cmek_settings' not in self._stubs:
+            self._stubs['update_cmek_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateCmekSettings',
                 request_serializer=logging_config.UpdateCmekSettingsRequest.serialize,
                 response_deserializer=logging_config.CmekSettings.deserialize,
             )
-        return self._stubs["update_cmek_settings"]
+        return self._stubs['update_cmek_settings']
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[
-        [logging_config.GetSettingsRequest], Awaitable[logging_config.Settings]
-    ]:
+    def get_settings(self) -> Callable[
+            [logging_config.GetSettingsRequest],
+            Awaitable[logging_config.Settings]]:
         r"""Return a callable for the get settings method over gRPC.
 
         Gets the Log Router settings for the given resource.
@@ -1381,20 +1254,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_settings" not in self._stubs:
-            self._stubs["get_settings"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/GetSettings",
+        if 'get_settings' not in self._stubs:
+            self._stubs['get_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/GetSettings',
                 request_serializer=logging_config.GetSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
             )
-        return self._stubs["get_settings"]
+        return self._stubs['get_settings']
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[
-        [logging_config.UpdateSettingsRequest], Awaitable[logging_config.Settings]
-    ]:
+    def update_settings(self) -> Callable[
+            [logging_config.UpdateSettingsRequest],
+            Awaitable[logging_config.Settings]]:
         r"""Return a callable for the update settings method over gRPC.
 
         Updates the Log Router settings for the given resource.
@@ -1426,20 +1297,18 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_settings" not in self._stubs:
-            self._stubs["update_settings"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/UpdateSettings",
+        if 'update_settings' not in self._stubs:
+            self._stubs['update_settings'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/UpdateSettings',
                 request_serializer=logging_config.UpdateSettingsRequest.serialize,
                 response_deserializer=logging_config.Settings.deserialize,
             )
-        return self._stubs["update_settings"]
+        return self._stubs['update_settings']
 
     @property
-    def copy_log_entries(
-        self,
-    ) -> Callable[
-        [logging_config.CopyLogEntriesRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def copy_log_entries(self) -> Callable[
+            [logging_config.CopyLogEntriesRequest],
+            Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the copy log entries method over gRPC.
 
         Copies a set of log entries from a log bucket to a
@@ -1455,16 +1324,16 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "copy_log_entries" not in self._stubs:
-            self._stubs["copy_log_entries"] = self._logged_channel.unary_unary(
-                "/google.logging.v2.ConfigServiceV2/CopyLogEntries",
+        if 'copy_log_entries' not in self._stubs:
+            self._stubs['copy_log_entries'] = self._logged_channel.unary_unary(
+                '/google.logging.v2.ConfigServiceV2/CopyLogEntries',
                 request_serializer=logging_config.CopyLogEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["copy_log_entries"]
+        return self._stubs['copy_log_entries']
 
     def _prep_wrapped_messages(self, client_info):
-        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_buckets: self._wrap_method(
                 self.list_buckets,
@@ -1757,25 +1626,14 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
     def _wrap_method(self, func, *args, **kwargs):
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
-            kwargs["client_options"] = getattr(
-                self, "_client_options", None
-            )  # pragma: NO COVER
+            kwargs["client_options"] = getattr(self, "_client_options", None)  # pragma: NO COVER
             kwargs["kind"] = self.kind  # pragma: NO COVER
-            return gapic_v1.method_async.wrap_method(
-                func, *args, **kwargs
-            )  # pragma: NO COVER
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed.
-        for k in [
-            "client_options",
-            "method_name",
-            "is_streaming",
-            "kind",
-        ]:  # pragma: NO COVER
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(
-            func, *args, **kwargs
-        )  # pragma: NO COVER
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
     def close(self):
         return self._logged_channel.close()
@@ -1788,7 +1646,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC."""
+        r"""Return a callable for the cancel_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -1805,7 +1664,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC."""
+        r"""Return a callable for the get_operation method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -1821,10 +1681,9 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
+        r"""Return a callable for the list_operations method over gRPC.
+        """
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -1838,4 +1697,6 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("ConfigServiceV2GrpcAsyncIOTransport",)
+__all__ = (
+    'ConfigServiceV2GrpcAsyncIOTransport',
+)

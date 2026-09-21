@@ -14,17 +14,20 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from google.api_core.client_options import ClientOptions
+
+from google.protobuf import json_format
+from google.cloud.location import locations_pb2 # type: ignore
+from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.api_core.client_options import ClientOptions
-from google.cloud.location import locations_pb2  # type: ignore
+
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import json_format
-
-from .base import DEFAULT_CLIENT_INFO, CloudRedisTransport
 
 
 class _BaseCloudRedisRestTransport(CloudRedisTransport):
@@ -40,18 +43,16 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "redis.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-        client_options: Optional[Union[ClientOptions, dict]] = None,
-        **kwargs,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'redis.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            client_options: Optional[Union[ClientOptions, dict]] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -78,9 +79,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -100,18 +99,16 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "instanceId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "instanceId" : "",        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
-                    "body": "instance",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{parent=projects/*/locations/*}/instances',
+                'body': 'instance',
+            },
             ]
             return http_options
 
@@ -119,15 +116,15 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}',
+            },
             ]
             return http_options
 
@@ -135,15 +132,15 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/instances/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}',
+            },
             ]
             return http_options
 
@@ -151,15 +148,15 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/instances",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{parent=projects/*/locations/*}/instances',
+            },
             ]
             return http_options
 
@@ -167,18 +164,16 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+            "updateMask" : {},        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{instance.name=projects/*/locations/*/instances/*}",
-                    "body": "instance",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1/{instance.name=projects/*/locations/*/instances/*}',
+                'body': 'instance',
+            },
             ]
             return http_options
 
@@ -188,11 +183,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}',
+            },
             ]
             return http_options
 
@@ -202,11 +196,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*}/locations',
+            },
             ]
             return http_options
 
@@ -216,11 +209,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+            },
             ]
             return http_options
 
@@ -230,11 +222,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
             ]
             return http_options
 
@@ -244,11 +235,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+            },
             ]
             return http_options
 
@@ -258,11 +248,10 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*}/operations',
+            },
             ]
             return http_options
 
@@ -272,14 +261,15 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/operations/*}:wait",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v2/{name=projects/*/locations/*/operations/*}:wait',
+                'body': '*',
+            },
             ]
             return http_options
 
 
-__all__ = ("_BaseCloudRedisRestTransport",)
+__all__=(
+    '_BaseCloudRedisRestTransport',
+)

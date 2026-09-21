@@ -13,45 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from collections import OrderedDict
+from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
-from collections import OrderedDict
-from http import HTTPStatus
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
 
-import google.protobuf
+from google.cloud.eventarc_v1 import gapic_version as package_version
+
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.cloud.eventarc_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.eventarc_v1 import gapic_version as package_version
-from google.cloud.eventarc_v1._compat import (
-    get_api_endpoint,
-    get_default_mtls_endpoint,
-    get_universe_domain,
-    read_environment_variables,
-    should_use_client_cert,
-)
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials             # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
+import google.protobuf
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -60,7 +43,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -74,42 +56,35 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.cloud.eventarc_v1.services.eventarc import pagers
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel as gce_channel
+from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import discovery
+from google.cloud.eventarc_v1.types import enrollment
+from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
+from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import google_api_source
+from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
+from google.cloud.eventarc_v1.types import google_channel_config
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
+from google.cloud.eventarc_v1.types import logging_config
+from google.cloud.eventarc_v1.types import message_bus
+from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
+from google.cloud.eventarc_v1.types import pipeline
+from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
+from google.cloud.eventarc_v1.types import trigger
+from google.cloud.eventarc_v1.types import trigger as gce_trigger
+from google.cloud.location import locations_pb2 # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2 # type: ignore
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.cloud.eventarc_v1.services.eventarc import pagers
-from google.cloud.eventarc_v1.types import (
-    channel,
-    channel_connection,
-    discovery,
-    enrollment,
-    eventarc,
-    google_api_source,
-    google_channel_config,
-    logging_config,
-    message_bus,
-    pipeline,
-    trigger,
-)
-from google.cloud.eventarc_v1.types import channel as gce_channel
-from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
-from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
-from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
-from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
-from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
-from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import (
-    iam_policy_pb2,  # type: ignore
-    policy_pb2,  # type: ignore
-)
-from google.longrunning import operations_pb2  # type: ignore
-
-from .transports.base import DEFAULT_CLIENT_INFO, EventarcTransport
+from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import EventarcGrpcTransport
 from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
 from .transports.rest import EventarcRestTransport
@@ -122,16 +97,14 @@ class EventarcClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-
     _transport_registry = OrderedDict()  # type: Dict[str, Type[EventarcTransport]]
     _transport_registry["grpc"] = EventarcGrpcTransport
     _transport_registry["grpc_asyncio"] = EventarcGrpcAsyncIOTransport
     _transport_registry["rest"] = EventarcRestTransport
 
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[EventarcTransport]:
+    def get_transport_class(cls,
+            label: Optional[str] = None,
+        ) -> Type[EventarcTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -194,7 +167,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         Returns:
             EventarcClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -211,249 +185,124 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return self._transport
 
     @staticmethod
-    def channel_path(
-        project: str,
-        location: str,
-        channel: str,
-    ) -> str:
+    def channel_path(project: str,location: str,channel: str,) -> str:
         """Returns a fully-qualified channel string."""
-        return "projects/{project}/locations/{location}/channels/{channel}".format(
-            project=project,
-            location=location,
-            channel=channel,
-        )
+        return "projects/{project}/locations/{location}/channels/{channel}".format(project=project, location=location, channel=channel, )
 
     @staticmethod
-    def parse_channel_path(path: str) -> Dict[str, str]:
+    def parse_channel_path(path: str) -> Dict[str,str]:
         """Parses a channel path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channels/(?P<channel>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channels/(?P<channel>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def channel_connection_path(
-        project: str,
-        location: str,
-        channel_connection: str,
-    ) -> str:
+    def channel_connection_path(project: str,location: str,channel_connection: str,) -> str:
         """Returns a fully-qualified channel_connection string."""
-        return "projects/{project}/locations/{location}/channelConnections/{channel_connection}".format(
-            project=project,
-            location=location,
-            channel_connection=channel_connection,
-        )
+        return "projects/{project}/locations/{location}/channelConnections/{channel_connection}".format(project=project, location=location, channel_connection=channel_connection, )
 
     @staticmethod
-    def parse_channel_connection_path(path: str) -> Dict[str, str]:
+    def parse_channel_connection_path(path: str) -> Dict[str,str]:
         """Parses a channel_connection path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channelConnections/(?P<channel_connection>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channelConnections/(?P<channel_connection>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def cloud_function_path(
-        project: str,
-        location: str,
-        function: str,
-    ) -> str:
+    def cloud_function_path(project: str,location: str,function: str,) -> str:
         """Returns a fully-qualified cloud_function string."""
-        return "projects/{project}/locations/{location}/functions/{function}".format(
-            project=project,
-            location=location,
-            function=function,
-        )
+        return "projects/{project}/locations/{location}/functions/{function}".format(project=project, location=location, function=function, )
 
     @staticmethod
-    def parse_cloud_function_path(path: str) -> Dict[str, str]:
+    def parse_cloud_function_path(path: str) -> Dict[str,str]:
         """Parses a cloud_function path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def crypto_key_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-    ) -> str:
+    def crypto_key_path(project: str,location: str,key_ring: str,crypto_key: str,) -> str:
         """Returns a fully-qualified crypto_key string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(project=project, location=location, key_ring=key_ring, crypto_key=crypto_key, )
 
     @staticmethod
-    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+    def parse_crypto_key_path(path: str) -> Dict[str,str]:
         """Parses a crypto_key path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def enrollment_path(
-        project: str,
-        location: str,
-        enrollment: str,
-    ) -> str:
+    def enrollment_path(project: str,location: str,enrollment: str,) -> str:
         """Returns a fully-qualified enrollment string."""
-        return (
-            "projects/{project}/locations/{location}/enrollments/{enrollment}".format(
-                project=project,
-                location=location,
-                enrollment=enrollment,
-            )
-        )
+        return "projects/{project}/locations/{location}/enrollments/{enrollment}".format(project=project, location=location, enrollment=enrollment, )
 
     @staticmethod
-    def parse_enrollment_path(path: str) -> Dict[str, str]:
+    def parse_enrollment_path(path: str) -> Dict[str,str]:
         """Parses a enrollment path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/enrollments/(?P<enrollment>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/enrollments/(?P<enrollment>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def google_api_source_path(
-        project: str,
-        location: str,
-        google_api_source: str,
-    ) -> str:
+    def google_api_source_path(project: str,location: str,google_api_source: str,) -> str:
         """Returns a fully-qualified google_api_source string."""
-        return "projects/{project}/locations/{location}/googleApiSources/{google_api_source}".format(
-            project=project,
-            location=location,
-            google_api_source=google_api_source,
-        )
+        return "projects/{project}/locations/{location}/googleApiSources/{google_api_source}".format(project=project, location=location, google_api_source=google_api_source, )
 
     @staticmethod
-    def parse_google_api_source_path(path: str) -> Dict[str, str]:
+    def parse_google_api_source_path(path: str) -> Dict[str,str]:
         """Parses a google_api_source path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/googleApiSources/(?P<google_api_source>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/googleApiSources/(?P<google_api_source>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def google_channel_config_path(
-        project: str,
-        location: str,
-    ) -> str:
+    def google_channel_config_path(project: str,location: str,) -> str:
         """Returns a fully-qualified google_channel_config string."""
-        return "projects/{project}/locations/{location}/googleChannelConfig".format(
-            project=project,
-            location=location,
-        )
+        return "projects/{project}/locations/{location}/googleChannelConfig".format(project=project, location=location, )
 
     @staticmethod
-    def parse_google_channel_config_path(path: str) -> Dict[str, str]:
+    def parse_google_channel_config_path(path: str) -> Dict[str,str]:
         """Parses a google_channel_config path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/googleChannelConfig$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/googleChannelConfig$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def message_bus_path(
-        project: str,
-        location: str,
-        message_bus: str,
-    ) -> str:
+    def message_bus_path(project: str,location: str,message_bus: str,) -> str:
         """Returns a fully-qualified message_bus string."""
-        return (
-            "projects/{project}/locations/{location}/messageBuses/{message_bus}".format(
-                project=project,
-                location=location,
-                message_bus=message_bus,
-            )
-        )
+        return "projects/{project}/locations/{location}/messageBuses/{message_bus}".format(project=project, location=location, message_bus=message_bus, )
 
     @staticmethod
-    def parse_message_bus_path(path: str) -> Dict[str, str]:
+    def parse_message_bus_path(path: str) -> Dict[str,str]:
         """Parses a message_bus path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/messageBuses/(?P<message_bus>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/messageBuses/(?P<message_bus>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def network_attachment_path(
-        project: str,
-        region: str,
-        networkattachment: str,
-    ) -> str:
+    def network_attachment_path(project: str,region: str,networkattachment: str,) -> str:
         """Returns a fully-qualified network_attachment string."""
-        return "projects/{project}/regions/{region}/networkAttachments/{networkattachment}".format(
-            project=project,
-            region=region,
-            networkattachment=networkattachment,
-        )
+        return "projects/{project}/regions/{region}/networkAttachments/{networkattachment}".format(project=project, region=region, networkattachment=networkattachment, )
 
     @staticmethod
-    def parse_network_attachment_path(path: str) -> Dict[str, str]:
+    def parse_network_attachment_path(path: str) -> Dict[str,str]:
         """Parses a network_attachment path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<networkattachment>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<networkattachment>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def pipeline_path(
-        project: str,
-        location: str,
-        pipeline: str,
-    ) -> str:
+    def pipeline_path(project: str,location: str,pipeline: str,) -> str:
         """Returns a fully-qualified pipeline string."""
-        return "projects/{project}/locations/{location}/pipelines/{pipeline}".format(
-            project=project,
-            location=location,
-            pipeline=pipeline,
-        )
+        return "projects/{project}/locations/{location}/pipelines/{pipeline}".format(project=project, location=location, pipeline=pipeline, )
 
     @staticmethod
-    def parse_pipeline_path(path: str) -> Dict[str, str]:
+    def parse_pipeline_path(path: str) -> Dict[str,str]:
         """Parses a pipeline path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/pipelines/(?P<pipeline>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/pipelines/(?P<pipeline>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def provider_path(
-        project: str,
-        location: str,
-        provider: str,
-    ) -> str:
+    def provider_path(project: str,location: str,provider: str,) -> str:
         """Returns a fully-qualified provider string."""
-        return "projects/{project}/locations/{location}/providers/{provider}".format(
-            project=project,
-            location=location,
-            provider=provider,
-        )
+        return "projects/{project}/locations/{location}/providers/{provider}".format(project=project, location=location, provider=provider, )
 
     @staticmethod
-    def parse_provider_path(path: str) -> Dict[str, str]:
+    def parse_provider_path(path: str) -> Dict[str,str]:
         """Parses a provider path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/providers/(?P<provider>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/providers/(?P<provider>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -462,173 +311,112 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return "*".format()
 
     @staticmethod
-    def parse_service_path(path: str) -> Dict[str, str]:
+    def parse_service_path(path: str) -> Dict[str,str]:
         """Parses a service path into its component segments."""
         m = re.match(r"^.*$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_account_path(
-        project: str,
-        service_account: str,
-    ) -> str:
+    def service_account_path(project: str,service_account: str,) -> str:
         """Returns a fully-qualified service_account string."""
-        return "projects/{project}/serviceAccounts/{service_account}".format(
-            project=project,
-            service_account=service_account,
-        )
+        return "projects/{project}/serviceAccounts/{service_account}".format(project=project, service_account=service_account, )
 
     @staticmethod
-    def parse_service_account_path(path: str) -> Dict[str, str]:
+    def parse_service_account_path(path: str) -> Dict[str,str]:
         """Parses a service_account path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def topic_path(
-        project: str,
-        topic: str,
-    ) -> str:
+    def topic_path(project: str,topic: str,) -> str:
         """Returns a fully-qualified topic string."""
-        return "projects/{project}/topics/{topic}".format(
-            project=project,
-            topic=topic,
-        )
+        return "projects/{project}/topics/{topic}".format(project=project, topic=topic, )
 
     @staticmethod
-    def parse_topic_path(path: str) -> Dict[str, str]:
+    def parse_topic_path(path: str) -> Dict[str,str]:
         """Parses a topic path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def trigger_path(
-        project: str,
-        location: str,
-        trigger: str,
-    ) -> str:
+    def trigger_path(project: str,location: str,trigger: str,) -> str:
         """Returns a fully-qualified trigger string."""
-        return "projects/{project}/locations/{location}/triggers/{trigger}".format(
-            project=project,
-            location=location,
-            trigger=trigger,
-        )
+        return "projects/{project}/locations/{location}/triggers/{trigger}".format(project=project, location=location, trigger=trigger, )
 
     @staticmethod
-    def parse_trigger_path(path: str) -> Dict[str, str]:
+    def parse_trigger_path(path: str) -> Dict[str,str]:
         """Parses a trigger path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/triggers/(?P<trigger>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/triggers/(?P<trigger>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def workflow_path(
-        project: str,
-        location: str,
-        workflow: str,
-    ) -> str:
+    def workflow_path(project: str,location: str,workflow: str,) -> str:
         """Returns a fully-qualified workflow string."""
-        return "projects/{project}/locations/{location}/workflows/{workflow}".format(
-            project=project,
-            location=location,
-            workflow=workflow,
-        )
+        return "projects/{project}/locations/{location}/workflows/{workflow}".format(project=project, location=location, workflow=workflow, )
 
     @staticmethod
-    def parse_workflow_path(path: str) -> Dict[str, str]:
+    def parse_workflow_path(path: str) -> Dict[str,str]:
         """Parses a workflow path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workflows/(?P<workflow>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workflows/(?P<workflow>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
+    def common_billing_account_path(billing_account: str, ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
+        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
+    def common_folder_path(folder: str, ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
+        return "folders/{folder}".format(folder=folder, )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
+    def parse_common_folder_path(path: str) -> Dict[str,str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
+    def common_organization_path(organization: str, ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
+        return "organizations/{organization}".format(organization=organization, )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
+    def parse_common_organization_path(path: str) -> Dict[str,str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
+    def common_project_path(project: str, ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
+        return "projects/{project}".format(project=project, )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
+    def parse_common_project_path(path: str) -> Dict[str,str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
+    def common_location_path(project: str, location: str, ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
+        return "projects/{project}/locations/{location}".format(project=project, location=location, )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
+    def parse_common_location_path(path: str) -> Dict[str,str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -660,18 +448,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
@@ -684,10 +468,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT  # type: ignore
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
@@ -726,18 +508,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         return True
 
     def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
+        self,
+        error: core_exceptions.GoogleAPICallError
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -770,16 +549,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
         """
         return self._universe_domain
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, EventarcTransport, Callable[..., EventarcTransport]]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, EventarcTransport, Callable[..., EventarcTransport]]] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the eventarc client.
 
         Args:
@@ -837,23 +612,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
+        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            read_environment_variables()
-        )
-        self._client_cert_source = EventarcClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = get_universe_domain(
-            universe_domain_opt,
-            self._universe_domain_env,
-            default_universe=EventarcClient._DEFAULT_UNIVERSE,
-        )
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = read_environment_variables()
+        self._client_cert_source = EventarcClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env, default_universe=EventarcClient._DEFAULT_UNIVERSE)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -865,9 +630,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -876,40 +639,35 @@ class EventarcClient(metaclass=EventarcClientMeta):
         if transport_provided:
             # transport is a EventarcTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, "
+                                 "provide its credentials directly.")
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = cast(EventarcTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = self._api_endpoint or get_api_endpoint(
-            api_override=self._client_options.api_endpoint,
-            universe_domain=self._universe_domain,
-            default_universe=EventarcClient._DEFAULT_UNIVERSE,
-            default_mtls_endpoint=EventarcClient.DEFAULT_MTLS_ENDPOINT,
-            default_endpoint_template=EventarcClient._DEFAULT_ENDPOINT_TEMPLATE,
-            use_mtls=self._use_mtls_endpoint == "always"
-            or (self._use_mtls_endpoint == "auto" and self._client_cert_source),
-        )
+        self._api_endpoint = (self._api_endpoint or
+            get_api_endpoint(
+                api_override=self._client_options.api_endpoint,
+                universe_domain=self._universe_domain,
+                default_universe=EventarcClient._DEFAULT_UNIVERSE,
+                default_mtls_endpoint=EventarcClient.DEFAULT_MTLS_ENDPOINT,
+                default_endpoint_template=EventarcClient._DEFAULT_ENDPOINT_TEMPLATE,
+                use_mtls=self._use_mtls_endpoint == "always" or (
+                    self._use_mtls_endpoint == "auto" and self._client_cert_source
+                ),
+            ))
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[EventarcTransport], Callable[..., EventarcTransport]
-            ] = (
+            transport_init: Union[Type[EventarcTransport], Callable[..., EventarcTransport]] = (
                 EventarcClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., EventarcTransport], transport)
@@ -934,46 +692,33 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 "client_info": client_info,
                 "always_use_jwt_access": True,
                 "api_audience": self._client_options.api_audience,
-                **(
-                    {"client_options": client_options}
-                    if client_options is not None
-                    else {}
-                ),
+                **({"client_options": client_options} if client_options is not None else {}),
             }
             self._transport = transport_init(**transport_kwargs)
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.eventarc_v1.EventarcClient`.",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                    } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "credentialsType": None,
-                    },
+                    }
                 )
 
-    def get_trigger(
-        self,
-        request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> trigger.Trigger:
+    def get_trigger(self,
+            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> trigger.Trigger:
         r"""Get a single trigger.
 
         .. code-block:: python
@@ -1031,14 +776,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1056,7 +797,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1073,15 +816,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_triggers(
-        self,
-        request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListTriggersPager:
+    def list_triggers(self,
+            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListTriggersPager:
         r"""List triggers.
 
         .. code-block:: python
@@ -1142,14 +884,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1167,7 +905,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1195,17 +935,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_trigger(
-        self,
-        request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        trigger: Optional[gce_trigger.Trigger] = None,
-        trigger_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_trigger(self,
+            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            trigger_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new trigger in a particular project and
         location.
 
@@ -1292,14 +1031,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, trigger, trigger_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1321,7 +1056,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1346,17 +1083,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_trigger(
-        self,
-        request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
-        *,
-        trigger: Optional[gce_trigger.Trigger] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        allow_missing: Optional[bool] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_trigger(self,
+            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
+            *,
+            trigger: Optional[gce_trigger.Trigger] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            allow_missing: Optional[bool] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single trigger.
 
         .. code-block:: python
@@ -1435,14 +1171,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [trigger, update_mask, allow_missing]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1464,9 +1196,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("trigger.name", request.trigger.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("trigger.name", request.trigger.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1491,16 +1223,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_trigger(
-        self,
-        request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        allow_missing: Optional[bool] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_trigger(self,
+            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            allow_missing: Optional[bool] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single trigger.
 
         .. code-block:: python
@@ -1573,14 +1304,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, allow_missing]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1600,7 +1327,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1625,15 +1354,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_channel(
-        self,
-        request: Optional[Union[eventarc.GetChannelRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> channel.Channel:
+    def get_channel(self,
+            request: Optional[Union[eventarc.GetChannelRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> channel.Channel:
         r"""Get a single Channel.
 
         .. code-block:: python
@@ -1697,14 +1425,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1722,7 +1446,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1739,15 +1465,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_channels(
-        self,
-        request: Optional[Union[eventarc.ListChannelsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListChannelsPager:
+    def list_channels(self,
+            request: Optional[Union[eventarc.ListChannelsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListChannelsPager:
         r"""List channels.
 
         .. code-block:: python
@@ -1808,14 +1533,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1833,7 +1554,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1861,17 +1584,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_channel(
-        self,
-        request: Optional[Union[eventarc.CreateChannelRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        channel: Optional[gce_channel.Channel] = None,
-        channel_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_channel(self,
+            request: Optional[Union[eventarc.CreateChannelRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            channel: Optional[gce_channel.Channel] = None,
+            channel_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new channel in a particular project and
         location.
 
@@ -1958,14 +1680,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, channel, channel_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1987,7 +1705,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2012,16 +1732,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_channel(
-        self,
-        request: Optional[Union[eventarc.UpdateChannelRequest, dict]] = None,
-        *,
-        channel: Optional[gce_channel.Channel] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_channel(self,
+            request: Optional[Union[eventarc.UpdateChannelRequest, dict]] = None,
+            *,
+            channel: Optional[gce_channel.Channel] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single channel.
 
         .. code-block:: python
@@ -2095,14 +1814,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [channel, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2122,9 +1837,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("channel.name", request.channel.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("channel.name", request.channel.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2149,15 +1864,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_channel(
-        self,
-        request: Optional[Union[eventarc.DeleteChannelRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_channel(self,
+            request: Optional[Union[eventarc.DeleteChannelRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single channel.
 
         .. code-block:: python
@@ -2225,14 +1939,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2250,7 +1960,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2275,15 +1987,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_provider(
-        self,
-        request: Optional[Union[eventarc.GetProviderRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> discovery.Provider:
+    def get_provider(self,
+            request: Optional[Union[eventarc.GetProviderRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> discovery.Provider:
         r"""Get a single Provider.
 
         .. code-block:: python
@@ -2341,14 +2052,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2366,7 +2073,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2383,15 +2092,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_providers(
-        self,
-        request: Optional[Union[eventarc.ListProvidersRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListProvidersPager:
+    def list_providers(self,
+            request: Optional[Union[eventarc.ListProvidersRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListProvidersPager:
         r"""List providers.
 
         .. code-block:: python
@@ -2452,14 +2160,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2477,7 +2181,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2505,15 +2211,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_channel_connection(
-        self,
-        request: Optional[Union[eventarc.GetChannelConnectionRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> channel_connection.ChannelConnection:
+    def get_channel_connection(self,
+            request: Optional[Union[eventarc.GetChannelConnectionRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
 
         .. code-block:: python
@@ -2576,14 +2281,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2601,7 +2302,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2618,15 +2321,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_channel_connections(
-        self,
-        request: Optional[Union[eventarc.ListChannelConnectionsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListChannelConnectionsPager:
+    def list_channel_connections(self,
+            request: Optional[Union[eventarc.ListChannelConnectionsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListChannelConnectionsPager:
         r"""List channel connections.
 
         .. code-block:: python
@@ -2688,14 +2390,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2713,7 +2411,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2741,17 +2441,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_channel_connection(
-        self,
-        request: Optional[Union[eventarc.CreateChannelConnectionRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        channel_connection: Optional[gce_channel_connection.ChannelConnection] = None,
-        channel_connection_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_channel_connection(self,
+            request: Optional[Union[eventarc.CreateChannelConnectionRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            channel_connection: Optional[gce_channel_connection.ChannelConnection] = None,
+            channel_connection_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new ChannelConnection in a particular
         project and location.
 
@@ -2839,14 +2538,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, channel_connection, channel_connection_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2863,14 +2558,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_channel_connection
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2895,15 +2590,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_channel_connection(
-        self,
-        request: Optional[Union[eventarc.DeleteChannelConnectionRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_channel_connection(self,
+            request: Optional[Union[eventarc.DeleteChannelConnectionRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single ChannelConnection.
 
         .. code-block:: python
@@ -2970,14 +2664,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2990,14 +2680,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_channel_connection
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -3022,15 +2712,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_google_channel_config(
-        self,
-        request: Optional[Union[eventarc.GetGoogleChannelConfigRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> google_channel_config.GoogleChannelConfig:
+    def get_google_channel_config(self,
+            request: Optional[Union[eventarc.GetGoogleChannelConfigRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> google_channel_config.GoogleChannelConfig:
         r"""Get a GoogleChannelConfig.
         The name of the GoogleChannelConfig in the response is
         ALWAYS coded with projectID.
@@ -3096,14 +2785,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3116,14 +2801,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_google_channel_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -3140,20 +2825,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_google_channel_config(
-        self,
-        request: Optional[
-            Union[eventarc.UpdateGoogleChannelConfigRequest, dict]
-        ] = None,
-        *,
-        google_channel_config: Optional[
-            gce_google_channel_config.GoogleChannelConfig
-        ] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> gce_google_channel_config.GoogleChannelConfig:
+    def update_google_channel_config(self,
+            request: Optional[Union[eventarc.UpdateGoogleChannelConfigRequest, dict]] = None,
+            *,
+            google_channel_config: Optional[gce_google_channel_config.GoogleChannelConfig] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> gce_google_channel_config.GoogleChannelConfig:
         r"""Update a single GoogleChannelConfig
 
         .. code-block:: python
@@ -3227,14 +2907,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [google_channel_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3249,16 +2925,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_google_channel_config
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("google_channel_config.name", request.google_channel_config.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("google_channel_config.name", request.google_channel_config.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -3275,15 +2949,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_message_bus(
-        self,
-        request: Optional[Union[eventarc.GetMessageBusRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> message_bus.MessageBus:
+    def get_message_bus(self,
+            request: Optional[Union[eventarc.GetMessageBusRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> message_bus.MessageBus:
         r"""Get a single MessageBus.
 
         .. code-block:: python
@@ -3347,14 +3020,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3372,7 +3041,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -3389,15 +3060,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_message_buses(
-        self,
-        request: Optional[Union[eventarc.ListMessageBusesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListMessageBusesPager:
+    def list_message_buses(self,
+            request: Optional[Union[eventarc.ListMessageBusesRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListMessageBusesPager:
         r"""List message buses.
 
         .. code-block:: python
@@ -3458,14 +3128,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3483,7 +3149,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -3511,17 +3179,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_message_bus_enrollments(
-        self,
-        request: Optional[
-            Union[eventarc.ListMessageBusEnrollmentsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListMessageBusEnrollmentsPager:
+    def list_message_bus_enrollments(self,
+            request: Optional[Union[eventarc.ListMessageBusEnrollmentsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListMessageBusEnrollmentsPager:
         r"""List message bus enrollments.
 
         .. code-block:: python
@@ -3583,14 +3248,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3603,14 +3264,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_message_bus_enrollments
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_message_bus_enrollments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -3638,17 +3299,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_message_bus(
-        self,
-        request: Optional[Union[eventarc.CreateMessageBusRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        message_bus: Optional[gce_message_bus.MessageBus] = None,
-        message_bus_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_message_bus(self,
+            request: Optional[Union[eventarc.CreateMessageBusRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            message_bus: Optional[gce_message_bus.MessageBus] = None,
+            message_bus_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new MessageBus in a particular project and
         location.
 
@@ -3730,14 +3390,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, message_bus, message_bus_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3759,7 +3415,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -3784,16 +3442,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_message_bus(
-        self,
-        request: Optional[Union[eventarc.UpdateMessageBusRequest, dict]] = None,
-        *,
-        message_bus: Optional[gce_message_bus.MessageBus] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_message_bus(self,
+            request: Optional[Union[eventarc.UpdateMessageBusRequest, dict]] = None,
+            *,
+            message_bus: Optional[gce_message_bus.MessageBus] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single message bus.
 
         .. code-block:: python
@@ -3869,14 +3526,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [message_bus, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3896,9 +3549,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("message_bus.name", request.message_bus.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("message_bus.name", request.message_bus.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -3923,16 +3576,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_message_bus(
-        self,
-        request: Optional[Union[eventarc.DeleteMessageBusRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_message_bus(self,
+            request: Optional[Union[eventarc.DeleteMessageBusRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            etag: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single message bus.
 
         .. code-block:: python
@@ -4007,14 +3659,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4034,7 +3682,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -4059,15 +3709,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_enrollment(
-        self,
-        request: Optional[Union[eventarc.GetEnrollmentRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> enrollment.Enrollment:
+    def get_enrollment(self,
+            request: Optional[Union[eventarc.GetEnrollmentRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> enrollment.Enrollment:
         r"""Get a single Enrollment.
 
         .. code-block:: python
@@ -4129,14 +3778,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4154,7 +3799,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -4171,15 +3818,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_enrollments(
-        self,
-        request: Optional[Union[eventarc.ListEnrollmentsRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListEnrollmentsPager:
+    def list_enrollments(self,
+            request: Optional[Union[eventarc.ListEnrollmentsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListEnrollmentsPager:
         r"""List Enrollments.
 
         .. code-block:: python
@@ -4240,14 +3886,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4265,7 +3907,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -4293,17 +3937,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_enrollment(
-        self,
-        request: Optional[Union[eventarc.CreateEnrollmentRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        enrollment: Optional[gce_enrollment.Enrollment] = None,
-        enrollment_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_enrollment(self,
+            request: Optional[Union[eventarc.CreateEnrollmentRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            enrollment: Optional[gce_enrollment.Enrollment] = None,
+            enrollment_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new Enrollment in a particular project and
         location.
 
@@ -4390,14 +4033,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, enrollment, enrollment_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4419,7 +4058,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -4444,16 +4085,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_enrollment(
-        self,
-        request: Optional[Union[eventarc.UpdateEnrollmentRequest, dict]] = None,
-        *,
-        enrollment: Optional[gce_enrollment.Enrollment] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_enrollment(self,
+            request: Optional[Union[eventarc.UpdateEnrollmentRequest, dict]] = None,
+            *,
+            enrollment: Optional[gce_enrollment.Enrollment] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single Enrollment.
 
         .. code-block:: python
@@ -4534,14 +4174,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [enrollment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4561,9 +4197,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("enrollment.name", request.enrollment.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("enrollment.name", request.enrollment.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -4588,16 +4224,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_enrollment(
-        self,
-        request: Optional[Union[eventarc.DeleteEnrollmentRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_enrollment(self,
+            request: Optional[Union[eventarc.DeleteEnrollmentRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            etag: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single Enrollment.
 
         .. code-block:: python
@@ -4671,14 +4306,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4698,7 +4329,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -4723,15 +4356,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_pipeline(
-        self,
-        request: Optional[Union[eventarc.GetPipelineRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pipeline.Pipeline:
+    def get_pipeline(self,
+            request: Optional[Union[eventarc.GetPipelineRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pipeline.Pipeline:
         r"""Get a single Pipeline.
 
         .. code-block:: python
@@ -4789,14 +4421,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4814,7 +4442,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -4831,15 +4461,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_pipelines(
-        self,
-        request: Optional[Union[eventarc.ListPipelinesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListPipelinesPager:
+    def list_pipelines(self,
+            request: Optional[Union[eventarc.ListPipelinesRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListPipelinesPager:
         r"""List pipelines.
 
         .. code-block:: python
@@ -4901,14 +4530,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4926,7 +4551,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -4954,17 +4581,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_pipeline(
-        self,
-        request: Optional[Union[eventarc.CreatePipelineRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        pipeline: Optional[gce_pipeline.Pipeline] = None,
-        pipeline_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_pipeline(self,
+            request: Optional[Union[eventarc.CreatePipelineRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            pipeline: Optional[gce_pipeline.Pipeline] = None,
+            pipeline_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new Pipeline in a particular project and
         location.
 
@@ -5048,14 +4674,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, pipeline, pipeline_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5077,7 +4699,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -5102,16 +4726,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_pipeline(
-        self,
-        request: Optional[Union[eventarc.UpdatePipelineRequest, dict]] = None,
-        *,
-        pipeline: Optional[gce_pipeline.Pipeline] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_pipeline(self,
+            request: Optional[Union[eventarc.UpdatePipelineRequest, dict]] = None,
+            *,
+            pipeline: Optional[gce_pipeline.Pipeline] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single pipeline.
 
         .. code-block:: python
@@ -5187,14 +4810,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [pipeline, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5214,9 +4833,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("pipeline.name", request.pipeline.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("pipeline.name", request.pipeline.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -5241,16 +4860,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_pipeline(
-        self,
-        request: Optional[Union[eventarc.DeletePipelineRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_pipeline(self,
+            request: Optional[Union[eventarc.DeletePipelineRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            etag: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single pipeline.
 
         .. code-block:: python
@@ -5323,14 +4941,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5350,7 +4964,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -5375,15 +4991,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def get_google_api_source(
-        self,
-        request: Optional[Union[eventarc.GetGoogleApiSourceRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> google_api_source.GoogleApiSource:
+    def get_google_api_source(self,
+            request: Optional[Union[eventarc.GetGoogleApiSourceRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> google_api_source.GoogleApiSource:
         r"""Get a single GoogleApiSource.
 
         .. code-block:: python
@@ -5442,14 +5057,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5467,7 +5078,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -5484,15 +5097,14 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def list_google_api_sources(
-        self,
-        request: Optional[Union[eventarc.ListGoogleApiSourcesRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListGoogleApiSourcesPager:
+    def list_google_api_sources(self,
+            request: Optional[Union[eventarc.ListGoogleApiSourcesRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListGoogleApiSourcesPager:
         r"""List GoogleApiSources.
 
         .. code-block:: python
@@ -5554,14 +5166,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5579,7 +5187,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -5607,17 +5217,16 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def create_google_api_source(
-        self,
-        request: Optional[Union[eventarc.CreateGoogleApiSourceRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        google_api_source: Optional[gce_google_api_source.GoogleApiSource] = None,
-        google_api_source_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def create_google_api_source(self,
+            request: Optional[Union[eventarc.CreateGoogleApiSourceRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            google_api_source: Optional[gce_google_api_source.GoogleApiSource] = None,
+            google_api_source_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Create a new GoogleApiSource in a particular project
         and location.
 
@@ -5705,14 +5314,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, google_api_source, google_api_source_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5734,7 +5339,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -5759,16 +5366,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def update_google_api_source(
-        self,
-        request: Optional[Union[eventarc.UpdateGoogleApiSourceRequest, dict]] = None,
-        *,
-        google_api_source: Optional[gce_google_api_source.GoogleApiSource] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def update_google_api_source(self,
+            request: Optional[Union[eventarc.UpdateGoogleApiSourceRequest, dict]] = None,
+            *,
+            google_api_source: Optional[gce_google_api_source.GoogleApiSource] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Update a single GoogleApiSource.
 
         .. code-block:: python
@@ -5848,14 +5454,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [google_api_source, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5875,9 +5477,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("google_api_source.name", request.google_api_source.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("google_api_source.name", request.google_api_source.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -5902,16 +5504,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Done; return the response.
         return response
 
-    def delete_google_api_source(
-        self,
-        request: Optional[Union[eventarc.DeleteGoogleApiSourceRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        etag: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
+    def delete_google_api_source(self,
+            request: Optional[Union[eventarc.DeleteGoogleApiSourceRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            etag: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation.Operation:
         r"""Delete a single GoogleApiSource.
 
         .. code-block:: python
@@ -5985,14 +5586,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, etag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6012,7 +5609,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -6092,7 +5691,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -6101,11 +5701,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6155,7 +5751,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -6164,11 +5761,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6222,19 +5815,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     def cancel_operation(
         self,
@@ -6281,19 +5870,15 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(
-            request_pb,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     def set_iam_policy(
         self,
@@ -6404,8 +5989,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request_pb.resource),)
-            ),
+                (("resource", request_pb.resource),)),
         )
 
         # Validate the universe domain.
@@ -6414,11 +5998,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6536,8 +6116,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request_pb.resource),)
-            ),
+                (("resource", request_pb.resource),)),
         )
 
         # Validate the universe domain.
@@ -6546,11 +6125,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6606,8 +6181,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request_pb.resource),)
-            ),
+                (("resource", request_pb.resource),)),
         )
 
         # Validate the universe domain.
@@ -6616,11 +6190,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6670,7 +6240,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -6679,11 +6250,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6733,7 +6300,8 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -6742,11 +6310,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request_pb,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -6755,9 +6319,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
             raise e
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("EventarcClient",)
+__all__ = (
+    "EventarcClient",
+)

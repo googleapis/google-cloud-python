@@ -17,27 +17,26 @@ import abc
 import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-import google.api_core
+from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
+
 import google.auth  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.api_core
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.cloud.storagebatchoperations_v1 import gapic_version as package_version
-from google.cloud.storagebatchoperations_v1.types import (
-    storage_batch_operations,
-    storage_batch_operations_types,
-)
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
+import google.protobuf
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.storagebatchoperations_v1.types import storage_batch_operations
+from google.cloud.storagebatchoperations_v1.types import storage_batch_operations_types
+from google.longrunning import operations_pb2 # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 # Check once at module load time whether google-api-core's wrap_method supports
@@ -51,24 +50,25 @@ _WRAP_METHOD_SUPPORTS_TRACING = (
 class StorageBatchOperationsTransport(abc.ABC):
     """Abstract transport class for StorageBatchOperations."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
-    DEFAULT_HOST: str = "storagebatchoperations.googleapis.com"
+    DEFAULT_HOST: str = 'storagebatchoperations.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -110,43 +110,31 @@ class StorageBatchOperationsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file,
-                scopes=scopes,
-                quota_project_id=quota_project_id,
-                default_scopes=self.AUTH_SCOPES,
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id,
+                                default_scopes=self.AUTH_SCOPES,
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                scopes=scopes,
-                quota_project_id=quota_project_id,
-                default_scopes=self.AUTH_SCOPES,
-            )
+            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         self._client_options = client_options
@@ -166,12 +154,7 @@ class StorageBatchOperationsTransport(abc.ABC):
         # of google-api-core is installed (which does not accept client_options, etc.).
         # Excluded from coverage because our CI and testing environments always install
         # a modern version of google-api-core that supports tracing.
-        for k in [
-            "client_options",
-            "method_name",
-            "is_streaming",
-            "kind",
-        ]:  # pragma: NO COVER
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
         return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
@@ -301,14 +284,14 @@ class StorageBatchOperationsTransport(abc.ABC):
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
@@ -318,81 +301,66 @@ class StorageBatchOperationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.ListJobsRequest],
-        Union[
-            storage_batch_operations.ListJobsResponse,
-            Awaitable[storage_batch_operations.ListJobsResponse],
-        ],
-    ]:
+    def list_jobs(self) -> Callable[
+            [storage_batch_operations.ListJobsRequest],
+            Union[
+                storage_batch_operations.ListJobsResponse,
+                Awaitable[storage_batch_operations.ListJobsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.GetJobRequest],
-        Union[
-            storage_batch_operations_types.Job,
-            Awaitable[storage_batch_operations_types.Job],
-        ],
-    ]:
+    def get_job(self) -> Callable[
+            [storage_batch_operations.GetJobRequest],
+            Union[
+                storage_batch_operations_types.Job,
+                Awaitable[storage_batch_operations_types.Job]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.CreateJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_job(self) -> Callable[
+            [storage_batch_operations.CreateJobRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.DeleteJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_job(self) -> Callable[
+            [storage_batch_operations.DeleteJobRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def cancel_job(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.CancelJobRequest],
-        Union[
-            storage_batch_operations.CancelJobResponse,
-            Awaitable[storage_batch_operations.CancelJobResponse],
-        ],
-    ]:
+    def cancel_job(self) -> Callable[
+            [storage_batch_operations.CancelJobRequest],
+            Union[
+                storage_batch_operations.CancelJobResponse,
+                Awaitable[storage_batch_operations.CancelJobResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_bucket_operations(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.ListBucketOperationsRequest],
-        Union[
-            storage_batch_operations.ListBucketOperationsResponse,
-            Awaitable[storage_batch_operations.ListBucketOperationsResponse],
-        ],
-    ]:
+    def list_bucket_operations(self) -> Callable[
+            [storage_batch_operations.ListBucketOperationsRequest],
+            Union[
+                storage_batch_operations.ListBucketOperationsResponse,
+                Awaitable[storage_batch_operations.ListBucketOperationsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_bucket_operation(
-        self,
-    ) -> Callable[
-        [storage_batch_operations.GetBucketOperationRequest],
-        Union[
-            storage_batch_operations_types.BucketOperation,
-            Awaitable[storage_batch_operations_types.BucketOperation],
-        ],
-    ]:
+    def get_bucket_operation(self) -> Callable[
+            [storage_batch_operations.GetBucketOperationRequest],
+            Union[
+                storage_batch_operations_types.BucketOperation,
+                Awaitable[storage_batch_operations_types.BucketOperation]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -400,10 +368,7 @@ class StorageBatchOperationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -435,8 +400,7 @@ class StorageBatchOperationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_location(
-        self,
+    def get_location(self,
     ) -> Callable[
         [locations_pb2.GetLocationRequest],
         Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
@@ -444,14 +408,10 @@ class StorageBatchOperationsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_locations(
-        self,
+    def list_locations(self,
     ) -> Callable[
         [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
+        Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -460,4 +420,6 @@ class StorageBatchOperationsTransport(abc.ABC):
         return ""
 
 
-__all__ = ("StorageBatchOperationsTransport",)
+__all__ = (
+    'StorageBatchOperationsTransport',
+)
