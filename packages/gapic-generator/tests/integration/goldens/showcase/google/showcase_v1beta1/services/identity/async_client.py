@@ -278,6 +278,31 @@ class IdentityAsyncClient:
             ) -> identity.User:
         r"""Creates a user.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_create_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateUserRequest(
+                )
+
+                # Make the request
+                response = await client.create_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.CreateUserRequest, dict]]):
                 The request object. The request message for the
@@ -393,6 +418,32 @@ class IdentityAsyncClient:
             ) -> identity.User:
         r"""Retrieves the User with the given uri.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_get_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.GetUserRequest, dict]]):
                 The request object. The request message for the
@@ -471,6 +522,31 @@ class IdentityAsyncClient:
             ) -> identity.User:
         r"""Updates a user.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_update_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.UpdateUserRequest(
+                )
+
+                # Make the request
+                response = await client.update_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.UpdateUserRequest, dict]]):
                 The request object. The request message for the
@@ -530,6 +606,29 @@ class IdentityAsyncClient:
             ) -> None:
         r"""Deletes a user, their profile, and all of their
         authored messages.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_delete_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_user(request=request)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.DeleteUserRequest, dict]]):
@@ -601,6 +700,32 @@ class IdentityAsyncClient:
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListUsersAsyncPager:
         r"""Lists all users.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_list_users():
+                # Create a client
+                client = showcase_v1beta1.IdentityAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListUsersRequest(
+                )
+
+                # Make the request
+                page_result = client.list_users(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.ListUsersRequest, dict]]):

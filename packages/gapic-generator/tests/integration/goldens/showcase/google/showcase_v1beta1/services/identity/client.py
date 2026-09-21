@@ -521,6 +521,31 @@ class IdentityClient(metaclass=IdentityClientMeta):
             ) -> identity.User:
         r"""Creates a user.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateUserRequest(
+                )
+
+                # Make the request
+                response = client.create_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.CreateUserRequest, dict]):
                 The request object. The request message for the
@@ -635,6 +660,32 @@ class IdentityClient(metaclass=IdentityClientMeta):
             ) -> identity.User:
         r"""Retrieves the User with the given uri.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.GetUserRequest, dict]):
                 The request object. The request message for the
@@ -712,6 +763,31 @@ class IdentityClient(metaclass=IdentityClientMeta):
             ) -> identity.User:
         r"""Updates a user.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_update_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.UpdateUserRequest(
+                )
+
+                # Make the request
+                response = client.update_user(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.UpdateUserRequest, dict]):
                 The request object. The request message for the
@@ -771,6 +847,29 @@ class IdentityClient(metaclass=IdentityClientMeta):
             ) -> None:
         r"""Deletes a user, their profile, and all of their
         authored messages.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_delete_user():
+                # Create a client
+                client = showcase_v1beta1.IdentityClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteUserRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_user(request=request)
 
         Args:
             request (Union[google.showcase_v1beta1.types.DeleteUserRequest, dict]):
@@ -841,6 +940,32 @@ class IdentityClient(metaclass=IdentityClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListUsersPager:
         r"""Lists all users.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_list_users():
+                # Create a client
+                client = showcase_v1beta1.IdentityClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListUsersRequest(
+                )
+
+                # Make the request
+                page_result = client.list_users(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ListUsersRequest, dict]):

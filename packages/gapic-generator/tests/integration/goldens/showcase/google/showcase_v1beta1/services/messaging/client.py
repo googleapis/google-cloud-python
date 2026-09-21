@@ -545,6 +545,31 @@ class MessagingClient(metaclass=MessagingClientMeta):
             ) -> messaging.Room:
         r"""Creates a room.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_room():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateRoomRequest(
+                )
+
+                # Make the request
+                response = client.create_room(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.CreateRoomRequest, dict]):
                 The request object. The request message for the
@@ -621,6 +646,32 @@ class MessagingClient(metaclass=MessagingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> messaging.Room:
         r"""Retrieves the Room with the given resource name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_room():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetRoomRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_room(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.GetRoomRequest, dict]):
@@ -699,6 +750,31 @@ class MessagingClient(metaclass=MessagingClientMeta):
             ) -> messaging.Room:
         r"""Updates a room.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_update_room():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.UpdateRoomRequest(
+                )
+
+                # Make the request
+                response = client.update_room(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.UpdateRoomRequest, dict]):
                 The request object. The request message for the
@@ -757,6 +833,29 @@ class MessagingClient(metaclass=MessagingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
         r"""Deletes a room and all of its blurbs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_delete_room():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteRoomRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_room(request=request)
 
         Args:
             request (Union[google.showcase_v1beta1.types.DeleteRoomRequest, dict]):
@@ -827,6 +926,32 @@ class MessagingClient(metaclass=MessagingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListRoomsPager:
         r"""Lists all chat rooms.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_list_rooms():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListRoomsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_rooms(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ListRoomsRequest, dict]):
@@ -902,6 +1027,32 @@ class MessagingClient(metaclass=MessagingClientMeta):
         is understood to be a message in that room. If the
         parent is a profile, the blurb is understood to be a
         post on the profile.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_blurb():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateBlurbRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_blurb(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.CreateBlurbRequest, dict]):
@@ -1008,6 +1159,32 @@ class MessagingClient(metaclass=MessagingClientMeta):
             ) -> messaging.Blurb:
         r"""Retrieves the Blurb with the given resource name.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_blurb():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetBlurbRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_blurb(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.GetBlurbRequest, dict]):
                 The request object. The request message for the
@@ -1088,6 +1265,31 @@ class MessagingClient(metaclass=MessagingClientMeta):
             ) -> messaging.Blurb:
         r"""Updates a blurb.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_update_blurb():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.UpdateBlurbRequest(
+                )
+
+                # Make the request
+                response = client.update_blurb(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.UpdateBlurbRequest, dict]):
                 The request object. The request message for the
@@ -1149,6 +1351,29 @@ class MessagingClient(metaclass=MessagingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
         r"""Deletes a blurb.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_delete_blurb():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteBlurbRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_blurb(request=request)
 
         Args:
             request (Union[google.showcase_v1beta1.types.DeleteBlurbRequest, dict]):
@@ -1221,6 +1446,33 @@ class MessagingClient(metaclass=MessagingClientMeta):
             ) -> pagers.ListBlurbsPager:
         r"""Lists blurbs for a specific chat room or user profile
         depending on the parent resource name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_list_blurbs():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListBlurbsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_blurbs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ListBlurbsRequest, dict]):
@@ -1321,6 +1573,36 @@ class MessagingClient(metaclass=MessagingClientMeta):
         rooms and profiles for blurbs containing to words found
         in the query. Only posts that contain an exact match of
         a queried word will be returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_search_blurbs():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.SearchBlurbsRequest(
+                    query="query_value",
+                )
+
+                # Make the request
+                operation = client.search_blurbs(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.SearchBlurbsRequest, dict]):
@@ -1423,6 +1705,33 @@ class MessagingClient(metaclass=MessagingClientMeta):
         r"""This returns a stream that emits the blurbs that are
         created for a particular chat room or user profile.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_stream_blurbs():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.StreamBlurbsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                stream = client.stream_blurbs(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.StreamBlurbsRequest, dict]):
                 The request object. The request message for the
@@ -1486,6 +1795,42 @@ class MessagingClient(metaclass=MessagingClientMeta):
         invalid blurb is requested to be created, the stream
         will close with an error.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_send_blurbs():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateBlurbRequest(
+                    parent="parent_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'showcase_v1beta1.CreateBlurbRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                response = client.send_blurbs(requests=request_generator())
+
+                # Handle the response
+                print(response)
+
         Args:
             requests (Iterator[google.showcase_v1beta1.types.CreateBlurbRequest]):
                 The request object iterator. The request message for the
@@ -1544,6 +1889,42 @@ class MessagingClient(metaclass=MessagingClientMeta):
         stream has started and sends requests to create blurbs.
         If an invalid blurb is requested to be created, the
         stream will close with an error.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_connect():
+                # Create a client
+                client = showcase_v1beta1.MessagingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ConnectRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'showcase_v1beta1.ConnectRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.connect(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             requests (Iterator[google.showcase_v1beta1.types.ConnectRequest]):

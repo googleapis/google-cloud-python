@@ -548,6 +548,31 @@ class TestingClient(metaclass=TestingClientMeta):
 
         2) [Nonsense][]: ``pokemon/*/psychic/*``
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_session():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateSessionRequest(
+                )
+
+                # Make the request
+                response = client.create_session(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.CreateSessionRequest, dict]):
                 The request object. The request for the CreateSession
@@ -603,6 +628,31 @@ class TestingClient(metaclass=TestingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> testing.Session:
         r"""Gets a testing session.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_session():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetSessionRequest(
+                )
+
+                # Make the request
+                response = client.get_session(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.GetSessionRequest, dict]):
@@ -667,6 +717,32 @@ class TestingClient(metaclass=TestingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListSessionsPager:
         r"""Lists the current test sessions.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_list_sessions():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListSessionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_sessions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ListSessionsRequest, dict]):
@@ -733,6 +809,28 @@ class TestingClient(metaclass=TestingClientMeta):
             ) -> None:
         r"""Delete a test session.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_delete_session():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteSessionRequest(
+                )
+
+                # Make the request
+                client.delete_session(request=request)
+
         Args:
             request (Union[google.showcase_v1beta1.types.DeleteSessionRequest, dict]):
                 The request object. Request for the DeleteSession method.
@@ -783,6 +881,31 @@ class TestingClient(metaclass=TestingClientMeta):
         r"""Report on the status of a session.
         This generates a report detailing which tests have been
         completed, and an overall rollup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_report_session():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ReportSessionRequest(
+                )
+
+                # Make the request
+                response = client.report_session(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ReportSessionRequest, dict]):
@@ -842,6 +965,32 @@ class TestingClient(metaclass=TestingClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListTestsPager:
         r"""List the tests of a sessesion.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_list_tests():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ListTestsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_tests(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.ListTestsRequest, dict]):
@@ -920,6 +1069,28 @@ class TestingClient(metaclass=TestingClientMeta):
 
         This method will error if attempting to delete a required test.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_delete_test():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.DeleteTestRequest(
+                )
+
+                # Make the request
+                client.delete_test(request=request)
+
         Args:
             request (Union[google.showcase_v1beta1.types.DeleteTestRequest, dict]):
                 The request object. Request message for deleting a test.
@@ -972,6 +1143,31 @@ class TestingClient(metaclass=TestingClientMeta):
         In cases where a test involves registering a final
         answer at the end of the test, this method provides the
         means to do so.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_verify_test():
+                # Create a client
+                client = showcase_v1beta1.TestingClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.VerifyTestRequest(
+                )
+
+                # Make the request
+                response = client.verify_test(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.VerifyTestRequest, dict]):

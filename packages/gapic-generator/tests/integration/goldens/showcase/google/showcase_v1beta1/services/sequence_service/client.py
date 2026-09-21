@@ -552,6 +552,31 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
         r"""Create a sequence of responses to be returned as
         unary calls
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_sequence():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateSequenceRequest(
+                )
+
+                # Make the request
+                response = client.create_sequence(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.CreateSequenceRequest, dict]):
                 The request object. Request message for creating a
@@ -622,6 +647,31 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
             ) -> sequence.StreamingSequence:
         r"""Creates a sequence of responses to be returned in a
         server streaming call
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_create_streaming_sequence():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.CreateStreamingSequenceRequest(
+                )
+
+                # Make the request
+                response = client.create_streaming_sequence(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.CreateStreamingSequenceRequest, dict]):
@@ -694,6 +744,32 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
             ) -> sequence.SequenceReport:
         r"""Retrieves a sequence report which can be used to
         retrieve information about a sequence of unary calls.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_sequence_report():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetSequenceReportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_sequence_report(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.GetSequenceReportRequest, dict]):
@@ -773,6 +849,32 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
         retrieve information about a sequences of responses in a
         server streaming call.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_streaming_sequence_report():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.GetStreamingSequenceReportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_streaming_sequence_report(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.GetStreamingSequenceReportRequest, dict]):
                 The request object.
@@ -849,6 +951,29 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
             ) -> None:
         r"""Attempts a sequence of unary responses.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_attempt_sequence():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.AttemptSequenceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.attempt_sequence(request=request)
+
         Args:
             request (Union[google.showcase_v1beta1.types.AttemptSequenceRequest, dict]):
                 The request object. Request message for the unary
@@ -921,6 +1046,33 @@ class SequenceServiceClient(metaclass=SequenceServiceClientMeta):
         mode due to when http statuses are sent See
         https://github.com/googleapis/gapic-showcase/issues/1377
         for more details
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_attempt_streaming_sequence():
+                # Create a client
+                client = showcase_v1beta1.SequenceServiceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.AttemptStreamingSequenceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                stream = client.attempt_streaming_sequence(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.AttemptStreamingSequenceRequest, dict]):

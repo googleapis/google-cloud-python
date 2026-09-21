@@ -510,6 +510,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         method exercises sending the entire request object in
         the REST body.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_body():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_body(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
                 The request object.
@@ -561,6 +586,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         REST body. Per AIP-127, only top-level, non-repeated
         fields can be sent this way.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_body_info():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_body_info(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
                 The request object.
@@ -610,6 +660,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         r"""This method echoes the ComplianceData request. This
         method exercises sending all request fields as query
         parameters.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_query():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_query(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
@@ -661,6 +736,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         exercises sending some parameters as "simple" path variables
         (i.e., of the form "/bar/{foo}" rather than "/{foo=bar/\*}"),
         and the rest as query parameters.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_simple_path():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_simple_path(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
@@ -723,6 +823,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         r"""Same as RepeatDataSimplePath, but with a path
         resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_path_resource():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_path_resource(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
                 The request object.
@@ -782,6 +907,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         r"""Same as RepeatDataSimplePath, but with a trailing
         resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_path_trailing_resource():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_path_trailing_resource(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
                 The request object.
@@ -840,6 +990,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         r"""This method echoes the ComplianceData request, using
         the HTTP PUT method.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_body_put():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_body_put(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
                 The request object.
@@ -888,6 +1063,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
             ) -> compliance.RepeatResponse:
         r"""This method echoes the ComplianceData request, using
         the HTTP PATCH method.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_repeat_data_body_patch():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.RepeatRequest(
+                )
+
+                # Make the request
+                response = client.repeat_data_body_patch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.RepeatRequest, dict]):
@@ -949,6 +1149,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         VerifyEnum() to work) but are not guaranteed to be the
         same across separate Showcase server runs.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_get_enum():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EnumRequest(
+                )
+
+                # Make the request
+                response = client.get_enum(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.showcase_v1beta1.types.EnumRequest, dict]):
                 The request object.
@@ -1008,6 +1233,31 @@ class ComplianceClient(metaclass=ComplianceClientMeta):
         be the same within a single Showcase server run,
         although they are not guaranteed to be the same across
         separate Showcase server runs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            def sample_verify_enum():
+                # Create a client
+                client = showcase_v1beta1.ComplianceClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EnumResponse(
+                )
+
+                # Make the request
+                response = client.verify_enum(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.showcase_v1beta1.types.EnumResponse, dict]):

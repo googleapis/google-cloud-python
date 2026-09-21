@@ -286,6 +286,32 @@ class EchoAsyncClient:
         r"""This method simply echoes the request. This method
         showcases unary RPCs.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_echo():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EchoRequest(
+                    content="content_value",
+                )
+
+                # Make the request
+                response = await client.echo(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.EchoRequest, dict]]):
                 The request object. The request message used for the
@@ -400,6 +426,31 @@ class EchoAsyncClient:
         for these fields must be one of the types in
         google/rpc/error_details.proto.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_echo_error_details():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EchoErrorDetailsRequest(
+                )
+
+                # Make the request
+                response = await client.echo_error_details(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.EchoErrorDetailsRequest, dict]]):
                 The request object. The request message used for the
@@ -462,6 +513,31 @@ class EchoAsyncClient:
         RPC is to verify that GAPICs can process these various error
         details and surface them to the user in an idiomatic form.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_fail_echo_with_details():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.FailEchoWithDetailsRequest(
+                )
+
+                # Make the request
+                response = await client.fail_echo_with_details(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.FailEchoWithDetailsRequest, dict]]):
                 The request object. The request message used for the
@@ -522,6 +598,32 @@ class EchoAsyncClient:
         r"""This method splits the given content into words and
         will pass each word back through the stream. This method
         showcases server-side streaming RPCs.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_expand():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.ExpandRequest(
+                )
+
+                # Make the request
+                stream = await client.expand(request=request)
+
+                # Handle the response
+                async for response in stream:
+                    print(response)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.ExpandRequest, dict]]):
@@ -611,6 +713,42 @@ class EchoAsyncClient:
         return the a concatenation of the strings passed to it.
         This method showcases client-side streaming RPCs.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_collect():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EchoRequest(
+                    content="content_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'showcase_v1beta1.EchoRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                response = await client.collect(requests=request_generator())
+
+                # Handle the response
+                print(response)
+
         Args:
             requests (AsyncIterator[`google.showcase_v1beta1.types.EchoRequest`]):
                 The request object AsyncIterator. The request message used for the
@@ -668,6 +806,43 @@ class EchoAsyncClient:
         will pass the same content back on the stream. This
         method showcases bidirectional streaming RPCs.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_chat():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.EchoRequest(
+                    content="content_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'showcase_v1beta1.EchoRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = await client.chat(requests=request_generator())
+
+                # Handle the response
+                async for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.showcase_v1beta1.types.EchoRequest`]):
                 The request object AsyncIterator. The request message used for the
@@ -724,6 +899,33 @@ class EchoAsyncClient:
         r"""This is similar to the Expand method but instead of
         returning a stream of expanded words, this method
         returns a paged list of expanded words.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_paged_expand():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.PagedExpandRequest(
+                    content="content_value",
+                )
+
+                # Make the request
+                page_result = client.paged_expand(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.PagedExpandRequest, dict]]):
@@ -796,6 +998,33 @@ class EchoAsyncClient:
         r"""This is similar to the PagedExpand except that it uses
         max_results instead of page_size, as some legacy APIs still do.
         New APIs should NOT use this pattern.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_paged_expand_legacy():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.PagedExpandLegacyRequest(
+                    content="content_value",
+                )
+
+                # Make the request
+                page_result = client.paged_expand_legacy(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.PagedExpandLegacyRequest, dict]]):
@@ -877,6 +1106,33 @@ class EchoAsyncClient:
         map of lists is a pattern used by some legacy APIs. New APIs
         should NOT use this pattern.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_paged_expand_legacy_mapped():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.PagedExpandRequest(
+                    content="content_value",
+                )
+
+                # Make the request
+                page_result = client.paged_expand_legacy_mapped(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.PagedExpandRequest, dict]]):
                 The request object. The request for the PagedExpand
@@ -947,6 +1203,35 @@ class EchoAsyncClient:
         time and then return. This method showcases how a client
         handles a request timeout.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_wait():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.WaitRequest(
+                )
+
+                # Make the request
+                operation = await client.wait(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.WaitRequest, dict]]):
                 The request object. The request for Wait method.
@@ -1015,6 +1300,31 @@ class EchoAsyncClient:
         amount of time and then return the response or error.
         This method showcases how a client handles delays or
         retries.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google import showcase_v1beta1
+
+            async def sample_block():
+                # Create a client
+                client = showcase_v1beta1.EchoAsyncClient()
+
+                # Initialize request argument(s)
+                request = showcase_v1beta1.BlockRequest(
+                )
+
+                # Make the request
+                response = await client.block(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Optional[Union[google.showcase_v1beta1.types.BlockRequest, dict]]):
