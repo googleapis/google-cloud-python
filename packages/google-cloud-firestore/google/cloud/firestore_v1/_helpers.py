@@ -431,7 +431,7 @@ def _decode_bson_dict_recursive(data: Any) -> Any:
 def decode_dict(
     value_fields,
     client=None,
-) -> Union[dict, Vector, _BSONType, bytes]:
+) -> Union[dict, Vector, _BSONType]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -442,7 +442,7 @@ def decode_dict(
 
     Returns:
         Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
-            ~google.cloud.firestore_v1.bson._BSONType, bytes]: A dictionary of native \
+            ~google.cloud.firestore_v1.bson._BSONType]: A dictionary of native \
         Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
