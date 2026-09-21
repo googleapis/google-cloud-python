@@ -1365,7 +1365,7 @@ def test_bson_query_ordering(client, cleanup, database):
     doc3.set({"val": BSONMaxKey()})
 
     query = coll_ref.order_by("val")
-    results = [doc.to_dict(decode_bson=True)["val"] for doc in query.stream()]
+    results = [doc.to_dict()["val"] for doc in query.stream()]
     assert results == [BSONMinKey(), BSONInt32(10), BSONMaxKey()]
 
 

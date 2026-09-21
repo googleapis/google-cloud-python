@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import decimal
 import math
 from enum import Enum
 from typing import Any
@@ -67,26 +68,33 @@ class TypeOrder(Enum):
             fields = value_pb.map_value.fields
             if len(fields) == 1:
                 key = next(iter(fields))
-                if key == "__min__":
-                    return TypeOrder.BSON_MIN_KEY
-                if key == "__max__":
-                    return TypeOrder.BSON_MAX_KEY
-                if key == "__oid__":
-                    return TypeOrder.BSON_OBJECT_ID
-                if key in ("__int__", "__decimal128__"):
-                    return TypeOrder.NUMBER
-                if key == "__binary__":
-                    return TypeOrder.BSON_BINARY
-                if key == "__regex__":
-                    return TypeOrder.BSON_REGEX
-                if key == "__request_timestamp__":
-                    return TypeOrder.TIMESTAMP
+                bson_order = _BSON_KEY_TO_TYPE_ORDER.get(key)
+                if bson_order is not None:
+                    return bson_order
             if "__type__" in fields and fields["__type__"].string_value == "__vector__":
                 return TypeOrder.VECTOR
         return lut[v]
 
 
+# Maps BSON wire map keys directly to their corresponding TypeOrder.
+# BSONTimestamp maps to TypeOrder.TIMESTAMP, and BSONInt32 / BSONDecimal128
+# map to TypeOrder.NUMBER, enabling cross-type comparisons.
+_BSON_KEY_TO_TYPE_ORDER = {
+    "__min__": TypeOrder.BSON_MIN_KEY,
+    "__max__": TypeOrder.BSON_MAX_KEY,
+    "__oid__": TypeOrder.BSON_OBJECT_ID,
+    "__int__": TypeOrder.NUMBER,
+    "__decimal128__": TypeOrder.NUMBER,
+    "__binary__": TypeOrder.BSON_BINARY,
+    "__request_timestamp__": TypeOrder.TIMESTAMP,
+    "__regex__": TypeOrder.BSON_REGEX,
+}
+
+
 # NOTE: This order is defined by the backend and cannot be changed.
+# BSONTimestamp shares TypeOrder.TIMESTAMP with native timestamps, and
+# BSONInt32 / BSONDecimal128 share TypeOrder.NUMBER, enabling direct cross-type
+# value comparison within those categories.
 _TYPE_ORDER_MAP = {
     TypeOrder.NULL: 0,
     TypeOrder.BSON_MIN_KEY: 1,
@@ -136,8 +144,10 @@ class Order(object):
         elif leftType == TypeOrder.BOOLEAN:
             return cls._compare_to(left.boolean_value, right.boolean_value)
         elif leftType == TypeOrder.NUMBER:
+            # Handles int64, double, BSONInt32, and BSONDecimal128.
             return cls.compare_numbers(left, right)
         elif leftType == TypeOrder.TIMESTAMP:
+            # Handles native Firestore timestamps and BSONTimestamp.
             return cls.compare_timestamps(left, right)
         elif leftType == TypeOrder.STRING:
             return cls._compare_to(left.string_value, right.string_value)
@@ -209,6 +219,7 @@ class Order(object):
 
     @staticmethod
     def compare_timestamps(left, right) -> Any:
+        """Compare native Firestore timestamps and BSON timestamps."""
         left_pb = getattr(left, "_pb", left)
         right_pb = getattr(right, "_pb", right)
 
@@ -319,13 +330,34 @@ class Order(object):
 
     @staticmethod
     def compare_numbers(left, right) -> int:
-        left_val = decode_value(left, None, decode_bson=True)
-        right_val = decode_value(right, None, decode_bson=True)
-        if hasattr(left_val, "value"):
-            left_val = left_val.value
-        if hasattr(right_val, "value"):
-            right_val = right_val.value
-        return Order.compare_doubles(float(left_val), float(right_val))
+        """Compare numeric values across int, float, BSONInt32, and BSONDecimal128."""
+
+        def _to_number(val):
+            num = decode_value(val, None)
+            to_decimal = getattr(num, "to_decimal", None)
+            return (
+                to_decimal()
+                if callable(to_decimal)
+                else getattr(num, "value", num)
+            )
+
+        l = _to_number(left)
+        r = _to_number(right)
+
+        l_nan = l.is_nan() if hasattr(l, "is_nan") else math.isnan(l)
+        r_nan = r.is_nan() if hasattr(r, "is_nan") else math.isnan(r)
+        if l_nan or r_nan:
+            return 0 if (l_nan and r_nan) else (-1 if l_nan else 1)
+
+        # Python raises TypeError when comparing Decimal with float directly,
+        # but allows comparing Decimal with int. Convert float to Decimal
+        # to ensure safe cross-type comparison without float overflow.
+        if isinstance(l, decimal.Decimal) and isinstance(r, float):
+            r = decimal.Decimal(str(r))
+        elif isinstance(r, decimal.Decimal) and isinstance(l, float):
+            l = decimal.Decimal(str(l))
+
+        return Order._compare_to(l, r)
 
     @staticmethod
     def compare_doubles(left, right) -> int:

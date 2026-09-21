@@ -242,6 +242,16 @@ def test_order_bson_type_ordering():
     assert target.compare(int32_v, int64_v) == 0
     assert target.compare(int32_v, dec_v) == 0
 
+    # Test large decimal comparison exceeding float limit
+    large_dec = encode_value(BSONDecimal128("1e1000"))
+    assert target.compare(large_dec, _double_value(1e300)) == 1
+    assert target.compare(_double_value(1e300), large_dec) == -1
+
+    # Test decimal NaN comparison
+    nan_dec = encode_value(BSONDecimal128("NaN"))
+    assert target.compare(nan_dec, int32_v) == -1
+    assert target.compare(int32_v, nan_dec) == 1
+
     # Test timestamp comparison (native timestamp < BSON timestamp with increment)
     assert target.compare(ts_native, ts_bson) == -1
 
@@ -255,6 +265,22 @@ def test_order_bson_type_ordering():
     # Test Regex rank (GEO_POINT < REGEX < ARRAY)
     assert target.compare(geo_v, regex_v) == -1
     assert target.compare(regex_v, arr_v) == -1
+
+    # Verify _BSON_KEY_TO_TYPE_ORDER mapping directly
+    from google.cloud.firestore_v1.order import _BSON_KEY_TO_TYPE_ORDER, TypeOrder
+
+    expected_orders = {
+        "__min__": TypeOrder.BSON_MIN_KEY,
+        "__max__": TypeOrder.BSON_MAX_KEY,
+        "__oid__": TypeOrder.BSON_OBJECT_ID,
+        "__int__": TypeOrder.NUMBER,
+        "__decimal128__": TypeOrder.NUMBER,
+        "__binary__": TypeOrder.BSON_BINARY,
+        "__regex__": TypeOrder.BSON_REGEX,
+        "__request_timestamp__": TypeOrder.TIMESTAMP,
+    }
+    for key, expected_order in expected_orders.items():
+        assert _BSON_KEY_TO_TYPE_ORDER.get(key) == expected_order
 
 
 def test_order_compare_w_objects_different_keys():
