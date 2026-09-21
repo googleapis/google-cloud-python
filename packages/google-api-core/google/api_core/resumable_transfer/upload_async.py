@@ -350,8 +350,9 @@ class AsyncResumableUploadSession:
                    ``UnseekableStreamError``) always return ``False``.
                 2. Protocol-recoverable errors during chunk transfer
                    (``RECOVERABLE_STATUS_CODES`` and ``MissingStatusHeaderError``)
-                   and transport connection drops (``aiohttp.ClientError``) always
-                   return ``True`` so the session can query server state and recover.
+                   and transport errors (``aiohttp.ClientError`` and
+                   ``asyncio.TimeoutError``) always return ``True`` so the session
+                   can query server state and recover.
 
         Returns:
             A callable accepting an exception and returning a boolean.
@@ -368,7 +369,9 @@ class AsyncResumableUploadSession:
                 )
             ):
                 return True
-            if _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError):
+            if isinstance(exc, asyncio.TimeoutError) or (
+                _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError)
+            ):
                 return True
             if (
                 custom_predicate is not None
@@ -583,11 +586,7 @@ class AsyncResumableUploadSession:
                 ),
             ):
                 t_elapsed = _monotonic_clock() - t_start
-                remaining = self._get_deadline_remaining()
-                if remaining is not None and remaining <= 0:
-                    raise exceptions.DeadlineExceeded(
-                        "Resumable upload deadline exceeded during chunk transfer."
-                    ) from exc
+                self._get_deadline_remaining()
                 self._update_stall_control(0, t_start, t_elapsed)
             raise
 
@@ -817,14 +816,22 @@ class AsyncResumableUploadSession:
         except (
             asyncio.TimeoutError,
             aiohttp.ServerTimeoutError,
+            exceptions.RetryError,
         ) as exc:
-            self._enrich_exception(exc)
+            timeout_exc = (
+                exc.__cause__ if isinstance(exc, exceptions.RetryError) else exc
+            )
+            if not isinstance(
+                timeout_exc, (asyncio.TimeoutError, aiohttp.ServerTimeoutError)
+            ):
+                raise
+            self._enrich_exception(timeout_exc)
             self._get_deadline_remaining()
             raise exceptions.TransferStalledError(
-                f"Upload stalled: chunk transfer timed out ({exc}).",
+                f"Upload stalled: chunk transfer timed out ({timeout_exc}).",
                 upload_url=self.upload_url,
                 chunk_size=self.chunk_size,
-            ) from exc
+            ) from timeout_exc
 
         if final_resp_tuple is None:
             raise ValueError("Upload completed without receiving a final response.")

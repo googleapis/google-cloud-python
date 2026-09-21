@@ -1442,17 +1442,14 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
     )
     session._state._resumable_url = "https://upload.example.com/resumable-async"
     no_retry = google.api_core.retry.AsyncStreamingRetry(
-        predicate=lambda e: False, timeout=0
+        predicate=lambda e: False, timeout=0.001
     )
 
     with pytest.raises(exceptions.TransferStalledError):
         await session.upload(stream=b"data", retry=no_retry)
 
-    # 2. TimeoutError raises DeadlineExceeded when remaining <= 0
-    past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-        seconds=10
-    )
-    config2 = ResumableUploadConfig(deadline=past_deadline)
+    # 2. TimeoutError raises DeadlineExceeded when deadline expires
+    config2 = ResumableUploadConfig(deadline=future_deadline)
 
     session2 = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
@@ -1461,9 +1458,61 @@ async def test_async_transmit_chunk_timeout_errors() -> None:
     )
     session2._state._resumable_url = "https://upload.example.com/resumable-async"
 
-    with mock.patch.object(session2, "_get_deadline_remaining", return_value=-5.0):
+    with mock.patch.object(
+        session2,
+        "_get_deadline_remaining",
+        side_effect=[5.0, 5.0, exceptions.DeadlineExceeded("Deadline exceeded")],
+    ):
         with pytest.raises(exceptions.DeadlineExceeded):
-            await session2.upload(stream=b"data")
+            await session2.upload(stream=b"data", retry=no_retry)
+
+    # 3. Non-timeout RetryError re-raises RetryError rather than TransferStalledError
+    class ConnectionErrorAsyncSession:
+        def __init__(self):
+            self.calls = 0
+
+        def request(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+
+                class StartContext:
+                    async def __aenter__(self):
+                        class Resp:
+                            status = 200
+                            headers = {
+                                "X-Goog-Upload-Status": "active",
+                                "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+                            }
+
+                            async def read(self):
+                                return b""
+
+                        return Resp()
+
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+
+                return StartContext()
+            else:
+
+                class ErrorContext:
+                    async def __aenter__(self):
+                        raise aiohttp.ClientConnectionError("Connection dropped")
+
+                    async def __aexit__(self, exc_type, exc, tb):
+                        pass
+
+                return ErrorContext()
+
+    session3 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=ConnectionErrorAsyncSession(),
+    )
+    session3._state._resumable_url = "https://upload.example.com/resumable-async"
+
+    with pytest.raises(exceptions.RetryError):
+        await session3.upload(stream=b"data", retry=no_retry)
 
 
 @pytest.mark.asyncio
@@ -1666,18 +1715,15 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
     )
     session._state._resumable_url = "https://upload.example.com/resumable-async"
     no_retry = google.api_core.retry.AsyncStreamingRetry(
-        predicate=lambda e: False, timeout=0
+        predicate=lambda e: False, timeout=0.001
     )
 
     with pytest.raises(exceptions.TransferStalledError):
         await session.upload(stream=b"data", retry=no_retry)
 
-    # 2. TimeoutError raises DeadlineExceeded when remaining <= 0 and no stall control
-    past_deadline = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-        seconds=10
-    )
+    # 2. TimeoutError raises DeadlineExceeded when deadline expires and no stall control
     config2 = ResumableUploadConfig(
-        deadline=past_deadline, stall_minimum_rate=0, stall_timeout=0
+        deadline=future_deadline, stall_minimum_rate=0, stall_timeout=0
     )
 
     session2 = AsyncResumableUploadSession(
@@ -1687,9 +1733,13 @@ async def test_async_transmit_chunk_timeout_errors_no_stall() -> None:
     )
     session2._state._resumable_url = "https://upload.example.com/resumable-async"
 
-    with mock.patch.object(session2, "_get_deadline_remaining", return_value=-5.0):
+    with mock.patch.object(
+        session2,
+        "_get_deadline_remaining",
+        side_effect=[5.0, 5.0, exceptions.DeadlineExceeded("Deadline exceeded")],
+    ):
         with pytest.raises(exceptions.DeadlineExceeded):
-            await session2.upload(stream=b"data")
+            await session2.upload(stream=b"data", retry=no_retry)
 
 
 @pytest.mark.asyncio
@@ -2072,3 +2122,10 @@ async def test_async_method_override_arguments() -> None:
         upload_url="https://upload.example.com/123",
         stream=b"data",
     )
+
+
+def test_async_retry_predicate_includes_asyncio_timeout_error() -> None:
+    """Verifies that asyncio.TimeoutError is treated as retryable by _get_retry_predicate."""
+    session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
+    predicate = session._get_retry_predicate()
+    assert predicate(asyncio.TimeoutError()) is True

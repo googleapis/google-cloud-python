@@ -14,7 +14,7 @@
 
 import datetime
 import io
-from typing import List, Union
+from typing import Union
 from unittest import mock
 
 import pytest
