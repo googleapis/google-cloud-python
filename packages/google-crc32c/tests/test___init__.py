@@ -229,12 +229,15 @@ class TestChecksum(object):
         assert helper._crc == google_crc32c.value(chunk)
 
     @staticmethod
-    def test_ctor_array(_crc32c):
+    def test_update_array():
         import array
 
+        from google_crc32c import python
+
         chunk = array.array("B", b"DEADBEEF")
-        helper = google_crc32c.Checksum(chunk)
-        assert helper._crc == google_crc32c.value(b"DEADBEEF")
+        helper = python.Checksum()
+        helper.update(chunk)
+        assert helper._crc == python.value(b"DEADBEEF")
 
     @staticmethod
     def test_update(_crc32c):
