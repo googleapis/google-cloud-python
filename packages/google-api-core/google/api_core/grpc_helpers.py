@@ -47,11 +47,30 @@ def _resolve_direct_path_interconnect(
 ) -> bool:
     """Resolves whether DirectPath over Interconnect is enabled."""
     env_val = os.environ.get(_DIRECT_PATH_INTERCONNECT_ENV)
-    if env_val == "true":
-        return True
-    if env_val == "false":
-        return False
+    if env_val is not None:
+        env_val_clean = env_val.strip().lower()
+        if env_val_clean == "true":
+            return True
+        elif env_val_clean == "false":
+            return False
+        else:
+            raise ValueError(
+                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val}"
+            )
     return bool(attempt_direct_path_xds_over_interconnect)
+
+
+def _extract_direct_path_authority(target: str) -> Optional[str]:
+    """Extracts the canonical TLS/HTTP2 authority for a ``-direct.googleapis.com`` target."""
+    clean_host = target
+    for prefix in ("google-c2p:///", "dns:///", "https://", "http://"):
+        if clean_host.startswith(prefix):
+            clean_host = clean_host[len(prefix) :]
+            break
+    clean_host = clean_host.split("?", 1)[0].split("/", 1)[0].split(":", 1)[0]
+    if "-direct.googleapis.com" in clean_host:
+        return clean_host.replace("-direct.googleapis.com", ".googleapis.com", 1)
+    return None
 
 
 # The list of gRPC Callable interfaces that return iterators.
@@ -431,13 +450,26 @@ def create_channel(
         default_host=default_host,
     )
 
+    if use_dp_interconnect:
+        authority = _extract_direct_path_authority(target)
+        if authority:
+            existing_options = tuple(kwargs.get("options") or ())
+            option_keys = {opt[0] for opt in existing_options}
+            if (
+                "grpc.ssl_target_name_override" not in option_keys
+                and "grpc.default_authority" not in option_keys
+            ):
+                kwargs["options"] = existing_options + (
+                    ("grpc.ssl_target_name_override", authority),
+                )
+
     if attempt_direct_path or use_dp_interconnect:
         target = _modify_target_for_direct_path(
             target,
             attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
-    elif "-direct." in target and not target.startswith("google-c2p:///"):
-        target = target.replace("-direct.", ".")
+    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
+        target = target.replace("-direct.googleapis.com", ".googleapis.com")
 
     return grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
@@ -464,23 +496,24 @@ def _modify_target_for_direct_path(
             original target may already denote Direct Path.
     """
 
-    # A DNS prefix may be included with the target to indicate the endpoint is living in the Internet,
-    # outside of Google Cloud Platform.
-    dns_prefix = "dns:///"
-    # Remove "dns:///" if `attempt_direct_path` is set to True as
-    # the Direct Path prefix `google-c2p:///` will be used instead.
-    target = target.replace(dns_prefix, "")
+    # Strip standard URI scheme prefixes ("dns:///", "https://", "http://") if
+    # `attempt_direct_path` is enabled, as the Direct Path prefix `google-c2p:///`
+    # will be used instead.
+    for scheme_prefix in ("dns:///", "https://", "http://"):
+        if target.startswith(scheme_prefix):
+            target = target[len(scheme_prefix) :]
+            break
 
     direct_path_separator = ":///"
     if direct_path_separator not in target:
         if "?" in target:
             host_part, query_part = target.split("?", 1)
-            target_without_port = host_part.split(":")[0]
+            target_without_port = host_part.split("/")[0].split(":")[0]
             target = (
                 f"google-c2p{direct_path_separator}{target_without_port}?{query_part}"
             )
         else:
-            target_without_port = target.split(":")[0]
+            target_without_port = target.split("/")[0].split(":")[0]
             # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
             target = f"google-c2p{direct_path_separator}{target_without_port}"
 

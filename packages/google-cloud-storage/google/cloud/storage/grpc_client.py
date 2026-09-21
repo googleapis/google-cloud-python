@@ -29,10 +29,16 @@ _DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERC
 def _resolve_direct_path_interconnect(option_value: bool) -> bool:
     """Resolves DirectPath over Interconnect flag from env var or parameter."""
     env_val = os.environ.get(_DIRECT_PATH_INTERCONNECT_ENV)
-    if env_val == "true":
-        return True
-    if env_val == "false":
-        return False
+    if env_val is not None:
+        env_val_clean = env_val.strip().lower()
+        if env_val_clean == "true":
+            return True
+        elif env_val_clean == "false":
+            return False
+        else:
+            raise ValueError(
+                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val}"
+            )
     return bool(option_value)
 
 
@@ -145,18 +151,25 @@ class GrpcClient(ClientWithProject):
 
         if attempt_direct_path_xds_over_interconnect:
             host = _DEFAULT_HOST
+            quota_project_id = None
             if isinstance(client_options, dict):
                 host = client_options.get("api_endpoint") or _DEFAULT_HOST
+                quota_project_id = client_options.get("quota_project_id")
             elif client_options is not None:
                 host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
+                quota_project_id = getattr(client_options, "quota_project_id", None)
             host = _rewrite_host_for_interconnect(host)
-            channel = transport_cls.create_channel(
-                host=host,
-                attempt_direct_path=bool(
+            channel_kwargs = {
+                "host": host,
+                "credentials": credentials,
+                "attempt_direct_path": bool(
                     attempt_direct_path or attempt_direct_path_xds_over_interconnect
                 ),
-                attempt_direct_path_xds_over_interconnect=True,
-            )
+                "attempt_direct_path_xds_over_interconnect": True,
+            }
+            if quota_project_id is not None:
+                channel_kwargs["quota_project_id"] = quota_project_id
+            channel = transport_cls.create_channel(**channel_kwargs)
         else:
             channel = transport_cls.create_channel(
                 attempt_direct_path=attempt_direct_path

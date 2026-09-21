@@ -775,6 +775,7 @@ def test_create_channel_attempt_direct_path_xds_over_interconnect_default_ssl(
         "google-c2p:///storage-direct.googleapis.com?force-xds",
         composite_creds,
         compression=None,
+        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
     )
 
 
@@ -806,6 +807,7 @@ def test_create_channel_attempt_direct_path_xds_over_interconnect_custom_ssl(
         "google-c2p:///storage-direct.googleapis.com?force-xds",
         composite_creds,
         compression=None,
+        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
     )
 
 
@@ -835,3 +837,42 @@ def test_create_channel_interconnect_fallback(
         composite_creds,
         compression=None,
     )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.aio.secure_channel")
+def test_create_channel_interconnect_fallback_preserves_non_google_direct_host(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(
+        "my-direct.example.com:443",
+        attempt_direct_path=False,
+        attempt_direct_path_xds_over_interconnect=False,
+    )
+
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(
+        "my-direct.example.com:443",
+        composite_creds,
+        compression=None,
+    )
+
+
+def test_create_channel_async_invalid_env_var_raises(monkeypatch):
+    monkeypatch.setenv(
+        "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT", "invalid"
+    )
+    with pytest.raises(
+        ValueError,
+        match="Invalid value for GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT",
+    ):
+        grpc_helpers_async.create_channel("storage-direct.googleapis.com:443")

@@ -216,6 +216,32 @@ class TestGrpcClient(unittest.TestCase):
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage-direct.googleapis.com",
+            credentials=mock_creds,
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud._storage_v2.StorageClient")
+    def test_grpc_client_attempt_direct_path_xds_over_interconnect_with_quota_project(
+        self, mock_storage_client, mock_base_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        mock_base_client.return_value._credentials = mock_creds
+
+        grpc_client.GrpcClient(
+            project="test-project",
+            credentials=mock_creds,
+            client_options={"quota_project_id": "my-quota-proj"},
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="storage-direct.googleapis.com",
+            credentials=mock_creds,
+            quota_project_id="my-quota-proj",
             attempt_direct_path=True,
             attempt_direct_path_xds_over_interconnect=True,
         )
@@ -232,7 +258,7 @@ class TestGrpcClient(unittest.TestCase):
 
         with mock.patch.dict(
             "os.environ",
-            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "true"},
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": " TRUE "},
         ):
             grpc_client.GrpcClient(
                 project="test-project",
@@ -242,6 +268,7 @@ class TestGrpcClient(unittest.TestCase):
 
         mock_transport_cls.create_channel.assert_called_once_with(
             host="storage-direct.googleapis.com",
+            credentials=mock_creds,
             attempt_direct_path=True,
             attempt_direct_path_xds_over_interconnect=True,
         )
@@ -249,7 +276,7 @@ class TestGrpcClient(unittest.TestCase):
         mock_transport_cls.create_channel.reset_mock()
         with mock.patch.dict(
             "os.environ",
-            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "false"},
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": " FALSE "},
         ):
             grpc_client.GrpcClient(
                 project="test-project",
@@ -260,6 +287,16 @@ class TestGrpcClient(unittest.TestCase):
         mock_transport_cls.create_channel.assert_called_once_with(
             attempt_direct_path=True
         )
+
+        with mock.patch.dict(
+            "os.environ",
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "invalid"},
+        ):
+            with self.assertRaises(ValueError):
+                grpc_client.GrpcClient(
+                    project="test-project",
+                    credentials=mock_creds,
+                )
 
     def test_rewrite_host_for_interconnect_delimiters(self):
         cases = [

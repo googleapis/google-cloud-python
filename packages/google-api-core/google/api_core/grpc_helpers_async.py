@@ -313,13 +313,26 @@ def create_channel(
         default_host=default_host,
     )
 
+    if use_dp_interconnect:
+        authority = grpc_helpers._extract_direct_path_authority(target)
+        if authority:
+            existing_options = tuple(kwargs.get("options") or ())
+            option_keys = {opt[0] for opt in existing_options}
+            if (
+                "grpc.ssl_target_name_override" not in option_keys
+                and "grpc.default_authority" not in option_keys
+            ):
+                kwargs["options"] = existing_options + (
+                    ("grpc.ssl_target_name_override", authority),
+                )
+
     if attempt_direct_path or use_dp_interconnect:
         target = grpc_helpers._modify_target_for_direct_path(
             target,
             attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
-    elif "-direct." in target and not target.startswith("google-c2p:///"):
-        target = target.replace("-direct.", ".")
+    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
+        target = target.replace("-direct.googleapis.com", ".googleapis.com")
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs

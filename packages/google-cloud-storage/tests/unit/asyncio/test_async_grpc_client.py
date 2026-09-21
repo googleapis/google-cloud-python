@@ -490,3 +490,10 @@ class TestAsyncGrpcClient:
             credentials=mock_creds,
             options=expected_options,
         )
+
+        with mock.patch.dict(
+            "os.environ",
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "invalid"},
+        ):
+            with pytest.raises(ValueError):
+                async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
