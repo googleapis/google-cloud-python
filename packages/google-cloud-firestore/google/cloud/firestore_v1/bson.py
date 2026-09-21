@@ -467,7 +467,10 @@ class BSONDecimal128(_BSONType):
 
     def __float__(self) -> float:
         """float: Convert decimal value to float."""
-        return float(self._value)
+        d = self.to_decimal()
+        if d.is_nan():
+            return float("-nan") if d.is_signed() else float("nan")
+        return float(d)
 
     def __int__(self) -> int:
         """int: Convert decimal value to integer."""
