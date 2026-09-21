@@ -156,6 +156,53 @@ T4_GRPC_ERROR_CONTRACT = SpanContract(
     strict_ceiling=False,
 )
 
+# Tier 4 (HTTP Transport Wire Span) - Success Contract
+# Strict floor, open ceiling.
+T4_HTTP_SUCCESS_CONTRACT = SpanContract(
+    required={
+        "http.request.method",
+        "http.response.status_code",
+        "url.domain",
+    },
+    optional={
+        "server.address",
+        "server.port",
+        "url.template",
+        "url.full",
+        "http.request.body.size",
+        "http.response.body.size",
+    },
+    forbidden={
+        "error.type",
+        "rpc.system.name",
+    },
+    strict_ceiling=False,
+)
+
+# Tier 4 (HTTP Transport Wire Span) - Error Contract
+# Strict floor, open ceiling.
+T4_HTTP_ERROR_CONTRACT = SpanContract(
+    required={
+        "http.request.method",
+        "url.domain",
+        "error.type",
+    },
+    optional={
+        "http.response.status_code",
+        "server.address",
+        "server.port",
+        "url.template",
+        "url.full",
+        "http.request.body.size",
+        "http.response.body.size",
+        "status.message",
+    },
+    forbidden={
+        "rpc.system.name",
+    },
+    strict_ceiling=False,
+)
+
 
 def assert_span_contract(
     span_or_attrs: Any,

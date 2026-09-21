@@ -107,6 +107,7 @@ class Async{{service.name}}RestStub:
     _session: AsyncAuthorizedSession
     _host: str
     _interceptor: Async{{service.name}}RestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     """Asynchronous REST backend transport for {{ service.name }}.
@@ -343,7 +344,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None))  # type: ignore
 
     {% endfor %}
     {% for name, sig in api.mixin_api_signatures.items() %}

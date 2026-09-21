@@ -283,26 +283,57 @@ def get_otel_async_interceptor(
     )
 
 
+# The `start_http_span` context manager deliberately supports two distinct invocation styles:
+# 1. Bundled Request Object: `start_http_span(request, ...)`
+#    Used when callers already possess an HTTP request instance (such as
+#    requests.PreparedRequest or urllib.request.Request) with `.method`, `.url`, etc.
+# 2. Unpacked Keyword Arguments: `start_http_span(method=..., url=..., headers=..., body=...)`
+#    Used by generated GAPIC REST transports (_shared_macros.j2). In GAPIC templates,
+#    requests are assembled from local strings and dictionaries before hitting the session.
+#    Supporting keyword arguments avoids the CPU and memory overhead of instantiating
+#    a throwaway dummy request object on every single RPC execution.
 @contextlib.contextmanager
 def start_http_span(
-    request: Any,
+    request: Any = None,
+    *,
+    method: str | None = None,
+    url: str | None = None,
     url_template: str | None = None,
+    headers: dict[str, Any] | None = None,
+    body: Any = None,
     client_options: ClientOptions | dict[str, Any] | None = None,
 ):
     """Context manager for tracing an HTTP wire request with OpenTelemetry.
 
-    Injects W3C traceparent headers into request.headers and attaches standard
+    Supports two calling conventions:
+    - Pass a single `request` object (such as `requests.PreparedRequest`).
+    - Pass explicit keyword arguments (`method`, `url`, `headers`, `body`, `client_options`).
+
+    Injects W3C traceparent headers into request headers and attaches standard
     semantic attributes. If tracing is disabled or OpenTelemetry is not installed,
     yields None.
 
     Args:
-        request: The HTTP request object (e.g. requests.PreparedRequest or similar).
-        url_template: Optional low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        request: Optional HTTP request object with .method, .url, .headers, and .body.
+        method: HTTP request method (e.g. 'GET', 'POST').
+        url: Full request URL.
+        url_template: Low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        headers: Outgoing HTTP headers dictionary for traceparent injection.
+        body: HTTP request body payload.
         client_options: Client options used for feature gating and tracer extraction.
 
     Yields:
         Optional[Span]: The active OpenTelemetry span or None.
     """
+    # Defensively handle case where client_options was passed as the first positional argument
+    if (
+        isinstance(request, (ClientOptions, dict))
+        and client_options is None
+        and method is not None
+    ):
+        client_options = request
+        request = None
+
     if not is_otel_capabilities_enabled(client_options):
         yield None
         return
@@ -319,46 +350,57 @@ def start_http_span(
         else:
             tracer = trace.get_tracer("google.api_core")
 
-        method = getattr(request, "method", "HTTP") or "HTTP"
-        url = getattr(request, "url", "") or ""
+        # Resolve request attributes from either bundled object or explicit keyword arguments
+        if request is not None:
+            resolved_method = getattr(request, "method", "HTTP") or "HTTP"
+            resolved_url = getattr(request, "url", "") or ""
+            resolved_headers = getattr(request, "headers", None)
+            resolved_body = getattr(request, "body", None)
+        else:
+            resolved_method = method or "HTTP"
+            resolved_url = url or ""
+            resolved_headers = headers
+            resolved_body = body
+
+        resolved_method = resolved_method.upper()
         endpoint_attrs = _extract_endpoint_attributes(client_options)
 
         server_address = endpoint_attrs.get("server.address")
         server_port = endpoint_attrs.get("server.port")
-        if not server_address and url:
+        if not server_address and resolved_url:
             try:
-                parsed = urllib.parse.urlsplit(url)
+                parsed = urllib.parse.urlsplit(resolved_url)
                 server_address = parsed.hostname
                 if not server_port and parsed.port:
                     server_port = parsed.port
             except Exception:
                 pass
 
-        span_name = method
+        span_name = resolved_method
         span_attributes: dict[str, Any] = {
-            "http.request.method": method,
+            "http.request.method": resolved_method,
             "server.address": server_address or "",
             "server.port": server_port or 443,
             "url.domain": endpoint_attrs.get("url.domain", "googleapis.com"),
         }
         if url_template:
             span_attributes["url.template"] = url_template
-        if url:
-            span_attributes["url.full"] = url
+        if resolved_url:
+            span_attributes["url.full"] = resolved_url
 
-        body = getattr(request, "body", None)
-        if body is not None and isinstance(body, (bytes, str)):
-            span_attributes["http.request.body.size"] = len(body)
+        if resolved_body is not None and isinstance(resolved_body, (bytes, str)):
+            span_attributes["http.request.body.size"] = len(resolved_body)
 
         with tracer.start_as_current_span(
             span_name,
             kind=trace.SpanKind.CLIENT,
             attributes=span_attributes,
         ) as span:
-            headers = getattr(request, "headers", None)
-            if headers is not None and hasattr(headers, "__setitem__"):
+            if resolved_headers is not None and hasattr(
+                resolved_headers, "__setitem__"
+            ):
                 try:
-                    TraceContextTextMapPropagator().inject(headers)
+                    TraceContextTextMapPropagator().inject(resolved_headers)
                 except Exception:
                     pass
 

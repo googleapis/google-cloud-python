@@ -1030,6 +1030,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_custom_channel_interceptor
 def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel_interceptors():
     mock_interceptor = mock.Mock()
     mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
 
     with mock.patch.object(
         transports.{{ service.grpc_asyncio_transport_name }},
@@ -1042,9 +1043,7 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel_intercepto
         )
 
         assert mock_create_channel.call_count == 1
-        call_kwargs = mock_create_channel.call_args.kwargs
-        assert "interceptors" in call_kwargs
-        assert mock_interceptor in call_kwargs["interceptors"]
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
         assert transport.grpc_channel == mock_channel
 
 
@@ -1053,6 +1052,7 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_otel_channel_inter
     mock_obs = mock.Mock()
     mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
     mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
 
     with (
         mock.patch(
@@ -1073,9 +1073,7 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_otel_channel_inter
 
         mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
         assert mock_create_channel.call_count == 1
-        call_kwargs = mock_create_channel.call_args.kwargs
-        assert "interceptors" in call_kwargs
-        assert mock_otel_interceptor in call_kwargs["interceptors"]
+        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
         assert transport.grpc_channel == mock_channel
 
 

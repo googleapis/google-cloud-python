@@ -377,7 +377,7 @@ _DEFAULT_SPAN_ATTRIBUTES = {
         (
             {
                 "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-                "kind": "rest",
+                "kind": "custom_unsupported",
             },
             True,
         ),
@@ -407,7 +407,7 @@ _DEFAULT_SPAN_ATTRIBUTES = {
         "disabled_by_flag",
         "omitted_method_name",
         "streaming_skipped",
-        "rest_kind_skipped",
+        "custom_unsupported_kind_skipped",
         "rest_asyncio_kind_skipped",
         "grpc_asyncio_kind_skipped",
         "http_kind_skipped",
@@ -439,7 +439,8 @@ def test_wrap_method_otel_tracing_skips_span(monkeypatch, kwargs, capabilities_e
     )
 
 
-def test_wrap_method_otel_tracing_enabled_success(mock_otel):
+@pytest.mark.parametrize("kind", ["grpc", "rest"])
+def test_wrap_method_otel_tracing_enabled_success(mock_otel, kind):
     """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started."""
     mock_target = mock.Mock(return_value="success")
 
@@ -447,7 +448,7 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel):
         mock_target,
         default_timeout=60,
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="grpc",
+        kind=kind,
     )
     result = wrapped()
 

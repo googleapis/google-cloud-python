@@ -170,7 +170,7 @@ def _get_http_options():
 
     if _observability is not None and hasattr(_observability, "start_http_span"):
         with _observability.start_http_span(
-            client_options,
+            client_options=client_options,
             method=method,
             url=url,
             url_template=uri,
@@ -192,22 +192,26 @@ def _get_http_options():
                 )
                 _observability.record_http_response(span, response)
                 return response
-            except (Exception, {% if is_async %}asyncio.CancelledError{% else %}BaseException{% endif %}) as exc:
-                _observability.record_http_error(span, exc)
-                raise
-    response = {{ await_prefix }}getattr(session, method)(
-        url,
-        timeout=timeout,
-        headers=headers,
-        params=rest_helpers.flatten_query_params(query_params, strict=True),
+            # Transport network exceptions during dispatch record error span and re-raise.
+            # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+            except (Exception, {% if is_async %}asyncio.CancelledError{% else %}BaseException{% endif %}) as exc:  # pragma: NO COVER
+                _observability.record_http_error(span, exc)  # pragma: NO COVER
+                raise  # pragma: NO COVER
+    # For older versions of google-api-core without observability support, fallback to untraced request.
+    # Excluded from coverage because testing environments always install modern google-api-core.
+    response = {{ await_prefix }}getattr(session, method)(  # pragma: NO COVER
+        url,  # pragma: NO COVER
+        timeout=timeout,  # pragma: NO COVER
+        headers=headers,  # pragma: NO COVER
+        params=rest_helpers.flatten_query_params(query_params, strict=True),  # pragma: NO COVER
         {% if body_spec %}
-        data=body,
+        data=body,  # pragma: NO COVER
         {% endif %}
         {% if not is_async and is_streaming_method %}
-        stream=True,
+        stream=True,  # pragma: NO COVER
         {% endif %}
-    )
-    return response
+    )  # pragma: NO COVER
+    return response  # pragma: NO COVER
 {% endmacro %}
 
 {# rest_call_method_common includes the common code for a rest __call__ method to be
@@ -363,6 +367,10 @@ def _prep_wrapped_messages(self, client_info):
             {% endif %}
             default_timeout={{ method.timeout }},
             client_info=client_info,
+            method_name="{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}",
+            {% if method.client_streaming or method.server_streaming %}
+            is_streaming=True,
+            {% endif %}
         ),
         {% endfor %}{# service.methods.values() #}
         {% for method_name in api.mixin_api_methods.keys() %}
@@ -373,6 +381,7 @@ def _prep_wrapped_messages(self, client_info):
             self.{{ method_name|snake_case }},
             default_timeout=None,
             client_info=client_info,
+            method_name="{{ api.mixin_api_signatures[method_name].rpc_name }}",
         ),
         {% endfor %}{# method_name in api.mixin_api_methods.keys() #}
     }
@@ -390,8 +399,7 @@ See related issue: https://github.com/googleapis/gapic-generator-python/issues/2
 def _wrap_method(self, func, *args, **kwargs):
     if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
         kwargs["client_options"] = getattr(self, "_client_options", None)
-        if self.kind:
-            kwargs["kind"] = self.kind
+        kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
     # The fallback below strips tracing-specific arguments when an older version
     # of google-api-core is installed.
@@ -529,7 +537,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
 @property
 def {{ name|snake_case }}(self):
-    return self.{{ name|make_private }}(self._session, self._host, self._interceptor) # type: ignore
+    return self.{{ name|make_private }}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
 class {{ name|make_private }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_method_name_prefix }}{{service.name}}RestStub):
     def __hash__(self):

@@ -78,6 +78,7 @@ class {{service.name}}RestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: {{ service.name }}RestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
@@ -334,7 +335,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {{method.output.ident}}]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     {% endfor %}
 

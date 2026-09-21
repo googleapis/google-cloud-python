@@ -44,22 +44,39 @@ from google.rpc import code_pb2, error_details_pb2
 from google.showcase import EchoClient
 
 try:
-    from .conftest import construct_client
+    from google.showcase import EchoAsyncClient
+
+    HAS_ASYNC_CLIENT = True
+except ImportError:
+    HAS_ASYNC_CLIENT = False
+
+try:
+    from .conftest import (
+        HAS_ASYNC_REST_ECHO_TRANSPORT,
+        async_anonymous_credentials,
+        construct_client,
+    )
     from .span_contract import (
         T3_ERROR_CONTRACT,
         T3_SUCCESS_CONTRACT,
         T4_GRPC_ERROR_CONTRACT,
         T4_GRPC_SUCCESS_CONTRACT,
+        T4_HTTP_SUCCESS_CONTRACT,
         SpanContract,
         assert_span_contract,
     )
 except (ImportError, ValueError):
-    from conftest import construct_client
+    from conftest import (
+        HAS_ASYNC_REST_ECHO_TRANSPORT,
+        async_anonymous_credentials,
+        construct_client,
+    )
     from span_contract import (
         T3_ERROR_CONTRACT,
         T3_SUCCESS_CONTRACT,
         T4_GRPC_ERROR_CONTRACT,
         T4_GRPC_SUCCESS_CONTRACT,
+        T4_HTTP_SUCCESS_CONTRACT,
         SpanContract,
         assert_span_contract,
     )
@@ -93,6 +110,73 @@ def otel_echo_client(span_exporter, use_mtls):
             use_mtls,
             client_options=options,
             credentials=ga_credentials.AnonymousCredentials(),
+        )
+        yield client, exporter
+
+
+@pytest.fixture
+def otel_echo_async_client(span_exporter, use_mtls):
+    """Constructs an EchoAsyncClient over gRPC wired with an in-memory TracerProvider."""
+    if not HAS_ASYNC_CLIENT:
+        pytest.skip("EchoAsyncClient is not available")
+    from grpc.experimental import aio
+
+    exporter, provider = span_exporter
+    options = ClientOptions(
+        tracer_provider=provider,
+    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoAsyncClient,
+            use_mtls,
+            transport_name="grpc_asyncio",
+            channel_creator=aio.insecure_channel,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        yield client, exporter
+
+
+@pytest.fixture
+def otel_echo_rest_client(span_exporter, use_mtls):
+    """Constructs an EchoClient over REST wired with an in-memory TracerProvider."""
+    exporter, provider = span_exporter
+    options = ClientOptions(
+        tracer_provider=provider,
+    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            transport_name="rest",
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        yield client, exporter
+
+
+@pytest.fixture
+def otel_echo_async_rest_client(span_exporter, use_mtls):
+    """Constructs an EchoAsyncClient over async REST wired with an in-memory TracerProvider."""
+    if not HAS_ASYNC_CLIENT or not HAS_ASYNC_REST_ECHO_TRANSPORT:
+        pytest.skip("EchoAsyncClient or AsyncEchoRestTransport is not available")
+    exporter, provider = span_exporter
+    options = ClientOptions(
+        tracer_provider=provider,
+    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoAsyncClient,
+            use_mtls,
+            transport_name="rest_asyncio",
+            client_options=options,
+            credentials=async_anonymous_credentials(),
         )
         yield client, exporter
 
@@ -144,6 +228,147 @@ def test_sync_unary_tracing(otel_echo_client):
         label="T4 Sync Unary Wire Span",
     )
     assert wire_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert wire_span.kind == trace.SpanKind.CLIENT
+    assert wire_span.parent.span_id == method_span.context.span_id
+
+
+@pytest.mark.asyncio
+async def test_async_unary_tracing(otel_echo_async_client):
+    """Verifies that an async gRPC unary RPC generates trace spans conforming to semantic contracts."""
+    client, exporter = otel_echo_async_client
+
+    response = await client.echo(showcase.EchoRequest(content="hello async world"))
+    assert response.content == "hello async world"
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+    assert len(t3_spans) == 1
+    assert len(t4_spans) == 1
+
+    method_span = t3_spans[0]
+    wire_span = t4_spans[0]
+
+    assert_span_contract(
+        method_span,
+        T3_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+        },
+        label="T3 Async gRPC Method Span",
+    )
+    assert method_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert method_span.kind == trace.SpanKind.CLIENT
+
+    assert_span_contract(
+        wire_span,
+        T4_GRPC_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+            "url.domain": "googleapis.com",
+        },
+        label="T4 Async gRPC Wire Span",
+    )
+    assert wire_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert wire_span.kind == trace.SpanKind.CLIENT
+    assert wire_span.parent.span_id == method_span.context.span_id
+
+
+def test_sync_rest_unary_tracing(otel_echo_rest_client):
+    """Verifies that a synchronous REST RPC generates trace spans conforming to semantic contracts."""
+    client, exporter = otel_echo_rest_client
+
+    response = client.echo(showcase.EchoRequest(content="hello sync rest"))
+    assert response.content == "hello sync rest"
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+    assert len(t3_spans) == 1
+    assert len(t4_spans) == 1
+
+    method_span = t3_spans[0]
+    wire_span = t4_spans[0]
+
+    assert_span_contract(
+        method_span,
+        T3_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+        },
+        label="T3 Sync REST Method Span",
+    )
+    assert method_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert method_span.kind == trace.SpanKind.CLIENT
+
+    assert_span_contract(
+        wire_span,
+        T4_HTTP_SUCCESS_CONTRACT,
+        exact_values={
+            "http.request.method": "POST",
+            "http.response.status_code": 200,
+            "url.domain": "googleapis.com",
+        },
+        label="T4 Sync REST Wire Span",
+    )
+    assert wire_span.name == "POST"
+    assert wire_span.kind == trace.SpanKind.CLIENT
+    assert wire_span.parent.span_id == method_span.context.span_id
+
+
+@pytest.mark.asyncio
+async def test_async_rest_unary_tracing(otel_echo_async_rest_client):
+    """Verifies that an async REST RPC generates trace spans conforming to semantic contracts."""
+    client, exporter = otel_echo_async_rest_client
+
+    response = await client.echo(showcase.EchoRequest(content="hello async rest"))
+    assert response.content == "hello async rest"
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) == 2
+
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+    assert len(t3_spans) == 1
+    assert len(t4_spans) == 1
+
+    method_span = t3_spans[0]
+    wire_span = t4_spans[0]
+
+    assert_span_contract(
+        method_span,
+        T3_SUCCESS_CONTRACT,
+        exact_values={
+            "rpc.system.name": "grpc",
+            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
+            "rpc.response.status_code": "OK",
+        },
+        label="T3 Async REST Method Span",
+    )
+    assert method_span.name == "google.showcase.v1beta1.Echo/Echo"
+    assert method_span.kind == trace.SpanKind.CLIENT
+
+    assert_span_contract(
+        wire_span,
+        T4_HTTP_SUCCESS_CONTRACT,
+        exact_values={
+            "http.request.method": "POST",
+            "http.response.status_code": 200,
+            "url.domain": "googleapis.com",
+        },
+        label="T4 Async REST Wire Span",
+    )
+    assert wire_span.name == "POST"
     assert wire_span.kind == trace.SpanKind.CLIENT
     assert wire_span.parent.span_id == method_span.context.span_id
 

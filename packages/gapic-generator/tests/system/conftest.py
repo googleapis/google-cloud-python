@@ -181,9 +181,8 @@ def construct_client(
             transport_kwargs = {
                 "credentials": credentials,
                 "channel": channel_creator(transport_endpoint),
+                "client_options": client_options,
             }
-            if transport_name == "grpc":
-                transport_kwargs["client_options"] = client_options
             transport = transport_cls(**transport_kwargs)
         elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
@@ -191,6 +190,7 @@ def construct_client(
                 credentials=credentials,
                 host=transport_endpoint,
                 url_scheme="http",
+                client_options=client_options,
             )
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
