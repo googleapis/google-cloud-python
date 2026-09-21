@@ -1307,7 +1307,7 @@ def test_bson_document_read_and_write(client, cleanup, database):
 
     snapshot = doc_ref.get()
     assert snapshot.exists
-    assert snapshot.to_dict(decode_bson=True) == bson_payload
+    assert snapshot.to_dict() == bson_payload
 
 
 @pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)

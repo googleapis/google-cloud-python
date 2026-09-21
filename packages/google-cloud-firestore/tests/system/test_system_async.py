@@ -1280,7 +1280,7 @@ async def test_async_bson_document_read_and_write(client, cleanup, database):
 
     snapshot = await doc_ref.get()
     assert snapshot.exists
-    assert snapshot.to_dict(decode_bson=True) == bson_payload
+    assert snapshot.to_dict() == bson_payload
 
 
 @pytest.mark.asyncio

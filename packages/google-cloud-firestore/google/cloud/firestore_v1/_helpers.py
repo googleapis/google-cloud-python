@@ -347,7 +347,7 @@ def reference_value_to_document(reference_value, client) -> Any:
     return document
 
 
-def decode_value(value, client=None, decode_bson: Optional[bool] = None) -> Any:
+def decode_value(value, client=None) -> Any:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
     Args:
@@ -355,10 +355,12 @@ def decode_value(value, client=None, decode_bson: Optional[bool] = None) -> Any:
             Firestore protobuf to be decoded / parsed / converted.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
-        decode_bson (Optional[bool]): Whether to decode BSON extended types.
 
     Returns:
         Any: A native Python value converted from the ``value``.
+
+    Raises:
+        ValueError: If ``value_type`` is unknown or unsupported.
     """
     value_pb = getattr(value, "_pb", value)
     value_type = value_pb.WhichOneof("value_type")
@@ -385,32 +387,19 @@ def decode_value(value, client=None, decode_bson: Optional[bool] = None) -> Any:
         )
     elif value_type == "array_value":
         return [
-            decode_value(element, client, decode_bson=decode_bson)
+            decode_value(element, client)
             for element in value_pb.array_value.values
         ]
     elif value_type == "map_value":
-        return decode_dict(value_pb.map_value.fields, client, decode_bson=decode_bson)
+        return decode_dict(value_pb.map_value.fields, client)
     else:
         raise ValueError("Unknown ``value_type``", value_type)
-
-
-def _decode_bson_dict(data: dict) -> Optional[_BSONType]:
-    """Decode a single-key wire map dictionary if registered."""
-    if len(data) == 1:
-        key, val = next(iter(data.items()))
-        decoder = _BSON_DECODERS.get(key)
-        if decoder is not None:
-            try:
-                return decoder(val)
-            except Exception:
-                pass
-    return None
 
 
 def _decode_bson_dict_recursive(data: Any) -> Any:
     """Recursively decodes BSON wire map dictionaries."""
     if isinstance(data, dict):
-        decoded = _decode_bson_dict(data)
+        decoded = _BSONType._from_dict(data)
         if decoded is not None:
             return decoded
         return {k: _decode_bson_dict_recursive(v) for k, v in data.items()}
@@ -422,8 +411,7 @@ def _decode_bson_dict_recursive(data: Any) -> Any:
 def decode_dict(
     value_fields,
     client=None,
-    decode_bson: Optional[bool] = None,
-) -> Union[dict, Vector, _BSONType]:
+) -> Union[dict, Vector, _BSONType, bytes]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -431,16 +419,15 @@ def decode_dict(
             protobuf map of Firestore ``Value``-s.
         client (:class:`~google.cloud.firestore_v1.client.Client`):
             A client that has a document factory.
-        decode_bson (Optional[bool]): Whether to decode BSON extended types.
 
     Returns:
         Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
-            ~google.cloud.firestore_v1.bson._BSONType]: A dictionary of native \
+            ~google.cloud.firestore_v1.bson._BSONType, bytes]: A dictionary of native \
         Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
     res = {
-        key: decode_value(value, client, decode_bson=decode_bson)
+        key: decode_value(value, client)
         for key, value in value_fields_pb.items()
     }
 
@@ -450,15 +437,9 @@ def decode_dict(
         values = cast(Sequence[float], res["value"])
         return Vector(values)
 
-    should_decode = (
-        decode_bson
-        if decode_bson is not None
-        else getattr(client, "_decode_bson", False)
-    )
-    if should_decode:
-        decoded = _decode_bson_dict(res)
-        if decoded is not None:
-            return decoded
+    decoded = _BSONType._from_dict(res)
+    if decoded is not None:
+        return decoded
 
     return res
 

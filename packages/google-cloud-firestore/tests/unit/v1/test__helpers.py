@@ -733,13 +733,7 @@ def test_decode_dict_w_bson_types():
     }
 
     pb_fields = encode_dict(original_dict)
-    # Default (decode_bson=False) returns raw dict
-    raw_decoded = decode_dict(pb_fields, mock.sentinel.client)
-    assert raw_decoded != original_dict
-    assert raw_decoded["oid"] == {"__oid__": "507f191e810c19729de860ea"}
-
-    # decode_bson=True returns deserialized BSON objects
-    decoded = decode_dict(pb_fields, mock.sentinel.client, decode_bson=True)
+    decoded = decode_dict(pb_fields, mock.sentinel.client)
     assert decoded == original_dict
 
 
