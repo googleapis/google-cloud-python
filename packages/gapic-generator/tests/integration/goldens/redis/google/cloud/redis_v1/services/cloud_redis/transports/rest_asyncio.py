@@ -15,54 +15,68 @@
 #
 
 import google.auth
+
 try:
-    import aiohttp # type: ignore
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession # type: ignore
-    from google.api_core import rest_streaming_async # type: ignore
-    from google.api_core.operations_v1 import AsyncOperationsRestClient # type: ignore
+    import aiohttp  # type: ignore
+    from google.api_core import rest_streaming_async  # type: ignore
+    from google.api_core.operations_v1 import AsyncOperationsRestClient  # type: ignore
+    from google.auth.aio.transport.sessions import (
+        AsyncAuthorizedSession,  # type: ignore
+    )
 except ImportError as e:  # pragma: NO COVER
-    raise ImportError("`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-cloud-redis[async_rest]`") from e
+    raise ImportError(
+        "`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-cloud-redis[async_rest]`"
+    ) from e
 
-from google.auth.aio import credentials as ga_credentials_async  # type: ignore
-
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import operations_v1
-from google.cloud.location import locations_pb2 # type: ignore
-from google.api_core import retry_async as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming_async  # type: ignore
-from google.cloud.redis_v1._compat import transcode_request
+import contextlib
+import dataclasses
+import json  # type: ignore
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.protobuf
-
-from google.protobuf import json_format
-from google.api_core import operations_v1
-from google.cloud.location import locations_pb2 # type: ignore
-
-import json  # type: ignore
-import dataclasses
-from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
-
-
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    rest_helpers,
+    rest_streaming_async,  # type: ignore
+)
+from google.api_core import retry_async as retries
+from google.auth.aio import credentials as ga_credentials_async  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore  # type: ignore
+from google.cloud.redis_v1._compat import transcode_request
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
 
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
 
-from .rest_base import _BaseCloudRedisRestTransport
+import asyncio
+import inspect
+import logging
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-
-
-import logging
+from .rest_base import _BaseCloudRedisRestTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
+
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -186,7 +200,14 @@ class AsyncCloudRedisRestInterceptor:
 
 
     """
-    async def pre_create_instance(self, request: cloud_redis.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+
+    async def pre_create_instance(
+        self,
+        request: cloud_redis.CreateInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -194,7 +215,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_create_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -207,7 +230,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_create_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_create_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -222,7 +249,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_delete_instance(
+        self,
+        request: cloud_redis.DeleteInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -230,7 +263,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_delete_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -243,7 +278,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_delete_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_delete_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -258,7 +297,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_export_instance(
+        self,
+        request: cloud_redis.ExportInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -266,7 +311,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_export_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_export_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_instance
 
         DEPRECATED. Please use the `post_export_instance_with_metadata`
@@ -279,7 +326,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_export_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_export_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -294,7 +345,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_failover_instance(
+        self,
+        request: cloud_redis.FailoverInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for failover_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -302,7 +359,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_failover_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for failover_instance
 
         DEPRECATED. Please use the `post_failover_instance_with_metadata`
@@ -315,7 +374,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_failover_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_failover_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -330,7 +393,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_get_instance(
+        self,
+        request: cloud_redis.GetInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -338,7 +405,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
+    async def post_get_instance(
+        self, response: cloud_redis.Instance
+    ) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
 
         DEPRECATED. Please use the `post_get_instance_with_metadata`
@@ -351,7 +420,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_get_instance_with_metadata(self, response: cloud_redis.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_get_instance_with_metadata(
+        self,
+        response: cloud_redis.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -366,7 +439,14 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_get_instance_auth_string(
+        self,
+        request: cloud_redis.GetInstanceAuthStringRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.GetInstanceAuthStringRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_instance_auth_string
 
         Override in a subclass to manipulate the request or metadata
@@ -374,7 +454,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
+    async def post_get_instance_auth_string(
+        self, response: cloud_redis.InstanceAuthString
+    ) -> cloud_redis.InstanceAuthString:
         """Post-rpc interceptor for get_instance_auth_string
 
         DEPRECATED. Please use the `post_get_instance_auth_string_with_metadata`
@@ -387,7 +469,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_get_instance_auth_string_with_metadata(self, response: cloud_redis.InstanceAuthString, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.InstanceAuthString, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_get_instance_auth_string_with_metadata(
+        self,
+        response: cloud_redis.InstanceAuthString,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_redis.InstanceAuthString, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance_auth_string
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -402,7 +488,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_import_instance(
+        self,
+        request: cloud_redis.ImportInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -410,7 +502,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_import_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_import_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_instance
 
         DEPRECATED. Please use the `post_import_instance_with_metadata`
@@ -423,7 +517,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_import_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_import_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -438,7 +536,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_list_instances(
+        self,
+        request: cloud_redis.ListInstancesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -446,7 +550,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
+    async def post_list_instances(
+        self, response: cloud_redis.ListInstancesResponse
+    ) -> cloud_redis.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -459,7 +565,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_list_instances_with_metadata(self, response: cloud_redis.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_list_instances_with_metadata(
+        self,
+        response: cloud_redis.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -474,7 +586,14 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_reschedule_maintenance(
+        self,
+        request: cloud_redis.RescheduleMaintenanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.RescheduleMaintenanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -482,7 +601,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_reschedule_maintenance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_maintenance
 
         DEPRECATED. Please use the `post_reschedule_maintenance_with_metadata`
@@ -495,7 +616,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_reschedule_maintenance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_reschedule_maintenance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -510,7 +635,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_update_instance(
+        self,
+        request: cloud_redis.UpdateInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -518,7 +649,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_update_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -531,7 +664,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_update_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_update_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -546,7 +683,13 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response, metadata
 
-    async def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def pre_upgrade_instance(
+        self,
+        request: cloud_redis.UpgradeInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for upgrade_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -554,7 +697,9 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    async def post_upgrade_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
 
         DEPRECATED. Please use the `post_upgrade_instance_with_metadata`
@@ -567,7 +712,11 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def post_upgrade_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    async def post_upgrade_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -583,8 +732,12 @@ class AsyncCloudRedisRestInterceptor:
         return response, metadata
 
     async def pre_get_location(
-        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -604,8 +757,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_list_locations(
-        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -625,8 +782,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_cancel_operation(
-        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -634,9 +795,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_cancel_operation(
-        self, response: None
-    ) -> None:
+    async def post_cancel_operation(self, response: None) -> None:
         """Post-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the response
@@ -646,8 +805,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_delete_operation(
-        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: operations_pb2.DeleteOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -655,9 +818,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_delete_operation(
-        self, response: None
-    ) -> None:
+    async def post_delete_operation(self, response: None) -> None:
         """Post-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the response
@@ -667,8 +828,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -688,8 +853,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_list_operations(
-        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -709,8 +878,12 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
     async def pre_wait_operation(
-        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
-    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        self,
+        request: operations_pb2.WaitOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -735,6 +908,8 @@ class AsyncCloudRedisRestStub:
     _session: AsyncAuthorizedSession
     _host: str
     _interceptor: AsyncCloudRedisRestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
+
 
 class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     """Asynchronous REST backend transport for CloudRedis.
@@ -767,38 +942,45 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
-    def __init__(self,
-            *,
-            host: str = 'redis.googleapis.com',
-            credentials: Optional[ga_credentials_async.Credentials] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            url_scheme: str = 'https',
-            interceptor: Optional[AsyncCloudRedisRestInterceptor] = None,
-            ) -> None:
+
+    def __init__(
+        self,
+        *,
+        host: str = "redis.googleapis.com",
+        credentials: Optional[ga_credentials_async.Credentials] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        url_scheme: str = "https",
+        interceptor: Optional[AsyncCloudRedisRestInterceptor] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
-       NOTE: This async REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
+        NOTE: This async REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
-        Args:
-            host (Optional[str]):
-                 The hostname to connect to (default: 'redis.googleapis.com').
-            credentials (Optional[google.auth.aio.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify the application to the service; if none
-                are specified, the client will attempt to ascertain the
-                credentials from the environment.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you are developing
-                your own client library.
-            url_scheme (str): the protocol scheme for the API endpoint.  Normally
-                "https", but for testing or local servers,
-                "http" can be specified.
-            interceptor (Optional[AsyncCloudRedisRestInterceptor]): Interceptor used
-                to manipulate requests, request metadata, and responses.
+         Args:
+             host (Optional[str]):
+                  The hostname to connect to (default: 'redis.googleapis.com').
+             credentials (Optional[google.auth.aio.credentials.Credentials]): The
+                 authorization credentials to attach to requests. These
+                 credentials identify the application to the service; if none
+                 are specified, the client will attempt to ascertain the
+                 credentials from the environment.
+             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                 The client info used to send a user-agent string along with
+                 API requests. If ``None``, then default info will be used.
+                 Generally, you only need to set this if you are developing
+                 your own client library.
+             url_scheme (str): the protocol scheme for the API endpoint.  Normally
+                 "https", but for testing or local servers,
+                 "http" can be specified.
+             interceptor (Optional[AsyncCloudRedisRestInterceptor]): Interceptor used
+                 to manipulate requests, request metadata, and responses.
+             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                 Custom options for the client, containing options such as
+                 custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         super().__init__(
@@ -807,115 +989,155 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             client_info=client_info,
             always_use_jwt_access=False,
             url_scheme=url_scheme,
-            api_audience=None
+            api_audience=None,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or AsyncCloudRedisRestInterceptor()
-        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
-        self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
+        self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = (
+            None
+        )
 
     def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_instances: self._wrap_method(
                 self.list_instances,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/ListInstances",
             ),
             self.get_instance: self._wrap_method(
                 self.get_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/GetInstance",
             ),
             self.get_instance_auth_string: self._wrap_method(
                 self.get_instance_auth_string,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/GetInstanceAuthString",
             ),
             self.create_instance: self._wrap_method(
                 self.create_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/CreateInstance",
             ),
             self.update_instance: self._wrap_method(
                 self.update_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/UpdateInstance",
             ),
             self.upgrade_instance: self._wrap_method(
                 self.upgrade_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/UpgradeInstance",
             ),
             self.import_instance: self._wrap_method(
                 self.import_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/ImportInstance",
             ),
             self.export_instance: self._wrap_method(
                 self.export_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/ExportInstance",
             ),
             self.failover_instance: self._wrap_method(
                 self.failover_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/FailoverInstance",
             ),
             self.delete_instance: self._wrap_method(
                 self.delete_instance,
                 default_timeout=600.0,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/DeleteInstance",
             ),
             self.reschedule_maintenance: self._wrap_method(
                 self.reschedule_maintenance,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.redis.v1.CloudRedis/RescheduleMaintenance",
             ),
             self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/GetLocation",
             ),
             self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/ListLocations",
             ),
             self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/CancelOperation",
             ),
             self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/DeleteOperation",
             ),
             self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
             self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/ListOperations",
             ),
             self.wait_operation: self._wrap_method(
                 self.wait_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/WaitOperation",
             ),
         }
 
     def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_kind:  # pragma: NO COVER
-            kwargs["kind"] = self.kind
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
+            kwargs["client_options"] = getattr(
+                self, "_client_options", None
+            )  # pragma: NO COVER
+            kwargs["kind"] = self.kind  # pragma: NO COVER
+            return gapic_v1.method_async.wrap_method(
+                func, *args, **kwargs
+            )  # pragma: NO COVER
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed.
+        for k in [
+            "client_options",
+            "method_name",
+            "is_streaming",
+            "kind",
+        ]:  # pragma: NO COVER
+            kwargs.pop(k, None)  # pragma: NO COVER
+        return gapic_v1.method_async.wrap_method(
+            func, *args, **kwargs
+        )  # pragma: NO COVER
 
-    class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
+    class _CreateInstance(
+        _BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.CreateInstance")
 
@@ -927,27 +1149,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.CreateInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.CreateInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
             Args:
@@ -970,8 +1228,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_create_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseCreateInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_create_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -983,22 +1245,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.CreateInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CreateInstance",
                         "httpRequest": http_request,
@@ -1007,16 +1273,29 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._CreateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = await AsyncCloudRedisRestTransport._CreateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -1025,20 +1304,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_create_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.create_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CreateInstance",
                         "metadata": http_response["headers"],
@@ -1048,7 +1331,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
+    class _DeleteInstance(
+        _BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.DeleteInstance")
 
@@ -1060,26 +1345,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.DeleteInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.DeleteInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
             Args:
@@ -1102,8 +1423,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_delete_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseDeleteInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_delete_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1115,22 +1440,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.DeleteInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteInstance",
                         "httpRequest": http_request,
@@ -1139,16 +1468,28 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._DeleteInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._DeleteInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -1157,20 +1498,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_delete_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.delete_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteInstance",
                         "metadata": http_response["headers"],
@@ -1180,7 +1525,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
+    class _ExportInstance(
+        _BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ExportInstance")
 
@@ -1192,27 +1539,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.ExportInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.ExportInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
 
             Args:
@@ -1235,8 +1618,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseExportInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_export_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseExportInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_export_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1248,22 +1635,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.ExportInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ExportInstance",
                         "httpRequest": http_request,
@@ -1272,16 +1663,29 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._ExportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = await AsyncCloudRedisRestTransport._ExportInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -1290,20 +1694,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_export_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_export_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_export_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.export_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ExportInstance",
                         "metadata": http_response["headers"],
@@ -1313,7 +1721,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
+    class _FailoverInstance(
+        _BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.FailoverInstance")
 
@@ -1325,27 +1735,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.FailoverInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.FailoverInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
 
             Args:
@@ -1368,8 +1814,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_failover_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseFailoverInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_failover_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1381,22 +1831,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "FailoverInstance",
                         "httpRequest": http_request,
@@ -1405,16 +1859,31 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._FailoverInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = (
+                await AsyncCloudRedisRestTransport._FailoverInstance._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -1423,20 +1892,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_failover_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_failover_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_failover_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.failover_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "FailoverInstance",
                         "metadata": http_response["headers"],
@@ -1446,7 +1919,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
+    class _GetInstance(
+        _BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstance")
 
@@ -1458,26 +1933,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.GetInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> cloud_redis.Instance:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.GetInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
 
             Args:
@@ -1497,8 +2008,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     A Memorystore for Redis instance.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_get_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseGetInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_get_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1510,22 +2025,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstance",
                         "httpRequest": http_request,
@@ -1534,16 +2053,28 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._GetInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._GetInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = cloud_redis.Instance()
@@ -1552,20 +2083,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.Instance.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.get_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstance",
                         "metadata": http_response["headers"],
@@ -1575,7 +2110,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
+    class _GetInstanceAuthString(
+        _BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstanceAuthString")
 
@@ -1587,26 +2124,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.GetInstanceAuthStringRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> cloud_redis.InstanceAuthString:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.GetInstanceAuthStringRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis.InstanceAuthString:
             r"""Call the get instance auth string method over HTTP.
 
             Args:
@@ -1627,7 +2200,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
-            request, metadata = await self._interceptor.pre_get_instance_auth_string(request, metadata)
+            request, metadata = await self._interceptor.pre_get_instance_auth_string(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1639,22 +2214,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstanceAuthString",
                         "httpRequest": http_request,
@@ -1663,16 +2242,30 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._GetInstanceAuthString._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = (
+                await AsyncCloudRedisRestTransport._GetInstanceAuthString._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = cloud_redis.InstanceAuthString()
@@ -1681,20 +2274,27 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_get_instance_auth_string_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            (
+                resp,
+                _,
+            ) = await self._interceptor.post_get_instance_auth_string_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.InstanceAuthString.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.get_instance_auth_string",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstanceAuthString",
                         "metadata": http_response["headers"],
@@ -1704,7 +2304,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
+    class _ImportInstance(
+        _BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ImportInstance")
 
@@ -1716,27 +2318,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.ImportInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.ImportInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
 
             Args:
@@ -1759,8 +2397,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseImportInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_import_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseImportInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_import_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1772,22 +2414,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.ImportInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ImportInstance",
                         "httpRequest": http_request,
@@ -1796,16 +2442,29 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._ImportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = await AsyncCloudRedisRestTransport._ImportInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -1814,20 +2473,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_import_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_import_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_import_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.import_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ImportInstance",
                         "metadata": http_response["headers"],
@@ -1837,7 +2500,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
+    class _ListInstances(
+        _BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListInstances")
 
@@ -1849,26 +2514,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.ListInstancesRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> cloud_redis.ListInstancesResponse:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.ListInstancesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
             Args:
@@ -1890,8 +2591,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
-            request, metadata = await self._interceptor.pre_list_instances(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseListInstances._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_list_instances(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -1903,22 +2608,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListInstances",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListInstances",
                         "httpRequest": http_request,
@@ -1927,16 +2636,28 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._ListInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = cloud_redis.ListInstancesResponse()
@@ -1945,20 +2666,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_redis.ListInstancesResponse.to_json(response)
+                    response_payload = cloud_redis.ListInstancesResponse.to_json(
+                        response
+                    )
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.list_instances",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListInstances",
                         "metadata": http_response["headers"],
@@ -1968,7 +2695,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
+    class _RescheduleMaintenance(
+        _BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.RescheduleMaintenance")
 
@@ -1980,27 +2709,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.RescheduleMaintenanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.RescheduleMaintenanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the reschedule maintenance method over HTTP.
 
             Args:
@@ -2024,7 +2789,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_http_options()
-            request, metadata = await self._interceptor.pre_reschedule_maintenance(request, metadata)
+            request, metadata = await self._interceptor.pre_reschedule_maintenance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2036,22 +2803,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "RescheduleMaintenance",
                         "httpRequest": http_request,
@@ -2060,16 +2831,31 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._RescheduleMaintenance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = (
+                await AsyncCloudRedisRestTransport._RescheduleMaintenance._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -2078,20 +2864,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_reschedule_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_reschedule_maintenance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_reschedule_maintenance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.reschedule_maintenance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "RescheduleMaintenance",
                         "metadata": http_response["headers"],
@@ -2101,7 +2891,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
+    class _UpdateInstance(
+        _BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.UpdateInstance")
 
@@ -2113,27 +2905,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.UpdateInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.UpdateInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
             Args:
@@ -2156,8 +2984,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_update_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseUpdateInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_update_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2169,22 +3001,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.UpdateInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpdateInstance",
                         "httpRequest": http_request,
@@ -2193,16 +3029,29 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._UpdateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = await AsyncCloudRedisRestTransport._UpdateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -2211,20 +3060,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_update_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.update_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpdateInstance",
                         "metadata": http_response["headers"],
@@ -2234,7 +3087,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             return resp
 
-    class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
+    class _UpgradeInstance(
+        _BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.UpgradeInstance")
 
@@ -2246,27 +3101,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-                    request: cloud_redis.UpgradeInstanceRequest, *,
-                    retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                    timeout: Optional[float]=None,
-                    metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                    ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
+
+        async def __call__(
+            self,
+            request: cloud_redis.UpgradeInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
 
             Args:
@@ -2289,8 +3180,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_http_options()
-            request, metadata = await self._interceptor.pre_upgrade_instance(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_upgrade_instance(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2302,22 +3197,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpgradeInstance",
                         "httpRequest": http_request,
@@ -2326,16 +3225,31 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._UpgradeInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = (
+                await AsyncCloudRedisRestTransport._UpgradeInstance._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             # Return the response
             resp = operations_pb2.Operation()
@@ -2344,20 +3258,24 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_upgrade_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = await self._interceptor.post_upgrade_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            resp, _ = await self._interceptor.post_upgrade_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
-                    "status": "OK", # need to obtain this properly
+                    "headers": dict(response.headers),
+                    "status": "OK",  # need to obtain this properly
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.upgrade_instance",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpgradeInstance",
                         "metadata": http_response["headers"],
@@ -2377,123 +3295,191 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                'google.longrunning.Operations.CancelOperation': [
+                "google.longrunning.Operations.CancelOperation": [
                     {
-                        'method': 'post',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
                     },
                 ],
-                'google.longrunning.Operations.DeleteOperation': [
+                "google.longrunning.Operations.DeleteOperation": [
                     {
-                        'method': 'delete',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.GetOperation': [
+                "google.longrunning.Operations.GetOperation": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.ListOperations': [
+                "google.longrunning.Operations.ListOperations": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
                     },
                 ],
-                'google.longrunning.Operations.WaitOperation': [
+                "google.longrunning.Operations.WaitOperation": [
                     {
-                        'method': 'post',
-                        'uri': '/v2/{name=projects/*/locations/*/operations/*}:wait',
-                        'body': '*',
+                        "method": "post",
+                        "uri": "/v2/{name=projects/*/locations/*/operations/*}:wait",
+                        "body": "*",
                     },
                 ],
             }
 
             rest_transport = operations_v1.AsyncOperationsRestTransport(  # type: ignore
-                    host=self._host,
-                    # use the credentials which are saved
-                    credentials=self._credentials,  # type: ignore
-                    http_options=http_options,
-                    path_prefix="v1"
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,  # type: ignore
+                http_options=http_options,
+                path_prefix="v1",
             )
 
-            self._operations_client = AsyncOperationsRestClient(transport=rest_transport)
+            self._operations_client = AsyncOperationsRestClient(
+                transport=rest_transport
+            )
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_instance(self) -> Callable[
-            [cloud_redis.CreateInstanceRequest],
-            operations_pb2.Operation]:
-        return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def create_instance(
+        self,
+    ) -> Callable[[cloud_redis.CreateInstanceRequest], operations_pb2.Operation]:
+        return self._CreateInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def delete_instance(self) -> Callable[
-            [cloud_redis.DeleteInstanceRequest],
-            operations_pb2.Operation]:
-        return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def delete_instance(
+        self,
+    ) -> Callable[[cloud_redis.DeleteInstanceRequest], operations_pb2.Operation]:
+        return self._DeleteInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
-            operations_pb2.Operation]:
-        return self._ExportInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def export_instance(
+        self,
+    ) -> Callable[[cloud_redis.ExportInstanceRequest], operations_pb2.Operation]:
+        return self._ExportInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
-            operations_pb2.Operation]:
-        return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def failover_instance(
+        self,
+    ) -> Callable[[cloud_redis.FailoverInstanceRequest], operations_pb2.Operation]:
+        return self._FailoverInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def get_instance(self) -> Callable[
-            [cloud_redis.GetInstanceRequest],
-            cloud_redis.Instance]:
-        return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def get_instance(
+        self,
+    ) -> Callable[[cloud_redis.GetInstanceRequest], cloud_redis.Instance]:
+        return self._GetInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            cloud_redis.InstanceAuthString]:
-        return self._GetInstanceAuthString(self._session, self._host, self._interceptor)  # type: ignore
+    def get_instance_auth_string(
+        self,
+    ) -> Callable[
+        [cloud_redis.GetInstanceAuthStringRequest], cloud_redis.InstanceAuthString
+    ]:
+        return self._GetInstanceAuthString(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
-            operations_pb2.Operation]:
-        return self._ImportInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def import_instance(
+        self,
+    ) -> Callable[[cloud_redis.ImportInstanceRequest], operations_pb2.Operation]:
+        return self._ImportInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def list_instances(self) -> Callable[
-            [cloud_redis.ListInstancesRequest],
-            cloud_redis.ListInstancesResponse]:
-        return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
+    def list_instances(
+        self,
+    ) -> Callable[
+        [cloud_redis.ListInstancesRequest], cloud_redis.ListInstancesResponse
+    ]:
+        return self._ListInstances(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
-            operations_pb2.Operation]:
-        return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
+    def reschedule_maintenance(
+        self,
+    ) -> Callable[[cloud_redis.RescheduleMaintenanceRequest], operations_pb2.Operation]:
+        return self._RescheduleMaintenance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def update_instance(self) -> Callable[
-            [cloud_redis.UpdateInstanceRequest],
-            operations_pb2.Operation]:
-        return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def update_instance(
+        self,
+    ) -> Callable[[cloud_redis.UpdateInstanceRequest], operations_pb2.Operation]:
+        return self._UpdateInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
-    def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
-            operations_pb2.Operation]:
-        return self._UpgradeInstance(self._session, self._host, self._interceptor)  # type: ignore
+    def upgrade_instance(
+        self,
+    ) -> Callable[[cloud_redis.UpgradeInstanceRequest], operations_pb2.Operation]:
+        return self._UpgradeInstance(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _GetLocation(_BaseCloudRedisRestTransport._BaseGetLocation, AsyncCloudRedisRestStub):
+    class _GetLocation(
+        _BaseCloudRedisRestTransport._BaseGetLocation, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetLocation")
 
@@ -2505,27 +3491,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: locations_pb2.GetLocationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> locations_pb2.Location:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
             Args:
@@ -2543,8 +3564,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseGetLocation._get_http_options()
-            request, metadata = await self._interceptor.pre_get_location(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseGetLocation._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_get_location(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2556,22 +3581,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetLocation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
                         "httpRequest": http_request,
@@ -2580,34 +3609,48 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             content = await response.read()
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetLocation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
                         "httpResponse": http_response,
@@ -2618,9 +3661,16 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _ListLocations(_BaseCloudRedisRestTransport._BaseListLocations, AsyncCloudRedisRestStub):
+    class _ListLocations(
+        _BaseCloudRedisRestTransport._BaseListLocations, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListLocations")
 
@@ -2632,27 +3682,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: locations_pb2.ListLocationsRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> locations_pb2.ListLocationsResponse:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
             Args:
@@ -2670,8 +3755,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseListLocations._get_http_options()
-            request, metadata = await self._interceptor.pre_list_locations(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseListLocations._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_list_locations(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2683,22 +3772,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListLocations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
                         "httpRequest": http_request,
@@ -2707,34 +3800,48 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             content = await response.read()
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListLocations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
                         "httpResponse": http_response,
@@ -2745,9 +3852,16 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _CancelOperation(_BaseCloudRedisRestTransport._BaseCancelOperation, AsyncCloudRedisRestStub):
+    class _CancelOperation(
+        _BaseCloudRedisRestTransport._BaseCancelOperation, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.CancelOperation")
 
@@ -2759,27 +3873,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: operations_pb2.CancelOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> None:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -2794,8 +3943,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
-            request, metadata = await self._interceptor.pre_cancel_operation(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2807,22 +3960,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.CancelOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -2831,24 +3988,45 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = (
+                await AsyncCloudRedisRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             return await self._interceptor.post_cancel_operation(None)
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _DeleteOperation(_BaseCloudRedisRestTransport._BaseDeleteOperation, AsyncCloudRedisRestStub):
+    class _DeleteOperation(
+        _BaseCloudRedisRestTransport._BaseDeleteOperation, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.DeleteOperation")
 
@@ -2860,27 +4038,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: operations_pb2.DeleteOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> None:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
             r"""Call the delete operation method over HTTP.
 
             Args:
@@ -2895,8 +4108,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
-            request, metadata = await self._interceptor.pre_delete_operation(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_delete_operation(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -2908,22 +4125,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.DeleteOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteOperation",
                         "httpRequest": http_request,
@@ -2932,24 +4153,45 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = (
+                await AsyncCloudRedisRestTransport._DeleteOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    client_options=getattr(self, "_client_options", None),
+                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             return await self._interceptor.post_delete_operation(None)
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _GetOperation(_BaseCloudRedisRestTransport._BaseGetOperation, AsyncCloudRedisRestStub):
+    class _GetOperation(
+        _BaseCloudRedisRestTransport._BaseGetOperation, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetOperation")
 
@@ -2961,27 +4203,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: operations_pb2.GetOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -2999,8 +4276,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseGetOperation._get_http_options()
-            request, metadata = await self._interceptor.pre_get_operation(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseGetOperation._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_get_operation(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -3012,22 +4293,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -3036,34 +4321,48 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             content = await response.read()
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -3074,9 +4373,16 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _ListOperations(_BaseCloudRedisRestTransport._BaseListOperations, AsyncCloudRedisRestStub):
+    class _ListOperations(
+        _BaseCloudRedisRestTransport._BaseListOperations, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListOperations")
 
@@ -3088,27 +4394,62 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: operations_pb2.ListOperationsRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> operations_pb2.ListOperationsResponse:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -3126,8 +4467,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseListOperations._get_http_options()
-            request, metadata = await self._interceptor.pre_list_operations(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseListOperations._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_list_operations(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -3139,22 +4484,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.ListOperations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -3163,34 +4512,48 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = await AsyncCloudRedisRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             content = await response.read()
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListOperations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -3201,9 +4564,16 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def wait_operation(self):
-        return self._WaitOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._WaitOperation(
+            self._session,
+            self._host,
+            self._interceptor,
+            getattr(self, "_client_options", None),
+        )  # type: ignore
 
-    class _WaitOperation(_BaseCloudRedisRestTransport._BaseWaitOperation, AsyncCloudRedisRestStub):
+    class _WaitOperation(
+        _BaseCloudRedisRestTransport._BaseWaitOperation, AsyncCloudRedisRestStub
+    ):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.WaitOperation")
 
@@ -3215,28 +4585,63 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+            client_options=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
+            headers["Content-Type"] = "application/json"
+            url = "{host}{uri}".format(host=host, uri=uri)
 
-        async def __call__(self,
-            request: operations_pb2.WaitOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> operations_pb2.Operation:
+            if _observability is not None and hasattr(
+                _observability, "start_http_span"
+            ):  # pragma: NO COVER
+                span_context = _observability.start_http_span(  # pragma: NO COVER
+                    client_options=client_options,  # pragma: NO COVER
+                    method=method,  # pragma: NO COVER
+                    url=url,  # pragma: NO COVER
+                    url_template=uri,  # pragma: NO COVER
+                    headers=headers,  # pragma: NO COVER
+                    body=body,  # pragma: NO COVER
+                )  # pragma: NO COVER
+            else:  # pragma: NO COVER
+                span_context = contextlib.nullcontext()  # pragma: NO COVER
+            with span_context as span:
+                try:
+                    response = await getattr(session, method)(
+                        url,
+                        timeout=timeout,
+                        headers=headers,
+                        params=rest_helpers.flatten_query_params(
+                            query_params, strict=True
+                        ),
+                        data=body,
+                    )
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_response"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_response(
+                            span, response
+                        )  # pragma: NO COVER
+                    return response
+                # Transport network exceptions during dispatch record error span and re-raise.
+                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
+                except (Exception, asyncio.CancelledError) as exc:  # pragma: NO COVER
+                    if _observability is not None and hasattr(
+                        _observability, "record_http_error"
+                    ):  # pragma: NO COVER
+                        _observability.record_http_error(span, exc)  # pragma: NO COVER
+                    raise  # pragma: NO COVER
 
+        async def __call__(
+            self,
+            request: operations_pb2.WaitOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the wait operation method over HTTP.
 
             Args:
@@ -3254,8 +4659,12 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 operations_pb2.Operation: Response from WaitOperation method.
             """
 
-            http_options = _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
-            request, metadata = await self._interceptor.pre_wait_operation(request, metadata)
+            http_options = (
+                _BaseCloudRedisRestTransport._BaseWaitOperation._get_http_options()
+            )
+            request, metadata = await self._interceptor.pre_wait_operation(
+                request, metadata
+            )
             transcoded_request, body, query_params = transcode_request(
                 http_options,
                 request,
@@ -3267,22 +4676,26 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 rest_numeric_enums=False,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.redis_v1.CloudRedisClient.WaitOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
                         "httpRequest": http_request,
@@ -3291,34 +4704,49 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
 
             # Send the request
-            response = await AsyncCloudRedisRestTransport._WaitOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = await AsyncCloudRedisRestTransport._WaitOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 content = await response.read()
-                payload = json.loads(content.decode('utf-8'))
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+                payload = json.loads(content.decode("utf-8"))
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                raise core_exceptions.format_http_response_error(
+                    response, method, request_url, payload
+                )  # type: ignore
 
             content = await response.read()
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_wait_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.WaitOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
                         "httpResponse": http_response,
@@ -3333,3 +4761,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     async def close(self):
         await self._session.close()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()

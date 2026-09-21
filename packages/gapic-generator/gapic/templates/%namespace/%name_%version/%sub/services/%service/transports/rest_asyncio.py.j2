@@ -51,6 +51,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 
+import contextlib
 import json  # type: ignore
 import dataclasses
 from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union

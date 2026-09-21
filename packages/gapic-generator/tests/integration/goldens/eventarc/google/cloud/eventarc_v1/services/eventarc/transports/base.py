@@ -17,36 +17,41 @@ import abc
 import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.cloud.eventarc_v1 import gapic_version as package_version
-
-import google.auth  # type: ignore
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
-import google.protobuf
+from google.cloud.eventarc_v1 import gapic_version as package_version
+from google.cloud.eventarc_v1.types import (
+    channel,
+    channel_connection,
+    discovery,
+    enrollment,
+    eventarc,
+    google_api_source,
+    google_channel_config,
+    message_bus,
+    pipeline,
+    trigger,
+)
+from google.cloud.eventarc_v1.types import (
+    google_channel_config as gce_google_channel_config,
+)
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.eventarc_v1.types import channel
-from google.cloud.eventarc_v1.types import channel_connection
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import enrollment
-from google.cloud.eventarc_v1.types import eventarc
-from google.cloud.eventarc_v1.types import google_api_source
-from google.cloud.eventarc_v1.types import google_channel_config
-from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
-from google.cloud.eventarc_v1.types import message_bus
-from google.cloud.eventarc_v1.types import pipeline
-from google.cloud.eventarc_v1.types import trigger
-from google.cloud.location import locations_pb2 # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2 # type: ignore
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=package_version.__version__
+)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 # Check once at module load time whether google-api-core's wrap_method supports
@@ -60,25 +65,24 @@ _WRAP_METHOD_SUPPORTS_TRACING = (
 class EventarcTransport(abc.ABC):
     """Abstract transport class for Eventarc."""
 
-    AUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-    )
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = 'eventarc.googleapis.com'
+    DEFAULT_HOST: str = "eventarc.googleapis.com"
 
     def __init__(
-            self, *,
-            host: str = DEFAULT_HOST,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-            **kwargs,
-            ) -> None:
+        self,
+        *,
+        host: str = DEFAULT_HOST,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -120,36 +124,46 @@ class EventarcTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+            raise core_exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                scopes=scopes,
-                                quota_project_id=quota_project_id,
-                                default_scopes=self.AUTH_SCOPES,
-                            )
+                credentials_file,
+                scopes=scopes,
+                quota_project_id=quota_project_id,
+                default_scopes=self.AUTH_SCOPES,
+            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
+            credentials, _ = google.auth.default(
+                scopes=scopes,
+                quota_project_id=quota_project_id,
+                default_scopes=self.AUTH_SCOPES,
+            )
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
+                credentials = credentials.with_gdch_audience(
+                    api_audience if api_audience else host
+                )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
+        if ":" not in host:
+            host += ":443"
         self._host = host
 
         self._client_options = client_options
-        self._wrap_with_tracing = _WRAP_METHOD_SUPPORTS_TRACING
-
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
@@ -157,21 +171,21 @@ class EventarcTransport(abc.ABC):
         return self._host
 
     def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_tracing:
+        if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
-            try:
+            if self.kind:
                 kwargs["kind"] = self.kind
-            # The abstract BaseTransport class raises NotImplementedError for the kind property.
-            # Concrete transport subclasses (gRPC, REST) override kind, so this exception handler
-            # is unreachable during normal execution. Excluded from coverage check.
-            except NotImplementedError:  # pragma: NO COVER
-                pass
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
         # Excluded from coverage because our CI and testing environments always install
         # a modern version of google-api-core that supports tracing.
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+        for k in [
+            "client_options",
+            "method_name",
+            "is_streaming",
+            "kind",
+        ]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
         return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
@@ -466,14 +480,14 @@ class EventarcTransport(abc.ABC):
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
-         }
+        }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
@@ -483,354 +497,383 @@ class EventarcTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_trigger(self) -> Callable[
-            [eventarc.GetTriggerRequest],
-            Union[
-                trigger.Trigger,
-                Awaitable[trigger.Trigger]
-            ]]:
+    def get_trigger(
+        self,
+    ) -> Callable[
+        [eventarc.GetTriggerRequest], Union[trigger.Trigger, Awaitable[trigger.Trigger]]
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_triggers(self) -> Callable[
-            [eventarc.ListTriggersRequest],
-            Union[
-                eventarc.ListTriggersResponse,
-                Awaitable[eventarc.ListTriggersResponse]
-            ]]:
+    def list_triggers(
+        self,
+    ) -> Callable[
+        [eventarc.ListTriggersRequest],
+        Union[eventarc.ListTriggersResponse, Awaitable[eventarc.ListTriggersResponse]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_trigger(self) -> Callable[
-            [eventarc.CreateTriggerRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_trigger(
+        self,
+    ) -> Callable[
+        [eventarc.CreateTriggerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_trigger(self) -> Callable[
-            [eventarc.UpdateTriggerRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_trigger(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateTriggerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_trigger(self) -> Callable[
-            [eventarc.DeleteTriggerRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_trigger(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteTriggerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_channel(self) -> Callable[
-            [eventarc.GetChannelRequest],
-            Union[
-                channel.Channel,
-                Awaitable[channel.Channel]
-            ]]:
+    def get_channel(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelRequest], Union[channel.Channel, Awaitable[channel.Channel]]
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_channels(self) -> Callable[
-            [eventarc.ListChannelsRequest],
-            Union[
-                eventarc.ListChannelsResponse,
-                Awaitable[eventarc.ListChannelsResponse]
-            ]]:
+    def list_channels(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelsRequest],
+        Union[eventarc.ListChannelsResponse, Awaitable[eventarc.ListChannelsResponse]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_channel_(self) -> Callable[
-            [eventarc.CreateChannelRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_channel_(
+        self,
+    ) -> Callable[
+        [eventarc.CreateChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_channel(self) -> Callable[
-            [eventarc.UpdateChannelRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_channel(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_channel(self) -> Callable[
-            [eventarc.DeleteChannelRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_channel(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_provider(self) -> Callable[
-            [eventarc.GetProviderRequest],
-            Union[
-                discovery.Provider,
-                Awaitable[discovery.Provider]
-            ]]:
+    def get_provider(
+        self,
+    ) -> Callable[
+        [eventarc.GetProviderRequest],
+        Union[discovery.Provider, Awaitable[discovery.Provider]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_providers(self) -> Callable[
-            [eventarc.ListProvidersRequest],
-            Union[
-                eventarc.ListProvidersResponse,
-                Awaitable[eventarc.ListProvidersResponse]
-            ]]:
+    def list_providers(
+        self,
+    ) -> Callable[
+        [eventarc.ListProvidersRequest],
+        Union[
+            eventarc.ListProvidersResponse, Awaitable[eventarc.ListProvidersResponse]
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_channel_connection(self) -> Callable[
-            [eventarc.GetChannelConnectionRequest],
-            Union[
-                channel_connection.ChannelConnection,
-                Awaitable[channel_connection.ChannelConnection]
-            ]]:
+    def get_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelConnectionRequest],
+        Union[
+            channel_connection.ChannelConnection,
+            Awaitable[channel_connection.ChannelConnection],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_channel_connections(self) -> Callable[
-            [eventarc.ListChannelConnectionsRequest],
-            Union[
-                eventarc.ListChannelConnectionsResponse,
-                Awaitable[eventarc.ListChannelConnectionsResponse]
-            ]]:
+    def list_channel_connections(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelConnectionsRequest],
+        Union[
+            eventarc.ListChannelConnectionsResponse,
+            Awaitable[eventarc.ListChannelConnectionsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_channel_connection(self) -> Callable[
-            [eventarc.CreateChannelConnectionRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.CreateChannelConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_channel_connection(self) -> Callable[
-            [eventarc.DeleteChannelConnectionRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteChannelConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_google_channel_config(self) -> Callable[
-            [eventarc.GetGoogleChannelConfigRequest],
-            Union[
-                google_channel_config.GoogleChannelConfig,
-                Awaitable[google_channel_config.GoogleChannelConfig]
-            ]]:
+    def get_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleChannelConfigRequest],
+        Union[
+            google_channel_config.GoogleChannelConfig,
+            Awaitable[google_channel_config.GoogleChannelConfig],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_google_channel_config(self) -> Callable[
-            [eventarc.UpdateGoogleChannelConfigRequest],
-            Union[
-                gce_google_channel_config.GoogleChannelConfig,
-                Awaitable[gce_google_channel_config.GoogleChannelConfig]
-            ]]:
+    def update_google_channel_config(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateGoogleChannelConfigRequest],
+        Union[
+            gce_google_channel_config.GoogleChannelConfig,
+            Awaitable[gce_google_channel_config.GoogleChannelConfig],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_message_bus(self) -> Callable[
-            [eventarc.GetMessageBusRequest],
-            Union[
-                message_bus.MessageBus,
-                Awaitable[message_bus.MessageBus]
-            ]]:
+    def get_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.GetMessageBusRequest],
+        Union[message_bus.MessageBus, Awaitable[message_bus.MessageBus]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_message_buses(self) -> Callable[
-            [eventarc.ListMessageBusesRequest],
-            Union[
-                eventarc.ListMessageBusesResponse,
-                Awaitable[eventarc.ListMessageBusesResponse]
-            ]]:
+    def list_message_buses(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusesRequest],
+        Union[
+            eventarc.ListMessageBusesResponse,
+            Awaitable[eventarc.ListMessageBusesResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_message_bus_enrollments(self) -> Callable[
-            [eventarc.ListMessageBusEnrollmentsRequest],
-            Union[
-                eventarc.ListMessageBusEnrollmentsResponse,
-                Awaitable[eventarc.ListMessageBusEnrollmentsResponse]
-            ]]:
+    def list_message_bus_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListMessageBusEnrollmentsRequest],
+        Union[
+            eventarc.ListMessageBusEnrollmentsResponse,
+            Awaitable[eventarc.ListMessageBusEnrollmentsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_message_bus(self) -> Callable[
-            [eventarc.CreateMessageBusRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.CreateMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_message_bus(self) -> Callable[
-            [eventarc.UpdateMessageBusRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_message_bus(self) -> Callable[
-            [eventarc.DeleteMessageBusRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_message_bus(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteMessageBusRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_enrollment(self) -> Callable[
-            [eventarc.GetEnrollmentRequest],
-            Union[
-                enrollment.Enrollment,
-                Awaitable[enrollment.Enrollment]
-            ]]:
+    def get_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.GetEnrollmentRequest],
+        Union[enrollment.Enrollment, Awaitable[enrollment.Enrollment]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_enrollments(self) -> Callable[
-            [eventarc.ListEnrollmentsRequest],
-            Union[
-                eventarc.ListEnrollmentsResponse,
-                Awaitable[eventarc.ListEnrollmentsResponse]
-            ]]:
+    def list_enrollments(
+        self,
+    ) -> Callable[
+        [eventarc.ListEnrollmentsRequest],
+        Union[
+            eventarc.ListEnrollmentsResponse,
+            Awaitable[eventarc.ListEnrollmentsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_enrollment(self) -> Callable[
-            [eventarc.CreateEnrollmentRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.CreateEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_enrollment(self) -> Callable[
-            [eventarc.UpdateEnrollmentRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_enrollment(self) -> Callable[
-            [eventarc.DeleteEnrollmentRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_enrollment(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteEnrollmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_pipeline(self) -> Callable[
-            [eventarc.GetPipelineRequest],
-            Union[
-                pipeline.Pipeline,
-                Awaitable[pipeline.Pipeline]
-            ]]:
+    def get_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.GetPipelineRequest],
+        Union[pipeline.Pipeline, Awaitable[pipeline.Pipeline]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_pipelines(self) -> Callable[
-            [eventarc.ListPipelinesRequest],
-            Union[
-                eventarc.ListPipelinesResponse,
-                Awaitable[eventarc.ListPipelinesResponse]
-            ]]:
+    def list_pipelines(
+        self,
+    ) -> Callable[
+        [eventarc.ListPipelinesRequest],
+        Union[
+            eventarc.ListPipelinesResponse, Awaitable[eventarc.ListPipelinesResponse]
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_pipeline(self) -> Callable[
-            [eventarc.CreatePipelineRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.CreatePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_pipeline(self) -> Callable[
-            [eventarc.UpdatePipelineRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.UpdatePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_pipeline(self) -> Callable[
-            [eventarc.DeletePipelineRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_pipeline(
+        self,
+    ) -> Callable[
+        [eventarc.DeletePipelineRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_google_api_source(self) -> Callable[
-            [eventarc.GetGoogleApiSourceRequest],
-            Union[
-                google_api_source.GoogleApiSource,
-                Awaitable[google_api_source.GoogleApiSource]
-            ]]:
+    def get_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.GetGoogleApiSourceRequest],
+        Union[
+            google_api_source.GoogleApiSource,
+            Awaitable[google_api_source.GoogleApiSource],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_google_api_sources(self) -> Callable[
-            [eventarc.ListGoogleApiSourcesRequest],
-            Union[
-                eventarc.ListGoogleApiSourcesResponse,
-                Awaitable[eventarc.ListGoogleApiSourcesResponse]
-            ]]:
+    def list_google_api_sources(
+        self,
+    ) -> Callable[
+        [eventarc.ListGoogleApiSourcesRequest],
+        Union[
+            eventarc.ListGoogleApiSourcesResponse,
+            Awaitable[eventarc.ListGoogleApiSourcesResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_google_api_source(self) -> Callable[
-            [eventarc.CreateGoogleApiSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.CreateGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_google_api_source(self) -> Callable[
-            [eventarc.UpdateGoogleApiSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_google_api_source(self) -> Callable[
-            [eventarc.DeleteGoogleApiSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_google_api_source(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteGoogleApiSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -838,7 +881,10 @@ class EventarcTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -900,7 +946,8 @@ class EventarcTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_location(self,
+    def get_location(
+        self,
     ) -> Callable[
         [locations_pb2.GetLocationRequest],
         Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
@@ -908,18 +955,20 @@ class EventarcTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_locations(self,
+    def list_locations(
+        self,
     ) -> Callable[
         [locations_pb2.ListLocationsRequest],
-        Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
     def kind(self) -> str:
-        raise NotImplementedError()
+        return ""
 
 
-__all__ = (
-    'EventarcTransport',
-)
+__all__ = ("EventarcTransport",)

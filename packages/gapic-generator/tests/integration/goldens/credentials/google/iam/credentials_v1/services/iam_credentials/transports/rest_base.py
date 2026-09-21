@@ -14,17 +14,15 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
+from google.api_core import gapic_v1, path_template
+from google.api_core.client_options import ClientOptions
 from google.iam.credentials_v1.types import common
+from google.protobuf import json_format
+
+from .base import DEFAULT_CLIENT_INFO, IAMCredentialsTransport
 
 
 class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
@@ -40,14 +38,18 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'iamcredentials.googleapis.com',
-            credentials: Optional[Any] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "iamcredentials.googleapis.com",
+        credentials: Optional[Any] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        api_audience: Optional[str] = None,
+        client_options: Optional[Union[ClientOptions, dict]] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -67,11 +69,16 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -82,23 +89,25 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
 
     class _BaseGenerateAccessToken:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:generateAccessToken',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:generateAccessToken",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -106,16 +115,16 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:generateIdToken',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:generateIdToken",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -123,16 +132,16 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:signBlob',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:signBlob",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -140,20 +149,18 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:signJwt',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:signJwt",
+                    "body": "*",
+                },
             ]
             return http_options
 
 
-__all__=(
-    '_BaseIAMCredentialsRestTransport',
-)
+__all__ = ("_BaseIAMCredentialsRestTransport",)

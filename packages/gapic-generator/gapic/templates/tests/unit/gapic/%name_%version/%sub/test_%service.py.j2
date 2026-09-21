@@ -1441,10 +1441,14 @@ def test_{{ service.name|snake_case }}_base_transport_wrap_method():
             mock_kind.return_value = "grpc"
 
             # Test modern google-api-core with tracing support
-            func = mock.Mock()
-            transport._wrap_method(func)
-            assert mock_wrap.call_args.kwargs.get("client_options") == options
-            assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
+            with mock.patch(
+                "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
 
             # Test older google-api-core without tracing support
             with mock.patch(
@@ -1457,11 +1461,15 @@ def test_{{ service.name|snake_case }}_base_transport_wrap_method():
                 assert "kind" not in mock_wrap.call_args.kwargs
 
             # Test for default/empty kind on base transport
-            mock_wrap.reset_mock()
-            mock_kind.return_value = ""
-            transport._wrap_method(func)
-            assert mock_wrap.call_args.kwargs.get("client_options") == options
-            assert "kind" not in mock_wrap.call_args.kwargs
+            with mock.patch(
+                "{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join('.') }}.services.{{ service.name|snake_case }}.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
 
 
 def test_{{ service.name|snake_case }}_auth_adc():

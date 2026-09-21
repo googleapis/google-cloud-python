@@ -14,21 +14,21 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from google.cloud.location import locations_pb2 # type: ignore
-from .base import StorageBatchOperationsTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-
-from google.cloud.storagebatchoperations_v1.types import storage_batch_operations
-from google.cloud.storagebatchoperations_v1.types import storage_batch_operations_types
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+from google.api_core import gapic_v1, path_template
+from google.api_core.client_options import ClientOptions
+from google.cloud.location import locations_pb2  # type: ignore
+from google.cloud.storagebatchoperations_v1.types import (
+    storage_batch_operations,
+    storage_batch_operations_types,
+)
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+
+from .base import DEFAULT_CLIENT_INFO, StorageBatchOperationsTransport
 
 
 class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
@@ -44,14 +44,18 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'storagebatchoperations.googleapis.com',
-            credentials: Optional[Any] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "storagebatchoperations.googleapis.com",
+        credentials: Optional[Any] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        api_audience: Optional[str] = None,
+        client_options: Optional[Union[ClientOptions, dict]] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -71,11 +75,16 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -86,23 +95,25 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
 
     class _BaseCancelJob:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/locations/*/jobs/*}:cancel',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/jobs/*}:cancel",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -110,16 +121,18 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "jobId" : "",        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "jobId": "",
+        }
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=projects/*/locations/*}/jobs',
-                'body': 'job',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/jobs",
+                    "body": "job",
+                },
             ]
             return http_options
 
@@ -127,15 +140,15 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/jobs/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/jobs/*}",
+                },
             ]
             return http_options
 
@@ -143,15 +156,15 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/jobs/*/bucketOperations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/jobs/*/bucketOperations/*}",
+                },
             ]
             return http_options
 
@@ -159,15 +172,15 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/jobs/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/jobs/*}",
+                },
             ]
             return http_options
 
@@ -175,15 +188,15 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*/jobs/*}/bucketOperations',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/jobs/*}/bucketOperations",
+                },
             ]
             return http_options
 
@@ -191,15 +204,15 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=projects/*/locations/*}/jobs',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/jobs",
+                },
             ]
             return http_options
 
@@ -209,10 +222,11 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}",
+                },
             ]
             return http_options
 
@@ -222,10 +236,11 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*}/locations',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*}/locations",
+                },
             ]
             return http_options
 
@@ -235,11 +250,12 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -249,10 +265,11 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -262,10 +279,11 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*/operations/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                },
             ]
             return http_options
 
@@ -275,14 +293,13 @@ class _BaseStorageBatchOperationsRestTransport(StorageBatchOperationsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*/locations/*}/operations',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*}/operations",
+                },
             ]
             return http_options
 
 
-__all__=(
-    '_BaseStorageBatchOperationsRestTransport',
-)
+__all__ = ("_BaseStorageBatchOperationsRestTransport",)

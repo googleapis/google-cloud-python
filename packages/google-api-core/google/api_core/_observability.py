@@ -450,7 +450,7 @@ def record_http_response(span: Any, response: Any) -> None:
         pass
 
 
-def record_http_error(span: Any, exc: Exception) -> None:
+def record_http_error(span: Any, exc: BaseException) -> None:
     """Record an HTTP error/exception on the wire span.
 
     Args:
