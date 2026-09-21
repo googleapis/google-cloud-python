@@ -44,6 +44,16 @@ TARGET_BRANCH="${TARGET_BRANCH:-main}"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python"
 git config --global url."${PROJECT_ROOT}".insteadOf "https://github.com/googleapis/google-cloud-python.git"
 
+# Ensure remote-tracking branches (e.g. origin/feat/...) are also exposed under
+# refs/heads/* in PROJECT_ROOT so that `pip` clones redirected via `insteadOf`
+# can resolve branch references.
+for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ 2>/dev/null); do
+    branch="${ref#origin/}"
+    if [ "${branch}" != "HEAD" ] && ! git show-ref --verify --quiet "refs/heads/${branch}"; then
+        git branch "${branch}" "${ref}" 2>/dev/null || true
+    fi
+done
+
 # A script file for running the test in a sub project.
 test_script="${PROJECT_ROOT}/ci/run_single_test.sh"
 
@@ -54,7 +64,7 @@ elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the
     # common commit in the target branch.
     if [ -n "${TARGET_BRANCH}" ]; then
-        if [[ "${TEST_TYPE}" == "import_profile" ]]; then
+        if [[ "${TEST_TYPE}" == "import_profile" ]] || [ ! -f "$(git rev-parse --git-dir)/shallow" ]; then
             git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" || true
         else
             git fetch --no-tags --quiet origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
@@ -186,6 +196,7 @@ AVAIL_CORES=$(nproc 2>/dev/null || echo 4)
 if [ "${PARALLEL_WORKERS}" -gt "${AVAIL_CORES}" ]; then
     PARALLEL_WORKERS="${AVAIL_CORES}"
 fi
+export PARALLEL_WORKERS
 
 echo "Running tests across ${#dirs_to_test[@]} package(s) using ${PARALLEL_WORKERS} parallel worker(s)..."
 printf "%s\0" "${dirs_to_test[@]}" | xargs -0 -P "${PARALLEL_WORKERS}" -I {} bash -c 'run_test_in_dir "$@"' _ {}
