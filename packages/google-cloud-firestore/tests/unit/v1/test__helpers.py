@@ -67,6 +67,22 @@ def test_encode_value_pymongo_duck_typing():
         def __str__(self):
             return self.val
 
+    class Regex:
+        def __init__(self, pattern, flags="i"):
+            self.pattern = pattern
+            self.flags = flags
+
+    class Timestamp:
+        def __init__(self, time, inc):
+            self.time = time
+            self.inc = inc
+
+    class MinKey:
+        pass
+
+    class MaxKey:
+        pass
+
     oid_obj = ObjectId("507f191e810c19729de860ea")
     oid_pb = encode_value(oid_obj)
     assert oid_pb.map_value.fields["__oid__"].string_value == "507f191e810c19729de860ea"
@@ -74,6 +90,40 @@ def test_encode_value_pymongo_duck_typing():
     dec_obj = Decimal128("123.45")
     dec_pb = encode_value(dec_obj)
     assert dec_pb.map_value.fields["__decimal128__"].string_value == "123.45"
+
+    regex_obj = Regex("^[a-z]+$", "i")
+    regex_pb = encode_value(regex_obj)
+    assert (
+        regex_pb.map_value.fields["__regex__"].map_value.fields["pattern"].string_value
+        == "^[a-z]+$"
+    )
+    assert (
+        regex_pb.map_value.fields["__regex__"].map_value.fields["options"].string_value
+        == "i"
+    )
+
+    ts_obj = Timestamp(1700000000, 42)
+    ts_pb = encode_value(ts_obj)
+    assert (
+        ts_pb.map_value.fields["__request_timestamp__"]
+        .map_value.fields["seconds"]
+        .integer_value
+        == 1700000000
+    )
+    assert (
+        ts_pb.map_value.fields["__request_timestamp__"]
+        .map_value.fields["increment"]
+        .integer_value
+        == 42
+    )
+
+    min_obj = MinKey()
+    min_pb = encode_value(min_obj)
+    assert "__min__" in min_pb.map_value.fields
+
+    max_obj = MaxKey()
+    max_pb = encode_value(max_obj)
+    assert "__max__" in max_pb.map_value.fields
 
 
 def test_geopoint___eq__w_same_value():

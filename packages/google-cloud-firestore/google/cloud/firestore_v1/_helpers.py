@@ -43,7 +43,7 @@ from google.type import latlng_pb2  # type: ignore
 
 import google
 from google.cloud import exceptions  # type: ignore
-from google.cloud.firestore_v1 import transforms, types
+from google.cloud.firestore_v1 import bson, transforms, types
 from google.cloud.firestore_v1.bson import BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
@@ -170,8 +170,10 @@ def encode_value(value) -> types.document.Value:
     Args:
         value (Union[NoneType, bool, int, float, datetime.datetime, \
             str, bytes, dict, ~google.cloud.Firestore.GeoPoint, \
-            ~google.cloud.firestore_v1.vector.Vector]): A native
-            Python value to convert to a protobuf field.
+            ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson._BSONType]): A native \
+            Python value or supported BSON / PyMongo-compatible value to \
+            convert to a protobuf field.
 
     Returns:
         ~google.cloud.firestore_v1.types.Value: A
@@ -214,32 +216,6 @@ def encode_value(value) -> types.document.Value:
     if isinstance(value, BSONType):
         return encode_value(value._to_map_value())
 
-    # Duck-type native PyMongo / third-party BSON objects
-    if hasattr(value, "__class__"):
-        cls_name = value.__class__.__name__
-        if cls_name == "ObjectId" and hasattr(value, "binary"):
-            return encode_value({"__oid__": str(value).lower()})
-        if cls_name == "Decimal128" and hasattr(value, "to_decimal"):
-            return encode_value({"__decimal128__": str(value)})
-        if cls_name == "Regex" and hasattr(value, "pattern"):
-            opts = getattr(value, "flags", "") or getattr(value, "options", "")
-            return encode_value(
-                {"__regex__": {"pattern": value.pattern, "options": str(opts)}}
-            )
-        if cls_name == "Timestamp" and hasattr(value, "time") and hasattr(value, "inc"):
-            return encode_value(
-                {
-                    "__request_timestamp__": {
-                        "seconds": value.time,
-                        "increment": value.inc,
-                    }
-                }
-            )
-        if cls_name == "MinKey":
-            return encode_value({"__min__": None})
-        if cls_name == "MaxKey":
-            return encode_value({"__max__": None})
-
     if isinstance(value, GeoPoint):
         return document.Value(geo_point_value=value.to_protobuf())
 
@@ -256,9 +232,33 @@ def encode_value(value) -> types.document.Value:
         value_pb = document.MapValue(fields=value_dict)
         return document.Value(map_value=value_pb)
 
+    # Fallback: Coerce third-party BSON objects (e.g. PyMongo) to Firestore BSON types
+    bson_val = _try_duck_type_bson(value)
+    if bson_val is not None:
+        return encode_value(bson_val._to_map_value())
+
     raise TypeError(
         "Cannot convert to a Firestore Value", value, "Invalid type", type(value)
     )
+
+
+def _try_duck_type_bson(value) -> Optional[bson._BSONType]:
+    """Coerce third-party BSON objects (e.g. PyMongo) to Firestore BSON types."""
+    cls_name = getattr(value.__class__, "__name__", "")
+    if cls_name == "ObjectId" and hasattr(value, "binary"):
+        return bson.BSONObjectId(str(value).lower())
+    if cls_name == "Decimal128" and hasattr(value, "to_decimal"):
+        return bson.BSONDecimal128(value.to_decimal())
+    if cls_name == "Regex" and hasattr(value, "pattern"):
+        opts = getattr(value, "flags", "") or getattr(value, "options", "")
+        return bson.BSONRegex(value.pattern, opts)
+    if cls_name == "Timestamp" and hasattr(value, "time") and hasattr(value, "inc"):
+        return bson.BSONTimestamp(value.time, value.inc)
+    if cls_name == "MinKey":
+        return bson.BSONMinKey()
+    if cls_name == "MaxKey":
+        return bson.BSONMaxKey()
+    return None
 
 
 def encode_dict(values_dict) -> dict:
