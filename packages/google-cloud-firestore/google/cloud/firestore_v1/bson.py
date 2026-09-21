@@ -26,7 +26,7 @@ Example:
 
 import abc
 import re
-from typing import Any, Dict, Union
+from typing import Any, Dict, FrozenSet, Union
 
 __all__ = [
     "BSONObjectId",
@@ -350,12 +350,12 @@ class BSONRegex(_BSONType):
 
     Args:
         pattern (str): The regular expression pattern string.
-        options (Union[str, re.RegexFlag, int], optional): BSON regex option flags
-            as a string (e.g. "i", "m", "s") or Python `re` flag integer (e.g. `re.I | re.M`).
-            Defaults to "".
+        options (str, optional): BSON regex option flags as a string
+            (e.g. "i", "m", "s", "x", "u", "a"). Defaults to "".
 
     Raises:
-        TypeError: If pattern is not a string or options is invalid type.
+        TypeError: If pattern is not a string or options is not a string.
+        ValueError: If options contains invalid BSON regex flag characters.
 
     Example:
         >>> regex = BSONRegex("^hello.*$", options="i")
@@ -367,34 +367,24 @@ class BSONRegex(_BSONType):
 
     __slots__ = ("_pattern", "_options")
 
-    _FLAG_TO_OPTION: Dict[int, str] = {
-        re.IGNORECASE: "i",
-        re.LOCALE: "l",
-        re.MULTILINE: "m",
-        re.DOTALL: "s",
-        re.UNICODE: "u",
-        re.VERBOSE: "x",
-    }
+    _VALID_OPTIONS: FrozenSet[str] = frozenset({"i", "m", "s", "x", "u", "a"})
 
-    def __init__(self, pattern: str, options: Union[str, re.RegexFlag, int] = ""):
+    def __init__(self, pattern: str, options: str = ""):
         if not isinstance(pattern, str):
             raise TypeError("BSONRegex pattern must be a str.")
 
-        if isinstance(options, bool):
-            raise TypeError("BSONRegex options must be a str or re flag integer.")
+        if not isinstance(options, str):
+            raise TypeError("BSONRegex options must be a str.")
 
-        if isinstance(options, str):
-            self._options: str = "".join(sorted(set(options)))
-        elif isinstance(options, int):
-            opts = []
-            for flag, char in self._FLAG_TO_OPTION.items():
-                if options & flag:
-                    opts.append(char)
-            self._options = "".join(sorted(opts))
-        else:
-            raise TypeError("BSONRegex options must be a str or re flag integer.")
+        invalid = set(options) - self._VALID_OPTIONS
+        if invalid:
+            raise ValueError(
+                f"Invalid BSON regex option(s): {sorted(invalid)}. "
+                f"Valid options are: {sorted(self._VALID_OPTIONS)}"
+            )
 
         self._pattern: str = pattern
+        self._options: str = "".join(sorted(set(options)))
 
     @property
     def pattern(self) -> str:

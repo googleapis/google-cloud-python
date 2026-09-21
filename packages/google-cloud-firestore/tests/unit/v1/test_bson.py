@@ -17,7 +17,6 @@
 
 import copy
 import pickle
-import re
 
 import pytest
 
@@ -436,18 +435,16 @@ def test_bson_regex_options_sorting_and_deduplication():
     assert rx2.options == "ims"
 
 
-def test_bson_regex_options_from_re_flags():
-    rx = BSONRegex("foo", options=re.IGNORECASE | re.MULTILINE)
-    assert rx.options == "im"
-
-
 @pytest.mark.parametrize(
     "pattern_input, options_input, exc_type, match_msg",
     [
         (123, "i", TypeError, "pattern must be a str"),
         (None, "i", TypeError, "pattern must be a str"),
-        ("foo", True, TypeError, "options must be a str or re flag integer"),
-        ("foo", [1, 2], TypeError, "options must be a str or re flag integer"),
+        ("foo", 123, TypeError, "options must be a str"),
+        ("foo", True, TypeError, "options must be a str"),
+        ("foo", [1, 2], TypeError, "options must be a str"),
+        ("foo", "l", ValueError, "Invalid BSON regex option"),
+        ("foo", "invalid", ValueError, "Invalid BSON regex option"),
     ],
 )
 def test_bson_regex_invalid_inputs(pattern_input, options_input, exc_type, match_msg):
