@@ -876,3 +876,45 @@ def test_create_channel_async_invalid_env_var_raises(monkeypatch):
         match="Invalid value for GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT",
     ):
         grpc_helpers_async.create_channel("storage-direct.googleapis.com:443")
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.aio.secure_channel")
+def test_create_channel_async_interconnect_authority_branches(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    ssl_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    # Branch 318->329: authority is None (target does not contain -direct.googleapis.com)
+    grpc_helpers_async.create_channel(
+        "storage.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+    )
+
+    # Branch 321->329: authority exists, but grpc.ssl_target_name_override is already provided
+    custom_options = (("grpc.ssl_target_name_override", "custom.googleapis.com"),)
+    grpc_helpers_async.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+        options=custom_options,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=custom_options,
+    )

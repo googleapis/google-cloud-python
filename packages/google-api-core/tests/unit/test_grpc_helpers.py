@@ -1272,3 +1272,62 @@ def test_create_channel_interconnect_fallback_preserves_non_google_direct_host(
         composite_creds,
         compression=None,
     )
+
+
+@pytest.mark.parametrize(
+    "target,expected_authority",
+    [
+        ("storage-direct.googleapis.com:443", "storage.googleapis.com"),
+        ("dns:///storage-direct.googleapis.com:443", "storage.googleapis.com"),
+        (
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+            "storage.googleapis.com",
+        ),
+        ("storage.googleapis.com:443", None),
+        ("my-direct.example.com:443", None),
+    ],
+)
+def test__extract_direct_path_authority(target, expected_authority):
+    assert grpc_helpers._extract_direct_path_authority(target) == expected_authority
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_interconnect_authority_branches(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    ssl_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    # Branch 455->466: authority is None (target does not contain -direct.googleapis.com)
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+    )
+
+    # Branch 458->466: authority exists, but grpc.ssl_target_name_override is already provided
+    custom_options = (("grpc.ssl_target_name_override", "custom.googleapis.com"),)
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+        options=custom_options,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=custom_options,
+    )
