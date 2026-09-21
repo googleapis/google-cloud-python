@@ -188,11 +188,12 @@ class AsyncResumableUploadSession:
                 default transient retry policy is used. Use this to customize
                 exponential backoff timing (such as ``AsyncRetry(initial=1.0, maximum=60.0)``)
                 or to supply a custom ``predicate`` function for API-specific transient
-                errors. A custom ``predicate`` applies only to transient HTTP status
-                errors. Transport errors (``aiohttp.ClientError``) are always
-                retried. Terminal errors (``DeadlineExceeded``,
-                ``TransferStalledError``, ``UploadCancelledError``, and
-                ``UnseekableStreamError``) are never retried.
+                errors. A custom ``predicate`` replaces the default transient HTTP status
+                check (HTTP 408, 429, 500, 502, 503, and 504). Transport errors
+                (``aiohttp.ClientError``) are always retried. Terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are never
+                retried.
             start_timeout: Timeout in seconds for the start request. Defaults to
                 ``60.0`` seconds.
         """
@@ -338,9 +339,9 @@ class AsyncResumableUploadSession:
                 MissingStatusHeaderError) are also retried via recovery.
             custom_predicate: Optional callable taking an exception and returning True
                 if the error should be retried (from a user-supplied AsyncRetry instance).
-                Custom predicates apply only to transient errors (such as
-                ``RETRYABLE_STATUS_CODES``) and are evaluated after protocol-enforced
-                rules:
+                Custom predicates replace the default transient HTTP status check
+                (``RETRYABLE_STATUS_CODES``: HTTP 408, 429, 500, 502, 503, and 504)
+                and are evaluated after protocol-enforced rules:
                 1. Terminal errors (``TERMINAL_ERRORS``: ``DeadlineExceeded``,
                    ``TransferStalledError``, ``UploadCancelledError``, and
                    ``UnseekableStreamError``) always return ``False``.
@@ -856,9 +857,10 @@ class AsyncResumableUploadSession:
             retry: Optional retry configuration (``AsyncStreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                A custom ``predicate`` applies only to transient HTTP status errors.
-                Transport errors and protocol recovery errors (HTTP 400, 412, 416,
-                and ``MissingStatusHeaderError``) always initiate server offset
+                A custom ``predicate`` replaces the default transient HTTP status
+                check (HTTP 408, 429, 500, 502, 503, and 504). Transport errors and
+                protocol recovery errors (HTTP 400, 412, 416, and
+                ``MissingStatusHeaderError``) always initiate server offset
                 recovery. Terminal errors (``DeadlineExceeded``,
                 ``TransferStalledError``, ``UploadCancelledError``, and
                 ``UnseekableStreamError``) are never retried.
@@ -929,9 +931,10 @@ class AsyncResumableUploadSession:
             retry: Optional retry configuration (``AsyncStreamingRetry``) for
                 chunk upload requests. Use this to customize exponential backoff timing between chunk retries or to
                 supply a custom ``predicate`` for API-specific transient errors.
-                A custom ``predicate`` applies only to transient HTTP status errors.
-                Transport errors and protocol recovery errors (HTTP 400, 412, 416,
-                and ``MissingStatusHeaderError``) always initiate server offset
+                A custom ``predicate`` replaces the default transient HTTP status
+                check (HTTP 408, 429, 500, 502, 503, and 504). Transport errors and
+                protocol recovery errors (HTTP 400, 412, 416, and
+                ``MissingStatusHeaderError``) always initiate server offset
                 recovery. Terminal errors (``DeadlineExceeded``,
                 ``TransferStalledError``, ``UploadCancelledError``, and
                 ``UnseekableStreamError``) are never retried.
