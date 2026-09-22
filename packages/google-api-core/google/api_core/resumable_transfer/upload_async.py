@@ -105,11 +105,11 @@ class AsyncUploadOperation(
             try:
                 async for _ in self._progress_stream:
                     pass
-                self._consumed = True
             except BaseException as exc:
-                self._consumed = True
                 self._exception = exc
                 raise
+            finally:
+                self._consumed = True
         if self._exception is not None:
             raise self._exception
         return self._session.response  # type: ignore[return-value]
@@ -132,11 +132,11 @@ class AsyncUploadOperation(
             try:
                 async for item in self._progress_stream:
                     yield item
-                self._consumed = True
             except BaseException as exc:
-                self._consumed = True
                 self._exception = exc
                 raise
+            finally:
+                self._consumed = True
 
     @property
     def response(self) -> Optional[ResponseType]:
