@@ -502,9 +502,9 @@ class AsyncAppendableObjectWriter:
                         if resp:
                             if resp.persisted_size is not None:
                                 self.persisted_size = resp.persisted_size
-                                state["write_state"].persisted_size = (
-                                    resp.persisted_size
-                                )
+                                state[
+                                    "write_state"
+                                ].persisted_size = resp.persisted_size
                                 self.offset = self.persisted_size
                             if resp.write_handle:
                                 self.write_handle = resp.write_handle
