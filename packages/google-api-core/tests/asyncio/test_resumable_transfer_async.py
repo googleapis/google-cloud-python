@@ -1987,19 +1987,15 @@ async def test_async_partial_chunk_recovery_does_not_prematurely_finalize() -> N
 
 
 @pytest.mark.asyncio
-async def test_async_upload_progress_cancellation_and_base_exception() -> None:
-    """Ensure progress() does not hang if the background task is cancelled or raises BaseException."""
-
-    class CustomBaseException(BaseException):
-        pass
-
-    # 1. Task cancelled while awaiting progress()
+async def test_async_upload_progress_cancellation() -> None:
+    """Verifies that cancelling a task iterating over progress() propagates CancelledError cleanly."""
     slow_event = asyncio.Event()
 
     class HangingTransport:
         def request(self, *args: Any, **kwargs: Any) -> Any:
             class HangingCtx:
                 async def __aenter__(self) -> Any:
+                    # Block indefinitely to simulate an in-flight HTTP request.
                     await slow_event.wait()
                     return DummyAsyncResponse(status=200, headers={}, body=b"")
 
@@ -2018,17 +2014,28 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
         async for _ in op_cancel.progress():
             pass
 
+    # Start iterating over progress() in a background task, allow it to reach
+    # the blocking request, and then cancel the task.
     progress_task = asyncio.create_task(consume_progress())
     await asyncio.sleep(0.01)
     progress_task.cancel()
     with pytest.raises(asyncio.CancelledError):
         await progress_task
 
-    # 2. Task raises BaseException subclass
+
+@pytest.mark.asyncio
+async def test_async_upload_progress_base_exception() -> None:
+    """Verifies that a BaseException raised during progress() is captured and propagated."""
+
+    class CustomBaseException(BaseException):
+        pass
+
     class BaseExceptionTransport:
         def request(self, *args: Any, **kwargs: Any) -> Any:
             class BaseExceptionCtx:
                 async def __aenter__(self) -> Any:
+                    # Raise a direct BaseException subclass to verify non-Exception
+                    # errors mark the operation as consumed and propagate out of progress().
                     raise CustomBaseException("fatal error")
 
                 async def __aexit__(self, exc_type: Any, exc: Any, tb: Any) -> None:
@@ -2044,8 +2051,13 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
     with pytest.raises(CustomBaseException, match="fatal error"):
         async for _ in op_base_exc.progress():
             pass
+    assert op_base_exc._consumed is True
+    assert isinstance(op_base_exc._exception, CustomBaseException)
 
-    # 3. Multiple progress() iterations after completion do not hang
+
+@pytest.mark.asyncio
+async def test_async_upload_progress_repeated_iteration_after_completion() -> None:
+    """Verifies that iterating over progress() again after stream completion yields no items."""
     start_resp = DummyAsyncResponse(
         status=200,
         headers={
@@ -2064,10 +2076,65 @@ async def test_async_upload_progress_cancellation_and_base_exception() -> None:
         transport=DummyAsyncSession([start_resp, final_resp]),
     )
     op_ok = session_ok.upload(stream=b"data")
+
+    # First pass drains the entire progress stream (STARTED and FINALIZED).
     first_pass = [p async for p in op_ok]
     assert len(first_pass) == 2
+    assert op_ok._consumed is True
+
+    # Subsequent iteration over progress() sees _consumed=True and returns immediately.
     second_pass = [p async for p in op_ok.progress()]
     assert second_pass == []
+
+
+@pytest.mark.asyncio
+async def test_async_upload_partial_progress_iteration_then_await() -> None:
+    """Verifies that breaking out of progress iteration early allows awaiting the remaining upload."""
+    start_partial = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-partial",
+        },
+        body=b"",
+    )
+    chunk1_partial = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active"},
+        body=b"",
+    )
+    chunk2_partial = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b'{"name": "partial_then_await.txt", "size": 8}',
+    )
+    # Configure a 2-chunk upload (8 bytes total with 4-byte chunk_size), which yields
+    # 3 progress notifications in total: STARTED, UPLOADING (after chunk 1), and FINALIZED (after chunk 2).
+    session_partial = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(chunk_size=4),
+        response_type=DummyResponse,
+        transport=DummyAsyncSession([start_partial, chunk1_partial, chunk2_partial]),
+    )
+    op_partial = session_partial.upload(stream=b"01234567")
+
+    # Consume only the first two progress events (STARTED and first UPLOADING) and break early.
+    seen_states = []
+    async for p in op_partial:
+        seen_states.append(p.state)
+        if len(seen_states) == 2:
+            break
+
+    # The stream has not reached the end yet, so _consumed remains False.
+    assert op_partial._consumed is False
+
+    # Awaiting the operation handle resumes draining the remaining chunks from _progress_stream
+    # until completion, marks _consumed=True, and returns the deserialized response.
+    final_result = await op_partial
+    assert op_partial._consumed is True
+    assert isinstance(final_result, DummyResponse)
+    assert final_result.name == "partial_then_await.txt"
+    assert final_result.size == 8
 
 
 @pytest.mark.asyncio

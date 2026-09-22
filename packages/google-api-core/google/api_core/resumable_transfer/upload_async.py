@@ -102,11 +102,12 @@ class AsyncUploadOperation(
     async def _consume(self) -> ResponseType:
         """Consumes the upload stream to completion and returns the response."""
         if not self._consumed:
-            self._consumed = True
             try:
                 async for _ in self._progress_stream:
                     pass
+                self._consumed = True
             except BaseException as exc:
+                self._consumed = True
                 self._exception = exc
                 raise
         if self._exception is not None:
@@ -128,13 +129,17 @@ class AsyncUploadOperation(
             UploadProgress snapshots for each progress transition.
         """
         if not self._consumed:
-            self._consumed = True
-            try:
-                async for item in self._progress_stream:
-                    yield item
-            except BaseException as exc:
-                self._exception = exc
-                raise
+            while True:
+                try:
+                    item = await self._progress_stream.__anext__()
+                except StopAsyncIteration:
+                    self._consumed = True
+                    break
+                except BaseException as exc:
+                    self._consumed = True
+                    self._exception = exc
+                    raise
+                yield item
 
     @property
     def response(self) -> Optional[ResponseType]:
