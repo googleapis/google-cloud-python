@@ -26,7 +26,7 @@ Example:
 
 import abc
 import re
-from typing import Any, Dict, FrozenSet, Union
+from typing import Any, Dict, Union
 
 __all__ = [
     "BSONObjectId",
@@ -351,11 +351,10 @@ class BSONRegex(_BSONType):
     Args:
         pattern (str): The regular expression pattern string.
         options (str, optional): BSON regex option flags as a string
-            (e.g. "i", "m", "s", "x", "u", "a"). Defaults to "".
+            (e.g. "i", "m", "s", "x", "u"). Defaults to "".
 
     Raises:
         TypeError: If pattern is not a string or options is not a string.
-        ValueError: If options contains invalid BSON regex flag characters.
 
     Example:
         >>> regex = BSONRegex("^hello.*$", options="i")
@@ -367,21 +366,12 @@ class BSONRegex(_BSONType):
 
     __slots__ = ("_pattern", "_options")
 
-    _VALID_OPTIONS: FrozenSet[str] = frozenset({"i", "m", "s", "x", "u", "a"})
-
     def __init__(self, pattern: str, options: str = ""):
         if not isinstance(pattern, str):
             raise TypeError("BSONRegex pattern must be a str.")
 
         if not isinstance(options, str):
             raise TypeError("BSONRegex options must be a str.")
-
-        invalid = set(options) - self._VALID_OPTIONS
-        if invalid:
-            raise ValueError(
-                f"Invalid BSON regex option(s): {sorted(invalid)}. "
-                f"Valid options are: {sorted(self._VALID_OPTIONS)}"
-            )
 
         self._pattern: str = pattern
         self._options: str = "".join(sorted(set(options)))

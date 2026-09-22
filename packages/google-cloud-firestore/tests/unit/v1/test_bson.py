@@ -434,6 +434,9 @@ def test_bson_regex_options_sorting_and_deduplication():
     rx2 = BSONRegex("foo", options="mmiis")
     assert rx2.options == "ims"
 
+    rx3 = BSONRegex("foo", options="xl")
+    assert rx3.options == "lx"
+
 
 @pytest.mark.parametrize(
     "pattern_input, options_input, exc_type, match_msg",
@@ -443,8 +446,6 @@ def test_bson_regex_options_sorting_and_deduplication():
         ("foo", 123, TypeError, "options must be a str"),
         ("foo", True, TypeError, "options must be a str"),
         ("foo", [1, 2], TypeError, "options must be a str"),
-        ("foo", "l", ValueError, "Invalid BSON regex option"),
-        ("foo", "invalid", ValueError, "Invalid BSON regex option"),
     ],
 )
 def test_bson_regex_invalid_inputs(pattern_input, options_input, exc_type, match_msg):
