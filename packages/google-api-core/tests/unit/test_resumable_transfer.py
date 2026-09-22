@@ -1184,6 +1184,11 @@ def test_sync_stall_control_with_deadline():
     session5._update_stall_control(10240, 10.5)
     assert session5._aggregate_lag == pytest.approx(0.5)
     assert session5._stall_timeout_started is not None
+    session5._buffered_chunk = memoryview(b"stale")
+    session5._reset_transfer_state()
+    assert session5._buffered_chunk is None
+    assert session5._aggregate_lag == 0.0
+    assert session5._stall_timeout_started is None
 
 
 def test_sync_update_stall_control_disabled():

@@ -111,7 +111,11 @@ class _ProtocolState(object):
         if not self._initial_url:
             raise ValueError("upload_url must be provided to start an upload.")
         self._upload_url = None
+        self._chunk_granularity = None
+        self._bytes_uploaded = 0
         self._total_bytes = size
+        self._finished = False
+        self._invalid = False
         req_headers: Dict[str, str] = {}
 
         if headers:

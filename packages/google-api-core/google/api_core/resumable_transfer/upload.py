@@ -181,6 +181,19 @@ class ResumableUploadSession:
         """bool: Whether the upload has completed successfully."""
         return self._state.finished
 
+    def _reset_transfer_state(self) -> None:
+        """Resets per-transfer buffer, recovery, and stall control state."""
+        self._response = None
+        self._buffered_chunk = None
+        self._buffered_chunk_offset = 0
+        self._buffered_chunk_is_last = False
+        self._start_stream_offset = 0
+        self._aggregate_lag = 0.0
+        self._stall_timeout_started = None
+        self._needs_recovery = False
+        self._state._finished = False
+        self._state._invalid = False
+
     def _get_transport(self, transport: Optional[requests.Session]) -> requests.Session:
         """Resolves the requests.Session transport.
 
@@ -865,6 +878,7 @@ class ResumableUploadSession:
         sess = self._get_transport(transport)
         if content_type is not None:
             self._content_type = content_type
+        self._reset_transfer_state()
         progress_queue: List[UploadProgress] = []
         try:
             stream_obj, computed_size = self._prepare_stream(stream, size)
@@ -979,6 +993,7 @@ class ResumableUploadSession:
         if stream is None:
             raise ValueError("A data stream or payload must be provided to resume.")
 
+        self._reset_transfer_state()
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
 

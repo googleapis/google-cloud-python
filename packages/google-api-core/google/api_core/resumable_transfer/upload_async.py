@@ -247,6 +247,19 @@ class AsyncResumableUploadSession:
         """bool: Whether the upload has completed successfully."""
         return self._state.finished
 
+    def _reset_transfer_state(self) -> None:
+        """Resets per-transfer buffer, recovery, and stall control state."""
+        self._response = None
+        self._buffered_chunk = None
+        self._buffered_chunk_offset = 0
+        self._buffered_chunk_is_last = False
+        self._start_stream_offset = 0
+        self._aggregate_lag = 0.0
+        self._stall_timeout_started = None
+        self._needs_recovery = False
+        self._state._finished = False
+        self._state._invalid = False
+
     def _ensure_aiohttp(self) -> None:
         """Validates that aiohttp is installed and accessible.
 
@@ -878,6 +891,7 @@ class AsyncResumableUploadSession:
         if content_type is not None:
             self._content_type = content_type
 
+        self._reset_transfer_state()
         progress_queue: List[UploadProgress] = []
         reader_fn, computed_size, stream_obj = self._prepare_async_reader(stream, size)
 
@@ -949,6 +963,7 @@ class AsyncResumableUploadSession:
         if sess is None:
             raise ValueError("An aiohttp.ClientSession transport must be provided.")
 
+        self._reset_transfer_state()
         if chunk_size is not None:
             self._state._chunk_size = chunk_size
 

@@ -818,22 +818,10 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     with pytest.raises(TransferStalledError, match="Upload stalled"):
         await session.upload(stream=b"0123456789")
 
-    # Verify branch where _stall_timeout_started is already set prior to chunk evaluation
-    clock_vals2 = iter([0.0, 10.0, 10.0])
-    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals2))
-    session2 = AsyncResumableUploadSession(
-        upload_url="https://api.example.com/start",
-        config=config,
-        transport=DummyAsyncSession([start_resp, chunk_resp]),
-    )
-    session2._stall_timeout_started = 0.0
-    with pytest.raises(TransferStalledError, match="Upload stalled"):
-        await session2.upload(stream=b"0123456789")
-
     # Verify that a chunk slightly over expected_sec (e.g., 100 bytes with expected_sec=1.0s
     # taking 1.2s -> current_lag=0.2s) only counts current_lag (0.2s) toward
     # stall_timeout (1.0s), rather than the full 1.2s chunk duration.
-    clock_vals3 = iter([10.0])
+    clock_vals3 = iter([10.0, 11.0])
     monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals3))
     session3 = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
@@ -842,6 +830,10 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     session3._update_stall_control(100, 1.2)
     assert session3._aggregate_lag == pytest.approx(0.2)
     assert session3._stall_timeout_started == pytest.approx(9.8)
+
+    # Second lagging chunk when _stall_timeout_started is already set reaches stall_timeout
+    with pytest.raises(TransferStalledError, match="Upload stalled"):
+        session3._update_stall_control(100, 1.2)
 
 
 @pytest.mark.asyncio
@@ -1870,10 +1862,14 @@ async def test_async_recover_stream_obj_none() -> None:
 @pytest.mark.asyncio
 async def test_async_upload_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
-    session._state._finished = True
     session._state._upload_url = "https://upload.example.com/resumable-async"
 
-    with mock.patch.object(session, "_initiate", new_callable=mock.AsyncMock):
+    async def mark_finished(*args, **kwargs):
+        session._state._finished = True
+
+    with mock.patch.object(
+        session, "_initiate", new_callable=mock.AsyncMock, side_effect=mark_finished
+    ):
         sess_transport = DummyAsyncSession([])
         with pytest.raises(
             ValueError, match="Upload completed without receiving a final response"
@@ -1884,11 +1880,15 @@ async def test_async_upload_already_finished_raises_value_error() -> None:
 @pytest.mark.asyncio
 async def test_async_resume_already_finished_raises_value_error() -> None:
     session = AsyncResumableUploadSession()
-    session._state._finished = True
     session._state._upload_url = "https://upload.example.com/resumable-async"
 
+    async def mark_finished(*args, **kwargs):
+        session._state._finished = True
+
     sess_transport = DummyAsyncSession([])
-    with mock.patch.object(session, "_recover", new_callable=mock.AsyncMock):
+    with mock.patch.object(
+        session, "_recover", new_callable=mock.AsyncMock, side_effect=mark_finished
+    ):
         op = session.resume(
             upload_url="https://upload.example.com/resumable-async",
             stream=b"data",
