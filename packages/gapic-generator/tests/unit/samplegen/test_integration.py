@@ -886,11 +886,15 @@ def test_generate_sample_resumable_upload():
         sample, schema, env.get_template("examples/sample.py.j2")
     )
 
-    assert "from google.api_core.resumable_transfer import ResumableUploadConfig" in sample_str
+    assert (
+        "from google.api_core.resumable_transfer import ResumableUploadConfig, UploadProgress"
+        in sample_str
+    )
     assert "import io" in sample_str
     assert "upload_session = client.classify(request=request, config=config)" in sample_str
     assert 'stream = io.BytesIO(b"Example upload data")' in sample_str
     assert "response = upload_session.upload(stream)" in sample_str
+    assert "progress: UploadProgress" in sample_str
     assert "for progress in upload_session.iter_upload(stream):" in sample_str
     assert "response = upload_session.resume(upload_url, stream, chunk_size=chunk_size)" in sample_str
     assert "for progress in upload_session.iter_resume(upload_url, stream, chunk_size=chunk_size):" in sample_str
@@ -973,12 +977,16 @@ def test_generate_sample_resumable_upload_async():
         sample, schema, env.get_template("examples/sample.py.j2")
     )
 
-    assert "from google.api_core.resumable_transfer import ResumableUploadConfig" in sample_str
+    assert (
+        "from google.api_core.resumable_transfer import ResumableUploadConfig, UploadProgress"
+        in sample_str
+    )
     assert "import io" in sample_str
     assert "python3 -m pip install molluscs-v1-molluscclient[async_rest]" in sample_str
     assert "upload_session = client.classify(request=request, config=config)" in sample_str
     assert 'stream = io.BytesIO(b"Example upload data")' in sample_str
     assert "response = await upload_session.upload(stream)" in sample_str
+    assert "progress: UploadProgress" in sample_str
     assert "async for progress in upload_session.upload(stream):" in sample_str
     assert "response = await upload_session.resume(upload_url, stream, chunk_size=chunk_size)" in sample_str
     assert "async for progress in upload_session.resume(upload_url, stream, chunk_size=chunk_size):" in sample_str

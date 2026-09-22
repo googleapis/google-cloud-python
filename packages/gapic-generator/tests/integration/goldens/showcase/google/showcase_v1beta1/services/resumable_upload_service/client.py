@@ -547,7 +547,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import showcase_v1beta1
-            from google.api_core.resumable_transfer import ResumableUploadConfig
+            from google.api_core.resumable_transfer import ResumableUploadConfig, UploadProgress
             import io
 
             def sample_upload_media():
@@ -597,6 +597,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
 
                 # Iterate over the upload to receive progress updates as each chunk is transmitted
                 stream = io.BytesIO(b"Example upload data")
+                progress: UploadProgress
                 for progress in upload_session.iter_upload(stream):
                     print(
                         f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}"
@@ -646,6 +647,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                 stream = io.BytesIO(b"Example upload data")
                 upload_url = "https://..."
                 chunk_size = 8 * 1024 * 1024
+                progress: UploadProgress
                 for progress in upload_session.iter_resume(upload_url, stream, chunk_size=chunk_size):
                     print(
                         f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}"

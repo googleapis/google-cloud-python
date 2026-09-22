@@ -6342,31 +6342,31 @@
       "regionTag": "localhost_v1beta1_generated_ResumableUploadService_UploadMedia_async",
       "segments": [
         {
-          "end": 151,
+          "end": 153,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 151,
+          "end": 153,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 126,
-          "start": 124,
+          "end": 127,
+          "start": 125,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "start": 127,
+          "start": 128,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 147,
+          "end": 149,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 152,
-          "start": 148,
+          "end": 154,
+          "start": 150,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6416,31 +6416,31 @@
       "regionTag": "localhost_v1beta1_generated_ResumableUploadService_UploadMedia_sync",
       "segments": [
         {
-          "end": 151,
+          "end": 153,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 151,
+          "end": 153,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 126,
-          "start": 124,
+          "end": 127,
+          "start": 125,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "start": 127,
+          "start": 128,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 147,
+          "end": 149,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 152,
-          "start": 148,
+          "end": 154,
+          "start": 150,
           "type": "RESPONSE_HANDLING"
         }
       ],

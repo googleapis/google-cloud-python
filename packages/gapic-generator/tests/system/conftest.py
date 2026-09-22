@@ -646,8 +646,8 @@ def resume_resumable_upload(
                 setattr(config, k, v)
 
     session = ResumableUploadSession(
+        upload_url=upload_url,
         config=config,
-        resumable_url=upload_url,
         transport=transport,
         content_type=content_type,
         response_type=response_type,
