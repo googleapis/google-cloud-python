@@ -42,6 +42,9 @@ DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 _WRAP_METHOD_SUPPORTS_TRACING = (
     "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
 )
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
 
 
 class LoggingServiceV2Transport(abc.ABC):

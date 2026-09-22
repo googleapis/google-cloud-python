@@ -21,7 +21,7 @@ functions. This module is implementing the same surface with AsyncIO semantics.
 import asyncio
 import functools
 import warnings
-from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
+from typing import AsyncGenerator, Generic, Iterator, Optional, Sequence, TypeVar
 
 import grpc
 from grpc import aio
@@ -306,6 +306,42 @@ def create_channel(
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
+
+
+def apply_channel_interceptors(
+    channel: aio.Channel,
+    interceptors: Optional[Sequence[aio.ClientInterceptor]] = None,
+) -> aio.Channel:
+    """Applies client interceptors to a gRPC AsyncIO channel.
+
+    In grpc.aio, channels maintain internal interceptor lists
+    (_unary_unary_interceptors, etc.). To preserve the public API contract for
+    callers who supply their own pre-instantiated ``channel`` object or a custom
+    channel factory callable (which does not accept ``interceptors``), we attach
+    interceptors post-instantiation directly to the channel's interceptor lists.
+
+    Args:
+        channel (aio.Channel): The async gRPC channel to intercept.
+        interceptors (Optional[Sequence[aio.ClientInterceptor]]):
+            Additional interceptors to apply to the channel.
+
+    Returns:
+        aio.Channel: The channel with interceptors attached, or the original channel
+            if no interceptors were provided.
+    """
+    if not interceptors or not hasattr(channel, "_unary_unary_interceptors"):
+        return channel
+
+    unary_interceptors = channel._unary_unary_interceptors
+    if isinstance(unary_interceptors, list):
+        for interceptor in interceptors:
+            if interceptor not in unary_interceptors:
+                unary_interceptors.append(interceptor)
+    elif hasattr(unary_interceptors, "append"):
+        for interceptor in interceptors:
+            unary_interceptors.append(interceptor)
+
+    return channel
 
 
 class FakeUnaryUnaryCall(_WrappedUnaryUnaryCall):

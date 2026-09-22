@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import inspect
 import json
 import pickle
 import logging as std_logging
@@ -45,7 +44,7 @@ from grpc.experimental import aio  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2 # type: ignore
-from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
+from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO, _ASYNC_WRAP_METHOD_SUPPORTS_TRACING
 from .grpc import CloudRedisGrpcTransport
 
 try:
@@ -55,9 +54,6 @@ except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
-    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-)
 
 
 class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
@@ -347,47 +343,36 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 ],
             )
 
+        channel_interceptors = list(interceptors) if interceptors else []
         self._interceptor = _LoggingClientAIOInterceptor()
-        # In grpc.aio, channels maintain an internal list of `_unary_unary_interceptors`.
-        # The transport attaches both the logging interceptor and any OpenTelemetry
-        # interceptors directly to this list on the channel. We avoid passing `interceptors`
-        # into `create_channel` so that default `create_channel` call signatures remain
-        # strictly backward-compatible with existing client mocks and test assertions.
-        if hasattr(self._grpc_channel, "_unary_unary_interceptors"):
-            self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        channel_interceptors.append(self._interceptor)
 
-            if interceptors:
-                for interceptor in interceptors:
-                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors"):  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
-                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors"):  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
-                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors"):  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
-                    else:
-                        self._grpc_channel._unary_unary_interceptors.append(interceptor)
+        if (
+            _observability is not None
+            and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
+        ):
+            otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]
+            channel_interceptors.extend(otel_list)
 
-            # OpenTelemetry async channel interceptor injection
-            # Excluded from unit test coverage because unit tests test default instantiation without tracing.
-            # Verified end-to-end in Showcase system tracing tests.
-            if (
-                _observability is not None
-                and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
-            ):  # pragma: NO COVER
-                otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
-                for interceptor in otel_list:  # pragma: NO COVER
-                    if isinstance(interceptor, aio.UnaryStreamClientInterceptor) and hasattr(self._grpc_channel, "_unary_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_stream_interceptors):  # pragma: NO COVER
-                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
-                        self._grpc_channel._unary_stream_interceptors.append(interceptor)  # pragma: NO COVER
-                    elif isinstance(interceptor, aio.StreamUnaryClientInterceptor) and hasattr(self._grpc_channel, "_stream_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_unary_interceptors):  # pragma: NO COVER
-                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
-                        self._grpc_channel._stream_unary_interceptors.append(interceptor)  # pragma: NO COVER
-                    elif isinstance(interceptor, aio.StreamStreamClientInterceptor) and hasattr(self._grpc_channel, "_stream_stream_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._stream_stream_interceptors):  # pragma: NO COVER
-                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
-                        self._grpc_channel._stream_stream_interceptors.append(interceptor)  # pragma: NO COVER
-                    elif hasattr(self._grpc_channel, "_unary_unary_interceptors") and not any(getattr(i, "_is_otel_interceptor", None) is True for i in self._grpc_channel._unary_unary_interceptors):  # pragma: NO COVER
-                        setattr(interceptor, "_is_otel_interceptor", True)  # pragma: NO COVER
-                        self._grpc_channel._unary_unary_interceptors.append(interceptor)  # pragma: NO COVER
+        # Fallback for older versions of google-api-core where apply_channel_interceptors is unavailable.
+        def _fallback_apply_interceptors(channel, interceptors):  # pragma: NO COVER
+            if hasattr(channel, "_unary_unary_interceptors"):
+                unary_interceptors = channel._unary_unary_interceptors
+                if isinstance(unary_interceptors, list):
+                    for i in interceptors:
+                        if i not in unary_interceptors:
+                            unary_interceptors.append(i)
+                elif hasattr(unary_interceptors, "append"):
+                    for i in interceptors:
+                        unary_interceptors.append(i)
+            return channel
+
+        apply_interceptors = getattr(
+            grpc_helpers_async,
+            "apply_channel_interceptors",
+            _fallback_apply_interceptors,
+        )
+        self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists

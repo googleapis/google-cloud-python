@@ -69,11 +69,13 @@ except ImportError:  # pragma: NO COVER
 
 from .rest_base import _Base{{ service.name }}RestTransport
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import (
+    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
+    _ASYNC_WRAP_METHOD_SUPPORTS_TRACING,
+)
 
 
 import asyncio
-import inspect
 import logging
 
 try:
@@ -83,10 +85,6 @@ except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
-
-_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
-    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-)
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
