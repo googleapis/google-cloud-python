@@ -1148,6 +1148,7 @@ async def test_async_retry_branches() -> None:
 
     default_stream = session._get_async_streaming_retry()
     assert isinstance(default_stream, google.api_core.retry.AsyncStreamingRetry)
+    assert default_stream.timeout is None
 
     class CustomApiError(Exception):
         """Example API-specific transient exception provided by a caller."""

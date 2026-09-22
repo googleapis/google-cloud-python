@@ -1078,6 +1078,9 @@ def test_sync_get_retry_start_and_override():
     # Scenario 3: Category 2 recovery (400, 412, 416, MissingStatusHeaderError)
     # is preserved during chunk transfer
     # -------------------------------------------------------------------------
+    default_stream = session._get_streaming_retry()
+    assert default_stream.timeout is None
+
     restrictive_chunk_retry = google.api_core.retry.StreamingRetry(
         initial=0.1,
         predicate=lambda exc: False,

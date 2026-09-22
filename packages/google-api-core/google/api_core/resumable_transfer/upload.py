@@ -375,7 +375,8 @@ class ResumableUploadSession:
             )
             return retry_override.with_predicate(wrapped_pred)
         return google.api_core.retry.StreamingRetry(
-            predicate=self._get_retry_predicate(is_start=False)
+            predicate=self._get_retry_predicate(is_start=False),
+            timeout=None,
         )
 
     def _compute_chunk_timeout(

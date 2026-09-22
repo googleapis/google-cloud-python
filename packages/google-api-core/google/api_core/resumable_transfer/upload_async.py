@@ -430,7 +430,8 @@ class AsyncResumableUploadSession:
             )
             return retry_override.with_predicate(wrapped_pred)
         return google.api_core.retry.AsyncStreamingRetry(
-            predicate=self._get_retry_predicate(is_start=False)
+            predicate=self._get_retry_predicate(is_start=False),
+            timeout=None,
         )
 
     async def _initiate(
