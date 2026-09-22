@@ -24,7 +24,7 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.asset_v1._compat import transcode_request
-from google.cloud.asset_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
+from google.cloud.asset_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables, _observability
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -423,3 +423,12 @@ def test_read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
         with pytest.raises(MutualTLSChannelError):
             read_environment_variables()
+
+
+def test_observability_compat():
+    # _observability is exposed from _compat
+    try:
+        from google.api_core import _observability as core_observability
+        assert _observability is core_observability
+    except ImportError:  # pragma: NO COVER
+        assert _observability is None  # pragma: NO COVER

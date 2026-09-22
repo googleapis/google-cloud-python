@@ -30,7 +30,14 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
-from {{package_path}}._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
+from {{package_path}}._compat import (
+    get_universe_domain,
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    should_use_client_cert,
+    read_environment_variables,
+    _observability,
+)
 {% if has_auto_populated_fields %}
 from {{package_path}}._compat import setup_request_id
 {% endif %}
@@ -52,13 +59,6 @@ try:
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
-
-# Optional: OpenTelemetry tracing capabilities for grpc channel injection
-# Note: _observability was added in google-api-core 2.36.0+; guard for older versions
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
 
 _LOGGER = std_logging.getLogger(__name__)
 

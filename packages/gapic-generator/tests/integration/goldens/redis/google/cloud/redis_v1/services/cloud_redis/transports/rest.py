@@ -24,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.cloud.redis_v1._compat import transcode_request
+from google.cloud.redis_v1._compat import transcode_request, _observability
 import google.protobuf
 
 from google.protobuf import json_format
@@ -42,14 +42,6 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
-
 from .rest_base import _BaseCloudRedisRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 

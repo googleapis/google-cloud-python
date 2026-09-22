@@ -27,13 +27,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
 from google.api_core import client_options as client_options_lib
 from google.api_core import gapic_v1
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
+from google.cloud.logging_v2._compat import _observability
 import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore

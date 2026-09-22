@@ -18,13 +18,8 @@ from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
+{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
+from {{package_path}}._compat import _observability
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
@@ -58,7 +53,7 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
-from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO, _ASYNC_WRAP_METHOD_SUPPORTS_TRACING
+from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport
 
 try:
@@ -495,7 +490,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
 
-    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
+    def _wrap_method(self, func, *args, **kwargs):
+        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

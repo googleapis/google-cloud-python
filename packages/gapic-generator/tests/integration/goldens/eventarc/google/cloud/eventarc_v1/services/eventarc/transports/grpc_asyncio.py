@@ -25,13 +25,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
+from google.cloud.eventarc_v1._compat import _observability
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
@@ -56,7 +50,7 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
-from .base import EventarcTransport, DEFAULT_CLIENT_INFO, _ASYNC_WRAP_METHOD_SUPPORTS_TRACING
+from .base import EventarcTransport, DEFAULT_CLIENT_INFO
 from .grpc import EventarcGrpcTransport
 
 try:
@@ -1715,15 +1709,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         }
 
     def _wrap_method(self, func, *args, **kwargs):
-        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
-            kwargs["client_options"] = getattr(self, "_client_options", None)  # pragma: NO COVER
-            kwargs["kind"] = self.kind  # pragma: NO COVER
-            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed.
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

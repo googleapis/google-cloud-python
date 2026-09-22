@@ -15,7 +15,7 @@ from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request
+from {{package_path}}._compat import transcode_request, _observability
 import google.protobuf
 
 from google.protobuf import json_format
@@ -38,14 +38,6 @@ import warnings
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
-
 from .rest_base import _Base{{ service.name }}RestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 

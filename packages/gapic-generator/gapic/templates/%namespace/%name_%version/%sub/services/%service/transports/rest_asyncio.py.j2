@@ -35,7 +35,7 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request
+from {{package_path}}._compat import transcode_request, _observability
 
 import google.protobuf
 
@@ -59,20 +59,9 @@ from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
-
 from .rest_base import _Base{{ service.name }}RestTransport
 
-from .base import (
-    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
-    _ASYNC_WRAP_METHOD_SUPPORTS_TRACING,
-)
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 import asyncio
@@ -184,7 +173,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
 
-    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
+    def _wrap_method(self, func, *args, **kwargs):
+        return self._wrap_async_method(func, *args, **kwargs)
 
     {% for method in service.methods.values()|sort(attribute="name") %}
     class {{ method.name|make_private }}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):

@@ -32,7 +32,7 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
-from google.cloud.redis_v1._compat import transcode_request
+from google.cloud.redis_v1._compat import transcode_request, _observability
 
 import google.protobuf
 
@@ -51,20 +51,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from google.api_core import client_options as client_options_lib
-# The _observability module was introduced in google-api-core 2.36.0+.
-# On older versions of google-api-core or when type-checking against them,
-# mypy may flag attr-defined or assignment errors when fallback to None occurs.
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
-
 from .rest_base import _BaseCloudRedisRestTransport
 
-from .base import (
-    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
-    _ASYNC_WRAP_METHOD_SUPPORTS_TRACING,
-)
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
 import asyncio
@@ -950,15 +939,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         }
 
     def _wrap_method(self, func, *args, **kwargs):
-        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
-            kwargs["client_options"] = getattr(self, "_client_options", None)  # pragma: NO COVER
-            kwargs["kind"] = self.kind  # pragma: NO COVER
-            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed.
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        return self._wrap_async_method(func, *args, **kwargs)
 
     class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
         def __hash__(self):

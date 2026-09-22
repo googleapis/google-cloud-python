@@ -171,6 +171,20 @@ class EventarcTransport(abc.ABC):
             kwargs.pop(k, None)  # pragma: NO COVER
         return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
 
+    def _wrap_async_method(self, func, *args, **kwargs):
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed (which does not accept client_options, etc.).
+        # Excluded from coverage because our CI and testing environments always install
+        # a modern version of google-api-core that supports tracing.
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+            kwargs.pop(k, None)  # pragma: NO COVER
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {

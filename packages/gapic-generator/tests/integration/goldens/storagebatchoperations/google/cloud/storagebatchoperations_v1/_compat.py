@@ -32,6 +32,14 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
 try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`
     # is different than that of the fallback implementation below. This will be removed once

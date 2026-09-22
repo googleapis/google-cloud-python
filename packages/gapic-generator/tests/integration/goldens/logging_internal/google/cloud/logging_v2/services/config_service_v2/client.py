@@ -27,7 +27,14 @@ from google.cloud.logging_v2 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
+from google.cloud.logging_v2._compat import (
+    get_universe_domain,
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    should_use_client_cert,
+    read_environment_variables,
+    _observability,
+)
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -46,13 +53,6 @@ try:
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
-
-# Optional: OpenTelemetry tracing capabilities for grpc channel injection
-# Note: _observability was added in google-api-core 2.36.0+; guard for older versions
-try:
-    from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
-    _observability = None  # type: ignore[assignment]
 
 _LOGGER = std_logging.getLogger(__name__)
 

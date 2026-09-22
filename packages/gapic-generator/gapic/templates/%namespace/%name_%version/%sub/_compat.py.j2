@@ -5,12 +5,12 @@
 """A compatibility module for older versions of google-api-core."""
 {% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17813):
-Clean up this file/functions when the minimum supported version of 
+Clean up this file/functions when the minimum supported version of
 google-api-core has the functions in `_compat.py.j2`. #}
-{# TODO(https://github.com/googleapis/google-cloud-python/issues/17884): 
-Add conditional logic to check if static code exists in google-api-core and use it from there, 
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17884):
+Add conditional logic to check if static code exists in google-api-core and use it from there,
 falling back to the local implementation if not present. #}
-{# TODO(https://github.com/googleapis/google-cloud-python/issues/17883): 
+{# TODO(https://github.com/googleapis/google-cloud-python/issues/17883):
 Backfill compatibility functions being removed from the client layer. #}
 
 import os
@@ -34,9 +34,17 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
 try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`
-    # is different than that of the fallback implementation below. This will be removed once 
+    # is different than that of the fallback implementation below. This will be removed once
     # we bump the minimum supported version of google-auth.
     from google.auth.transport.mtls import should_use_client_cert  # type: ignore
 except ImportError:  # pragma: NO COVER

@@ -6825,6 +6825,50 @@ def test_cloud_redis_base_transport_wrap_method():
                 assert "kind" not in mock_wrap.call_args.kwargs
 
 
+def test_cloud_redis_base_transport_wrap_async_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.redis_v1.services.cloud_redis.transports.CloudRedisTransport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.CloudRedisTransport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc_asyncio"
+
+            # Test modern google-api-core with tracing support
+            with mock.patch(
+                "google.cloud.redis_v1.services.cloud_redis.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
+
+            # Test older google-api-core without tracing support
+            with mock.patch(
+                "google.cloud.redis_v1.services.cloud_redis.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test for default/empty kind on base transport
+            with mock.patch(
+                "google.cloud.redis_v1.services.cloud_redis.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+
 def test_cloud_redis_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, 'default', autospec=True) as adc:

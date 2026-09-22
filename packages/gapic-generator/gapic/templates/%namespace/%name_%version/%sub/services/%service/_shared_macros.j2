@@ -377,26 +377,6 @@ def _prep_wrapped_messages(self, client_info):
     }
 {% endmacro %}
 
-{# TODO: This helper logic to check whether `kind` needs to be configured in wrap_method
-can be removed once we require the correct version of the google-api-core dependency to
-avoid having a gRPC code path in an async REST call.
-See related issue: https://github.com/googleapis/python-api-core/issues/661.
-In the meantime, if an older version of the dependency is installed (which has a wrap_method with
-no kind parameter), then an async gRPC call will work correctly and async REST transport
-will not be available as a transport.
-See related issue: https://github.com/googleapis/gapic-generator-python/issues/2119. #}
-{% macro wrap_async_method_macro() %}
-def _wrap_method(self, func, *args, **kwargs):
-    if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:  # pragma: NO COVER
-        kwargs["client_options"] = getattr(self, "_client_options", None)  # pragma: NO COVER
-        kwargs["kind"] = self.kind  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
-    # The fallback below strips tracing-specific arguments when an older version
-    # of google-api-core is installed.
-    for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-        kwargs.pop(k, None)  # pragma: NO COVER
-    return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
-{% endmacro %}
 
 {# `create_interceptor_class` generates an Interceptor class for
  # synchronous and asynchronous rest transports
