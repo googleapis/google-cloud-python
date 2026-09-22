@@ -15,6 +15,7 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
+import contextlib
 import os
 import json
 
@@ -33,6 +34,19 @@ try:
     from google.api_core import _observability  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
     _observability = None  # type: ignore[assignment]
+
+if _observability is not None and hasattr(_observability, "trace_http_request"):
+    trace_http_request = _observability.trace_http_request
+else:  # pragma: NO COVER
+    @contextlib.contextmanager
+    def trace_http_request(*args: Any, **kwargs: Any):  # pragma: NO COVER
+        yield None
+
+if _observability is not None and hasattr(_observability, "record_http_response"):
+    record_http_response = _observability.record_http_response
+else:  # pragma: NO COVER
+    def record_http_response(span: Any, response: Any) -> None:  # pragma: NO COVER
+        pass
 
 try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`

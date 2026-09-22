@@ -483,3 +483,45 @@ def record_http_error(span: Any, exc: BaseException) -> None:
                 span.set_attribute("status.message", msg)
     except Exception:
         pass
+
+
+@contextlib.contextmanager
+def trace_http_request(
+    *,
+    method: str | None = None,
+    url: str | None = None,
+    url_template: str | None = None,
+    headers: dict[str, Any] | None = None,
+    body: Any = None,
+    client_options: ClientOptions | dict[str, Any] | None = None,
+):
+    """Context manager for tracing HTTP wire attempts with automatic error capture.
+
+    Starts an OpenTelemetry span via `start_http_span`, yields the span, and
+    automatically records any exception raised during the attempt using
+    `record_http_error` before re-raising.
+
+    Args:
+        method: HTTP request method (e.g. 'GET', 'POST').
+        url: Full request URL.
+        url_template: Low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        headers: Outgoing HTTP headers dictionary for traceparent injection.
+        body: HTTP request body payload.
+        client_options: Client options used for feature gating and tracer extraction.
+
+    Yields:
+        Optional[Span]: The active OpenTelemetry span or None.
+    """
+    with start_http_span(
+        method=method,
+        url=url,
+        url_template=url_template,
+        headers=headers,
+        body=body,
+        client_options=client_options,
+    ) as span:
+        try:
+            yield span
+        except BaseException as exc:
+            record_http_error(span, exc)
+            raise

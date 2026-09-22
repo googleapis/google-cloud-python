@@ -35,7 +35,7 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request, _observability
+from {{package_path}}._compat import transcode_request, trace_http_request, record_http_response
 
 import google.protobuf
 

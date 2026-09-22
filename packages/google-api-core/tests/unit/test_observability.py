@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import sys
 from unittest import mock
 
@@ -1070,3 +1071,78 @@ def test_record_http_response_no_content_length_and_no_content(monkeypatch):
     response = mock.Mock(spec=["status_code", "headers"], status_code=200, headers={})
     _observability.record_http_response(mock_span, response)
     mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
+
+
+def test_trace_http_request_disabled():
+    """Proves that trace_http_request yields None when tracing is disabled."""
+    headers = {}
+    with _observability.trace_http_request(
+        method="GET",
+        url="https://example.com/api",
+        headers=headers,
+        client_options=ClientOptions(),
+    ) as span:
+        assert span is None
+
+
+def test_trace_http_request_success(monkeypatch):
+    """Proves that trace_http_request yields active span on success."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    headers = {}
+    with _observability.trace_http_request(
+        method="POST",
+        url="https://example.com/api",
+        headers=headers,
+        body=b"payload",
+        url_template="/api",
+    ) as span:
+        assert span is mock_span
+
+
+def test_trace_http_request_records_error_and_reraises(monkeypatch):
+    """Proves that trace_http_request records error on active span when exception occurs."""
+    mock_span = mock.MagicMock()
+
+    @contextlib.contextmanager
+    def mock_start_http_span(**kwargs):
+        yield mock_span
+
+    monkeypatch.setattr(_observability, "start_http_span", mock_start_http_span)
+    record_error_called = []
+
+    def mock_record_http_error(span, exc):
+        record_error_called.append((span, exc))
+
+    monkeypatch.setattr(_observability, "record_http_error", mock_record_http_error)
+
+    err = RuntimeError("network broke")
+    with pytest.raises(RuntimeError, match="network broke"):
+        with _observability.trace_http_request(
+            method="GET",
+            url="https://example.com/fail",
+            headers={},
+        ):
+            raise err
+
+    assert len(record_error_called) == 1
+    assert record_error_called[0] == (mock_span, err)

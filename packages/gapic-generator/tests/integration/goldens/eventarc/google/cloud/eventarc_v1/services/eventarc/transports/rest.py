@@ -24,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.cloud.eventarc_v1._compat import transcode_request, _observability
+from google.cloud.eventarc_v1._compat import transcode_request, trace_http_request, record_http_response
 import google.protobuf
 
 from google.protobuf import json_format
@@ -2182,35 +2182,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateChannelRequest, *,
@@ -2341,35 +2329,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateChannelConnectionRequest, *,
@@ -2500,35 +2476,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateEnrollmentRequest, *,
@@ -2659,35 +2623,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateGoogleApiSourceRequest, *,
@@ -2818,35 +2770,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateMessageBusRequest, *,
@@ -2977,35 +2917,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreatePipelineRequest, *,
@@ -3136,35 +3064,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.CreateTriggerRequest, *,
@@ -3295,34 +3211,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteChannelRequest, *,
@@ -3452,34 +3356,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteChannelConnectionRequest, *,
@@ -3609,34 +3501,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteEnrollmentRequest, *,
@@ -3766,34 +3646,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteGoogleApiSourceRequest, *,
@@ -3923,34 +3791,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteMessageBusRequest, *,
@@ -4080,34 +3936,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeletePipelineRequest, *,
@@ -4237,34 +4081,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.DeleteTriggerRequest, *,
@@ -4394,34 +4226,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetChannelRequest, *,
@@ -4558,34 +4378,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetChannelConnectionRequest, *,
@@ -4721,34 +4529,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetEnrollmentRequest, *,
@@ -4883,34 +4679,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetGoogleApiSourceRequest, *,
@@ -5042,34 +4826,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetGoogleChannelConfigRequest, *,
@@ -5206,34 +4978,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetMessageBusRequest, *,
@@ -5370,34 +5130,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetPipelineRequest, *,
@@ -5528,34 +5276,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetProviderRequest, *,
@@ -5686,34 +5422,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.GetTriggerRequest, *,
@@ -5844,34 +5568,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListChannelConnectionsRequest, *,
@@ -6002,34 +5714,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListChannelsRequest, *,
@@ -6158,34 +5858,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListEnrollmentsRequest, *,
@@ -6314,34 +6002,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListGoogleApiSourcesRequest, *,
@@ -6472,34 +6148,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListMessageBusEnrollmentsRequest, *,
@@ -6631,34 +6295,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListMessageBusesRequest, *,
@@ -6789,34 +6441,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListPipelinesRequest, *,
@@ -6947,34 +6587,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListProvidersRequest, *,
@@ -7103,34 +6731,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.ListTriggersRequest, *,
@@ -7259,35 +6875,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateChannelRequest, *,
@@ -7418,35 +7022,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateEnrollmentRequest, *,
@@ -7577,35 +7169,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateGoogleApiSourceRequest, *,
@@ -7736,35 +7316,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateGoogleChannelConfigRequest, *,
@@ -7903,35 +7471,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateMessageBusRequest, *,
@@ -8062,35 +7618,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdatePipelineRequest, *,
@@ -8221,35 +7765,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
                 request: eventarc.UpdateTriggerRequest, *,
@@ -8696,34 +8228,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: locations_pb2.GetLocationRequest, *,
@@ -8851,34 +8371,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: locations_pb2.ListLocationsRequest, *,
@@ -9006,34 +8514,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.GetIamPolicyRequest, *,
@@ -9161,35 +8657,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.SetIamPolicyRequest, *,
@@ -9318,35 +8802,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.TestIamPermissionsRequest, *,
@@ -9475,35 +8947,23 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                        data=body,
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: operations_pb2.CancelOperationRequest, *,
@@ -9606,34 +9066,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: operations_pb2.DeleteOperationRequest, *,
@@ -9735,34 +9183,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
@@ -9890,34 +9326,22 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             headers['Content-Type'] = 'application/json'
             url = "{host}{uri}".format(host=host, uri=uri)
 
-            if _observability is not None and hasattr(_observability, "start_http_span"):  # pragma: NO COVER
-                span_context = _observability.start_http_span(  # pragma: NO COVER
-                    client_options=client_options,  # pragma: NO COVER
-                    method=method,  # pragma: NO COVER
-                    url=url,  # pragma: NO COVER
-                    url_template=uri,  # pragma: NO COVER
-                    headers=headers,  # pragma: NO COVER
-                    body=body,  # pragma: NO COVER
-                )  # pragma: NO COVER
-            else:  # pragma: NO COVER
-                span_context = contextlib.nullcontext()  # pragma: NO COVER
-            with span_context as span:
-                try:
-                    response = getattr(session, method)(
-                        url,
-                        timeout=timeout,
-                        headers=headers,
-                        params=rest_helpers.flatten_query_params(query_params, strict=True),
-                    )
-                    if _observability is not None and hasattr(_observability, "record_http_response"):  # pragma: NO COVER
-                        _observability.record_http_response(span, response)  # pragma: NO COVER
-                    return response
-                # Transport network exceptions during dispatch record error span and re-raise.
-                # Excluded from coverage because unit test sessions use mocks that do not raise raw socket errors.
-                except (Exception, BaseException) as exc:  # pragma: NO COVER
-                    if _observability is not None and hasattr(_observability, "record_http_error"):  # pragma: NO COVER
-                        _observability.record_http_error(span, exc)  # pragma: NO COVER
-                    raise  # pragma: NO COVER
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
+                headers=headers,
+                body=body,
+            ) as span:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+                record_http_response(span, response)
+                return response
 
         def __call__(self,
             request: operations_pb2.ListOperationsRequest, *,

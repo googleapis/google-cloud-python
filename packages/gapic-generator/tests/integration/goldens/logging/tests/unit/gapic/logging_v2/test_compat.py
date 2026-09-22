@@ -24,7 +24,16 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.logging_v2._compat import transcode_request
-from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables, _observability
+from google.cloud.logging_v2._compat import (
+    get_universe_domain,
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    should_use_client_cert,
+    read_environment_variables,
+    _observability,
+    trace_http_request,
+    record_http_response,
+)
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -432,3 +441,14 @@ def test_observability_compat():
         assert _observability is core_observability
     except ImportError:  # pragma: NO COVER
         assert _observability is None  # pragma: NO COVER
+
+
+def test_trace_http_request_compat():
+    # trace_http_request is exposed from _compat and callable as context manager
+    with trace_http_request(method="GET", url="https://example.com") as span:
+        pass
+
+
+def test_record_http_response_compat():
+    # record_http_response is exposed from _compat and callable with dummy args
+    record_http_response(None, None)
