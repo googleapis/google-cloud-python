@@ -103,9 +103,12 @@ class TestAgentIdentityUtils:
         mock_load_cert.assert_called_once_with(b"cert_bytes")
         assert result == mock.sentinel.cert
 
-    def test_parse_certificate_empty_bytes_raises_value_error(self):
-        with pytest.raises(ValueError):
-            _agent_identity_utils.parse_certificate(b"")
+    @pytest.mark.parametrize("invalid_input", [b"", None])
+    def test_parse_certificate_empty_or_none_raises_value_error(self, invalid_input):
+        with pytest.raises(
+            ValueError, match="Certificate bytes cannot be empty or None"
+        ):
+            _agent_identity_utils.parse_certificate(invalid_input)
 
     @pytest.mark.parametrize(
         "second_cert_block",
@@ -118,12 +121,15 @@ class TestAgentIdentityUtils:
             b"-----BEGIN CERTIFICATE-----\n!!!not_base64!!!\n-----END CERTIFICATE-----\n",
             # Non-UTF-8 bytes
             b"-----BEGIN CERTIFICATE-----\n\xff\xfe\xfd\n-----END CERTIFICATE-----\n",
+            # Truncated block missing END CERTIFICATE
+            b"-----BEGIN CERTIFICATE-----\nMIIB\n",
+            # Truncated block missing BEGIN CERTIFICATE
+            b"MIIB\n-----END CERTIFICATE-----\n",
         ],
     )
     def test_parse_certificate_full_chain_rejects_malformed_intermediate(
-        self, second_cert_block, monkeypatch
+        self, second_cert_block
     ):
-        monkeypatch.delattr(x509, "load_pem_x509_certificates", raising=False)
         chain_bytes = NON_AGENT_IDENTITY_CERT_BYTES + second_cert_block
         with pytest.raises(ValueError):
             _agent_identity_utils.parse_certificate(chain_bytes)
@@ -317,8 +323,8 @@ class TestAgentIdentityUtils:
             )
             assert not _agent_identity_utils._is_bound_token_opted_out()
 
-        # Explicit opt-out via primary -> opted out
-        for val in ("false", "FALSE"):
+        # Explicit opt-out via primary (including surrounding whitespace) -> opted out
+        for val in ("false", "FALSE", " false ", " FALSE\n"):
             monkeypatch.setenv(
                 environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
                 val,
@@ -346,6 +352,18 @@ class TestAgentIdentityUtils:
             "false",
         )
         assert not _agent_identity_utils._is_bound_token_opted_out()
+
+        # Empty or whitespace-only string on primary falls back to secondary
+        for empty_val in ("", "   "):
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+                empty_val,
+            )
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+                " false ",
+            )
+            assert _agent_identity_utils._is_bound_token_opted_out()
 
         # Fallback when primary is unset
         monkeypatch.delenv(
@@ -375,11 +393,13 @@ class TestAgentIdentityUtils:
         assert _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
 
         # Agent cert, opted out
+        mock_is_agent.reset_mock()
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
             "false",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        mock_is_agent.assert_not_called()
 
         # Non-agent cert, opted in
         mock_is_agent.return_value = False
@@ -388,6 +408,7 @@ class TestAgentIdentityUtils:
             "true",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        mock_is_agent.assert_called_once_with(mock.sentinel.cert)
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
     def test_should_request_bound_token_explicit_use_client_cert_false(
@@ -399,6 +420,7 @@ class TestAgentIdentityUtils:
             "false",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        mock_is_agent.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
     def test_should_request_bound_token_explicit_use_client_cert_invalid(
@@ -410,6 +432,7 @@ class TestAgentIdentityUtils:
             "foo",
         )
         assert not _agent_identity_utils.should_request_bound_token(mock.sentinel.cert)
+        mock_is_agent.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils._is_agent_identity_certificate")
     def test_should_request_bound_token_auto_enablement(self, mock_is_agent):
@@ -761,7 +784,7 @@ class TestAgentIdentityUtils:
         )
         combined_bundle = (
             non_utf8_bag_attrs
-            + NON_AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n")
+            + AGENT_IDENTITY_CERT_BYTES.rstrip(b"\n")
             + b"   \n"
             + private_key_pem
             + NON_AGENT_IDENTITY_CERT_BYTES
@@ -775,8 +798,9 @@ class TestAgentIdentityUtils:
             cert_bytes,
         ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
 
-        expected_certs = NON_AGENT_IDENTITY_CERT_BYTES + NON_AGENT_IDENTITY_CERT_BYTES
+        expected_certs = AGENT_IDENTITY_CERT_BYTES + NON_AGENT_IDENTITY_CERT_BYTES
         assert isinstance(cert, x509.Certificate)
+        assert _agent_identity_utils._is_agent_identity_certificate(cert)
         assert cert_bytes == expected_certs
         assert b"PRIVATE KEY" not in cert_bytes
         assert cert_bytes.decode("utf-8") == expected_certs.decode("utf-8")
@@ -851,15 +875,19 @@ class TestAgentIdentityUtils:
         assert cert is None
         assert cert_bytes is None
 
-    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
-    def test_get_agent_identity_certificate_and_bytes_corrupt_intermediate_warns(
-        self, mock_get_path, tmpdir
-    ):
-        corrupt_intermediate = (
+    @pytest.mark.parametrize(
+        "corrupt_intermediate",
+        [
             b"-----BEGIN CERTIFICATE-----\n"
             + base64.b64encode(b"invalid_asn1_der_intermediate")
-            + b"\n-----END CERTIFICATE-----\n"
-        )
+            + b"\n-----END CERTIFICATE-----\n",
+            b"-----BEGIN CERTIFICATE-----\ntruncated_without_end_marker\n",
+        ],
+    )
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_corrupt_intermediate_warns(
+        self, mock_get_path, corrupt_intermediate, tmpdir
+    ):
         cert_file = tmpdir.join("chain_with_corrupt_intermediate.pem")
         cert_file.write_binary(AGENT_IDENTITY_CERT_BYTES + corrupt_intermediate)
         mock_get_path.return_value = str(cert_file)
@@ -1007,3 +1035,20 @@ class TestAgentIdentityUtilsNoCryptography:
     def test_calculate_certificate_fingerprint_raises_import_error(self):
         with pytest.raises(ImportError, match="The cryptography library is required"):
             _agent_identity_utils.calculate_certificate_fingerprint(mock.sentinel.cert)
+
+    @mock.patch("google.auth._agent_identity_utils.get_agent_identity_certificate_path")
+    def test_get_agent_identity_certificate_and_bytes_warns_without_cryptography(
+        self, mock_get_path, tmpdir
+    ):
+        cert_file = tmpdir.join("cert.pem")
+        cert_file.write_binary(AGENT_IDENTITY_CERT_BYTES)
+        mock_get_path.return_value = str(cert_file)
+
+        with pytest.warns(UserWarning, match="The cryptography library is required"):
+            (
+                cert,
+                cert_bytes,
+            ) = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
+
+        assert cert is None
+        assert cert_bytes is None

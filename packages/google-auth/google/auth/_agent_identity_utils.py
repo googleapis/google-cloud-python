@@ -230,18 +230,16 @@ def _parse_cert_path_from_config(cert_config_path):
 
 def _is_bound_token_opted_out():
     """Returns True only if bound tokens are explicitly disabled via env vars."""
-    val = os.environ.get(environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN)
-    if val is not None:
-        return val.lower() == "false"
-
-    # Fall back to the deprecated env var for backward compatibility
-    return (
-        os.environ.get(
+    val = os.environ.get(
+        environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN, ""
+    ).strip()
+    if not val:
+        # Fall back to the deprecated env var for backward compatibility
+        val = os.environ.get(
             environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
             "true",
-        ).lower()
-        == "false"
-    )
+        ).strip()
+    return val.lower() == "false"
 
 
 def get_agent_identity_certificate_and_bytes():
@@ -291,8 +289,8 @@ def get_agent_identity_certificate_and_bytes():
 
     cert_bytes = b"\n".join(block.strip() for block in cert_blocks) + b"\n"
     try:
-        return parse_certificate(cert_bytes), cert_bytes
-    except ValueError as e:
+        return parse_certificate(raw_bytes), cert_bytes
+    except (ValueError, ImportError) as e:
         warnings.warn(
             f"Failed to parse agent identity certificate at {cert_path}: {e}. "
             "Token binding protection cannot be enabled. Falling back to unbound tokens."
@@ -301,7 +299,7 @@ def get_agent_identity_certificate_and_bytes():
 
 
 def parse_certificate(cert_bytes):
-    """Validates a PEM-encoded certificate chain and returns the leaf certificate.
+    """Parses a PEM-encoded certificate or certificate chain and returns the leaf certificate.
 
     Args:
         cert_bytes (bytes): The PEM-encoded certificate bytes.
@@ -314,13 +312,21 @@ def parse_certificate(cert_bytes):
             is malformed.
         ImportError: If the cryptography library is not installed.
     """
+    if not cert_bytes:
+        raise ValueError("Certificate bytes cannot be empty or None.")
+
+    from google.auth.transport import _mtls_helper
+
     try:
         from cryptography import x509
-        from google.auth.transport import _mtls_helper
 
         cert_blocks = _mtls_helper._CERT_REGEX.findall(cert_bytes)
         if not cert_blocks:
             return x509.load_pem_x509_certificate(cert_bytes)
+        if len(cert_blocks) != cert_bytes.count(b"-----BEGIN CERTIFICATE-----") or len(
+            cert_blocks
+        ) != cert_bytes.count(b"-----END CERTIFICATE-----"):
+            raise ValueError("Malformed or truncated PEM certificate chain.")
         certs = [x509.load_pem_x509_certificate(block) for block in cert_blocks]
         return certs[0]
     except ImportError as e:
@@ -404,8 +410,7 @@ def should_request_bound_token(cert):
     Returns:
         bool: True if a bound token should be requested, False otherwise.
     """
-    is_agent_cert = _is_agent_identity_certificate(cert)
-    if not is_agent_cert or _is_bound_token_opted_out():
+    if _is_bound_token_opted_out():
         return False
 
     # Respect explicit opt-out of mTLS / client certs
@@ -415,7 +420,7 @@ def should_request_bound_token(cert):
     if env_override is False:
         return False
 
-    return True
+    return _is_agent_identity_certificate(cert)
 
 
 def get_cached_cert_fingerprint(cached_cert):

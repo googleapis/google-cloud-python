@@ -846,8 +846,9 @@ def test_get_service_account_token_no_cert(mock_get_cert_and_bytes):
 
     request.assert_called_once()
     _, kwargs = request.call_args
-    assert kwargs.get("method", "GET") == "GET"
+    assert kwargs["method"] == "GET"
     assert kwargs.get("body") is None
+    assert "Content-Type" not in kwargs["headers"]
 
 
 @mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
@@ -867,8 +868,9 @@ def test_get_service_account_token_should_not_bind(
 
     request.assert_called_once()
     _, kwargs = request.call_args
-    assert kwargs.get("method", "GET") == "GET"
+    assert kwargs["method"] == "GET"
     assert kwargs.get("body") is None
+    assert "Content-Type" not in kwargs["headers"]
 
 
 def test_get_service_account_info():

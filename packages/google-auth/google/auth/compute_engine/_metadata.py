@@ -480,7 +480,7 @@ def get_service_account_info(request, service_account="default"):
     return get(request, path, params={"recursive": "true"})
 
 
-def _get_token_request_params(metrics_header_value):
+def _build_token_request_options(metrics_header_value):
     """Returns (method, body, headers) for a metadata server token request.
 
     Defaults to a standard GET request with the x-goog-api-client metrics header.
@@ -530,7 +530,7 @@ def get_service_account_token(request, service_account="default", scopes=None):
             scopes = ",".join(scopes)
         params["scopes"] = scopes
 
-    method, body, headers = _get_token_request_params(
+    method, body, headers = _build_token_request_options(
         metrics.token_request_access_token_mds()
     )
 

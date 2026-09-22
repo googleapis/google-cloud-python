@@ -528,7 +528,7 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            method, body, headers = _metadata._get_token_request_params(
+            method, body, headers = _metadata._build_token_request_options(
                 metrics.token_request_id_token_mds()
             )
 

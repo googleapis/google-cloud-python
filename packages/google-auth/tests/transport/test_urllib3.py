@@ -702,7 +702,7 @@ class TestAuthorizedHttp(object):
             "https://my-service-123456.us-central1.mtls.run.app/v1",
         ],
     )
-    def test_cert_rotation_triggered_on_psc_url(self, mtls_url):
+    def test_cert_rotation_triggered_on_mtls_url(self, mtls_url):
         """
         Tests that mTLS cert rotation IS triggered on Private Service Connect
         (PSC) and Cloud Run mTLS endpoints when an UNAUTHORIZED (401) response

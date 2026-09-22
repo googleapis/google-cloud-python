@@ -806,7 +806,7 @@ class TestReadCertAndKeyFile(object):
     def test_combined_bundle_with_interleaved_key(self, tmp_path):
         bundle_file = tmp_path / "credentialbundle.pem"
         bundle_file.write_bytes(
-            pytest.public_cert_bytes
+            pytest.public_cert_bytes.rstrip(b"\n")
             + pytest.private_key_bytes
             + pytest.public_cert_bytes
         )
@@ -1266,6 +1266,21 @@ class TestMtlsHelper:
         assert current_fingerprint == "current_fingerprint"
         mock_call_client_cert_callback.assert_called_once()
         mock_agent_identity_utils.get_cached_cert_fingerprint.assert_not_called()
+
+    @mock.patch("google.auth.transport._mtls_helper.call_client_cert_callback")
+    @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
+    def test_check_parameters_for_unauthorized_response_no_call_cert(
+        self, mock_agent_identity_utils, mock_call_client_cert_callback
+    ):
+        mock_call_client_cert_callback.return_value = (None, None)
+
+        result = _mtls_helper.check_parameters_for_unauthorized_response(
+            cached_cert=CERT_MOCK_VAL
+        )
+
+        assert result == (None, None, None, None)
+        mock_call_client_cert_callback.assert_called_once()
+        mock_agent_identity_utils.parse_certificate.assert_not_called()
 
     @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
     def test_call_client_cert_callback(self, mock_get_client_ssl_credentials):

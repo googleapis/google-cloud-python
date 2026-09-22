@@ -529,6 +529,13 @@ def _read_cert_and_key_files(cert_path, key_path):
     return cert_data, key_data
 
 
+def _join_cert_chain(cert_match):
+    return b"".join(
+        m if m.endswith(b"\n") or i == len(cert_match) - 1 else m + b"\n"
+        for i, m in enumerate(cert_match)
+    )
+
+
 def _read_cert_file(cert_path):
     with open(cert_path, "rb") as cert_file:
         cert_data = cert_file.read()
@@ -540,10 +547,7 @@ def _read_cert_file(cert_path):
                 cert_path
             )
         )
-    return b"".join(
-        m if m.endswith(b"\n") or i == len(cert_match) - 1 else m + b"\n"
-        for i, m in enumerate(cert_match)
-    )
+    return _join_cert_chain(cert_match)
 
 
 def _read_key_file(key_path):
@@ -596,10 +600,7 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
     cert_match = re.findall(_CERT_REGEX, stdout)
     if not cert_match:
         raise exceptions.ClientCertError("Client SSL certificate is missing or invalid")
-    cert_chain = b"".join(
-        m if m.endswith(b"\n") or i == len(cert_match) - 1 else m + b"\n"
-        for i, m in enumerate(cert_match)
-    )
+    cert_chain = _join_cert_chain(cert_match)
     key_match = re.findall(_KEY_REGEX, stdout)
     if len(key_match) != 1:
         raise exceptions.ClientCertError("Client SSL key is missing or invalid")
@@ -829,6 +830,8 @@ def check_parameters_for_unauthorized_response(cached_cert):
         str: The base64-encoded SHA256 current cert fingerprint.
     """
     call_cert_bytes, call_key_bytes = call_client_cert_callback()
+    if not call_cert_bytes:
+        return None, None, None, None
     cert_obj = _agent_identity_utils.parse_certificate(call_cert_bytes)
     current_cert_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
         cert_obj

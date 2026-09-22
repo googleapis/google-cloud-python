@@ -476,7 +476,7 @@ class TestCredentials(object):
         # Subsequent check calls should return False early
         assert creds._is_regional_access_boundary_lookup_required() is False
 
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -524,7 +524,7 @@ class TestCredentials(object):
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=False,
     )
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_with_agent_identity_opt_out_or_not_agent(
         self,
         mock_metadata_get,
@@ -549,13 +549,14 @@ class TestCredentials(object):
         mock_get_cert_and_bytes.assert_called_once()
         mock_should_request.assert_called_once_with(mock_cert)
         kwargs = mock_metadata_get.call_args[1]
-        assert kwargs.get("method", "GET") == "GET"
-        assert kwargs.get("body") is None
+        assert kwargs["method"] == "GET"
+        assert kwargs["body"] is None
+        assert "Content-Type" not in kwargs["headers"]
 
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_without_agent_identity_certificate(
         self,
         mock_metadata_get,
@@ -573,8 +574,9 @@ class TestCredentials(object):
         assert self.credentials.token == "token"
         mock_get_cert_and_bytes.assert_called_once()
         kwargs = mock_metadata_get.call_args[1]
-        assert kwargs.get("method", "GET") == "GET"
-        assert kwargs.get("body") is None
+        assert kwargs["method"] == "GET"
+        assert kwargs["body"] is None
+        assert "Content-Type" not in kwargs["headers"]
 
     def test_set_blocking_regional_access_boundary_lookup(self):
         creds = self.credentials
@@ -889,7 +891,7 @@ class TestIDTokenCredentials(object):
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=True,
     )
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_with_agent_identity(
         self,
         mock_metadata_get,
@@ -941,7 +943,7 @@ class TestIDTokenCredentials(object):
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=False,
     )
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_with_agent_identity_opt_out_or_not_agent(
         self,
         mock_metadata_get,
@@ -978,6 +980,7 @@ class TestIDTokenCredentials(object):
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["method"] == "GET"
         assert kwargs["body"] is None
+        assert "Content-Type" not in kwargs["headers"]
         assert (
             kwargs["headers"][metrics.API_CLIENT_HEADER]
             == metrics.token_request_id_token_mds()
@@ -986,7 +989,7 @@ class TestIDTokenCredentials(object):
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
-    @mock.patch("google.auth.compute_engine._metadata.get")
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_without_agent_identity_certificate(
         self,
         mock_metadata_get,
@@ -1019,6 +1022,7 @@ class TestIDTokenCredentials(object):
         kwargs = mock_metadata_get.call_args[1]
         assert kwargs["method"] == "GET"
         assert kwargs["body"] is None
+        assert "Content-Type" not in kwargs["headers"]
         assert (
             kwargs["headers"][metrics.API_CLIENT_HEADER]
             == metrics.token_request_id_token_mds()
