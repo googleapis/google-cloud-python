@@ -34,8 +34,9 @@ class _ProtocolState(object):
         """Initializes the protocol state machine.
 
         Args:
-            upload_url: The initial endpoint URL for starting the upload, or
-                the established upload session URL when resuming.
+            upload_url: The initial service endpoint URL for starting a new
+                upload (stored statically as ``initial_url``), or an existing
+                session URL when resuming.
             chunk_size: Desired chunk size in bytes.
         """
         self._initial_url = upload_url or ""
@@ -49,12 +50,25 @@ class _ProtocolState(object):
 
     @property
     def initial_url(self) -> str:
-        """The initial endpoint URL for starting the upload."""
+        """str: The static service endpoint URL used to initiate a new upload session.
+
+        Unlike ``upload_url``, this value remains unchanged throughout the
+        lifecycle of the state machine and is used by ``build_start_request()``
+        as the target endpoint for the ``start`` command.
+        """
         return self._initial_url
 
     @property
     def upload_url(self) -> Optional[str]:
-        """The established upload session URL, or None if not established."""
+        """Optional[str]: The established upload session URL, or ``None`` if not established.
+
+        Unlike ``initial_url`` (which remains static as the start endpoint),
+        ``upload_url`` is populated with the unique session URL returned by the
+        server in the ``x-goog-upload-url`` header once the upload is initiated
+        (or updated via ``set_session_url()`` when resuming). It is used for
+        subsequent chunk transfer, query, and cancel requests, and can be saved
+        to resume an interrupted upload later.
+        """
         return self._upload_url
 
     @property

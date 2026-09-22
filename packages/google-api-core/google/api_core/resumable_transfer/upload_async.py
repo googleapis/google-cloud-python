@@ -224,7 +224,13 @@ class AsyncResumableUploadSession:
 
     @property
     def upload_url(self) -> Optional[str]:
-        """Optional[str]: The unique upload URL for this session."""
+        """Optional[str]: The established upload session URL for this session.
+
+        Once an upload is initiated, this is populated with the unique session
+        URL returned by the server in the ``x-goog-upload-url`` header (or updated
+        to the session URL passed to ``resume()``), and can be saved to resume an
+        interrupted upload later.
+        """
         return self._state.upload_url
 
     @property
