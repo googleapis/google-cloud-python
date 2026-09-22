@@ -664,6 +664,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -809,6 +811,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -955,6 +959,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1065,6 +1071,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1211,6 +1219,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1356,6 +1366,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1502,6 +1514,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1705,6 +1719,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1848,6 +1864,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1991,6 +2009,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2110,6 +2130,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2227,6 +2249,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2370,6 +2394,8 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']

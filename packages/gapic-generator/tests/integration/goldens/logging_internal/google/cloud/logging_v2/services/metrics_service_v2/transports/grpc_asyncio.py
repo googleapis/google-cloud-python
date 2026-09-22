@@ -597,6 +597,9 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         }
 
     def _wrap_method(self, func, *args, **kwargs):
+        """Overrides the base transport's synchronous _wrap_method to proxy
+        to _wrap_async_method so that RPC calls and retries are wrapped as
+        asynchronous callables."""
         return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):

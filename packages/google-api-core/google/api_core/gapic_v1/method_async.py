@@ -70,7 +70,7 @@ class _AsyncGapicCallable(object):
         client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
             Client information used for metadata headers. Defaults to None.
         kind (str): The transport kind for the RPC method. Defaults to "grpc_asyncio".
-            Allowed values for OpenTelemetry method tracing are "grpc", "grpc_asyncio", "rest", and "rest_asyncio".
+            Allowed values for OpenTelemetry method tracing are "grpc_asyncio" and "rest_asyncio".
     """
 
     def __init__(
@@ -106,7 +106,7 @@ class _AsyncGapicCallable(object):
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in ("grpc", "grpc_asyncio", "rest", "rest_asyncio")
+            and kind in ("grpc_asyncio", "rest_asyncio")
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):

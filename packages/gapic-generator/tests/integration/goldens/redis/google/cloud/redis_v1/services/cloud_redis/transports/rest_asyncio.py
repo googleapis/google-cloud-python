@@ -939,6 +939,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         }
 
     def _wrap_method(self, func, *args, **kwargs):
+        """Overrides the base transport's synchronous _wrap_method to proxy
+        to _wrap_async_method so that RPC calls and retries are wrapped as
+        asynchronous callables."""
         return self._wrap_async_method(func, *args, **kwargs)
 
     class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
@@ -955,6 +958,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1109,6 +1114,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1261,6 +1268,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1415,6 +1424,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1569,6 +1580,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1718,6 +1731,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -1867,6 +1882,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2021,6 +2038,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2172,6 +2191,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2326,6 +2347,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2480,6 +2503,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2760,6 +2785,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -2907,6 +2934,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -3054,6 +3083,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -3175,6 +3206,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -3296,6 +3329,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -3443,6 +3478,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
@@ -3590,6 +3627,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             transcoded_request,
             body=None,
             client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']

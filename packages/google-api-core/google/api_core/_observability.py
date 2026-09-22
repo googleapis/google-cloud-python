@@ -43,8 +43,9 @@ def is_otel_capabilities_enabled(
     """Checks if OTel capabilities are enabled and installed.
 
     Args:
-        client_options: The client options object or dictionary.
-        env_var: The environment variable to check for enablement.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+            object or dictionary.
+        env_var (str): The environment variable to check for enablement.
 
     Returns:
         bool: True if enabled and installed, False otherwise.
@@ -72,7 +73,8 @@ def _extract_endpoint_attributes(
     """Extracts server.address, server.port (if non-default), and url.domain from client options if present.
 
     Args:
-        client_options: The client options object or dictionary.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+            object or dictionary.
 
     Returns:
         dict[str, Any]: A dictionary containing url.domain and, if an api_endpoint is configured,
@@ -121,7 +123,8 @@ def _make_grpc_client_request_hook(
     """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes.
 
     Args:
-        endpoint_attrs: Optional static endpoint attributes to attach to every span.
+        endpoint_attrs (Optional[dict[str, Any]]): Optional static endpoint attributes to attach
+            to every span.
 
     Returns:
         Callable[[Any, Any], None]: The request hook callback.
@@ -183,8 +186,8 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
         modern ``rpc.response.status_code`` in future releases, this hook can be retired.
 
     Args:
-        span: The OpenTelemetry span.
-        response: The gRPC response object or details.
+        span (Optional[Any]): The OpenTelemetry span.
+        response (Any): The gRPC response object or details.
     """
     if span is None or not getattr(span, "is_recording", lambda: False)():
         return
@@ -207,7 +210,8 @@ def _get_tracer_provider(
     """Extracts the OpenTelemetry tracer provider from client options if present.
 
     Args:
-        client_options: The client options object or dictionary.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+            object or dictionary.
 
     Returns:
         opentelemetry.trace.TracerProvider | None: The tracer provider if present,
@@ -226,8 +230,8 @@ def get_otel_interceptor(
     """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
 
     Args:
-        client_options: The client options object or dictionary used for feature gating
-            and extracting the tracer provider.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+            object or dictionary used for feature gating and extracting the tracer provider.
 
     Returns:
         Callable[[grpc.Channel], grpc.Channel] | None: An interceptor callable if OpenTelemetry
@@ -260,8 +264,8 @@ def get_otel_async_interceptor(
     """Returns async gRPC client interceptors for OpenTelemetry tracing.
 
     Args:
-        client_options: The client options object or dictionary used for feature gating
-            and extracting the tracer provider.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): The client options
+            object or dictionary used for feature gating and extracting the tracer provider.
 
     Returns:
         Sequence[grpc.aio.ClientInterceptor] | None: Instantiated OpenTelemetry async
@@ -288,10 +292,10 @@ def get_otel_async_interceptor(
 #    Used when callers already possess an HTTP request instance (such as
 #    requests.PreparedRequest or urllib.request.Request) with `.method`, `.url`, etc.
 # 2. Unpacked Keyword Arguments: `start_http_span(method=..., url=..., headers=..., body=...)`
-#    Used by generated GAPIC REST transports (_shared_macros.j2). In GAPIC templates,
-#    requests are assembled from local strings and dictionaries before hitting the session.
-#    Supporting keyword arguments avoids the CPU and memory overhead of instantiating
-#    a throwaway dummy request object on every single RPC execution.
+#    Used by `trace_http_request` and generated GAPIC REST transports (_shared_macros.j2).
+#    In GAPIC templates, requests are assembled from local strings and dictionaries before
+#    hitting the session. Supporting keyword arguments avoids the CPU and memory overhead
+#    of instantiating a throwaway dummy request object on every single RPC execution.
 @contextlib.contextmanager
 def start_http_span(
     request: Any = None,
@@ -314,13 +318,14 @@ def start_http_span(
     yields None.
 
     Args:
-        request: Optional HTTP request object with .method, .url, .headers, and .body.
-        method: HTTP request method (e.g. 'GET', 'POST').
-        url: Full request URL.
-        url_template: Low-cardinality URL path template (e.g. '/v1/{name}:echo').
-        headers: Outgoing HTTP headers dictionary for traceparent injection.
-        body: HTTP request body payload.
-        client_options: Client options used for feature gating and tracer extraction.
+        request (Optional[Any]): Optional HTTP request object with .method, .url, .headers, and .body.
+        method (Optional[str]): HTTP request method (e.g. 'GET', 'POST').
+        url (Optional[str]): Full request URL.
+        url_template (Optional[str]): Low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        headers (Optional[dict[str, Any]]): Outgoing HTTP headers dictionary for traceparent injection.
+        body (Optional[Any]): HTTP request body payload.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): Client options used for
+            feature gating and tracer extraction.
 
     Yields:
         Optional[Span]: The active OpenTelemetry span or None.
@@ -413,8 +418,8 @@ def record_http_response(span: Any, response: Any) -> None:
     """Record HTTP response attributes on the wire span.
 
     Args:
-        span: The active OpenTelemetry span.
-        response: The HTTP response object (e.g. requests.Response).
+        span (Optional[Any]): The active OpenTelemetry span.
+        response (Any): The HTTP response object (e.g. requests.Response).
     """
     if span is None or not hasattr(span, "set_attribute"):
         return
@@ -454,8 +459,8 @@ def record_http_error(span: Any, exc: BaseException) -> None:
     """Record an HTTP error/exception on the wire span.
 
     Args:
-        span: The active OpenTelemetry span.
-        exc: The exception raised during dispatch.
+        span (Optional[Any]): The active OpenTelemetry span.
+        exc (BaseException): The exception raised during dispatch.
     """
     if span is None:
         return
@@ -502,12 +507,13 @@ def trace_http_request(
     `record_http_error` before re-raising.
 
     Args:
-        method: HTTP request method (e.g. 'GET', 'POST').
-        url: Full request URL.
-        url_template: Low-cardinality URL path template (e.g. '/v1/{name}:echo').
-        headers: Outgoing HTTP headers dictionary for traceparent injection.
-        body: HTTP request body payload.
-        client_options: Client options used for feature gating and tracer extraction.
+        method (Optional[str]): HTTP request method (e.g. 'GET', 'POST').
+        url (Optional[str]): Full request URL.
+        url_template (Optional[str]): Low-cardinality URL path template (e.g. '/v1/{name}:echo').
+        headers (Optional[dict[str, Any]]): Outgoing HTTP headers dictionary for traceparent injection.
+        body (Optional[Any]): HTTP request body payload.
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): Client options used for
+            feature gating and tracer extraction.
 
     Yields:
         Optional[Span]: The active OpenTelemetry span or None.

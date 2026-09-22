@@ -320,12 +320,28 @@ def set_event_loop():
             },
             True,
         ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "rest",
+            },
+            True,
+        ),
+        (
+            {
+                "method_name": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+                "kind": "grpc",
+            },
+            True,
+        ),
     ],
     ids=[
         "disabled_by_flag",
         "omitted_method_name",
         "streaming_skipped",
         "unsupported_kind_skipped",
+        "sync_rest_kind_skipped",
+        "sync_grpc_kind_skipped",
     ],
 )
 async def test_wrap_method_async_otel_tracing_skips_span(
@@ -381,16 +397,15 @@ async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("kind", ["rest", "rest_asyncio"])
-async def test_wrap_method_async_otel_tracing_enabled_rest_transports(mock_otel, kind):
-    """Proves that when kind is 'rest' or 'rest_asyncio', a T3 client span is started."""
+async def test_wrap_method_async_otel_tracing_enabled_rest_asyncio(mock_otel):
+    """Proves that when kind is 'rest_asyncio', a T3 client span is started."""
     mock_target = mock.AsyncMock(return_value="rest_success")
 
     wrapped = gapic_v1.method_async.wrap_method(
         mock_target,
         default_timeout=60,
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind=kind,
+        kind="rest_asyncio",
     )
     result = await wrapped()
 

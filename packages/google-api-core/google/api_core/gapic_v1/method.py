@@ -268,7 +268,7 @@ class _GapicCallable(object):
         client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
             Client information used for metadata headers. Defaults to None.
         kind (str): The transport kind for the RPC method. Defaults to "grpc".
-            Allowed values for OpenTelemetry method tracing are "grpc" and "grpc_asyncio".
+            Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
     """
 
     def __init__(
@@ -503,8 +503,7 @@ def wrap_method(
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Streaming methods are currently gated and do not generate Tier 3 spans.
         kind (str): The transport kind for the RPC method. Defaults to "grpc".
-            Non-gRPC transports (e.g. "rest") are currently gated and do not generate
-            Tier 3 method spans.
+            Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,

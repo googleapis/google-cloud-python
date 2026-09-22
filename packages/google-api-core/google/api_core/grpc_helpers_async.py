@@ -347,12 +347,15 @@ def apply_channel_interceptors(
                     if interceptor not in target_list:
                         target_list.append(interceptor)
                     matched = True
+                elif hasattr(target_list, "append"):
+                    target_list.append(interceptor)
+                    matched = True
         if not matched and hasattr(channel, "_unary_unary_interceptors"):
             unary_interceptors = channel._unary_unary_interceptors
-            if (
-                isinstance(unary_interceptors, list)
-                and interceptor not in unary_interceptors
-            ):
+            if isinstance(unary_interceptors, list):
+                if interceptor not in unary_interceptors:
+                    unary_interceptors.append(interceptor)
+            elif hasattr(unary_interceptors, "append"):
                 unary_interceptors.append(interceptor)
 
     return channel
