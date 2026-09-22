@@ -19,8 +19,25 @@ from unittest import mock
 import pytest  # type: ignore
 
 
-def pytest_configure():
+@pytest.fixture(autouse=True)
+def isolate_mtls_configuration(monkeypatch, tmp_path):
+    """Keep workstation certificate configuration out of unit tests."""
+    for name in (
+        "GOOGLE_API_USE_CLIENT_CERTIFICATE",
+        "GOOGLE_API_CERTIFICATE_CONFIG",
+        "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE",
+        "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("CLOUDSDK_CONFIG", str(tmp_path))
+
+
+def pytest_configure(config):
     """Load public certificate and private key."""
+    # IAM chooses its endpoint at import time, before test fixtures run.
+    patch = pytest.MonkeyPatch()
+    patch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+    config.add_cleanup(patch.undo)
     pytest.data_dir = os.path.join(os.path.dirname(__file__), "data")
 
     with open(os.path.join(pytest.data_dir, "privatekey.pem"), "rb") as fh:
