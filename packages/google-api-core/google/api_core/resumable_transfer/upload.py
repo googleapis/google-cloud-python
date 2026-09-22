@@ -928,8 +928,8 @@ class ResumableUploadSession:
 
     def resume(
         self,
-        upload_url: Optional[str] = None,
-        stream: Optional[Union[BinaryIO, bytes, Iterable[bytes]]] = None,
+        upload_url: str,
+        stream: Union[BinaryIO, bytes, Iterable[bytes]],
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
@@ -939,22 +939,26 @@ class ResumableUploadSession:
         """Resumes an existing upload from a saved upload URL.
 
         Args:
-            upload_url: The pre-existing upload session URL.
-            stream: The data payload to resume uploading from.
-            size: Total size of the payload in bytes, if known.
-            chunk_size: Optional chunk size override in bytes.
-            transport: Optional requests session.
-            retry: Optional retry configuration (``StreamingRetry``) for
-                chunk upload requests. Use this to customize exponential backoff
-                timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. A custom ``predicate`` replaces the
-                default transient HTTP status check (HTTP 408, 429, 500, 502, 503,
-                and 504). Transport errors and protocol recovery errors (HTTP 400,
-                412, 416, and ``MissingStatusHeaderError``) always initiate server
-                offset recovery. Terminal errors (``DeadlineExceeded``,
-                ``TransferStalledError``, ``UploadCancelledError``, and
-                ``UnseekableStreamError``) are never retried.
-            timeout: Optional per-attempt timeout ceiling in seconds.
+            upload_url (str): The pre-existing upload session URL.
+            stream (Union[BinaryIO, bytes, Iterable[bytes]]): The data payload
+                to resume uploading from.
+            size (Optional[int]): Total size of the payload in bytes, if known.
+            chunk_size (Optional[int]): Optional chunk size override in bytes.
+            transport (Optional[requests.Session]): Optional requests session.
+            retry (Optional[google.api_core.retry.StreamingRetry]): Optional
+                retry configuration (``StreamingRetry``) for chunk upload
+                requests. Use this to customize exponential backoff timing
+                between chunk retries or to supply a custom ``predicate`` for
+                API-specific transient errors. A custom ``predicate`` replaces
+                the default transient HTTP status check (HTTP 408, 429, 500,
+                502, 503, and 504). Transport errors and protocol recovery
+                errors (HTTP 400, 412, 416, and ``MissingStatusHeaderError``)
+                always initiate server offset recovery. Terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are
+                never retried.
+            timeout (Optional[float]): Optional per-attempt timeout ceiling in
+                seconds.
 
         Returns:
             The final server response payload or deserialized response message.
@@ -977,8 +981,8 @@ class ResumableUploadSession:
 
     def iter_resume(
         self,
-        upload_url: Optional[str] = None,
-        stream: Optional[Union[BinaryIO, bytes, Iterable[bytes]]] = None,
+        upload_url: str,
+        stream: Union[BinaryIO, bytes, Iterable[bytes]],
         size: Optional[int] = None,
         chunk_size: Optional[int] = None,
         transport: Optional[requests.Session] = None,
@@ -988,22 +992,26 @@ class ResumableUploadSession:
         """Streams resumption of an upload, yielding UploadProgress snapshots.
 
         Args:
-            upload_url: The pre-existing upload session URL.
-            stream: The data payload to resume uploading from.
-            size: Total size of the payload in bytes, if known.
-            chunk_size: Optional chunk size override in bytes.
-            transport: Optional requests session.
-            retry: Optional retry configuration (``StreamingRetry``) for
-                chunk upload requests. Use this to customize exponential backoff
-                timing between chunk retries or to supply a custom ``predicate`` for
-                API-specific transient errors. A custom ``predicate`` replaces the
-                default transient HTTP status check (HTTP 408, 429, 500, 502, 503,
-                and 504). Transport errors and protocol recovery errors (HTTP 400,
-                412, 416, and ``MissingStatusHeaderError``) always initiate server
-                offset recovery. Terminal errors (``DeadlineExceeded``,
-                ``TransferStalledError``, ``UploadCancelledError``, and
-                ``UnseekableStreamError``) are never retried.
-            timeout: Optional per-attempt timeout ceiling in seconds.
+            upload_url (str): The pre-existing upload session URL.
+            stream (Union[BinaryIO, bytes, Iterable[bytes]]): The data payload
+                to resume uploading from.
+            size (Optional[int]): Total size of the payload in bytes, if known.
+            chunk_size (Optional[int]): Optional chunk size override in bytes.
+            transport (Optional[requests.Session]): Optional requests session.
+            retry (Optional[google.api_core.retry.StreamingRetry]): Optional
+                retry configuration (``StreamingRetry``) for chunk upload
+                requests. Use this to customize exponential backoff timing
+                between chunk retries or to supply a custom ``predicate`` for
+                API-specific transient errors. A custom ``predicate`` replaces
+                the default transient HTTP status check (HTTP 408, 429, 500,
+                502, 503, and 504). Transport errors and protocol recovery
+                errors (HTTP 400, 412, 416, and ``MissingStatusHeaderError``)
+                always initiate server offset recovery. Terminal errors
+                (``DeadlineExceeded``, ``TransferStalledError``,
+                ``UploadCancelledError``, and ``UnseekableStreamError``) are
+                never retried.
+            timeout (Optional[float]): Optional per-attempt timeout ceiling in
+                seconds.
 
         Yields:
             UploadProgress snapshots for each chunk transmission milestone.

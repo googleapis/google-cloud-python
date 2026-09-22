@@ -516,6 +516,21 @@ async def test_async_resume_success() -> None:
     assert async_transport.requests[1][2]["headers"]["X-Goog-Upload-Offset"] == "5"
 
 
+def test_async_resume_missing_arguments_raises() -> None:
+    """Verifies that resume raises ValueError when upload_url or stream is missing."""
+    session = AsyncResumableUploadSession(transport=DummyAsyncSession())
+    with pytest.raises(ValueError, match="An upload URL must be provided to resume"):
+        session.resume(upload_url="", stream=b"data")
+
+    with pytest.raises(
+        ValueError, match="A data stream or payload must be provided to resume"
+    ):
+        session.resume(
+            upload_url="https://upload.example.com/resumable-async",
+            stream=None,  # type: ignore[arg-type]
+        )
+
+
 @pytest.mark.asyncio
 async def test_async_resume_recovery_unseekable_stream_raises() -> None:
     """Verifies that UnseekableStreamError is raised if server offset cannot be rewound."""
