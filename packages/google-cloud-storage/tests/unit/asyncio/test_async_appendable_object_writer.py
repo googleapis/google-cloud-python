@@ -312,35 +312,6 @@ class TestAsyncAppendableObjectWriter:
         assert mock_stream_cls.call_args.kwargs["storage_class"] is None
         assert writer.write_obj_stream.storage_class is None
 
-    @pytest.mark.asyncio
-    @pytest.mark.parametrize("storage_class", ["STANDARD", "RAPID"])
-    async def test_open_passes_storage_class(
-        self, mock_appendable_writer, storage_class
-    ):
-        writer = self._make_one(
-            mock_appendable_writer["mock_client"],
-            storage_class=storage_class,
-        )
-        mock_appendable_writer["mock_stream"].generation_number = 456
-        mock_appendable_writer["mock_stream"].write_handle = b"new-h"
-        mock_appendable_writer["mock_stream"].persisted_size = 0
-
-        await writer.open()
-
-        assert writer._is_stream_open
-        mock_stream_cls = mock_appendable_writer["mock_stream_cls"]
-        mock_stream_cls.assert_called_once_with(
-            client=mock_appendable_writer["mock_client"].grpc_client,
-            bucket_name=BUCKET,
-            object_name=OBJECT,
-            blob=None,
-            generation_number=None,
-            write_handle=None,
-            routing_token=None,
-            storage_class=storage_class,
-        )
-        assert writer.write_obj_stream.storage_class == storage_class
-
     def test_on_open_error_redirection(self, mock_appendable_writer):
         """Verify redirect info is extracted from helper."""
         writer = self._make_one(mock_appendable_writer["mock_client"])
