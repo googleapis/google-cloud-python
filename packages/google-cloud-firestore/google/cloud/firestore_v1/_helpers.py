@@ -348,7 +348,7 @@ def reference_value_to_document(reference_value, client) -> Any:
 
 
 def decode_value(
-    value, client=None
+    value, client
 ) -> Union[
     None,
     bool,
@@ -407,8 +407,7 @@ def decode_value(
         )
     elif value_type == "array_value":
         return [
-            decode_value(element, client)
-            for element in value_pb.array_value.values
+            decode_value(element, client) for element in value_pb.array_value.values
         ]
     elif value_type == "map_value":
         return decode_dict(value_pb.map_value.fields, client)
@@ -430,7 +429,7 @@ def _decode_bson_dict_recursive(data: Any) -> Any:
 
 def decode_dict(
     value_fields,
-    client=None,
+    client,
 ) -> Union[dict, Vector, _BSONType]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
@@ -446,10 +445,7 @@ def decode_dict(
         Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
-    res = {
-        key: decode_value(value, client)
-        for key, value in value_fields_pb.items()
-    }
+    res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
 
     if res.get("__type__", None) == "__vector__":
         # Vector data type is represented as mapping.
