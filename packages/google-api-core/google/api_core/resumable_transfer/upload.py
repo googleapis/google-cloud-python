@@ -407,14 +407,11 @@ class ResumableUploadSession:
 
         return per_attempt_timeout
 
-    def _update_stall_control(
-        self, data_len: int, t_start: float, t_elapsed: float
-    ) -> None:
+    def _update_stall_control(self, data_len: int, t_elapsed: float) -> None:
         """Updates aggregate transfer rate lag and enforces stall timeout and deadlines.
 
         Args:
             data_len: Length of the transmitted chunk in bytes.
-            t_start: Monotonic timestamp before chunk transmission began.
             t_elapsed: Elapsed duration in seconds for chunk transmission.
 
         Raises:
@@ -430,12 +427,10 @@ class ResumableUploadSession:
         self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
 
         if self._aggregate_lag > 0.0:
+            now = _monotonic_clock()
             if self._stall_timeout_started is None:
-                self._stall_timeout_started = t_start
-            if (
-                _monotonic_clock() - self._stall_timeout_started
-                >= self._config.stall_timeout
-            ):
+                self._stall_timeout_started = now - current_lag
+            if now - self._stall_timeout_started >= self._config.stall_timeout:
                 self._get_deadline_remaining()
                 raise exceptions.TransferStalledError(
                     f"Upload stalled: transfer rate remained below {rate} bytes/s "
@@ -616,13 +611,13 @@ class ResumableUploadSession:
             t_elapsed = _monotonic_clock() - t_start
             self._enrich_exception(exc)
             self._get_deadline_remaining()
-            self._update_stall_control(0, t_start, t_elapsed)
+            self._update_stall_control(0, t_elapsed)
             raise
         except Exception as exc:
             self._enrich_exception(exc)
             raise
 
-        self._update_stall_control(data_len, t_start, t_elapsed)
+        self._update_stall_control(data_len, t_elapsed)
         self._state.process_chunk_response(resp.status_code, resp.headers, data_len)
         self._buffered_chunk = None
         self._notify_progress(

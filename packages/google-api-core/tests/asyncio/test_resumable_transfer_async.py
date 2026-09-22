@@ -830,6 +830,19 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     with pytest.raises(TransferStalledError, match="Upload stalled"):
         await session2.upload(stream=b"0123456789")
 
+    # Verify that a chunk slightly over expected_sec (e.g., 100 bytes with expected_sec=1.0s
+    # taking 1.2s -> current_lag=0.2s) only counts current_lag (0.2s) toward
+    # stall_timeout (1.0s), rather than the full 1.2s chunk duration.
+    clock_vals3 = iter([10.0])
+    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals3))
+    session3 = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+    )
+    session3._update_stall_control(100, 1.2)
+    assert session3._aggregate_lag == pytest.approx(0.2)
+    assert session3._stall_timeout_started == pytest.approx(9.8)
+
 
 @pytest.mark.asyncio
 async def test_async_deadline_exceeded() -> None:

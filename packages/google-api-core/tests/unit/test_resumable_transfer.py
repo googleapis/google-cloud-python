@@ -1117,8 +1117,6 @@ def test_sync_get_retry_start_and_override():
 
 
 def test_sync_stall_control_with_deadline():
-    import time
-
     # 1. compute_chunk_timeout with timeout_override and stall control active
     config = ResumableUploadConfig(
         stall_minimum_rate=1024,
@@ -1157,7 +1155,7 @@ def test_sync_stall_control_with_deadline():
         config=config3,
     )
     with pytest.raises(exceptions.DeadlineExceeded):
-        session3._update_stall_control(512, time.monotonic() - 15.0, 15.0)
+        session3._update_stall_control(512, 15.0)
 
     # 4. update_stall_control raises TransferStalledError (no deadline)
     config4 = ResumableUploadConfig(
@@ -1170,18 +1168,28 @@ def test_sync_stall_control_with_deadline():
     )
     session4._state._upload_url = "https://api.example.com/init"
     with pytest.raises(exceptions.TransferStalledError):
-        session4._update_stall_control(512, time.monotonic() - 15.0, 15.0)
+        session4._update_stall_control(512, 15.0)
+
+    # 5. A chunk slightly over expected_sec (e.g., 10240 bytes with expected_sec=10.0s
+    # taking 10.5s -> current_lag=0.5s) only counts current_lag (0.5s) toward
+    # stall_timeout (10.0s), rather than the full 10.5s chunk duration.
+    session5 = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=config4,
+    )
+    session5._state._upload_url = "https://api.example.com/init"
+    session5._update_stall_control(10240, 10.5)
+    assert session5._aggregate_lag == pytest.approx(0.5)
+    assert session5._stall_timeout_started is not None
 
 
 def test_sync_update_stall_control_disabled():
-    import time
-
     config = ResumableUploadConfig(stall_minimum_rate=0, stall_timeout=10.0)
     session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=config,
     )
-    session._update_stall_control(512, time.monotonic(), 5.0)
+    session._update_stall_control(512, 5.0)
     assert session._aggregate_lag == 0.0
 
     # Ensure that _stall_timeout_started resets to None when transfer rate exceeds minimum rate (no lag).
@@ -1191,7 +1199,7 @@ def test_sync_update_stall_control_disabled():
         config=active_config,
     )
     active_session._stall_timeout_started = 100.0
-    active_session._update_stall_control(1024, time.monotonic(), 0.1)
+    active_session._update_stall_control(1024, 0.1)
     assert active_session._aggregate_lag == 0.0
     assert active_session._stall_timeout_started is None
 
