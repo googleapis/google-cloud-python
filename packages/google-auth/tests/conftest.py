@@ -35,9 +35,17 @@ def isolate_mtls_configuration(monkeypatch, tmp_path):
 def pytest_configure(config):
     """Load public certificate and private key."""
     # IAM chooses its endpoint at import time, before test fixtures run.
-    patch = pytest.MonkeyPatch()
-    patch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-    config.add_cleanup(patch.undo)
+    name = "GOOGLE_API_USE_CLIENT_CERTIFICATE"
+    original = os.environ.get(name)
+
+    def restore_client_certificate_setting():
+        if original is None:
+            os.environ.pop(name, None)
+        else:
+            os.environ[name] = original
+
+    config.add_cleanup(restore_client_certificate_setting)
+    os.environ[name] = "false"
     pytest.data_dir = os.path.join(os.path.dirname(__file__), "data")
 
     with open(os.path.join(pytest.data_dir, "privatekey.pem"), "rb") as fh:
