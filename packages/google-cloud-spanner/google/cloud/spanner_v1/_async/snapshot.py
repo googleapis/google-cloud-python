@@ -15,7 +15,9 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.snapshot"
+import asyncio
 import functools
+import time
 from typing import List, Optional, Union
 
 from google.api_core import gapic_v1
@@ -23,7 +25,13 @@ from google.api_core.exceptions import (
     Aborted,
     InternalServerError,
     InvalidArgument,
+    ResourceExhausted,
     ServiceUnavailable,
+)
+from google.api_core.retry import (
+    RetryFailureReason,
+    build_retry_error,
+    exponential_sleep_generator,
 )
 from google.protobuf.struct_pb2 import Struct
 
@@ -86,6 +94,7 @@ async def _restart_on_unavailable(
     observability_options=None,
     request_id_manager=None,
     resource_info=None,
+    retry=None,
 ):
     """Restart iteration after :exc:`.ServiceUnavailable`.
 
@@ -118,6 +127,23 @@ async def _restart_on_unavailable(
     attempt = 1
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
     current_request_id = None
+
+    deadline = None
+    sleep_iter = None
+    retry_predicate = None
+    timeout = None
+    if retry is not None and retry is not gapic_v1.method.DEFAULT:
+        timeout = getattr(retry, "_timeout", getattr(retry, "timeout", None))
+        deadline_setting = getattr(retry, "_deadline", getattr(retry, "deadline", None))
+        if deadline_setting is not None:
+            timeout = deadline_setting
+        if timeout is not None:
+            deadline = time.monotonic() + timeout
+        retry_predicate = getattr(retry, "_predicate", getattr(retry, "predicate", None))
+        initial = getattr(retry, "_initial", getattr(retry, "initial", 0.1))
+        maximum = getattr(retry, "_maximum", getattr(retry, "maximum", 32.0))
+        multiplier = getattr(retry, "_multiplier", getattr(retry, "multiplier", 1.3))
+        sleep_iter = iter(exponential_sleep_generator(initial, maximum, multiplier=multiplier))
 
     while True:
         try:
@@ -169,7 +195,23 @@ async def _restart_on_unavailable(
                     resume_token = item.resume_token
                     break
 
-        except ServiceUnavailable:
+        except (ServiceUnavailable, ResourceExhausted) as exc:
+            if retry_predicate is not None and not retry_predicate(exc):
+                raise _augment_error_with_request_id(exc, current_request_id)
+            if sleep_iter is not None:
+                try:
+                    next_sleep = next(sleep_iter)
+                except StopIteration:
+                    next_sleep = 0
+                if deadline is not None and time.monotonic() + next_sleep > deadline:
+                    final_exc, source_exc = build_retry_error(
+                        [exc], RetryFailureReason.TIMEOUT, timeout
+                    )
+                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
+                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
+                    raise final_exc from source_exc
+                await asyncio.sleep(next_sleep)
+
             del item_buffer[:]
             request.resume_token = resume_token
             if transaction is not None:
@@ -186,6 +228,22 @@ async def _restart_on_unavailable(
             )
             if not resumable_error:
                 raise _augment_error_with_request_id(exc, current_request_id)
+            if retry_predicate is not None and not retry_predicate(exc):
+                raise _augment_error_with_request_id(exc, current_request_id)
+            if sleep_iter is not None:
+                try:
+                    next_sleep = next(sleep_iter)
+                except StopIteration:
+                    next_sleep = 0
+                if deadline is not None and time.monotonic() + next_sleep > deadline:
+                    final_exc, source_exc = build_retry_error(
+                        [exc], RetryFailureReason.TIMEOUT, timeout
+                    )
+                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
+                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
+                    raise final_exc from source_exc
+                await asyncio.sleep(next_sleep)
+
             del item_buffer[:]
             request.resume_token = resume_token
             if transaction is not None:
@@ -441,7 +499,7 @@ class _SnapshotBase(_SessionWrapper):
             api.streaming_read,
             request=read_request,
             metadata=metadata,
-            retry=retry,
+            retry=None,
             timeout=timeout,
         )
 
@@ -456,6 +514,7 @@ class _SnapshotBase(_SessionWrapper):
             },
             column_info=column_info,
             lazy_decode=lazy_decode,
+            retry=retry,
         )
 
     @CrossSync.convert
@@ -637,7 +696,7 @@ class _SnapshotBase(_SessionWrapper):
             api.execute_streaming_sql,
             request=execute_sql_request,
             metadata=metadata,
-            retry=retry,
+            retry=None,
             timeout=timeout,
         )
 
@@ -648,13 +707,23 @@ class _SnapshotBase(_SessionWrapper):
             trace_attributes={"db.statement": sql, "request_options": request_options},
             column_info=column_info,
             lazy_decode=lazy_decode,
+            retry=retry,
         )
 
     @CrossSync.convert
     async def _get_streamed_result_set(
-        self, method, request, metadata, trace_attributes, column_info, lazy_decode
+        self,
+        method,
+        request,
+        metadata,
+        trace_attributes,
+        column_info,
+        lazy_decode,
+        retry=None,
     ):
         """Returns the streamed result set for a read or execute SQL request."""
+        if retry is gapic_v1.method.DEFAULT:
+            retry = getattr(method, "_retry", gapic_v1.method.DEFAULT)
         session = self._session
         database = session._database
 
@@ -679,6 +748,7 @@ class _SnapshotBase(_SessionWrapper):
                 observability_options=getattr(database, "observability_options", None),
                 request_id_manager=database,
                 resource_info=self._resource_info,
+                retry=retry,
             )
 
             if is_execute_sql_request:

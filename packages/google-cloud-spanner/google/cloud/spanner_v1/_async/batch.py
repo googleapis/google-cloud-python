@@ -323,7 +323,12 @@ class Batch(_BatchBase):
             MetricsCapture(self._resource_info),
         ):
 
+            nth_request = getattr(database, "_next_nth_request", 0)
+            attempt = 0
+
             async def wrapped_method():
+                nonlocal attempt
+                attempt += 1
                 commit_request = CommitRequest(
                     session=session.name,
                     mutations=mutations,
@@ -332,12 +337,9 @@ class Batch(_BatchBase):
                     max_commit_delay=max_commit_delay,
                     request_options=request_options,
                 )
-                # This code is retried due to ABORTED, hence nth_request
-                # should be increased. attempt can only be increased if
-                # we encounter UNAVAILABLE or INTERNAL.
                 call_metadata, error_augmenter = database.with_error_augmentation(
-                    getattr(database, "_next_nth_request", 0),
-                    1,
+                    nth_request,
+                    attempt,
                     metadata,
                     span,
                 )
