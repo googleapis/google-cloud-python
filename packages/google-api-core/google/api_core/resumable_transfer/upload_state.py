@@ -104,7 +104,12 @@ class _ProtocolState(object):
 
         Returns:
             A tuple of (HTTP method, URL, headers dict, payload bytes).
+
+        Raises:
+            ValueError: If the initial upload URL was not provided.
         """
+        if not self._initial_url:
+            raise ValueError("upload_url must be provided to start an upload.")
         self._upload_url = None
         self._total_bytes = size
         req_headers: Dict[str, str] = {}

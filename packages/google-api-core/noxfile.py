@@ -296,7 +296,7 @@ def default(
                 "--cov=tests.unit",
                 "--cov-append",
                 "--cov-config=.coveragerc",
-                "--cov-report=",
+                "--cov-report=term",
                 "--cov-fail-under=0",
                 # Running individual tests with parallelism enabled is usually not helpful.
                 "-n=auto",

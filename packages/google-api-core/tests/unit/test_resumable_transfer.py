@@ -758,6 +758,12 @@ def test_upload_state_properties():
 
 
 def test_upload_state_start_errors():
+    empty_state = upload_state._ProtocolState()
+    with pytest.raises(
+        ValueError, match="upload_url must be provided to start an upload"
+    ):
+        empty_state.build_start_request()
+
     state = upload_state._ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Start command failed with status 500"):
         state.process_start_response(500, {})
