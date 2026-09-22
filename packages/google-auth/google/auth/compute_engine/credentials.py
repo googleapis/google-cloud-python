@@ -21,16 +21,17 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
-
-from google.auth import _helpers
-from google.auth import _regional_access_boundary_utils
-from google.auth import credentials
-from google.auth import exceptions
-from google.auth import iam
-from google.auth import jwt
-from google.auth import metrics
+from google.auth import (
+    _helpers,
+    _regional_access_boundary_utils,
+    credentials,
+    exceptions,
+    iam,
+    jwt,
+    metrics,
+)
 from google.auth.compute_engine import _metadata
 from google.oauth2 import _client
 
@@ -174,7 +175,8 @@ class Credentials(
         return _metadata._is_service_account_email(self.service_account_email)
 
     def _build_regional_access_boundary_lookup_url(
-        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+        self,
+        request: "Optional[google.auth.transport.Request]" = None,  # noqa: F821
     ):
         """Builds and returns the URL for the regional access boundary lookup API for GCE.
 
@@ -467,7 +469,7 @@ class IDTokenCredentials(
         # the request is not needed
         if self._use_metadata_identity_endpoint:
             raise ValueError(
-                "If use_metadata_identity_endpoint is set, token_uri" " must not be set"
+                "If use_metadata_identity_endpoint is set, token_uri must not be set"
             )
         else:
             return self.__class__(

@@ -15,14 +15,42 @@
 
 set -eo pipefail
 
-python -m pip install "setuptools<71"
+python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
-# Start the releasetool reporter
-python -m pip install --require-hashes -r ${REPO_ROOT}/.kokoro/requirements.txt
-python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+echo "Built wheels in ${REPO_ROOT}/wheels/:"
+ls -la "${REPO_ROOT}/wheels/"
 
-ls ${REPO_ROOT}/wheels/
-# Disable logging
-set +x
-TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
-python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" ${REPO_ROOT}/wheels/*
+# If BUILD_PYTHON is specified (single version build), only validate wheels for that version.
+# Otherwise, validate wheels for all versions listed in python_versions.yaml.
+VERSIONS_TO_CHECK=""
+if [[ -n "${BUILD_PYTHON}" ]]; then
+    VERSIONS_TO_CHECK="${BUILD_PYTHON}"
+else
+    VERSIONS_TO_CHECK=$(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_versions.yaml")
+fi
+
+for VER in ${VERSIONS_TO_CHECK}; do
+    SHORT=$(echo "$VER" | cut -d. -f1,2)
+    ABI="cp${SHORT//.}-cp${SHORT//.}"
+    for ARCH in x86_64 aarch64; do
+        ls "${REPO_ROOT}/wheels/"*${ABI}*${ARCH}*.whl >/dev/null || {
+            echo "ERROR: Missing Linux wheel for ${ABI} (${ARCH})!"
+            exit 1
+        }
+    done
+done
+
+python -m twine check "${REPO_ROOT}/wheels/"*
+
+if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
+    # Start the releasetool reporter
+    python -m pip install --upgrade gcp-releasetool
+    python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+
+    # Disable logging
+    set +x
+    TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
+    python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" "${REPO_ROOT}/wheels/"*
+else
+    echo "PUBLISH_WHEELS is not 'true'; skipping PyPI upload after twine check."
+fi

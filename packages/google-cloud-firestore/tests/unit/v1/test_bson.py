@@ -21,10 +21,12 @@ import pickle
 import pytest
 
 from google.cloud.firestore_v1.bson import (
+    BSONBinary,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONTimestamp,
     _BSONType,
 )
 
@@ -267,3 +269,145 @@ def test_bson_int32_copy():
 def test_bson_int32_pickle():
     val = BSONInt32(42)
     assert pickle.loads(pickle.dumps(val)) == val
+
+
+def test_bson_binary_custom_subtype():
+    val = BSONBinary(bytearray(b"world"), subtype=128)
+    assert val.data == b"world"
+    assert val.subtype == 128
+
+
+def test_bson_binary_to_map_value():
+    assert BSONBinary(b"world", subtype=128)._to_map_value() == {
+        "__binary__": b"\x80world"
+    }
+
+
+def test_bson_binary_bytes_coercion():
+    assert bytes(BSONBinary(b"hello", subtype=1)) == b"hello"
+
+
+def test_bson_binary_repr():
+    assert (
+        repr(BSONBinary(b"world", subtype=128)) == "BSONBinary(b'world', subtype=128)"
+    )
+
+
+def test_bson_binary_boundaries():
+    bin_min = BSONBinary(b"test", subtype=1)
+    bin_max = BSONBinary(b"test", subtype=255)
+    assert bin_min.subtype == 1
+    assert bin_max.subtype == 255
+
+
+@pytest.mark.parametrize(
+    "data_input, subtype_input, exc_type, match_msg",
+    [
+        ("not bytes", 1, TypeError, "must be bytes or bytearray"),
+        (123, 1, TypeError, "must be bytes or bytearray"),
+        (None, 1, TypeError, "must be bytes or bytearray"),
+        (b"data", 256, ValueError, "must be between"),
+        (b"data", 0, ValueError, "must be between"),
+        (b"data", -1, ValueError, "must be between"),
+        (b"data", True, TypeError, "subtype must be an int"),
+        (b"data", False, TypeError, "subtype must be an int"),
+        (b"data", "1", TypeError, "subtype must be an int"),
+    ],
+)
+def test_bson_binary_invalid_inputs(data_input, subtype_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONBinary(data_input, subtype=subtype_input)
+
+
+def test_bson_binary_equality():
+    bin1 = BSONBinary(b"abc", subtype=1)
+    bin2 = BSONBinary(b"abc", subtype=1)
+    bin3 = BSONBinary(b"abc", subtype=2)
+    bin4 = BSONBinary(b"xyz", subtype=1)
+    assert bin1 == bin2
+    assert bin1 != bin3
+    assert bin1 != bin4
+    assert bin1 != b"abc"
+
+
+def test_bson_binary_hash_and_dict_key():
+    bin1 = BSONBinary(b"abc", subtype=1)
+    bin2 = BSONBinary(b"abc", subtype=1)
+    assert hash(bin1) == hash(bin2)
+    assert len({bin1, bin2}) == 1
+
+
+def test_bson_binary_copy():
+    val = BSONBinary(b"hello", subtype=5)
+    assert copy.copy(val) == val
+    assert copy.deepcopy(val) == val
+
+
+def test_bson_binary_pickle():
+    val = BSONBinary(b"hello", subtype=5)
+    assert pickle.loads(pickle.dumps(val)) == val
+
+
+def test_bson_timestamp_valid():
+    ts = BSONTimestamp(1700000000, 42)
+    assert ts.seconds == 1700000000
+    assert ts.increment == 42
+    assert ts._to_map_value() == {
+        "__request_timestamp__": {
+            "seconds": 1700000000,
+            "increment": 42,
+        }
+    }
+    assert repr(ts) == "BSONTimestamp(seconds=1700000000, increment=42)"
+
+
+def test_bson_timestamp_boundaries():
+    ts_min = BSONTimestamp(0, 0)
+    ts_max = BSONTimestamp(4294967295, 4294967295)
+    assert ts_min.seconds == 0
+    assert ts_min.increment == 0
+    assert ts_max.seconds == 4294967295
+    assert ts_max.increment == 4294967295
+
+
+@pytest.mark.parametrize(
+    "sec_input, inc_input, exc_type, match_msg",
+    [
+        (True, 0, TypeError, "seconds must be an int"),
+        (0, False, TypeError, "increment must be an int"),
+        ("1700000000", 0, TypeError, "seconds must be an int"),
+        (0, 1.5, TypeError, "increment must be an int"),
+    ],
+)
+def test_bson_timestamp_invalid_inputs(sec_input, inc_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONTimestamp(sec_input, inc_input)
+
+
+def test_bson_timestamp_equality():
+    ts1 = BSONTimestamp(100, 1)
+    ts2 = BSONTimestamp(100, 1)
+    ts3 = BSONTimestamp(100, 2)
+    ts4 = BSONTimestamp(200, 1)
+    assert ts1 == ts2
+    assert ts1 != ts3
+    assert ts1 != ts4
+    assert ts1 != 100
+
+
+def test_bson_timestamp_hash_and_dict_key():
+    ts1 = BSONTimestamp(100, 1)
+    ts2 = BSONTimestamp(100, 1)
+    assert hash(ts1) == hash(ts2)
+    assert len({ts1, ts2}) == 1
+
+
+def test_bson_timestamp_copy():
+    ts = BSONTimestamp(100, 1)
+    assert copy.copy(ts) == ts
+    assert copy.deepcopy(ts) == ts
+
+
+def test_bson_timestamp_pickle():
+    ts = BSONTimestamp(100, 1)
+    assert pickle.loads(pickle.dumps(ts)) == ts

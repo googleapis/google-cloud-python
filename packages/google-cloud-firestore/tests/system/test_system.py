@@ -49,10 +49,12 @@ from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.bson import (
+    BSONBinary,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONTimestamp,
 )
 from google.cloud.firestore_v1.vector import Vector
 
@@ -1292,6 +1294,8 @@ def test_bson_document_writes(client, cleanup, database):
         "min_key": BSONMinKey(),
         "max_key": BSONMaxKey(),
         "int32_val": BSONInt32(42),
+        "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
     }
 
     doc_ref.set(bson_payload)
@@ -1303,6 +1307,13 @@ def test_bson_document_writes(client, cleanup, database):
         "min_key": {"__min__": None},
         "max_key": {"__max__": None},
         "int32_val": {"__int__": 42},
+        "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
     }
 
 

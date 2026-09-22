@@ -29,7 +29,6 @@ UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 
 FLAKE8_VERSION = "flake8==6.1.0"
-BLACK_VERSION = "black[jupyter]==23.7.0"
 RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["src", "tests", "noxfile.py", "setup.py"]
@@ -94,10 +93,24 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
+    # 1. Check imports
     session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
     session.run("flake8", *LINT_PATHS)
@@ -105,10 +118,18 @@ def lint(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
