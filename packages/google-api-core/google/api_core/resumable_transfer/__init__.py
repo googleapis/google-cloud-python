@@ -23,10 +23,8 @@ from google.api_core.exceptions import (
 )
 from google.api_core.resumable_transfer.common import (
     DEFAULT_CHUNK_SIZE,
-    Command,
     ProgressState,
     ResumableUploadConfig,
-    Status,
     UploadProgress,
 )
 from google.api_core.resumable_transfer.upload import ResumableUploadSession
@@ -36,12 +34,10 @@ from google.api_core.resumable_transfer.upload_async import (
 )
 
 __all__ = [
-    "Command",
     "DEFAULT_CHUNK_SIZE",
     "MissingStatusHeaderError",
     "ProgressState",
     "ResumableTransferError",
-    "Status",
     "TransferStalledError",
     "UnseekableStreamError",
     "UploadCancelledError",

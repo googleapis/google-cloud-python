@@ -45,7 +45,7 @@ HEADER_CHUNK_GRANULARITY = "X-Goog-Upload-Chunk-Granularity"
 PROTOCOL_RESUMABLE = "resumable"
 
 
-class Command(str, enum.Enum):
+class _Command(str, enum.Enum):
     """Protocol commands."""
 
     START = "start"
@@ -55,7 +55,7 @@ class Command(str, enum.Enum):
     CANCEL = "cancel"
 
 
-class Status(str, enum.Enum):
+class _Status(str, enum.Enum):
     """Server upload status values."""
 
     ACTIVE = "active"

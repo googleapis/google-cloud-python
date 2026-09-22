@@ -25,12 +25,10 @@ import google.api_core.retry
 from google.api_core import exceptions
 from google.api_core.resumable_transfer import (
     DEFAULT_CHUNK_SIZE,
-    Command,
     MissingStatusHeaderError,
     ProgressState,
     ResumableUploadConfig,
     ResumableUploadSession,
-    Status,
     TransferStalledError,
     UnseekableStreamError,
     UploadCancelledError,
@@ -86,15 +84,15 @@ def test_common_constants():
     assert common.HEADER_SIZE_RECEIVED == "X-Goog-Upload-Size-Received"
     assert common.PROTOCOL_RESUMABLE == "resumable"
 
-    assert Command.START == "start"
-    assert Command.UPLOAD == "upload"
-    assert Command.FINALIZE == "finalize"
-    assert Command.QUERY == "query"
-    assert Command.CANCEL == "cancel"
+    assert common._Command.START == "start"
+    assert common._Command.UPLOAD == "upload"
+    assert common._Command.FINALIZE == "finalize"
+    assert common._Command.QUERY == "query"
+    assert common._Command.CANCEL == "cancel"
 
-    assert Status.ACTIVE == "active"
-    assert Status.FINAL == "final"
-    assert Status.CANCELLED == "cancelled"
+    assert common._Status.ACTIVE == "active"
+    assert common._Status.FINAL == "final"
+    assert common._Status.CANCELLED == "cancelled"
 
     assert ProgressState.STARTED == "started"
     assert ProgressState.UPLOADING == "uploading"
@@ -135,7 +133,7 @@ def test_exception_hierarchy():
 
 
 def test_protocol_state_start_request():
-    state = upload_state.ProtocolState(upload_url="https://api.example.com/start")
+    state = upload_state._ProtocolState(upload_url="https://api.example.com/start")
     method, url, headers, payload = state.build_start_request(
         body='{"name": "test"}',
         headers=[("X-Custom", "val")],
@@ -154,7 +152,7 @@ def test_protocol_state_start_request():
 
 
 def test_protocol_state_process_start_response():
-    state = upload_state.ProtocolState(upload_url="https://api.example.com/start")
+    state = upload_state._ProtocolState(upload_url="https://api.example.com/start")
     headers = {
         "X-Goog-Upload-Status": "active",
         "X-Goog-Upload-URL": "https://upload.example.com/resumable-id",
@@ -167,21 +165,21 @@ def test_protocol_state_process_start_response():
 
 
 def test_protocol_state_start_response_missing_status():
-    state = upload_state.ProtocolState(upload_url="https://api.example.com/start")
+    state = upload_state._ProtocolState(upload_url="https://api.example.com/start")
     headers = {"X-Goog-Upload-URL": "https://upload.example.com/resumable-id"}
     with pytest.raises(MissingStatusHeaderError):
         state.process_start_response(200, headers)
 
 
 def test_protocol_state_start_response_missing_url():
-    state = upload_state.ProtocolState(upload_url="https://api.example.com/start")
+    state = upload_state._ProtocolState(upload_url="https://api.example.com/start")
     headers = {"X-Goog-Upload-Status": "active"}
     with pytest.raises(ValueError, match="Server did not return"):
         state.process_start_response(200, headers)
 
 
 def test_protocol_state_granularity_alignment():
-    state = upload_state.ProtocolState(chunk_size=500)
+    state = upload_state._ProtocolState(chunk_size=500)
     assert state.chunk_size == 500
     state._chunk_granularity = 256
     # 500 rounded up to multiple of 256 is 512
@@ -189,7 +187,7 @@ def test_protocol_state_granularity_alignment():
 
 
 def test_protocol_state_chunk_request_and_response():
-    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
+    state = upload_state._ProtocolState(upload_url="https://upload.example.com/session")
 
     # First chunk: not last
     method, url, headers, payload = state.build_chunk_request(
@@ -217,20 +215,20 @@ def test_protocol_state_chunk_request_and_response():
 
 
 def test_protocol_state_chunk_missing_status_header():
-    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
+    state = upload_state._ProtocolState(upload_url="https://upload.example.com/session")
     with pytest.raises(MissingStatusHeaderError):
         state.process_chunk_response(200, {}, 10)
 
 
 def test_protocol_state_chunk_cancelled_status():
-    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
+    state = upload_state._ProtocolState(upload_url="https://upload.example.com/session")
     with pytest.raises(UploadCancelledError):
         state.process_chunk_response(200, {"X-Goog-Upload-Status": "cancelled"}, 10)
     assert state.invalid
 
 
 def test_protocol_state_query_and_cancel():
-    state = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
+    state = upload_state._ProtocolState(upload_url="https://upload.example.com/session")
     method, url, headers, payload = state.build_query_request()
     assert headers["X-Goog-Upload-Command"] == "query"
 
@@ -241,7 +239,9 @@ def test_protocol_state_query_and_cancel():
     assert state.bytes_uploaded == 1024
 
     # query with unknown status
-    state2 = upload_state.ProtocolState(upload_url="https://upload.example.com/session")
+    state2 = upload_state._ProtocolState(
+        upload_url="https://upload.example.com/session"
+    )
     received2 = state2.process_query_response(200, {"X-Goog-Upload-Status": "unknown"})
     assert received2 == 0
 
@@ -743,7 +743,7 @@ def test_sync_upload_rejects_invalid_stream_types(invalid_stream):
 
 
 def test_upload_state_properties():
-    state = upload_state.ProtocolState("https://api.example.com/init", chunk_size=500)
+    state = upload_state._ProtocolState("https://api.example.com/init", chunk_size=500)
     assert state.initial_url == "https://api.example.com/init"
     assert state.upload_url == "https://api.example.com/init"
     assert state.bytes_uploaded == 0
@@ -758,19 +758,19 @@ def test_upload_state_properties():
 
 
 def test_upload_state_start_errors():
-    state = upload_state.ProtocolState("https://api.example.com/init")
+    state = upload_state._ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Start command failed with status 500"):
         state.process_start_response(500, {})
     assert state.invalid is True
 
-    state2 = upload_state.ProtocolState("https://api.example.com/init")
+    state2 = upload_state._ProtocolState("https://api.example.com/init")
     with pytest.raises(ValueError, match="Server did not return"):
         state2.process_start_response(200, {"X-Goog-Upload-Status": "active"})
     assert state2.invalid is True
 
 
 def test_upload_state_chunk_and_query_errors():
-    state = upload_state.ProtocolState()
+    state = upload_state._ProtocolState()
     with pytest.raises(ValueError, match="Upload session URL not established"):
         state.build_chunk_request(b"data", is_last_chunk=True)
 
@@ -790,12 +790,12 @@ def test_upload_state_chunk_and_query_errors():
     assert state.invalid is True
 
     # process_query_response with final status
-    state3 = upload_state.ProtocolState("https://api.example.com/init")
+    state3 = upload_state._ProtocolState("https://api.example.com/init")
     state3.process_query_response(200, {"X-Goog-Upload-Status": "final"})
     assert state3.finished is True
 
     # process_query_response with cancelled status
-    state4 = upload_state.ProtocolState("https://api.example.com/init")
+    state4 = upload_state._ProtocolState("https://api.example.com/init")
     with pytest.raises(UploadCancelledError):
         state4.process_query_response(200, {"X-Goog-Upload-Status": "cancelled"})
     assert state4.invalid is True
@@ -1696,9 +1696,9 @@ def test_sync_prepare_stream_explicit_size():
 
 
 def test_state_process_chunk_response_unknown_status():
-    from google.api_core.resumable_transfer.upload_state import ProtocolState
+    from google.api_core.resumable_transfer.upload_state import _ProtocolState
 
-    state = ProtocolState(upload_url="https://api.example.com/init")
+    state = _ProtocolState(upload_url="https://api.example.com/init")
     state.process_chunk_response(200, {"X-Goog-Upload-Status": "unknown"}, 100)
     assert state.bytes_uploaded == 0
     assert not state.finished

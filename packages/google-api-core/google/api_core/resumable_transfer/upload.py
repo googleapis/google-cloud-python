@@ -140,7 +140,7 @@ class ResumableUploadSession:
         self._start_retry = start_retry
         self._start_timeout = start_timeout
         self._response: Optional[Any] = None
-        self._state = upload_state.ProtocolState(
+        self._state = upload_state._ProtocolState(
             upload_url=upload_url,
             chunk_size=self._config.chunk_size,
         )

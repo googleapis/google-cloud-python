@@ -23,7 +23,7 @@ from google.api_core.resumable_transfer import common
 _LOGGER = logging.getLogger(__name__)
 
 
-class ProtocolState(object):
+class _ProtocolState(object):
     """Encapsulates the state and command formatting for Resumable Upload protocol."""
 
     def __init__(
@@ -116,7 +116,7 @@ class ProtocolState(object):
                 req_headers[key] = val
 
         req_headers[common.HEADER_PROTOCOL] = common.PROTOCOL_RESUMABLE
-        req_headers[common.HEADER_COMMAND] = common.Command.START.value
+        req_headers[common.HEADER_COMMAND] = common._Command.START.value
 
         if content_type is not None:
             req_headers[common.HEADER_CONTENT_TYPE] = content_type
@@ -188,9 +188,9 @@ class ProtocolState(object):
             raise ValueError("Upload session URL not established.")
 
         command = (
-            f"{common.Command.UPLOAD.value}, {common.Command.FINALIZE.value}"
+            f"{common._Command.UPLOAD.value}, {common._Command.FINALIZE.value}"
             if is_last_chunk
-            else common.Command.UPLOAD.value
+            else common._Command.UPLOAD.value
         )
 
         headers = {
@@ -227,12 +227,12 @@ class ProtocolState(object):
                 f"Missing {common.HEADER_STATUS} header in chunk upload response"
             )
 
-        if status == common.Status.ACTIVE.value:
+        if status == common._Status.ACTIVE.value:
             self._bytes_uploaded += chunk_bytes_sent
-        elif status == common.Status.FINAL.value:
+        elif status == common._Status.FINAL.value:
             self._finished = True
             self._bytes_uploaded += chunk_bytes_sent
-        elif status == common.Status.CANCELLED.value:
+        elif status == common._Status.CANCELLED.value:
             self._invalid = True
             raise exceptions.UploadCancelledError(
                 "Upload session was cancelled by server"
@@ -250,7 +250,7 @@ class ProtocolState(object):
         if not self._upload_url:
             raise ValueError("Upload session URL not established.")
 
-        headers = {common.HEADER_COMMAND: common.Command.QUERY.value}
+        headers = {common.HEADER_COMMAND: common._Command.QUERY.value}
         return "POST", self._upload_url, headers, b""
 
     def process_query_response(
@@ -276,12 +276,12 @@ class ProtocolState(object):
         headers_lower = {k.lower(): v for k, v in headers.items()}
         status = headers_lower.get(common.HEADER_STATUS.lower())
 
-        if status == common.Status.ACTIVE.value:
+        if status == common._Status.ACTIVE.value:
             received = int(headers_lower.get(common.HEADER_SIZE_RECEIVED.lower(), "0"))
             self._bytes_uploaded = received
-        elif status == common.Status.FINAL.value:
+        elif status == common._Status.FINAL.value:
             self._finished = True
-        elif status == common.Status.CANCELLED.value:
+        elif status == common._Status.CANCELLED.value:
             self._invalid = True
             raise exceptions.UploadCancelledError(
                 "Upload session was cancelled by server"
@@ -301,7 +301,7 @@ class ProtocolState(object):
         if not self._upload_url:
             raise ValueError("Upload session URL not established.")
 
-        headers = {common.HEADER_COMMAND: common.Command.CANCEL.value}
+        headers = {common.HEADER_COMMAND: common._Command.CANCEL.value}
         return "POST", self._upload_url, headers, b""
 
     def process_cancel_response(
