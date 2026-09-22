@@ -329,17 +329,31 @@ def apply_channel_interceptors(
         aio.Channel: The channel with interceptors attached, or the original channel
             if no interceptors were provided.
     """
-    if not interceptors or not hasattr(channel, "_unary_unary_interceptors"):
+    if not interceptors:
         return channel
 
-    unary_interceptors = channel._unary_unary_interceptors
-    if isinstance(unary_interceptors, list):
-        for interceptor in interceptors:
-            if interceptor not in unary_interceptors:
+    mapping = (
+        ("intercept_unary_unary", "_unary_unary_interceptors"),
+        ("intercept_unary_stream", "_unary_stream_interceptors"),
+        ("intercept_stream_unary", "_stream_unary_interceptors"),
+        ("intercept_stream_stream", "_stream_stream_interceptors"),
+    )
+    for interceptor in interceptors:
+        matched = False
+        for method_name, attr_name in mapping:
+            if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
+                target_list = getattr(channel, attr_name)
+                if isinstance(target_list, list):
+                    if interceptor not in target_list:
+                        target_list.append(interceptor)
+                    matched = True
+        if not matched and hasattr(channel, "_unary_unary_interceptors"):
+            unary_interceptors = channel._unary_unary_interceptors
+            if (
+                isinstance(unary_interceptors, list)
+                and interceptor not in unary_interceptors
+            ):
                 unary_interceptors.append(interceptor)
-    elif hasattr(unary_interceptors, "append"):
-        for interceptor in interceptors:
-            unary_interceptors.append(interceptor)
 
     return channel
 
