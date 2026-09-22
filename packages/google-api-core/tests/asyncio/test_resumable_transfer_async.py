@@ -818,9 +818,11 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     with pytest.raises(TransferStalledError, match="Upload stalled"):
         await session.upload(stream=b"0123456789")
 
-    # Verify that a chunk slightly over expected_sec (e.g., 100 bytes with expected_sec=1.0s
-    # taking 1.2s -> current_lag=0.2s) only counts current_lag (0.2s) toward
-    # stall_timeout (1.0s), rather than the full 1.2s chunk duration.
+    # config has stall_minimum_rate=100 B/s, stall_timeout=1.0s.
+    # 100 bytes / 100 B/s -> expected_sec = 1.0s.
+    # Taking 1.2s gives current_lag = 1.2 - 1.0 = 0.2s.
+    # At clock = 10.0s, _stall_timeout_started is backdated by current_lag
+    # (10.0 - 0.2 = 9.8s) so elapsed stall time is 0.2s (< 1.0s stall_timeout).
     clock_vals3 = iter([10.0, 11.0])
     monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals3))
     session3 = AsyncResumableUploadSession(
@@ -831,9 +833,23 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     assert session3._aggregate_lag == pytest.approx(0.2)
     assert session3._stall_timeout_started == pytest.approx(9.8)
 
-    # Second lagging chunk when _stall_timeout_started is already set reaches stall_timeout
+    # At clock = 11.0s, elapsed time since _stall_timeout_started (9.8s) is
+    # 11.0 - 9.8 = 1.2s >= stall_timeout (1.0s), raising TransferStalledError.
     with pytest.raises(TransferStalledError, match="Upload stalled"):
         session3._update_stall_control(100, 1.2)
+
+    # With aggregate_lag = 0.4s (0.2s + 0.2s), next_chunk_timeout is
+    # 1.0 - 0.4 + 1.0 = 1.6s. timeout_override=0.5s is smaller, so 0.5s wins.
+    assert session3._compute_chunk_timeout(100, timeout_override=0.5) == pytest.approx(
+        0.5
+    )
+    session_no_stall = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=ResumableUploadConfig(stall_minimum_rate=0, stall_timeout=0),
+    )
+    assert session_no_stall._compute_chunk_timeout(
+        100, timeout_override=15.0
+    ) == pytest.approx(15.0)
 
 
 @pytest.mark.asyncio

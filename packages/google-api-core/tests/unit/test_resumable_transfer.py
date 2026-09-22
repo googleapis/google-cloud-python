@@ -1120,7 +1120,6 @@ def test_sync_get_retry_start_and_override():
 
 
 def test_sync_stall_control_with_deadline():
-    # 1. compute_chunk_timeout with timeout_override and stall control active
     config = ResumableUploadConfig(
         stall_minimum_rate=1024,
         stall_timeout=10.0,
@@ -1129,10 +1128,28 @@ def test_sync_stall_control_with_deadline():
         upload_url="https://api.example.com/init",
         config=config,
     )
+    # 512 bytes / 1024 B/s -> expected_sec = 0.5s.
+    # With aggregate_lag = 0.0 and stall_timeout = 10.0s:
+    # next_chunk_timeout = 0.5 - 0.0 + 10.0 = 10.5s.
+    # timeout_override=15.0 exceeds next_chunk_timeout, so it clamps to 10.5s.
     t1 = session._compute_chunk_timeout(512, timeout_override=15.0)
-    assert t1 <= 15.0
+    assert t1 == pytest.approx(10.5)
+    # timeout_override=8.0 is below next_chunk_timeout (10.5s), so 8.0s is used
+    # directly instead of the default heuristic (max(5.0, 2 * 0.5) = 5.0s).
+    assert session._compute_chunk_timeout(512, timeout_override=8.0) == pytest.approx(
+        8.0
+    )
 
-    # 2. compute_chunk_timeout with deadline active
+    # When stall control is disabled, timeout_override is returned as-is.
+    session_no_stall = ResumableUploadSession(
+        upload_url="https://api.example.com/init",
+        config=ResumableUploadConfig(stall_minimum_rate=0, stall_timeout=0),
+    )
+    assert session_no_stall._compute_chunk_timeout(
+        512, timeout_override=15.0
+    ) == pytest.approx(15.0)
+
+    # Overall upload deadline (5s left) caps the per-attempt timeout.
     config2 = ResumableUploadConfig(
         stall_minimum_rate=1024,
         stall_timeout=10.0,
@@ -1146,7 +1163,8 @@ def test_sync_stall_control_with_deadline():
     t2 = session2._compute_chunk_timeout(512)
     assert t2 <= 5.0
 
-    # 3. update_stall_control raises DeadlineExceeded
+    # If the upload stalls and the overall deadline has already passed,
+    # DeadlineExceeded takes precedence over TransferStalledError.
     config3 = ResumableUploadConfig(
         stall_minimum_rate=1024,
         stall_timeout=10.0,
@@ -1160,7 +1178,8 @@ def test_sync_stall_control_with_deadline():
     with pytest.raises(exceptions.DeadlineExceeded):
         session3._update_stall_control(512, 15.0)
 
-    # 4. update_stall_control raises TransferStalledError (no deadline)
+    # 512 bytes / 1024 B/s -> expected_sec = 0.5s. Taking 15.0s yields
+    # current_lag = 14.5s, which exceeds stall_timeout (10.0s).
     config4 = ResumableUploadConfig(
         stall_minimum_rate=1024,
         stall_timeout=10.0,
@@ -1173,9 +1192,10 @@ def test_sync_stall_control_with_deadline():
     with pytest.raises(exceptions.TransferStalledError):
         session4._update_stall_control(512, 15.0)
 
-    # 5. A chunk slightly over expected_sec (e.g., 10240 bytes with expected_sec=10.0s
-    # taking 10.5s -> current_lag=0.5s) only counts current_lag (0.5s) toward
-    # stall_timeout (10.0s), rather than the full 10.5s chunk duration.
+    # 10240 bytes / 1024 B/s -> expected_sec = 10.0s.
+    # Taking 10.5s gives current_lag = 10.5 - 10.0 = 0.5s.
+    # Only the 0.5s lag counts toward stall_timeout (10.0s), not the full 10.5s,
+    # so the transfer does not stall yet.
     session5 = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=config4,

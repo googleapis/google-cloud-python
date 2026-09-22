@@ -556,21 +556,9 @@ class AsyncResumableUploadSession:
             content_type=self._content_type,
         )
 
-        rate = self._config.stall_minimum_rate
-        expected_sec = data_len / rate if rate > 0 else 60.0
-        next_chunk_timeout = max(
-            1.0,
-            expected_sec - self._aggregate_lag + self._config.stall_timeout,
+        per_attempt_timeout = self._compute_chunk_timeout(
+            data_len, timeout_override=timeout
         )
-        per_attempt_timeout = max(5.0, min(next_chunk_timeout, 2.0 * expected_sec))
-
-        if timeout is not None:
-            per_attempt_timeout = min(timeout, per_attempt_timeout)
-
-        remaining = self._get_deadline_remaining()
-        if remaining is not None:
-            per_attempt_timeout = min(per_attempt_timeout, remaining)
-
         client_timeout = aiohttp.ClientTimeout(total=per_attempt_timeout)
         t_start = _monotonic_clock()
         try:
@@ -614,6 +602,55 @@ class AsyncResumableUploadSession:
             progress_queue,
         )
         return status_code, resp_headers, resp_body
+
+    def _compute_chunk_timeout(
+        self, data_len: int, timeout_override: Optional[float] = None
+    ) -> float:
+        """Computes the dynamic per-attempt chunk timeout based on stall control and deadlines.
+
+        Args:
+            data_len: Length of the current chunk in bytes.
+            timeout_override: Optional per-attempt timeout ceiling in seconds.
+
+        Returns:
+            Timeout in seconds for chunk transmission attempt.
+        """
+        rate = self._config.stall_minimum_rate
+        expected_sec = data_len / rate if rate > 0 else 60.0
+
+        # Remaining time budget for this chunk across all retries before stalling.
+        # If prior chunks accumulated high aggregate_lag (or if expected_sec is tiny
+        # when stall_timeout is 0), expected_sec - _aggregate_lag + stall_timeout can
+        # drop to <= 0. Enforce a 1.0s minimum so the HTTP transport always receives
+        # a valid positive timeout instead of failing immediately with <= 0s.
+        min_chunk_timeout = 1.0
+        next_chunk_timeout = max(
+            min_chunk_timeout,
+            expected_sec - self._aggregate_lag + self._config.stall_timeout,
+        )
+
+        if timeout_override is not None:
+            if rate > 0 and self._config.stall_timeout > 0:
+                per_attempt_timeout = min(timeout_override, next_chunk_timeout)
+            else:
+                per_attempt_timeout = timeout_override
+        else:
+            # Give a single attempt up to 2x expected_sec (bounded by next_chunk_timeout)
+            # so a hung socket fails fast enough to recover and retry before stalling.
+            # For a tiny final chunk (e.g. a few hundred bytes), 2x expected_sec is only
+            # a few milliseconds—shorter than an HTTP round-trip—so enforce a 5s minimum
+            # per-attempt timeout (e.g. 0.01s -> 5.0s, while 256.0s stays 256.0s).
+            min_attempt_timeout = 5.0
+            per_attempt_timeout = max(
+                min_attempt_timeout,
+                min(next_chunk_timeout, 2.0 * expected_sec),
+            )
+
+        remaining = self._get_deadline_remaining()
+        if remaining is not None:
+            per_attempt_timeout = min(per_attempt_timeout, remaining)
+
+        return per_attempt_timeout
 
     def _update_stall_control(self, data_len: int, t_elapsed: float) -> None:
         """Updates aggregate transfer rate lag and enforces stall timeout and deadlines.
