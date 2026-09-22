@@ -180,11 +180,12 @@ class BigQueryTableReferences(proto.Message):
         table_references (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.BigQueryTableReference]):
             Optional. References to BigQuery tables.
         property_graph_references (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.BigQueryPropertyGraphReference]):
-            Optional. Preview feature. References to
-            BigQuery property graphs. Note: Data sources
-            must exclusively use either tables or property
-            graphs, not both. When using property graphs, a
-            maximum of one graph reference is supported.
+            Optional. References to BigQuery graphs.
+
+            Note: "property graph" is the former name for
+            BigQuery Graph. The field and message names
+            retain the original term for backward
+            compatibility; both refer to the same resource.
         agent_context_reference (google.cloud.geminidataanalytics_v1beta.types.AgentContextReference):
             Optional. Parameters for retrieving data from
             Agent Context.

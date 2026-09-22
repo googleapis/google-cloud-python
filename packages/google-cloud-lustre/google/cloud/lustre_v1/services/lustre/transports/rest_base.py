@@ -19,11 +19,17 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.lustre_v1.types import instance, transfer
+from google.cloud.lustre_v1.types import directory_policy, instance, mirror, transfer
+from google.cloud.lustre_v1.types import directory_policy as gcl_directory_policy
 from google.cloud.lustre_v1.types import instance as gcl_instance
+from google.cloud.lustre_v1.types import mirror as gcl_mirror
 
 from .base import DEFAULT_CLIENT_INFO, LustreTransport
 
@@ -90,6 +96,25 @@ class _BaseLustreRestTransport(LustreTransport):
             api_audience=api_audience,
         )
 
+    class _BaseCreateDirectoryPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "directoryPolicyId": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/directoryPolicies",
+                    "body": "directory_policy",
+                },
+            ]
+            return http_options
+
     class _BaseCreateInstance:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -109,6 +134,41 @@ class _BaseLustreRestTransport(LustreTransport):
             ]
             return http_options
 
+    class _BaseCreateMirror:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "mirrorId": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/mirrors",
+                    "body": "mirror",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteDirectoryPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/directoryPolicies/*}",
+                },
+            ]
+            return http_options
+
     class _BaseDeleteInstance:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -121,6 +181,22 @@ class _BaseLustreRestTransport(LustreTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/locations/*/instances/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteMirror:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/mirrors/*}",
                 },
             ]
             return http_options
@@ -142,6 +218,22 @@ class _BaseLustreRestTransport(LustreTransport):
             ]
             return http_options
 
+    class _BaseGetDirectoryPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/directoryPolicies/*}",
+                },
+            ]
+            return http_options
+
     class _BaseGetInstance:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -154,6 +246,22 @@ class _BaseLustreRestTransport(LustreTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/instances/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseGetMirror:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*/mirrors/*}",
                 },
             ]
             return http_options
@@ -175,6 +283,22 @@ class _BaseLustreRestTransport(LustreTransport):
             ]
             return http_options
 
+    class _BaseListDirectoryPolicies:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/directoryPolicies",
+                },
+            ]
+            return http_options
+
     class _BaseListInstances:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -187,6 +311,39 @@ class _BaseLustreRestTransport(LustreTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=projects/*/locations/*}/instances",
+                },
+            ]
+            return http_options
+
+    class _BaseListMirrors:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/instances/*}/mirrors",
+                },
+            ]
+            return http_options
+
+    class _BaseRescheduleMaintenance:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance",
+                    "body": "*",
                 },
             ]
             return http_options
@@ -204,6 +361,23 @@ class _BaseLustreRestTransport(LustreTransport):
                     "method": "patch",
                     "uri": "/v1/{instance.name=projects/*/locations/*/instances/*}",
                     "body": "instance",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateMirror:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{mirror.name=projects/*/locations/*/instances/*/mirrors/*}",
+                    "body": "mirror",
                 },
             ]
             return http_options
@@ -232,6 +406,64 @@ class _BaseLustreRestTransport(LustreTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*}/locations",
+                },
+            ]
+            return http_options
+
+    class _BaseGetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*}:getIamPolicy",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*/directoryPolicies/*}:getIamPolicy",
+                },
+            ]
+            return http_options
+
+    class _BaseSetIamPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*}:setIamPolicy",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*/directoryPolicies/*}:setIamPolicy",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseTestIamPermissions:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/instances/*/directoryPolicies/*}:testIamPermissions",
+                    "body": "*",
                 },
             ]
             return http_options

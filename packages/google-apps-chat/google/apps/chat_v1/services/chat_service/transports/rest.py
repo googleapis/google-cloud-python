@@ -35,6 +35,7 @@ from google.apps.chat_v1.types import (
     availability,
     membership,
     message,
+    message_pin,
     reaction,
     section,
     space,
@@ -47,6 +48,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import message_pin as gc_message_pin
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
@@ -128,6 +130,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_message_pin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_message_pin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_reaction(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -165,6 +175,10 @@ class ChatServiceRestInterceptor:
                 return response
 
             def pre_delete_message(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_message_pin(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
@@ -289,6 +303,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_list_memberships(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_message_pins(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_message_pins(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -666,6 +688,54 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_message_pin(
+        self,
+        request: gc_message_pin.CreateMessagePinRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_message_pin.CreateMessagePinRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_message_pin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_create_message_pin(
+        self, response: gc_message_pin.MessagePin
+    ) -> gc_message_pin.MessagePin:
+        """Post-rpc interceptor for create_message_pin
+
+        DEPRECATED. Please use the `post_create_message_pin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_create_message_pin` interceptor runs
+        before the `post_create_message_pin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_message_pin_with_metadata(
+        self,
+        response: gc_message_pin.MessagePin,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_message_pin.MessagePin, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_message_pin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_message_pin_with_metadata`
+        interceptor in new development instead of the `post_create_message_pin` interceptor.
+        When both interceptors are used, this `post_create_message_pin_with_metadata` interceptor runs after the
+        `post_create_message_pin` interceptor. The (possibly modified) response returned by
+        `post_create_message_pin` will be passed to
+        `post_create_message_pin_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_reaction(
         self,
         request: gc_reaction.CreateReactionRequest,
@@ -872,6 +942,20 @@ class ChatServiceRestInterceptor:
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[message.DeleteMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_message
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def pre_delete_message_pin(
+        self,
+        request: message_pin.DeleteMessagePinRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        message_pin.DeleteMessagePinRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_message_pin
 
         Override in a subclass to manipulate the request or metadata
         before they are sent to the ChatService server.
@@ -1577,6 +1661,56 @@ class ChatServiceRestInterceptor:
         `post_list_memberships` interceptor. The (possibly modified) response returned by
         `post_list_memberships` will be passed to
         `post_list_memberships_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_message_pins(
+        self,
+        request: message_pin.ListMessagePinsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        message_pin.ListMessagePinsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_message_pins
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_list_message_pins(
+        self, response: message_pin.ListMessagePinsResponse
+    ) -> message_pin.ListMessagePinsResponse:
+        """Post-rpc interceptor for list_message_pins
+
+        DEPRECATED. Please use the `post_list_message_pins_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_list_message_pins` interceptor runs
+        before the `post_list_message_pins_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_message_pins_with_metadata(
+        self,
+        response: message_pin.ListMessagePinsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        message_pin.ListMessagePinsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_message_pins
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_message_pins_with_metadata`
+        interceptor in new development instead of the `post_list_message_pins` interceptor.
+        When both interceptors are used, this `post_list_message_pins_with_metadata` interceptor runs after the
+        `post_list_message_pins` interceptor. The (possibly modified) response returned by
+        `post_list_message_pins` will be passed to
+        `post_list_message_pins_with_metadata`.
         """
         return response, metadata
 
@@ -3321,6 +3455,158 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _CreateMessagePin(
+        _BaseChatServiceRestTransport._BaseCreateMessagePin, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.CreateMessagePin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gc_message_pin.CreateMessagePinRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gc_message_pin.MessagePin:
+            r"""Call the create message pin method over HTTP.
+
+            Args:
+                request (~.gc_message_pin.CreateMessagePinRequest):
+                    The request object. Request message for creating a
+                message pin.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gc_message_pin.MessagePin:
+                    A pin on a Chat message. For more information see `Pin a
+                message <https://support.google.com/chat?p=chat-board-hc>`__.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateMessagePin._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_create_message_pin(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChatServiceRestTransport._BaseCreateMessagePin,
+                    "_BaseCreateMessagePin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateMessagePin",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMessagePin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._CreateMessagePin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gc_message_pin.MessagePin()
+            pb_resp = gc_message_pin.MessagePin.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_message_pin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_message_pin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_message_pin.MessagePin.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_message_pin",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMessagePin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateReaction(
         _BaseChatServiceRestTransport._BaseCreateReaction, ChatServiceRestStub
     ):
@@ -4143,6 +4429,116 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             # Send the request
             response = ChatServiceRestTransport._DeleteMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteMessagePin(
+        _BaseChatServiceRestTransport._BaseDeleteMessagePin, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.DeleteMessagePin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: message_pin.DeleteMessagePinRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete message pin method over HTTP.
+
+            Args:
+                request (~.message_pin.DeleteMessagePinRequest):
+                    The request object. Request message for deleting a
+                message pin.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteMessagePin._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_delete_message_pin(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChatServiceRestTransport._BaseDeleteMessagePin,
+                    "_BaseDeleteMessagePin__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteMessagePin",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteMessagePin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._DeleteMessagePin._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -6578,6 +6974,158 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "ListMemberships",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListMessagePins(
+        _BaseChatServiceRestTransport._BaseListMessagePins, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.ListMessagePins")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: message_pin.ListMessagePinsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> message_pin.ListMessagePinsResponse:
+            r"""Call the list message pins method over HTTP.
+
+            Args:
+                request (~.message_pin.ListMessagePinsRequest):
+                    The request object. Request message for listing message
+                pins.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.message_pin.ListMessagePinsResponse:
+                    Response message for listing message
+                pins.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListMessagePins._get_http_options()
+            )
+            request, metadata = self._interceptor.pre_list_message_pins(
+                request, metadata
+            )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChatServiceRestTransport._BaseListMessagePins,
+                    "_BaseListMessagePins__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListMessagePins",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMessagePins",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._ListMessagePins._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = message_pin.ListMessagePinsResponse()
+            pb_resp = message_pin.ListMessagePinsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_message_pins(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_message_pins_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = message_pin.ListMessagePinsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_message_pins",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMessagePins",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -9960,6 +10508,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._CreateMessage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_message_pin(
+        self,
+    ) -> Callable[[gc_message_pin.CreateMessagePinRequest], gc_message_pin.MessagePin]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateMessagePin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_reaction(
         self,
     ) -> Callable[[gc_reaction.CreateReactionRequest], gc_reaction.Reaction]:
@@ -10004,6 +10560,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMessage(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_message_pin(
+        self,
+    ) -> Callable[[message_pin.DeleteMessagePinRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteMessagePin(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_reaction(
@@ -10147,6 +10711,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMemberships(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_message_pins(
+        self,
+    ) -> Callable[
+        [message_pin.ListMessagePinsRequest], message_pin.ListMessagePinsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListMessagePins(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_messages(
