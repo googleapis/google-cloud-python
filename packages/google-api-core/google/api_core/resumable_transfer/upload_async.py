@@ -129,17 +129,14 @@ class AsyncUploadOperation(
             UploadProgress snapshots for each progress transition.
         """
         if not self._consumed:
-            while True:
-                try:
-                    item = await self._progress_stream.__anext__()
-                except StopAsyncIteration:
-                    self._consumed = True
-                    break
-                except BaseException as exc:
-                    self._consumed = True
-                    self._exception = exc
-                    raise
-                yield item
+            try:
+                async for item in self._progress_stream:
+                    yield item
+                self._consumed = True
+            except BaseException as exc:
+                self._consumed = True
+                self._exception = exc
+                raise
 
     @property
     def response(self) -> Optional[ResponseType]:
