@@ -38,20 +38,20 @@ from urllib.parse import urlparse, urlunparse
 # mypy may flag attr-defined or assignment errors when fallback to None occurs.
 try:
     from google.api_core import _observability  # type: ignore[attr-defined]
-except ImportError:  # pragma: NO COVER
+except ImportError:
     _observability = None  # type: ignore[assignment]
 
 if _observability is not None and hasattr(_observability, "trace_http_request"):
     trace_http_request = _observability.trace_http_request
-else:  # pragma: NO COVER
+else:
     @contextlib.contextmanager
-    def trace_http_request(*args: Any, **kwargs: Any):  # pragma: NO COVER
+    def trace_http_request(*args: Any, **kwargs: Any):
         yield None
 
 if _observability is not None and hasattr(_observability, "record_http_response"):
     record_http_response = _observability.record_http_response
-else:  # pragma: NO COVER
-    def record_http_response(span: Any, response: Any) -> None:  # pragma: NO COVER
+else:
+    def record_http_response(span: Any, response: Any) -> None:
         pass
 
 try:

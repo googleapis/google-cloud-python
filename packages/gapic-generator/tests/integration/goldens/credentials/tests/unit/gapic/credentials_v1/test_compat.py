@@ -452,3 +452,22 @@ def test_trace_http_request_compat():
 def test_record_http_response_compat():
     # record_http_response is exposed from _compat and callable with dummy args
     record_http_response(None, None)
+
+
+def test_observability_compat_fallback(monkeypatch):
+    import importlib
+    import sys
+    from google.iam.credentials_v1 import _compat
+
+    # Simulate an environment where google.api_core._observability is not available
+    monkeypatch.setitem(sys.modules, "google.api_core._observability", None)
+    reloaded = importlib.reload(_compat)
+    try:
+        assert reloaded._observability is None
+        with reloaded.trace_http_request(method="GET", url="https://example.com") as span:
+            assert span is None
+        reloaded.record_http_response(None, None)
+    finally:
+        # Restore _compat to normal environment
+        monkeypatch.undo()
+        importlib.reload(_compat)

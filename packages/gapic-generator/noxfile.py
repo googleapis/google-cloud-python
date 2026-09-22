@@ -269,54 +269,30 @@ def showcase_library(
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
-        # Check local cache first to avoid transient download outages or rate limits.
-        cache_dir = path.join(path.dirname(__file__), ".cache", "showcase")
-        desc_cache = path.join(cache_dir, "showcase.desc")
-        yaml_cache = path.join(cache_dir, "showcase_v1beta1.yaml")
-        grpc_config_cache = path.join(cache_dir, "showcase_grpc_service_config.json")
-
-        # Download or copy the Showcase descriptor.
-        if path.exists(desc_cache):
-            shutil.copyfile(desc_cache, path.join(tmp_dir, "showcase.desc"))
-        else:
+        # Download the Showcase descriptor.
+        session.run(
+            "curl",
+            "https://github.com/googleapis/gapic-showcase/releases/"
+            f"download/v{showcase_version}/"
+            f"gapic-showcase-{showcase_version}.desc",
+            "-L",
+            "--output",
+            path.join(tmp_dir, "showcase.desc"),
+            external=True,
+            silent=True,
+        )
+        if include_service_yaml:
             session.run(
                 "curl",
                 "https://github.com/googleapis/gapic-showcase/releases/"
                 f"download/v{showcase_version}/"
-                f"gapic-showcase-{showcase_version}.desc",
+                f"showcase_v1beta1.yaml",
                 "-L",
-                "--fail",
-                "--retry",
-                "5",
-                "--retry-delay",
-                "2",
-                "--retry-all-errors",
                 "--output",
-                path.join(tmp_dir, "showcase.desc"),
+                path.join(tmp_dir, "showcase_v1beta1.yaml"),
                 external=True,
                 silent=True,
             )
-        if include_service_yaml:
-            if path.exists(yaml_cache):
-                shutil.copyfile(yaml_cache, path.join(tmp_dir, "showcase_v1beta1.yaml"))
-            else:
-                session.run(
-                    "curl",
-                    "https://github.com/googleapis/gapic-showcase/releases/"
-                    f"download/v{showcase_version}/"
-                    f"showcase_v1beta1.yaml",
-                    "-L",
-                    "--fail",
-                    "--retry",
-                    "5",
-                    "--retry-delay",
-                    "2",
-                    "--retry-all-errors",
-                    "--output",
-                    path.join(tmp_dir, "showcase_v1beta1.yaml"),
-                    external=True,
-                    silent=True,
-                )
             # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
             # to test experimental async rest transport. It must be removed once support for async rest is GA.
             if rest_async_io_enabled:
@@ -335,29 +311,17 @@ def showcase_library(
                 session.run("python", "-c", f"{update_service_yaml}")
             # END TODO section to remove.
         if retry_config:
-            if path.exists(grpc_config_cache):
-                shutil.copyfile(
-                    grpc_config_cache,
-                    path.join(tmp_dir, "showcase_grpc_service_config.json"),
-                )
-            else:
-                session.run(
-                    "curl",
-                    "https://github.com/googleapis/gapic-showcase/releases/"
-                    f"download/v{showcase_version}/"
-                    f"showcase_grpc_service_config.json",
-                    "-L",
-                    "--fail",
-                    "--retry",
-                    "5",
-                    "--retry-delay",
-                    "2",
-                    "--retry-all-errors",
-                    "--output",
-                    path.join(tmp_dir, "showcase_grpc_service_config.json"),
-                    external=True,
-                    silent=True,
-                )
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_grpc_service_config.json",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_grpc_service_config.json"),
+                external=True,
+                silent=True,
+            )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="

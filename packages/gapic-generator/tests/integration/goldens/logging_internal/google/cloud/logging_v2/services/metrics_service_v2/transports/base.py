@@ -36,7 +36,7 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-# Check once at module load time whether google-api-core's wrap_method supports
+# Check once at module load time whether google-api-core's wrap_methods support
 # OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
 # to avoid recurring inspect.signature latency during client instantiation.
 _WRAP_METHOD_SUPPORTS_TRACING = (
@@ -148,33 +148,25 @@ class MetricsServiceV2Transport(abc.ABC):
     def host(self):
         return self._host
 
-    def _wrap_method(self, func, *args, **kwargs):
-        if _WRAP_METHOD_SUPPORTS_TRACING:
+    def _wrap(self, wrapper, supports_tracing, func, *args, **kwargs):
+        if supports_tracing:
             kwargs["client_options"] = self._client_options
             if self.kind:
                 kwargs["kind"] = self.kind
-            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+            return wrapper(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
         # Excluded from coverage because our CI and testing environments always install
         # a modern version of google-api-core that supports tracing.
         for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
             kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        return wrapper(func, *args, **kwargs)  # pragma: NO COVER
+
+    def _wrap_method(self, func, *args, **kwargs):
+        return self._wrap(gapic_v1.method.wrap_method, _WRAP_METHOD_SUPPORTS_TRACING, func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
-        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
-            kwargs["client_options"] = self._client_options
-            if self.kind:
-                kwargs["kind"] = self.kind
-            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        # Excluded from coverage because our CI and testing environments always install
-        # a modern version of google-api-core that supports tracing.
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+        return self._wrap(gapic_v1.method_async.wrap_method, _ASYNC_WRAP_METHOD_SUPPORTS_TRACING, func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
