@@ -176,7 +176,11 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Create issue on failure
-        if: ${{ steps.run-tests.outcome == 'failure' && github.repository == 'googleapis/google-cloud-python' }}
+        # Only file an issue from the nightly schedule or a manual dispatch, never from a
+        # pull request. PRs that touch `ci/**` or this workflow trigger the check for
+        # validation purposes only; filing a `priority: p1` issue from them would duplicate
+        # the nightly report. The job summary written above still surfaces PR failures.
+        if: ${{ steps.run-tests.outcome == 'failure' && github.event_name != 'pull_request' && github.repository == 'googleapis/google-cloud-python' }}
         uses: googleapis/librarian/.github/actions/create-issue-on-failure@bb2ee61752bd0f5387195b54c509e4d01a52b41d
         with:
           title: "prerelease_deps check failed"
