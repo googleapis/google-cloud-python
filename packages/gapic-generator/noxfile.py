@@ -332,6 +332,13 @@ def showcase_library(
                     "transport=grpc+rest",
                 )
             )
+        protos = (
+            "google/showcase/v1beta1/echo.proto",
+            "google/showcase/v1beta1/identity.proto",
+            "google/showcase/v1beta1/messaging.proto",
+        )
+        if templates == "DEFAULT":
+            protos += ("google/showcase/v1beta1/resumable_upload.proto",)
         cmd_tup = (
             "python",
             "-m",
@@ -340,10 +347,7 @@ def showcase_library(
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
             f"--python_gapic_out={tmp_dir}",
-            f"google/showcase/v1beta1/echo.proto",
-            f"google/showcase/v1beta1/identity.proto",
-            f"google/showcase/v1beta1/messaging.proto",
-            f"google/showcase/v1beta1/resumable_upload.proto",
+            *protos,
         )
         session.run(
             *cmd_tup,
