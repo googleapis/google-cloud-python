@@ -496,14 +496,11 @@ def test_bson_decimal128_valid():
     dec2 = BSONDecimal128(42)
     assert dec2.value == "42"
 
-    dec3 = BSONDecimal128(1.5)
-    assert dec3.value == "1.5"
+    dec3 = BSONDecimal128(decimal.Decimal("99.99"))
+    assert dec3.value == "99.99"
 
-    dec4 = BSONDecimal128(decimal.Decimal("99.99"))
-    assert dec4.value == "99.99"
-
-    dec5 = BSONDecimal128(dec1)
-    assert dec5.value == "123.45"
+    dec4 = BSONDecimal128(dec1)
+    assert dec4.value == "123.45"
 
 
 def test_bson_decimal128_float_and_int():
@@ -523,9 +520,6 @@ def test_bson_decimal128_float_and_int():
         "-NaN",
         "sNaN",
         "-sNaN",
-        float("inf"),
-        float("-inf"),
-        float("nan"),
     ],
 )
 def test_bson_decimal128_special_values(special_val):
@@ -545,9 +539,14 @@ def test_bson_decimal128_special_values(special_val):
 @pytest.mark.parametrize(
     "val_input, exc_type, match_msg",
     [
-        (True, TypeError, "value must be a Decimal, str, int, or float"),
-        (False, TypeError, "value must be a Decimal, str, int, or float"),
-        ([1, 2], TypeError, "value must be a Decimal, str, int, or float"),
+        (True, TypeError, "value must be a Decimal, str, or int"),
+        (False, TypeError, "value must be a Decimal, str, or int"),
+        ([1, 2], TypeError, "value must be a Decimal, str, or int"),
+        (1.5, TypeError, "does not accept float values"),
+        (float("inf"), TypeError, "does not accept float values"),
+        (float("nan"), TypeError, "does not accept float values"),
+        ("not-a-number", ValueError, "Cannot convert 'not-a-number' to Decimal"),
+        ("12.34.56", ValueError, "Cannot convert '12.34.56' to Decimal"),
     ],
 )
 def test_bson_decimal128_invalid_inputs(val_input, exc_type, match_msg):

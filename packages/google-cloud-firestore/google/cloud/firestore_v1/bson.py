@@ -413,12 +413,12 @@ class BSONDecimal128(_BSONType):
     """Represents a BSON 128-bit Decimal container for Firestore.
 
     Args:
-        value (Union[str, int, float, decimal.Decimal, BSONDecimal128]):
-            The decimal value as a string, integer, float, decimal.Decimal,
+        value (Union[str, int, decimal.Decimal, BSONDecimal128]):
+            The decimal value as a string, integer, decimal.Decimal,
             or BSONDecimal128 instance.
 
     Raises:
-        TypeError: If value is a boolean or unsupported type.
+        TypeError: If value is a boolean or an unsupported type.
         ValueError: If value cannot be parsed as a valid decimal number.
 
     Example:
@@ -433,18 +433,26 @@ class BSONDecimal128(_BSONType):
 
     def __init__(
         self,
-        value: Union[str, int, float, decimal.Decimal, "BSONDecimal128"],
+        value: Union[str, int, decimal.Decimal, "BSONDecimal128"],
     ):
         if isinstance(value, BSONDecimal128):
             self._value: str = value._value
-        elif isinstance(value, (str, int, float, decimal.Decimal)) and not isinstance(
+        elif isinstance(value, (str, int, decimal.Decimal)) and not isinstance(
             value, bool
         ):
+            try:
+                # Validate the value parses as a valid decimal number
+                decimal.Decimal(value)
+            except decimal.InvalidOperation as exc:
+                raise ValueError(f"Cannot convert {value!r} to Decimal: {exc}") from exc
             self._value = str(value)
-        else:
+        elif isinstance(value, float):
             raise TypeError(
-                "BSONDecimal128 value must be a Decimal, str, int, or float."
+                "BSONDecimal128 does not accept float values due to potential precision loss. "
+                "Convert the float to a str or decimal.Decimal first."
             )
+        else:
+            raise TypeError("BSONDecimal128 value must be a Decimal, str, or int.")
 
     @property
     def value(self) -> str:
