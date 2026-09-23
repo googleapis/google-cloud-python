@@ -19,10 +19,6 @@ env:
   PRERELEASE_PYTHON: 3.15
   ALL_PYTHON: "['3.10', '3.11', '3.12', '3.13', '3.14', '3.15']"
   TRIMMED_PYTHON: "['3.10', '3.14', '3.15']"
-  # Workaround: Allows libcst to compile on Python 3.15+ while PyO3 catches up
-  # Can be removed once libcst releases a version with native Python 3.15 wheels
-  # Follow https://github.com/Instagram/LibCST/issues/1445 for updates.
-  PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
 
 jobs:
   # Check if the gapic-generator was changed. If so, execute specialized tests

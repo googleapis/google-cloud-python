@@ -36,8 +36,6 @@ env:
   PACKAGE_DIRS: packages
   NOX_DEFAULT_VENV_BACKEND: "virtualenv"
   UV_PRERELEASE: "allow"
-  # Workaround: Allows libcst/Rust extensions to compile on Python 3.15+ while PyO3 catches up
-  PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
 
 jobs:
   prerelease:
