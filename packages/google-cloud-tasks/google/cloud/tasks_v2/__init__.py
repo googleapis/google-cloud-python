@@ -28,6 +28,7 @@ __version__ = package_version.__version__
 __lazy_modules__ = {
     "google.cloud.tasks_v2.services.cloud_tasks",
     "google.cloud.tasks_v2.types.cloudtasks",
+    "google.cloud.tasks_v2.types.cmek_config",
     "google.cloud.tasks_v2.types.queue",
     "google.cloud.tasks_v2.types.target",
     "google.cloud.tasks_v2.types.task",
@@ -36,10 +37,16 @@ __lazy_modules__ = {
 
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
+    BatchCreateTasksMetadata,
+    BatchCreateTasksRequest,
+    BatchCreateTasksResponse,
+    BatchDeleteTasksMetadata,
+    BatchDeleteTasksRequest,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
     DeleteTaskRequest,
+    GetCmekConfigRequest,
     GetQueueRequest,
     GetTaskRequest,
     ListQueuesRequest,
@@ -50,16 +57,22 @@ from .types.cloudtasks import (
     PurgeQueueRequest,
     ResumeQueueRequest,
     RunTaskRequest,
+    UpdateCmekConfigRequest,
     UpdateQueueRequest,
 )
+from .types.cmek_config import CmekConfig
 from .types.queue import Queue, RateLimits, RetryConfig, StackdriverLoggingConfig
 from .types.target import (
     AppEngineHttpRequest,
     AppEngineRouting,
     HttpMethod,
     HttpRequest,
+    HttpTarget,
     OAuthToken,
     OidcToken,
+    PathOverride,
+    QueryOverride,
+    UriOverride,
 )
 from .types.task import Attempt, Task
 
@@ -68,23 +81,33 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
+    "BatchCreateTasksMetadata",
+    "BatchCreateTasksRequest",
+    "BatchCreateTasksResponse",
+    "BatchDeleteTasksMetadata",
+    "BatchDeleteTasksRequest",
     "CloudTasksClient",
+    "CmekConfig",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
     "DeleteTaskRequest",
+    "GetCmekConfigRequest",
     "GetQueueRequest",
     "GetTaskRequest",
     "HttpMethod",
     "HttpRequest",
+    "HttpTarget",
     "ListQueuesRequest",
     "ListQueuesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
     "OAuthToken",
     "OidcToken",
+    "PathOverride",
     "PauseQueueRequest",
     "PurgeQueueRequest",
+    "QueryOverride",
     "Queue",
     "RateLimits",
     "ResumeQueueRequest",
@@ -92,7 +115,9 @@ __all__ = (
     "RunTaskRequest",
     "StackdriverLoggingConfig",
     "Task",
+    "UpdateCmekConfigRequest",
     "UpdateQueueRequest",
+    "UriOverride",
 )
 
 api_core.check_python_version("google.cloud.tasks_v2")

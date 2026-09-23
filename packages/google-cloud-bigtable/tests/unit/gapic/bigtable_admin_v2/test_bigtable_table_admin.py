@@ -22749,7 +22749,10 @@ def test_update_table_rest_call_success(request_type):
             "retention_period": {},
             "frequency": {},
             "locations": ["locations_value1", "locations_value2"],
+            "keep_hot_duration": {},
+            "disabled": True,
         },
+        "effective_automated_backup_policy": {},
         "tiered_storage_config": {"infrequent_access": {"include_if_older_than": {}}},
         "row_key_schema": {
             "fields": [
