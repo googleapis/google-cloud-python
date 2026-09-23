@@ -98,7 +98,7 @@ class ResumableUploadServiceClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
-        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES and ASYNC_REST_EXCEPTION is not None:  # pragma: NO COVER
             raise ASYNC_REST_EXCEPTION
         if label:
             return cls._transport_registry[label]

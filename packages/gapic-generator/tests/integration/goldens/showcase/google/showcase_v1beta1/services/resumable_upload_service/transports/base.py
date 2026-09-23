@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 import abc
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.showcase_v1beta1 import gapic_version as package_version
 
@@ -115,7 +115,7 @@ class ResumableUploadServiceTransport(abc.ABC):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
-        self._credentials = credentials
+        self._credentials: Any = credentials
         self._client_info = client_info
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.

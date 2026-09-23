@@ -135,7 +135,7 @@ class {{ service.client_name }}Meta(type):
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
         {% if rest_async_io_enabled %}
         {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
-        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES and ASYNC_REST_EXCEPTION is not None:  # pragma: NO COVER
             raise ASYNC_REST_EXCEPTION
         {% endif %}
         if label:
