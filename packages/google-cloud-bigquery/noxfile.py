@@ -180,9 +180,13 @@ def default(session, install_extras=True):
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
-    if session.python == "3.15":
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/17741): 
+    # remove this skip once the optional extras resolve on 3.15. 
+    # `unit_noextras` can be tested on 3.15
+    if session.python == "3.15" and test_type == "unit":
         session.skip(
-            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+            "Optional extras do not yet resolve on 3.15; "
+            "unit_noextras covers the core install."
         )
 
     install_extras = True
