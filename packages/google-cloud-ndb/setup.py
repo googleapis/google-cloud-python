@@ -45,7 +45,7 @@ def main():
         "protobuf >= 6.33.5, < 8.0.0",
         "pymemcache >= 2.1.0, < 5.0.0",
         "pytz >= 2022.1",
-        "redis >= 3.0.0, < 8.0.0",
+        "redis >= 3.0.0, < 9.0.0",
     ]
 
     setuptools.setup(

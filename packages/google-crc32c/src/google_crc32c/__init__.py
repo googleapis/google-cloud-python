@@ -20,11 +20,12 @@ _SLOW_CRC32C_WARNING = (
     "please configure a c build environment and compile the extension"
 )
 
-# Default to C exstension Implementation, falling back to pure python.
+# Default to C extension implementation, falling back to pure Python.
 try:
-    from google_crc32c import cext as impl
+    # Pure-Python unit test sessions test python.py; cext is tested during wheel checks.
+    from google_crc32c import cext as impl  # pragma: NO COVER
 
-    implementation = "c"
+    implementation = "c"  # pragma: NO COVER
 except ImportError:
     from google_crc32c import python as impl  # type: ignore
 
