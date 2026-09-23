@@ -684,55 +684,46 @@ class ComplianceGrpcAsyncIOTransport(ComplianceTransport):
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
         }
 

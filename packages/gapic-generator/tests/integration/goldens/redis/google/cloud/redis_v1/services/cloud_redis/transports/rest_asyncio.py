@@ -877,43 +877,36 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
             self.wait_operation: self._wrap_method(
                 self.wait_operation,
                 default_timeout=None,
                 client_info=client_info,
-                kind='rest',
             ),
         }
 

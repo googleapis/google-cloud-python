@@ -350,7 +350,6 @@ def _prep_wrapped_messages(self, client_info):
             self.{{ method_name|snake_case }},
             default_timeout=None,
             client_info=client_info,
-            kind='rest',
         ),
         {% endfor %}{# api.mixin_api_methods.keys() #}
         {% endif %}
