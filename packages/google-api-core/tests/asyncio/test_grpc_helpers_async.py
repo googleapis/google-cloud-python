@@ -786,7 +786,16 @@ def test_apply_channel_interceptors_mock():
     channel._unary_unary_interceptors.append.assert_any_call(interceptor2)
 
 
-def test_apply_channel_interceptors_attr_not_appendable():
+def test_apply_channel_interceptors_inner_target_not_appendable():
+    channel = mock.Mock(spec=["_unary_unary_interceptors"])
+    channel._unary_unary_interceptors = 123
+    interceptor = mock.Mock(spec=["intercept_unary_unary"])
+    assert (
+        grpc_helpers_async.apply_channel_interceptors(channel, [interceptor]) is channel
+    )
+
+
+def test_apply_channel_interceptors_fallback_not_appendable():
     channel = mock.Mock(spec=["_unary_unary_interceptors"])
     channel._unary_unary_interceptors = 123
     interceptor = mock.Mock(spec=[])
