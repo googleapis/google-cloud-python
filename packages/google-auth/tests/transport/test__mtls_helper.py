@@ -807,6 +807,20 @@ class TestReadCertAndKeyFile(object):
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
 
+    @pytest.mark.parametrize(
+        "trailing_bytes",
+        [
+            b"-----BEGIN CERTIFICATE-----\nMIIB\n",
+            b"MIIB\n-----END CERTIFICATE-----\n",
+        ],
+    )
+    def test_truncated_multi_cert_raises_error(self, tmp_path, trailing_bytes):
+        cert_file = tmp_path / "truncated_chain.pem"
+        cert_file.write_bytes(pytest.public_cert_bytes + trailing_bytes)
+        key_path = os.path.join(pytest.data_dir, "privatekey.pem")
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
+
 
 class TestGetCertConfigPath(object):
     def test_success_with_override(self):

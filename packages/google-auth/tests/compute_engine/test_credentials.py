@@ -472,7 +472,6 @@ class TestCredentials(object):
         # Subsequent check calls should return False early
         assert creds._is_regional_access_boundary_lookup_required() is False
 
-    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -480,11 +479,12 @@ class TestCredentials(object):
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=True,
     )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_with_agent_identity(
         self,
+        mock_metadata_get,
         mock_should_request,
         mock_get_cert_and_bytes,
-        mock_metadata_get,
     ):
         mock_cert = mock.sentinel.cert
         mock_cert_bytes = b"cert_content"

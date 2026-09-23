@@ -321,9 +321,7 @@ def parse_certificate(cert_bytes):
         cert_blocks = _mtls_helper._CERT_REGEX.findall(cert_bytes)
         if not cert_blocks:
             return x509.load_pem_x509_certificate(cert_bytes)
-        if len(cert_blocks) != cert_bytes.count(b"-----BEGIN CERTIFICATE-----") or len(
-            cert_blocks
-        ) != cert_bytes.count(b"-----END CERTIFICATE-----"):
+        if _mtls_helper._has_unmatched_pem_markers(cert_bytes, cert_blocks):
             raise ValueError("Malformed or truncated PEM certificate chain.")
         certs = [x509.load_pem_x509_certificate(block) for block in cert_blocks]
         return certs[0]
@@ -400,7 +398,7 @@ def should_request_bound_token(cert):
 
     This is based on the GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN env var
     (falls back to the deprecated GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES
-    if unset) and whether the certificate is an agent identity cert.
+    if unset or empty) and whether the certificate is an agent identity cert.
 
     Args:
         cert (cryptography.x509.Certificate): The parsed certificate object.

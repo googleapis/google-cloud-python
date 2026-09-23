@@ -131,8 +131,8 @@ file. This variable is the fallback of GOOGLE_API_CERTIFICATE_CONFIG."""
 GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN = "GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN"
 """Environment variable controlling whether to enable runtime bound tokens.
 
-Defaults to enabled; only a case-insensitive ``"false"`` disables it. When set,
-this variable takes precedence over
+Defaults to enabled; only a case-insensitive ``"false"`` disables it. When set
+to a non-empty value, this variable takes precedence over
 :data:`GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES`.
 """
 

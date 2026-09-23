@@ -1819,7 +1819,7 @@ class TestCredentials(object):
             credentials.refresh(None)
 
         assert excinfo.match(
-            "Failed to retrieve certificate bytes for external account credentials"
+            "Failed to retrieve or parse certificate for external account credentials"
         )
 
     @mock.patch.object(
@@ -1835,7 +1835,7 @@ class TestCredentials(object):
         with pytest.raises(exceptions.RefreshError) as excinfo:
             credentials.refresh(None)
 
-        msg = "Failed to retrieve certificate bytes for external"
+        msg = "Failed to retrieve or parse certificate for external"
         assert excinfo.match(msg + " account credentials")
 
     @mock.patch(
@@ -1856,7 +1856,7 @@ class TestCredentials(object):
             credentials.refresh(None)
 
         assert excinfo.match(
-            "Failed to retrieve certificate bytes for external account credentials"
+            "Failed to retrieve or parse certificate for external account credentials"
         )
 
     @mock.patch("google.auth._agent_identity_utils.parse_certificate")

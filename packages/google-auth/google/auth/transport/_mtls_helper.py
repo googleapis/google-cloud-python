@@ -536,12 +536,19 @@ def _join_cert_chain(cert_match):
     )
 
 
+def _has_unmatched_pem_markers(pem_bytes, cert_blocks):
+    """Checks that every BEGIN/END CERTIFICATE marker belongs to a complete cert block."""
+    return len(cert_blocks) != pem_bytes.count(b"-----BEGIN CERTIFICATE-----") or len(
+        cert_blocks
+    ) != pem_bytes.count(b"-----END CERTIFICATE-----")
+
+
 def _read_cert_file(cert_path):
     with open(cert_path, "rb") as cert_file:
         cert_data = cert_file.read()
 
     cert_match = re.findall(_CERT_REGEX, cert_data)
-    if not cert_match:
+    if not cert_match or _has_unmatched_pem_markers(cert_data, cert_match):
         raise exceptions.ClientCertError(
             "Certificate file {} is in an invalid format, at least one PEM formatted certificate is expected".format(
                 cert_path

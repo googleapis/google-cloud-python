@@ -575,7 +575,7 @@ class Credentials(external_account.Credentials):
                 cert = _agent_identity_utils.parse_certificate(cert_bytes)
             except (exceptions.ClientCertError, OSError, ValueError) as e:
                 raise exceptions.RefreshError(
-                    "Failed to retrieve certificate bytes for external"
+                    "Failed to retrieve or parse certificate for external"
                     " account credentials"
                 ) from e
             if _agent_identity_utils.should_request_bound_token(cert):

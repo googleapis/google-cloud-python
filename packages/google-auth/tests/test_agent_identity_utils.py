@@ -72,30 +72,31 @@ AGENT_IDENTITY_CERT_BYTES = (
 )
 
 
-class TestAgentIdentityUtils:
-    @pytest.fixture(autouse=True)
-    def clean_env(self, monkeypatch):
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-            raising=False,
-        )
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            raising=False,
-        )
-        monkeypatch.delenv(
-            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
-            raising=False,
-        )
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
-            raising=False,
-        )
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
-            raising=False,
-        )
+@pytest.fixture(autouse=True)
+def clean_env(monkeypatch):
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN,
+        raising=False,
+    )
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES,
+        raising=False,
+    )
 
+
+class TestAgentIdentityUtils:
     @mock.patch("cryptography.x509.load_pem_x509_certificate")
     def test_parse_certificate(self, mock_load_cert):
         mock_load_cert.return_value = mock.sentinel.cert
