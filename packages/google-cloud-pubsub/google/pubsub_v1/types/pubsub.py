@@ -82,6 +82,7 @@ __protobuf__ = proto.module(
         "DeleteSnapshotRequest",
         "SeekRequest",
         "SeekResponse",
+        "PubsubClientTelemetry",
     },
 )
 
@@ -3929,6 +3930,59 @@ class SeekRequest(proto.Message):
 
 class SeekResponse(proto.Message):
     r"""Response for the ``Seek`` method (this response is empty)."""
+
+
+class PubsubClientTelemetry(proto.Message):
+    r"""Client-side telemetry about Pub/Sub requests, useful for debugging
+    purposes. If the client opts to provide this information, it will be
+    passed as a serialized proto in the
+    ``x-goog-pubsub-client-telemetry`` header.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        publish_operation (google.pubsub_v1.types.PubsubClientTelemetry.PublishOperation):
+            Optional. Telemetry about a ``Publish`` operation.
+
+            This field is a member of `oneof`_ ``operation``.
+    """
+
+    class PublishOperation(proto.Message):
+        r"""Telemetry about a ``Publish`` operation which may or may not be
+        common across individual RPCs.
+
+        Attributes:
+            hedged_attempt_count (int):
+                Optional. If the publisher client is using
+                publish hedging, provides the attempt count for
+                the hedge (starting at 1). A value of 0
+                indicates that the request was not hedged.
+            publish_start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. Time at which the ``publish()`` call was initiated
+                in the client library, meaning across all RPC retry
+                attempts, see `grpc
+                retries <https://grpc.io/docs/guides/retry/>`__. Provides a
+                sense of the end-to-end publish duration from the client
+                perspective, across retries.
+        """
+
+        hedged_attempt_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        publish_start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    publish_operation: PublishOperation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="operation",
+        message=PublishOperation,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

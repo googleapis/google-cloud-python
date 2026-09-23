@@ -51,6 +51,14 @@ from test__helpers import (
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectId,
+    BSONTimestamp,
+)
 from google.cloud.firestore_v1.query_profile import (
     ExecutionStats,
     ExplainMetrics,
@@ -1243,6 +1251,42 @@ async def test_list_collections_with_read_time(client, cleanup, database):
     ) == {
         document_ref1,
         document_ref2,
+    }
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_async_bson_document_writes(client, cleanup, database):
+    """Test async write operations for BSON types on Enterprise DB."""
+    collection_id = "async_bson_type_writes_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("bson_doc")
+    cleanup(doc_ref.delete)
+
+    bson_payload = {
+        "user_id": BSONObjectId("507f191e810c19729de860ea"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
+        "int32_val": BSONInt32(42),
+        "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
+    }
+
+    await doc_ref.set(bson_payload)
+
+    snapshot = await doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {
+        "user_id": {"__oid__": "507f191e810c19729de860ea"},
+        "min_key": {"__min__": None},
+        "max_key": {"__max__": None},
+        "int32_val": {"__int__": 42},
+        "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
     }
 
 

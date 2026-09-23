@@ -175,6 +175,7 @@ replacements:
       ]
       extras = {
           "libcst": "libcst >= 0.2.5",
+          "omni": ["cryptography >= 44.0.0"],
           "test": [
               "pytest",
               "mock",
@@ -693,7 +694,9 @@ replacements:
       UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
       UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
       UNIT_TEST_DEPENDENCIES: List[str] = []
-      UNIT_TEST_EXTRAS: List[str] = []
+      UNIT_TEST_EXTRAS: List[str] = [
+          "omni",
+      ]
       UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
       SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
@@ -707,6 +710,7 @@ replacements:
       SYSTEM_TEST_DEPENDENCIES: List[str] = []
       SYSTEM_TEST_EXTRAS: List[str] = [
           "tracing",
+          "omni",
       ]
       SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
@@ -1412,6 +1416,7 @@ replacements:
       mmh3==4.1.0
       libcst==0.2.5
       googleapis-common-protos==1.69.2
+      cryptography==44.0.0
     count: 1
   - paths: [
       packages/google-cloud-spanner/noxfile.py
@@ -1431,6 +1436,10 @@ replacements:
                 "-n",
                 "auto",
                 "tests/unit",
+    count: 1
+  - paths: [packages/google-cloud-spanner/noxfile.py]
+    before: '\n    # Install all dependencies\n    session\.install\("-e", "\."\)'
+    after: '\n    # Install all dependencies\n    session.install("-e", ".[omni]")'
     count: 1
   - paths: [packages/google-cloud-spanner/.coveragerc]
     before: |

@@ -48,6 +48,14 @@ from test__helpers import (
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectId,
+    BSONTimestamp,
+)
 from google.cloud.firestore_v1.vector import Vector
 
 
@@ -1272,6 +1280,41 @@ def test_unicode_doc(client, cleanup, database):
     snapshot2 = document_ref.get()
     assert snapshot2.to_dict() == data2
     assert snapshot2.reference.id == explicit_doc_id
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_document_writes(client, cleanup, database):
+    """Test write operations for BSON types on Enterprise DB."""
+    collection_id = "bson_type_writes_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("bson_doc")
+    cleanup(doc_ref.delete)
+
+    bson_payload = {
+        "user_id": BSONObjectId("507f191e810c19729de860ea"),
+        "min_key": BSONMinKey(),
+        "max_key": BSONMaxKey(),
+        "int32_val": BSONInt32(42),
+        "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
+    }
+
+    doc_ref.set(bson_payload)
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {
+        "user_id": {"__oid__": "507f191e810c19729de860ea"},
+        "min_key": {"__min__": None},
+        "max_key": {"__max__": None},
+        "int32_val": {"__int__": 42},
+        "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
+    }
 
 
 @pytest.fixture(scope="module")

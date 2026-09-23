@@ -393,6 +393,9 @@ def test_wrd_with_non_default_flush_interval(
     event_loop.run_until_complete(_run())
 
 
+@pytest.mark.skipif(
+    RCU_SYSTEM_TESTS, reason="Write from blob for RCU not supported in SDK yet"
+)
 def test_write_from_blob(
     storage_client,
     blobs_to_delete,

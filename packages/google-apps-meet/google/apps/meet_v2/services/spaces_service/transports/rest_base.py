@@ -88,6 +88,40 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
             api_audience=api_audience,
         )
 
+    class _BaseBatchUpdateMembers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=spaces/*}/members:batchUpdate",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseCreateMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=spaces/*}/members",
+                    "body": "member",
+                },
+            ]
+            return http_options
+
     class _BaseCreateSpace:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -99,6 +133,22 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
                     "method": "post",
                     "uri": "/v2/spaces",
                     "body": "space",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=spaces/*/members/*}",
                 },
             ]
             return http_options
@@ -120,6 +170,22 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
             ]
             return http_options
 
+    class _BaseGetMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=spaces/*/members/*}",
+                },
+            ]
+            return http_options
+
     class _BaseGetSpace:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -132,6 +198,39 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v2/{name=spaces/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseListMembers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=spaces/*}/members",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{member.name=spaces/*/members/*}",
+                    "body": "member",
                 },
             ]
             return http_options
