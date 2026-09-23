@@ -30,12 +30,15 @@ def setup(monkeypatch):
 
 def test_opentelemetry_import_error_on_load(monkeypatch):
     """Verify module import gracefully handles missing opentelemetry package."""
-    with monkeypatch.context() as m:
-        m.setitem(sys.modules, "opentelemetry", None)
+    try:
+        with monkeypatch.context() as m:
+            m.setitem(sys.modules, "opentelemetry", None)
+            importlib.reload(_opentelemetry_metrics)
+            m.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
+            assert _opentelemetry_metrics.HAS_OPENTELEMETRY_METRICS is False
+            assert _opentelemetry_metrics.get_meter() is None
+    finally:
         importlib.reload(_opentelemetry_metrics)
-        assert _opentelemetry_metrics.HAS_OPENTELEMETRY_METRICS is False
-        assert _opentelemetry_metrics.get_meter() is None
-    importlib.reload(_opentelemetry_metrics)
 
 
 @pytest.mark.parametrize(
