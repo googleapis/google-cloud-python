@@ -48,7 +48,11 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
 )
 
 
-# A mock PEM-encoded certificate with a valid Agent Identity SPIFFE ID.
+# Synthetic self-signed test certificate (CN=agent-identity-test) with SAN URI
+# "spiffe://agents.global.proj-12345.system.id.goog/workload".
+# To regenerate safely, use cryptography.x509.CertificateBuilder with a
+# throwaway key (discard the private key; never commit it) and a dummy project
+# ID in the SPIFFE URI.
 AGENT_IDENTITY_CERT_BYTES = (
     b"-----BEGIN CERTIFICATE-----\n"
     b"MIIDEjCCAfqgAwIBAgIUKZAXnXnxf8hsn+ojS1N8bN3hXrUwDQYJKoZIhvcNAQEL\n"
