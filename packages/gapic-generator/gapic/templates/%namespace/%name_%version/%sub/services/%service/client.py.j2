@@ -30,6 +30,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
+{% if service.has_resumable_upload_methods %}
+from google.api_core.resumable_transfer import ResumableUploadConfig
+{% endif %}
 from {{package_path}}._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 {% if has_auto_populated_fields %}
 from {{package_path}}._compat import setup_request_id

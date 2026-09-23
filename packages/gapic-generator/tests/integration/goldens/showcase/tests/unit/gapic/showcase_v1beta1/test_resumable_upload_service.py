@@ -54,6 +54,7 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import resumable_transfer
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -849,9 +850,7 @@ def test_upload_media(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.ResumableUploadSession)
 
 
 def test_upload_media_non_empty_request_with_auto_populated_field():
@@ -981,9 +980,7 @@ async def test_upload_media_async(request_type, transport: str = 'grpc_asyncio')
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
 
 
 def test_upload_media_rest_use_cached_wrapped_rpc():
@@ -1250,9 +1247,7 @@ def test_upload_media_rest_call_success(request_type):
         response = client.upload_media(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.ResumableUploadSession)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1877,9 +1872,7 @@ async def test_upload_media_rest_asyncio_call_success(request_type):
         response = await client.upload_media(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
 
 
 @pytest.mark.asyncio
@@ -2314,7 +2307,7 @@ def test_resumable_upload_service_upload_media_rest_start_empty_body():
         response_value.content = b""
         req.return_value = response_value
         response = client.upload_media(resumable_upload.UploadMediaRequest())
-        assert isinstance(response, resumable_upload.UploadMediaResponse)
+        assert isinstance(response, resumable_transfer.ResumableUploadSession)
 
 
 @pytest.mark.asyncio
@@ -2327,12 +2320,12 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_bo
     )
     with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:
         response_value = mock.MagicMock()
-        response_value.status = 200
+        response_value.status_code = 200
         response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         response_value.read = mock.AsyncMock(return_value=b"")
         req.return_value = response_value
         response = await client.upload_media(resumable_upload.UploadMediaRequest())
-        assert isinstance(response, resumable_upload.UploadMediaResponse)
+        assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are

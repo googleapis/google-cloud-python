@@ -1639,6 +1639,25 @@ class Method:
                 )
             )
 
+        if self.is_resumable_upload:
+            return PythonType(
+                meta=metadata.Metadata(
+                    address=metadata.Address(
+                        name=(
+                            "AsyncResumableUploadSession"
+                            if enable_asyncio
+                            else "ResumableUploadSession"
+                        ),
+                        module="resumable_transfer",
+                        package=("google", "api_core"),
+                        collisions=self.input.ident.collisions,
+                    ),
+                    documentation=utils.doc(
+                        "An object representing a resumable upload session."
+                    ),
+                ),
+            )
+
         # Return the usual output.
         return self.output
 
@@ -1957,6 +1976,9 @@ class Method:
         # that the individual result messages reside in a different module.
         if self.paged_result_field and self.paged_result_field.message:
             answer.append(self.paged_result_field.message)
+
+        if self.is_resumable_upload:
+            answer.append(self.output)
 
         # Done; return the answer.
         return tuple(answer)

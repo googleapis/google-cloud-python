@@ -1154,8 +1154,14 @@ def test_method_is_resumable_upload():
     # With UploadMedia method name
     method_upload = make_method("UploadMedia")
     assert method_upload.is_resumable_upload
+    assert method_upload.client_output.ident.name == "ResumableUploadSession"
+    assert str(method_upload.client_output.ident) == "resumable_transfer.ResumableUploadSession"
+    assert method_upload.client_output_async.ident.name == "AsyncResumableUploadSession"
+    assert str(method_upload.client_output_async.ident) == "resumable_transfer.AsyncResumableUploadSession"
+    assert method_upload.output in method_upload.ref_types
 
     # Non-resumable method
     method_other = make_method("OtherMethod")
     assert not method_other.is_resumable_upload
+
 

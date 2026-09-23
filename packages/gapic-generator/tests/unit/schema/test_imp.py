@@ -40,6 +40,11 @@ def test_str_untyped_api_core():
     assert str(i) == "import foo.api_core.baz as bacon  # type: ignore"
 
 
+def test_str_typed_resumable_transfer():
+    i = imp.Import(package=("google", "api_core"), module="resumable_transfer")
+    assert str(i) == "from google.api_core import resumable_transfer"
+
+
 def test_str_eq():
     i1 = imp.Import(package=("foo", "bar"), module="baz")
     i2 = imp.Import(package=("foo", "bar"), module="baz")

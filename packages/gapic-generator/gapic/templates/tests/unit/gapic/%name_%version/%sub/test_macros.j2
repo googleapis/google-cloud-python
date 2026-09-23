@@ -92,6 +92,8 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% elif method.server_streaming %}
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
+    {% elif method.is_resumable_upload %}
+    assert isinstance(response, {{ method.client_output.ident }})
     {% else %}
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
@@ -357,6 +359,8 @@ async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyn
     {% elif method.server_streaming %}
     message = await response.read()
     assert isinstance(message, {{ method.output.ident }})
+    {% elif method.is_resumable_upload %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output_async.ident }})
     {% for field in method_output.fields.values() | rejectattr('message') %}
@@ -2105,6 +2109,12 @@ def test_initialize_client_w_{{transport_name}}():
     assert response is None
     {% elif method.lro %}
     json_return_value = json_format.MessageToJson(return_value)
+    {% elif method.is_resumable_upload %}
+    {% if is_async %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
+    {% else %}
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% endif %}
     {% else %}
     {% if is_async %}
     assert isinstance(response, {{ method.client_output_async.ident }})

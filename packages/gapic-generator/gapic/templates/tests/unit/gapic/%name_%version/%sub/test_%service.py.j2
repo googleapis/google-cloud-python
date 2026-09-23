@@ -1575,12 +1575,12 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
     )
     with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:
         response_value = mock.MagicMock()
-        response_value.status = 200
+        response_value.status_code = 200
         response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         response_value.read = mock.AsyncMock(return_value=b"")
         req.return_value = response_value
         response = await client.{{ method.client_method_name|snake_case }}({{ method.input.ident }}())
-        assert isinstance(response, {{ method.client_output.ident }})
+        assert isinstance(response, {{ method.client_output_async.ident }})
 {% endif %}
 {% endfor %}
 {% endif %}
