@@ -599,6 +599,65 @@ def test_sync_stall_timeout(monkeypatch):
     assert exc_info.value.upload_url == "https://upload.example.com/resumable-123"
 
 
+def test_sync_multi_chunk_small_lag_does_not_false_stall(monkeypatch):
+    """Verifies that a small lag on chunk 1 does not cause chunk 2's normal transfer
+    duration to count toward stall_timeout and falsely raise TransferStalledError."""
+    session_transport = mock.create_autospec(requests.Session, instance=True)
+
+    start_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-123",
+        },
+    )
+    chunk1_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "active"},
+        content=b"",
+    )
+    chunk2_resp = mock.Mock(
+        ok=True,
+        status_code=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        content=b'{"name": "ok.txt", "size": 20480}',
+    )
+    responses = iter([start_resp, chunk1_resp, chunk2_resp])
+    current_time = [0.0]
+
+    def handle_request(*args, **kwargs):
+        resp = next(responses)
+        if resp is not start_resp:
+            current_time[0] += 10.5
+        return resp
+
+    session_transport.request.side_effect = handle_request
+    monkeypatch.setattr(upload, "_monotonic_clock", lambda: current_time[0])
+
+    # Each 10240-byte chunk has expected_sec = 10240 / 1024 = 10.0s, and stall_timeout = 10.0s.
+    # Chunk 1 takes 10.5s (t=0.0 -> 10.5, lag=0.5s).
+    # Chunk 2 takes 10.5s (t=10.5 -> 21.0, lag=0.5s).
+    # Cumulative lag is only 1.0s (< 10.0s stall_timeout), even though wall-clock time
+    # elapsed since chunk 1 started lagging is 11.0s (>= 10.0s).
+    config = ResumableUploadConfig(
+        chunk_size=10240,
+        stall_minimum_rate=1024,
+        stall_timeout=10.0,
+    )
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=session_transport,
+        response_type=DummyResponse,
+    )
+
+    result = session.upload(stream=b"x" * 20480)
+    assert result.name == "ok.txt"
+    assert session._aggregate_lag == pytest.approx(1.0)
+
+
 def test_sync_cancel():
     session_transport = mock.create_autospec(requests.Session, instance=True)
     cancel_resp = mock.Mock(ok=True, status_code=200, headers={})
@@ -1195,7 +1254,8 @@ def test_sync_stall_control_with_deadline():
     # 10240 bytes / 1024 B/s -> expected_sec = 10.0s.
     # Taking 10.5s gives current_lag = 10.5 - 10.0 = 0.5s.
     # Only the 0.5s lag counts toward stall_timeout (10.0s), not the full 10.5s,
-    # so the transfer does not stall yet.
+    # so even across two such chunks (aggregate_lag = 1.0s < 10.0s) the transfer
+    # does not stall.
     session5 = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=config4,
@@ -1203,12 +1263,12 @@ def test_sync_stall_control_with_deadline():
     session5._state._upload_url = "https://api.example.com/init"
     session5._update_stall_control(10240, 10.5)
     assert session5._aggregate_lag == pytest.approx(0.5)
-    assert session5._stall_timeout_started is not None
+    session5._update_stall_control(10240, 10.5)
+    assert session5._aggregate_lag == pytest.approx(1.0)
     session5._buffered_chunk = memoryview(b"stale")
     session5._reset_transfer_state()
     assert session5._buffered_chunk is None
     assert session5._aggregate_lag == 0.0
-    assert session5._stall_timeout_started is None
 
 
 def test_sync_update_stall_control_disabled():
@@ -1220,16 +1280,15 @@ def test_sync_update_stall_control_disabled():
     session._update_stall_control(512, 5.0)
     assert session._aggregate_lag == 0.0
 
-    # Ensure that _stall_timeout_started resets to None when transfer rate exceeds minimum rate (no lag).
+    # Ensure that _aggregate_lag resets to 0.0 when transfer rate exceeds minimum rate.
     active_config = ResumableUploadConfig(stall_minimum_rate=1024, stall_timeout=10.0)
     active_session = ResumableUploadSession(
         upload_url="https://api.example.com/init",
         config=active_config,
     )
-    active_session._stall_timeout_started = 100.0
+    active_session._aggregate_lag = 0.5
     active_session._update_stall_control(1024, 0.1)
     assert active_session._aggregate_lag == 0.0
-    assert active_session._stall_timeout_started is None
 
 
 def test_sync_initiate_failure():
@@ -1285,7 +1344,7 @@ def test_sync_transmit_chunk_timeout_with_stall_control_active(monkeypatch):
     session._state._upload_url = "https://upload.example.com/resumable-123"
 
     # Attempt 1 times out at 5.0s (< stall_timeout=10.0s): re-raises Timeout so retry/recovery can run
-    clock_vals = iter([0.0, 5.0, 5.0, 5.0, 10.0, 10.0, 10.0, 10.0])
+    clock_vals = iter([0.0, 5.0, 5.0, 10.0, 0.0, 5.0])
     monkeypatch.setattr(upload, "_monotonic_clock", lambda: next(clock_vals))
     with pytest.raises(requests.exceptions.Timeout):
         session._transmit_chunk(transport, io.BytesIO(b"data"), size=4)

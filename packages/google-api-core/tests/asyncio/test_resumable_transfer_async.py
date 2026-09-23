@@ -836,28 +836,27 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     # config has stall_minimum_rate=100 B/s, stall_timeout=1.0s.
     # 100 bytes / 100 B/s -> expected_sec = 1.0s.
     # Taking 1.2s gives current_lag = 1.2 - 1.0 = 0.2s.
-    # At clock = 10.0s, _stall_timeout_started is backdated by current_lag
-    # (10.0 - 0.2 = 9.8s) so elapsed stall time is 0.2s (< 1.0s stall_timeout).
-    clock_vals3 = iter([10.0, 11.0])
-    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: next(clock_vals3))
+    # Two such chunks accumulate aggregate_lag = 0.4s (< 1.0s stall_timeout),
+    # so the transfer does not stall prematurely.
     session3 = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=config,
     )
     session3._update_stall_control(100, 1.2)
     assert session3._aggregate_lag == pytest.approx(0.2)
-    assert session3._stall_timeout_started == pytest.approx(9.8)
-
-    # At clock = 11.0s, elapsed time since _stall_timeout_started (9.8s) is
-    # 11.0 - 9.8 = 1.2s >= stall_timeout (1.0s), raising TransferStalledError.
-    with pytest.raises(TransferStalledError, match="Upload stalled"):
-        session3._update_stall_control(100, 1.2)
+    session3._update_stall_control(100, 1.2)
+    assert session3._aggregate_lag == pytest.approx(0.4)
 
     # With aggregate_lag = 0.4s (0.2s + 0.2s), next_chunk_timeout is
     # 1.0 - 0.4 + 1.0 = 1.6s. timeout_override=0.5s is smaller, so 0.5s wins.
     assert session3._compute_chunk_timeout(100, timeout_override=0.5) == pytest.approx(
         0.5
     )
+
+    # A third chunk taking 1.6s adds current_lag = 0.6s -> aggregate_lag = 1.0s >= stall_timeout (1.0s),
+    # raising TransferStalledError.
+    with pytest.raises(TransferStalledError, match="Upload stalled"):
+        session3._update_stall_control(100, 1.6)
     session_no_stall = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start",
         config=ResumableUploadConfig(stall_minimum_rate=0, stall_timeout=0),
@@ -865,6 +864,59 @@ async def test_async_stall_timeout_raises_transfer_stalled_error(
     assert session_no_stall._compute_chunk_timeout(
         100, timeout_override=15.0
     ) == pytest.approx(15.0)
+
+
+@pytest.mark.asyncio
+async def test_async_multi_chunk_small_lag_does_not_false_stall(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Verifies that a small lag on chunk 1 does not cause chunk 2's normal transfer
+    duration to count toward stall_timeout and falsely raise TransferStalledError."""
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    chunk1_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "active"},
+        body=b"",
+    )
+    chunk2_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b'{"name": "ok_async.txt", "size": 20480}',
+    )
+    responses = iter([start_resp, chunk1_resp, chunk2_resp])
+    current_time = [0.0]
+
+    class AdvancingClockAsyncSession:
+        def request(self, *args: Any, **kwargs: Any) -> DummyAsyncResponse:
+            resp = next(responses)
+            if resp is not start_resp:
+                current_time[0] += 10.5
+            return resp
+
+    monkeypatch.setattr(upload_async, "_monotonic_clock", lambda: current_time[0])
+
+    config = ResumableUploadConfig(
+        chunk_size=10240,
+        stall_minimum_rate=1024,
+        stall_timeout=10.0,
+    )
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        config=config,
+        transport=AdvancingClockAsyncSession(),
+        response_type=DummyResponse,
+    )
+
+    result = await session.upload(stream=b"x" * 20480)
+    assert result.name == "ok_async.txt"
+    assert session._aggregate_lag == pytest.approx(1.0)
 
 
 @pytest.mark.asyncio

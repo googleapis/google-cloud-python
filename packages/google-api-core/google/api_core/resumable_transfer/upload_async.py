@@ -219,7 +219,6 @@ class AsyncResumableUploadSession:
 
         # Stall control tracking via monotonic clock
         self._aggregate_lag: float = 0.0
-        self._stall_timeout_started: Optional[float] = None
         self._needs_recovery: bool = False
 
     @property
@@ -261,7 +260,6 @@ class AsyncResumableUploadSession:
         self._buffered_chunk_is_last = False
         self._start_stream_offset = 0
         self._aggregate_lag = 0.0
-        self._stall_timeout_started = None
         self._needs_recovery = False
         self._state._finished = False
         self._state._invalid = False
@@ -676,19 +674,13 @@ class AsyncResumableUploadSession:
         expected_sec = data_len / rate if rate > 0 else 0.0
         current_lag = t_elapsed - expected_sec
         self._aggregate_lag = max(0.0, self._aggregate_lag + current_lag)
-        if self._aggregate_lag > 0.0:
-            now = _monotonic_clock()
-            if self._stall_timeout_started is None:
-                self._stall_timeout_started = now - current_lag
-            if now - self._stall_timeout_started >= self._config.stall_timeout:
-                self._get_deadline_remaining()
-                raise exceptions.TransferStalledError(
-                    f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
-                    upload_url=self.upload_url,
-                    chunk_size=self.chunk_size,
-                )
-        else:
-            self._stall_timeout_started = None
+        if self._aggregate_lag >= self._config.stall_timeout:
+            self._get_deadline_remaining()
+            raise exceptions.TransferStalledError(
+                f"Upload stalled: transfer rate remained below {rate} bytes/s for longer than {self._config.stall_timeout}s.",
+                upload_url=self.upload_url,
+                chunk_size=self.chunk_size,
+            )
 
     async def _recover(
         self,
