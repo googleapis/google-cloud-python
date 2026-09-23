@@ -27,6 +27,7 @@ _BLOB_ATTR_TO_PROTO_FIELD = {
     "content_language": "content_language",
     "temporary_hold": "temporary_hold",
     "event_based_hold": "event_based_hold",
+    "storage_class": "storage_class",
 }
 
 
