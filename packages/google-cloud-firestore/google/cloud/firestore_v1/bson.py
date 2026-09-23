@@ -30,6 +30,7 @@ import re
 from typing import Any, Callable, Dict, Union
 
 __all__ = [
+    "BSONType",
     "BSONObjectId",
     "BSONMinKey",
     "BSONMaxKey",
@@ -44,7 +45,7 @@ _OBJECT_ID_BYTES_LEN = 12
 _HEX_24_REGEX = re.compile(r"^[0-9a-fA-F]{24}$")
 
 
-class _BSONType(abc.ABC):
+class BSONType(abc.ABC):
     """Abstract base class for all BSON type containers in Firestore."""
 
     __slots__ = ()
@@ -87,7 +88,7 @@ class _BSONType(abc.ABC):
         return f"{self.__class__.__name__}()"
 
 
-class BSONObjectId(_BSONType):
+class BSONObjectId(BSONType):
     """Represents a 12-byte BSON ObjectId identifier.
 
     Args:
@@ -146,7 +147,7 @@ class BSONObjectId(_BSONType):
         return hash((type(self), self._value))
 
 
-class BSONMinKey(_BSONType):
+class BSONMinKey(BSONType):
     """Represents the BSON MinKey sentinel value for query range boundaries."""
 
     __slots__ = ()
@@ -164,7 +165,7 @@ class BSONMinKey(_BSONType):
         return hash(type(self))
 
 
-class BSONMaxKey(_BSONType):
+class BSONMaxKey(BSONType):
     """Represents the BSON MaxKey sentinel value for query range boundaries."""
 
     __slots__ = ()
@@ -182,7 +183,7 @@ class BSONMaxKey(_BSONType):
         return hash(type(self))
 
 
-class BSONInt32(_BSONType):
+class BSONInt32(BSONType):
     """Represents a 32-bit signed integer value container for Firestore BSON.
 
     Args:
@@ -239,7 +240,7 @@ class BSONInt32(_BSONType):
         return hash((type(self), self._value))
 
 
-class BSONBinary(_BSONType):
+class BSONBinary(BSONType):
     """Represents a BSON binary data container with a subtype for Firestore.
 
     Args:
@@ -304,7 +305,7 @@ class BSONBinary(_BSONType):
         return hash((type(self), self._data, self._subtype))
 
 
-class BSONTimestamp(_BSONType):
+class BSONTimestamp(BSONType):
     """Container for BSON Timestamp values.
 
     Args:
@@ -365,7 +366,7 @@ class BSONTimestamp(_BSONType):
         return hash((type(self), self._seconds, self._increment))
 
 
-class BSONRegex(_BSONType):
+class BSONRegex(BSONType):
     """Represents a BSON Regular Expression container for Firestore.
 
     Args:
@@ -427,7 +428,7 @@ class BSONRegex(_BSONType):
         return hash((type(self), self._pattern, self._options))
 
 
-class BSONDecimal128(_BSONType):
+class BSONDecimal128(BSONType):
     """Represents a BSON 128-bit Decimal container for Firestore.
 
     Args:

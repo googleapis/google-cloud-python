@@ -78,6 +78,7 @@ replacements:
           BSONObjectId,
           BSONRegex,
           BSONTimestamp,
+          BSONType,
       )
       from google.cloud.firestore_v1.client import Client
       from google.cloud.firestore_v1.collection import CollectionReference
@@ -188,6 +189,7 @@ replacements:
           "BSONObjectId",
           "BSONRegex",
           "BSONTimestamp",
+          "BSONType",
           "Client",
           "CountAggregation",
           "CollectionGroup",
@@ -268,6 +270,7 @@ replacements:
           BSONObjectId,
           BSONRegex,
           BSONTimestamp,
+          BSONType,
           Client,
           CollectionGroup,
           CollectionReference,
@@ -333,6 +336,7 @@ replacements:
           "BSONObjectId",
           "BSONRegex",
           "BSONTimestamp",
+          "BSONType",
           "Client",
           "CountAggregation",
           "CollectionGroup",

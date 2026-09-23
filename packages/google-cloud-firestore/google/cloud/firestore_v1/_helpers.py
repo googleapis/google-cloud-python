@@ -44,7 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import _BSONType
+from google.cloud.firestore_v1.bson import BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -211,7 +211,7 @@ def encode_value(value) -> types.document.Value:
     if document_path is not None:
         return document.Value(reference_value=document_path)
 
-    if isinstance(value, _BSONType):
+    if isinstance(value, BSONType):
         return encode_value(value._to_map_value())
 
     if isinstance(value, GeoPoint):
@@ -361,7 +361,7 @@ def decode_value(
     dict,
     GeoPoint,
     Vector,
-    _BSONType,
+    BSONType,
 ]:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
@@ -375,7 +375,7 @@ def decode_value(
         Union[NoneType, bool, int, float, datetime.datetime, \
             str, bytes, dict, ~google.cloud.Firestore.GeoPoint, \
             ~google.cloud.firestore_v1.vector.Vector, \
-            ~google.cloud.firestore_v1.bson._BSONType]: A native \
+            ~google.cloud.firestore_v1.bson.BSONType]: A native \
         Python value converted from the ``value``.
 
     Raises:
@@ -418,7 +418,7 @@ def decode_value(
 def _decode_bson_dict_recursive(data: Any) -> Any:
     """Recursively decodes BSON wire map dictionaries."""
     if isinstance(data, dict):
-        decoded = _BSONType._from_dict(data)
+        decoded = BSONType._from_dict(data)
         if decoded is not None:
             return decoded
         return {k: _decode_bson_dict_recursive(v) for k, v in data.items()}
@@ -430,7 +430,7 @@ def _decode_bson_dict_recursive(data: Any) -> Any:
 def decode_dict(
     value_fields,
     client,
-) -> Union[dict, Vector, _BSONType]:
+) -> Union[dict, Vector, BSONType]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -441,7 +441,7 @@ def decode_dict(
 
     Returns:
         Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
-            ~google.cloud.firestore_v1.bson._BSONType]: A dictionary of native \
+            ~google.cloud.firestore_v1.bson.BSONType]: A dictionary of native \
         Python values, Vector, or BSON object converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
@@ -453,7 +453,7 @@ def decode_dict(
         values = cast(Sequence[float], res["value"])
         return Vector(values)
 
-    decoded = _BSONType._from_dict(res)
+    decoded = BSONType._from_dict(res)
     if decoded is not None:
         return decoded
 

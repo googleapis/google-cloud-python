@@ -31,18 +31,18 @@ from google.cloud.firestore_v1.bson import (
     BSONObjectId,
     BSONRegex,
     BSONTimestamp,
-    _BSONType,
+    BSONType,
 )
 
 
 def test_bson_type_abc_cannot_be_instantiated():
     with pytest.raises(TypeError):
-        _BSONType()  # type: ignore
+        BSONType()  # type: ignore
 
 
 def test_bson_type_inheritance():
     oid = BSONObjectId("507f191e810c19729de860ea")
-    assert isinstance(oid, _BSONType)
+    assert isinstance(oid, BSONType)
 
 
 def test_bson_object_id_from_hex_string():
