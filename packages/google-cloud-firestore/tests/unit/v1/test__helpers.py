@@ -83,6 +83,12 @@ def test_encode_value_pymongo_duck_typing():
     class MaxKey:
         pass
 
+    class Binary(bytes):
+        def __new__(cls, data, subtype=0):
+            obj = super().__new__(cls, data)
+            obj.subtype = subtype
+            return obj
+
     oid_obj = ObjectId("507f191e810c19729de860ea")
     oid_pb = encode_value(oid_obj)
     assert oid_pb.map_value.fields["__oid__"].string_value == "507f191e810c19729de860ea"
@@ -101,6 +107,21 @@ def test_encode_value_pymongo_duck_typing():
         regex_pb.map_value.fields["__regex__"].map_value.fields["options"].string_value
         == "i"
     )
+
+    import re
+
+    regex_int_flags = Regex("^[a-z]+$", re.IGNORECASE | re.MULTILINE)
+    regex_int_pb = encode_value(regex_int_flags)
+    assert (
+        regex_int_pb.map_value.fields["__regex__"]
+        .map_value.fields["options"]
+        .string_value
+        == "im"
+    )
+
+    bin_obj = Binary(b"\x01\x02\x03", subtype=128)
+    bin_pb = encode_value(bin_obj)
+    assert bin_pb.map_value.fields["__binary__"].bytes_value == b"\x80\x01\x02\x03"
 
     ts_obj = Timestamp(1700000000, 42)
     ts_pb = encode_value(ts_obj)
@@ -124,6 +145,11 @@ def test_encode_value_pymongo_duck_typing():
     max_obj = MaxKey()
     max_pb = encode_value(max_obj)
     assert "__max__" in max_pb.map_value.fields
+
+    import pytest
+
+    with pytest.raises(ValueError):
+        encode_value(ObjectId("invalid_hex"))
 
 
 def test_geopoint___eq__w_same_value():

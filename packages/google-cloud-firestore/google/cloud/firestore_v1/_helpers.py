@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import datetime
 import json
+import re
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -181,6 +182,8 @@ def encode_value(value) -> types.document.Value:
 
     Raises:
         TypeError: If the ``value`` is not one of the accepted types.
+        ValueError: If a BSON or duck-typed BSON value has an invalid value
+            or representation (e.g. invalid ObjectId hex or binary subtype).
     """
     if value is None:
         return document.Value(null_value=struct_pb2.NULL_VALUE)
@@ -205,6 +208,9 @@ def encode_value(value) -> types.document.Value:
         return document.Value(string_value=value)
 
     if isinstance(value, bytes):
+        subtype = getattr(value, "subtype", None)
+        if subtype is not None:
+            return encode_value(bson.BSONBinary(value, subtype=subtype)._to_map_value())
         return document.Value(bytes_value=value)
 
     # NOTE: We avoid doing an isinstance() check for a Document
@@ -242,7 +248,40 @@ def encode_value(value) -> types.document.Value:
     )
 
 
-def _try_duck_type_bson(value) -> Optional[bson._BSONType]:
+# Mapping of Python standard library regex flags to their canonical BSON regex
+# option characters per the BSON specification (https://bsonspec.org/spec.html, type 0x0B).
+# Stored in alphabetical order of option characters to produce normalized output.
+_REGEX_FLAG_TO_BSON_CHAR: Tuple[Tuple[int, str], ...] = (
+    (re.IGNORECASE, "i"),  # Case-insensitive matching
+    (re.LOCALE, "l"),  # Locale-dependent matching
+    (re.MULTILINE, "m"),  # Multi-line matching
+    (re.DOTALL, "s"),  # Dot matches all (including newline)
+    (re.UNICODE, "u"),  # Unicode matching
+    (re.VERBOSE, "x"),  # Verbose / whitespace-ignored matching
+)
+
+
+def _flags_to_options_string(flags: Any) -> str:
+    """Convert regex flags to a normalized BSON options string.
+
+    Supports string options directly (e.g. ``"i"``), integer bitmasks from
+    the standard library ``re`` module (e.g. ``re.IGNORECASE | re.MULTILINE``),
+    or third-party driver types like PyMongo's ``Regex.flags``.
+
+    Args:
+        flags (Any): A string of flag characters or an integer bitmask of regex flags.
+
+    Returns:
+        str: The corresponding BSON regex options string.
+    """
+    if isinstance(flags, str):
+        return flags
+    if isinstance(flags, int):
+        return "".join(char for flag, char in _REGEX_FLAG_TO_BSON_CHAR if flags & flag)
+    return str(flags)
+
+
+def _try_duck_type_bson(value) -> Optional[BSONType]:
     """Coerce third-party BSON objects (e.g. PyMongo) to Firestore BSON types."""
     cls_name = getattr(value.__class__, "__name__", "")
     if cls_name == "ObjectId" and hasattr(value, "binary"):
@@ -250,7 +289,10 @@ def _try_duck_type_bson(value) -> Optional[bson._BSONType]:
     if cls_name == "Decimal128" and hasattr(value, "to_decimal"):
         return bson.BSONDecimal128(value.to_decimal())
     if cls_name == "Regex" and hasattr(value, "pattern"):
-        opts = getattr(value, "flags", "") or getattr(value, "options", "")
+        raw_opts = getattr(value, "flags", None)
+        if raw_opts is None or raw_opts == "":
+            raw_opts = getattr(value, "options", "")
+        opts = _flags_to_options_string(raw_opts)
         return bson.BSONRegex(value.pattern, opts)
     if cls_name == "Timestamp" and hasattr(value, "time") and hasattr(value, "inc"):
         return bson.BSONTimestamp(value.time, value.inc)
@@ -258,6 +300,8 @@ def _try_duck_type_bson(value) -> Optional[bson._BSONType]:
         return bson.BSONMinKey()
     if cls_name == "MaxKey":
         return bson.BSONMaxKey()
+    if cls_name == "Binary" and hasattr(value, "subtype"):
+        return bson.BSONBinary(value, subtype=value.subtype)
     return None
 
 
