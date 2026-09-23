@@ -453,10 +453,14 @@ def test_wrap_method_otel_tracing_enabled_success(mock_otel, kind):
     result = wrapped()
 
     assert result == "success"
+    expected_attributes = {
+        "rpc.system.name": "http" if kind == "rest" else "grpc",
+        "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+    }
     mock_otel.tracer.start_as_current_span.assert_called_once_with(
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
-        attributes=_DEFAULT_SPAN_ATTRIBUTES,
+        attributes=expected_attributes,
     )
     mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
 

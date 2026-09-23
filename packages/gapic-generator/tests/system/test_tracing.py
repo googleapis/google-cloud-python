@@ -302,7 +302,7 @@ def test_sync_rest_unary_tracing(otel_echo_rest_client):
         method_span,
         T3_SUCCESS_CONTRACT,
         exact_values={
-            "rpc.system.name": "grpc",
+            "rpc.system.name": "http",
             "rpc.method": "google.showcase.v1beta1.Echo/Echo",
             "rpc.response.status_code": "OK",
         },
@@ -349,7 +349,7 @@ async def test_async_rest_unary_tracing(otel_echo_async_rest_client):
         method_span,
         T3_SUCCESS_CONTRACT,
         exact_values={
-            "rpc.system.name": "grpc",
+            "rpc.system.name": "http",
             "rpc.method": "google.showcase.v1beta1.Echo/Echo",
             "rpc.response.status_code": "OK",
         },

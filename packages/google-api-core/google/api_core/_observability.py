@@ -18,9 +18,10 @@
 
 from __future__ import annotations
 
+import asyncio
 import contextlib
 import urllib.parse
-from typing import TYPE_CHECKING, Any, Callable, Sequence
+from typing import TYPE_CHECKING, Any, Callable, Iterator, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
@@ -287,6 +288,20 @@ def get_otel_async_interceptor(
     )
 
 
+_TRACE_CONTEXT_PROPAGATOR: Any = None
+
+
+def _get_trace_context_propagator() -> Any:
+    global _TRACE_CONTEXT_PROPAGATOR
+    if _TRACE_CONTEXT_PROPAGATOR is None:
+        from opentelemetry.trace.propagation.tracecontext import (  # type: ignore[import-not-found]
+            TraceContextTextMapPropagator,
+        )
+
+        _TRACE_CONTEXT_PROPAGATOR = TraceContextTextMapPropagator()
+    return _TRACE_CONTEXT_PROPAGATOR
+
+
 # The `start_http_span` context manager deliberately supports two distinct invocation styles:
 # 1. Bundled Request Object: `start_http_span(request, ...)`
 #    Used when callers already possess an HTTP request instance (such as
@@ -345,9 +360,6 @@ def start_http_span(
 
     try:
         from opentelemetry import trace
-        from opentelemetry.trace.propagation.tracecontext import (  # type: ignore[import-not-found]
-            TraceContextTextMapPropagator,
-        )
 
         tracer_provider = _get_tracer_provider(client_options)
         if tracer_provider is not None:
@@ -405,7 +417,7 @@ def start_http_span(
                 resolved_headers, "__setitem__"
             ):
                 try:
-                    TraceContextTextMapPropagator().inject(resolved_headers)
+                    _get_trace_context_propagator().inject(resolved_headers)
                 except Exception:  # Fail-open on header injection failure
                     pass
 
@@ -432,7 +444,9 @@ def record_http_response(span: Any, response: Any) -> None:
             StatusCode,
         )
 
-        status_code = getattr(response, "status_code", None)
+        status_code = getattr(
+            response, "status_code", getattr(response, "status", None)
+        )
         if status_code is not None:
             span.set_attribute("http.response.status_code", int(status_code))
             if int(status_code) >= 400:
@@ -501,7 +515,7 @@ def trace_http_request(
     headers: dict[str, Any] | None = None,
     body: Any = None,
     client_options: ClientOptions | dict[str, Any] | None = None,
-):
+) -> Iterator[Any]:
     """Context manager for tracing HTTP wire attempts with automatic error capture.
 
     Starts an OpenTelemetry span via `start_http_span`, yields the span, and
@@ -530,6 +544,6 @@ def trace_http_request(
     ) as span:
         try:
             yield span
-        except BaseException as exc:
+        except (Exception, asyncio.CancelledError) as exc:
             record_http_error(span, exc)
             raise

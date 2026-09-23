@@ -414,7 +414,7 @@ async def test_wrap_method_async_otel_tracing_enabled_rest_asyncio(mock_otel):
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system.name": "grpc",
+            "rpc.system.name": "http",
             "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         },
     )

@@ -323,8 +323,9 @@ class _GapicCallable(object):
                     tracer = trace.get_tracer("google.api_core")
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
+                is_rest = kind in ("rest", "rest_asyncio")
                 span_attributes = {
-                    "rpc.system.name": "grpc",
+                    "rpc.system.name": "http" if is_rest else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
