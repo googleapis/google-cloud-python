@@ -605,7 +605,7 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
 
     # Extract certificate (chain), key and passphrase.
     cert_match = re.findall(_CERT_REGEX, stdout)
-    if not cert_match:
+    if not cert_match or _has_unmatched_pem_markers(stdout, cert_match):
         raise exceptions.ClientCertError("Client SSL certificate is missing or invalid")
     cert_chain = _join_cert_chain(cert_match)
     key_match = re.findall(_KEY_REGEX, stdout)

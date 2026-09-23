@@ -208,6 +208,21 @@ class TestRunCertProviderCommand(object):
         assert key == ENCRYPTED_EC_PRIVATE_KEY
         assert passphrase == PASSPHRASE_VALUE
 
+    @pytest.mark.parametrize(
+        "trailing_bytes",
+        [
+            b"-----BEGIN CERTIFICATE-----\nMIIB\n",
+            b"MIIB\n-----END CERTIFICATE-----\n",
+        ],
+    )
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_truncated_cert_chain_raises_error(self, mock_popen, trailing_bytes):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + trailing_bytes + pytest.private_key_bytes, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
+
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_cert(self, mock_popen):
         mock_popen.return_value = self.create_mock_process(
