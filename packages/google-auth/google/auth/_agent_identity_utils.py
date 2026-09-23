@@ -16,6 +16,7 @@
 
 import base64
 import hashlib
+import json
 import os
 import re
 import stat
@@ -150,7 +151,6 @@ def _get_cert_path_with_optional_polling(cert_config_path, should_poll):
             # The config was parsed, but the cert file is not ready yet.
             # Only poll if both the config path and cert path are in the well-known directory.
             if not (should_poll and _is_in_well_known_dir(cert_path)):
-                # If polling is disabled, return early.
                 return None
 
             if not has_logged_cert_warning:
@@ -210,8 +210,6 @@ def _parse_cert_path_from_config(cert_config_path):
         KeyError: If the certificate config file does not contain the
             expected structure.
     """
-    import json
-
     with open(cert_config_path, "r", encoding="utf-8") as f:
         cert_config = json.load(f)
 

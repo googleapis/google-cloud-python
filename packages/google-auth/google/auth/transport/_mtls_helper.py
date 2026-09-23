@@ -821,13 +821,13 @@ def check_parameters_for_unauthorized_response(cached_cert):
     """Returns the cached and current cert fingerprint for reconfiguring mTLS.
 
     Args:
-        cached_cert(bytes): The cached client certificate.
+        cached_cert (Optional[bytes]): The cached client certificate.
 
     Returns:
-        bytes: The client callback cert bytes.
-        bytes: The client callback key bytes.
-        str: The base64-encoded SHA256 cached fingerprint.
-        str: The base64-encoded SHA256 current cert fingerprint.
+        Tuple[Optional[bytes], Optional[bytes], Optional[str], Optional[str]]:
+            The client callback cert bytes, client callback key bytes,
+            base64-encoded SHA256 cached fingerprint, and base64-encoded SHA256
+            current cert fingerprint.
     """
     call_cert_bytes, call_key_bytes = call_client_cert_callback()
     if not call_cert_bytes:
