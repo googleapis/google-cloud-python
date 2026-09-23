@@ -38,6 +38,7 @@ except ImportError:
 if _observability is not None and hasattr(_observability, "trace_http_request"):
     trace_http_request = _observability.trace_http_request
 else:
+    # Fallback for older versions of google-api-core without HTTP tracing.
     @contextlib.contextmanager
     def trace_http_request(*args: Any, **kwargs: Any):
         yield None
@@ -45,6 +46,7 @@ else:
 if _observability is not None and hasattr(_observability, "record_http_response"):
     record_http_response = _observability.record_http_response
 else:
+    # Fallback for older versions of google-api-core without HTTP tracing.
     def record_http_response(span: Any, response: Any) -> None:
         pass
 

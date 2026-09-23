@@ -378,7 +378,7 @@ def start_http_span(
                 server_address = parsed.hostname
                 if not server_port and parsed.port:
                     server_port = parsed.port
-            except Exception:
+            except Exception:  # Fail-open on malformed URL parsing
                 pass
 
         span_name = resolved_method
@@ -406,11 +406,13 @@ def start_http_span(
             ):
                 try:
                     TraceContextTextMapPropagator().inject(resolved_headers)
-                except Exception:
+                except Exception:  # Fail-open on header injection failure
                     pass
 
             yield span
-    except Exception:
+    except (
+        Exception
+    ):  # Fail-open: telemetry failures must never disrupt core RPC execution
         yield None
 
 
@@ -486,7 +488,7 @@ def record_http_error(span: Any, exc: BaseException) -> None:
             msg = str(exc)
             if msg:
                 span.set_attribute("status.message", msg)
-    except Exception:
+    except Exception:  # Fail-open on error attribute extraction failure
         pass
 
 

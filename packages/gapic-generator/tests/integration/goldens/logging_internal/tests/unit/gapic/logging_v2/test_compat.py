@@ -454,13 +454,37 @@ def test_record_http_response_compat():
     record_http_response(None, None)
 
 
+def test_observability_compat_present(monkeypatch):
+    import importlib
+    import sys
+    import google.api_core
+    from google.cloud.logging_v2 import _compat
+
+    # Simulate an environment where google.api_core._observability is available
+    mock_obs = mock.MagicMock()
+    mock_obs.trace_http_request = mock.MagicMock()
+    mock_obs.record_http_response = mock.MagicMock()
+    monkeypatch.setitem(sys.modules, "google.api_core._observability", mock_obs)
+    monkeypatch.setattr(google.api_core, "_observability", mock_obs, raising=False)
+    reloaded = importlib.reload(_compat)
+    try:
+        assert reloaded._observability is mock_obs
+        assert reloaded.trace_http_request is mock_obs.trace_http_request
+        assert reloaded.record_http_response is mock_obs.record_http_response
+    finally:
+        monkeypatch.undo()
+        importlib.reload(_compat)
+
+
 def test_observability_compat_fallback(monkeypatch):
     import importlib
     import sys
+    import google.api_core
     from google.cloud.logging_v2 import _compat
 
     # Simulate an environment where google.api_core._observability is not available
     monkeypatch.setitem(sys.modules, "google.api_core._observability", None)
+    monkeypatch.setattr(google.api_core, "_observability", None, raising=False)
     reloaded = importlib.reload(_compat)
     try:
         assert reloaded._observability is None

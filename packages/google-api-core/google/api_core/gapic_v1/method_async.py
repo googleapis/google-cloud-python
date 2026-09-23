@@ -179,7 +179,9 @@ class _AsyncGapicCallable(object):
         if self._start_span_fn is not None:
             try:
                 span_cm = self._start_span_fn()
-            except Exception:
+            except (
+                Exception
+            ):  # Fail-open: proceed without span if tracing initialization fails
                 span_cm = contextlib.nullcontext()
 
         with span_cm as span:
