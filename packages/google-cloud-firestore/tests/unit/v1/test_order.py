@@ -254,6 +254,16 @@ def test_order_bson_type_ordering():
 
     # Test timestamp comparison (native timestamp < BSON timestamp with increment)
     assert target.compare(ts_native, ts_bson) == -1
+    assert target.compare(ts_bson, ts_native) == 1
+
+    # Test BSON timestamp comparison
+    ts_bson2 = encode_value(BSONTimestamp(100, 2))
+    ts_bson_later = encode_value(BSONTimestamp(101, 0))
+    assert target.compare(ts_bson, ts_bson2) == -1
+    assert target.compare(ts_bson2, ts_bson) == 1
+    assert target.compare(ts_bson, ts_bson_later) == -1
+    assert target.compare(ts_bson_later, ts_bson) == 1
+    assert target.compare(ts_bson, ts_bson) == 0
 
     # Test BSON binary > bytes
     assert target.compare(bytes_native, bin_b) == -1
@@ -277,7 +287,7 @@ def test_order_bson_type_ordering():
         "__decimal128__": TypeOrder.NUMBER,
         "__binary__": TypeOrder.BSON_BINARY,
         "__regex__": TypeOrder.BSON_REGEX,
-        "__request_timestamp__": TypeOrder.TIMESTAMP,
+        "__request_timestamp__": TypeOrder.BSON_TIMESTAMP,
     }
     for key, expected_order in expected_orders.items():
         assert _BSON_KEY_TO_TYPE_ORDER.get(key) == expected_order

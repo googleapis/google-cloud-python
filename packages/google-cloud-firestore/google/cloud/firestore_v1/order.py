@@ -20,6 +20,45 @@ from typing import Any
 from google.cloud.firestore_v1._helpers import GeoPoint, decode_value
 
 
+def _to_number(val: Any) -> Any:
+    """Extract a numeric value (int, float, Decimal) from a Value protobuf or Python value.
+
+    Directly inspects the protobuf value_type without calling decode_value()
+    for optimal performance.
+    """
+    value_pb = getattr(val, "_pb", val)
+    which = (
+        value_pb.WhichOneof("value_type") if hasattr(value_pb, "WhichOneof") else None
+    )
+
+    if which == "integer_value":
+        return value_pb.integer_value
+    elif which == "double_value":
+        return value_pb.double_value
+    elif which == "map_value":
+        fields = value_pb.map_value.fields
+        if "__int__" in fields:
+            return fields["__int__"].integer_value
+        elif "__decimal128__" in fields:
+            return decimal.Decimal(fields["__decimal128__"].string_value)
+
+    num = decode_value(val, None)
+    to_decimal = getattr(num, "to_decimal", None)
+    return to_decimal() if callable(to_decimal) else getattr(num, "value", num)
+
+
+def _is_nan(val: Any) -> bool:
+    """Check if a numeric value is NaN, safely handling OverflowError and non-floats."""
+    if hasattr(val, "is_nan"):
+        return val.is_nan()
+    if isinstance(val, (int, decimal.Decimal)):
+        return False
+    try:
+        return math.isnan(val)
+    except (TypeError, OverflowError):
+        return False
+
+
 class TypeOrder(Enum):
     """The supported Data Type.
 
@@ -42,6 +81,7 @@ class TypeOrder(Enum):
     BSON_OBJECT_ID = 13
     BSON_BINARY = 14
     BSON_REGEX = 15
+    BSON_TIMESTAMP = 16
 
     @staticmethod
     def from_value(value) -> Any:
@@ -77,8 +117,7 @@ class TypeOrder(Enum):
 
 
 # Maps BSON wire map keys directly to their corresponding TypeOrder.
-# BSONTimestamp maps to TypeOrder.TIMESTAMP, and BSONInt32 / BSONDecimal128
-# map to TypeOrder.NUMBER, enabling cross-type comparisons.
+# BSONInt32 and BSONDecimal128 map to TypeOrder.NUMBER, enabling cross-type comparisons.
 _BSON_KEY_TO_TYPE_ORDER = {
     "__min__": TypeOrder.BSON_MIN_KEY,
     "__max__": TypeOrder.BSON_MAX_KEY,
@@ -86,32 +125,30 @@ _BSON_KEY_TO_TYPE_ORDER = {
     "__int__": TypeOrder.NUMBER,
     "__decimal128__": TypeOrder.NUMBER,
     "__binary__": TypeOrder.BSON_BINARY,
-    "__request_timestamp__": TypeOrder.TIMESTAMP,
+    "__request_timestamp__": TypeOrder.BSON_TIMESTAMP,
     "__regex__": TypeOrder.BSON_REGEX,
 }
 
 
 # NOTE: This order is defined by the backend and cannot be changed.
-# BSONTimestamp shares TypeOrder.TIMESTAMP with native timestamps, and
-# BSONInt32 / BSONDecimal128 share TypeOrder.NUMBER, enabling direct cross-type
-# value comparison within those categories.
 _TYPE_ORDER_MAP = {
     TypeOrder.NULL: 0,
     TypeOrder.BSON_MIN_KEY: 1,
     TypeOrder.BOOLEAN: 2,
     TypeOrder.NUMBER: 3,
     TypeOrder.TIMESTAMP: 4,
-    TypeOrder.STRING: 5,
-    TypeOrder.BLOB: 6,
-    TypeOrder.BSON_BINARY: 7,
-    TypeOrder.REF: 8,
-    TypeOrder.BSON_OBJECT_ID: 9,
-    TypeOrder.GEO_POINT: 10,
-    TypeOrder.BSON_REGEX: 11,
-    TypeOrder.ARRAY: 12,
-    TypeOrder.VECTOR: 13,
-    TypeOrder.OBJECT: 14,
-    TypeOrder.BSON_MAX_KEY: 15,
+    TypeOrder.BSON_TIMESTAMP: 5,
+    TypeOrder.STRING: 6,
+    TypeOrder.BLOB: 7,
+    TypeOrder.BSON_BINARY: 8,
+    TypeOrder.REF: 9,
+    TypeOrder.BSON_OBJECT_ID: 10,
+    TypeOrder.GEO_POINT: 11,
+    TypeOrder.BSON_REGEX: 12,
+    TypeOrder.ARRAY: 13,
+    TypeOrder.VECTOR: 14,
+    TypeOrder.OBJECT: 15,
+    TypeOrder.BSON_MAX_KEY: 16,
 }
 
 
@@ -147,8 +184,9 @@ class Order(object):
             # Handles int64, double, BSONInt32, and BSONDecimal128.
             return cls.compare_numbers(left, right)
         elif leftType == TypeOrder.TIMESTAMP:
-            # Handles native Firestore timestamps and BSONTimestamp.
             return cls.compare_timestamps(left, right)
+        elif leftType == TypeOrder.BSON_TIMESTAMP:
+            return cls.compare_bson_timestamps(left, right)
         elif leftType == TypeOrder.STRING:
             return cls._compare_to(left.string_value, right.string_value)
         elif leftType == TypeOrder.BLOB:
@@ -219,25 +257,31 @@ class Order(object):
 
     @staticmethod
     def compare_timestamps(left, right) -> Any:
-        """Compare native Firestore timestamps and BSON timestamps."""
         left_pb = getattr(left, "_pb", left)
         right_pb = getattr(right, "_pb", right)
 
-        if left_pb.WhichOneof("value_type") == "map_value":
-            l_ts = left_pb.map_value.fields["__request_timestamp__"].map_value.fields
-            l_sec = l_ts["seconds"].integer_value if "seconds" in l_ts else 0
-            l_inc = l_ts["increment"].integer_value if "increment" in l_ts else 0
-        else:
-            l_sec = left_pb.timestamp_value.seconds
-            l_inc = left_pb.timestamp_value.nanos
+        seconds = Order._compare_to(
+            left_pb.timestamp_value.seconds, right_pb.timestamp_value.seconds
+        )
+        if seconds != 0:
+            return seconds
 
-        if right_pb.WhichOneof("value_type") == "map_value":
-            r_ts = right_pb.map_value.fields["__request_timestamp__"].map_value.fields
-            r_sec = r_ts["seconds"].integer_value if "seconds" in r_ts else 0
-            r_inc = r_ts["increment"].integer_value if "increment" in r_ts else 0
-        else:
-            r_sec = right_pb.timestamp_value.seconds
-            r_inc = right_pb.timestamp_value.nanos
+        return Order._compare_to(
+            left_pb.timestamp_value.nanos, right_pb.timestamp_value.nanos
+        )
+
+    @staticmethod
+    def compare_bson_timestamps(left, right) -> Any:
+        left_pb = getattr(left, "_pb", left)
+        right_pb = getattr(right, "_pb", right)
+
+        l_ts = left_pb.map_value.fields["__request_timestamp__"].map_value.fields
+        l_sec = l_ts["seconds"].integer_value if "seconds" in l_ts else 0
+        l_inc = l_ts["increment"].integer_value if "increment" in l_ts else 0
+
+        r_ts = right_pb.map_value.fields["__request_timestamp__"].map_value.fields
+        r_sec = r_ts["seconds"].integer_value if "seconds" in r_ts else 0
+        r_inc = r_ts["increment"].integer_value if "increment" in r_ts else 0
 
         seconds = Order._compare_to(l_sec, r_sec)
         if seconds != 0:
@@ -331,23 +375,11 @@ class Order(object):
     @staticmethod
     def compare_numbers(left, right) -> int:
         """Compare numeric values across int, float, BSONInt32, and BSONDecimal128."""
-
-        def _to_number(val):
-            num = decode_value(val, None)
-            to_decimal = getattr(num, "to_decimal", None)
-            return to_decimal() if callable(to_decimal) else getattr(num, "value", num)
-
         left_val = _to_number(left)
         right_val = _to_number(right)
 
-        left_nan = (
-            left_val.is_nan() if hasattr(left_val, "is_nan") else math.isnan(left_val)
-        )
-        right_nan = (
-            right_val.is_nan()
-            if hasattr(right_val, "is_nan")
-            else math.isnan(right_val)
-        )
+        left_nan = _is_nan(left_val)
+        right_nan = _is_nan(right_val)
         if left_nan or right_nan:
             return 0 if (left_nan and right_nan) else (-1 if left_nan else 1)
 

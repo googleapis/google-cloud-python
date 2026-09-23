@@ -1350,6 +1350,7 @@ def test_bson_decimal128_special_values(client, cleanup, database):
     }
 
 
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
 def test_bson_query_ordering(client, cleanup, database):
     """Test server query ordering for BSON types."""
     collection_id = "bson_ordering_" + UNIQUE_RESOURCE_ID
@@ -1358,7 +1359,9 @@ def test_bson_query_ordering(client, cleanup, database):
     doc1 = coll_ref.document("doc1")
     doc2 = coll_ref.document("doc2")
     doc3 = coll_ref.document("doc3")
-    cleanup.extend([doc1.delete, doc2.delete, doc3.delete])
+    cleanup(doc1.delete)
+    cleanup(doc2.delete)
+    cleanup(doc3.delete)
 
     doc1.set({"val": BSONMinKey()})
     doc2.set({"val": BSONInt32(10)})
@@ -1367,7 +1370,6 @@ def test_bson_query_ordering(client, cleanup, database):
     query = coll_ref.order_by("val")
     results = [doc.to_dict()["val"] for doc in query.stream()]
     assert results == [BSONMinKey(), BSONInt32(10), BSONMaxKey()]
-
 
 
 @pytest.fixture(scope="module")
