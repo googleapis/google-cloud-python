@@ -594,6 +594,7 @@ def test_start_http_span_active(monkeypatch):
     mock_otel = mock.MagicMock()
     mock_propagator = mock.Mock()
     mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
 
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
@@ -692,6 +693,7 @@ def test_start_http_span_with_kwargs(monkeypatch):
     mock_otel = mock.MagicMock()
     mock_propagator = mock.Mock()
     mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
 
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
@@ -824,6 +826,7 @@ def test_start_http_span_propagator_error(monkeypatch):
     mock_propagator = mock.Mock()
     mock_propagator.inject.side_effect = RuntimeError("Propagator failed")
     mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
 
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
