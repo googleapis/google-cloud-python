@@ -98,6 +98,9 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        # `test_utils` is not part of the installed package (only `gapic` is
+        # included in setup.py), but it is needed for running tests.
+        env={"PYTHONPATH": "."},
     )
 
 
