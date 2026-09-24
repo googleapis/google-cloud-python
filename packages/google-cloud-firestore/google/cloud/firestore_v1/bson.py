@@ -25,6 +25,7 @@ Example:
 """
 
 import abc
+import decimal
 import re
 from typing import Any, Dict, Union
 
@@ -36,6 +37,7 @@ __all__ = [
     "BSONBinary",
     "BSONTimestamp",
     "BSONRegex",
+    "BSONDecimal128",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -405,3 +407,103 @@ class BSONRegex(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._pattern, self._options))
+
+
+class BSONDecimal128(_BSONType):
+    """Represents a BSON 128-bit Decimal container for Firestore.
+
+    Args:
+        value (Union[str, int, decimal.Decimal, BSONDecimal128]):
+            The decimal value as a string, integer, decimal.Decimal,
+            or BSONDecimal128 instance.
+
+    Raises:
+        TypeError: If value is a boolean or an unsupported type.
+        ValueError: If value cannot be parsed as a valid decimal number.
+
+    Example:
+        >>> dec = BSONDecimal128("123.45")
+        >>> dec.value
+        '123.45'
+        >>> dec.to_decimal()
+        Decimal('123.45')
+    """
+
+    __slots__ = ("_value",)
+
+    def __init__(
+        self,
+        value: Union[str, int, decimal.Decimal, "BSONDecimal128"],
+    ):
+        if isinstance(value, BSONDecimal128):
+            self._value: str = value._value
+        elif isinstance(value, (str, int, decimal.Decimal)) and not isinstance(
+            value, bool
+        ):
+            try:
+                # Validate the value parses as a valid decimal number
+                decimal.Decimal(value)
+            except decimal.InvalidOperation as exc:
+                raise ValueError(f"Cannot convert {value!r} to Decimal: {exc}") from exc
+            self._value = str(value)
+        elif isinstance(value, float):
+            raise TypeError(
+                "BSONDecimal128 does not accept float values due to potential precision loss. "
+                "Convert the float to a str or decimal.Decimal first."
+            )
+        else:
+            raise TypeError("BSONDecimal128 value must be a Decimal, str, or int.")
+
+    @property
+    def value(self) -> str:
+        """str: The string representation of the 128-bit decimal value."""
+        return self._value
+
+    def to_decimal(self) -> decimal.Decimal:
+        """decimal.Decimal: Convert to Python standard library Decimal instance."""
+        return decimal.Decimal(self._value)
+
+    def _to_map_value(self) -> Dict[str, str]:
+        """Returns map dictionary representation for wire serialization."""
+        return {"__decimal128__": self._value}
+
+    def __repr__(self) -> str:
+        return f"BSONDecimal128({self._value!r})"
+
+    def __str__(self) -> str:
+        return self._value
+
+    def __float__(self) -> float:
+        """float: Convert decimal value to float."""
+        d = self.to_decimal()
+        if d.is_nan():
+            return float("-nan") if d.is_signed() else float("nan")
+        return float(d)
+
+    def __int__(self) -> int:
+        """int: Convert decimal value to integer."""
+        return int(self.to_decimal())
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONDecimal128):
+            try:
+                d1, d2 = self.to_decimal(), other.to_decimal()
+                # Following PyMongo's bson.decimal128.Decimal128 specification,
+                # two Decimal128 instances compare equal if their underlying BSON
+                # encodings are identical (including NaN == NaN). This aligns with
+                # Firestore query and indexing semantics where NaN matches NaN.
+                if d1.is_nan() and d2.is_nan():
+                    return True
+                return d1 == d2
+            except decimal.InvalidOperation:
+                return self._value == other._value
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        try:
+            d = self.to_decimal()
+            if d.is_nan():
+                return hash((type(self), "NAN"))
+            return hash(d)
+        except decimal.InvalidOperation:
+            return hash((type(self), self._value))

@@ -16,12 +16,15 @@
 """Unit tests for google.cloud.firestore_v1.bson classes."""
 
 import copy
+import decimal
+import math
 import pickle
 
 import pytest
 
 from google.cloud.firestore_v1.bson import (
     BSONBinary,
+    BSONDecimal128,
     BSONInt32,
     BSONMaxKey,
     BSONMinKey,
@@ -480,3 +483,121 @@ def test_bson_regex_copy():
 def test_bson_regex_pickle():
     rx = BSONRegex("^abc", options="i")
     assert pickle.loads(pickle.dumps(rx)) == rx
+
+
+def test_bson_decimal128_valid():
+    dec1 = BSONDecimal128("123.45")
+    assert dec1.value == "123.45"
+    assert dec1.to_decimal() == decimal.Decimal("123.45")
+    assert dec1._to_map_value() == {"__decimal128__": "123.45"}
+    assert repr(dec1) == "BSONDecimal128('123.45')"
+    assert str(dec1) == "123.45"
+
+    dec2 = BSONDecimal128(42)
+    assert dec2.value == "42"
+
+    dec3 = BSONDecimal128(decimal.Decimal("99.99"))
+    assert dec3.value == "99.99"
+
+    dec4 = BSONDecimal128(dec1)
+    assert dec4.value == "123.45"
+
+
+def test_bson_decimal128_float_and_int():
+    dec = BSONDecimal128("123.45")
+    assert float(dec) == 123.45
+    assert int(dec) == 123
+
+
+@pytest.mark.parametrize(
+    "special_val",
+    [
+        "inf",
+        "-inf",
+        "Infinity",
+        "-Infinity",
+        "NaN",
+        "-NaN",
+        "sNaN",
+        "-sNaN",
+    ],
+)
+def test_bson_decimal128_special_values(special_val):
+    dec1 = BSONDecimal128(special_val)
+    dec2 = BSONDecimal128(special_val)
+    assert dec1.value == str(special_val)
+    assert dec1._to_map_value() == {"__decimal128__": str(special_val)}
+    assert dec1 == dec2
+    assert hash(dec1) == hash(dec2)
+
+    if "inf" in str(special_val).lower():
+        assert math.isinf(float(dec1))
+    elif "nan" in str(special_val).lower():
+        assert math.isnan(float(dec1))
+
+
+@pytest.mark.parametrize(
+    "val_input, exc_type, match_msg",
+    [
+        (True, TypeError, "value must be a Decimal, str, or int"),
+        (False, TypeError, "value must be a Decimal, str, or int"),
+        ([1, 2], TypeError, "value must be a Decimal, str, or int"),
+        (1.5, TypeError, "does not accept float values"),
+        (float("inf"), TypeError, "does not accept float values"),
+        (float("nan"), TypeError, "does not accept float values"),
+        ("not-a-number", ValueError, "Cannot convert 'not-a-number' to Decimal"),
+        ("12.34.56", ValueError, "Cannot convert '12.34.56' to Decimal"),
+    ],
+)
+def test_bson_decimal128_invalid_inputs(val_input, exc_type, match_msg):
+    with pytest.raises(exc_type, match=match_msg):
+        BSONDecimal128(val_input)
+
+
+def test_bson_decimal128_equality():
+    d1 = BSONDecimal128("123.45")
+    d2 = BSONDecimal128("123.45")
+    d3 = BSONDecimal128("678.90")
+    assert d1 == d2
+    assert d1 != d3
+    assert d1 != "123.45"
+    # Pure container parity with PyMongo: BSONDecimal128 does not equate to
+    # standard decimal.Decimal directly; developers use .to_decimal() for math/comparison.
+    assert d1 != decimal.Decimal("123.45")
+    assert d1.to_decimal() == decimal.Decimal("123.45")
+
+    d_trail = BSONDecimal128("1.0")
+    d_int = BSONDecimal128("1")
+    assert d_trail == d_int
+
+    nan1 = BSONDecimal128("NaN")
+    nan2 = BSONDecimal128("NaN")
+    # Two BSONDecimal128 instances compare equal for NaN (PyMongo container parity)
+    assert nan1 == nan2
+
+
+def test_bson_decimal128_hash_and_dict_key():
+    d1 = BSONDecimal128("123.45")
+    d2 = BSONDecimal128("123.45")
+    d3 = BSONDecimal128("678.90")
+
+    # Hash invariant test: if a == b, then hash(a) == hash(b)
+    assert hash(d1) == hash(d2)
+    assert len({d1, d2}) == 1
+    assert len({d1, d3}) == 2
+
+    nan1 = BSONDecimal128("NaN")
+    nan2 = BSONDecimal128("NaN")
+    assert hash(nan1) == hash(nan2)
+    assert len({nan1, nan2}) == 1
+
+
+def test_bson_decimal128_copy():
+    d = BSONDecimal128("123.45")
+    assert copy.copy(d) == d
+    assert copy.deepcopy(d) == d
+
+
+def test_bson_decimal128_pickle():
+    d = BSONDecimal128("123.45")
+    assert pickle.loads(pickle.dumps(d)) == d
