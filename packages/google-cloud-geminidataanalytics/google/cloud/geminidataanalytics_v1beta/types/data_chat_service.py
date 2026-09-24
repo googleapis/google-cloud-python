@@ -23,7 +23,7 @@ import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import context as gcg_context
 from google.cloud.geminidataanalytics_v1beta.types import credentials as gcg_credentials
-from google.cloud.geminidataanalytics_v1beta.types import datasource
+from google.cloud.geminidataanalytics_v1beta.types import datasource, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1beta",
@@ -254,6 +254,8 @@ class QueryDataResponse(proto.Message):
             and may change at any time without notice. Do not write
             production code or business logic depending on the fields in
             this object.
+        token_usage (google.cloud.geminidataanalytics_v1beta.types.TokenUsage):
+            Overall token usage for the request.
     """
 
     generated_query: str = proto.Field(
@@ -282,6 +284,11 @@ class QueryDataResponse(proto.Message):
         number=9,
         message=struct_pb2.Struct,
     )
+    token_usage: usage.TokenUsage = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=usage.TokenUsage,
+    )
 
 
 class ExecutedQueryResult(proto.Message):
@@ -296,13 +303,11 @@ class ExecutedQueryResult(proto.Message):
         total_row_count (int):
             The total number of rows in the full result
             set, if known. This may be an estimate or an
-            exact count.
-
-            Note: if an internal limit (such as LIMIT 1000)
-            was applied during query execution to guard
-            against excessive data transfer, this count
-            reflects the truncated result size rather than
-            the unrestricted table result size.
+            exact count. Note: if an internal limit (such as
+            LIMIT 1000) was applied during query execution
+            to guard against excessive data transfer, this
+            count reflects the truncated result size rather
+            than the unrestricted table result size.
         partial_result (bool):
             Set to true if the returned rows in ``query_result`` are a
             subset of the full result. This can happen, for example, if
@@ -559,7 +564,8 @@ class ChatRequest(proto.Message):
         Values:
             THINKING_MODE_UNSPECIFIED (0):
                 Unspecified thinking mode, agent will use
-                THINKING mode by default.
+                THINKING mode by default except for BigQuery
+                user defaulting to FAST mode by default.
             FAST (1):
                 Fast mode, answers quickly.
             THINKING (2):
@@ -571,12 +577,12 @@ class ChatRequest(proto.Message):
         THINKING = 2
 
     class Model(proto.Enum):
-        r"""Model selection for the agent.
+        r"""Model selection for the agent for BigQuery users.
 
         Values:
             MODEL_UNSPECIFIED (0):
-                No model specified. The default model will be
-                used.
+                No model specified. Either preview or non
+                preview model can be used.
             LATEST_GA_MODEL (1):
                 Use the most up-to-date non-preview model.
                 This may constrain certain request level
