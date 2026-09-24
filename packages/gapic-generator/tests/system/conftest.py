@@ -147,6 +147,12 @@ def pytest_addoption(parser):
         action="store_true",
         help="Run system test with standard one-way TLS channel",
     )
+    parser.addoption(
+        "--dump-spans",
+        action="store_true",
+        default=False,
+        help="Dump captured raw OpenTelemetry spans to a timestamped JSON file.",
+    )
 
 
 # TODO: Need to test  without passing in a transport class

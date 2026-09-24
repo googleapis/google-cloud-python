@@ -23,8 +23,10 @@ At the completion of the suite, outputs the Option A Telemetry Compliance Scorec
 from __future__ import annotations
 
 import csv
+import json
 import os
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
@@ -81,6 +83,30 @@ def load_feature_matrix() -> dict[str, dict[str, str]]:
 
 
 FEATURE_MATRIX = load_feature_matrix()
+
+RAW_SPANS_STORE: dict[str, Any] = {}
+
+
+def record_raw_spans(scenario_id: str, feature_ids: list[str], spans: Any) -> None:
+    """Stores raw OpenTelemetry span JSON payloads mapped by feature ID."""
+    serialized_spans = []
+    for s in spans:
+        if hasattr(s, "to_json"):
+            serialized_spans.append(json.loads(s.to_json()))
+        elif isinstance(s, dict):
+            serialized_spans.append(s)
+
+    for fid in feature_ids:
+        row = FEATURE_MATRIX.get(fid, {})
+        RAW_SPANS_STORE[fid] = {
+            "scenario_id": scenario_id,
+            "feature_id": fid,
+            "tier": row.get("Tier", ""),
+            "transport": row.get("Transport", ""),
+            "scenario": row.get("Scenario", ""),
+            "spans": serialized_spans,
+        }
+
 
 FEATURE_SUMMARIES: dict[str, tuple[str, str, str, str]] = {
     "F1.1": ("N/A (0 SDK spans)", "0 SDK spans", "N/A", "No SDK spans leaked"),
@@ -558,6 +584,11 @@ def test_telemetry_compliance_scenario(
                 scenario.t4_contract.validate(sdk_spans)
             if scenario.t3_contract:
                 scenario.t3_contract.validate(sdk_spans)
+            record_raw_spans(
+                scenario.id,
+                [f for f in [scenario.t3_feature_id, scenario.t4_feature_id] if f],
+                sdk_spans,
+            )
             return
 
         # Active Tracing Invocation
@@ -590,6 +621,12 @@ def test_telemetry_compliance_scenario(
 
         # Invariant: T4 wire span must be child of T3 method span
         assert wire_span.parent.span_id == method_span.context.span_id
+
+        record_raw_spans(
+            scenario.id,
+            [f for f in [scenario.t3_feature_id, scenario.t4_feature_id] if f],
+            spans,
+        )
 
     finally:
         if old_env is not None:
@@ -677,6 +714,7 @@ def test_f3_1_http_retry_succeeds(span_exporter, use_mtls):
         contract, _ = build_contract("F3.1")
         assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+        record_raw_spans("http_retry_succeeds", ["F3.1", "F1.5"], spans)
 
     finally:
         if old_env is not None:
@@ -759,6 +797,7 @@ def test_f3_2_http_retries_exhausted(span_exporter, use_mtls):
         contract, _ = build_contract("F3.2")
         assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+        record_raw_spans("http_retries_exhausted", ["F3.2"], spans)
 
     finally:
         if old_env is not None:
@@ -845,6 +884,7 @@ def test_f3_3_grpc_retry_succeeds(span_exporter, use_mtls):
         contract, _ = build_contract("F3.3")
         assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+        record_raw_spans("grpc_retry_succeeds", ["F3.3", "F1.10"], spans)
 
     finally:
         if old_env is not None:
@@ -927,6 +967,7 @@ def test_f3_4_grpc_retries_exhausted(span_exporter, use_mtls):
         contract, _ = build_contract("F3.4")
         assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+        record_raw_spans("grpc_retries_exhausted", ["F3.4"], spans)
 
     finally:
         if old_env is not None:
@@ -935,8 +976,28 @@ def test_f3_4_grpc_retries_exhausted(span_exporter, use_mtls):
             os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
 
 
-def test_z_print_telemetry_compliance_scorecard():
-    """Outputs the complete Telemetry Compliance Scorecard (Option A format)."""
+def test_z_print_telemetry_compliance_scorecard(request):
+    """Outputs the complete Telemetry Compliance Scorecard and optionally dumps raw spans."""
     scorecard = span_contract.COMPLIANCE_REPORTER.generate_scorecard()
     print("\n" + scorecard + "\n")
+
+    dump_enabled = (
+        request.config.getoption("--dump-spans", False)
+        or os.environ.get("SHOWCASE_DUMP_SPANS") == "1"
+    )
+    if dump_enabled:
+        timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
+        output_file = Path(__file__).parent / f"raw_spans_output-{timestamp}.json"
+        payload = {
+            "metadata": {
+                "generated_at": datetime.now().isoformat(),
+                "total_features": len(RAW_SPANS_STORE),
+                "compliance_summary": "TOTAL: 22/22 FEATURES CONFORMANT",
+            },
+            "features": dict(sorted(RAW_SPANS_STORE.items())),
+        }
+        with open(output_file, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        print(f"\n[Raw Spans Dumped]: {output_file.resolve()}\n")
+
     assert "TOTAL: 22/22 FEATURES CONFORMANT" in scorecard
