@@ -33,7 +33,7 @@ _ENABLE_METRICS_DEV_GATE = False
 # 2. Standardized Configuration and Environment Variable Names
 # ---------------------------------------------------------------------------
 ENABLE_OTEL_METRICS_ENV_VAR = "GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS"
-ENABLE_DEBUG_METRICS_ENV_VAR = "GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS"
+ENABLE_OTEL_DEBUG_METRICS_ENV_VAR = "GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS"
 
 _DEFAULT_ENABLE_METRICS = False
 _DEFAULT_ENABLE_DEBUG_METRICS = False
@@ -110,7 +110,9 @@ def is_advanced_metrics_enabled(
     if client_setting is not None:
         return client_setting
 
-    return _parse_bool_env(ENABLE_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS)
+    return _parse_bool_env(
+        ENABLE_OTEL_DEBUG_METRICS_ENV_VAR, _DEFAULT_ENABLE_DEBUG_METRICS
+    )
 
 
 # ---------------------------------------------------------------------------
