@@ -380,7 +380,7 @@ def _build_http_span_attributes(
     return span_name, span_attributes, resolved_headers
 
 
-class _HttpSpanContext:
+class trace_http_request:
     """Context manager for tracing an HTTP wire request with OpenTelemetry.
 
     Manages span creation, semantic attribute attachment, W3C traceparent injection,
@@ -552,43 +552,3 @@ def record_http_error(span: Any, exc: BaseException) -> None:
                 span.set_attribute("status.message", msg)
     except Exception:  # Fail-open on error attribute extraction failure
         pass
-
-
-def trace_http_request(
-    request: Any = None,
-    *,
-    method: str | None = None,
-    url: str | None = None,
-    url_template: str | None = None,
-    headers: dict[str, Any] | None = None,
-    body: Any = None,
-    client_options: ClientOptions | dict[str, Any] | None = None,
-) -> _HttpSpanContext:
-    """Context manager for tracing HTTP wire attempts with automatic error capture.
-
-    Starts an OpenTelemetry span via `_HttpSpanContext`, injects W3C traceparent headers,
-    and automatically records any exception raised during the attempt using
-    `record_http_error` before re-raising.
-
-    Args:
-        request (Optional[Any]): Optional HTTP request object with .method, .url, .headers, and .body.
-        method (Optional[str]): HTTP request method (e.g. 'GET', 'POST').
-        url (Optional[str]): Full request URL.
-        url_template (Optional[str]): Low-cardinality URL path template (e.g. '/v1/{name}:echo').
-        headers (Optional[dict[str, Any]]): Outgoing HTTP headers dictionary for traceparent injection.
-        body (Optional[Any]): HTTP request body payload.
-        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): Client options used for
-            feature gating and tracer extraction.
-
-    Returns:
-        _HttpSpanContext: Active context manager yielding the span or None.
-    """
-    return _HttpSpanContext(
-        request,
-        method=method,
-        url=url,
-        url_template=url_template,
-        headers=headers,
-        body=body,
-        client_options=client_options,
-    )
