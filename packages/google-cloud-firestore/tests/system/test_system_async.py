@@ -57,6 +57,7 @@ from google.cloud.firestore_v1.bson import (
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
     BSONTimestamp,
 )
 from google.cloud.firestore_v1.query_profile import (
@@ -1269,6 +1270,7 @@ async def test_async_bson_document_writes(client, cleanup, database):
         "int32_val": BSONInt32(42),
         "binary_val_sub128": BSONBinary(b"world", subtype=128),
         "timestamp_val": BSONTimestamp(1700000000, 1),
+        "regex_val": BSONRegex("^hello.*$", options="i"),
     }
 
     await doc_ref.set(bson_payload)
@@ -1287,7 +1289,28 @@ async def test_async_bson_document_writes(client, cleanup, database):
                 "increment": 1,
             }
         },
+        "regex_val": {
+            "__regex__": {
+                "pattern": "^hello.*$",
+                "options": "i",
+            }
+        },
     }
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+async def test_async_bson_regex_invalid_options(client, cleanup, database):
+    """Test async write operations for BSONRegex with invalid options against backend."""
+    collection_id = "async_bson_regex_invalid_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("invalid_regex")
+    cleanup(doc_ref.delete)
+
+    # Backend enforces supported BSON regex flags ('i', 'm', 's', 'u', 'x')
+    # and rejects unsupported options (e.g. 'l') with InvalidArgument.
+    with pytest.raises(InvalidArgument) as exc_info:
+        await doc_ref.set({"regex_val": BSONRegex("hello", options="l")})
+    assert "Invalid regex option" in exc_info.value.message
 
 
 @pytest_asyncio.fixture(scope="module")

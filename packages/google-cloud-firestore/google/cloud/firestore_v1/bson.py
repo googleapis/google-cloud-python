@@ -35,6 +35,7 @@ __all__ = [
     "BSONInt32",
     "BSONBinary",
     "BSONTimestamp",
+    "BSONRegex",
 ]
 
 _OBJECT_ID_BYTES_LEN = 12
@@ -342,3 +343,65 @@ class BSONTimestamp(_BSONType):
 
     def __hash__(self) -> int:
         return hash((type(self), self._seconds, self._increment))
+
+
+class BSONRegex(_BSONType):
+    """Represents a BSON Regular Expression container for Firestore.
+
+    Args:
+        pattern (str): The regular expression pattern string.
+        options (str, optional): BSON regex option flags as a string
+            (e.g. "i", "m", "s", "x", "u"). Defaults to "".
+
+    Raises:
+        TypeError: If pattern is not a string or options is not a string.
+
+    Example:
+        >>> regex = BSONRegex("^hello.*$", options="i")
+        >>> regex.pattern
+        '^hello.*$'
+        >>> regex.options
+        'i'
+    """
+
+    __slots__ = ("_pattern", "_options")
+
+    def __init__(self, pattern: str, options: str = ""):
+        if not isinstance(pattern, str):
+            raise TypeError("BSONRegex pattern must be a str.")
+
+        if not isinstance(options, str):
+            raise TypeError("BSONRegex options must be a str.")
+
+        self._pattern: str = pattern
+        self._options: str = "".join(sorted(set(options)))
+
+    @property
+    def pattern(self) -> str:
+        """str: The regular expression pattern string."""
+        return self._pattern
+
+    @property
+    def options(self) -> str:
+        """str: The normalized BSON regex option flags sorted alphabetically."""
+        return self._options
+
+    def _to_map_value(self) -> Dict[str, Dict[str, str]]:
+        """Returns map dictionary representation for wire serialization."""
+        return {
+            "__regex__": {
+                "pattern": self._pattern,
+                "options": self._options,
+            }
+        }
+
+    def __repr__(self) -> str:
+        return f"BSONRegex({self._pattern!r}, options={self._options!r})"
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, BSONRegex):
+            return self._pattern == other._pattern and self._options == other._options
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash((type(self), self._pattern, self._options))
