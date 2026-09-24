@@ -139,7 +139,7 @@ class PipelineResult:
             return NotImplemented
         return (self._ref == other._ref) and (self._fields_pb == other._fields_pb)
 
-    def data(self) -> dict | "Vector" | "BSONType" | None:
+    def data(self) -> dict | "Vector" | "BSONType" | bytes | None:
         """
         Retrieves all fields in the result.
 

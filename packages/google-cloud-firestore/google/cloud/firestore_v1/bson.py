@@ -27,7 +27,7 @@ Example:
 import abc
 import decimal
 import re
-from typing import Any, Callable, Dict, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 __all__ = [
     "BSONType",
@@ -67,14 +67,15 @@ class BSONType(abc.ABC):
         """Hash representation contract for set and dictionary keys."""
 
     @classmethod
-    def _from_dict(cls, data: Any) -> Any:
+    def _from_dict(cls, data: Any) -> Optional[Union["BSONType", bytes]]:
         """Deserializes a BSON wire map dictionary into a BSON instance or bytes.
 
         Args:
             data (Any): Potential BSON wire map dictionary.
 
         Returns:
-            Any: Deserialized BSON container instance/bytes, or None if not a BSON wire map.
+            Optional[Union[BSONType, bytes]]: Deserialized BSON container
+            instance or bytes, or None if not a BSON wire map or if decoding fails.
         """
         if not isinstance(data, dict) or len(data) != 1:
             return None
@@ -82,7 +83,10 @@ class BSONType(abc.ABC):
         decoder = _BSON_DECODERS.get(key)
         if decoder is None:
             return None
-        return decoder(val)
+        try:
+            return decoder(val)
+        except Exception:
+            return None
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
@@ -528,7 +532,7 @@ class BSONDecimal128(BSONType):
             return hash((type(self), self._value))
 
 
-_BSON_DECODERS: Dict[str, Callable[[Any], Any]] = {
+_BSON_DECODERS: Dict[str, Callable[..., Optional[Union[BSONType, bytes]]]] = {
     "__oid__": BSONObjectId,
     "__min__": lambda _: BSONMinKey(),
     "__max__": lambda _: BSONMaxKey(),

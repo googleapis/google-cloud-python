@@ -601,3 +601,13 @@ def test_bson_decimal128_copy():
 def test_bson_decimal128_pickle():
     d = BSONDecimal128("123.45")
     assert pickle.loads(pickle.dumps(d)) == d
+
+
+def test_bson_from_dict_exception_fallback():
+    # Corrupted or malformed BSON wire dictionary shapes gracefully return None
+    assert BSONType._from_dict({"__int__": "not-an-int"}) is None
+    assert BSONType._from_dict({"__oid__": "short"}) is None
+    assert BSONType._from_dict({"__decimal128__": "invalid-decimal"}) is None
+    assert BSONType._from_dict({"__unknown__": "value"}) is None
+    assert BSONType._from_dict("not-a-dict") is None
+    assert BSONType._from_dict({"a": 1, "b": 2}) is None
