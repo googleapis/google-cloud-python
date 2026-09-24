@@ -488,11 +488,16 @@ class InstalledAppFlow(Flow):
 class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     """Custom WSGIServer.
 
-    Enforces exclusive address binding on Windows and reserves the matching
-    IPv6 loopback address (`::1`) when binding to localhost.
+    Enforces exclusive address binding on Windows.
     Setting `WSGIServer.allow_reuse_address` is not enough, since it sets `SO_REUSEADDR`
     and not `SO_EXCLUSIVEADDRUSE`. `SO_REUSEADDR` alone allows other processes to bind
     to the same address and port on Windows.
+
+    When bound to `localhost`, it also reserves the matching IPv6 loopback
+    address (`::1`). `localhost` resolves to both `::1` and `127.0.0.1`, and
+    browsers try `::1` first, so an unrelated `::1` listener would otherwise
+    receive the OAuth callback. Binding an address literal (e.g. `127.0.0.1`)
+    is unaffected, since the browser then never resolves `localhost`.
     """
 
     allow_reuse_address = False
@@ -501,11 +506,11 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     def _is_listener_present(family, addr, port):
         """Return True if a TCP listener already accepts connections on (addr, port).
 
-        On Windows (same user account), SO_EXCLUSIVEADDRUSE on `::1` does not
-        fail when another process already holds a wildcard `[::]` listener with
-        default flags, and a bound-non-listening `::1` socket does not intercept
-        incoming SYNs. Probing via connect_ex detects pre-existing `[::]`
-        listeners before binding.
+        The `::1` socket reserved by `server_bind` is deliberately not listening,
+        so it cannot detect a pre-existing listener by itself: on Windows (same
+        user account) binding `::1` with SO_EXCLUSIVEADDRUSE succeeds even when
+        another process already holds a wildcard `[::]` listener, and a bound
+        non-listening socket does not intercept incoming SYNs.
         """
         try:
             with socket.socket(family, socket.SOCK_STREAM) as probe:
@@ -521,8 +526,8 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
         super().server_bind()
         port = self.server_address[1]
         if host == "localhost" and port and hasattr(socket, "AF_INET6"):
+            # `TCPServer.__init__` calls `server_close()` if `server_bind()` raises.
             if self._is_listener_present(socket.AF_INET6, "::1", port):
-                self.socket.close()
                 raise OSError(errno.EADDRINUSE, "Address already in use")
             self._ipv6_socket = None
             try:

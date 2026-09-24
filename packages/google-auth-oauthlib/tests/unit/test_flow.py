@@ -629,13 +629,30 @@ class TestExclusiveWSGIServer(object):
             with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
                 with pytest.raises(OSError):
                     server.server_bind()
-            server.socket.close.assert_called_once()
 
             # 2. _is_listener_present returns False when socket() raises OSError
             mock_socket.socket.side_effect = OSError("socket error")
             assert not flow._ExclusiveWSGIServer._is_listener_present(
                 socket.AF_INET6, "::1", 8085
             )
+
+    def test_exclusive_wsgi_server_ipv4_literal_ignores_ipv6(self):
+        # An address literal is served verbatim in redirect_uri, so the browser
+        # never resolves `localhost` and `::1` is irrelevant.
+        server = flow._ExclusiveWSGIServer(
+            ("127.0.0.1", 8085), flow._WSGIRequestHandler, bind_and_activate=False
+        )
+        server.socket = mock.Mock()
+
+        with mock.patch.object(
+            wsgiref.simple_server.WSGIServer, "server_bind"
+        ), mock.patch.object(
+            flow._ExclusiveWSGIServer, "_is_listener_present", return_value=True
+        ) as is_listener_present:
+            server.server_bind()
+
+        is_listener_present.assert_not_called()
+        assert getattr(server, "_ipv6_socket", None) is None
 
     def test_exclusive_wsgi_server_ipv6_bind_errors(self):
         import errno
@@ -669,5 +686,3 @@ class TestExclusiveWSGIServer(object):
             )
             server.server_bind()
             assert server._ipv6_socket is None
-
-
