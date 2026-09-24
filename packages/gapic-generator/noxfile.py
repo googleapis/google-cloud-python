@@ -728,7 +728,7 @@ def mypy(session):
     # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
     session.install(
         "mypy",
-        "types-protobuf<=3.19.7",
+        "types-protobuf",
         "types-PyYAML",
         "types-dataclasses",
         "click==8.1.3",
