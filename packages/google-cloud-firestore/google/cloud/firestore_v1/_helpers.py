@@ -415,18 +415,6 @@ def decode_value(
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def _decode_bson_dict_recursive(data: Any) -> Any:
-    """Recursively decodes BSON wire map dictionaries."""
-    if isinstance(data, dict):
-        decoded = BSONType._from_dict(data)
-        if decoded is not None:
-            return decoded
-        return {k: _decode_bson_dict_recursive(v) for k, v in data.items()}
-    elif isinstance(data, list):
-        return [_decode_bson_dict_recursive(item) for item in data]
-    return data
-
-
 def decode_dict(
     value_fields,
     client,

@@ -1319,9 +1319,9 @@ async def test_async_bson_decimal128_special_values(client, cleanup, database):
     snapshot = await doc_ref.get()
     assert snapshot.exists
     assert snapshot.to_dict() == {
-        "inf_val": {"__decimal128__": "Infinity"},
-        "neg_inf_val": {"__decimal128__": "-Infinity"},
-        "nan_val": {"__decimal128__": "NaN"},
+        "inf_val": BSONDecimal128("Infinity"),
+        "neg_inf_val": BSONDecimal128("-Infinity"),
+        "nan_val": BSONDecimal128("NaN"),
     }
 
 

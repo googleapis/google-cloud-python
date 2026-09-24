@@ -525,8 +525,7 @@ class DocumentSnapshot(object):
         """
         if not self._exists:
             return None
-        data = copy.deepcopy(self._data)
-        return _helpers._decode_bson_dict_recursive(data)
+        return copy.deepcopy(self._data)
 
     def _to_protobuf(self) -> Optional[Document]:
         return _helpers.document_snapshot_to_protobuf(self)
