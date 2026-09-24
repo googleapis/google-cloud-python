@@ -151,10 +151,15 @@ def upload_many(
 
     :type deadline: int
     :param deadline:
-        The number of seconds to wait for all threads to resolve. If the
-        deadline is reached, all threads will be terminated regardless of their
-        progress and `concurrent.futures.TimeoutError` will be raised. This can
-        be left as the default of `None` (no deadline) for most use cases.
+        The number of seconds to wait for all uploads to complete. If the
+        deadline is reached, `concurrent.futures.TimeoutError` will be raised
+        and queued uploads will be cancelled.
+
+        If worker_type is set to THREAD, in-progress uploads will still run to
+        completion. If worker_type is set to PROCESS, in-progress uploads will
+        be terminated.
+
+        This can be left as the default of `None` (no deadline) for most use cases.
 
     :type raise_exception: bool
     :param raise_exception:
@@ -540,10 +545,15 @@ def upload_many_from_filenames(
 
     :type deadline: int
     :param deadline:
-        The number of seconds to wait for all threads to resolve. If the
-        deadline is reached, all threads will be terminated regardless of their
-        progress and `concurrent.futures.TimeoutError` will be raised. This can
-        be left as the default of `None` (no deadline) for most use cases.
+        The number of seconds to wait for all uploads to complete. If the
+        deadline is reached, `concurrent.futures.TimeoutError` will be raised
+        and queued uploads will be cancelled.
+
+        If worker_type is set to THREAD, in-progress uploads will still run to
+        completion. If worker_type is set to PROCESS, in-progress uploads will
+        be terminated.
+
+        This can be left as the default of `None` (no deadline) for most use cases.
 
     :type raise_exception: bool
     :param raise_exception:
