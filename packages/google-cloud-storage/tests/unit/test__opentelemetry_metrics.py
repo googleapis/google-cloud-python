@@ -125,7 +125,7 @@ def test_advanced_metrics_requires_base_metrics(monkeypatch):
     """Advanced metrics cannot be active if base metrics are disabled."""
     monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS", "false")
-    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS", "true")
+    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "true")
 
     assert _opentelemetry_metrics.is_advanced_metrics_enabled() is False
     assert (
@@ -140,7 +140,7 @@ def test_advanced_metrics_enabled(monkeypatch):
     """Advanced metrics is enabled when both base and debug flags are True."""
     monkeypatch.setattr(_opentelemetry_metrics, "_ENABLE_METRICS_DEV_GATE", True)
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS", "true")
-    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS", "true")
+    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "true")
 
     assert _opentelemetry_metrics.is_advanced_metrics_enabled() is True
 
@@ -151,13 +151,13 @@ def test_advanced_metrics_client_setting_overrides_env_var(monkeypatch):
     monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_METRICS", "true")
 
     # Client enables while debug env var is False
-    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS", "false")
+    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "false")
     assert (
         _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=True) is True
     )
 
     # Client disables while debug env var is True
-    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_DEBUG_METRICS", "true")
+    monkeypatch.setenv("GCP_STORAGE_PYTHON_ENABLE_OTEL_DEBUG_METRICS", "true")
     assert (
         _opentelemetry_metrics.is_advanced_metrics_enabled(client_setting=False)
         is False
