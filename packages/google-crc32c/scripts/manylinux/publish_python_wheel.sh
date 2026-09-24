@@ -17,25 +17,20 @@ set -eo pipefail
 
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 
-# Prefer Python 3.12 from manylinux (/opt/python/cp312-cp312/bin/python) or host python3.12,
-# and run inside an isolated virtual environment so pip never conflicts with system distutils packages.
-if [[ -x "/opt/python/cp312-cp312/bin/python" ]]; then
-    PYTHON_BIN="/opt/python/cp312-cp312/bin/python"
-elif command -v python3.12 >/dev/null 2>&1; then
-    PYTHON_BIN="$(command -v python3.12)"
-else
-    PYTHON_BIN="$(command -v python3)"
+# This script runs as a container entrypoint in quay.io/pypa/manylinux2014_x86_64.
+# The venv is load-bearing: `releasetool publish-reporter-script` emits bash that
+# hardcodes `python3`, which does not exist in this image outside a venv.
+PYTHON_BIN="/opt/python/cp312-cp312/bin/python"
+if [[ ! -x "${PYTHON_BIN}" ]]; then
+    echo "ERROR: ${PYTHON_BIN} not found; run this inside manylinux2014_x86_64." >&2
+    exit 1
 fi
 
 PUBLISH_VENV="$(mktemp -d)/venv"
-if "${PYTHON_BIN}" -m venv "${PUBLISH_VENV}" 2>/dev/null; then
-    source "${PUBLISH_VENV}/bin/activate"
-else
-    python3 -m virtualenv -p "${PYTHON_BIN}" "${PUBLISH_VENV}"
-    source "${PUBLISH_VENV}/bin/activate"
-fi
+"${PYTHON_BIN}" -m venv "${PUBLISH_VENV}"
+source "${PUBLISH_VENV}/bin/activate"
 
-python -m pip install --upgrade pip "setuptools<71" twine wheel pkginfo
+python -m pip install --upgrade "setuptools<71" twine wheel pkginfo
 
 echo "Built wheels in ${REPO_ROOT}/wheels/:"
 ls -la "${REPO_ROOT}/wheels/"
