@@ -560,31 +560,31 @@ def test_bson_decimal128_equality():
     d3 = BSONDecimal128("678.90")
     assert d1 == d2
     assert d1 != d3
-    assert d1 == decimal.Decimal("123.45")
     assert d1 != "123.45"
+    # Pure container parity with PyMongo: BSONDecimal128 does not equate to
+    # standard decimal.Decimal directly; developers use .to_decimal() for math/comparison.
+    assert d1 != decimal.Decimal("123.45")
+    assert d1.to_decimal() == decimal.Decimal("123.45")
 
-    # Transitivity test: BSONDecimal128("1.0") == Decimal("1") == BSONDecimal128("1")
     d_trail = BSONDecimal128("1.0")
     d_int = BSONDecimal128("1")
-    dec_int = decimal.Decimal("1")
-    assert d_trail == dec_int
-    assert d_int == dec_int
-    assert d_trail == d_int  # Transitivity enforced!
+    assert d_trail == d_int
 
     nan1 = BSONDecimal128("NaN")
     nan2 = BSONDecimal128("NaN")
+    # Two BSONDecimal128 instances compare equal for NaN (PyMongo container parity)
     assert nan1 == nan2
 
 
 def test_bson_decimal128_hash_and_dict_key():
     d1 = BSONDecimal128("123.45")
     d2 = BSONDecimal128("123.45")
-    dec_val = decimal.Decimal("123.45")
+    d3 = BSONDecimal128("678.90")
 
     # Hash invariant test: if a == b, then hash(a) == hash(b)
     assert hash(d1) == hash(d2)
-    assert hash(d1) == hash(dec_val)
-    assert len({d1, d2, dec_val}) == 1
+    assert len({d1, d2}) == 1
+    assert len({d1, d3}) == 2
 
     nan1 = BSONDecimal128("NaN")
     nan2 = BSONDecimal128("NaN")

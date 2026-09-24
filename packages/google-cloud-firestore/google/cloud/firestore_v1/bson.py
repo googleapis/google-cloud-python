@@ -488,19 +488,15 @@ class BSONDecimal128(_BSONType):
         if isinstance(other, BSONDecimal128):
             try:
                 d1, d2 = self.to_decimal(), other.to_decimal()
+                # Following PyMongo's bson.decimal128.Decimal128 specification,
+                # two Decimal128 instances compare equal if their underlying BSON
+                # encodings are identical (including NaN == NaN). This aligns with
+                # Firestore query and indexing semantics where NaN matches NaN.
                 if d1.is_nan() and d2.is_nan():
                     return True
                 return d1 == d2
             except decimal.InvalidOperation:
                 return self._value == other._value
-        if isinstance(other, decimal.Decimal):
-            try:
-                d1 = self.to_decimal()
-                if d1.is_nan() and other.is_nan():
-                    return True
-                return d1 == other
-            except decimal.InvalidOperation:
-                return False
         return NotImplemented
 
     def __hash__(self) -> int:
