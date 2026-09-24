@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-crc32c-v1.9.0-rc0...google-crc32c-v1.9.0) (2026-09-24)
+
+
+### Features
+
+* **crc32c:** support Python 3.15 ([1bf979a](https://github.com/googleapis/google-cloud-python/commit/1bf979a2efc0b8c6ccc738b046698beb7914d21a))
+
 ## [1.9.0-rc0](https://github.com/googleapis/google-cloud-python/compare/google-crc32c-v1.8.0...google-crc32c-v1.9.0-rc0) (2026-09-23)
 
 
