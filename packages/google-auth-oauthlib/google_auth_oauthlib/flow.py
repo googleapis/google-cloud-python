@@ -493,24 +493,16 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     and not `SO_EXCLUSIVEADDRUSE`. `SO_REUSEADDR` alone allows other processes to bind
     to the same address and port on Windows.
 
-    When bound to `localhost`, it also reserves the matching IPv6 loopback
-    address (`::1`). `localhost` resolves to both `::1` and `127.0.0.1`, and
-    browsers try `::1` first, so an unrelated `::1` listener would otherwise
-    receive the OAuth callback. Binding an address literal (e.g. `127.0.0.1`)
-    is unaffected, since the browser then never resolves `localhost`.
+    When bound to `localhost`, also reserves the IPv6 loopback (`::1`) so
+    another process listening on `::1` cannot intercept the OAuth callback.
     """
 
     allow_reuse_address = False
 
     @staticmethod
     def _is_listener_present(family, addr, port):
-        """Return True if a TCP listener already accepts connections on (addr, port).
-
-        The `::1` socket reserved by `server_bind` is deliberately not listening,
-        so it cannot detect a pre-existing listener by itself: on Windows (same
-        user account) binding `::1` with SO_EXCLUSIVEADDRUSE succeeds even when
-        another process already holds a wildcard `[::]` listener, and a bound
-        non-listening socket does not intercept incoming SYNs.
+        """Check if another process is already listening on (addr, port) by
+        attempting a test connection.
         """
         try:
             with socket.socket(family, socket.SOCK_STREAM) as probe:
@@ -525,8 +517,9 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
         port = self.server_address[1]
+        # Reserve IPv6 loopback (::1) so another process cannot intercept localhost callbacks.
         if host == "localhost" and port and hasattr(socket, "AF_INET6"):
-            # `TCPServer.__init__` calls `server_close()` if `server_bind()` raises.
+            # base class (TCPServer) calls server_close on error
             if self._is_listener_present(socket.AF_INET6, "::1", port):
                 raise OSError(errno.EADDRINUSE, "Address already in use")
             self._ipv6_socket = None
