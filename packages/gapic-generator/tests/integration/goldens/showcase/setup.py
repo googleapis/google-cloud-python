@@ -43,7 +43,7 @@ else:
 
 dependencies = [
     # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18352 is merged
-    "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git@feat/resumable-transfer-api-core#subdirectory=packages/google-api-core",
+    "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core",
     # TODO: Uncomment the line below
     # "google-api-core[grpc] >= 2.28.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
@@ -94,6 +94,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.15",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
