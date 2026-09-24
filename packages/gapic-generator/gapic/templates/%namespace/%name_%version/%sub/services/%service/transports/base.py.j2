@@ -169,6 +169,15 @@ class {{ service.name }}Transport(abc.ABC):
         return self._host
 
     def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
         if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             if self.kind:
@@ -181,6 +190,15 @@ class {{ service.name }}Transport(abc.ABC):
         return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             if self.kind:
@@ -193,7 +211,7 @@ class {{ service.name }}Transport(abc.ABC):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
             {% for method in service.methods.values() %}
             self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
