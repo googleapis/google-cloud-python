@@ -72,16 +72,12 @@ def test_is_port_open_ipv6_checks(monkeypatch):
     sock6.__enter__.return_value.connect_ex.return_value = 0
     assert not module_under_test.is_port_open(8085)
 
-    sock6.side_effect = OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
-    monkeypatch.setattr(
-        socket,
-        "socket",
-        lambda family, type_: (_ for _ in ()).throw(
-            OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
-        )
-        if family == socket.AF_INET6
-        else sock4,
-    )
+    def mock_socket_fn(family, type_):
+        if family == socket.AF_INET6:
+            raise OSError(errno.EAFNOSUPPORT, "IPv6 disabled")
+        return sock4
+
+    monkeypatch.setattr(socket, "socket", mock_socket_fn)
     assert module_under_test.is_port_open(8085)
 
 
