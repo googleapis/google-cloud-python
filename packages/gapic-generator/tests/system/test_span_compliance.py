@@ -44,11 +44,18 @@ if not HAS_OPENTELEMETRY:
 
 from google import showcase
 from google.api_core import exceptions
+from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials
 from google.protobuf import any_pb2
-from google.rpc import code_pb2, error_details_pb2
-from google.showcase import EchoClient
+from google.rpc import code_pb2, error_details_pb2, status_pb2
+from google.showcase import (
+    AttemptSequenceRequest,
+    CreateSequenceRequest,
+    EchoClient,
+    Sequence,
+    SequenceServiceClient,
+)
 
 try:
     from . import conftest, span_contract
@@ -791,8 +798,381 @@ def test_telemetry_compliance_scenario(
             os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
 
 
+def test_f3_1_http_retry_succeeds(span_exporter, use_mtls):
+    """[F3.1] HTTP/REST Retry Succeeds: Validates 1 T3 parent + 2 T4 child spans."""
+    exporter, provider = span_exporter
+    client_options = ClientOptions(tracer_provider=provider)
+    old_env = os.environ.get("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED")
+    os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "true"
+
+    try:
+        client = conftest.construct_client(
+            SequenceServiceClient,
+            transport_name="rest",
+            use_mtls=use_mtls,
+            client_options=client_options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        sequence = client.create_sequence(
+            CreateSequenceRequest(
+                sequence=Sequence(
+                    responses=[
+                        Sequence.Response(
+                            status=status_pb2.Status(
+                                code=code_pb2.UNAVAILABLE,
+                                message="HTTP temporary failure",
+                            )
+                        ),
+                        Sequence.Response(status=status_pb2.Status(code=code_pb2.OK)),
+                    ]
+                )
+            )
+        )
+
+        exporter.clear()
+
+        retry_policy = retries.Retry(
+            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+            initial=0.01,
+            maximum=0.05,
+            multiplier=1.0,
+            deadline=5.0,
+        )
+
+        client.attempt_sequence(
+            AttemptSequenceRequest(name=sequence.name),
+            retry=retry_policy,
+        )
+
+        spans = exporter.get_finished_spans()
+        assert len(spans) == 3, f"Expected 3 spans (1 T3 + 2 T4), got {len(spans)}"
+
+        t3_spans = [s for s in spans if s.parent is None]
+        t4_spans = [s for s in spans if s.parent is not None]
+        assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
+        assert len(t4_spans) == 2, f"Expected 2 T4 child spans, got {len(t4_spans)}"
+
+        method_span = t3_spans[0]
+        t4_1 = [
+            s for s in t4_spans if s.attributes.get("http.response.status_code") == 503
+        ][0]
+        t4_2 = [
+            s for s in t4_spans if s.attributes.get("http.response.status_code") == 200
+        ][0]
+
+        # Verify parent-child hierarchy
+        assert t4_1.parent.span_id == method_span.context.span_id
+        assert t4_2.parent.span_id == method_span.context.span_id
+
+        # Verify child span statuses
+        assert t4_1.status.status_code.name == "ERROR"
+        assert t4_2.status.status_code.name in ("UNSET", "OK")
+
+        # Verify parent span status & aggregation
+        assert method_span.status.status_code.name in ("UNSET", "OK")
+        assert "error.type" not in method_span.attributes
+
+        # Record compliance
+        contract = SpanContract(
+            feature_id="F3.1",
+            tier="T3/T4",
+            transport="HTTP/REST",
+            scenario="Retry Succeeds",
+            expected_span_count=3,
+            _metadata_summary="1 T3 parent, 2 T4 children",
+            _floor_summary="T4_1: 503, T4_2: 200",
+            _optional_summary="T3: OK/UNSET",
+            _invariants_summary="T4 parent is T3, T3 error.* NOT SET",
+        )
+        contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+
+    finally:
+        if old_env is not None:
+            os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = old_env
+        else:
+            os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
+
+
+def test_f3_2_http_retries_exhausted(span_exporter, use_mtls):
+    """[F3.2] HTTP/REST Retries Exhausted: Validates 1 T3 parent + N T4 child spans, error aggregated."""
+    exporter, provider = span_exporter
+    client_options = ClientOptions(tracer_provider=provider)
+    old_env = os.environ.get("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED")
+    os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "true"
+
+    try:
+        client = conftest.construct_client(
+            SequenceServiceClient,
+            transport_name="rest",
+            use_mtls=use_mtls,
+            client_options=client_options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        sequence = client.create_sequence(
+            CreateSequenceRequest(
+                sequence=Sequence(
+                    responses=[
+                        Sequence.Response(
+                            status=status_pb2.Status(
+                                code=code_pb2.UNAVAILABLE,
+                                message="HTTP permanent unavailable",
+                            )
+                        )
+                        for _ in range(20)
+                    ]
+                )
+            )
+        )
+
+        exporter.clear()
+
+        retry_policy = retries.Retry(
+            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+            initial=0.01,
+            maximum=0.01,
+            multiplier=1.0,
+            deadline=0.05,
+        )
+
+        with pytest.raises((exceptions.RetryError, exceptions.ServiceUnavailable)):
+            client.attempt_sequence(
+                AttemptSequenceRequest(name=sequence.name),
+                retry=retry_policy,
+            )
+
+        spans = exporter.get_finished_spans()
+        assert len(spans) >= 2, (
+            f"Expected at least 2 spans (1 T3 + >=1 T4), got {len(spans)}"
+        )
+
+        t3_spans = [s for s in spans if s.parent is None]
+        t4_spans = [s for s in spans if s.parent is not None]
+        assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
+        assert len(t4_spans) >= 1, f"Expected >=1 T4 child spans, got {len(t4_spans)}"
+
+        method_span = t3_spans[0]
+        # Verify parent-child hierarchy on all attempts
+        for t4 in t4_spans:
+            assert t4.parent.span_id == method_span.context.span_id
+            assert t4.status.status_code.name == "ERROR"
+            assert t4.attributes.get("http.response.status_code") == 503
+
+        # Verify parent span status & aggregated error
+        assert method_span.status.status_code.name == "ERROR"
+        assert method_span.attributes.get("error.type") == "UNAVAILABLE"
+        assert "rpc.system.name" in method_span.attributes
+
+        # Record compliance
+        contract = SpanContract(
+            feature_id="F3.2",
+            tier="T3/T4",
+            transport="HTTP/REST",
+            scenario="Retries Exhausted",
+            expected_span_count=len(spans),
+            _metadata_summary=f"1 T3 parent, {len(t4_spans)} T4 children",
+            _floor_summary="All T4: 503, T3: UNAVAILABLE",
+            _optional_summary="status.message",
+            _invariants_summary="T4 parent is T3, T3 status ERROR",
+        )
+        contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+
+    finally:
+        if old_env is not None:
+            os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = old_env
+        else:
+            os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
+
+
+def test_f3_3_grpc_retry_succeeds(span_exporter, use_mtls):
+    """[F3.3] gRPC Retry Succeeds: Validates 1 T3 parent + 2 T4 child spans."""
+    exporter, provider = span_exporter
+    client_options = ClientOptions(tracer_provider=provider)
+    old_env = os.environ.get("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED")
+    os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "true"
+
+    try:
+        client = conftest.construct_client(
+            SequenceServiceClient,
+            transport_name="grpc",
+            use_mtls=use_mtls,
+            client_options=client_options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        sequence = client.create_sequence(
+            CreateSequenceRequest(
+                sequence=Sequence(
+                    responses=[
+                        Sequence.Response(
+                            status=status_pb2.Status(
+                                code=code_pb2.UNAVAILABLE,
+                                message="gRPC temporary failure",
+                            )
+                        ),
+                        Sequence.Response(status=status_pb2.Status(code=code_pb2.OK)),
+                    ]
+                )
+            )
+        )
+
+        exporter.clear()
+
+        retry_policy = retries.Retry(
+            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+            initial=0.01,
+            maximum=0.05,
+            multiplier=1.0,
+            deadline=5.0,
+        )
+
+        client.attempt_sequence(
+            AttemptSequenceRequest(name=sequence.name),
+            retry=retry_policy,
+        )
+
+        spans = exporter.get_finished_spans()
+        assert len(spans) == 3, f"Expected 3 spans (1 T3 + 2 T4), got {len(spans)}"
+
+        t3_spans = [s for s in spans if s.parent is None]
+        t4_spans = [s for s in spans if s.parent is not None]
+        assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
+        assert len(t4_spans) == 2, f"Expected 2 T4 child spans, got {len(t4_spans)}"
+
+        method_span = t3_spans[0]
+        # Child 1: status 14 UNAVAILABLE; Child 2: status 0 OK
+        t4_1 = [s for s in t4_spans if s.attributes.get("rpc.grpc.status_code") == 14][
+            0
+        ]
+        t4_2 = [s for s in t4_spans if s.attributes.get("rpc.grpc.status_code") == 0][0]
+
+        # Verify parent-child hierarchy
+        assert t4_1.parent.span_id == method_span.context.span_id
+        assert t4_2.parent.span_id == method_span.context.span_id
+
+        # Verify child span statuses
+        assert t4_1.status.status_code.name == "ERROR"
+        assert t4_2.status.status_code.name in ("UNSET", "OK")
+
+        # Verify parent span status & aggregation
+        assert method_span.status.status_code.name in ("UNSET", "OK")
+        assert "error.type" not in method_span.attributes
+
+        # Record compliance
+        contract = SpanContract(
+            feature_id="F3.3",
+            tier="T3/T4",
+            transport="gRPC",
+            scenario="Retry Succeeds",
+            expected_span_count=3,
+            _metadata_summary="1 T3 parent, 2 T4 children",
+            _floor_summary="T4_1: 14, T4_2: 0",
+            _optional_summary="T3: OK/UNSET",
+            _invariants_summary="T4 parent is T3, T3 error.* NOT SET",
+        )
+        contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+
+    finally:
+        if old_env is not None:
+            os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = old_env
+        else:
+            os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
+
+
+def test_f3_4_grpc_retries_exhausted(span_exporter, use_mtls):
+    """[F3.4] gRPC Retries Exhausted: Validates 1 T3 parent + N T4 child spans, error aggregated."""
+    exporter, provider = span_exporter
+    client_options = ClientOptions(tracer_provider=provider)
+    old_env = os.environ.get("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED")
+    os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "true"
+
+    try:
+        client = conftest.construct_client(
+            SequenceServiceClient,
+            transport_name="grpc",
+            use_mtls=use_mtls,
+            client_options=client_options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        sequence = client.create_sequence(
+            CreateSequenceRequest(
+                sequence=Sequence(
+                    responses=[
+                        Sequence.Response(
+                            status=status_pb2.Status(
+                                code=code_pb2.UNAVAILABLE,
+                                message="gRPC permanent unavailable",
+                            )
+                        )
+                        for _ in range(20)
+                    ]
+                )
+            )
+        )
+
+        exporter.clear()
+
+        retry_policy = retries.Retry(
+            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+            initial=0.01,
+            maximum=0.01,
+            multiplier=1.0,
+            deadline=0.05,
+        )
+
+        with pytest.raises((exceptions.RetryError, exceptions.ServiceUnavailable)):
+            client.attempt_sequence(
+                AttemptSequenceRequest(name=sequence.name),
+                retry=retry_policy,
+            )
+
+        spans = exporter.get_finished_spans()
+        assert len(spans) >= 2, (
+            f"Expected at least 2 spans (1 T3 + >=1 T4), got {len(spans)}"
+        )
+
+        t3_spans = [s for s in spans if s.parent is None]
+        t4_spans = [s for s in spans if s.parent is not None]
+        assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
+        assert len(t4_spans) >= 1, f"Expected >=1 T4 child spans, got {len(t4_spans)}"
+
+        method_span = t3_spans[0]
+        # Verify parent-child hierarchy on all attempts
+        for t4 in t4_spans:
+            assert t4.parent.span_id == method_span.context.span_id
+            assert t4.status.status_code.name == "ERROR"
+            assert t4.attributes.get("rpc.grpc.status_code") == 14
+
+        # Verify parent span status & aggregated error
+        assert method_span.status.status_code.name == "ERROR"
+        assert method_span.attributes.get("error.type") == "UNAVAILABLE"
+        assert "rpc.system.name" in method_span.attributes
+
+        # Record compliance
+        contract = SpanContract(
+            feature_id="F3.4",
+            tier="T3/T4",
+            transport="gRPC",
+            scenario="Retries Exhausted",
+            expected_span_count=len(spans),
+            _metadata_summary=f"1 T3 parent, {len(t4_spans)} T4 children",
+            _floor_summary="All T4: 14, T3: UNAVAILABLE",
+            _optional_summary="status.message",
+            _invariants_summary="T4 parent is T3, T3 status ERROR",
+        )
+        contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
+
+    finally:
+        if old_env is not None:
+            os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = old_env
+        else:
+            os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
+
+
 def test_z_print_telemetry_compliance_scorecard():
     """Outputs the complete Telemetry Compliance Scorecard (Option A format)."""
     scorecard = span_contract.COMPLIANCE_REPORTER.generate_scorecard()
     print("\n" + scorecard + "\n")
-    assert "TOTAL: 18/18 FEATURES CONFORMANT" in scorecard
+    assert "TOTAL: 22/22 FEATURES CONFORMANT" in scorecard
