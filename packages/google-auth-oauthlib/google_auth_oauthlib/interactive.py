@@ -50,6 +50,10 @@ def is_port_open(port):
             is_open = False
         else:
             is_open = True
+    if is_open and google_auth_oauthlib.flow._ipv6_loopback_listener_present(port):
+        # The bind above only covers IPv4, but a browser sent to "localhost"
+        # would reach whatever holds the same port on ::1.
+        is_open = False
     return is_open
 
 

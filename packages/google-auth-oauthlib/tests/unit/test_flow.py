@@ -414,7 +414,7 @@ class TestInstalledAppFlow(object):
     ):
         def assign_last_request_uri(host, port, wsgi_app, **kwargs):
             wsgi_app.last_request_uri = self.REDIRECT_REQUEST_PATH
-            return mock.Mock()
+            return mock.Mock(server_port=0)
 
         make_server_mock.side_effect = assign_last_request_uri
 
@@ -429,7 +429,7 @@ class TestInstalledAppFlow(object):
     ):
         def assign_last_request_uri(host, port, wsgi_app, **kwargs):
             wsgi_app.last_request_uri = self.REDIRECT_REQUEST_PATH
-            return mock.Mock()
+            return mock.Mock(server_port=0)
 
         make_server_mock.side_effect = assign_last_request_uri
 
@@ -485,7 +485,7 @@ class TestInstalledAppFlow(object):
     def test_run_local_server_uses_exclusive_server_class(
         self, make_server_mock, webbrowser_mock, instance
     ):
-        server_mock = mock.MagicMock()
+        server_mock = mock.MagicMock(server_port=0)
         make_server_mock.return_value = server_mock
 
         with pytest.raises(Exception):
@@ -502,7 +502,7 @@ class TestInstalledAppFlow(object):
     def test_local_server_socket_cleanup(
         self, make_server_mock, webbrowser_mock, instance
     ):
-        server_mock = mock.MagicMock()
+        server_mock = mock.MagicMock(server_port=0)
         make_server_mock.return_value = server_mock
         webbrowser_mock.side_effect = webbrowser.Error("Browser not found")
 
@@ -551,7 +551,7 @@ class TestInstalledAppFlow(object):
     def test_run_local_server_timeout(
         self, make_server_mock, webbrowser_mock, instance, mock_fetch_token
     ):
-        mock_server = mock.Mock()
+        mock_server = mock.Mock(server_port=0)
         make_server_mock.return_value = mock_server
 
         # handle_request does nothing (simulating timeout), so last_request_uri remains None
@@ -562,6 +562,116 @@ class TestInstalledAppFlow(object):
 
         webbrowser_mock.get.assert_called_with(None)
         webbrowser_mock.get.return_value.open.assert_called_once()
+
+    @pytest.fixture
+    def ipv6_listener_port(self):
+        """Port of a socket listening on ``[::1]`` only, leaving IPv4 free."""
+        if not socket.has_ipv6:
+            pytest.skip("IPv6 is not available on this host.")
+        with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as listener:
+            try:
+                listener.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 1)
+                listener.bind(("::1", 0))
+                listener.listen(1)
+            except OSError:  # pragma: NO COVER
+                pytest.skip("The IPv6 loopback address is not usable on this host.")
+            yield listener.getsockname()[1]
+
+    @pytest.mark.parametrize(
+        "client_type,uri_host,probed",
+        [("installed", "127.0.0.1", False), ("web", "localhost", True)],
+    )
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    @mock.patch("wsgiref.simple_server.make_server", autospec=True)
+    def test_run_local_server_redirect_host(
+        self, make_server_mock, webbrowser_mock, instance, client_type, uri_host, probed
+    ):
+        # Installed clients get the address the server really listens on; web
+        # clients keep the "localhost" URI registered in the Cloud Console.
+        make_server_mock.return_value = mock.Mock(server_port=12345)
+        instance.client_type = client_type
+
+        with mock.patch.object(
+            flow, "_ipv6_loopback_listener_present", autospec=True, return_value=False
+        ) as probe_mock:
+            with pytest.raises(flow.WSGITimeoutError):
+                instance.run_local_server(port=12345)
+
+        assert instance.redirect_uri == f"http://{uri_host}:12345/"
+        assert probe_mock.called is probed
+
+    @pytest.mark.webtest
+    @pytest.mark.parametrize("kwargs", [{}, {"bind_addr": "127.0.0.1"}])
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_ipv6_listener_raises(
+        self, webbrowser_mock, instance, ipv6_listener_port, kwargs
+    ):
+        # A ::1 listener would get the authorization code, so refuse to start.
+        with pytest.raises(OSError, match=r"\[::1\]:%d" % ipv6_listener_port):
+            instance.run_local_server(
+                port=ipv6_listener_port, timeout_seconds=1, **kwargs
+            )
+
+        assert not webbrowser_mock.get().open.called
+
+    def test_ipv6_loopback_listener_present_without_ipv6(self, monkeypatch):
+        monkeypatch.setattr(socket, "has_ipv6", False)
+        assert flow._ipv6_loopback_listener_present(12345) is False
+
+    @pytest.mark.webtest
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_installed_client_ignores_ipv6_listener(
+        self, webbrowser_mock, instance, mock_fetch_token, ipv6_listener_port
+    ):
+        # Regression test for the reported hang: another process holds
+        # [::1]:port, where "localhost" resolves first. The installed client
+        # advertises the IPv4 literal, so the browser still reaches us.
+        instance.client_type = "installed"
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(
+                instance.run_local_server, port=ipv6_listener_port, timeout_seconds=10
+            )
+
+            while not future.done():  # Follow the advertised URI, like a browser.
+                uri = urllib.parse.urljoin(
+                    instance.redirect_uri or "", self.REDIRECT_REQUEST_PATH
+                )
+                try:
+                    requests.get(uri, timeout=5)
+                except requests.RequestException:  # pragma: NO COVER
+                    pass
+
+            credentials = future.result()
+
+        assert credentials.token == mock.sentinel.access_token
+        assert instance.redirect_uri == f"http://127.0.0.1:{ipv6_listener_port}/"
+
+
+class TestWSGIRequestHandler(object):
+    @pytest.mark.webtest
+    def test_idle_connection_is_closed_quietly(self, capsys, monkeypatch):
+        # A client that connects and sends nothing must not block the flow, and
+        # an unhandled read timeout would print a traceback to stderr.
+        assert flow._WSGIRequestHandler.timeout == flow._REQUEST_TIMEOUT
+        monkeypatch.setattr(flow._WSGIRequestHandler, "timeout", 0.1)
+        wsgi_app = flow._RedirectWSGIApp("success")
+        server = wsgiref.simple_server.make_server(
+            "127.0.0.1",
+            0,
+            wsgi_app,
+            server_class=flow._ExclusiveWSGIServer,
+            handler_class=flow._WSGIRequestHandler,
+        )
+
+        try:
+            with socket.create_connection(("127.0.0.1", server.server_port)):
+                server.handle_request()  # Returns once the handler times out.
+        finally:
+            server.server_close()
+
+        assert wsgi_app.last_request_uri is None
+        assert "Traceback" not in capsys.readouterr().err
 
 
 class TestExclusiveWSGIServer(object):

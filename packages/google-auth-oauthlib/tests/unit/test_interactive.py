@@ -55,6 +55,18 @@ def test_find_open_port_returns_none(monkeypatch):
     socket_instance.listen.assert_has_calls(mock.call(1) for _ in range(100))
 
 
+@pytest.mark.parametrize("ipv6_taken,expected", [(False, True), (True, False)])
+def test_is_port_open_checks_ipv6(monkeypatch, ipv6_taken, expected):
+    from google_auth_oauthlib import flow
+    from google_auth_oauthlib import interactive as module_under_test
+
+    # A port can be free on 127.0.0.1 while another process holds ::1.
+    monkeypatch.setattr(
+        flow, "_ipv6_loopback_listener_present", lambda port: ipv6_taken
+    )
+    assert module_under_test.is_port_open(0) is expected
+
+
 def test_get_user_credentials():
     from google_auth_oauthlib import flow
     from google_auth_oauthlib import interactive as module_under_test

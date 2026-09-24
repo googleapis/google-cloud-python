@@ -73,6 +73,9 @@ import google_auth_oauthlib.helpers
 
 _LOGGER = logging.getLogger(__name__)
 
+# Seconds an idle connection may block the single threaded redirect server.
+_REQUEST_TIMEOUT = 10.0
+
 
 class Flow(object):
     """OAuth 2.0 Authorization Flow
@@ -397,7 +400,8 @@ class InstalledAppFlow(Flow):
 
         Args:
             host (str): The hostname for the local redirect server. This will
-                be served over http, not https.
+                be served over http, not https. For ``installed`` clients
+                ``"localhost"`` is advertised as ``127.0.0.1``.
             bind_addr (str): Optionally provide an ip address for the redirect
                 server to listen on when it is not the same as host
                 (e.g. in a container). Default value is None,
@@ -433,6 +437,8 @@ class InstalledAppFlow(Flow):
         Raises:
             WSGITimeoutError: If there is a timeout when waiting for the response from the
                 authorization server.
+            OSError: If the redirect server cannot bind the requested address
+                and port, or if another process is listening on ``[::1]`` there.
         """
         wsgi_app = _RedirectWSGIApp(success_message)
         # Use _ExclusiveWSGIServer to fail fast if the address/port is occupied,
@@ -449,9 +455,26 @@ class InstalledAppFlow(Flow):
             redirect_uri_format = (
                 "http://{}:{}/" if redirect_uri_trailing_slash else "http://{}:{}"
             )
+            # wsgiref only serves 127.0.0.1, but "localhost" usually resolves to
+            # ::1 first. Installed clients may advertise the loopback literal
+            # (RFC 8252 section 7.3); web clients must keep the registered name.
+            redirect_host = host
+            if host == "localhost" and self.client_type == "installed":
+                redirect_host = "127.0.0.1"
             self.redirect_uri = redirect_uri_format.format(
-                host, local_server.server_port
+                redirect_host, local_server.server_port
             )
+
+            # A "localhost" redirect may still resolve to ::1, where another
+            # process would take the code and this call would block forever.
+            if redirect_host == "localhost" and _ipv6_loopback_listener_present(
+                local_server.server_port
+            ):
+                raise OSError(
+                    f"Another process is listening on [::1]:{local_server.server_port}"
+                    ' and would get the authorization response. Try host="127.0.0.1".'
+                )
+
             auth_url, _ = self.authorization_url(**kwargs)
 
             if open_browser:
@@ -485,6 +508,19 @@ class InstalledAppFlow(Flow):
         return self.credentials
 
 
+def _ipv6_loopback_listener_present(port):
+    """Check whether something is already listening on ``[::1]:port``."""
+    if not socket.has_ipv6:
+        return False
+    try:
+        with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as probe:
+            probe.settimeout(1.0)
+            return probe.connect_ex(("::1", port)) == 0
+    except OSError:  # pragma: NO COVER
+        # IPv6 is compiled in but unusable at runtime.
+        return False
+
+
 class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     """Custom WSGIServer.
 
@@ -507,6 +543,17 @@ class _WSGIRequestHandler(wsgiref.simple_server.WSGIRequestHandler):
 
     Uses a named logger instead of printing to stderr.
     """
+
+    timeout = _REQUEST_TIMEOUT
+
+    def handle(self):
+        try:
+            super().handle()
+        except TimeoutError:
+            # wsgiref's handler reads the request line itself, so
+            # BaseHTTPRequestHandler never sees the timeout; unhandled it
+            # prints a traceback to stderr. Returning closes the connection.
+            _LOGGER.info("Closing idle connection from %s.", self.client_address)
 
     def log_message(self, format, *args):
         # pylint: disable=redefined-builtin
