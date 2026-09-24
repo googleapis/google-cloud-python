@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-agentregistry-v0.1.0...google-cloud-agentregistry-v0.1.1) (2026-09-24)
+
+
+### Features
+
+* update API sources and regenerate ([#18446](https://github.com/googleapis/google-cloud-python/issues/18446)) ([54f1019](https://github.com/googleapis/google-cloud-python/commit/54f10190a4ab7b3772010bf9006de55266f74da9))
+
 ## 0.1.0 (2026-07-07)
 
 

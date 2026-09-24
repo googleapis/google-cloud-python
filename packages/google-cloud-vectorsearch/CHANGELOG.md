@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
+## [0.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.11.3...google-cloud-vectorsearch-v0.11.4) (2026-09-24)
+
+
+### Features
+
+* update API sources and regenerate ([#18446](https://github.com/googleapis/google-cloud-python/issues/18446)) ([54f1019](https://github.com/googleapis/google-cloud-python/commit/54f10190a4ab7b3772010bf9006de55266f74da9))
+
 ## [0.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.11.2...google-cloud-vectorsearch-v0.11.3) (2026-09-14)
 
 

@@ -92,7 +92,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.39.0
+    version: 1.40.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -112,7 +112,7 @@ libraries:
     python:
       default_version: v1
   - name: google-ads-marketingplatform-admin
-    version: 0.6.0
+    version: 0.6.1
     apis:
       - path: google/marketingplatform/admin/v1alpha
     python:
@@ -144,7 +144,7 @@ libraries:
       metadata_name_override: analyticsadmin
       default_version: v1alpha
   - name: google-analytics-data
-    version: 0.23.1
+    version: 0.23.2
     apis:
       - path: google/analytics/data/v1beta
       - path: google/analytics/data/v1alpha
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.38.0
+    version: 2.39.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -164,7 +164,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.10.5
+    version: 0.10.6
     apis:
       - path: google/chat/v1
     python:
@@ -313,7 +313,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-agentregistry
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/cloud/agentregistry/v1
     copyright_year: "2026"
@@ -664,7 +664,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.46.0
+    version: 2.47.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -1174,7 +1174,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.31.0
+    version: 2.32.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1228,7 +1228,7 @@ libraries:
     python:
       default_version: v1alpha
   - name: google-cloud-geminidataanalytics
-    version: 0.13.3
+    version: 0.13.4
     apis:
       - path: google/cloud/geminidataanalytics/v1
       - path: google/cloud/geminidataanalytics/v1beta
@@ -1432,7 +1432,7 @@ libraries:
       metadata_name_override: logging
       default_version: v2
   - name: google-cloud-lustre
-    version: 0.4.1
+    version: 0.4.2
     apis:
       - path: google/cloud/lustre/v1
     python:
@@ -1512,7 +1512,7 @@ libraries:
       metadata_name_override: monitoring
       default_version: v3
   - name: google-cloud-monitoring-dashboards
-    version: 3.0.0
+    version: 3.1.0
     apis:
       - path: google/monitoring/dashboard/v1
     keep:
@@ -1536,7 +1536,7 @@ libraries:
           - python-gapic-namespace=google.cloud
       default_version: v1
   - name: google-cloud-ndb
-    version: 2.6.0
+    version: 2.6.1
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
@@ -1670,7 +1670,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-parametermanager
-    version: 0.4.1
+    version: 0.4.2
     apis:
       - path: google/cloud/parametermanager/v1
     python:
@@ -2034,7 +2034,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.14.1
+    version: 3.15.0
     apis:
       - path: google/storage/v2
     python:
@@ -2096,7 +2096,7 @@ libraries:
       metadata_name_override: talent
       default_version: v4
   - name: google-cloud-tasks
-    version: 2.24.0
+    version: 2.25.0
     apis:
       - path: google/cloud/tasks/v2
       - path: google/cloud/tasks/v2beta3
@@ -2158,7 +2158,7 @@ libraries:
       metadata_name_override: translate
       default_version: v3
   - name: google-cloud-vectorsearch
-    version: 0.11.3
+    version: 0.11.4
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta
@@ -2622,7 +2622,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.75.3
+    version: 1.75.4
     apis:
       - path: google/api
       - path: google/cloud

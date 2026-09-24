@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.38.0...google-api-core-v2.39.0) (2026-09-24)
+
+
+### Features
+
+* **google-api-core:** add support for resumable uploads ([#18352](https://github.com/googleapis/google-cloud-python/issues/18352)) ([17d6c53](https://github.com/googleapis/google-cloud-python/commit/17d6c53698fa430d59fe43b81001e36459d24ef1))
+
 ## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.37.0...google-api-core-v2.38.0) (2026-09-17)
 
 
