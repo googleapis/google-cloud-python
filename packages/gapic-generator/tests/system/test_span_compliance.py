@@ -1000,4 +1000,6 @@ def test_z_print_telemetry_compliance_scorecard(request):
             json.dump(payload, f, indent=2)
         print(f"\n[Raw Spans Dumped]: {output_file.resolve()}\n")
 
-    assert "TOTAL: 22/22 FEATURES CONFORMANT" in scorecard
+    results = span_contract.COMPLIANCE_REPORTER._results
+    assert len(results) == 22, f"Expected 22 features evaluated, got {len(results)}"
+    assert all(r.passed for r in results), "Not all features passed compliance!"

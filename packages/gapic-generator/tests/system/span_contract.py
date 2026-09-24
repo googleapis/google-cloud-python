@@ -97,56 +97,6 @@ class TelemetryComplianceReporter:
             )
         )
 
-    def generate_scorecard(self) -> str:
-        """Formats the recorded evaluations into the Option A ASCII scorecard table."""
-        header_line = "=" * 143
-        divider_line = "-" * 143
-        title = "GOOGLE CLOUD OBSERVABILITY TELEMETRY COMPLIANCE SCORECARD".center(143)
-        cols = (
-            f"{'Feature':<8}| {'Tier':<5}| {'Transport':<10}| {'Scenario':<16}| "
-            f"{'Span Metadata':<22}| {'Mandatory Floor':<22}| {'Optional / Permitted':<26}| "
-            f"{'Invariants (Forbidden)':<24}| {'Result'}"
-        )
-
-        rows = []
-        rows.append(header_line)
-        rows.append(title)
-        rows.append(header_line)
-        rows.append(cols)
-        rows.append(divider_line)
-
-        pass_count = 0
-        for r in self._results:
-            if r.passed:
-                pass_count += 1
-                res_str = "✅ PASS"
-            else:
-                res_str = "❌ FAIL"
-
-            row = (
-                f"{r.feature_id:<8}| "
-                f"{r.tier:<5}| "
-                f"{r.transport:<10}| "
-                f"{r.scenario:<16}| "
-                f"{r.metadata_checked:<22}| "
-                f"{r.floor_checked:<22}| "
-                f"{r.optional_checked:<26}| "
-                f"{r.invariants_checked:<24}| "
-                f"{res_str}"
-            )
-            rows.append(row)
-
-        total = len(self._results)
-        pct = (pass_count / total * 100) if total else 100.0
-        rows.append(header_line)
-        summary = f"TOTAL: {pass_count}/{total} FEATURES CONFORMANT ({pct:.1f}% PASS RATE)".center(
-            143
-        )
-        rows.append(summary)
-        rows.append(header_line)
-
-        return "\n".join(rows)
-
     def export_csv(self) -> str:
         """Exports the recorded evaluations as standard CSV for spreadsheet ingestion."""
         output = io.StringIO()
@@ -162,7 +112,6 @@ class TelemetryComplianceReporter:
                 "Optional / Permitted",
                 "Invariants (Forbidden)",
                 "Result",
-                "Details",
             ]
         )
         for r in self._results:
@@ -176,11 +125,14 @@ class TelemetryComplianceReporter:
                     r.floor_checked,
                     r.optional_checked,
                     r.invariants_checked,
-                    "PASS" if r.passed else "FAIL",
-                    r.details,
+                    "PASS" if r.passed else f"FAIL: {r.details}",
                 ]
             )
-        return output.getvalue()
+        return output.getvalue().strip()
+
+    def generate_scorecard(self) -> str:
+        """Outputs the compliance scorecard in clean CSV format for spreadsheet ingestion."""
+        return self.export_csv()
 
 
 GLOBAL_COMPLIANCE_REPORTER = TelemetryComplianceReporter()
