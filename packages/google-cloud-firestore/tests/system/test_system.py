@@ -1342,6 +1342,32 @@ def test_bson_regex_invalid_options(client, cleanup, database):
     assert "Invalid regex option" in exc_info.value.message
 
 
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_decimal128_special_values(client, cleanup, database):
+    """Test write and read operations for BSONDecimal128 special values against backend."""
+    collection_id = "bson_decimal128_special_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("special_decimals")
+    cleanup(doc_ref.delete)
+
+    # Firestore backend accepts "inf", "-inf", and "NaN", automatically
+    # normalizing them to "Infinity", "-Infinity", and "NaN" upon storage.
+    doc_ref.set(
+        {
+            "inf_val": BSONDecimal128("inf"),
+            "neg_inf_val": BSONDecimal128("-inf"),
+            "nan_val": BSONDecimal128("NaN"),
+        }
+    )
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {
+        "inf_val": {"__decimal128__": "Infinity"},
+        "neg_inf_val": {"__decimal128__": "-Infinity"},
+        "nan_val": {"__decimal128__": "NaN"},
+    }
+
+
 @pytest.fixture(scope="module")
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
