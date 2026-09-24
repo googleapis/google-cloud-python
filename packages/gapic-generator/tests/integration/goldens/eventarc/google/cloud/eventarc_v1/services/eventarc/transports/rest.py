@@ -7538,7 +7538,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_location(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -7661,7 +7661,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_locations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -7784,7 +7784,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -7908,7 +7908,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_set_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -8032,7 +8032,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_test_iam_permissions(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -8350,7 +8350,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
@@ -8473,7 +8473,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_operations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:

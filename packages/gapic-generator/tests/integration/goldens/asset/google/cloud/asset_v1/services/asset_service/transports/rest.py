@@ -4312,7 +4312,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(content, resp)
+            resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:

@@ -548,7 +548,7 @@ class {{ name|make_private }}(_Base{{ service.name }}RestTransport._Base{{name}}
         content = response.content.decode("utf-8")
         {% endif %}
         resp = {{ sig.response_type }}()
-        resp = json_format.Parse(content, resp)
+        resp = json_format.Parse(content, resp, ignore_unknown_fields=True)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
             try:

@@ -34,9 +34,8 @@ def test_resumable_upload_start(intercepted_resumable_upload_rest):
     client, interceptor = intercepted_resumable_upload_rest
     response = client.upload_media(request=UploadMediaRequest(name="test_file.txt"))
 
-    assert isinstance(response, UploadMediaResponse)
-    assert response.name == ""
-    assert response.size == 0
+    assert isinstance(response, ResumableUploadSession)
+    assert response._response_type == UploadMediaResponse
 
     # Verify that the generated client automatically added the resumable upload protocol headers
     req_meta = dict(interceptor.request_metadata)
@@ -57,9 +56,8 @@ def test_resumable_upload_custom_metadata(intercepted_resumable_upload_rest):
         metadata=custom_metadata,
     )
 
-    assert isinstance(response, UploadMediaResponse)
-    assert response.name == ""
-    assert response.size == 0
+    assert isinstance(response, ResumableUploadSession)
+    assert response._response_type == UploadMediaResponse
 
     req_meta = dict(interceptor.request_metadata)
     assert req_meta.get("x-goog-upload-protocol") == "resumable"
