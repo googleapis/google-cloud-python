@@ -503,6 +503,10 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     def _is_listener_present(family, addr, port):
         """Check if another process is already listening on (addr, port) by
         attempting a test connection.
+
+        This is needed because on Windows, `bind()` on `::1` succeeds even when
+        another process from the same user is already listening on all
+        interfaces (`[::]`).
         """
         try:
             with socket.socket(family, socket.SOCK_STREAM) as probe:
@@ -522,6 +526,8 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
             # base class (TCPServer) calls server_close on error
             if self._is_listener_present(socket.AF_INET6, "::1", port):
                 raise OSError(errno.EADDRINUSE, "Address already in use")
+            # Hold `::1` without calling `listen()` so no other process can claim
+            # the port while the browser falls back from `::1` to `127.0.0.1`.
             self._ipv6_socket = None
             try:
                 self._ipv6_socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
