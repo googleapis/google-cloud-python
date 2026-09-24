@@ -1325,6 +1325,20 @@ def test_bson_document_writes(client, cleanup, database):
     }
 
 
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_regex_invalid_options(client, cleanup, database):
+    """Test write operations for BSONRegex with invalid options against backend."""
+    collection_id = "bson_regex_invalid_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("invalid_regex")
+    cleanup(doc_ref.delete)
+
+    # Backend enforces supported BSON regex flags ('i', 'm', 's', 'u', 'x')
+    # and rejects unsupported options (e.g. 'l') with InvalidArgument.
+    with pytest.raises(InvalidArgument) as exc_info:
+        doc_ref.set({"regex_val": BSONRegex("hello", options="l")})
+    assert "Invalid regex option" in exc_info.value.message
+
+
 @pytest.fixture(scope="module")
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
