@@ -267,17 +267,20 @@ py_gapic_library(
     deps = [":iam_policy_py_proto"],
 )
 
-py_test(
-    name = "showcase_py_gapic_test",
-    srcs = [
-        "showcase_py_gapic_pytest.py",
-        "showcase_py_gapic_test.py",
-    ],
-    legacy_create_init = False,
-    deps = [
-        ":showcase_py_gapic",
-    ],
-)
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/1444,
+# https://github.com/googleapis/google-cloud-python/issues/16312):
+# Uncomment once enum field header formatting in test_compliance.py is fixed.
+# py_test(
+#     name = "showcase_py_gapic_test",
+#     srcs = [
+#         "showcase_py_gapic_pytest.py",
+#         "showcase_py_gapic_test.py",
+#     ],
+#     legacy_create_init = False,
+#     deps = [
+#         ":showcase_py_gapic",
+#     ],
+# )
 
 test_suite(
     name = "googleapis_test_suite",
