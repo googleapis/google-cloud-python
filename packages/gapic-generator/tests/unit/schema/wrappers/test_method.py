@@ -1160,6 +1160,10 @@ def test_method_is_resumable_upload():
     assert str(method_upload.client_output_async.ident) == "resumable_transfer.AsyncResumableUploadSession"
     assert method_upload.output in method_upload.ref_types
 
+    # With CreateYouTubeVideoUpload method name
+    method_youtube_upload = make_method("CreateYouTubeVideoUpload")
+    assert method_youtube_upload.is_resumable_upload
+
     # Non-resumable method
     method_other = make_method("OtherMethod")
     assert not method_other.is_resumable_upload

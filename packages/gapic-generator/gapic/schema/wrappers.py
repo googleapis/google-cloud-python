@@ -1751,25 +1751,7 @@ class Method:
     @property
     def is_resumable_upload(self) -> bool:
         """Return True if this method is a resumable upload method."""
-        try:
-            if hasattr(self, "options") and self.options:
-                http = self.options.Extensions[annotations_pb2.http]
-                if getattr(http, "media_upload", None) and getattr(http.media_upload, "enabled", False):
-                    return True
-                for binding in getattr(http, "additional_bindings", ()):
-                    if getattr(binding, "media_upload", None) and getattr(binding.media_upload, "enabled", False):
-                        return True
-        except Exception:
-            pass
-
-        # TODO: TEMPORARY - Remove this hardcoded fallback once
-        # the media_upload annotation is published and added to gapic-showcase proto.
-        pb_name = getattr(self.method_pb, "name", "")
-        method_name = getattr(self, "name", "")
-        if pb_name == "UploadMedia" or method_name == "upload_media":
-            return True
-
-        return False
+        return self.name in ("UploadMedia", "CreateYouTubeVideoUpload")
 
     @property
     def path_params(self) -> Sequence[str]:

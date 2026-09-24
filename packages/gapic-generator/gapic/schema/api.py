@@ -1352,8 +1352,7 @@ class _ProtoBuilder:
             wrapped = loader(
                 child, address=address, path=path + (i,), resources=resources
             )
-            if wrapped is not None:
-                answer[wrapped.name] = wrapped
+            answer[wrapped.name] = wrapped
         return answer
 
     def _get_oneofs(
