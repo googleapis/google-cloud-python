@@ -35,8 +35,12 @@ for VER in $(awk -F': ' '/^versions:/ {print $2}' "${REPO_ROOT}/scripts/python_v
 done
 
 "${PYTHON_EXE}" -m twine check "${REPO_ROOT}/wheels/"*
+echo "macOS wheels successfully built and validated."
 
-if [[ "${PUBLISH_WHEELS}" == "true" ]]; then
+# TODO(#16512): Remove legacy PyPI upload branch once OSS Exit Gate release is fully adopted.
+if [[ "${EXIT_GATE_RELEASE}" == "true" ]]; then
+    echo "EXIT_GATE_RELEASE is 'true': macOS wheels ready for Kokoro / OSS Exit Gate collection."
+elif [[ "${PUBLISH_WHEELS}" == "true" ]]; then
     # Start the releasetool reporter
     "${PYTHON_EXE}" -m pip install --upgrade gcp-releasetool
     "${PYTHON_EXE}" -m releasetool publish-reporter-script > /tmp/publisher-script

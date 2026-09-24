@@ -113,8 +113,14 @@ py -3 -m pip install --upgrade twine wheel setuptools pkginfo || goto :error
 echo "Build the source distribution (sdist) and validate with twine check"
 py -3 setup.py sdist || goto :error
 py -3 -m twine check dist/* wheels/* || goto :error
+echo "Windows wheels and sdist successfully built and validated."
 
-if "%PUBLISH_WHEELS%"=="true" (
+@rem TODO(#16512): Remove legacy PyPI upload branch once OSS Exit Gate release is fully adopted.
+if "%EXIT_GATE_RELEASE%"=="true" (
+    echo "EXIT_GATE_RELEASE is 'true': Windows wheels and sdist ready for Kokoro / OSS Exit Gate collection."
+    dir wheels
+    dir dist
+) else if "%PUBLISH_WHEELS%"=="true" (
     echo "Start the releasetool reporter"
     py -3 -m pip install gcp-releasetool || goto :error
     if not exist C:\temp mkdir C:\temp
