@@ -65,7 +65,6 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache-2.0",
     packages=setuptools.find_namespace_packages(
-        include=["gapic", "gapic.*"],
         exclude=["docs*", "tests*", "testing*", ".*", "bazel*", "rules_python_gapic*"]
     ),
     url=url,
