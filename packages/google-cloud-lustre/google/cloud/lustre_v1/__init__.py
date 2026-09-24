@@ -27,22 +27,47 @@ __version__ = package_version.__version__
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
     "google.cloud.lustre_v1.services.lustre",
+    "google.cloud.lustre_v1.types.directory_policy",
     "google.cloud.lustre_v1.types.instance",
     "google.cloud.lustre_v1.types.lustre",
+    "google.cloud.lustre_v1.types.mirror",
     "google.cloud.lustre_v1.types.transfer",
 }
 
 
 from .services.lustre import LustreAsyncClient, LustreClient
+from .types.directory_policy import (
+    CreateDirectoryPolicyRequest,
+    DeleteDirectoryPolicyRequest,
+    DirectoryPolicy,
+    GetDirectoryPolicyRequest,
+    ListDirectoryPoliciesRequest,
+    ListDirectoryPoliciesResponse,
+)
 from .types.instance import (
+    AccessRulesOptions,
     CreateInstanceRequest,
     DeleteInstanceRequest,
+    DynamicTierOptions,
     GetInstanceRequest,
     Instance,
     ListInstancesRequest,
     ListInstancesResponse,
+    MaintenancePolicy,
+    MaintenanceSchedule,
     OperationMetadata,
+    RescheduleMaintenanceRequest,
     UpdateInstanceRequest,
+)
+from .types.mirror import (
+    CreateMirrorMetadata,
+    CreateMirrorRequest,
+    DeleteMirrorRequest,
+    GetMirrorRequest,
+    ListMirrorsRequest,
+    ListMirrorsResponse,
+    Mirror,
+    UpdateMirrorRequest,
 )
 from .types.transfer import (
     ErrorLogEntry,
@@ -62,28 +87,47 @@ from .types.transfer import (
 
 __all__ = (
     "LustreAsyncClient",
+    "AccessRulesOptions",
+    "CreateDirectoryPolicyRequest",
     "CreateInstanceRequest",
+    "CreateMirrorMetadata",
+    "CreateMirrorRequest",
+    "DeleteDirectoryPolicyRequest",
     "DeleteInstanceRequest",
+    "DeleteMirrorRequest",
+    "DirectoryPolicy",
+    "DynamicTierOptions",
     "ErrorLogEntry",
     "ErrorSummary",
     "ExportDataMetadata",
     "ExportDataRequest",
     "ExportDataResponse",
     "GcsPath",
+    "GetDirectoryPolicyRequest",
     "GetInstanceRequest",
+    "GetMirrorRequest",
     "ImportDataMetadata",
     "ImportDataRequest",
     "ImportDataResponse",
     "Instance",
+    "ListDirectoryPoliciesRequest",
+    "ListDirectoryPoliciesResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
+    "ListMirrorsRequest",
+    "ListMirrorsResponse",
     "LustreClient",
     "LustrePath",
+    "MaintenancePolicy",
+    "MaintenanceSchedule",
+    "Mirror",
     "OperationMetadata",
+    "RescheduleMaintenanceRequest",
     "TransferCounters",
     "TransferOperationMetadata",
     "TransferType",
     "UpdateInstanceRequest",
+    "UpdateMirrorRequest",
 )
 
 api_core.check_python_version("google.cloud.lustre_v1")

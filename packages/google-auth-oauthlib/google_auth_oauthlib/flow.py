@@ -383,7 +383,7 @@ class InstalledAppFlow(Flow):
         timeout_seconds=None,
         token_audience=None,
         browser=None,
-        **kwargs
+        **kwargs,
     ):
         """Run the flow using the server strategy.
 

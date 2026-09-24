@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.14.1...google-cloud-storage-v3.15.0) (2026-09-24)
+
+
+### Features
+
+* **storage:** support storage_class in AsyncAppendableObjectWriter ([#18289](https://github.com/googleapis/google-cloud-python/issues/18289)) ([dc30df2](https://github.com/googleapis/google-cloud-python/commit/dc30df20164dc2edf28b7373642466d2c5c3bb81))
+* **storage:** support storage_class via Blob in AsyncAppendableObjectWriter ([#18318](https://github.com/googleapis/google-cloud-python/issues/18318)) ([b0872f2](https://github.com/googleapis/google-cloud-python/commit/b0872f267ab57a28f132558f3ceff840661f2b7b))
+
 ## [3.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.14.0...google-cloud-storage-v3.14.1) (2026-09-08)
 
 

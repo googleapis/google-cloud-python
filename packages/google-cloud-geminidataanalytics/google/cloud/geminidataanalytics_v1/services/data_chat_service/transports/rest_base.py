@@ -189,6 +189,23 @@ class _BaseDataChatServiceRestTransport(DataChatServiceTransport):
             ]
             return http_options
 
+    class _BaseUpdateConversation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{conversation.name=projects/*/locations/*/conversations/*}",
+                    "body": "conversation",
+                },
+            ]
+            return http_options
+
     class _BaseGetLocation:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

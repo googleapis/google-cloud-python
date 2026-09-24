@@ -28,6 +28,9 @@ from .annotation import (
     SlashCommandMetadata,
     UserMentionMetadata,
 )
+from .app_command_metadata import (
+    AppCommandMetadata,
+)
 from .attachment import (
     Attachment,
     AttachmentDataRef,
@@ -118,6 +121,13 @@ from .message import (
     SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
+)
+from .message_pin import (
+    CreateMessagePinRequest,
+    DeleteMessagePinRequest,
+    ListMessagePinsRequest,
+    ListMessagePinsResponse,
+    MessagePin,
 )
 from .reaction import (
     CreateCustomEmojiRequest,
@@ -211,6 +221,7 @@ __all__ = (
     "SlashCommandMetadata",
     "UserMentionMetadata",
     "AnnotationType",
+    "AppCommandMetadata",
     "Attachment",
     "AttachmentDataRef",
     "DriveDataRef",
@@ -278,6 +289,11 @@ __all__ = (
     "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
+    "CreateMessagePinRequest",
+    "DeleteMessagePinRequest",
+    "ListMessagePinsRequest",
+    "ListMessagePinsResponse",
+    "MessagePin",
     "CreateCustomEmojiRequest",
     "CreateReactionRequest",
     "CustomEmoji",

@@ -5,6 +5,70 @@
   "protoPackage": "google.cloud.geminidataanalytics.v1beta",
   "schema": "1.0",
   "services": {
+    "DataA2AService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataA2AServiceClient",
+          "rpcs": {
+            "GetAgentCard": {
+              "methods": [
+                "get_agent_card"
+              ]
+            },
+            "SendMessage": {
+              "methods": [
+                "send_message"
+              ]
+            },
+            "SendStreamingMessage": {
+              "methods": [
+                "send_streaming_message"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataA2AServiceAsyncClient",
+          "rpcs": {
+            "GetAgentCard": {
+              "methods": [
+                "get_agent_card"
+              ]
+            },
+            "SendMessage": {
+              "methods": [
+                "send_message"
+              ]
+            },
+            "SendStreamingMessage": {
+              "methods": [
+                "send_streaming_message"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataA2AServiceClient",
+          "rpcs": {
+            "GetAgentCard": {
+              "methods": [
+                "get_agent_card"
+              ]
+            },
+            "SendMessage": {
+              "methods": [
+                "send_message"
+              ]
+            },
+            "SendStreamingMessage": {
+              "methods": [
+                "send_streaming_message"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DataAgentService": {
       "clients": {
         "grpc": {
@@ -48,6 +112,16 @@
             "ListDataAgents": {
               "methods": [
                 "list_data_agents"
+              ]
+            },
+            "RetrieveAgentOpsObservability": {
+              "methods": [
+                "retrieve_agent_ops_observability"
+              ]
+            },
+            "SetAgentOpsObservability": {
+              "methods": [
+                "set_agent_ops_observability"
               ]
             },
             "SetIamPolicy": {
@@ -110,6 +184,16 @@
                 "list_data_agents"
               ]
             },
+            "RetrieveAgentOpsObservability": {
+              "methods": [
+                "retrieve_agent_ops_observability"
+              ]
+            },
+            "SetAgentOpsObservability": {
+              "methods": [
+                "set_agent_ops_observability"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -170,6 +254,16 @@
                 "list_data_agents"
               ]
             },
+            "RetrieveAgentOpsObservability": {
+              "methods": [
+                "retrieve_agent_ops_observability"
+              ]
+            },
+            "SetAgentOpsObservability": {
+              "methods": [
+                "set_agent_ops_observability"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
@@ -228,6 +322,11 @@
               "methods": [
                 "query_data"
               ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
+              ]
             }
           }
         },
@@ -268,6 +367,11 @@
               "methods": [
                 "query_data"
               ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
+              ]
             }
           }
         },
@@ -307,6 +411,11 @@
             "QueryData": {
               "methods": [
                 "query_data"
+              ]
+            },
+            "UpdateConversation": {
+              "methods": [
+                "update_conversation"
               ]
             }
           }

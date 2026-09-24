@@ -68,6 +68,10 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "Received unexpected EOS on DATA frame from server",
 )
 
+# Maximum time that a request will wait for a concurrent request to begin the
+# transaction before giving up.
+_TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
+
 
 @CrossSync.convert
 async def _restart_on_unavailable(
@@ -221,9 +225,19 @@ class _SnapshotBase(_SessionWrapper):
         self._client_context = _validate_client_context(client_context)
         self._execute_sql_request_count: int = 0
         self._read_request_count: int = 0
+        self._begin_request_sent: bool = False
+
+        # Identifier for the transaction.
         self._transaction_id: Optional[bytes] = None
         self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
+
+        # Operations within a transaction can be performed concurrently, so we
+        # need to use a lock when updating the transaction.
         self._lock: CrossSync.Lock = CrossSync.Lock()
+
+        # Event to coordinate concurrent requests beginning the transaction.
+        # This is used to prevent the "Transaction has not begun" race condition.
+        self._transaction_begin_event: CrossSync.Event = CrossSync.Event()
 
     @property
     def _resource_info(self):
@@ -236,6 +250,39 @@ class _SnapshotBase(_SessionWrapper):
         }
 
     @CrossSync.convert
+    async def _wait_for_transaction_begin(self) -> None:
+        """Claims the inline-begin for this request, or waits for it to complete.
+
+        The first request against the transaction is the one that begins it
+        inline. Requests that are issued concurrently, before the transaction
+        id is available, must wait for that first request to complete instead
+        of assuming that the transaction has not begun.
+
+        :raises ValueError: if the transaction has already been used to execute
+            a request, but is not a multi-use transaction, or if the concurrent
+            request that began the transaction did not complete in time.
+        """
+
+        async with self._lock:
+            if self._begin_request_sent or self._read_request_count > 0:
+                if not self._multi_use:
+                    raise ValueError("Cannot re-use single-use snapshot.")
+                wait_needed = self._transaction_id is None
+            else:
+                wait_needed = False
+                self._begin_request_sent = True
+
+        if not wait_needed:
+            return
+
+        await CrossSync.event_wait(
+            self._transaction_begin_event,
+            timeout=_TRANSACTION_BEGIN_TIMEOUT_SECONDS,
+        )
+        if not self._transaction_begin_event.is_set():
+            raise ValueError("Timed out waiting for transaction to begin.")
+
+    @CrossSync.convert
     async def begin(self) -> bytes:
         """Begins a transaction on the database.
 
@@ -246,7 +293,6 @@ class _SnapshotBase(_SessionWrapper):
         """
         return await self._begin_transaction()
 
-    @CrossSync.convert
     @CrossSync.convert
     async def read(
         self,
@@ -265,12 +311,88 @@ class _SnapshotBase(_SessionWrapper):
         column_info=None,
         lazy_decode=False,
     ):
-        """Perform a ``StreamingRead`` API request for rows in a table."""
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
+        """Perform a ``StreamingRead`` API request for rows in a table.
+
+        :type table: str
+        :param table: name of the table from which to fetch data
+
+        :type columns: list of str
+        :param columns: names of columns to be retrieved
+
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
+        :param keyset: keys / ranges identifying rows to be retrieved
+
+        :type index: str
+        :param index: (Optional) name of index to use, rather than the
+                      table's primary key
+
+        :type limit: int
+        :param limit: (Optional) maximum number of rows to return.
+                      Incompatible with ``partition``.
+
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_read`.  Incompatible with
+                          ``limit``.
+
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+                Please note, the `transactionTag` setting will be ignored for
+                snapshot as it's not supported for read-only transactions.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
+        :type data_boost_enabled:
+        :param data_boost_enabled:
+                (Optional) If this is for a partitioned read and this field is
+                set ``true``, the request will be executed via offline access.
+                If the field is set to ``true`` but the request does not set
+                ``partition_token``, the API will return an
+                ``INVALID_ARGUMENT`` error.
+
+        :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :param directed_read_options: (Optional) Request level option used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets. The application is responsible for decoding
+            the data that is needed. The returned row iterator contains two
+            functions that can be used for this. ``iterator.decode_row(row)``
+            decodes all the columns in the given row to an array of Python
+            objects. ``iterator.decode_column(row, column_index)`` decodes one
+            specific column in the given row.
+
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+
+        :raises ValueError: if the Transaction already used to execute a
+            read request, but is not a multi-use transaction or has not begun.
+        """
+
+        await self._wait_for_transaction_begin()
 
         session = self._session
         database = session._database
@@ -337,7 +459,6 @@ class _SnapshotBase(_SessionWrapper):
         )
 
     @CrossSync.convert
-    @CrossSync.convert
     async def execute_sql(
         self,
         sql,
@@ -355,12 +476,107 @@ class _SnapshotBase(_SessionWrapper):
         column_info=None,
         lazy_decode=False,
     ):
-        """Perform an ``ExecuteStreamingSql`` API request."""
-        if self._read_request_count > 0:
-            if not self._multi_use:
-                raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None:
-                raise ValueError("Transaction has not begun.")
+        """Perform an ``ExecuteStreamingSql`` API request.
+
+        :type sql: str
+        :param sql: SQL query statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``sql``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :type query_mode:
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryMode`
+        :param query_mode: Mode governing return of results / query plan.
+            See:
+            `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
+
+        :type query_options:
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
+                or :class:`dict`
+        :param query_options:
+                (Optional) Query optimizer configuration to use for the given query.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
+        :type last_statement: bool
+        :param last_statement:
+                If set to true, this option marks the end of the transaction. The
+                transaction should be committed or aborted after this statement
+                executes, and attempts to execute any other requests against this
+                transaction (including reads and queries) will be rejected. Mixing
+                mutations with statements that are marked as the last statement is
+                not allowed.
+                For DML statements, setting this option may cause some error
+                reporting to be deferred until commit time (e.g. validation of
+                unique constraints). Given this, successful execution of a DML
+                statement should not be assumed until the transaction commits.
+
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_query`.
+
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
+        :type data_boost_enabled:
+        :param data_boost_enabled:
+                (Optional) If this is for a partitioned query and this field is
+                set ``true``, the request will be executed via offline access.
+                If the field is set to ``true`` but the request does not set
+                ``partition_token``, the API will return an
+                ``INVALID_ARGUMENT`` error.
+
+        :type directed_read_options: :class:`~google.cloud.spanner_v1.DirectedReadOptions`
+            or :class:`dict`
+        :param directed_read_options: (Optional) Request level option used to set the directed_read_options
+            for all ReadRequests and ExecuteSqlRequests that indicates which replicas
+            or regions should be used for non-transactional reads or queries.
+
+        :type column_info: dict
+        :param column_info: (Optional) dict of mapping between column names and additional column information.
+            An object where column names as keys and custom objects as corresponding
+            values for deserialization. It's specifically useful for data types like
+            protobuf where deserialization logic is on user-specific code. When provided,
+            the custom object enables deserialization of backend-received column data.
+            If not provided, data remains serialized as bytes for Proto Messages and
+            integer for Proto Enums.
+
+        :type lazy_decode: bool
+        :param lazy_decode:
+            (Optional) If this argument is set to ``true``, the iterator
+            returns the underlying protobuf values instead of decoded Python
+            objects. This reduces the time that is needed to iterate through
+            large result sets. The application is responsible for decoding
+            the data that is needed. The returned row iterator contains two
+            functions that can be used for this. ``iterator.decode_row(row)``
+            decodes all the columns in the given row to an array of Python
+            objects. ``iterator.decode_column(row, column_index)`` decodes one
+            specific column in the given row.
+
+        :raises ValueError: if the Transaction already used to execute a
+            read request, but is not a multi-use transaction or has not begun.
+        """
+
+        await self._wait_for_transaction_begin()
 
         if params is not None:
             params_pb = Struct(
@@ -766,6 +982,8 @@ class _SnapshotBase(_SessionWrapper):
         """Updates the snapshot for the given transaction."""
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
+            # Release any request waiting for this transaction to begin.
+            self._transaction_begin_event.set()
 
         if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
