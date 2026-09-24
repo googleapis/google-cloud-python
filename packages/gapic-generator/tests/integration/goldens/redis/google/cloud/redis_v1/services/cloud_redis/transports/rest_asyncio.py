@@ -826,7 +826,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
 
     def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute and cache wrapped methods for async RPC dispatch.
+
+        Overrides the base class method to use asynchronous wrappers and retries.
+        """
         self._wrapped_methods = {
             self.list_instances: self._wrap_async_method(
                 self.list_instances,

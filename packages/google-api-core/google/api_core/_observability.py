@@ -418,8 +418,8 @@ class trace_http_request:
         self._headers = headers
         self._body = body
         self._client_options = client_options
-        self._span = None
-        self._cm = None
+        self._span: Any = None
+        self._cm: Any = None
 
     def __enter__(self) -> Any:
         if not is_otel_capabilities_enabled(self._client_options):
@@ -464,7 +464,7 @@ class trace_http_request:
             # Fail-open: telemetry failures must never disrupt core RPC execution
             return None
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> bool:
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         if self._span is not None:
             try:
                 if exc_val is not None:
@@ -472,8 +472,8 @@ class trace_http_request:
             finally:
                 if self._cm is not None:
                     self._cm.__exit__(exc_type, exc_val, exc_tb)
-        # Always return False so caller exceptions are never suppressed
-        return False
+        # Always return None so caller exceptions are never suppressed
+        return None
 
 
 def record_http_response(span: Any, response: Any) -> None:

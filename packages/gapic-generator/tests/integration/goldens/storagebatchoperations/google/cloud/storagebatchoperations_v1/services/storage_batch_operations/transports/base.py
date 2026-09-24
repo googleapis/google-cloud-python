@@ -147,28 +147,50 @@ class StorageBatchOperationsTransport(abc.ABC):
     def host(self):
         return self._host
 
-    def _wrap(self, wrapper, supports_tracing, func, *args, **kwargs):
-        if supports_tracing:
+    def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             if self.kind:
                 kwargs["kind"] = self.kind
-            return wrapper(func, *args, **kwargs)
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
-        # Excluded from coverage because our CI and testing environments always install
-        # a modern version of google-api-core that supports tracing.
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
-            kwargs.pop(k, None)  # pragma: NO COVER
-        return wrapper(func, *args, **kwargs)  # pragma: NO COVER
-
-    def _wrap_method(self, func, *args, **kwargs):
-        return self._wrap(gapic_v1.method.wrap_method, _WRAP_METHOD_SUPPORTS_TRACING, func, *args, **kwargs)
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
-        return self._wrap(gapic_v1.method_async.wrap_method, _ASYNC_WRAP_METHOD_SUPPORTS_TRACING, func, *args, **kwargs)
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed (which does not accept client_options, etc.).
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
             self.list_jobs: self._wrap_method(
                 self.list_jobs,

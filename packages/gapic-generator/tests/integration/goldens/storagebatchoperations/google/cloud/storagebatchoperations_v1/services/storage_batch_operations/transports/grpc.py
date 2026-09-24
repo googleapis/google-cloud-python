@@ -21,10 +21,6 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union, TYPE_CHECKI
 
 import grpc  # type: ignore
 from google.api_core import grpc_helpers
-
-if TYPE_CHECKING:  # pragma: NO COVER
-    # ClientInterceptor was added in google-api-core 2.36.0+; ignore attribute-defined for older api-core versions during type checking
-    from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
 from google.api_core import operations_v1
 from google.api_core import client_options as client_options_lib
 from google.api_core import gapic_v1
@@ -43,6 +39,11 @@ from google.cloud.storagebatchoperations_v1.types import storage_batch_operation
 from google.longrunning import operations_pb2 # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from .base import StorageBatchOperationsTransport, DEFAULT_CLIENT_INFO
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    # ClientInterceptor was added in google-api-core 2.36.0+; ignore attribute-defined for older api-core versions during type checking
+    from google.api_core.grpc_helpers import ClientInterceptor  # type: ignore[attr-defined]
+
 
 try:
     from google.api_core import client_logging  # type: ignore
