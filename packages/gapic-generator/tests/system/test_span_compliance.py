@@ -22,8 +22,10 @@ At the completion of the suite, outputs the Option A Telemetry Compliance Scorec
 
 from __future__ import annotations
 
+import csv
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Callable, Mapping
 
 import pytest
@@ -67,6 +69,273 @@ except (ImportError, ValueError):
 
 
 # ---------------------------------------------------------------------------
+# Dynamic CSV Feature Matrix Loader & Semantic Contract Generator
+# ---------------------------------------------------------------------------
+
+CSV_PATH = Path(__file__).parent / "telemetry_requirements_matrix.csv"
+
+
+def load_feature_matrix() -> dict[str, dict[str, str]]:
+    with open(CSV_PATH, mode="r", encoding="utf-8") as f:
+        return {r["Feature ID"]: r for r in csv.DictReader(f)}
+
+
+FEATURE_MATRIX = load_feature_matrix()
+
+FEATURE_SUMMARIES: dict[str, tuple[str, str, str, str]] = {
+    "F1.1": ("N/A (0 SDK spans)", "0 SDK spans", "N/A", "No SDK spans leaked"),
+    "F2.1": ("N/A (0 SDK spans)", "0 SDK spans", "N/A", "No SDK spans leaked"),
+    "F1.6": ("N/A (0 SDK spans)", "0 SDK spans", "N/A", "No SDK spans leaked"),
+    "F2.5": ("N/A (0 SDK spans)", "0 SDK spans", "N/A", "No SDK spans leaked"),
+    "F2.6": (
+        "Kind, Name",
+        "system, method, code",
+        "address, port",
+        "status_code == OK",
+    ),
+    "F1.7": (
+        "Kind, Name",
+        "system, method, code, domain",
+        "address, port, rpc.system",
+        "status_code == OK",
+    ),
+    "F2.2": (
+        "Kind, Name",
+        "system, method, code",
+        "address, port",
+        "status_code == OK",
+    ),
+    "F1.2": (
+        "Kind, Name",
+        "method, code, domain",
+        "template, address, port",
+        "status_code == 200",
+    ),
+    "F2.7": (
+        "Kind, Name, Status",
+        "system, method, code, err.type, msg",
+        "address, port, domain, metadata.*",
+        "status_code == INVALID_ARGUMENT",
+    ),
+    "F1.8": (
+        "Kind, Name, Status",
+        "system, method, domain",
+        "address, port, rpc.system",
+        "Span status == ERROR",
+    ),
+    "F2.3": (
+        "Kind, Name, Status",
+        "system, method, err.type, msg",
+        "code, address, port, domain, metadata.*",
+        "Span status == ERROR",
+    ),
+    "F1.3": (
+        "Kind, Name, Status",
+        "method, code, domain",
+        "err.type, template, address, port",
+        "status_code >= 400",
+    ),
+    "F2.8": (
+        "Kind, Name, Status",
+        "err.type, msg, domain",
+        "address, port",
+        "status_code NOT SET",
+    ),
+    "F1.9": (
+        "Kind, Name, Status",
+        "system, method, code",
+        "address, port, rpc.system",
+        "status_code NOT SET",
+    ),
+    "F2.4": (
+        "Kind, Name, Status",
+        "err.type, domain",
+        "address, port",
+        "status_code NOT SET",
+    ),
+    "F1.4": (
+        "Kind, Name, Status",
+        "err.type, domain",
+        "address, port",
+        "status_code NOT SET",
+    ),
+    "F1.10": (
+        "Kind, Name",
+        "resend_count, domain",
+        "address, port, rpc.system",
+        "Multiple spans verified",
+    ),
+    "F1.5": (
+        "Kind, Name",
+        "resend_count, domain",
+        "template, address, port",
+        "Multiple spans verified",
+    ),
+    "F3.1": (
+        "1 T3 parent, 2 T4 children",
+        "T4_1: 503, T4_2: 200",
+        "T3: OK/UNSET",
+        "T4 parent is T3, T3 error.* NOT SET",
+    ),
+    "F3.2": (
+        "1 T3 parent, 6 T4 children",
+        "All T4: 503, T3: UNAVAILABLE",
+        "status.message",
+        "T4 parent is T3, T3 status ERROR",
+    ),
+    "F3.3": (
+        "1 T3 parent, 2 T4 children",
+        "T4_1: 14, T4_2: 0",
+        "T3: OK/UNSET",
+        "T4 parent is T3, T3 error.* NOT SET",
+    ),
+    "F3.4": (
+        "1 T3 parent, 6 T4 children",
+        "All T4: 14, T3: UNAVAILABLE",
+        "status.message",
+        "T4 parent is T3, T3 status ERROR",
+    ),
+}
+
+
+def build_contract(
+    feature_id: str | None,
+) -> tuple[SpanContract | None, dict[str, Any]]:
+    """Builds a SpanContract and exact_values mapping directly from a CSV row."""
+    if not feature_id or feature_id not in FEATURE_MATRIX:
+        return None, {}
+
+    row = FEATURE_MATRIX[feature_id]
+    tier = row["Tier"]
+    transport = row["Transport"]
+    scenario = row["Scenario"]
+    count_str = row["Span Count"]
+    meta_s, floor_s, opt_s, inv_s = FEATURE_SUMMARIES.get(
+        feature_id, (None, None, None, None)
+    )
+
+    if count_str == "0":
+        return SpanContract(
+            feature_id=feature_id,
+            tier=tier,
+            transport=transport,
+            scenario=scenario,
+            expected_span_count=0,
+            _metadata_summary=meta_s,
+            _floor_summary=floor_s,
+            _optional_summary=opt_s,
+            _invariants_summary=inv_s,
+        ), {}
+
+    kind = "CLIENT" if "CLIENT" in row["Span Kind"] else None
+    status = "ERROR" if row["Span Status"] == "ERROR" else None
+    strict = tier == "T3"
+    allowed_prefixes = (
+        ("gcp.errors.metadata.",) if (tier == "T3" and status == "ERROR") else ()
+    )
+
+    required = set()
+    optional = {"server.address", "server.port"}
+    forbidden = set()
+    exact_values: dict[str, Any] = {}
+
+    if tier == "T4":
+        optional.update(
+            {
+                "url.template",
+                "url.full",
+                "http.request.body.size",
+                "http.response.body.size",
+                "rpc.system",
+                "rpc.service",
+                "net.peer.name",
+                "net.peer.port",
+            }
+        )
+    else:
+        optional.update({"url.template", "url.domain", "gcp.errors.domain"})
+
+    for col in [
+        "rpc.system.name",
+        "rpc.method",
+        "url.domain",
+        "http.request.method",
+    ]:
+        val = row.get(col, "")
+        if val.startswith("Optional"):
+            optional.add(col)
+        elif val not in ("N/A", "NOT SET", ""):
+            if col == "url.domain" and tier == "T3":
+                optional.add(col)
+            else:
+                required.add(col)
+                if col == "rpc.system.name" and val in ("grpc", "http"):
+                    exact_values[col] = val
+                elif col == "rpc.method":
+                    exact_values[col] = val
+                elif col == "url.domain":
+                    exact_values[col] = val
+                elif col == "http.request.method":
+                    exact_values[col] = val
+
+    for col in [
+        "http.response.status_code",
+        "rpc.response.status_code",
+        "rpc.grpc.status_code",
+    ]:
+        val = row.get(col, "")
+        if "optional" in val.lower():
+            optional.add(col)
+        elif val == "NOT SET":
+            if scenario == "Client Timeout":
+                optional.add(col)
+            else:
+                forbidden.add(col)
+        elif val not in ("N/A", ""):
+            if tier == "T4" and col == "rpc.response.status_code":
+                optional.add(col)
+            elif not val.startswith(">="):
+                required.add(col)
+                if val == '"OK"':
+                    exact_values[col] = "OK"
+                elif val == "200":
+                    exact_values[col] = 200
+                elif val == "0":
+                    exact_values[col] = 0
+            else:
+                required.add(col)
+
+    for col in ["error.type", "status.message"]:
+        val = row.get(col, "")
+        if val == "NOT SET":
+            forbidden.add(col)
+        elif val not in ("N/A", ""):
+            if tier == "T4":
+                optional.add(col)
+            else:
+                required.add(col)
+
+    return SpanContract(
+        feature_id=feature_id,
+        tier=tier,
+        transport=transport,
+        scenario=scenario,
+        expected_span_count=1,
+        required=required,
+        optional=optional,
+        forbidden=forbidden,
+        allowed_prefixes=allowed_prefixes,
+        strict_ceiling=strict,
+        expected_kind=kind,
+        expected_status=status,
+        _metadata_summary=meta_s,
+        _floor_summary=floor_s,
+        _optional_summary=opt_s,
+        _invariants_summary=inv_s,
+    ), exact_values
+
+
+# ---------------------------------------------------------------------------
 # Declarative Scenario Model
 # ---------------------------------------------------------------------------
 
@@ -81,11 +350,29 @@ class ComplianceScenario:
     payload: Any = None
     call_kwargs: Mapping[str, Any] = field(default_factory=dict)
     expected_exception: Any = None
-    t3_contract: SpanContract | None = None
-    t4_contract: SpanContract | None = None
-    t3_exact: Mapping[str, Any] = field(default_factory=dict)
-    t4_exact: Mapping[str, Any] = field(default_factory=dict)
+    t3_feature_id: str | None = None
+    t4_feature_id: str | None = None
     t4_custom: Mapping[str, Callable[[Any], bool]] = field(default_factory=dict)
+
+    @property
+    def t3_contract(self) -> SpanContract | None:
+        contract, _ = build_contract(self.t3_feature_id)
+        return contract
+
+    @property
+    def t4_contract(self) -> SpanContract | None:
+        contract, _ = build_contract(self.t4_feature_id)
+        return contract
+
+    @property
+    def t3_exact(self) -> dict[str, Any]:
+        _, exact = build_contract(self.t3_feature_id)
+        return exact
+
+    @property
+    def t4_exact(self) -> dict[str, Any]:
+        _, exact = build_contract(self.t4_feature_id)
+        return exact
 
 
 def _build_server_error_payload() -> dict[str, Any]:
@@ -122,28 +409,8 @@ COMPLIANCE_SCENARIOS = [
         transport="rest",
         tracing_enabled=False,
         payload=showcase.EchoRequest(content="tracing disabled test"),
-        t3_contract=SpanContract(
-            feature_id="F2.1",
-            tier="T3",
-            transport="HTTP/REST",
-            scenario="Tracing Off",
-            expected_span_count=0,
-            _metadata_summary="N/A (0 SDK spans)",
-            _floor_summary="0 SDK spans",
-            _optional_summary="N/A",
-            _invariants_summary="No SDK spans leaked",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.1",
-            tier="T4",
-            transport="HTTP/REST",
-            scenario="Tracing Off",
-            expected_span_count=0,
-            _metadata_summary="N/A (0 SDK spans)",
-            _floor_summary="0 SDK spans",
-            _optional_summary="N/A",
-            _invariants_summary="No SDK spans leaked",
-        ),
+        t3_feature_id="F2.1",
+        t4_feature_id="F1.1",
     ),
     # 2. [F1.6 & F2.5] gRPC Tracing Disabled
     ComplianceScenario(
@@ -151,176 +418,26 @@ COMPLIANCE_SCENARIOS = [
         transport="grpc",
         tracing_enabled=False,
         payload=showcase.EchoRequest(content="tracing disabled test"),
-        t3_contract=SpanContract(
-            feature_id="F2.5",
-            tier="T3",
-            transport="gRPC",
-            scenario="Tracing Off",
-            expected_span_count=0,
-            _metadata_summary="N/A (0 SDK spans)",
-            _floor_summary="0 SDK spans",
-            _optional_summary="N/A",
-            _invariants_summary="No SDK spans leaked",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.6",
-            tier="T4",
-            transport="gRPC",
-            scenario="Tracing Off",
-            expected_span_count=0,
-            _metadata_summary="N/A (0 SDK spans)",
-            _floor_summary="0 SDK spans",
-            _optional_summary="N/A",
-            _invariants_summary="No SDK spans leaked",
-        ),
+        t3_feature_id="F2.5",
+        t4_feature_id="F1.6",
     ),
-    # 3. [F1.7 & F2.6] gRPC Happy Path
+    # 3. [F1.7 & F2.6] gRPC Unary Success
     ComplianceScenario(
-        id="grpc_happy_path",
+        id="grpc_unary_success",
         transport="grpc",
         tracing_enabled=True,
-        payload=showcase.EchoRequest(content="grpc happy path"),
-        t3_contract=SpanContract(
-            feature_id="F2.6",
-            tier="T3",
-            transport="gRPC",
-            scenario="Happy Path",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "rpc.response.status_code",
-            },
-            optional={
-                "url.domain",
-                "server.address",
-                "server.port",
-            },
-            forbidden={
-                "gcp.errors.domain",
-                "error.type",
-                "status.message",
-            },
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            _floor_summary="system, method, code",
-            _optional_summary="address, port",
-            _invariants_summary="status_code == OK",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.7",
-            tier="T4",
-            transport="gRPC",
-            scenario="Happy Path",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "rpc.response.status_code",
-                "url.domain",
-            },
-            optional={
-                "server.address",
-                "server.port",
-                "gcp.grpc.resend_count",
-                "rpc.service",
-                "rpc.system",
-                "rpc.grpc.status_code",
-                "net.peer.name",
-                "net.peer.port",
-            },
-            forbidden={
-                "error.type",
-                "status.message",
-            },
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            _floor_summary="system, method, code, domain",
-            _optional_summary="address, port, rpc.system",
-            _invariants_summary="status_code == OK",
-        ),
-        t3_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "rpc.response.status_code": "OK",
-        },
-        t4_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "rpc.response.status_code": "OK",
-            "url.domain": "googleapis.com",
-        },
+        payload=showcase.EchoRequest(content="hello grpc"),
+        t3_feature_id="F2.6",
+        t4_feature_id="F1.7",
     ),
-    # 4. [F1.2 & F2.2] HTTP Happy Path
+    # 4. [F1.2 & F2.2] HTTP Unary Success
     ComplianceScenario(
-        id="http_happy_path",
+        id="http_unary_success",
         transport="rest",
         tracing_enabled=True,
-        payload=showcase.EchoRequest(content="http happy path"),
-        t3_contract=SpanContract(
-            feature_id="F2.2",
-            tier="T3",
-            transport="HTTP/REST",
-            scenario="Happy Path",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "rpc.response.status_code",
-            },
-            optional={
-                "url.domain",
-                "server.address",
-                "server.port",
-            },
-            forbidden={
-                "gcp.errors.domain",
-                "error.type",
-                "status.message",
-            },
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            _floor_summary="system, method, code",
-            _optional_summary="address, port",
-            _invariants_summary="status_code == OK",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.2",
-            tier="T4",
-            transport="HTTP/REST",
-            scenario="Happy Path",
-            required={
-                "http.request.method",
-                "http.response.status_code",
-                "url.domain",
-            },
-            optional={
-                "url.template",
-                "url.full",
-                "server.address",
-                "server.port",
-                "http.request.body.size",
-                "http.response.body.size",
-                "http.request.resend_count",
-                "rpc.system.name",
-            },
-            forbidden={
-                "error.type",
-                "status.message",
-            },
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            _floor_summary="method, code, domain",
-            _optional_summary="template, address, port",
-            _invariants_summary="status_code == 200",
-        ),
-        t3_exact={
-            "rpc.system.name": "http",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "rpc.response.status_code": "OK",
-        },
-        t4_exact={
-            "http.request.method": "POST",
-            "http.response.status_code": 200,
-            "url.domain": "googleapis.com",
-        },
+        payload=showcase.EchoRequest(content="hello http"),
+        t3_feature_id="F2.2",
+        t4_feature_id="F1.2",
     ),
     # 5. [F1.8 & F2.7] gRPC Server Failure
     ComplianceScenario(
@@ -329,75 +446,8 @@ COMPLIANCE_SCENARIOS = [
         tracing_enabled=True,
         payload=SERVER_ERROR_PAYLOAD,
         expected_exception=exceptions.InvalidArgument,
-        t3_contract=SpanContract(
-            feature_id="F2.7",
-            tier="T3",
-            transport="gRPC",
-            scenario="Server Failure",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "rpc.response.status_code",
-                "error.type",
-                "status.message",
-            },
-            optional={
-                "url.domain",
-                "server.address",
-                "server.port",
-                "gcp.errors.domain",
-            },
-            allowed_prefixes=("gcp.errors.metadata.",),
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="system, method, code, err.type, msg",
-            _optional_summary="address, port, domain, metadata.*",
-            _invariants_summary="status_code == INVALID_ARGUMENT",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.8",
-            tier="T4",
-            transport="gRPC",
-            scenario="Server Failure",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "url.domain",
-            },
-            optional={
-                "server.address",
-                "server.port",
-                "gcp.grpc.resend_count",
-                "rpc.service",
-                "rpc.system",
-                "rpc.grpc.status_code",
-                "rpc.response.status_code",
-                "error.type",
-                "status.message",
-                "net.peer.name",
-                "net.peer.port",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="system, method, domain",
-            _optional_summary="address, port, rpc.system",
-            _invariants_summary="Span status == ERROR",
-        ),
-        t3_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "rpc.response.status_code": "INVALID_ARGUMENT",
-            "error.type": "RESOURCE_PROJECT_INVALID",
-            "gcp.errors.domain": "googleapis.com",
-        },
-        t4_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "url.domain": "googleapis.com",
-        },
+        t3_feature_id="F2.7",
+        t4_feature_id="F1.8",
     ),
     # 6. [F1.3 & F2.3] HTTP Server Failure
     ComplianceScenario(
@@ -406,75 +456,9 @@ COMPLIANCE_SCENARIOS = [
         tracing_enabled=True,
         payload=SERVER_ERROR_PAYLOAD,
         expected_exception=(exceptions.InvalidArgument, exceptions.BadRequest),
-        t3_contract=SpanContract(
-            feature_id="F2.3",
-            tier="T3",
-            transport="HTTP/REST",
-            scenario="Server Failure",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "error.type",
-                "status.message",
-            },
-            optional={
-                "rpc.response.status_code",
-                "http.response.status_code",
-                "url.domain",
-                "url.template",
-                "server.address",
-                "server.port",
-                "gcp.errors.domain",
-            },
-            allowed_prefixes=("gcp.errors.metadata.",),
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="system, method, err.type, msg",
-            _optional_summary="code, address, port, domain, metadata.*",
-            _invariants_summary="Span status == ERROR",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.3",
-            tier="T4",
-            transport="HTTP/REST",
-            scenario="Server Failure",
-            required={
-                "http.request.method",
-                "http.response.status_code",
-                "url.domain",
-            },
-            optional={
-                "error.type",
-                "rpc.system.name",
-                "server.address",
-                "server.port",
-                "url.template",
-                "url.full",
-                "http.request.body.size",
-                "http.response.body.size",
-                "status.message",
-                "http.request.resend_count",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="method, code, domain",
-            _optional_summary="err.type, template, address, port",
-            _invariants_summary="status_code >= 400",
-        ),
-        t3_exact={
-            "rpc.system.name": "http",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-        },
-        t4_exact={
-            "http.request.method": "POST",
-            "url.domain": "googleapis.com",
-        },
-        t4_custom={
-            "http.response.status_code": lambda sc: sc >= 400,
-        },
+        t3_feature_id="F2.3",
+        t4_feature_id="F1.3",
+        t4_custom={"http.response.status_code": lambda sc: sc >= 400},
     ),
     # 7. [F1.9 & F2.8] gRPC Client Timeout
     ComplianceScenario(
@@ -483,73 +467,9 @@ COMPLIANCE_SCENARIOS = [
         tracing_enabled=True,
         payload=TIMEOUT_ERROR_PAYLOAD,
         call_kwargs={"retry": None, "timeout": 0.2},
-        expected_exception=exceptions.DeadlineExceeded,
-        t3_contract=SpanContract(
-            feature_id="F2.8",
-            tier="T3",
-            transport="gRPC",
-            scenario="Client Timeout",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "error.type",
-                "status.message",
-            },
-            optional={
-                "rpc.response.status_code",
-                "url.domain",
-                "server.address",
-                "server.port",
-                "gcp.errors.domain",
-            },
-            allowed_prefixes=("gcp.errors.metadata.",),
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="err.type, msg, domain",
-            _optional_summary="address, port",
-            _invariants_summary="status_code NOT SET",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.9",
-            tier="T4",
-            transport="gRPC",
-            scenario="Client Timeout",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "url.domain",
-            },
-            optional={
-                "server.address",
-                "server.port",
-                "gcp.grpc.resend_count",
-                "rpc.service",
-                "rpc.system",
-                "rpc.grpc.status_code",
-                "rpc.response.status_code",
-                "error.type",
-                "status.message",
-                "net.peer.name",
-                "net.peer.port",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="system, method, code",
-            _optional_summary="address, port, rpc.system",
-            _invariants_summary="status_code NOT SET",
-        ),
-        t3_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-        },
-        t4_exact={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-            "url.domain": "googleapis.com",
-        },
+        expected_exception=(exceptions.DeadlineExceeded, exceptions.GatewayTimeout),
+        t3_feature_id="F2.8",
+        t4_feature_id="F1.9",
     ),
     # 8. [F1.4 & F2.4] HTTP Client Timeout
     ComplianceScenario(
@@ -559,144 +479,24 @@ COMPLIANCE_SCENARIOS = [
         payload=TIMEOUT_ERROR_PAYLOAD,
         call_kwargs={"retry": None, "timeout": 0.2},
         expected_exception=(exceptions.DeadlineExceeded, exceptions.GatewayTimeout),
-        t3_contract=SpanContract(
-            feature_id="F2.4",
-            tier="T3",
-            transport="HTTP/REST",
-            scenario="Client Timeout",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "error.type",
-                "status.message",
-            },
-            optional={
-                "rpc.response.status_code",
-                "http.response.status_code",
-                "url.domain",
-                "url.template",
-                "server.address",
-                "server.port",
-                "gcp.errors.domain",
-            },
-            allowed_prefixes=("gcp.errors.metadata.",),
-            strict_ceiling=True,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="err.type, domain",
-            _optional_summary="address, port",
-            _invariants_summary="status_code NOT SET",
-        ),
-        t4_contract=SpanContract(
-            feature_id="F1.4",
-            tier="T4",
-            transport="HTTP/REST",
-            scenario="Client Timeout",
-            required={
-                "http.request.method",
-                "url.domain",
-            },
-            optional={
-                "error.type",
-                "rpc.system.name",
-                "http.response.status_code",
-                "server.address",
-                "server.port",
-                "url.template",
-                "url.full",
-                "http.request.body.size",
-                "http.response.body.size",
-                "status.message",
-                "http.request.resend_count",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            expected_status="ERROR",
-            _floor_summary="err.type, domain",
-            _optional_summary="address, port",
-            _invariants_summary="status_code NOT SET",
-        ),
-        t3_exact={
-            "rpc.system.name": "http",
-            "rpc.method": "google.showcase.v1beta1.Echo/Echo",
-        },
-        t4_exact={
-            "http.request.method": "POST",
-            "url.domain": "googleapis.com",
-        },
+        t3_feature_id="F2.4",
+        t4_feature_id="F1.4",
     ),
     # 9. [F1.10] gRPC Retry Recovery
     ComplianceScenario(
         id="grpc_retry_recovery",
         transport="grpc",
         tracing_enabled=True,
-        t4_contract=SpanContract(
-            feature_id="F1.10",
-            tier="T4",
-            transport="gRPC",
-            scenario="Retry Recovery",
-            required={
-                "rpc.system.name",
-                "rpc.method",
-                "url.domain",
-            },
-            optional={
-                "server.address",
-                "server.port",
-                "gcp.grpc.resend_count",
-                "rpc.service",
-                "rpc.system",
-                "rpc.grpc.status_code",
-                "rpc.response.status_code",
-                "error.type",
-                "status.message",
-                "net.peer.name",
-                "net.peer.port",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            _floor_summary="resend_count, domain",
-            _optional_summary="address, port, rpc.system",
-            _invariants_summary="Multiple spans verified",
-        ),
+        t4_feature_id="F1.10",
     ),
     # 10. [F1.5] HTTP Retry Recovery
     ComplianceScenario(
         id="http_retry_recovery",
         transport="rest",
         tracing_enabled=True,
-        t4_contract=SpanContract(
-            feature_id="F1.5",
-            tier="T4",
-            transport="HTTP/REST",
-            scenario="Retry Recovery",
-            required={
-                "http.request.method",
-                "url.domain",
-            },
-            optional={
-                "http.request.resend_count",
-                "rpc.system.name",
-                "http.response.status_code",
-                "server.address",
-                "server.port",
-                "url.template",
-                "url.full",
-                "http.request.body.size",
-                "http.response.body.size",
-            },
-            forbidden=set(),
-            strict_ceiling=False,
-            expected_kind="CLIENT",
-            _floor_summary="resend_count, domain",
-            _optional_summary="template, address, port",
-            _invariants_summary="Multiple spans verified",
-        ),
+        t4_feature_id="F1.5",
     ),
 ]
-
 
 # ---------------------------------------------------------------------------
 # Test Fixtures & Table-Driven Executor
@@ -874,17 +674,8 @@ def test_f3_1_http_retry_succeeds(span_exporter, use_mtls):
         assert "error.type" not in method_span.attributes
 
         # Record compliance
-        contract = SpanContract(
-            feature_id="F3.1",
-            tier="T3/T4",
-            transport="HTTP/REST",
-            scenario="Retry Succeeds",
-            expected_span_count=3,
-            _metadata_summary="1 T3 parent, 2 T4 children",
-            _floor_summary="T4_1: 503, T4_2: 200",
-            _optional_summary="T3: OK/UNSET",
-            _invariants_summary="T4 parent is T3, T3 error.* NOT SET",
-        )
+        contract, _ = build_contract("F3.1")
+        assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
 
     finally:
@@ -965,17 +756,8 @@ def test_f3_2_http_retries_exhausted(span_exporter, use_mtls):
         assert "rpc.system.name" in method_span.attributes
 
         # Record compliance
-        contract = SpanContract(
-            feature_id="F3.2",
-            tier="T3/T4",
-            transport="HTTP/REST",
-            scenario="Retries Exhausted",
-            expected_span_count=len(spans),
-            _metadata_summary=f"1 T3 parent, {len(t4_spans)} T4 children",
-            _floor_summary="All T4: 503, T3: UNAVAILABLE",
-            _optional_summary="status.message",
-            _invariants_summary="T4 parent is T3, T3 status ERROR",
-        )
+        contract, _ = build_contract("F3.2")
+        assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
 
     finally:
@@ -1060,17 +842,8 @@ def test_f3_3_grpc_retry_succeeds(span_exporter, use_mtls):
         assert "error.type" not in method_span.attributes
 
         # Record compliance
-        contract = SpanContract(
-            feature_id="F3.3",
-            tier="T3/T4",
-            transport="gRPC",
-            scenario="Retry Succeeds",
-            expected_span_count=3,
-            _metadata_summary="1 T3 parent, 2 T4 children",
-            _floor_summary="T4_1: 14, T4_2: 0",
-            _optional_summary="T3: OK/UNSET",
-            _invariants_summary="T4 parent is T3, T3 error.* NOT SET",
-        )
+        contract, _ = build_contract("F3.3")
+        assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
 
     finally:
@@ -1151,17 +924,8 @@ def test_f3_4_grpc_retries_exhausted(span_exporter, use_mtls):
         assert "rpc.system.name" in method_span.attributes
 
         # Record compliance
-        contract = SpanContract(
-            feature_id="F3.4",
-            tier="T3/T4",
-            transport="gRPC",
-            scenario="Retries Exhausted",
-            expected_span_count=len(spans),
-            _metadata_summary=f"1 T3 parent, {len(t4_spans)} T4 children",
-            _floor_summary="All T4: 14, T3: UNAVAILABLE",
-            _optional_summary="status.message",
-            _invariants_summary="T4 parent is T3, T3 status ERROR",
-        )
+        contract, _ = build_contract("F3.4")
+        assert contract is not None
         contract.validate(reporter=span_contract.COMPLIANCE_REPORTER)
 
     finally:
