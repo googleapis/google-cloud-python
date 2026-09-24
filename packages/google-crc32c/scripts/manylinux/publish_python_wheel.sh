@@ -15,7 +15,7 @@
 
 set -eo pipefail
 
-REPO_ROOT="${REPO_ROOT:-$(dirname $(dirname $(cd $(dirname ${BASH_SOURCE[0]}); pwd)))}"
+REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 
 # Prefer Python 3.12 from manylinux (/opt/python/cp312-cp312/bin/python) or host python3.12,
 # and run inside an isolated virtual environment so pip never conflicts with system distutils packages.

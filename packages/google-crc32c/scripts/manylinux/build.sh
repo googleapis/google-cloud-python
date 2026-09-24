@@ -53,6 +53,12 @@ DOCKER_VOLUMES=(--volume "${REPO_ROOT}:/var/code/python-crc32c/")
 if [[ -d "/tmpfs" ]]; then
     DOCKER_VOLUMES+=(--volume "/tmpfs:/tmpfs")
 fi
+if [[ -n "${KOKORO_KEYSTORE_DIR}" && -d "${KOKORO_KEYSTORE_DIR}" && "${KOKORO_KEYSTORE_DIR}" != /tmpfs/* ]]; then
+    DOCKER_VOLUMES+=(--volume "${KOKORO_KEYSTORE_DIR}:${KOKORO_KEYSTORE_DIR}")
+fi
+if [[ -n "${KOKORO_GFILE_DIR}" && -d "${KOKORO_GFILE_DIR}" && "${KOKORO_GFILE_DIR}" != /tmpfs/* ]]; then
+    DOCKER_VOLUMES+=(--volume "${KOKORO_GFILE_DIR}:${KOKORO_GFILE_DIR}")
+fi
 
 docker run \
     --rm \
