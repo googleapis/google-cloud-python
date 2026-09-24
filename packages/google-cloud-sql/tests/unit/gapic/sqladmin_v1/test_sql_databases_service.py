@@ -1136,6 +1136,7 @@ def test_delete_non_empty_request_with_auto_populated_field():
         database="database_value",
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1150,6 +1151,7 @@ def test_delete_non_empty_request_with_auto_populated_field():
             database="database_value",
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -1416,6 +1418,7 @@ def test_get_non_empty_request_with_auto_populated_field():
         database="database_value",
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1430,6 +1433,7 @@ def test_get_non_empty_request_with_auto_populated_field():
             database="database_value",
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -1694,6 +1698,7 @@ def test_insert_non_empty_request_with_auto_populated_field():
     request = cloud_sql_databases.SqlDatabasesInsertRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1707,6 +1712,7 @@ def test_insert_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql_databases.SqlDatabasesInsertRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -1956,6 +1962,7 @@ def test_list_non_empty_request_with_auto_populated_field():
     request = cloud_sql_databases.SqlDatabasesListRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1969,6 +1976,7 @@ def test_list_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql_databases.SqlDatabasesListRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2218,6 +2226,7 @@ def test_patch_non_empty_request_with_auto_populated_field():
         database="database_value",
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2232,6 +2241,7 @@ def test_patch_non_empty_request_with_auto_populated_field():
             database="database_value",
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2502,6 +2512,7 @@ def test_update_non_empty_request_with_auto_populated_field():
         database="database_value",
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2516,6 +2527,7 @@ def test_update_non_empty_request_with_auto_populated_field():
             database="database_value",
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 

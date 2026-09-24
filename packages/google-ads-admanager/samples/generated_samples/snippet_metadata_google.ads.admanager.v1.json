@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-ads-admanager",
-    "version": "0.10.3"
+    "version": "0.10.5"
   },
   "snippets": [
     {
@@ -13376,6 +13376,86 @@
         }
       ],
       "title": "admanager_v1_generated_dai_encoding_profile_service_update_dai_encoding_profile_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.DaiSessionServiceClient",
+          "shortName": "DaiSessionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.DaiSessionServiceClient.get_dai_session",
+        "method": {
+          "fullName": "google.ads.admanager.v1.DaiSessionService.GetDaiSession",
+          "service": {
+            "fullName": "google.ads.admanager.v1.DaiSessionService",
+            "shortName": "DaiSessionService"
+          },
+          "shortName": "GetDaiSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetDaiSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.DaiSession",
+        "shortName": "get_dai_session"
+      },
+      "description": "Sample for GetDaiSession",
+      "file": "admanager_v1_generated_dai_session_service_get_dai_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_DaiSessionService_GetDaiSession_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_dai_session_service_get_dai_session_sync.py"
     },
     {
       "canonical": true,

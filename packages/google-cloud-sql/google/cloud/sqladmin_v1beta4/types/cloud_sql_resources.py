@@ -2143,6 +2143,13 @@ class DatabaseInstance(proto.Message):
             Optional. If true, instance metadata is sent
             to the Database Center. If false, instance
             metadata is not sent to the Database Center.
+        database_center_integration (google.cloud.sqladmin_v1beta4.types.DatabaseInstance.DatabaseCenterIntegration):
+            Optional. State of the Database Center
+            integration for this instance. When unspecified,
+            Database Center integration is enabled by
+            default.
+
+            This field is a member of `oneof`_ ``_database_center_integration``.
     """
 
     class SqlInstanceState(proto.Enum):
@@ -2201,6 +2208,24 @@ class DatabaseInstance(proto.Message):
         SQL_NETWORK_ARCHITECTURE_UNSPECIFIED = 0
         NEW_NETWORK_ARCHITECTURE = 1
         OLD_NETWORK_ARCHITECTURE = 2
+
+    class DatabaseCenterIntegration(proto.Enum):
+        r"""State of the integration with Database Center.
+
+        Values:
+            DATABASE_CENTER_INTEGRATION_UNSPECIFIED (0):
+                Default value. The integration state is
+                unspecified. When unspecified, Database Center
+                integration is enabled by default.
+            ENABLED (1):
+                Database Center integration is enabled.
+            DISABLED (2):
+                Database Center integration is disabled.
+        """
+
+        DATABASE_CENTER_INTEGRATION_UNSPECIFIED = 0
+        ENABLED = 1
+        DISABLED = 2
 
     class SqlFailoverReplica(proto.Message):
         r"""
@@ -2669,6 +2694,12 @@ class DatabaseInstance(proto.Message):
         proto.MESSAGE,
         number=72,
         message=wrappers_pb2.BoolValue,
+    )
+    database_center_integration: DatabaseCenterIntegration = proto.Field(
+        proto.ENUM,
+        number=76,
+        optional=True,
+        enum=DatabaseCenterIntegration,
     )
 
 

@@ -44,6 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
+from google.cloud.firestore_v1.bson import _BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -209,6 +210,9 @@ def encode_value(value) -> types.document.Value:
     document_path = getattr(value, "_document_path", None)
     if document_path is not None:
         return document.Value(reference_value=document_path)
+
+    if isinstance(value, _BSONType):
+        return encode_value(value._to_map_value())
 
     if isinstance(value, GeoPoint):
         return document.Value(geo_point_value=value.to_protobuf())

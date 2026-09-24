@@ -1650,6 +1650,8 @@ def test_get_gateway(request_type, transport: str = "grpc"):
             api_config="api_config_value",
             state=apigateway.Gateway.State.CREATING,
             default_hostname="default_hostname_value",
+            streaming_mode=apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED,
+            effective_streaming_mode=apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED,
         )
         response = client.get_gateway(request)
 
@@ -1666,6 +1668,14 @@ def test_get_gateway(request_type, transport: str = "grpc"):
     assert response.api_config == "api_config_value"
     assert response.state == apigateway.Gateway.State.CREATING
     assert response.default_hostname == "default_hostname_value"
+    assert (
+        response.streaming_mode
+        == apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED
+    )
+    assert (
+        response.effective_streaming_mode
+        == apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED
+    )
 
 
 def test_get_gateway_non_empty_request_with_auto_populated_field():
@@ -1802,6 +1812,8 @@ async def test_get_gateway_async(request_type, transport: str = "grpc_asyncio"):
                 api_config="api_config_value",
                 state=apigateway.Gateway.State.CREATING,
                 default_hostname="default_hostname_value",
+                streaming_mode=apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED,
+                effective_streaming_mode=apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED,
             )
         )
         response = await client.get_gateway(request)
@@ -1819,6 +1831,14 @@ async def test_get_gateway_async(request_type, transport: str = "grpc_asyncio"):
     assert response.api_config == "api_config_value"
     assert response.state == apigateway.Gateway.State.CREATING
     assert response.default_hostname == "default_hostname_value"
+    assert (
+        response.streaming_mode
+        == apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED
+    )
+    assert (
+        response.effective_streaming_mode
+        == apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED
+    )
 
 
 def test_get_gateway_field_headers():
@@ -10054,6 +10074,8 @@ async def test_get_gateway_empty_call_grpc_asyncio():
                 api_config="api_config_value",
                 state=apigateway.Gateway.State.CREATING,
                 default_hostname="default_hostname_value",
+                streaming_mode=apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED,
+                effective_streaming_mode=apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED,
             )
         )
         await client.get_gateway(request=None)
@@ -10587,6 +10609,8 @@ def test_get_gateway_rest_call_success(request_type):
             api_config="api_config_value",
             state=apigateway.Gateway.State.CREATING,
             default_hostname="default_hostname_value",
+            streaming_mode=apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED,
+            effective_streaming_mode=apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -10608,6 +10632,14 @@ def test_get_gateway_rest_call_success(request_type):
     assert response.api_config == "api_config_value"
     assert response.state == apigateway.Gateway.State.CREATING
     assert response.default_hostname == "default_hostname_value"
+    assert (
+        response.streaming_mode
+        == apigateway.Gateway.StreamingMode.STREAMING_MODE_ENABLED
+    )
+    assert (
+        response.effective_streaming_mode
+        == apigateway.Gateway.EffectiveStreamingMode.EFFECTIVE_STREAMING_MODE_DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10720,6 +10752,8 @@ def test_create_gateway_rest_call_success(request_type):
         "api_config": "api_config_value",
         "state": 1,
         "default_hostname": "default_hostname_value",
+        "streaming_mode": 1,
+        "effective_streaming_mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10925,6 +10959,8 @@ def test_update_gateway_rest_call_success(request_type):
         "api_config": "api_config_value",
         "state": 1,
         "default_hostname": "default_hostname_value",
+        "streaming_mode": 1,
+        "effective_streaming_mode": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

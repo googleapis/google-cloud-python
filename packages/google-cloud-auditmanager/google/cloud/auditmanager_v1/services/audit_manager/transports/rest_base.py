@@ -89,6 +89,35 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
             api_audience=api_audience,
         )
 
+    class _BaseCreateAuditSchedule:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "auditScheduleId": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/auditSchedules",
+                    "body": "audit_schedule",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=folders/*/locations/*}/auditSchedules",
+                    "body": "audit_schedule",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=organizations/*/locations/*}/auditSchedules",
+                    "body": "audit_schedule",
+                },
+            ]
+            return http_options
+
     class _BaseEnrollResource:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -194,6 +223,30 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
             ]
             return http_options
 
+    class _BaseGetAuditSchedule:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/auditSchedules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=folders/*/locations/*/auditSchedules/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*/auditSchedules/*}",
+                },
+            ]
+            return http_options
+
     class _BaseGetResourceEnrollmentStatus:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -242,6 +295,30 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
             ]
             return http_options
 
+    class _BaseListAuditSchedules:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/auditSchedules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=folders/*/locations/*}/auditSchedules",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/locations/*}/auditSchedules",
+                },
+            ]
+            return http_options
+
     class _BaseListControls:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -282,6 +359,33 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=folders/*/locations/*}/resourceEnrollmentStatuses",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateAuditSchedule:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{audit_schedule.name=projects/*/locations/*/auditSchedules/*}",
+                    "body": "audit_schedule",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{audit_schedule.name=folders/*/locations/*/auditSchedules/*}",
+                    "body": "audit_schedule",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{audit_schedule.name=organizations/*/locations/*/auditSchedules/*}",
+                    "body": "audit_schedule",
                 },
             ]
             return http_options

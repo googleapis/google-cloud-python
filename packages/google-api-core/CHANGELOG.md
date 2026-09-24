@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.37.0...google-api-core-v2.38.0) (2026-09-17)
+
+
+### Features
+
+* **core:** add request hook to enrich T4 network spans with GCP resource attributes (E) ([#18272](https://github.com/googleapis/google-cloud-python/issues/18272)) ([1ca95e9](https://github.com/googleapis/google-cloud-python/commit/1ca95e90199cf0a40077437a4c00f8039599dd5e))
+
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.36.0...google-api-core-v2.37.0) (2026-09-14)
+
+
+### Features
+
+* **gapic:** add OpenTelemetry T3 client method span wrapping in gapic_v1.method (D) ([#18274](https://github.com/googleapis/google-cloud-python/issues/18274)) ([156e319](https://github.com/googleapis/google-cloud-python/commit/156e31941b4bf6257a4d719b9630c388435660e8))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.35.0...google-api-core-v2.36.0) (2026-09-03)
 
 
