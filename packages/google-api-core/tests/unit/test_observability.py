@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import contextlib
 import sys
 from unittest import mock
 
@@ -571,17 +570,87 @@ def test_get_otel_interceptor_sentinel_attribute(monkeypatch):
     assert getattr(interceptor, "_is_otel_interceptor", None) is True
 
 
-def test_start_http_span_disabled():
-    """Proves that start_http_span yields None when tracing is disabled."""
+def test_build_http_span_attributes_with_request():
+    """Proves that _build_http_span_attributes extracts attributes from a request object."""
+    headers = {"key": "val"}
+    request = mock.Mock(
+        method="post",
+        url="https://example.com:8443/v1/echo",
+        headers=headers,
+        body=b"bytes-payload",
+    )
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        request, url_template="/v1/echo"
+    )
+    assert name == "POST"
+    assert attrs["http.request.method"] == "POST"
+    assert attrs["server.address"] == "example.com"
+    assert attrs["server.port"] == 8443
+    assert attrs["url.template"] == "/v1/echo"
+    assert attrs["url.full"] == "https://example.com:8443/v1/echo"
+    assert attrs["http.request.body.size"] == len(b"bytes-payload")
+    assert res_headers is headers
+
+
+def test_build_http_span_attributes_with_kwargs():
+    """Proves that _build_http_span_attributes works with explicit kwargs and string body."""
+    headers = {"key": "val"}
+    options = ClientOptions(api_endpoint="custom.endpoint.com:9443")
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        method="get",
+        url="https://custom.endpoint.com:9443/v1/items",
+        url_template="/v1/items",
+        headers=headers,
+        body="string-body",
+        client_options=options,
+    )
+    assert name == "GET"
+    assert attrs["server.address"] == "custom.endpoint.com"
+    assert attrs["server.port"] == 9443
+    assert attrs["http.request.body.size"] == len("string-body")
+    assert res_headers is headers
+
+
+def test_build_http_span_attributes_first_arg_client_options():
+    """Proves that _build_http_span_attributes shifts client_options when passed positionally."""
+    options = ClientOptions(api_endpoint="custom.endpoint.com:443")
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        options,
+        method="GET",
+        url="https://custom.endpoint.com:443/test",
+    )
+    assert name == "GET"
+    assert attrs["server.address"] == "custom.endpoint.com"
+
+
+def test_build_http_span_attributes_url_parsing_fallbacks():
+    """Proves that _build_http_span_attributes gracefully handles empty or invalid URLs."""
+    # Empty url
+    name, attrs, _ = _observability._build_http_span_attributes(method="DELETE", url="")
+    assert name == "DELETE"
+    assert attrs["server.address"] == ""
+    assert attrs["server.port"] == 443
+
+    # Malformed URL
+    with mock.patch("urllib.parse.urlsplit", side_effect=ValueError("boom")):
+        name, attrs, _ = _observability._build_http_span_attributes(
+            method="PUT", url="http://[invalid"
+        )
+        assert name == "PUT"
+        assert attrs["server.address"] == ""
+
+
+def test_trace_http_request_disabled():
+    """Proves that trace_http_request yields None when tracing is disabled."""
     request = mock.Mock(method="GET", url="https://example.com/api", headers={})
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         request, client_options=ClientOptions()
     ) as span:
         assert span is None
 
 
-def test_start_http_span_active(monkeypatch):
-    """Proves that start_http_span creates a span, sets attributes, and injects W3C headers."""
+def test_trace_http_request_active(monkeypatch):
+    """Proves that trace_http_request creates a span, sets attributes, and injects W3C headers."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -621,7 +690,7 @@ def test_start_http_span_active(monkeypatch):
         body=b"test-body",
     )
 
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         request, url_template="/v1/test", client_options=options
     ) as span:
         assert span is mock_span
@@ -679,8 +748,8 @@ def test_record_http_error(monkeypatch):
     mock_span.set_attribute.assert_any_call("status.message", "Network failure")
 
 
-def test_start_http_span_with_kwargs(monkeypatch):
-    """Proves that start_http_span works when invoked using keyword arguments only."""
+def test_trace_http_request_with_kwargs(monkeypatch):
+    """Proves that trace_http_request works when invoked using keyword arguments only."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -714,7 +783,7 @@ def test_start_http_span_with_kwargs(monkeypatch):
     )
     headers = {}
 
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         method="post",
         url="https://custom.googleapis.com:8443/v1/test",
         headers=headers,
@@ -732,8 +801,8 @@ def test_start_http_span_with_kwargs(monkeypatch):
     mock_propagator.inject.assert_called_once_with(headers)
 
 
-def test_start_http_span_first_arg_client_options(monkeypatch):
-    """Proves that start_http_span shifts client_options when passed as first positional arg."""
+def test_trace_http_request_first_arg_client_options(monkeypatch):
+    """Proves that trace_http_request shifts client_options when passed as first positional arg."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -762,7 +831,7 @@ def test_start_http_span_first_arg_client_options(monkeypatch):
         tracer_provider=mock_provider,
     )
 
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         options,
         method="GET",
         url="https://custom.googleapis.com:8443/v1/test",
@@ -770,8 +839,8 @@ def test_start_http_span_first_arg_client_options(monkeypatch):
         assert span is mock_span
 
 
-def test_start_http_span_default_tracer_and_url_parse(monkeypatch):
-    """Proves that start_http_span uses trace.get_tracer when tracer_provider is None,
+def test_trace_http_request_default_tracer_and_url_parse(monkeypatch):
+    """Proves that trace_http_request uses trace.get_tracer when tracer_provider is None,
     and extracts server.address and port from url if not present in options.
     """
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
@@ -797,7 +866,7 @@ def test_start_http_span_default_tracer_and_url_parse(monkeypatch):
 
     options = ClientOptions()  # No api_endpoint, tracer_provider=None
 
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         client_options=options,
         method="GET",
         url="https://parsed-host.org:9443/v1/items",
@@ -811,8 +880,8 @@ def test_start_http_span_default_tracer_and_url_parse(monkeypatch):
     assert attrs["server.port"] == 9443
 
 
-def test_start_http_span_propagator_error(monkeypatch):
-    """Proves that start_http_span catches propagation errors silently."""
+def test_trace_http_request_propagator_error(monkeypatch):
+    """Proves that trace_http_request catches propagation errors silently."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -844,7 +913,7 @@ def test_start_http_span_propagator_error(monkeypatch):
     options = ClientOptions(tracer_provider=mock_provider)
     headers = {}
 
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         client_options=options,
         method="GET",
         url="https://example.com",
@@ -853,8 +922,8 @@ def test_start_http_span_propagator_error(monkeypatch):
         assert span is mock_span
 
 
-def test_start_http_span_unexpected_error(monkeypatch):
-    """Proves that start_http_span yields None when an unexpected error occurs during setup."""
+def test_trace_http_request_unexpected_error(monkeypatch):
+    """Proves that trace_http_request yields None when an unexpected error occurs during setup."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_otel = mock.MagicMock()
@@ -868,7 +937,7 @@ def test_start_http_span_unexpected_error(monkeypatch):
     )
 
     options = ClientOptions()
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         client_options=options,
         method="GET",
         url="https://example.com",
@@ -953,8 +1022,8 @@ def test_record_http_error_exception_handled(monkeypatch):
     _observability.record_http_error(mock_span, ValueError("test"))
 
 
-def test_start_http_span_url_parse_exception(monkeypatch):
-    """Proves that start_http_span handles url parsing errors gracefully."""
+def test_trace_http_request_url_parse_exception(monkeypatch):
+    """Proves that trace_http_request handles url parsing errors gracefully."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -978,7 +1047,7 @@ def test_start_http_span_url_parse_exception(monkeypatch):
 
     with mock.patch("urllib.parse.urlsplit", side_effect=ValueError("Invalid URL")):
         options = ClientOptions()
-        with _observability.start_http_span(
+        with _observability.trace_http_request(
             client_options=options,
             method="GET",
             url="http://[invalid-url",
@@ -986,8 +1055,8 @@ def test_start_http_span_url_parse_exception(monkeypatch):
             assert span is mock_span
 
 
-def test_start_http_span_empty_url(monkeypatch):
-    """Proves that start_http_span works when url is empty or None."""
+def test_trace_http_request_empty_url(monkeypatch):
+    """Proves that trace_http_request works when url is empty or None."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -1010,7 +1079,7 @@ def test_start_http_span_empty_url(monkeypatch):
     )
 
     options = ClientOptions()
-    with _observability.start_http_span(
+    with _observability.trace_http_request(
         client_options=options,
         method="GET",
         url="",
@@ -1076,20 +1145,8 @@ def test_record_http_response_no_content_length_and_no_content(monkeypatch):
     mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
 
 
-def test_trace_http_request_disabled():
-    """Proves that trace_http_request yields None when tracing is disabled."""
-    headers = {}
-    with _observability.trace_http_request(
-        method="GET",
-        url="https://example.com/api",
-        headers=headers,
-        client_options=ClientOptions(),
-    ) as span:
-        assert span is None
-
-
-def test_trace_http_request_success(monkeypatch):
-    """Proves that trace_http_request yields active span on success."""
+def test_trace_http_request_records_error_and_reraises(monkeypatch):
+    """Proves that trace_http_request records error on active span when exception occurs."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_span = mock.MagicMock()
@@ -1111,26 +1168,6 @@ def test_trace_http_request_success(monkeypatch):
         mock.Mock(),
     )
 
-    headers = {}
-    with _observability.trace_http_request(
-        method="POST",
-        url="https://example.com/api",
-        headers=headers,
-        body=b"payload",
-        url_template="/api",
-    ) as span:
-        assert span is mock_span
-
-
-def test_trace_http_request_records_error_and_reraises(monkeypatch):
-    """Proves that trace_http_request records error on active span when exception occurs."""
-    mock_span = mock.MagicMock()
-
-    @contextlib.contextmanager
-    def mock_start_http_span(**kwargs):
-        yield mock_span
-
-    monkeypatch.setattr(_observability, "start_http_span", mock_start_http_span)
     record_error_called = []
 
     def mock_record_http_error(span, exc):
@@ -1149,3 +1186,35 @@ def test_trace_http_request_records_error_and_reraises(monkeypatch):
 
     assert len(record_error_called) == 1
     assert record_error_called[0] == (mock_span, err)
+
+
+def test_trace_http_request_no_multi_yield_bug(monkeypatch):
+    """Proves that exceptions in caller block cleanly propagate without RuntimeError."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    err = ConnectionResetError("connection reset by peer")
+    with pytest.raises(ConnectionResetError, match="connection reset by peer"):
+        with _observability.trace_http_request(
+            method="GET",
+            url="https://example.com/api",
+        ):
+            raise err

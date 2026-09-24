@@ -24,14 +24,14 @@ import google.protobuf.message
 from typing import Any, Dict, List, Optional, Tuple
 from typing import TYPE_CHECKING, Union
 
-if TYPE_CHECKING:  # pragma: NO COVER
-    import proto  # type: ignore[import-untyped]
-
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import proto  # type: ignore[import-untyped]
 
 # The _observability module was introduced in google-api-core 2.36.0+.
 # On older versions of google-api-core or when type-checking against them,

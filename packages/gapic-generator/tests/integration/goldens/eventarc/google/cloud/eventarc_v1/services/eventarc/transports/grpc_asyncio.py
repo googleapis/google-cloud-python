@@ -371,6 +371,11 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         )
         self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
+        # In async gRPC, interceptors must be supplied at channel construction time;
+        # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.
+        # We set self._logged_channel = self._grpc_channel as an alias so that templates
+        # used for shared stub instantiation (like _mixins.py.j2) wouldn't need
+        # transport-specific branches.
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -1427,301 +1432,295 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_trigger: self._wrap_method(
+            self.get_trigger: self._wrap_async_method(
                 self.get_trigger,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetTrigger",
             ),
-            self.list_triggers: self._wrap_method(
+            self.list_triggers: self._wrap_async_method(
                 self.list_triggers,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListTriggers",
             ),
-            self.create_trigger: self._wrap_method(
+            self.create_trigger: self._wrap_async_method(
                 self.create_trigger,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateTrigger",
             ),
-            self.update_trigger: self._wrap_method(
+            self.update_trigger: self._wrap_async_method(
                 self.update_trigger,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateTrigger",
             ),
-            self.delete_trigger: self._wrap_method(
+            self.delete_trigger: self._wrap_async_method(
                 self.delete_trigger,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteTrigger",
             ),
-            self.get_channel: self._wrap_method(
+            self.get_channel: self._wrap_async_method(
                 self.get_channel,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetChannel",
             ),
-            self.list_channels: self._wrap_method(
+            self.list_channels: self._wrap_async_method(
                 self.list_channels,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListChannels",
             ),
-            self.create_channel_: self._wrap_method(
+            self.create_channel_: self._wrap_async_method(
                 self.create_channel_,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateChannel",
             ),
-            self.update_channel: self._wrap_method(
+            self.update_channel: self._wrap_async_method(
                 self.update_channel,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateChannel",
             ),
-            self.delete_channel: self._wrap_method(
+            self.delete_channel: self._wrap_async_method(
                 self.delete_channel,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteChannel",
             ),
-            self.get_provider: self._wrap_method(
+            self.get_provider: self._wrap_async_method(
                 self.get_provider,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetProvider",
             ),
-            self.list_providers: self._wrap_method(
+            self.list_providers: self._wrap_async_method(
                 self.list_providers,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListProviders",
             ),
-            self.get_channel_connection: self._wrap_method(
+            self.get_channel_connection: self._wrap_async_method(
                 self.get_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetChannelConnection",
             ),
-            self.list_channel_connections: self._wrap_method(
+            self.list_channel_connections: self._wrap_async_method(
                 self.list_channel_connections,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListChannelConnections",
             ),
-            self.create_channel_connection: self._wrap_method(
+            self.create_channel_connection: self._wrap_async_method(
                 self.create_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateChannelConnection",
             ),
-            self.delete_channel_connection: self._wrap_method(
+            self.delete_channel_connection: self._wrap_async_method(
                 self.delete_channel_connection,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection",
             ),
-            self.get_google_channel_config: self._wrap_method(
+            self.get_google_channel_config: self._wrap_async_method(
                 self.get_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig",
             ),
-            self.update_google_channel_config: self._wrap_method(
+            self.update_google_channel_config: self._wrap_async_method(
                 self.update_google_channel_config,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
             ),
-            self.get_message_bus: self._wrap_method(
+            self.get_message_bus: self._wrap_async_method(
                 self.get_message_bus,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetMessageBus",
             ),
-            self.list_message_buses: self._wrap_method(
+            self.list_message_buses: self._wrap_async_method(
                 self.list_message_buses,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListMessageBuses",
             ),
-            self.list_message_bus_enrollments: self._wrap_method(
+            self.list_message_bus_enrollments: self._wrap_async_method(
                 self.list_message_bus_enrollments,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
             ),
-            self.create_message_bus: self._wrap_method(
+            self.create_message_bus: self._wrap_async_method(
                 self.create_message_bus,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateMessageBus",
             ),
-            self.update_message_bus: self._wrap_method(
+            self.update_message_bus: self._wrap_async_method(
                 self.update_message_bus,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateMessageBus",
             ),
-            self.delete_message_bus: self._wrap_method(
+            self.delete_message_bus: self._wrap_async_method(
                 self.delete_message_bus,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteMessageBus",
             ),
-            self.get_enrollment: self._wrap_method(
+            self.get_enrollment: self._wrap_async_method(
                 self.get_enrollment,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetEnrollment",
             ),
-            self.list_enrollments: self._wrap_method(
+            self.list_enrollments: self._wrap_async_method(
                 self.list_enrollments,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListEnrollments",
             ),
-            self.create_enrollment: self._wrap_method(
+            self.create_enrollment: self._wrap_async_method(
                 self.create_enrollment,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateEnrollment",
             ),
-            self.update_enrollment: self._wrap_method(
+            self.update_enrollment: self._wrap_async_method(
                 self.update_enrollment,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateEnrollment",
             ),
-            self.delete_enrollment: self._wrap_method(
+            self.delete_enrollment: self._wrap_async_method(
                 self.delete_enrollment,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteEnrollment",
             ),
-            self.get_pipeline: self._wrap_method(
+            self.get_pipeline: self._wrap_async_method(
                 self.get_pipeline,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetPipeline",
             ),
-            self.list_pipelines: self._wrap_method(
+            self.list_pipelines: self._wrap_async_method(
                 self.list_pipelines,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListPipelines",
             ),
-            self.create_pipeline: self._wrap_method(
+            self.create_pipeline: self._wrap_async_method(
                 self.create_pipeline,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreatePipeline",
             ),
-            self.update_pipeline: self._wrap_method(
+            self.update_pipeline: self._wrap_async_method(
                 self.update_pipeline,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdatePipeline",
             ),
-            self.delete_pipeline: self._wrap_method(
+            self.delete_pipeline: self._wrap_async_method(
                 self.delete_pipeline,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeletePipeline",
             ),
-            self.get_google_api_source: self._wrap_method(
+            self.get_google_api_source: self._wrap_async_method(
                 self.get_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/GetGoogleApiSource",
             ),
-            self.list_google_api_sources: self._wrap_method(
+            self.list_google_api_sources: self._wrap_async_method(
                 self.list_google_api_sources,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/ListGoogleApiSources",
             ),
-            self.create_google_api_source: self._wrap_method(
+            self.create_google_api_source: self._wrap_async_method(
                 self.create_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/CreateGoogleApiSource",
             ),
-            self.update_google_api_source: self._wrap_method(
+            self.update_google_api_source: self._wrap_async_method(
                 self.update_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/UpdateGoogleApiSource",
             ),
-            self.delete_google_api_source: self._wrap_method(
+            self.delete_google_api_source: self._wrap_async_method(
                 self.delete_google_api_source,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.eventarc.v1.Eventarc/DeleteGoogleApiSource",
             ),
-            self.get_location: self._wrap_method(
+            self.get_location: self._wrap_async_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.location.Locations/GetLocation",
             ),
-            self.list_locations: self._wrap_method(
+            self.list_locations: self._wrap_async_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.location.Locations/ListLocations",
             ),
-            self.get_iam_policy: self._wrap_method(
+            self.get_iam_policy: self._wrap_async_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.iam.v1.IAMPolicy/GetIamPolicy",
             ),
-            self.set_iam_policy: self._wrap_method(
+            self.set_iam_policy: self._wrap_async_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.iam.v1.IAMPolicy/SetIamPolicy",
             ),
-            self.test_iam_permissions: self._wrap_method(
+            self.test_iam_permissions: self._wrap_async_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.iam.v1.IAMPolicy/TestIamPermissions",
             ),
-            self.cancel_operation: self._wrap_method(
+            self.cancel_operation: self._wrap_async_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.delete_operation: self._wrap_method(
+            self.delete_operation: self._wrap_async_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.get_operation: self._wrap_method(
+            self.get_operation: self._wrap_async_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: self._wrap_method(
+            self.list_operations: self._wrap_async_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        """Overrides the base transport's synchronous _wrap_method to proxy
-        to _wrap_async_method so that RPC calls and retries are wrapped as
-        asynchronous callables."""
-        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

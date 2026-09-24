@@ -324,7 +324,7 @@ def _prep_wrapped_messages(self, client_info):
     """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
     self._wrapped_methods = {
         {% for method in service.methods.values() %}
-        self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
+        self.{{ method.transport_safe_name|snake_case }}: self._wrap_async_method(
             self.{{ method.transport_safe_name|snake_case }},
             {% if method.retry %}
             default_retry=retries.AsyncRetry(
@@ -357,7 +357,7 @@ def _prep_wrapped_messages(self, client_info):
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2197): Use `transport_safe_name` similar
          # to what we do for non-mixin methods above.
         #}
-        self.{{ method_name|snake_case }}: self._wrap_method(
+        self.{{ method_name|snake_case }}: self._wrap_async_method(
             self.{{ method_name|snake_case }},
             default_timeout=None,
             client_info=client_info,

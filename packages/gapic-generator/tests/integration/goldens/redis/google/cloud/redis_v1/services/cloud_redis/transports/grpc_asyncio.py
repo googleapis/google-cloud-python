@@ -377,6 +377,11 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         )
         self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
+        # In async gRPC, interceptors must be supplied at channel construction time;
+        # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.
+        # We set self._logged_channel = self._grpc_channel as an alias so that templates
+        # used for shared stub instantiation (like _mixins.py.j2) wouldn't need
+        # transport-specific branches.
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -744,121 +749,115 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_instances: self._wrap_method(
+            self.list_instances: self._wrap_async_method(
                 self.list_instances,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/ListInstances",
             ),
-            self.get_instance: self._wrap_method(
+            self.get_instance: self._wrap_async_method(
                 self.get_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/GetInstance",
             ),
-            self.get_instance_auth_string: self._wrap_method(
+            self.get_instance_auth_string: self._wrap_async_method(
                 self.get_instance_auth_string,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/GetInstanceAuthString",
             ),
-            self.create_instance: self._wrap_method(
+            self.create_instance: self._wrap_async_method(
                 self.create_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/CreateInstance",
             ),
-            self.update_instance: self._wrap_method(
+            self.update_instance: self._wrap_async_method(
                 self.update_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/UpdateInstance",
             ),
-            self.upgrade_instance: self._wrap_method(
+            self.upgrade_instance: self._wrap_async_method(
                 self.upgrade_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/UpgradeInstance",
             ),
-            self.import_instance: self._wrap_method(
+            self.import_instance: self._wrap_async_method(
                 self.import_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/ImportInstance",
             ),
-            self.export_instance: self._wrap_method(
+            self.export_instance: self._wrap_async_method(
                 self.export_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/ExportInstance",
             ),
-            self.failover_instance: self._wrap_method(
+            self.failover_instance: self._wrap_async_method(
                 self.failover_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/FailoverInstance",
             ),
-            self.delete_instance: self._wrap_method(
+            self.delete_instance: self._wrap_async_method(
                 self.delete_instance,
                 default_timeout=600.0,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/DeleteInstance",
             ),
-            self.reschedule_maintenance: self._wrap_method(
+            self.reschedule_maintenance: self._wrap_async_method(
                 self.reschedule_maintenance,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.redis.v1.CloudRedis/RescheduleMaintenance",
             ),
-            self.get_location: self._wrap_method(
+            self.get_location: self._wrap_async_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.location.Locations/GetLocation",
             ),
-            self.list_locations: self._wrap_method(
+            self.list_locations: self._wrap_async_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.cloud.location.Locations/ListLocations",
             ),
-            self.cancel_operation: self._wrap_method(
+            self.cancel_operation: self._wrap_async_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.delete_operation: self._wrap_method(
+            self.delete_operation: self._wrap_async_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.get_operation: self._wrap_method(
+            self.get_operation: self._wrap_async_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: self._wrap_method(
+            self.list_operations: self._wrap_async_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
-            self.wait_operation: self._wrap_method(
+            self.wait_operation: self._wrap_async_method(
                 self.wait_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/WaitOperation",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        """Overrides the base transport's synchronous _wrap_method to proxy
-        to _wrap_async_method so that RPC calls and retries are wrapped as
-        asynchronous callables."""
-        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

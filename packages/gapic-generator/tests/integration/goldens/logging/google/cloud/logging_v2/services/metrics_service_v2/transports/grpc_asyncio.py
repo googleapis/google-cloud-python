@@ -355,6 +355,11 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         )
         self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
+        # In async gRPC, interceptors must be supplied at channel construction time;
+        # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.
+        # We set self._logged_channel = self._grpc_channel as an alias so that templates
+        # used for shared stub instantiation (like _mixins.py.j2) wouldn't need
+        # transport-specific branches.
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -502,7 +507,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_log_metrics: self._wrap_method(
+            self.list_log_metrics: self._wrap_async_method(
                 self.list_log_metrics,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -519,7 +524,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.MetricsServiceV2/ListLogMetrics",
             ),
-            self.get_log_metric: self._wrap_method(
+            self.get_log_metric: self._wrap_async_method(
                 self.get_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -536,13 +541,13 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.MetricsServiceV2/GetLogMetric",
             ),
-            self.create_log_metric: self._wrap_method(
+            self.create_log_metric: self._wrap_async_method(
                 self.create_log_metric,
                 default_timeout=60.0,
                 client_info=client_info,
                 method_name="google.logging.v2.MetricsServiceV2/CreateLogMetric",
             ),
-            self.update_log_metric: self._wrap_method(
+            self.update_log_metric: self._wrap_async_method(
                 self.update_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -559,7 +564,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.MetricsServiceV2/UpdateLogMetric",
             ),
-            self.delete_log_metric: self._wrap_method(
+            self.delete_log_metric: self._wrap_async_method(
                 self.delete_log_metric,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -576,31 +581,25 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.MetricsServiceV2/DeleteLogMetric",
             ),
-            self.cancel_operation: self._wrap_method(
+            self.cancel_operation: self._wrap_async_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.get_operation: self._wrap_method(
+            self.get_operation: self._wrap_async_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: self._wrap_method(
+            self.list_operations: self._wrap_async_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        """Overrides the base transport's synchronous _wrap_method to proxy
-        to _wrap_async_method so that RPC calls and retries are wrapped as
-        asynchronous callables."""
-        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

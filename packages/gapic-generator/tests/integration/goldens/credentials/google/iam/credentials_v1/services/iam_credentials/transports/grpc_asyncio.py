@@ -362,6 +362,11 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         )
         self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
+        # In async gRPC, interceptors must be supplied at channel construction time;
+        # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.
+        # We set self._logged_channel = self._grpc_channel as an alias so that templates
+        # used for shared stub instantiation (like _mixins.py.j2) wouldn't need
+        # transport-specific branches.
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -487,7 +492,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.generate_access_token: self._wrap_method(
+            self.generate_access_token: self._wrap_async_method(
                 self.generate_access_token,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -503,7 +508,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
                 client_info=client_info,
                 method_name="google.iam.credentials.v1.IAMCredentials/GenerateAccessToken",
             ),
-            self.generate_id_token: self._wrap_method(
+            self.generate_id_token: self._wrap_async_method(
                 self.generate_id_token,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -519,7 +524,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
                 client_info=client_info,
                 method_name="google.iam.credentials.v1.IAMCredentials/GenerateIdToken",
             ),
-            self.sign_blob: self._wrap_method(
+            self.sign_blob: self._wrap_async_method(
                 self.sign_blob,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -535,7 +540,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
                 client_info=client_info,
                 method_name="google.iam.credentials.v1.IAMCredentials/SignBlob",
             ),
-            self.sign_jwt: self._wrap_method(
+            self.sign_jwt: self._wrap_async_method(
                 self.sign_jwt,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -552,12 +557,6 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
                 method_name="google.iam.credentials.v1.IAMCredentials/SignJwt",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        """Overrides the base transport's synchronous _wrap_method to proxy
-        to _wrap_async_method so that RPC calls and retries are wrapped as
-        asynchronous callables."""
-        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()

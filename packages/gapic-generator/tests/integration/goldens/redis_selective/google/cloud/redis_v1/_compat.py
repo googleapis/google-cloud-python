@@ -27,6 +27,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
+
 # The _observability module was introduced in google-api-core 2.36.0+.
 # On older versions of google-api-core or when type-checking against them,
 # mypy may flag attr-defined or assignment errors when fallback to None occurs.

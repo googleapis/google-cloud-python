@@ -357,6 +357,11 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         )
         self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
 
+        # In async gRPC, interceptors must be supplied at channel construction time;
+        # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.
+        # We set self._logged_channel = self._grpc_channel as an alias so that templates
+        # used for shared stub instantiation (like _mixins.py.j2) wouldn't need
+        # transport-specific branches.
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -1323,85 +1328,85 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_buckets: self._wrap_method(
+            self.list_buckets: self._wrap_async_method(
                 self.list_buckets,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/ListBuckets",
             ),
-            self.get_bucket: self._wrap_method(
+            self.get_bucket: self._wrap_async_method(
                 self.get_bucket,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetBucket",
             ),
-            self.create_bucket_async: self._wrap_method(
+            self.create_bucket_async: self._wrap_async_method(
                 self.create_bucket_async,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateBucketAsync",
             ),
-            self.update_bucket_async: self._wrap_method(
+            self.update_bucket_async: self._wrap_async_method(
                 self.update_bucket_async,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateBucketAsync",
             ),
-            self.create_bucket: self._wrap_method(
+            self.create_bucket: self._wrap_async_method(
                 self.create_bucket,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateBucket",
             ),
-            self.update_bucket: self._wrap_method(
+            self.update_bucket: self._wrap_async_method(
                 self.update_bucket,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateBucket",
             ),
-            self.delete_bucket: self._wrap_method(
+            self.delete_bucket: self._wrap_async_method(
                 self.delete_bucket,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/DeleteBucket",
             ),
-            self.undelete_bucket: self._wrap_method(
+            self.undelete_bucket: self._wrap_async_method(
                 self.undelete_bucket,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UndeleteBucket",
             ),
-            self.list_views: self._wrap_method(
+            self.list_views: self._wrap_async_method(
                 self.list_views,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/ListViews",
             ),
-            self.get_view: self._wrap_method(
+            self.get_view: self._wrap_async_method(
                 self.get_view,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetView",
             ),
-            self.create_view: self._wrap_method(
+            self.create_view: self._wrap_async_method(
                 self.create_view,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateView",
             ),
-            self.update_view: self._wrap_method(
+            self.update_view: self._wrap_async_method(
                 self.update_view,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateView",
             ),
-            self.delete_view: self._wrap_method(
+            self.delete_view: self._wrap_async_method(
                 self.delete_view,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/DeleteView",
             ),
-            self.list_sinks: self._wrap_method(
+            self.list_sinks: self._wrap_async_method(
                 self.list_sinks,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1418,7 +1423,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/ListSinks",
             ),
-            self.get_sink: self._wrap_method(
+            self.get_sink: self._wrap_async_method(
                 self.get_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1435,13 +1440,13 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetSink",
             ),
-            self.create_sink: self._wrap_method(
+            self.create_sink: self._wrap_async_method(
                 self.create_sink,
                 default_timeout=120.0,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateSink",
             ),
-            self.update_sink: self._wrap_method(
+            self.update_sink: self._wrap_async_method(
                 self.update_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1458,7 +1463,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateSink",
             ),
-            self.delete_sink: self._wrap_method(
+            self.delete_sink: self._wrap_async_method(
                 self.delete_sink,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1475,31 +1480,31 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/DeleteSink",
             ),
-            self.create_link: self._wrap_method(
+            self.create_link: self._wrap_async_method(
                 self.create_link,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateLink",
             ),
-            self.delete_link: self._wrap_method(
+            self.delete_link: self._wrap_async_method(
                 self.delete_link,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/DeleteLink",
             ),
-            self.list_links: self._wrap_method(
+            self.list_links: self._wrap_async_method(
                 self.list_links,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/ListLinks",
             ),
-            self.get_link: self._wrap_method(
+            self.get_link: self._wrap_async_method(
                 self.get_link,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetLink",
             ),
-            self.list_exclusions: self._wrap_method(
+            self.list_exclusions: self._wrap_async_method(
                 self.list_exclusions,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1516,7 +1521,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/ListExclusions",
             ),
-            self.get_exclusion: self._wrap_method(
+            self.get_exclusion: self._wrap_async_method(
                 self.get_exclusion,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1533,19 +1538,19 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetExclusion",
             ),
-            self.create_exclusion: self._wrap_method(
+            self.create_exclusion: self._wrap_async_method(
                 self.create_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CreateExclusion",
             ),
-            self.update_exclusion: self._wrap_method(
+            self.update_exclusion: self._wrap_async_method(
                 self.update_exclusion,
                 default_timeout=120.0,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateExclusion",
             ),
-            self.delete_exclusion: self._wrap_method(
+            self.delete_exclusion: self._wrap_async_method(
                 self.delete_exclusion,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1562,61 +1567,55 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/DeleteExclusion",
             ),
-            self.get_cmek_settings: self._wrap_method(
+            self.get_cmek_settings: self._wrap_async_method(
                 self.get_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetCmekSettings",
             ),
-            self.update_cmek_settings: self._wrap_method(
+            self.update_cmek_settings: self._wrap_async_method(
                 self.update_cmek_settings,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateCmekSettings",
             ),
-            self.get_settings: self._wrap_method(
+            self.get_settings: self._wrap_async_method(
                 self.get_settings,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/GetSettings",
             ),
-            self.update_settings: self._wrap_method(
+            self.update_settings: self._wrap_async_method(
                 self.update_settings,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/UpdateSettings",
             ),
-            self.copy_log_entries: self._wrap_method(
+            self.copy_log_entries: self._wrap_async_method(
                 self.copy_log_entries,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.logging.v2.ConfigServiceV2/CopyLogEntries",
             ),
-            self.cancel_operation: self._wrap_method(
+            self.cancel_operation: self._wrap_async_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/CancelOperation",
             ),
-            self.get_operation: self._wrap_method(
+            self.get_operation: self._wrap_async_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.list_operations: self._wrap_method(
+            self.list_operations: self._wrap_async_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
                 method_name="google.longrunning.Operations/ListOperations",
             ),
         }
-
-    def _wrap_method(self, func, *args, **kwargs):
-        """Overrides the base transport's synchronous _wrap_method to proxy
-        to _wrap_async_method so that RPC calls and retries are wrapped as
-        asynchronous callables."""
-        return self._wrap_async_method(func, *args, **kwargs)
 
     def close(self):
         return self._logged_channel.close()
