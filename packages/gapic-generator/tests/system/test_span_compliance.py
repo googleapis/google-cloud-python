@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import csv
 import json
-import os
 from pathlib import Path
 from typing import Any
 
@@ -84,20 +83,14 @@ RAW_SPANS_CATALOG: dict[str, Any] = {}
 
 
 @pytest.fixture
-def span_exporter():
+def span_exporter(monkeypatch):
     """Provides an isolated InMemorySpanExporter and TracerProvider for test assertions."""
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
     provider.add_span_processor(SimpleSpanProcessor(exporter))
-    old_env = os.environ.get("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED")
-    os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "true"
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     yield exporter, provider
-
-    if old_env is not None:
-        os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = old_env
-    else:
-        os.environ.pop("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", None)
     exporter.clear()
 
 
@@ -222,13 +215,14 @@ def execute_scenario(
     provider: TracerProvider,
     exporter: InMemorySpanExporter,
     use_mtls: bool,
+    monkeypatch: pytest.MonkeyPatch,
 ):
     """Dispatches execution based on the scenario column in the requirements matrix."""
     transport = "grpc" if "grpc" in transport_str.lower() else "rest"
     client_options = ClientOptions(tracer_provider=provider)
 
     if scenario == "Tracing Off":
-        os.environ["GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED"] = "false"
+        monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
         client_options = ClientOptions()
         run_echo_call(scenario, transport, client_options, use_mtls)
     elif scenario in ("Happy Path", "Server Failure", "Client Timeout"):
@@ -413,13 +407,15 @@ def assert_span_matches_row(
         for fid in FEATURE_MATRIX
     ],
 )
-def test_feature(feature_id: str, span_exporter, use_mtls):
+def test_feature(feature_id: str, span_exporter, use_mtls, monkeypatch):
     """Executes each feature scenario and validates 1-to-1 against matrix specifications."""
     row = FEATURE_MATRIX[feature_id]
     exporter, provider = span_exporter
 
     # 1. Execute physical scenario
-    execute_scenario(row["Scenario"], row["Transport"], provider, exporter, use_mtls)
+    execute_scenario(
+        row["Scenario"], row["Transport"], provider, exporter, use_mtls, monkeypatch
+    )
     spans = exporter.get_finished_spans()
 
     # 2. Archive raw spans for downstream inspection
