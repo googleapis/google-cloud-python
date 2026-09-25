@@ -651,7 +651,7 @@ class TestExclusiveWSGIServer(object):
             server.server_bind()
 
         is_listener_present.assert_not_called()
-        assert getattr(server, "_ipv6_socket", None) is None
+        assert server._ipv6_socket is None
 
     def test_exclusive_wsgi_server_ipv6_bind_errors(self):
         import errno

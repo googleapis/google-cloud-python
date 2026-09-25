@@ -500,6 +500,10 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
 
     allow_reuse_address = False
 
+    def __init__(self, *args, **kwargs):
+        self._ipv6_socket = None
+        super().__init__(*args, **kwargs)
+
     @staticmethod
     def _is_listener_present(family, addr, port):
         """Check if another process is already listening on (addr, port) by
@@ -529,7 +533,6 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
                 raise OSError(errno.EADDRINUSE, "Address already in use")
             # Hold `::1` without calling `listen()` so no other process can claim
             # the port while the browser falls back from `::1` to `127.0.0.1`.
-            self._ipv6_socket = None
             try:
                 self._ipv6_socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
@@ -543,7 +546,7 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
                     self._ipv6_socket = None
 
     def server_close(self):
-        if getattr(self, "_ipv6_socket", None) is not None:
+        if self._ipv6_socket is not None:
             self._ipv6_socket.close()
             self._ipv6_socket = None
         super().server_close()
