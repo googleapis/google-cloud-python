@@ -20,6 +20,7 @@ Runs all 22 feature tests against the GAPIC Showcase daemon with 1-to-1 attribut
 
 from __future__ import annotations
 
+import contextlib
 import csv
 import json
 from pathlib import Path
@@ -58,6 +59,18 @@ try:
     from . import conftest
 except (ImportError, ValueError):
     import conftest
+
+
+# ---------------------------------------------------------------------------
+# Test Harness Performance & Tuning Knobs
+# (These tune test execution speed; they are NOT telemetry spec requirements)
+# ---------------------------------------------------------------------------
+SHORT_CLIENT_TIMEOUT_SECONDS = 0.2
+FAST_RETRY_BACKOFF_SECONDS = 0.01
+CONSTANT_BACKOFF_MULTIPLIER = 1.0  # Linear intervals (no exponential growth)
+FAST_EXHAUSTION_DEADLINE_SECONDS = 0.05
+GENEROUS_RECOVERY_DEADLINE_SECONDS = 5.0
+SHOWCASE_EXHAUSTION_QUEUE_BUFFER = 20
 
 
 # ---------------------------------------------------------------------------
@@ -136,7 +149,7 @@ def run_echo_call(client: EchoClient, scenario: str):
                         message="Client deadline exceeded",
                     )
                 ),
-                timeout=0.2,
+                timeout=SHORT_CLIENT_TIMEOUT_SECONDS,
                 retry=None,
             )
 
@@ -148,6 +161,7 @@ def run_sequence_retry_call(
 ):
     """Executes retry sequences against an injected SequenceServiceClient."""
     is_exhaust = scenario == "Retries Exhausted"
+
     if is_exhaust:
         responses = [
             Sequence.Response(
@@ -156,8 +170,11 @@ def run_sequence_retry_call(
                     message="Persistent outage",
                 )
             )
-            for _ in range(20)
-        ]
+        ] * SHOWCASE_EXHAUSTION_QUEUE_BUFFER
+        deadline = FAST_EXHAUSTION_DEADLINE_SECONDS
+        expectation = pytest.raises(
+            (exceptions.RetryError, exceptions.ServiceUnavailable)
+        )
     else:
         responses = [
             Sequence.Response(
@@ -168,6 +185,8 @@ def run_sequence_retry_call(
             ),
             Sequence.Response(status=status_pb2.Status(code=code_pb2.OK)),
         ]
+        deadline = GENEROUS_RECOVERY_DEADLINE_SECONDS
+        expectation = contextlib.nullcontext()
 
     seq = client.create_sequence(
         CreateSequenceRequest(sequence=Sequence(responses=responses))
@@ -175,27 +194,15 @@ def run_sequence_retry_call(
     # Clear setup RPC spans so exporter captures only the attempt_sequence spans
     exporter.clear()
 
-    if is_exhaust:
-        retry_policy = retries.Retry(
-            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
-            initial=0.01,
-            maximum=0.01,
-            multiplier=1.0,
-            deadline=0.05,
-        )
-        with pytest.raises((exceptions.RetryError, exceptions.ServiceUnavailable)):
-            client.attempt_sequence(
-                AttemptSequenceRequest(name=seq.name),
-                retry=retry_policy,
-            )
-    else:
-        retry_policy = retries.Retry(
-            predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
-            initial=0.01,
-            maximum=0.05,
-            multiplier=1.0,
-            deadline=5.0,
-        )
+    retry_policy = retries.Retry(
+        predicate=retries.if_exception_type(exceptions.ServiceUnavailable),
+        initial=FAST_RETRY_BACKOFF_SECONDS,
+        maximum=FAST_RETRY_BACKOFF_SECONDS,
+        multiplier=CONSTANT_BACKOFF_MULTIPLIER,
+        deadline=deadline,
+    )
+
+    with expectation:
         client.attempt_sequence(
             AttemptSequenceRequest(name=seq.name),
             retry=retry_policy,
