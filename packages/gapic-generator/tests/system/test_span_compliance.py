@@ -238,18 +238,75 @@ def execute_scenario(
 
 
 # ---------------------------------------------------------------------------
-# 1-to-1 Span Assertions
+# Universal Matrix-Driven Cell Parser & Assertion Engine
 # ---------------------------------------------------------------------------
 
 
-def assert_span_matches_row(span, row: dict[str, str]):
-    """Validates a single span against its row specification in the matrix."""
-    if row["Span Name"] != "N/A":
-        assert span.name == row["Span Name"]
-    if row["Span Kind"] != "N/A":
-        assert span.kind.name == row["Span Kind"]
-    if row["Span Status"] != "N/A":
-        assert span.status.status_code.name == row["Span Status"]
+def resolve_expected_value(
+    raw_val: str | None, target_tier: str, attempt_idx: int = 0
+) -> str:
+    """Resolves the expected value from a CSV cell for a given tier and attempt index.
+
+    Supports:
+    1. Static values: '200', 'POST', 'NOT SET', 'N/A'
+    2. Positional sequences: '503 | 200', 'ERROR | OK'
+    3. Tier-partitioned cells: 'T3: OK | T4: NOT SET', 'T3: UNSET | T4: ERROR | OK'
+    """
+    if raw_val is None:
+        return "N/A"
+    raw = raw_val.strip()
+    if not raw or raw == "N/A":
+        return "N/A"
+
+    # Step 1: Check for tier partitioning (T3: ... | T4: ...)
+    tier_content = raw
+    if "T3:" in raw or "T4:" in raw:
+        if target_tier == "T3":
+            if "T3:" in raw:
+                after_t3 = raw.split("T3:")[1]
+                tier_content = after_t3.split("| T4:")[0].strip()
+            else:
+                return "N/A"
+        elif target_tier == "T4":
+            if "T4:" in raw:
+                tier_content = raw.split("T4:")[1].strip()
+            else:
+                return "N/A"
+
+    # Step 2: Handle sequence across attempts (e.g. '503 | 200')
+    if "|" in tier_content:
+        parts = [p.strip() for p in tier_content.split("|")]
+        return parts[attempt_idx] if attempt_idx < len(parts) else parts[-1]
+
+    return tier_content.strip()
+
+
+def assert_span_matches_row(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int = 0
+):
+    """Validates a single span against row specifications for the given tier and attempt index."""
+    span_name = resolve_expected_value(row.get("Span Name"), target_tier, attempt_idx)
+    if span_name != "N/A":
+        assert span.name == span_name, (
+            f"Span name mismatch on {target_tier} attempt {attempt_idx}: "
+            f"expected '{span_name}', got '{span.name}'"
+        )
+
+    span_kind = resolve_expected_value(row.get("Span Kind"), target_tier, attempt_idx)
+    if span_kind != "N/A":
+        assert span.kind.name == span_kind, (
+            f"Span kind mismatch on {target_tier} attempt {attempt_idx}: "
+            f"expected '{span_kind}', got '{span.kind.name}'"
+        )
+
+    span_status = resolve_expected_value(
+        row.get("Span Status"), target_tier, attempt_idx
+    )
+    if span_status != "N/A":
+        assert span.status.status_code.name == span_status, (
+            f"Span status mismatch on {target_tier} attempt {attempt_idx}: "
+            f"expected '{span_status}', got '{span.status.status_code.name}'"
+        )
 
     # String attributes
     str_attrs = [
@@ -261,19 +318,47 @@ def assert_span_matches_row(span, row: dict[str, str]):
         "url.template",
         "server.address",
         "error.type",
-        "status.message",
     ]
     for attr in str_attrs:
-        expected = row.get(attr, "N/A")
+        expected = resolve_expected_value(row.get(attr), target_tier, attempt_idx)
         if expected == "NOT SET":
             assert attr not in span.attributes, (
-                f"Attribute {attr} should NOT be set, found: {span.attributes.get(attr)}"
+                f"Attribute {attr} should NOT be set on {target_tier} attempt {attempt_idx}, "
+                f"found: {span.attributes.get(attr)}"
             )
         elif expected != "N/A":
             actual = span.attributes.get(attr)
-            assert actual == expected, (
-                f"Attribute {attr}: expected '{expected}', got '{actual}'"
+            assert actual is not None, (
+                f"Attribute {attr} missing on {target_tier} attempt {attempt_idx}, "
+                f"expected '{expected}'"
             )
+            if expected.endswith("/*"):
+                prefix = expected[:-1]
+                assert str(actual).startswith(prefix), (
+                    f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
+                    f"expected to start with '{prefix}', got '{actual}'"
+                )
+            else:
+                assert actual == expected, (
+                    f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
+                    f"expected '{expected}', got '{actual}'"
+                )
+
+    # Status message (matches exact or substring to allow URL paths)
+    expected_msg = resolve_expected_value(
+        row.get("status.message"), target_tier, attempt_idx
+    )
+    if expected_msg == "NOT SET":
+        assert "status.message" not in span.attributes
+    elif expected_msg != "N/A":
+        actual_msg = span.attributes.get("status.message")
+        assert actual_msg is not None, (
+            f"Expected status.message containing '{expected_msg}', got None"
+        )
+        assert expected_msg in actual_msg, (
+            f"status.message on {target_tier} attempt {attempt_idx}: "
+            f"expected '{expected_msg}' in '{actual_msg}'"
+        )
 
     # Integer attributes
     int_attrs = [
@@ -282,104 +367,37 @@ def assert_span_matches_row(span, row: dict[str, str]):
         "server.port",
     ]
     for attr in int_attrs:
-        expected = row.get(attr, "N/A")
+        expected = resolve_expected_value(row.get(attr), target_tier, attempt_idx)
         if expected == "NOT SET":
             assert attr not in span.attributes, (
-                f"Attribute {attr} should NOT be set, found: {span.attributes.get(attr)}"
+                f"Attribute {attr} should NOT be set on {target_tier} attempt {attempt_idx}, "
+                f"found: {span.attributes.get(attr)}"
             )
         elif expected != "N/A":
             actual = span.attributes.get(attr)
             assert actual == int(expected), (
-                f"Attribute {attr}: expected {expected}, got {actual}"
+                f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
+                f"expected {expected}, got {actual}"
             )
 
     # Resend count
-    resend_expected = row.get("resend_count", "N/A")
-    if resend_expected == "NOT SET":
+    expected_resend = resolve_expected_value(
+        row.get("resend_count"), target_tier, attempt_idx
+    )
+    if expected_resend == "attempt_index":
+        expected_resend = "NOT SET" if attempt_idx == 0 else str(attempt_idx)
+
+    if expected_resend == "NOT SET":
         assert "http.request.resend_count" not in span.attributes
         assert "gcp.grpc.resend_count" not in span.attributes
-
-    # Parentage
-    parent_expected = row.get("parent_span_id", "N/A")
-    if parent_expected == "None (Root)":
-        assert span.parent is None, (
-            f"Expected root span with no parent, got {span.parent}"
+    elif expected_resend != "N/A":
+        actual_resend = span.attributes.get(
+            "http.request.resend_count"
+        ) or span.attributes.get("gcp.grpc.resend_count")
+        assert actual_resend == int(expected_resend), (
+            f"Resend count on {target_tier} attempt {attempt_idx}: "
+            f"expected {expected_resend}, got {actual_resend}"
         )
-    elif parent_expected == "T3.span_id":
-        assert span.parent is not None, "Expected child span with parent, got None"
-
-
-def assert_retry_child_spans(spans, row: dict[str, str]):
-    """Validates T4 child retry spans for F1.5 and F1.10."""
-    t4_spans = [s for s in spans if s.parent is not None]
-    assert len(t4_spans) == 2, f"Expected 2 T4 child spans, got {len(t4_spans)}"
-    t4_1, t4_2 = t4_spans[0], t4_spans[1]
-
-    # Attempt 1 failed
-    assert t4_1.status.status_code.name == "ERROR"
-    if "grpc" in row["Transport"].lower():
-        assert t4_1.attributes.get("rpc.grpc.status_code") == 14
-        assert t4_2.status.status_code.name == "UNSET"
-        assert t4_2.attributes.get("rpc.grpc.status_code") == 0
-        assert t4_2.attributes.get("rpc.response.status_code") == "OK"
-    else:
-        assert t4_1.attributes.get("http.response.status_code") == 503
-        assert t4_2.status.status_code.name == "OK"
-        assert t4_2.attributes.get("http.response.status_code") == 200
-
-
-def assert_retry_hierarchy_and_aggregation(spans, row: dict[str, str]):
-    """Validates parent-child hierarchy and status aggregation for F3.1-F3.4."""
-    t3_spans = [s for s in spans if s.parent is None]
-    t4_spans = [s for s in spans if s.parent is not None]
-
-    assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
-    root = t3_spans[0]
-
-    # Every child must reference the root span id
-    for child in t4_spans:
-        assert child.parent.span_id == root.context.span_id
-
-    scenario = row["Scenario"]
-    is_grpc = "grpc" in row["Transport"].lower()
-
-    if scenario == "Retry Recovery":
-        assert len(t4_spans) == 2, f"Expected 2 T4 child spans, got {len(t4_spans)}"
-        t4_1, t4_2 = t4_spans[0], t4_spans[1]
-
-        # Root aggregates success
-        assert root.status.status_code.name == "UNSET"
-        assert root.attributes.get("rpc.response.status_code") == "OK"
-        assert "error.type" not in root.attributes
-
-        # Child checks
-        if is_grpc:
-            assert t4_1.status.status_code.name == "ERROR"
-            assert t4_1.attributes.get("rpc.grpc.status_code") == 14
-            assert t4_2.status.status_code.name == "UNSET"
-            assert t4_2.attributes.get("rpc.grpc.status_code") == 0
-            assert t4_2.attributes.get("rpc.response.status_code") == "OK"
-        else:
-            assert t4_1.status.status_code.name == "ERROR"
-            assert t4_1.attributes.get("http.response.status_code") == 503
-            assert t4_2.status.status_code.name == "OK"
-            assert t4_2.attributes.get("http.response.status_code") == 200
-
-    elif scenario == "Retries Exhausted":
-        assert len(t4_spans) >= 2, f"Expected >=2 T4 child spans, got {len(t4_spans)}"
-
-        # Root aggregates error
-        assert root.status.status_code.name == "ERROR"
-        assert root.attributes.get("rpc.response.status_code") == "UNAVAILABLE"
-        assert root.attributes.get("error.type") == "UNAVAILABLE"
-
-        # All children failed
-        for child in t4_spans:
-            assert child.status.status_code.name == "ERROR"
-            if is_grpc:
-                assert child.attributes.get("rpc.grpc.status_code") == 14
-            else:
-                assert child.attributes.get("http.response.status_code") == 503
 
 
 # ---------------------------------------------------------------------------
@@ -407,29 +425,43 @@ def test_feature(feature_id: str, span_exporter, use_mtls):
     # 2. Archive raw spans for downstream inspection
     RAW_SPANS_CATALOG[feature_id] = [json.loads(s.to_json()) for s in spans]
 
-    # 3. Partition and Assert
-    tier = row["Tier"]
-
     # Tracing Off scenarios emit 0 spans
     if row["Span Count"] == "0":
         assert len(spans) == 0, f"Expected 0 spans for {feature_id}, found {len(spans)}"
         return
 
-    if tier == "T3":
-        t3_spans = [s for s in spans if s.parent is None]
+    # 3. Partition Spans into Root (T3) and Children (T4)
+    t3_spans = [s for s in spans if s.parent is None]
+    t4_spans = [s for s in spans if s.parent is not None]
+
+    tier = row["Tier"]
+
+    # 4. Evaluate Root T3 Span (if applicable)
+    if tier in ("T3", "T3 + T4"):
         assert len(t3_spans) == 1, f"Expected 1 T3 root span, got {len(t3_spans)}"
-        assert_span_matches_row(t3_spans[0], row)
+        assert_span_matches_row(t3_spans[0], row, target_tier="T3", attempt_idx=0)
 
-    elif tier == "T4":
-        if row["Span Count"] == "2":
-            assert_retry_child_spans(spans, row)
+    # 5. Evaluate Child T4 Spans (if applicable)
+    if tier in ("T4", "T3 + T4"):
+        expected_count = row["Span Count"]
+        if expected_count.isdigit():
+            expected_t4_count = (
+                int(expected_count) if tier == "T4" else int(expected_count) - 1
+            )
+            assert len(t4_spans) == expected_t4_count, (
+                f"Expected {expected_t4_count} T4 child spans, got {len(t4_spans)}"
+            )
         else:
-            t4_spans = [s for s in spans if s.parent is not None]
-            assert len(t4_spans) == 1, f"Expected 1 T4 child span, got {len(t4_spans)}"
-            assert_span_matches_row(t4_spans[0], row)
+            # For N + 1 exhausted retries
+            assert len(t4_spans) >= 2, (
+                f"Expected >=2 T4 child spans, got {len(t4_spans)}"
+            )
 
-    elif tier == "T3 + T4":
-        assert_retry_hierarchy_and_aggregation(spans, row)
+        for idx, child in enumerate(t4_spans):
+            assert_span_matches_row(child, row, target_tier="T4", attempt_idx=idx)
+            # Hierarchy Invariant: child must point to root T3 span
+            if t3_spans:
+                assert child.parent.span_id == t3_spans[0].context.span_id
 
 
 # ---------------------------------------------------------------------------
