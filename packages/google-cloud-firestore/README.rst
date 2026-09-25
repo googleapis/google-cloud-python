@@ -54,7 +54,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `python-docs-samples`_ repo.
 
-.. python-docs-samples: https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/firestore
+.. _`python-docs-samples`: https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/firestore
 
 
 Supported Python Versions
