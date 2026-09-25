@@ -422,7 +422,6 @@ def showcase(
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
             "py.test",
-            "--quiet",
             *(session.posargs or [str(test_directory)]),
         ]
         if ignore_file:
