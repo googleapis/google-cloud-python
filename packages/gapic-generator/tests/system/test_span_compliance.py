@@ -113,17 +113,8 @@ def construct_observability_client(
     )
 
 
-def run_echo_call(
-    scenario: str,
-    transport: str,
-    client_options: ClientOptions,
-):
-    """Executes unary RPC calls against EchoClient."""
-    client = construct_observability_client(
-        EchoClient,
-        transport=transport,
-        client_options=client_options,
-    )
+def run_echo_call(client: EchoClient, scenario: str):
+    """Executes unary RPC calls against an injected EchoClient."""
     if scenario in ("Happy Path", "Tracing Off"):
         client.echo(showcase.EchoRequest(content="hello"))
     elif scenario == "Server Failure":
@@ -151,17 +142,11 @@ def run_echo_call(
 
 
 def run_sequence_retry_call(
+    client: SequenceServiceClient,
     scenario: str,
-    transport: str,
-    client_options: ClientOptions,
     exporter: InMemorySpanExporter,
 ):
-    """Executes retry sequences against SequenceServiceClient."""
-    client = construct_observability_client(
-        SequenceServiceClient,
-        transport=transport,
-        client_options=client_options,
-    )
+    """Executes retry sequences against an injected SequenceServiceClient."""
     is_exhaust = scenario == "Retries Exhausted"
     if is_exhaust:
         responses = [
@@ -231,11 +216,15 @@ def execute_scenario(
     if scenario == "Tracing Off":
         monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
         client_options = ClientOptions()
-        run_echo_call(scenario, transport, client_options)
-    elif scenario in ("Happy Path", "Server Failure", "Client Timeout"):
-        run_echo_call(scenario, transport, client_options)
+
+    if scenario in ("Happy Path", "Server Failure", "Client Timeout", "Tracing Off"):
+        client = construct_observability_client(EchoClient, transport, client_options)
+        run_echo_call(client, scenario)
     else:
-        run_sequence_retry_call(scenario, transport, client_options, exporter)
+        client = construct_observability_client(
+            SequenceServiceClient, transport, client_options
+        )
+        run_sequence_retry_call(client, scenario, exporter)
 
 
 # ---------------------------------------------------------------------------
