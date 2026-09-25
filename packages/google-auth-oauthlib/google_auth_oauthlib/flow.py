@@ -520,6 +520,11 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
         except OSError:
             return False
 
+    def _close_ipv6_socket(self):
+        if self._ipv6_socket is not None:
+            self._ipv6_socket.close()
+            self._ipv6_socket = None
+
     def server_bind(self):
         host = self.server_address[0]
         if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
@@ -541,14 +546,10 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
                     )
                 self._ipv6_socket.bind(("::1", port))
             except OSError:
-                if self._ipv6_socket is not None:
-                    self._ipv6_socket.close()
-                    self._ipv6_socket = None
+                self._close_ipv6_socket()
 
     def server_close(self):
-        if self._ipv6_socket is not None:
-            self._ipv6_socket.close()
-            self._ipv6_socket = None
+        self._close_ipv6_socket()
         super().server_close()
 
 
