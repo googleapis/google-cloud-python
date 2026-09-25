@@ -13,17 +13,21 @@
 # limitations under the License.
 
 
-import grpc
-from unittest import mock
 import os
+from typing import Sequence, Tuple
+from unittest import mock
+
+import grpc
 import pytest
 import pytest_asyncio
-from requests.adapters import HTTPAdapter
-
-from typing import Sequence, Tuple
-
 from google.api_core.client_options import ClientOptions  # type: ignore
 from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
+from requests.adapters import HTTPAdapter
+
+try:
+    from google.api_core import _observability
+except ImportError:
+    _observability = None
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -34,20 +38,18 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 import google.auth
 from google.auth import credentials as ga_credentials
-from google.showcase import EchoClient
-from google.showcase import IdentityClient
-from google.showcase import MessagingClient
+from google.showcase import EchoClient, IdentityClient, MessagingClient
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
-    from grpc.experimental import aio
     import asyncio
-    from google.showcase import EchoAsyncClient
-    from google.showcase import IdentityAsyncClient
+
+    from google.showcase import EchoAsyncClient, IdentityAsyncClient
+    from grpc.experimental import aio
 
     try:
         from google.showcase_v1beta1.services.echo.transports import (
-            AsyncEchoRestTransport,
             AsyncEchoRestInterceptor,
+            AsyncEchoRestTransport,
         )
 
         HAS_ASYNC_REST_ECHO_TRANSPORT = True
@@ -132,8 +134,8 @@ def callback():
     return cert, key
 
 
-client_options = ClientOptions()
-client_options.client_cert_source = callback
+default_mtls_client_options = ClientOptions()
+default_mtls_client_options.client_cert_source = callback
 
 
 def pytest_addoption(parser):
@@ -141,7 +143,9 @@ def pytest_addoption(parser):
         "--mtls", action="store_true", help="Run system test with mutual TLS channel"
     )
     parser.addoption(
-        "--tls", action="store_true", help="Run system test with standard one-way TLS channel"
+        "--tls",
+        action="store_true",
+        help="Run system test with standard one-way TLS channel",
     )
 
 
@@ -153,6 +157,7 @@ def construct_client(
     channel_creator=grpc.insecure_channel,  # for grpc,grpc_asyncio only
     credentials=ga_credentials.AnonymousCredentials(),
     transport_endpoint="localhost:7469",
+    client_options=None,
 ):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
@@ -162,7 +167,7 @@ def construct_client(
                 mock_ssl_cred.return_value = ssl_credentials
                 client = client_class(
                     credentials=credentials,
-                    client_options=client_options,
+                    client_options=client_options or default_mtls_client_options,
                 )
                 mock_ssl_cred.assert_called_once_with(
                     certificate_chain=cert, private_key=key
@@ -173,10 +178,13 @@ def construct_client(
         if transport_name in ["grpc", "grpc_asyncio"]:
             # TODO(gapic-generator-python/issues/1914): Need to test grpc transports without a channel_creator
             assert channel_creator
-            transport = transport_cls(
-                credentials=credentials,
-                channel=channel_creator(transport_endpoint),
-            )
+            transport_kwargs = {
+                "credentials": credentials,
+                "channel": channel_creator(transport_endpoint),
+            }
+            if transport_name == "grpc":
+                transport_kwargs["client_options"] = client_options
+            transport = transport_cls(**transport_kwargs)
         elif transport_name in ["rest", "rest_asyncio"]:
             # The custom host explicitly bypasses https.
             transport = transport_cls(
@@ -187,7 +195,7 @@ def construct_client(
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")
 
-        client = client_class(transport=transport)
+        client = client_class(transport=transport, client_options=client_options)
         return client
 
 
@@ -340,7 +348,9 @@ class EchoMetadataClientGrpcInterceptor(
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in response.initial_metadata()] + [(k, str(v)) for k, v in response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in response.initial_metadata()] + [
+            (k, str(v)) for k, v in response.trailing_metadata()
+        ]
         self.response_metadata = metadata
         return response
 
@@ -399,7 +409,9 @@ class EchoMetadataClientGrpcAsyncInterceptor(
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         await self._add_request_metadata(client_call_details)
         response = await continuation(client_call_details, request)
-        metadata = [(k, str(v)) for k, v in await response.initial_metadata()] + [(k, str(v)) for k, v in await response.trailing_metadata()]
+        metadata = [(k, str(v)) for k, v in await response.initial_metadata()] + [
+            (k, str(v)) for k, v in await response.trailing_metadata()
+        ]
         self.response_metadata = metadata
         return response
 
@@ -458,9 +470,13 @@ async def intercepted_echo_grpc_async(use_mtls, use_tls):
     )
     host = "localhost:7469"
     if use_mtls:
-        channel = grpc.aio.secure_channel(host, ssl_credentials, interceptors=[interceptor])
+        channel = grpc.aio.secure_channel(
+            host, ssl_credentials, interceptors=[interceptor]
+        )
     elif use_tls:
-        channel = grpc.aio.secure_channel(host, tls_credentials, interceptors=[interceptor])
+        channel = grpc.aio.secure_channel(
+            host, tls_credentials, interceptors=[interceptor]
+        )
     else:
         channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
     transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
@@ -472,6 +488,7 @@ async def intercepted_echo_grpc_async(use_mtls, use_tls):
 
 class HostNameIgnoringAdapter(HTTPAdapter):
     """Custom HTTPAdapter that disables hostname verification for local self-signed certs."""
+
     def cert_verify(self, conn, url, verify, cert):
         super().cert_verify(conn, url, verify, cert)
         conn.assert_hostname = False

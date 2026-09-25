@@ -542,3 +542,29 @@ def test_grpc_client_response_hook_error_status_value():
     mock_span.status.status_code.value = 2
     _observability._grpc_client_response_hook(mock_span, mock.Mock())
     mock_span.set_attribute.assert_not_called()
+
+
+def test_grpc_client_response_hook_none_span():
+    """Proves that _grpc_client_response_hook gracefully handles span=None without error."""
+    _observability._grpc_client_response_hook(None, mock.Mock())
+
+
+def test_get_otel_interceptor_sentinel_attribute(monkeypatch):
+    """Proves that get_otel_interceptor tags the returned closure with _is_otel_interceptor=True."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    options = ClientOptions()
+
+    mock_otel = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock_otel.instrumentation.grpc,
+    )
+
+    interceptor = _observability.get_otel_interceptor(client_options=options)
+    assert callable(interceptor)
+    assert getattr(interceptor, "_is_otel_interceptor", None) is True

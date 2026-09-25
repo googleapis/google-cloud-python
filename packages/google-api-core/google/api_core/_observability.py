@@ -185,7 +185,7 @@ def _grpc_client_response_hook(span: Any, response: Any) -> None:
         span: The OpenTelemetry span.
         response: The gRPC response object or details.
     """
-    if not span.is_recording():
+    if span is None or not getattr(span, "is_recording", lambda: False)():
         return
 
     # Guard against upstream async calls that invoke this hook on failures.
@@ -249,6 +249,7 @@ def get_otel_interceptor(
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
         return otel_grpc.intercept_channel(channel, interceptor)
 
+    otel_interceptor._is_otel_interceptor = True  # type: ignore[attr-defined]
     return otel_interceptor
 
 

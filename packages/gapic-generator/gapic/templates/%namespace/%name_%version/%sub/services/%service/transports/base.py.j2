@@ -3,6 +3,7 @@
 {% block content %}
 
 import abc
+import inspect
 from typing import {% if service.any_extended_operations_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Union
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
@@ -10,6 +11,7 @@ from {{package_path}} import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -53,6 +55,13 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
+# Check once at module load time whether google-api-core's wrap_method supports
+# OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
+# to avoid recurring inspect.signature latency during client instantiation.
+_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+)
+
 
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
@@ -75,6 +84,7 @@ class {{ service.name }}Transport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -105,6 +115,9 @@ class {{ service.name }}Transport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         {% if service.any_extended_operations_methods %}
         self._extended_operations_services: Dict[str, Any] = {}
@@ -145,17 +158,39 @@ class {{ service.name }}Transport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
+        self._wrap_with_tracing = _WRAP_METHOD_SUPPORTS_TRACING
+
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_tracing:
+            kwargs["client_options"] = self._client_options
+            try:
+                kwargs["kind"] = self.kind
+            # The abstract BaseTransport class raises NotImplementedError for the kind property.
+            # Concrete transport subclasses (gRPC, REST) override kind, so this exception handler
+            # is unreachable during normal execution. Excluded from coverage check.
+            except NotImplementedError:  # pragma: NO COVER
+                pass
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed (which does not accept client_options, etc.).
+        # Excluded from coverage because our CI and testing environments always install
+        # a modern version of google-api-core that supports tracing.
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:  # pragma: NO COVER
+            kwargs.pop(k, None)  # pragma: NO COVER
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)  # pragma: NO COVER
+
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             {% for method in service.methods.values() %}
-            self.{{ method.transport_safe_name|snake_case }}: gapic_v1.method.wrap_method(
+            self.{{ method.transport_safe_name|snake_case }}: self._wrap_method(
                 self.{{ method.transport_safe_name|snake_case }},
                 {% if method.retry %}
                 default_retry=retries.Retry(
@@ -178,13 +213,18 @@ class {{ service.name }}Transport(abc.ABC):
                 {% endif %}
                 default_timeout={{ method.timeout }},
                 client_info=client_info,
+                method_name="{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}",
+                {% if method.client_streaming or method.server_streaming %}
+                is_streaming=True,
+                {% endif %}
             ),
             {% endfor %}{# method in service.methods.values() #}
             {% for method_name in api.mixin_api_methods.keys() %}
-            self.{{ method_name|snake_case }}: gapic_v1.method.wrap_method(
+            self.{{ method_name|snake_case }}: self._wrap_method(
                 self.{{ method_name|snake_case }},
                 default_timeout=None,
                 client_info=client_info,
+                method_name="{{ api.mixin_api_signatures[method_name].rpc_name }}",
             ),
             {% endfor %} {# method_name in api.mixin_api_methods.keys() #}
         }
