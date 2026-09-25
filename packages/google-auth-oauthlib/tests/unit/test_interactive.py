@@ -57,6 +57,7 @@ def test_find_open_port_returns_none(monkeypatch):
 
 def test_is_port_open_ipv6_checks(monkeypatch):
     import errno
+
     from google_auth_oauthlib import interactive as module_under_test
 
     sock4 = mock.create_autospec(socket.socket, instance=True)

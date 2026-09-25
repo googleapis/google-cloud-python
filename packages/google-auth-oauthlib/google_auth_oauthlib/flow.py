@@ -48,6 +48,7 @@ Here's an example of using :class:`InstalledAppFlow`::
     https://developers.google.com/identity/protocols/oauth2
 
 """
+
 import errno
 import hashlib
 import json

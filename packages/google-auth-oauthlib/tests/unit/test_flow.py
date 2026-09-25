@@ -575,9 +575,7 @@ class TestExclusiveWSGIServer(object):
             mock_socket.AF_INET = socket.AF_INET
             mock_socket.AF_INET6 = socket.AF_INET6
             mock_socket.SOCK_STREAM = socket.SOCK_STREAM
-            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = (
-                1
-            )
+            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = 1
 
             server = flow._ExclusiveWSGIServer(
                 ("localhost", 8085), flow._WSGIRequestHandler, bind_and_activate=False
@@ -609,9 +607,10 @@ class TestExclusiveWSGIServer(object):
                 server.server_close()
 
     def test_exclusive_wsgi_server_detects_existing_listeners(self):
-        with mock.patch("sys.platform", "win32"), mock.patch(
-            "google_auth_oauthlib.flow.socket"
-        ) as mock_socket:
+        with (
+            mock.patch("sys.platform", "win32"),
+            mock.patch("google_auth_oauthlib.flow.socket") as mock_socket,
+        ):
             mock_socket.SOL_SOCKET = socket.SOL_SOCKET
             mock_socket.SO_EXCLUSIVEADDRUSE = 1
             mock_socket.AF_INET = socket.AF_INET
@@ -624,9 +623,7 @@ class TestExclusiveWSGIServer(object):
             server.socket = mock.Mock()
 
             # 1. Pre-existing IPv6 listener on ::1 / [::]
-            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = (
-                0
-            )
+            mock_socket.socket.return_value.__enter__.return_value.connect_ex.return_value = 0
             with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
                 with pytest.raises(OSError):
                     server.server_bind()
@@ -645,11 +642,12 @@ class TestExclusiveWSGIServer(object):
         )
         server.socket = mock.Mock()
 
-        with mock.patch.object(
-            wsgiref.simple_server.WSGIServer, "server_bind"
-        ), mock.patch.object(
-            flow._ExclusiveWSGIServer, "_is_listener_present", return_value=True
-        ) as is_listener_present:
+        with (
+            mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"),
+            mock.patch.object(
+                flow._ExclusiveWSGIServer, "_is_listener_present", return_value=True
+            ) as is_listener_present,
+        ):
             server.server_bind()
 
         is_listener_present.assert_not_called()
@@ -663,13 +661,13 @@ class TestExclusiveWSGIServer(object):
         )
         server.socket = mock.Mock()
 
-        with mock.patch.object(
-            wsgiref.simple_server.WSGIServer, "server_bind"
-        ), mock.patch.object(
-            flow._ExclusiveWSGIServer, "_is_listener_present", return_value=False
-        ), mock.patch(
-            "google_auth_oauthlib.flow.socket"
-        ) as mock_socket:
+        with (
+            mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"),
+            mock.patch.object(
+                flow._ExclusiveWSGIServer, "_is_listener_present", return_value=False
+            ),
+            mock.patch("google_auth_oauthlib.flow.socket") as mock_socket,
+        ):
             mock_socket.AF_INET6 = socket.AF_INET6
             mock_socket.SOCK_STREAM = socket.SOCK_STREAM
 
