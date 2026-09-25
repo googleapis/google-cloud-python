@@ -292,7 +292,7 @@ jobs:
   # This job will be reported as 'Success' if all its dependencies either 
   # pass or are skipped due to path filtering.
   status:
-    needs: [check_changes, python_config, showcase-unit, showcase-mypy, goldens, goldens-prerelease, fragment-snippet, integration]
+    needs: [check_changes, python_config, showcase-unit, showcase, showcase-mypy, goldens, goldens-prerelease, fragment-snippet, integration]
     if: always()
     runs-on: ubuntu-latest
     steps:
