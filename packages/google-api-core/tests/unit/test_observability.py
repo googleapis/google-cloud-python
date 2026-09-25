@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import sys
+import urllib.parse
 from unittest import mock
 
 import pytest
@@ -92,6 +93,23 @@ def test_is_otel_capabilities_enabled_experimental_enabled_with_config(monkeypat
 
     options = ClientOptions(tracer_provider=mock.Mock())
     assert _observability.is_otel_capabilities_enabled(options)
+
+
+@pytest.mark.parametrize(
+    "boundary_options",
+    [
+        pytest.param(None, id="options_none"),
+        pytest.param({}, id="options_empty_dict"),
+        pytest.param({"irrelevant_field": 123}, id="options_missing_tracer_provider"),
+    ],
+)
+def test_observability_handles_boundary_client_options(boundary_options):
+    """Verifies boundary handling when client options lack telemetry attributes."""
+    enabled = _observability.is_otel_capabilities_enabled(boundary_options)
+    assert enabled is False
+
+    endpoint_attrs = _observability._extract_endpoint_attributes(boundary_options)
+    assert endpoint_attrs == {"url.domain": "googleapis.com"}
 
 
 def test_get_tracer_provider_default():
@@ -542,3 +560,703 @@ def test_grpc_client_response_hook_error_status_value():
     mock_span.status.status_code.value = 2
     _observability._grpc_client_response_hook(mock_span, mock.Mock())
     mock_span.set_attribute.assert_not_called()
+
+
+def test_grpc_client_response_hook_none_span():
+    """Proves that _grpc_client_response_hook gracefully handles span=None without error."""
+    _observability._grpc_client_response_hook(None, mock.Mock())
+
+
+def test_get_otel_interceptor_sentinel_attribute(monkeypatch):
+    """Proves that get_otel_interceptor tags the returned closure with _is_otel_interceptor=True."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    options = ClientOptions()
+
+    mock_otel = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock_otel.instrumentation.grpc,
+    )
+
+    interceptor = _observability.get_otel_interceptor(client_options=options)
+    assert callable(interceptor)
+    assert getattr(interceptor, "_is_otel_interceptor", None) is True
+
+
+def test_build_http_span_attributes_with_request():
+    """Proves that _build_http_span_attributes extracts attributes from a request object."""
+    headers = {"key": "val"}
+    request = mock.Mock(
+        method="post",
+        url="https://example.com:8443/v1/echo",
+        headers=headers,
+        body=b"bytes-payload",
+    )
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        request, url_template="/v1/echo"
+    )
+    assert name == "POST"
+    assert attrs["http.request.method"] == "POST"
+    assert attrs["server.address"] == "example.com"
+    assert attrs["server.port"] == 8443
+    assert attrs["url.template"] == "/v1/echo"
+    assert attrs["url.full"] == "https://example.com:8443/v1/echo"
+    assert attrs["http.request.body.size"] == len(b"bytes-payload")
+    assert res_headers is headers
+
+
+def test_build_http_span_attributes_with_kwargs():
+    """Proves that _build_http_span_attributes works with explicit kwargs and string body."""
+    headers = {"key": "val"}
+    options = ClientOptions(api_endpoint="custom.endpoint.com:9443")
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        method="get",
+        url="https://custom.endpoint.com:9443/v1/items",
+        url_template="/v1/items",
+        headers=headers,
+        body="string-body",
+        client_options=options,
+    )
+    assert name == "GET"
+    assert attrs["server.address"] == "custom.endpoint.com"
+    assert attrs["server.port"] == 9443
+    assert attrs["http.request.body.size"] == len("string-body")
+    assert res_headers is headers
+
+
+def test_build_http_span_attributes_first_arg_client_options():
+    """Proves that _build_http_span_attributes shifts client_options when passed positionally."""
+    options = ClientOptions(api_endpoint="custom.endpoint.com:443")
+    name, attrs, res_headers = _observability._build_http_span_attributes(
+        options,
+        method="GET",
+        url="https://custom.endpoint.com:443/test",
+    )
+    assert name == "GET"
+    assert attrs["server.address"] == "custom.endpoint.com"
+
+
+def test_build_http_span_attributes_url_parsing_fallbacks():
+    """Proves that _build_http_span_attributes gracefully handles empty or invalid URLs."""
+    # Empty url
+    name, attrs, _ = _observability._build_http_span_attributes(method="DELETE", url="")
+    assert name == "DELETE"
+    assert attrs["server.address"] == ""
+    assert attrs["server.port"] == 443
+
+    # Malformed URL
+    with mock.patch.object(
+        urllib.parse, "urlsplit", side_effect=ValueError("boom"), autospec=True
+    ):
+        name, attrs, _ = _observability._build_http_span_attributes(
+            method="PUT", url="http://[invalid"
+        )
+        assert name == "PUT"
+        assert attrs["server.address"] == ""
+
+
+def test_trace_http_request_disabled():
+    """Proves that trace_http_request yields None when tracing is disabled."""
+    request = mock.Mock(method="GET", url="https://example.com/api", headers={})
+    with _observability.trace_http_request(
+        request, client_options=ClientOptions()
+    ) as span:
+        assert span is None
+
+
+def test_trace_http_request_active(monkeypatch):
+    """Proves that trace_http_request creates a span, sets attributes, and injects W3C headers."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_tracer
+
+    mock_otel = mock.MagicMock()
+    mock_propagator = mock.Mock()
+    mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions(
+        api_endpoint="custom.googleapis.com:8443",
+        tracer_provider=mock_provider,
+    )
+    headers = {}
+    request = mock.Mock(
+        method="POST",
+        url="https://custom.googleapis.com:8443/v1/test",
+        headers=headers,
+        body=b"test-body",
+    )
+
+    with _observability.trace_http_request(
+        request, url_template="/v1/test", client_options=options
+    ) as span:
+        assert span is mock_span
+
+    mock_tracer.start_as_current_span.assert_called_once()
+    call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
+    assert call_args[0] == "POST"
+    attrs = call_kwargs["attributes"]
+    assert attrs["http.request.method"] == "POST"
+    assert attrs["server.address"] == "custom.googleapis.com"
+    assert attrs["server.port"] == 8443
+    assert attrs["url.template"] == "/v1/test"
+    assert attrs["http.request.body.size"] == 9
+    mock_propagator.inject.assert_called_once_with(headers)
+
+
+def test_record_http_response_success(monkeypatch):
+    """Proves that record_http_response records status code and size attributes."""
+    mock_span = mock.Mock()
+    response = mock.Mock(status_code=200, headers={"Content-Length": "42"})
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_response(mock_span, response)
+    mock_span.set_attribute.assert_any_call("http.response.status_code", 200)
+    mock_span.set_attribute.assert_any_call("http.response.body.size", 42)
+
+
+def test_record_http_response_error_status(monkeypatch):
+    """Proves that record_http_response sets error status on 4xx/5xx responses."""
+    mock_span = mock.Mock()
+    response = mock.Mock(status_code=503, headers={})
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_response(mock_span, response)
+    mock_span.set_attribute.assert_any_call("http.response.status_code", 503)
+    mock_span.set_status.assert_called_once()
+
+
+def test_record_http_error(monkeypatch):
+    """Proves that record_http_error records exception and error attributes."""
+    mock_span = mock.Mock()
+    exc = ValueError("Network failure")
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_error(mock_span, exc)
+    mock_span.record_exception.assert_called_once_with(exc)
+    mock_span.set_status.assert_called_once()
+    mock_span.set_attribute.assert_any_call("error.type", "ValueError")
+    mock_span.set_attribute.assert_any_call("status.message", "Network failure")
+
+
+def test_trace_http_request_with_kwargs(monkeypatch):
+    """Proves that trace_http_request works when invoked using keyword arguments only."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_tracer
+
+    mock_otel = mock.MagicMock()
+    mock_propagator = mock.Mock()
+    mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions(
+        api_endpoint="custom.googleapis.com:8443",
+        tracer_provider=mock_provider,
+    )
+    headers = {}
+
+    with _observability.trace_http_request(
+        method="post",
+        url="https://custom.googleapis.com:8443/v1/test",
+        headers=headers,
+        body="string-payload",
+        url_template="/v1/test",
+        client_options=options,
+    ) as span:
+        assert span is mock_span
+
+    call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
+    assert call_args[0] == "POST"
+    attrs = call_kwargs["attributes"]
+    assert attrs["http.request.method"] == "POST"
+    assert attrs["http.request.body.size"] == len("string-payload")
+    mock_propagator.inject.assert_called_once_with(headers)
+
+
+def test_trace_http_request_first_arg_client_options(monkeypatch):
+    """Proves that trace_http_request shifts client_options when passed as first positional arg."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_tracer
+
+    mock_otel = mock.MagicMock()
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions(
+        api_endpoint="custom.googleapis.com:8443",
+        tracer_provider=mock_provider,
+    )
+
+    with _observability.trace_http_request(
+        options,
+        method="GET",
+        url="https://custom.googleapis.com:8443/v1/test",
+    ) as span:
+        assert span is mock_span
+
+
+def test_trace_http_request_default_tracer_and_url_parse(monkeypatch):
+    """Proves that trace_http_request uses trace.get_tracer when tracer_provider is None,
+    and extracts server.address and port from url if not present in options.
+    """
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions()  # No api_endpoint, tracer_provider=None
+
+    with _observability.trace_http_request(
+        client_options=options,
+        method="GET",
+        url="https://parsed-host.org:9443/v1/items",
+    ) as span:
+        assert span is mock_span
+
+    mock_otel.trace.get_tracer.assert_called_once_with("google.api_core")
+    call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
+    attrs = call_kwargs["attributes"]
+    assert attrs["server.address"] == "parsed-host.org"
+    assert attrs["server.port"] == 9443
+
+
+def test_trace_http_request_propagator_error(monkeypatch):
+    """Proves that trace_http_request catches propagation errors silently."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_provider = mock.Mock()
+    mock_provider.get_tracer.return_value = mock_tracer
+
+    mock_otel = mock.MagicMock()
+    mock_propagator = mock.Mock()
+    mock_propagator.inject.side_effect = RuntimeError("Propagator failed")
+    mock_otel.trace.propagation.tracecontext.TraceContextTextMapPropagator.return_value = mock_propagator
+    monkeypatch.setattr(_observability, "_TRACE_CONTEXT_PROPAGATOR", mock_propagator)
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions(tracer_provider=mock_provider)
+    headers = {}
+
+    with _observability.trace_http_request(
+        client_options=options,
+        method="GET",
+        url="https://example.com",
+        headers=headers,
+    ) as span:
+        assert span is mock_span
+
+
+def test_trace_http_request_unexpected_error(monkeypatch):
+    """Proves that trace_http_request yields None when an unexpected error occurs during setup."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.side_effect = RuntimeError("Unexpected tracer crash")
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions()
+    with _observability.trace_http_request(
+        client_options=options,
+        method="GET",
+        url="https://example.com",
+    ) as span:
+        assert span is None
+
+
+def test_record_http_response_none_or_missing_attribute():
+    """Proves that record_http_response handles None or non-span gracefully."""
+    _observability.record_http_response(None, mock.Mock())
+    _observability.record_http_response(object(), mock.Mock())
+
+
+def test_record_http_response_content_fallback_and_invalid_content_length(monkeypatch):
+    """Proves that record_http_response handles invalid Content-Length and falls back to _content."""
+    mock_span = mock.Mock()
+    # Invalid Content-Length string
+    response_invalid_len = mock.Mock(
+        status_code=200, headers={"Content-Length": "not-an-int"}
+    )
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_response(mock_span, response_invalid_len)
+    mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
+
+    mock_span.reset_mock()
+    # No Content-Length header, but response._content is present
+    response_with_content = mock.Mock(
+        status_code=None, headers={}, _content=b"hello-content"
+    )
+    _observability.record_http_response(mock_span, response_with_content)
+    mock_span.set_attribute.assert_called_once_with(
+        "http.response.body.size", len(b"hello-content")
+    )
+
+
+def test_record_http_response_exception_handled(monkeypatch):
+    """Proves that record_http_response catches exceptions gracefully."""
+    mock_span = mock.Mock()
+    mock_span.set_attribute.side_effect = RuntimeError("attribute error")
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    # Should not raise
+    _observability.record_http_response(
+        mock_span, mock.Mock(status_code=200, headers={})
+    )
+
+
+def test_record_http_error_none_span():
+    """Proves that record_http_error handles span=None gracefully."""
+    _observability.record_http_error(None, ValueError("test"))
+
+
+def test_record_http_error_with_status_code_and_empty_msg(monkeypatch):
+    """Proves that record_http_error uses exc.code or exc.status_code when present,
+    and skips status.message when str(exc) is empty.
+    """
+    mock_span = mock.Mock()
+    exc = Exception()
+    exc.code = 404
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_error(mock_span, exc)
+    mock_span.set_attribute.assert_any_call("error.type", "404")
+    # str(exc) is empty, status.message should not be set
+    calls = [c[0][0] for c in mock_span.set_attribute.call_args_list]
+    assert "status.message" not in calls
+
+
+def test_record_http_error_exception_handled(monkeypatch):
+    """Proves that record_http_error catches exceptions gracefully."""
+    mock_span = mock.Mock()
+    mock_span.record_exception.side_effect = RuntimeError("crash")
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    # Should not raise
+    _observability.record_http_error(mock_span, ValueError("test"))
+
+
+def test_trace_http_request_url_parse_exception(monkeypatch):
+    """Proves that trace_http_request handles url parsing errors gracefully."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    with mock.patch.object(
+        urllib.parse, "urlsplit", side_effect=ValueError("Invalid URL"), autospec=True
+    ):
+        options = ClientOptions()
+        with _observability.trace_http_request(
+            client_options=options,
+            method="GET",
+            url="http://[invalid-url",
+        ) as span:
+            assert span is mock_span
+
+
+def test_trace_http_request_empty_url(monkeypatch):
+    """Proves that trace_http_request works when url is empty or None."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_tracer = mock.MagicMock()
+    mock_span = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    options = ClientOptions()
+    with _observability.trace_http_request(
+        client_options=options,
+        method="GET",
+        url="",
+    ) as span:
+        assert span is mock_span
+
+
+def test_record_http_response_content_len_error(monkeypatch):
+    """Proves record_http_response catches errors in response._content length calculation."""
+    mock_span = mock.Mock()
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    response = mock.Mock(status_code=200, headers={})
+    # Set _content to an object that raises TypeError on len()
+    response._content = object()
+
+    _observability.record_http_response(mock_span, response)
+
+
+def test_record_http_error_partial_span(monkeypatch):
+    """Proves that record_http_error handles spans with missing methods."""
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    # Object lacking record_exception and set_status
+    class MinimalSpan:
+        def __init__(self):
+            self.attrs = {}
+
+        def set_attribute(self, k, v):
+            self.attrs[k] = v
+
+    span = MinimalSpan()
+    _observability.record_http_error(span, ValueError("partial span"))
+    assert span.attrs["error.type"] == "ValueError"
+
+    # Object lacking set_attribute
+    class NoAttrSpan:
+        def __init__(self):
+            self.recorded = False
+            self.status = None
+
+        def record_exception(self, exc):
+            self.recorded = True
+
+        def set_status(self, status):
+            self.status = status
+
+    span2 = NoAttrSpan()
+    _observability.record_http_error(span2, ValueError("no attr span"))
+    assert span2.recorded is True
+
+
+def test_record_http_response_no_content_length_and_no_content(monkeypatch):
+    """Proves that record_http_response handles responses with neither Content-Length nor _content."""
+    mock_span = mock.Mock()
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    response = mock.Mock(spec=["status_code", "headers"], status_code=200, headers={})
+    _observability.record_http_response(mock_span, response)
+    mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
+
+
+def test_trace_http_request_records_error_and_reraises(monkeypatch):
+    """Proves that trace_http_request records error on active span when exception occurs."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    record_error_called = []
+
+    def mock_record_http_error(span, exc):
+        record_error_called.append((span, exc))
+
+    monkeypatch.setattr(_observability, "record_http_error", mock_record_http_error)
+
+    err = RuntimeError("network broke")
+    with pytest.raises(RuntimeError, match="network broke"):
+        with _observability.trace_http_request(
+            method="GET",
+            url="https://example.com/fail",
+            headers={},
+        ):
+            raise err
+
+    assert len(record_error_called) == 1
+    assert record_error_called[0] == (mock_span, err)
+
+
+def test_trace_http_request_no_multi_yield_bug(monkeypatch):
+    """Proves that exceptions in caller block cleanly propagate without RuntimeError."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_span = mock.MagicMock()
+    mock_tracer = mock.MagicMock()
+    mock_tracer.start_as_current_span.return_value.__enter__.return_value = mock_span
+
+    mock_otel = mock.MagicMock()
+    mock_otel.trace.get_tracer.return_value = mock_tracer
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace", mock_otel.trace)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.propagation.tracecontext",
+        mock_otel.trace.propagation.tracecontext,
+    )
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+
+    err = ConnectionResetError("connection reset by peer")
+    with pytest.raises(ConnectionResetError, match="connection reset by peer"):
+        with _observability.trace_http_request(
+            method="GET",
+            url="https://example.com/api",
+        ):
+            raise err
+
+
+def test_trace_http_request_initialization_fails_open(monkeypatch):
+    """Proves that unexpected exceptions during telemetry initialization fail open and yield None."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+    with mock.patch(
+        "opentelemetry.trace.get_tracer",
+        side_effect=RuntimeError("OTel crashed"),
+    ):
+        with _observability.trace_http_request(
+            client_options=ClientOptions(),
+            method="GET",
+            url="https://example.com",
+        ) as span:
+            assert span is None

@@ -1,0 +1,224 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import os
+from unittest import mock
+
+import grpc
+import pytest
+
+try:
+    from opentelemetry import trace
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+        InMemorySpanExporter,
+    )
+
+    HAS_OPENTELEMETRY = True
+except ImportError:
+    HAS_OPENTELEMETRY = False
+
+if not HAS_OPENTELEMETRY:
+    pytest.skip("OpenTelemetry is not installed", allow_module_level=True)
+
+from google import showcase
+from google.api_core._feature_gating_helpers import FeatureGatingError
+from google.api_core.client_options import ClientOptions
+from google.auth import credentials as ga_credentials
+from google.showcase import EchoClient
+
+try:
+    from .conftest import construct_client
+except (ImportError, ValueError):
+    from conftest import construct_client
+
+
+@pytest.fixture
+def span_exporter():
+    """Provides an isolated InMemorySpanExporter and TracerProvider for test assertions."""
+    exporter = InMemorySpanExporter()
+    provider = TracerProvider()
+    processor = SimpleSpanProcessor(exporter)
+    provider.add_span_processor(processor)
+
+    yield exporter, provider
+
+    exporter.clear()
+
+
+@pytest.fixture
+def otel_echo_client(span_exporter, use_mtls):
+    """Constructs an EchoClient wired with an in-memory TracerProvider."""
+    exporter, provider = span_exporter
+    options = ClientOptions(
+        tracer_provider=provider,
+    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+        yield client, exporter
+
+
+def test_tracing_disabled_default(span_exporter, use_mtls):
+    """Verifies that default client options emit zero spans (zero overhead guarantee).
+
+    Ensures that without setting GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED=true,
+    even if an ambient TracerProvider is active, zero spans are recorded and no
+    tracing overhead is incurred. Also verifies that passing tracer_provider without
+    the environment variable fails fast by raising FeatureGatingError.
+    """
+    exporter, provider = span_exporter
+
+    # Providing a tracer_provider without enabling the experimental env var fails fast
+    options_with_provider = ClientOptions(
+        tracer_provider=provider,
+    )
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "false"}
+    ):
+        with pytest.raises(FeatureGatingError):
+            construct_client(
+                EchoClient,
+                use_mtls,
+                client_options=options_with_provider,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+
+    # Default client options emit zero spans
+    options = ClientOptions()
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "false"}
+    ):
+        client = construct_client(
+            EchoClient,
+            use_mtls,
+            client_options=options,
+            credentials=ga_credentials.AnonymousCredentials(),
+        )
+
+        response = client.echo(showcase.EchoRequest(content="no tracing"))
+        assert response.content == "no tracing"
+
+        # Zero spans must be emitted when tracing is disabled
+        spans = exporter.get_finished_spans()
+        assert len(spans) == 0
+
+
+def test_custom_tracer_provider(use_mtls):
+    """Verifies that spans are emitted exclusively to the injected custom TracerProvider.
+
+    Ensures strict isolation of trace data: when a client is configured with a
+    custom `TracerProvider`, generated RPC spans must be routed solely to that
+    provider's exporters and never leak into the ambient/global `TracerProvider`.
+
+    Configures an ambient global `TracerProvider` with `global_exporter`, while
+    configuring the client with `custom_provider` and `custom_exporter`. After
+    executing an RPC, the test asserts that `custom_exporter` captured the span
+    while `global_exporter` recorded zero spans.
+    """
+    custom_exporter = InMemorySpanExporter()
+    custom_provider = TracerProvider()
+    custom_provider.add_span_processor(SimpleSpanProcessor(custom_exporter))
+
+    global_exporter = InMemorySpanExporter()
+    global_provider = TracerProvider()
+    global_provider.add_span_processor(SimpleSpanProcessor(global_exporter))
+
+    # Temporarily set the ambient global tracer provider
+    original_provider = trace.get_tracer_provider()
+    trace.set_tracer_provider(global_provider)
+    try:
+        options = ClientOptions(
+            tracer_provider=custom_provider,
+        )
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+        ):
+            client = construct_client(
+                EchoClient,
+                use_mtls,
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+
+            response = client.echo(showcase.EchoRequest(content="isolated trace"))
+            assert response.content == "isolated trace"
+
+            custom_spans = custom_exporter.get_finished_spans()
+            assert len(custom_spans) == 2
+            global_spans = global_exporter.get_finished_spans()
+            assert len(global_spans) == 0
+    finally:
+        trace.set_tracer_provider(original_provider)
+
+
+def test_direct_client_initialization_tracing(span_exporter):
+    """Verifies end-to-end trace injection via direct EchoClient instantiation.
+
+    Validates the template wiring in `client.py.j2` directly. In system test
+    harnesses, `construct_client` often creates the transport instance manually,
+    which bypasses `client.py`'s `if not transport_provided:` branch. This test
+    instantiates `EchoClient(client_options=...)` directly to prove that the client
+    resolves `_observability.get_otel_interceptor` and passes it to `EchoGrpcTransport`.
+
+    Constructs `EchoClient` without a pre-instantiated transport. Patches
+    `EchoGrpcTransport.create_channel` solely to target the local insecure Showcase
+    endpoint (`localhost:7469`). Executes `client.echo()` and asserts span generation.
+    """
+    exporter, provider = span_exporter
+    options = ClientOptions(
+        tracer_provider=provider,
+    )
+
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED": "true"}
+    ):
+        with mock.patch.object(
+            EchoClient.get_transport_class("grpc"),
+            "create_channel",
+            side_effect=lambda host, **kwargs: grpc.insecure_channel("localhost:7469"),
+        ):
+            # Client constructs the transport and wires interceptors itself
+            client = EchoClient(
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+            response = client.echo(showcase.EchoRequest(content="direct client wiring"))
+            assert response.content == "direct client wiring"
+
+            spans = exporter.get_finished_spans()
+            assert len(spans) == 2
+            for span in spans:
+                assert span.name == "google.showcase.v1beta1.Echo/Echo"
+                assert span.attributes.get("rpc.system.name") == "grpc"
+
+
+def test_env_var_opt_in(otel_echo_client):
+    """Verifies that setting the environment variable enables tracing without tracing_enabled=True."""
+    client, exporter = otel_echo_client
+
+    response = client.echo(showcase.EchoRequest(content="env opt in"))
+    assert response.content == "env opt in"
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) == 2
+    for span in spans:
+        assert span.name == "google.showcase.v1beta1.Echo/Echo"

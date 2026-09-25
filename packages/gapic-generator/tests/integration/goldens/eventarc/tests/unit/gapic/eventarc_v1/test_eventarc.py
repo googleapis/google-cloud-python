@@ -781,6 +781,183 @@ def test_eventarc_client_client_options_from_dict():
         )
 
 
+@pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
+    pytest.param(True, True, id="otel_injection_enabled"),
+    pytest.param(False, False, id="otel_injection_disabled"),
+])
+def test_eventarc_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
+    from google.cloud.eventarc_v1.services.eventarc.client import _observability
+    with (
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+            autospec=True,
+        ) as mock_is_otel_enabled,
+        mock.patch.object(
+            transports.EventarcGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = EventarcClient(transport="grpc")
+
+        mock_is_otel_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        if expected_options_injected:
+            assert called_kwargs.get("client_options") == client._client_options
+        else:
+            assert not called_kwargs.get("client_options")
+
+
+def test_eventarc_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.EventarcGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.EventarcGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_eventarc_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.cloud.eventarc_v1.services.eventarc.transports.grpc._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.EventarcGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.EventarcGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_eventarc_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.EventarcGrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
+def test_eventarc_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with mock.patch.object(
+        transports.EventarcGrpcAsyncIOTransport,
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.EventarcGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_eventarc_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with (
+        mock.patch(
+            "google.cloud.eventarc_v1.services.eventarc.transports.grpc_asyncio._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.EventarcGrpcAsyncIOTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.EventarcGrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
+        assert mock_create_channel.call_count == 1
+        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_eventarc_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.EventarcGrpcAsyncIOTransport,
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.EventarcGrpcAsyncIOTransport(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
+
+
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (EventarcClient, transports.EventarcGrpcTransport, "grpc", grpc_helpers),
     (EventarcAsyncClient, transports.EventarcGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
@@ -30740,13 +30917,7 @@ def test_eventarc_base_transport():
     with pytest.raises(NotImplementedError):
         transport.operations_client
 
-    # Catch all for all remaining methods and properties
-    remainder = [
-        'kind',
-    ]
-    for r in remainder:
-        with pytest.raises(NotImplementedError):
-            getattr(transport, r)()
+    assert transport.kind == ""
 
 
 def test_eventarc_base_transport_with_credentials_file():
@@ -30774,6 +30945,94 @@ def test_eventarc_base_transport_with_adc():
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EventarcTransport()
         adc.assert_called_once()
+
+
+def test_eventarc_base_transport_wrap_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.EventarcTransport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc"
+
+            # Test modern google-api-core with tracing support
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
+
+            # Test older google-api-core without tracing support
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_method(func, client_options=options, kind="grpc")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test for default/empty kind on base transport
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+
+def test_eventarc_base_transport_wrap_async_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.eventarc_v1.services.eventarc.transports.EventarcTransport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.EventarcTransport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc_asyncio"
+
+            # Test modern google-api-core with tracing support
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
+
+            # Test older google-api-core without tracing support
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test for default/empty kind on base transport
+            with mock.patch(
+                "google.cloud.eventarc_v1.services.eventarc.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
 
 
 def test_eventarc_auth_adc():

@@ -3,6 +3,7 @@
 
 {% block content %}
 
+import contextlib
 import logging
 import json  # type: ignore
 
@@ -14,7 +15,7 @@ from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request
+from {{package_path}}._compat import transcode_request, trace_http_request, record_http_response
 import google.protobuf
 
 from google.protobuf import json_format
@@ -36,6 +37,7 @@ import warnings
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
+from google.api_core import client_options as client_options_lib
 from .rest_base import _Base{{ service.name }}RestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
@@ -69,6 +71,7 @@ class {{service.name}}RestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: {{ service.name }}RestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
@@ -97,6 +100,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             url_scheme: str = 'https',
             interceptor: Optional[{{ service.name }}RestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -142,6 +147,9 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -153,7 +161,9 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -266,7 +276,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
-            {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
+            {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)
@@ -318,7 +328,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {{method.output.ident}}]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     {% endfor %}
 

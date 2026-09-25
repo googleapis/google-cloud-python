@@ -15,6 +15,7 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
+import contextlib
 import os
 import json
 import uuid
@@ -23,14 +24,37 @@ import google.protobuf.message
 from typing import Any, Dict, List, Optional, Tuple
 from typing import TYPE_CHECKING, Union
 
-if TYPE_CHECKING:  # pragma: NO COVER
-    import proto  # type: ignore[import-untyped]
-
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    import proto  # type: ignore[import-untyped]
+
+# The _observability module was introduced in google-api-core 2.36.0+.
+# On older versions of google-api-core or when type-checking against them,
+# mypy may flag attr-defined or assignment errors when fallback to None occurs.
+try:
+    from google.api_core import _observability  # type: ignore[attr-defined]
+except ImportError:  # pragma: NO COVER
+    _observability = None  # type: ignore[assignment]
+
+if _observability is not None and hasattr(_observability, "trace_http_request"):
+    trace_http_request = _observability.trace_http_request
+else:  # pragma: NO COVER
+    # Fallback for older versions of google-api-core without HTTP tracing.
+    @contextlib.contextmanager
+    def trace_http_request(*args: Any, **kwargs: Any):
+        yield None
+
+if _observability is not None and hasattr(_observability, "record_http_response"):
+    record_http_response = _observability.record_http_response
+else:  # pragma: NO COVER
+    # Fallback for older versions of google-api-core without HTTP tracing.
+    def record_http_response(span: Any, response: Any) -> None:
+        pass
 
 try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`
