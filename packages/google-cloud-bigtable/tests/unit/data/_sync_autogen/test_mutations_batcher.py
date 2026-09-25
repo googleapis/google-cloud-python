@@ -561,7 +561,10 @@ class TestMutationsBatcher:
                 num_entries = 10
                 for _ in range(num_entries):
                     instance.append(self._make_mutation(size=1))
-                instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 assert op_mock.call_count == 1
                 sent_batch = op_mock.call_args[0][0]
                 assert len(sent_batch) == 2
@@ -651,7 +654,10 @@ class TestMutationsBatcher:
                         [self._make_mutation(count=1)]
                     )
                     CrossSync._Sync_Impl.sleep(0.01)
-                instance._wait_for_batch_results(*instance._flush_jobs)
+                jobs = instance._flush_jobs
+                instance._wait_for_batch_results(
+                    *[(job, mock.MagicMock()) for job in jobs]
+                )
                 duration = time.monotonic() - start_time
                 assert len(instance._oldest_exceptions) == 0
                 assert len(instance._newest_exceptions) == 0
