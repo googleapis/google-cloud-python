@@ -16,6 +16,7 @@
 
 import collections
 import functools
+import os
 import warnings
 from typing import (
     Callable,
@@ -37,6 +38,40 @@ import google.protobuf
 import grpc
 
 from google.api_core import exceptions, general_helpers
+
+_DIRECT_PATH_INTERCONNECT_ENV = "GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT"
+
+
+def _resolve_direct_path_interconnect(
+    attempt_direct_path_xds_over_interconnect: Optional[bool],
+) -> bool:
+    """Resolves whether DirectPath over Interconnect is enabled."""
+    env_val = os.environ.get(_DIRECT_PATH_INTERCONNECT_ENV)
+    if env_val is not None:
+        env_val_clean = env_val.strip().lower()
+        if env_val_clean == "true":
+            return True
+        elif env_val_clean == "false":
+            return False
+        else:
+            raise ValueError(
+                f"Invalid value for {_DIRECT_PATH_INTERCONNECT_ENV}: {env_val}"
+            )
+    return bool(attempt_direct_path_xds_over_interconnect)
+
+
+def _extract_direct_path_authority(target: str) -> Optional[str]:
+    """Extracts the canonical TLS/HTTP2 authority for a ``-direct.googleapis.com`` target."""
+    clean_host = target
+    for prefix in ("google-c2p:///", "dns:///", "https://", "http://"):
+        if clean_host.startswith(prefix):
+            clean_host = clean_host[len(prefix) :]
+            break
+    clean_host = clean_host.split("?", 1)[0].split("/", 1)[0].split(":", 1)[0]
+    if "-direct.googleapis.com" in clean_host:
+        return clean_host.replace("-direct.googleapis.com", ".googleapis.com", 1)
+    return None
+
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
@@ -324,6 +359,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
     **kwargs,
 ):
     """Create a secure channel with credentials.
@@ -374,6 +410,9 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
+            DirectPath over Cloud Interconnect will be attempted using standard
+            TLS credentials and ``?force-xds`` C2P target resolution.
 
         kwargs: Additional key-word args passed to
             :func:`grpc.secure_channel`.
@@ -382,15 +421,24 @@ def create_channel(
         grpc.Channel: The created channel.
 
     Raises:
-        google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
-        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is set to `True`.
+        google.api_core.DuplicateCredentialArgs: If both a credentials object
+            and credentials_file are passed.
+        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
+            set to `True` without `attempt_direct_path_xds_over_interconnect`.
     """
 
+    use_dp_interconnect = _resolve_direct_path_interconnect(
+        attempt_direct_path_xds_over_interconnect
+    )
+
     # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
-    # raise ValueError as this is not yet supported.
+    # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
     # See https://github.com/googleapis/python-api-core/issues/590
-    if ssl_credentials and attempt_direct_path:
+    if ssl_credentials and attempt_direct_path and not use_dp_interconnect:
         raise ValueError("Using ssl_credentials with Direct Path is not supported")
+
+    if use_dp_interconnect and ssl_credentials is None:
+        ssl_credentials = grpc.ssl_channel_credentials()
 
     composite_credentials = _create_composite_credentials(
         credentials=credentials,
@@ -402,21 +450,44 @@ def create_channel(
         default_host=default_host,
     )
 
-    if attempt_direct_path:
-        target = _modify_target_for_direct_path(target)
+    if use_dp_interconnect:
+        authority = _extract_direct_path_authority(target)
+        if authority:
+            existing_options = tuple(kwargs.get("options") or ())
+            option_keys = {opt[0] for opt in existing_options}
+            if (
+                "grpc.ssl_target_name_override" not in option_keys
+                and "grpc.default_authority" not in option_keys
+            ):
+                kwargs["options"] = existing_options + (
+                    ("grpc.ssl_target_name_override", authority),
+                )
+
+    if attempt_direct_path or use_dp_interconnect:
+        target = _modify_target_for_direct_path(
+            target,
+            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+        )
+    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
+        target = target.replace("-direct.googleapis.com", ".googleapis.com")
 
     return grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
 
 
-def _modify_target_for_direct_path(target: str) -> str:
+def _modify_target_for_direct_path(
+    target: str,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
+) -> str:
     """
     Given a target, return a modified version which is compatible with Direct Path.
 
     Args:
         target (str): The target service address in the format 'hostname[:port]' or
             'dns://hostname[:port]'.
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): Whether to
+            append ``?force-xds`` for DirectPath over Cloud Interconnect.
 
     Returns:
         target (str): The target service address which is converted into a format compatible with Direct Path.
@@ -425,18 +496,33 @@ def _modify_target_for_direct_path(target: str) -> str:
             original target may already denote Direct Path.
     """
 
-    # A DNS prefix may be included with the target to indicate the endpoint is living in the Internet,
-    # outside of Google Cloud Platform.
-    dns_prefix = "dns:///"
-    # Remove "dns:///" if `attempt_direct_path` is set to True as
-    # the Direct Path prefix `google-c2p:///` will be used instead.
-    target = target.replace(dns_prefix, "")
+    # Strip standard URI scheme prefixes ("dns:///", "https://", "http://") if
+    # `attempt_direct_path` is enabled, as the Direct Path prefix `google-c2p:///`
+    # will be used instead.
+    for scheme_prefix in ("dns:///", "https://", "http://"):
+        if target.startswith(scheme_prefix):
+            target = target[len(scheme_prefix) :]
+            break
 
     direct_path_separator = ":///"
     if direct_path_separator not in target:
-        target_without_port = target.split(":")[0]
-        # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
-        target = f"google-c2p{direct_path_separator}{target_without_port}"
+        if "?" in target:
+            host_part, query_part = target.split("?", 1)
+            target_without_port = host_part.split("/")[0].split(":")[0]
+            target = (
+                f"google-c2p{direct_path_separator}{target_without_port}?{query_part}"
+            )
+        else:
+            target_without_port = target.split("/")[0].split(":")[0]
+            # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
+            target = f"google-c2p{direct_path_separator}{target_without_port}"
+
+    if attempt_direct_path_xds_over_interconnect and target.startswith(
+        "google-c2p:///"
+    ):
+        if "force-xds" not in target:
+            separator = "&" if "?" in target else "?"
+            target = f"{target}{separator}force-xds"
     return target
 
 

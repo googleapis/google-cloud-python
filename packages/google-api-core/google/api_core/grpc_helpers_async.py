@@ -219,6 +219,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
     **kwargs,
 ):
     """Create an AsyncIO secure channel with credentials.
@@ -270,6 +271,9 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
+            DirectPath over Cloud Interconnect will be attempted using standard
+            TLS credentials and ``?force-xds`` C2P target resolution.
 
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
@@ -277,18 +281,27 @@ def create_channel(
         aio.Channel: The created channel.
 
     Raises:
-        google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
-        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is set to `True`.
+        google.api_core.DuplicateCredentialArgs: If both a credentials object
+            and credentials_file are passed.
+        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
+            set to `True` without `attempt_direct_path_xds_over_interconnect`.
     """
 
     if credentials_file is not None:
         warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
 
+    use_dp_interconnect = grpc_helpers._resolve_direct_path_interconnect(
+        attempt_direct_path_xds_over_interconnect
+    )
+
     # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
-    # raise ValueError as this is not yet supported.
+    # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
     # See https://github.com/googleapis/python-api-core/issues/590
-    if ssl_credentials and attempt_direct_path:
+    if ssl_credentials and attempt_direct_path and not use_dp_interconnect:
         raise ValueError("Using ssl_credentials with Direct Path is not supported")
+
+    if use_dp_interconnect and ssl_credentials is None:
+        ssl_credentials = grpc.ssl_channel_credentials()
 
     composite_credentials = grpc_helpers._create_composite_credentials(
         credentials=credentials,
@@ -300,8 +313,26 @@ def create_channel(
         default_host=default_host,
     )
 
-    if attempt_direct_path:
-        target = grpc_helpers._modify_target_for_direct_path(target)
+    if use_dp_interconnect:
+        authority = grpc_helpers._extract_direct_path_authority(target)
+        if authority:
+            existing_options = tuple(kwargs.get("options") or ())
+            option_keys = {opt[0] for opt in existing_options}
+            if (
+                "grpc.ssl_target_name_override" not in option_keys
+                and "grpc.default_authority" not in option_keys
+            ):
+                kwargs["options"] = existing_options + (
+                    ("grpc.ssl_target_name_override", authority),
+                )
+
+    if attempt_direct_path or use_dp_interconnect:
+        target = grpc_helpers._modify_target_for_direct_path(
+            target,
+            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+        )
+    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
+        target = target.replace("-direct.googleapis.com", ".googleapis.com")
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs

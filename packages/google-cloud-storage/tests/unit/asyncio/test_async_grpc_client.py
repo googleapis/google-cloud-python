@@ -431,3 +431,69 @@ class TestAsyncGrpcClient:
         client = async_grpc_client.AsyncGrpcClient(credentials=_make_credentials())
         with pytest.raises(expected_exc):
             await client.get_object("bucket", "object", metadata=invalid_metadata)
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_async_grpc_client_attempt_direct_path_xds_over_interconnect(
+        self, mock_async_storage_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        async_grpc_client.AsyncGrpcClient(
+            credentials=mock_creds,
+            attempt_direct_path_xds_over_interconnect=True,
+        )
+
+        kwargs = mock_async_storage_client.call_args.kwargs
+        client_info = kwargs["client_info"]
+        primary_user_agent = client_info.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="storage-direct.googleapis.com",
+            quota_project_id=None,
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+            credentials=mock_creds,
+            options=expected_options,
+        )
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_async_grpc_client_interconnect_env_override(
+        self, mock_async_storage_client
+    ):
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+
+        with mock.patch.dict(
+            "os.environ",
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "true"},
+        ):
+            async_grpc_client.AsyncGrpcClient(
+                credentials=mock_creds,
+                attempt_direct_path=False,
+                attempt_direct_path_xds_over_interconnect=False,
+            )
+
+        kwargs = mock_async_storage_client.call_args.kwargs
+        client_info = kwargs["client_info"]
+        primary_user_agent = client_info.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            host="storage-direct.googleapis.com",
+            quota_project_id=None,
+            attempt_direct_path=True,
+            attempt_direct_path_xds_over_interconnect=True,
+            credentials=mock_creds,
+            options=expected_options,
+        )
+
+        with mock.patch.dict(
+            "os.environ",
+            {"GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT": "invalid"},
+        ):
+            with pytest.raises(ValueError):
+                async_grpc_client.AsyncGrpcClient(credentials=mock_creds)

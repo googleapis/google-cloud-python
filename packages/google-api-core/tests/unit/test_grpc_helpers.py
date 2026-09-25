@@ -1033,3 +1033,301 @@ def test_apply_channel_interceptors_invalid_type_raises():
     mock_base_channel = mock.Mock(name="base_channel")
     with pytest.raises(TypeError, match="Expected ClientInterceptor or Callable"):
         grpc_helpers.apply_channel_interceptors(mock_base_channel, [12345])
+
+
+@pytest.mark.parametrize(
+    "env_value,attempt_interconnect,expected_result",
+    [
+        ("true", False, True),
+        ("TRUE", False, True),
+        (" True ", None, True),
+        ("false", True, False),
+        ("FALSE", True, False),
+        (" False ", None, False),
+        (None, True, True),
+        (None, False, False),
+        (None, None, False),
+    ],
+)
+def test__resolve_direct_path_interconnect(
+    monkeypatch, env_value, attempt_interconnect, expected_result
+):
+    if env_value is None:
+        monkeypatch.delenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, raising=False)
+    else:
+        monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, env_value)
+    assert (
+        grpc_helpers._resolve_direct_path_interconnect(attempt_interconnect)
+        is expected_result
+    )
+
+
+@pytest.mark.parametrize("invalid_env_value", ["invalid", "1", "0", "   ", ""])
+def test__resolve_direct_path_interconnect_invalid_raises(
+    monkeypatch, invalid_env_value
+):
+    monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, invalid_env_value)
+    with pytest.raises(
+        ValueError,
+        match=f"Invalid value for {grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV}",
+    ):
+        grpc_helpers._resolve_direct_path_interconnect(False)
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+@mock.patch("google.auth.transport.grpc.AuthMetadataPlugin")
+def test__composite_credentials_auth_metadata_plugin_type_error_fallback(
+    auth_metadata_plugin, request, compute_engine_creds
+):
+    fallback_plugin = mock.sentinel.fallback_plugin
+    auth_metadata_plugin.side_effect = [
+        TypeError("unexpected keyword"),
+        fallback_plugin,
+    ]
+    credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    credentials.requires_scopes = False
+
+    grpc_helpers._create_composite_credentials(
+        credentials, default_host="storage.googleapis.com"
+    )
+
+    assert auth_metadata_plugin.call_count == 2
+
+
+@pytest.mark.parametrize(
+    "target,attempt_interconnect,expected_target",
+    [
+        (
+            "storage-direct.googleapis.com:443",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "dns:///storage-direct.googleapis.com:443",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "https://storage-direct.googleapis.com:443",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "http://storage-direct.googleapis.com:443/v1",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "google-c2p:///storage-direct.googleapis.com",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+            False,
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+        ),
+        (
+            "storage-direct.googleapis.com:443?foo=bar",
+            True,
+            "google-c2p:///storage-direct.googleapis.com?foo=bar&force-xds",
+        ),
+    ],
+)
+def test__modify_target_for_direct_path_interconnect(
+    target, attempt_interconnect, expected_target
+):
+    actual = grpc_helpers._modify_target_for_direct_path(
+        target,
+        attempt_direct_path_xds_over_interconnect=attempt_interconnect,
+    )
+    assert actual == expected_target
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_attempt_direct_path_xds_over_interconnect_default_ssl(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    ssl_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+    default_ssl_creds = ssl_creds_call.return_value
+
+    channel = grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=True,
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+
+    assert channel is grpc_secure_channel.return_value
+    ssl_creds_call.assert_called_once_with()
+    assert composite_creds_call.call_args.args[0] is default_ssl_creds
+    grpc_secure_channel.assert_called_once_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
+    )
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_attempt_direct_path_xds_over_interconnect_custom_ssl(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+    custom_ssl_creds = mock.sentinel.custom_ssl_creds
+
+    channel = grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        ssl_credentials=custom_ssl_creds,
+        attempt_direct_path=True,
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+
+    assert channel is grpc_secure_channel.return_value
+    assert composite_creds_call.call_args.args[0] is custom_ssl_creds
+    grpc_secure_channel.assert_called_once_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_interconnect_fallback_rewrites_direct_host(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=False,
+        attempt_direct_path_xds_over_interconnect=False,
+    )
+
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(
+        "storage.googleapis.com:443",
+        composite_creds,
+        compression=None,
+    )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_interconnect_fallback_preserves_non_google_direct_host(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers.create_channel(
+        "my-direct.example.com:443",
+        attempt_direct_path=False,
+        attempt_direct_path_xds_over_interconnect=False,
+    )
+
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(
+        "my-direct.example.com:443",
+        composite_creds,
+        compression=None,
+    )
+
+
+@pytest.mark.parametrize(
+    "target,expected_authority",
+    [
+        ("storage-direct.googleapis.com:443", "storage.googleapis.com"),
+        ("dns:///storage-direct.googleapis.com:443", "storage.googleapis.com"),
+        (
+            "google-c2p:///storage-direct.googleapis.com?force-xds",
+            "storage.googleapis.com",
+        ),
+        ("storage.googleapis.com:443", None),
+        ("my-direct.example.com:443", None),
+    ],
+)
+def test__extract_direct_path_authority(target, expected_authority):
+    assert grpc_helpers._extract_direct_path_authority(target) == expected_authority
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_interconnect_authority_branches(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    ssl_creds_call,
+):
+    composite_creds = composite_creds_call.return_value
+
+    # Branch 455->466: authority is None (target does not contain -direct.googleapis.com)
+    grpc_helpers.create_channel(
+        "storage.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+    )
+
+    # Branch 458->466: authority exists, but grpc.ssl_target_name_override is already provided
+    custom_options = (("grpc.ssl_target_name_override", "custom.googleapis.com"),)
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+        options=custom_options,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=custom_options,
+    )
