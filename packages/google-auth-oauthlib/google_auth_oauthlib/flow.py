@@ -49,6 +49,7 @@ Here's an example of using :class:`InstalledAppFlow`::
 
 """
 
+import errno
 import hashlib
 import json
 import logging
@@ -492,14 +493,64 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     Setting `WSGIServer.allow_reuse_address` is not enough, since it sets `SO_REUSEADDR`
     and not `SO_EXCLUSIVEADDRUSE`. `SO_REUSEADDR` alone allows other processes to bind
     to the same address and port on Windows.
+
+    When bound to `localhost`, also reserves the IPv6 loopback (`::1`) so
+    another process listening on `::1` cannot intercept the OAuth callback.
     """
 
     allow_reuse_address = False
 
+    def __init__(self, *args, **kwargs):
+        self._ipv6_socket = None
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def _is_listener_present(family, addr, port):
+        """Check if another process is already listening on (addr, port) by
+        attempting a test connection.
+
+        This is needed because on Windows, `bind()` on `::1` succeeds even when
+        another process from the same user is already listening on all
+        interfaces (`[::]`).
+        """
+        try:
+            with socket.socket(family, socket.SOCK_STREAM) as probe:
+                probe.settimeout(0.1)
+                return probe.connect_ex((addr, port)) == 0
+        except OSError:
+            return False
+
+    def _close_ipv6_socket(self):
+        if self._ipv6_socket is not None:
+            self._ipv6_socket.close()
+            self._ipv6_socket = None
+
     def server_bind(self):
+        host = self.server_address[0]
         if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
+        port = self.server_address[1]
+        # Reserve IPv6 loopback (::1) so another process cannot intercept localhost callbacks.
+        if host == "localhost" and port and hasattr(socket, "AF_INET6"):
+            # base class (TCPServer) calls server_close on error
+            if self._is_listener_present(socket.AF_INET6, "::1", port):
+                raise OSError(errno.EADDRINUSE, "Address already in use")
+            # Hold `::1` without calling `listen()` so no other process can claim
+            # the port while the browser falls back from `::1` to `127.0.0.1`.
+            try:
+                self._ipv6_socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+                    self._ipv6_socket.setsockopt(
+                        socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1
+                    )
+                self._ipv6_socket.bind(("::1", port))
+            except OSError:
+                self._close_ipv6_socket()
+
+    def server_close(self):
+        self._close_ipv6_socket()
+        super().server_close()
 
 
 class _WSGIRequestHandler(wsgiref.simple_server.WSGIRequestHandler):
