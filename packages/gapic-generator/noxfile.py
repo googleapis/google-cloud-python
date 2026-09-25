@@ -34,7 +34,7 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.44.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -98,6 +98,9 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        # `test_utils` is not part of the installed package (only `gapic` is
+        # included in setup.py), but it is needed for running tests.
+        env={"PYTHONPATH": "."},
     )
 
 
@@ -193,10 +196,6 @@ def fragment(session, use_ads_templates=False):
     )
     session.install("-e", ".")
 
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
-
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
     )
@@ -259,13 +258,6 @@ def showcase_library(
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
-    # Warnings emitted from google-api-core starting in 2.28
-    # appear to cause issues when running protoc.
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -343,6 +335,13 @@ def showcase_library(
                     "transport=grpc+rest",
                 )
             )
+        protos = (
+            "google/showcase/v1beta1/echo.proto",
+            "google/showcase/v1beta1/identity.proto",
+            "google/showcase/v1beta1/messaging.proto",
+        )
+        if templates == "DEFAULT":
+            protos += ("google/showcase/v1beta1/resumable_upload.proto",)
         cmd_tup = (
             "python",
             "-m",
@@ -351,9 +350,7 @@ def showcase_library(
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
             f"--python_gapic_out={tmp_dir}",
-            f"google/showcase/v1beta1/echo.proto",
-            f"google/showcase/v1beta1/identity.proto",
-            f"google/showcase/v1beta1/messaging.proto",
+            *protos,
         )
         session.run(
             *cmd_tup,
@@ -370,19 +367,17 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            extras = ""
-            if rest_async_io_enabled:
-                async_rest_constraints_path = str(
-                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+            async_rest_constraints_path = str(
+                f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+            )
+            if os.path.exists(async_rest_constraints_path):
+                # use async-rest constraints if available
+                constraints_path = async_rest_constraints_path
+            else:
+                session.log(
+                    f"{async_rest_constraints_path} not found. Using base constraints file"
                 )
-                if os.path.exists(async_rest_constraints_path):
-                    # use async-rest constraints if available
-                    constraints_path = async_rest_constraints_path
-                else:
-                    session.log(
-                        f"{async_rest_constraints_path} not found. Using base constraints file"
-                    )
-                extras = "[async_rest]"
+            extras = "[async_rest]"
 
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
@@ -733,7 +728,7 @@ def mypy(session):
     # Pin to click==8.1.3 to workaround https://github.com/pallets/click/issues/2558
     session.install(
         "mypy",
-        "types-protobuf<=3.19.7",
+        "types-protobuf",
         "types-PyYAML",
         "types-dataclasses",
         "click==8.1.3",

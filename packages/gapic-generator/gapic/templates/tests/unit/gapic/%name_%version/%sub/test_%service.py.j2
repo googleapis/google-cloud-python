@@ -1,7 +1,7 @@
 {% extends "_base.py.j2" %}
 {% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled or service.has_resumable_upload_methods %}
 {% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
@@ -1519,6 +1519,71 @@ def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
+
+
+{% if service.has_resumable_upload_methods and 'grpc' in opts.transport %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_channel_without_credentials_error():
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.{{ service.name }}GrpcTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_channel_without_credentials_error():
+    channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+{% endfor %}
+{% endif %}
+
+{% if service.has_resumable_upload_methods and 'rest' in opts.transport %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_empty_body():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        response_value = mock.MagicMock()
+        response_value.status_code = 200
+        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.content = b""
+        req.return_value = response_value
+        response = client.{{ method.client_method_name|snake_case }}({{ method.input.ident }}())
+        assert isinstance(response, {{ method.client_output.ident }})
+
+
+{% if rest_async_io_enabled %}
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:
+        response_value = mock.MagicMock()
+        response_value.status_code = 200
+        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.read = mock.AsyncMock(return_value=b"")
+        req.return_value = response_value
+        response = await client.{{ method.client_method_name|snake_case }}({{ method.input.ident }}())
+        assert isinstance(response, {{ method.client_output_async.ident }})
+{% endif %}
+{% endfor %}
+{% endif %}
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are

@@ -3,7 +3,7 @@
 {% block content %}
 
 import abc
-from typing import {% if service.any_extended_operations_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import {% if service.any_extended_operations_methods or service.has_resumable_upload_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Union
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
@@ -138,7 +138,12 @@ class {{ service.name }}Transport(abc.ABC):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
+        {% if service.has_resumable_upload_methods %}
+        self._credentials: Any = credentials
+        self._client_info = client_info
+        {% else %}
         self._credentials = credentials
+        {% endif %}
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:

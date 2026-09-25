@@ -1,5 +1,8 @@
 click
-google-api-core
+# TODO Revert this change
+google-api-core @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core
+# TODO uncomment the line below
+# google-api-core
 googleapis-common-protos
 jinja2
 MarkupSafe

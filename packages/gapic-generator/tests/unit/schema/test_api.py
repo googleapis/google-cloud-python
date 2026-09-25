@@ -4745,3 +4745,27 @@ def test_api_build_selective_multiple_protos_kept():
     assert len(api_schema.protos) == 2
     assert "proto1.proto" in api_schema.protos
     assert "proto2.proto" in api_schema.protos
+    assert not api_schema.has_resumable_upload_methods
+
+
+def test_api_has_resumable_upload_methods():
+    fd = make_file_pb2(
+        name="upload.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="UploadService",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="UploadMedia",
+                        input_type="google.example.v1.UploadRequest",
+                        output_type="google.example.v1.UploadResponse",
+                    ),
+                ),
+            ),
+        ),
+        messages=(make_message_pb2("UploadRequest"), make_message_pb2("UploadResponse")),
+    )
+    api_schema = api.API.build([fd], package="google.example.v1")
+    assert api_schema.has_resumable_upload_methods
+

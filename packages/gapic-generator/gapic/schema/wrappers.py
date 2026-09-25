@@ -1499,6 +1499,7 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    resumable_upload_prefix: str = "resumable/upload"
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -1638,6 +1639,25 @@ class Method:
                 )
             )
 
+        if self.is_resumable_upload:
+            return PythonType(
+                meta=metadata.Metadata(
+                    address=metadata.Address(
+                        name=(
+                            "AsyncResumableUploadSession"
+                            if enable_asyncio
+                            else "ResumableUploadSession"
+                        ),
+                        module="resumable_transfer",
+                        package=("google", "api_core"),
+                        collisions=self.input.ident.collisions,
+                    ),
+                    documentation=utils.doc(
+                        "An object representing a resumable upload session."
+                    ),
+                ),
+            )
+
         # Return the usual output.
         return self.output
 
@@ -1727,6 +1747,11 @@ class Method:
         # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
         # TODO(yon-mg): enums for http verbs?
         return answer
+
+    @property
+    def is_resumable_upload(self) -> bool:
+        """Return True if this method is a resumable upload method."""
+        return self.name in ("UploadMedia", "CreateYouTubeVideoUpload")
 
     @property
     def path_params(self) -> Sequence[str]:
@@ -1933,6 +1958,9 @@ class Method:
         # that the individual result messages reside in a different module.
         if self.paged_result_field and self.paged_result_field.message:
             answer.append(self.paged_result_field.message)
+
+        if self.is_resumable_upload:
+            answer.append(self.output)
 
         # Done; return the answer.
         return tuple(answer)
@@ -2209,6 +2237,11 @@ class Service:
         return any(m.paged_result_field for m in self.methods.values())
 
     @property
+    def has_resumable_upload_methods(self) -> bool:
+        """Return whether the service has resumable upload methods."""
+        return any(m.is_resumable_upload for m in self.methods.values())
+
+    @property
     def host(self) -> str:
         """Return the hostname for this service, if specified.
 
@@ -2241,7 +2274,7 @@ class Service:
         # Get the shortname from the host
         # Real APIs are expected to have format:
         # "{api_shortname}.googleapis.com"
-        return self.host.split(".")[0]
+        return self.host.split(".")[0].split(":")[0]
 
     @property
     def oauth_scopes(self) -> Sequence[str]:

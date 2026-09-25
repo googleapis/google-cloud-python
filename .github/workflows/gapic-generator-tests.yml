@@ -13,9 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SHOWCASE_VERSION: 0.35.0
+  SHOWCASE_VERSION: 0.44.0
   PROTOC_VERSION: 33.5
   LATEST_STABLE_PYTHON: 3.14
+  OLDEST_PYTHON: '3.10'
   PRERELEASE_PYTHON: 3.15
   ALL_PYTHON: "['3.10', '3.11', '3.12', '3.13', '3.14', '3.15']"
   TRIMMED_PYTHON: "['3.10', '3.14', '3.15']"
@@ -46,6 +47,7 @@ jobs:
     outputs:
       all_python: ${{ env.ALL_PYTHON }}
       latest_stable_python: ${{ env.LATEST_STABLE_PYTHON }}
+      oldest_python: ${{ env.OLDEST_PYTHON }}
       prerelease_python: ${{ env.PRERELEASE_PYTHON }}
       trimmed_python: ${{ env.TRIMMED_PYTHON }}
     steps:
@@ -89,6 +91,57 @@ jobs:
           pip install nox
           cd packages/gapic-generator
           nox -s showcase_unit${{ matrix.variant }}-${MATRIX_PYTHON}
+
+  showcase:
+    needs: python_config
+    strategy:
+      # Run showcase tests on the lowest and highest supported runtimes
+      matrix:
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
+        python: ["${{ needs.python_config.outputs.oldest_python }}", "${{ needs.python_config.outputs.latest_stable_python }}"]
+        target: [showcase, showcase_w_rest_async]
+        logging_scope: ["", "google"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Set up Python "${{ matrix.python }}"
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "${{ matrix.python }}"
+          cache: 'pip'
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip
+      - name: Install showcase
+        run: |
+          sudo mkdir -p /usr/src/showcase
+          sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz --output /usr/src/showcase/showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xf showcase-*
+          ./gapic-showcase run &
+          cd -
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Install protoc
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        env:
+          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2286): Construct nox sessions with logging enabled.
+          GOOGLE_SDK_PYTHON_LOGGING_SCOPE: ${{ matrix.logging_scope }}
+          MATRIX_PYTHON: ${{ matrix.python }}
+        run: |
+          cd packages/gapic-generator
+          nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
 
   showcase-mypy:
     needs: python_config
