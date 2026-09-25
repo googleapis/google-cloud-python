@@ -45,7 +45,6 @@ from google import showcase
 from google.api_core import exceptions
 from google.api_core import retry as retries
 from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials
 from google.rpc import code_pb2, status_pb2
 from google.showcase import (
     AttemptSequenceRequest,
@@ -99,19 +98,33 @@ def span_exporter(monkeypatch):
 # ---------------------------------------------------------------------------
 
 
+def construct_observability_client(
+    client_class,
+    transport: str,
+    client_options: ClientOptions | None = None,
+    use_mtls: bool = False,
+):
+    """Factory helper to construct Showcase clients with sensible observability test defaults."""
+    return conftest.construct_client(
+        client_class,
+        use_mtls=use_mtls,
+        transport_name=transport,
+        client_options=client_options,
+    )
+
+
 def run_echo_call(
     scenario: str,
     transport: str,
     client_options: ClientOptions,
-    use_mtls: bool,
+    use_mtls: bool = False,
 ):
     """Executes unary RPC calls against EchoClient."""
-    client = conftest.construct_client(
+    client = construct_observability_client(
         EchoClient,
-        transport_name=transport,
-        use_mtls=use_mtls,
+        transport=transport,
         client_options=client_options,
-        credentials=ga_credentials.AnonymousCredentials(),
+        use_mtls=use_mtls,
     )
     if scenario in ("Happy Path", "Tracing Off"):
         client.echo(showcase.EchoRequest(content="hello"))
@@ -143,16 +156,15 @@ def run_sequence_retry_call(
     scenario: str,
     transport: str,
     client_options: ClientOptions,
-    use_mtls: bool,
     exporter: InMemorySpanExporter,
+    use_mtls: bool = False,
 ):
     """Executes retry sequences against SequenceServiceClient."""
-    client = conftest.construct_client(
+    client = construct_observability_client(
         SequenceServiceClient,
-        transport_name=transport,
-        use_mtls=use_mtls,
+        transport=transport,
         client_options=client_options,
-        credentials=ga_credentials.AnonymousCredentials(),
+        use_mtls=use_mtls,
     )
     is_exhaust = scenario == "Retries Exhausted"
     if is_exhaust:
@@ -214,8 +226,8 @@ def execute_scenario(
     transport_str: str,
     provider: TracerProvider,
     exporter: InMemorySpanExporter,
-    use_mtls: bool,
     monkeypatch: pytest.MonkeyPatch,
+    use_mtls: bool = False,
 ):
     """Dispatches execution based on the scenario column in the requirements matrix."""
     transport = "grpc" if "grpc" in transport_str.lower() else "rest"
@@ -228,7 +240,7 @@ def execute_scenario(
     elif scenario in ("Happy Path", "Server Failure", "Client Timeout"):
         run_echo_call(scenario, transport, client_options, use_mtls)
     else:
-        run_sequence_retry_call(scenario, transport, client_options, use_mtls, exporter)
+        run_sequence_retry_call(scenario, transport, client_options, exporter, use_mtls)
 
 
 # ---------------------------------------------------------------------------
@@ -414,7 +426,7 @@ def test_feature(feature_id: str, span_exporter, use_mtls, monkeypatch):
 
     # 1. Execute physical scenario
     execute_scenario(
-        row["Scenario"], row["Transport"], provider, exporter, use_mtls, monkeypatch
+        row["Scenario"], row["Transport"], provider, exporter, monkeypatch, use_mtls
     )
     spans = exporter.get_finished_spans()
 
