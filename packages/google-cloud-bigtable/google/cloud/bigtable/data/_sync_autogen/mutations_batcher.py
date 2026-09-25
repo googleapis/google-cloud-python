@@ -509,9 +509,6 @@ class MutationsBatcher:
                     for exc in exc_list:
                         exc.index = None
                     exceptions.extend(exc_list)
-            except FailedMutationEntryError as e:
-                e.index = None
-                exceptions.append(e)
             except Exception as e:
                 exceptions.extend(
                     [
