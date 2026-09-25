@@ -140,11 +140,6 @@ RAW_SPANS_CATALOG: dict[str, Any] = {}
 # ---------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------
-# Test Fixture
-# ---------------------------------------------------------------------------
-
-
 @pytest.fixture
 def span_exporter(monkeypatch):
     """Provides an isolated OpenTelemetry in-memory span exporter and provider.
@@ -272,9 +267,11 @@ def run_sequence_retry_call(
        Purging the exporter ensures that downstream assertions strictly evaluate spans emitted
        by the target `attempt_sequence` call.
     3. Invokes `attempt_sequence` with a custom fast Retry policy.
-       Utilizes `contextlib.nullcontext()` to conditionally wrap execution in `pytest.raises`
-       for exhaustion scenarios while executing directly for recovery scenarios, eliminating
-       code duplication.
+       Uses `contextlib.nullcontext()` as a "do-nothing" placeholder so we can run the test
+       call using a single `with expectation:` block. If we expect the call to fail, `expectation`
+       is `pytest.raises(...)` to catch the error. If we expect it to succeed, `expectation` is
+       `nullcontext()`, which just lets the code run normally. This saves us from having to
+       write out the client call twice!
 
     Args:
         client: The instantiated SequenceServiceClient (injected by `execute_scenario`).
@@ -391,18 +388,34 @@ def resolve_expected_value(
     --------------------------
     1. Static Values:
        - '200', 'POST', 'INTERNAL', 'NOT SET', 'N/A'
-       - Directly returns the string literal.
-    2. Tier-Partitioned Expressions:
-       - 'T3: OK | T4: NOT SET'
-       - 'T3: UNSET | T4: ERROR | OK'
-       - Extracts only the sub-expression relevant to `target_tier`. If the target tier
-         is not mentioned, returns 'N/A' (unconstrained).
-    3. Positional Sequences (Across Retry Attempts):
+       - Directly returns the string literal when the expected value is identical everywhere.
+
+    2. Positional Sequences (Across Retry Attempts):
        - '503 | 200'
        - 'ERROR | OK'
-       - Splits by pipe delimiter ('|') and returns the element at `attempt_idx`.
-       - If `attempt_idx` exceeds the sequence length, clamps to the final element
-         (representing steady-state behavior during long retry loops).
+       - When a call retries, each try (attempt 0, attempt 1, etc.) can produce a different result.
+         For example, the first try might fail with 503, but the second try succeeds with 200.
+       - The pipe ('|') separates what we expect on each consecutive try:
+         * Attempt 0 checks the 1st item ('503').
+         * Attempt 1 checks the 2nd item ('200').
+       - If there are more attempts than values listed (like a loop that keeps failing 20 times),
+         it holds onto the last item in the list.
+
+    3. Tier-Partitioned Expressions (Per-Layer Rules):
+       - 'T3: OK | T4: NOT SET'
+       - 'T3: UNSET | T4: ERROR | OK'
+       - A single row in our matrix often checks an attribute that behaves differently depending
+         on which layer of the software we look at:
+         * Tier 3 (T3): The outer, overall operation span.
+         * Tier 4 (T4): The inner, individual network attempt spans.
+       - We label each tier with 'T3:' or 'T4:', followed by the value (or positional sequence)
+         for that tier:
+         * 'T3: OK | T4: NOT SET' means: "The outer T3 span should be OK, but every inner T4
+           attempt span should NOT have this attribute set."
+         * 'T3: UNSET | T4: ERROR | OK' means: "The outer T3 span should be UNSET, while the T4
+           spans will see an ERROR on the 1st try and OK on the 2nd try."
+       - If a tier is not mentioned in the cell, it returns 'N/A' (meaning that tier doesn't care
+         about this attribute in this test).
 
     Args:
         raw_val: Raw string content from the CSV cell (or None if empty).
@@ -523,32 +536,18 @@ def _assert_span_metadata(
         target_tier: 'T3' (root operation) or 'T4' (child attempt).
         attempt_idx: Zero-based attempt index.
     """
-    expected_name = resolve_expected_value(
-        row.get("Span Name"), target_tier, attempt_idx
+    metadata_fields = (
+        ("Span Name", span.name, "Span name"),
+        ("Span Kind", span.kind.name, "Span kind"),
+        ("Span Status", span.status.status_code.name, "Span status"),
     )
-    if expected_name != "N/A":
-        assert span.name == expected_name, (
-            f"Span name mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{expected_name}', got '{span.name}'"
-        )
-
-    expected_kind = resolve_expected_value(
-        row.get("Span Kind"), target_tier, attempt_idx
-    )
-    if expected_kind != "N/A":
-        assert span.kind.name == expected_kind, (
-            f"Span kind mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{expected_kind}', got '{span.kind.name}'"
-        )
-
-    expected_status = resolve_expected_value(
-        row.get("Span Status"), target_tier, attempt_idx
-    )
-    if expected_status != "N/A":
-        assert span.status.status_code.name == expected_status, (
-            f"Span status mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{expected_status}', got '{span.status.status_code.name}'"
-        )
+    for col, actual, label in metadata_fields:
+        expected = resolve_expected_value(row.get(col), target_tier, attempt_idx)
+        if expected != "N/A":
+            assert actual == expected, (
+                f"{label} mismatch on {target_tier} attempt {attempt_idx}: "
+                f"expected '{expected}', got '{actual}'"
+            )
 
 
 def _assert_string_attributes(
