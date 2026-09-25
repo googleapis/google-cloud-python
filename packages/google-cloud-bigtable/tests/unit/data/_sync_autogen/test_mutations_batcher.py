@@ -957,6 +957,29 @@ class TestMutationsBatcher:
                 callback.assert_called_once()
                 assert result == []
 
+    def test__execute_mutate_rows_batch_completed_callback_coroutine(self):
+        from google.rpc import code_pb2, status_pb2
+
+        with mock.patch.object(
+            CrossSync._Sync_Impl, "_MutateRowsOperation"
+        ) as mutate_rows:
+            mutate_rows.return_value = CrossSync._Sync_Impl.Mock()
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            called_with = []
+            async_callback = mock.AsyncMock(
+                side_effect=lambda statuses: called_with.append(statuses)
+            )
+
+            with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = async_callback
+                batch = [self._make_mutation()]
+                result = instance._execute_mutate_rows(batch, mock.Mock())
+                assert result == []
+                assert called_with == []
+
     def test__raise_exceptions(self):
         """Raise exceptions and reset error state"""
         from google.cloud.bigtable.data import exceptions

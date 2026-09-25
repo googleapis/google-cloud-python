@@ -1076,6 +1076,31 @@ class TestMutationsBatcherAsync:
                 assert result == []
 
     @CrossSync.pytest
+    async def test__execute_mutate_rows_batch_completed_callback_coroutine(self):
+        from google.rpc import code_pb2, status_pb2
+
+        with mock.patch.object(CrossSync, "_MutateRowsOperation") as mutate_rows:
+            mutate_rows.return_value = CrossSync.Mock()
+            table = mock.Mock()
+            table.default_mutate_rows_operation_timeout = 17
+            table.default_mutate_rows_attempt_timeout = 13
+            table.default_mutate_rows_retryable_errors = ()
+            called_with = []
+            async_callback = mock.AsyncMock(
+                side_effect=lambda statuses: called_with.append(statuses)
+            )
+
+            async with self._make_one(table) as instance:
+                instance._user_batch_completed_callback = async_callback
+                batch = [self._make_mutation()]
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
+                assert result == []
+                if CrossSync.is_async:
+                    assert called_with == [[status_pb2.Status(code=code_pb2.OK)]]
+                else:
+                    assert called_with == []
+
+    @CrossSync.pytest
     async def test__raise_exceptions(self):
         """Raise exceptions and reset error state"""
         from google.cloud.bigtable.data import exceptions
