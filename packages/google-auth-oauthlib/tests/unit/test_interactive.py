@@ -86,9 +86,12 @@ def test_get_user_credentials_raises_connectionerror(monkeypatch):
     monkeypatch.setattr(module_under_test, "find_open_port", mock_find_open_port)
     mock_flow = mock.create_autospec(flow.InstalledAppFlow, instance=True)
 
-    with mock.patch(
-        "google_auth_oauthlib.flow.InstalledAppFlow", autospec=True
-    ) as mock_flow, pytest.raises(ConnectionError):
+    with (
+        mock.patch(
+            "google_auth_oauthlib.flow.InstalledAppFlow", autospec=True
+        ) as mock_flow,
+        pytest.raises(ConnectionError),
+    ):
         mock_flow.from_client_config.return_value = mock_flow
         module_under_test.get_user_credentials(
             ["scopes"], "some-client-id", "shh-secret"

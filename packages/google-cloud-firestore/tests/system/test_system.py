@@ -48,7 +48,16 @@ from test__helpers import (
 from google.cloud import firestore_v1 as firestore
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
-from google.cloud.firestore_v1.bson import BSONMaxKey, BSONMinKey, BSONObjectId
+from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
+    BSONMaxKey,
+    BSONMinKey,
+    BSONObjectId,
+    BSONRegex,
+    BSONTimestamp,
+)
 from google.cloud.firestore_v1.vector import Vector
 
 
@@ -1286,6 +1295,11 @@ def test_bson_document_writes(client, cleanup, database):
         "user_id": BSONObjectId("507f191e810c19729de860ea"),
         "min_key": BSONMinKey(),
         "max_key": BSONMaxKey(),
+        "int32_val": BSONInt32(42),
+        "binary_val_sub128": BSONBinary(b"world", subtype=128),
+        "timestamp_val": BSONTimestamp(1700000000, 1),
+        "regex_val": BSONRegex("^hello.*$", options="i"),
+        "decimal128_val": BSONDecimal128("123.45"),
     }
 
     doc_ref.set(bson_payload)
@@ -1296,6 +1310,61 @@ def test_bson_document_writes(client, cleanup, database):
         "user_id": {"__oid__": "507f191e810c19729de860ea"},
         "min_key": {"__min__": None},
         "max_key": {"__max__": None},
+        "int32_val": {"__int__": 42},
+        "binary_val_sub128": {"__binary__": b"\x80world"},
+        "timestamp_val": {
+            "__request_timestamp__": {
+                "seconds": 1700000000,
+                "increment": 1,
+            }
+        },
+        "regex_val": {
+            "__regex__": {
+                "pattern": "^hello.*$",
+                "options": "i",
+            }
+        },
+        "decimal128_val": {"__decimal128__": "123.45"},
+    }
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_regex_invalid_options(client, cleanup, database):
+    """Test write operations for BSONRegex with invalid options against backend."""
+    collection_id = "bson_regex_invalid_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("invalid_regex")
+    cleanup(doc_ref.delete)
+
+    # Backend enforces supported BSON regex flags ('i', 'm', 's', 'u', 'x')
+    # and rejects unsupported options (e.g. 'l') with InvalidArgument.
+    with pytest.raises(InvalidArgument) as exc_info:
+        doc_ref.set({"regex_val": BSONRegex("hello", options="l")})
+    assert "Invalid regex option" in exc_info.value.message
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_bson_decimal128_special_values(client, cleanup, database):
+    """Test write and read operations for BSONDecimal128 special values against backend."""
+    collection_id = "bson_decimal128_special_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("special_decimals")
+    cleanup(doc_ref.delete)
+
+    # Firestore backend accepts "inf", "-inf", and "NaN", automatically
+    # normalizing them to "Infinity", "-Infinity", and "NaN" upon storage.
+    doc_ref.set(
+        {
+            "inf_val": BSONDecimal128("inf"),
+            "neg_inf_val": BSONDecimal128("-inf"),
+            "nan_val": BSONDecimal128("NaN"),
+        }
+    )
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {
+        "inf_val": {"__decimal128__": "Infinity"},
+        "neg_inf_val": {"__decimal128__": "-Infinity"},
+        "nan_val": {"__decimal128__": "NaN"},
     }
 
 

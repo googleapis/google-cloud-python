@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.31.0...google-cloud-firestore-v2.32.0) (2026-09-24)
+
+
+### Features
+
+* **firestore:** add BSONBinary support ([#18389](https://github.com/googleapis/google-cloud-python/issues/18389)) ([85556ad](https://github.com/googleapis/google-cloud-python/commit/85556add4f5d6693684265f146d3f1778b40968e))
+* **firestore:** add BSONDecimal128 support ([#18395](https://github.com/googleapis/google-cloud-python/issues/18395)) ([a04c831](https://github.com/googleapis/google-cloud-python/commit/a04c8315956cfe53489fb609ddcc3ad1546f0cd0))
+* **firestore:** add BSONRegex support ([#18394](https://github.com/googleapis/google-cloud-python/issues/18394)) ([322c9bc](https://github.com/googleapis/google-cloud-python/commit/322c9bc9751b7a77edfceb0abc3f0aa2d913bd8b))
+* **firestore:** add BSONTimestamp support ([#18390](https://github.com/googleapis/google-cloud-python/issues/18390)) ([a1b2d63](https://github.com/googleapis/google-cloud-python/commit/a1b2d6303a9e5f10b1f48b1d9e3c0df0eb9cd136))
+
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.30.0...google-cloud-firestore-v2.31.0) (2026-09-17)
+
+
+### Features
+
+* **firestore:** add BSONInt32 support ([#18388](https://github.com/googleapis/google-cloud-python/issues/18388)) ([136d4b9](https://github.com/googleapis/google-cloud-python/commit/136d4b95a6231dddfb59c76d2e2a1c5ea7fc84aa))
+* **firestore:** add BSONMinKey and BSONMaxKey support ([#18385](https://github.com/googleapis/google-cloud-python/issues/18385)) ([9a1fb24](https://github.com/googleapis/google-cloud-python/commit/9a1fb24d2b5554a8d34261dc7687b2ec8184f57d))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.29.0...google-cloud-firestore-v2.30.0) (2026-09-03)
 
 

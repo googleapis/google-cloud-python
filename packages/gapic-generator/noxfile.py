@@ -34,7 +34,7 @@ import nox  # type: ignore
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.44.1")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.

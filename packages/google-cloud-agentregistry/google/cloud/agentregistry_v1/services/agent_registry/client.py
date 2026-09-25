@@ -2566,7 +2566,6 @@ class AgentRegistryClient(metaclass=AgentRegistryClientMeta):
                 binding = agentregistry_v1.Binding()
                 binding.auth_provider_binding.auth_provider = "auth_provider_value"
                 binding.name = "name_value"
-                binding.source.identifier = "identifier_value"
                 binding.target.identifier = "identifier_value"
 
                 request = agentregistry_v1.CreateBindingRequest(
@@ -2723,7 +2722,6 @@ class AgentRegistryClient(metaclass=AgentRegistryClientMeta):
                 binding = agentregistry_v1.Binding()
                 binding.auth_provider_binding.auth_provider = "auth_provider_value"
                 binding.name = "name_value"
-                binding.source.identifier = "identifier_value"
                 binding.target.identifier = "identifier_value"
 
                 request = agentregistry_v1.UpdateBindingRequest(

@@ -1872,11 +1872,20 @@ class SqlInstancesServiceClient(metaclass=SqlInstancesServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
+        header_params: dict[str, str] = {}
+
+        if request.project:
+            header_params["project"] = request.project
+
+        routing_param_regex = re.compile("^(?P<region>.*)$")
+        regex_match = routing_param_regex.match(request.body.region)
+        if regex_match and regex_match.group("region"):
+            header_params["region"] = regex_match.group("region")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

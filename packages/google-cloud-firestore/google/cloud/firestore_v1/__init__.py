@@ -47,9 +47,14 @@ from google.cloud.firestore_v1.base_pipeline import SubPipeline
 from google.cloud.firestore_v1.base_query import And, FieldFilter, Or
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.bson import (
+    BSONBinary,
+    BSONDecimal128,
+    BSONInt32,
     BSONMaxKey,
     BSONMinKey,
     BSONObjectId,
+    BSONRegex,
+    BSONTimestamp,
 )
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
@@ -152,9 +157,14 @@ __all__: List[str] = [
     "async_transactional",
     "AsyncTransaction",
     "AsyncWriteBatch",
+    "BSONBinary",
+    "BSONDecimal128",
+    "BSONInt32",
     "BSONMaxKey",
     "BSONMinKey",
     "BSONObjectId",
+    "BSONRegex",
+    "BSONTimestamp",
     "Client",
     "CountAggregation",
     "CollectionGroup",

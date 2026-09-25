@@ -127,6 +127,44 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
             ]
             return http_options
 
+    class _BaseCreateTemplate:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "templateId": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/templates",
+                    "body": "template",
+                },
+            ]
+            return http_options
+
+    class _BaseCreateTemplateVersion:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "templateVersionId": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/templates/*}/versions",
+                    "body": "template_version",
+                },
+            ]
+            return http_options
+
     class _BaseDeleteParameter:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -155,6 +193,38 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=projects/*/locations/*/parameters/*/versions/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteTemplate:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/templates/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteTemplateVersion:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/templates/*/versions/*}",
                 },
             ]
             return http_options
@@ -191,6 +261,38 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
             ]
             return http_options
 
+    class _BaseGetTemplate:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/templates/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseGetTemplateVersion:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/templates/*/versions/*}",
+                },
+            ]
+            return http_options
+
     class _BaseListParameters:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -223,6 +325,38 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
             ]
             return http_options
 
+    class _BaseListTemplates:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/templates",
+                },
+            ]
+            return http_options
+
+    class _BaseListTemplateVersions:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/templates/*}/versions",
+                },
+            ]
+            return http_options
+
     class _BaseRenderParameterVersion:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -235,6 +369,24 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/parameters/*/versions/*}:render",
+                },
+            ]
+            return http_options
+
+    class _BaseRenderTemplateVersion:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "parameterVersion": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/templates/*/versions/*}:render",
                 },
             ]
             return http_options
@@ -269,6 +421,40 @@ class _BaseParameterManagerRestTransport(ParameterManagerTransport):
                     "method": "patch",
                     "uri": "/v1/{parameter_version.name=projects/*/locations/*/parameters/*/versions/*}",
                     "body": "parameter_version",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateTemplate:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{template.name=projects/*/locations/*/templates/*}",
+                    "body": "template",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateTemplateVersion:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{template_version.name=projects/*/locations/*/templates/*/versions/*}",
+                    "body": "template_version",
                 },
             ]
             return http_options

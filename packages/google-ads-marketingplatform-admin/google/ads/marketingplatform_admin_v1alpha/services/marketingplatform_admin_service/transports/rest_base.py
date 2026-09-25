@@ -93,6 +93,23 @@ class _BaseMarketingplatformAdminServiceRestTransport(
             api_audience=api_audience,
         )
 
+    class _BaseCreateAdminAccessBinding:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=organizations/*}/adminAccessBindings",
+                    "body": "admin_access_binding",
+                },
+            ]
+            return http_options
+
     class _BaseCreateAnalyticsAccountLink:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -110,6 +127,40 @@ class _BaseMarketingplatformAdminServiceRestTransport(
             ]
             return http_options
 
+    class _BaseCreateUserGroup:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=organizations/*}/userGroups",
+                    "body": "user_group",
+                },
+            ]
+            return http_options
+
+    class _BaseCreateUserGroupMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=organizations/*/userGroups/*}/members",
+                    "body": "user_group_member",
+                },
+            ]
+            return http_options
+
     class _BaseDeleteAnalyticsAccountLink:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -122,6 +173,38 @@ class _BaseMarketingplatformAdminServiceRestTransport(
                 {
                     "method": "delete",
                     "uri": "/v1alpha/{name=organizations/*/analyticsAccountLinks/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteUserGroup:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=organizations/*/userGroups/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteUserGroupMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=organizations/*/userGroups/*/members/*}",
                 },
             ]
             return http_options
@@ -143,6 +226,22 @@ class _BaseMarketingplatformAdminServiceRestTransport(
             ]
             return http_options
 
+    class _BaseGetAdminAccessBinding:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=organizations/*/adminAccessBindings/*}",
+                },
+            ]
+            return http_options
+
     class _BaseGetOrganization:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -155,6 +254,54 @@ class _BaseMarketingplatformAdminServiceRestTransport(
                 {
                     "method": "get",
                     "uri": "/v1alpha/{name=organizations/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseGetUserGroup:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=organizations/*/userGroups/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseGetUserGroupMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=organizations/*/userGroups/*/members/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseListAdminAccessBindings:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=organizations/*}/adminAccessBindings",
                 },
             ]
             return http_options
@@ -189,6 +336,38 @@ class _BaseMarketingplatformAdminServiceRestTransport(
             ]
             return http_options
 
+    class _BaseListUserGroupMembers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=organizations/*/userGroups/*}/members",
+                },
+            ]
+            return http_options
+
+    class _BaseListUserGroups:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=organizations/*}/userGroups",
+                },
+            ]
+            return http_options
+
     class _BaseReportPropertyUsage:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -219,6 +398,63 @@ class _BaseMarketingplatformAdminServiceRestTransport(
                     "method": "post",
                     "uri": "/v1alpha/{analytics_account_link=organizations/*/analyticsAccountLinks/*}:setPropertyServiceLevel",
                     "body": "*",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateAdminAccessBinding:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{admin_access_binding.name=organizations/*/adminAccessBindings/*}",
+                    "body": "admin_access_binding",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateUserGroup:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{user_group.name=organizations/*/userGroups/*}",
+                    "body": "user_group",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateUserGroupMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{user_group_member.name=organizations/*/userGroups/*/members/*}",
+                    "body": "user_group_member",
                 },
             ]
             return http_options

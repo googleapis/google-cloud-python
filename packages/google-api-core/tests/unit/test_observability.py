@@ -109,7 +109,7 @@ def test_observability_handles_boundary_client_options(boundary_options):
     assert enabled is False
 
     endpoint_attrs = _observability._extract_endpoint_attributes(boundary_options)
-    assert endpoint_attrs == {}
+    assert endpoint_attrs == {"url.domain": "googleapis.com"}
 
 
 def test_get_tracer_provider_default():
