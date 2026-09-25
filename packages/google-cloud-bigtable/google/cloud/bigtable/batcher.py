@@ -18,6 +18,8 @@
 import atexit
 import queue
 
+from google.api_core import exceptions as core_exceptions
+
 from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 
@@ -134,9 +136,13 @@ class MutationsBatcher(object):
                 # Unpack the root cause of the FailedMutationEntryError and
                 # return that error to the user. In standard execution paths,
                 # FailedMutationEntryError always has an Exception cause;
-                # defensively fall back to error itself if __cause__ is None.
-                cause = error.__cause__ if error.__cause__ is not None else error
-                self._exceptions.put(cause)
+                # defensively wrap in Unknown if __cause__ is None.
+                if error.__cause__ is not None:
+                    self._exceptions.put(error.__cause__)
+                else:
+                    unknown_err = core_exceptions.Unknown(str(error))
+                    unknown_err.__cause__ = error
+                    self._exceptions.put(unknown_err)
         except Exception as exc:
             self._exceptions.put(exc)
 
