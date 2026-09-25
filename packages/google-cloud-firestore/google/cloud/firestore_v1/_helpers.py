@@ -44,7 +44,7 @@ from google.type import latlng_pb2  # type: ignore
 import google
 from google.cloud import exceptions  # type: ignore
 from google.cloud.firestore_v1 import transforms, types
-from google.cloud.firestore_v1.bson import _BSONType
+from google.cloud.firestore_v1.bson import BSONType
 from google.cloud.firestore_v1.field_path import FieldPath, parse_field_path
 from google.cloud.firestore_v1.types import common, document, write
 from google.cloud.firestore_v1.types.write import DocumentTransform
@@ -211,7 +211,7 @@ def encode_value(value) -> types.document.Value:
     if document_path is not None:
         return document.Value(reference_value=document_path)
 
-    if isinstance(value, _BSONType):
+    if isinstance(value, BSONType):
         return encode_value(value._to_map_value())
 
     if isinstance(value, GeoPoint):
@@ -350,7 +350,18 @@ def reference_value_to_document(reference_value, client) -> Any:
 def decode_value(
     value, client
 ) -> Union[
-    None, bool, int, float, list, datetime.datetime, str, bytes, dict, GeoPoint, Vector
+    None,
+    bool,
+    int,
+    float,
+    list,
+    datetime.datetime,
+    str,
+    bytes,
+    dict,
+    GeoPoint,
+    Vector,
+    BSONType,
 ]:
     """Converts a Firestore protobuf ``Value`` to a native Python value.
 
@@ -362,7 +373,9 @@ def decode_value(
 
     Returns:
         Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]: A native
+            str, bytes, dict, ~google.cloud.Firestore.GeoPoint, \
+            ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson.BSONType]: A native \
         Python value converted from the ``value``.
 
     Raises:
@@ -402,7 +415,10 @@ def decode_value(
         raise ValueError("Unknown ``value_type``", value_type)
 
 
-def decode_dict(value_fields, client) -> Union[dict, Vector]:
+def decode_dict(
+    value_fields,
+    client,
+) -> Union[dict, Vector, BSONType, bytes]:
     """Converts a protobuf map of Firestore ``Value``-s.
 
     Args:
@@ -412,9 +428,9 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
             A client that has a document factory.
 
     Returns:
-        Dict[str, Union[NoneType, bool, int, float, datetime.datetime, \
-            str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
-        of native Python values converted from the ``value_fields``.
+        Union[dict, ~google.cloud.firestore_v1.vector.Vector, \
+            ~google.cloud.firestore_v1.bson.BSONType, bytes]: A dictionary of native \
+        Python values, Vector, BSON object, or bytes converted from ``value_fields``.
     """
     value_fields_pb = getattr(value_fields, "_pb", value_fields)
     res = {key: decode_value(value, client) for key, value in value_fields_pb.items()}
@@ -424,6 +440,10 @@ def decode_dict(value_fields, client) -> Union[dict, Vector]:
         # {"__type__":"__vector__", "value": [1.0, 2.0, 3.0]}.
         values = cast(Sequence[float], res["value"])
         return Vector(values)
+
+    decoded = BSONType._from_dict(res)
+    if decoded is not None:
+        return decoded
 
     return res
 
