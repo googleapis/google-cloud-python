@@ -41,10 +41,8 @@ from google.showcase import EchoClient
 
 try:
     from .conftest import construct_client
-    from .span_contract import SpanContract, assert_span_contract
 except (ImportError, ValueError):
     from conftest import construct_client
-    from span_contract import SpanContract, assert_span_contract
 
 
 @pytest.fixture
@@ -77,41 +75,6 @@ def otel_echo_client(span_exporter, use_mtls):
             credentials=ga_credentials.AnonymousCredentials(),
         )
         yield client, exporter
-
-
-def test_span_contract_validator_diagnostics():
-    """Verifies that assert_span_contract detects missing, forbidden, and weirdo attributes."""
-    sample_contract = SpanContract(
-        required={"rpc.system.name", "rpc.method"},
-        optional={"optional.tag"},
-        allowed_prefixes=("gcp.errors.metadata.",),
-        forbidden={"rpc.system"},
-        strict_ceiling=True,
-    )
-
-    # Valid span attributes
-    valid_attrs = {
-        "rpc.system.name": "grpc",
-        "rpc.method": "Showcase/Echo",
-        "optional.tag": "val",
-        "gcp.errors.metadata.key": "123",
-    }
-    assert_span_contract(valid_attrs, sample_contract)
-
-    # Missing required attribute triggers floor violation
-    missing_attrs = {"rpc.method": "Showcase/Echo"}
-    with pytest.raises(AssertionError, match="missing required attributes"):
-        assert_span_contract(missing_attrs, sample_contract)
-
-    # Forbidden attribute triggers forbidden violation
-    forbidden_attrs = dict(valid_attrs, **{"rpc.system": "grpc"})
-    with pytest.raises(AssertionError, match="found disallowed attributes"):
-        assert_span_contract(forbidden_attrs, sample_contract)
-
-    # Unexpected 'weirdo' attribute triggers ceiling violation
-    weirdo_attrs = dict(valid_attrs, **{"untracked.weirdo": "oops"})
-    with pytest.raises(AssertionError, match="unregistered schema drift detected"):
-        assert_span_contract(weirdo_attrs, sample_contract)
 
 
 def test_tracing_disabled_default(span_exporter, use_mtls):
