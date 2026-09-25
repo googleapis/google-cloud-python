@@ -35,7 +35,7 @@ from google.api_core import retry_async as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming_async  # type: ignore
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import transcode_request
+from {{package_path}}._compat import transcode_request, trace_http_request, record_http_response
 
 import google.protobuf
 
@@ -51,17 +51,20 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 
+import contextlib
 import json  # type: ignore
 import dataclasses
 from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
+from google.api_core import client_options as client_options_lib
 from .rest_base import _Base{{ service.name }}RestTransport
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 
+import asyncio
 import logging
 
 try:
@@ -92,6 +95,7 @@ class Async{{service.name}}RestStub:
     _session: AsyncAuthorizedSession
     _host: str
     _interceptor: Async{{service.name}}RestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     """Asynchronous REST backend transport for {{ service.name }}.
@@ -111,6 +115,8 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             interceptor: Optional[Async{{ service.name }}RestInterceptor] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -138,6 +144,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 "http" can be specified.
             interceptor (Optional[Async{{ service.name }}RestInterceptor]): Interceptor used
                 to manipulate requests, request metadata, and responses.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         super().__init__(
@@ -146,7 +155,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             client_info=client_info,
             always_use_jwt_access=False,
             url_scheme=url_scheme,
-            api_audience=None
+            api_audience=None,
+            client_options=client_options,
+            **kwargs,
         )
         {# Note: Type for creds is ignored because of incorrect type hint for creds in the client layer.
          # TODO(https://github.com/googleapis/gapic-generator-python/issues/2177): Remove `# type: ignore` once
@@ -154,7 +165,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
         #}
         self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or Async{{ service.name }}RestInterceptor()
-        self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.AsyncOperationsRestClient] = None
@@ -163,7 +173,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     {{ shared_macros.prep_wrapped_messages_async_method(api, service)|indent(4) }}
 
-    {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
     {% for method in service.methods.values()|sort(attribute="name") %}
     class {{ method.name|make_private }}(_Base{{ service.name }}RestTransport._Base{{method.name}}, Async{{service.name}}RestStub):
@@ -260,7 +269,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             return resp
 
             {% endif %}{# method.void #}
-         
+
          {% else %}
                 raise NotImplementedError(
                     "Method {{ method.name }} is not available over REST transport"
@@ -322,10 +331,10 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor, getattr(self, "_client_options", None))  # type: ignore
 
     {% endfor %}
-    {% for name, sig in api.mixin_api_signatures.items() %} 
+    {% for name, sig in api.mixin_api_signatures.items() %}
     {{ shared_macros.generate_mixin_call_method(service, api, name, sig, is_async=True) | indent(4) }}
     {% endfor %}
 
@@ -335,5 +344,11 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
     async def close(self):
         await self._session.close()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
 
 {% endblock %}

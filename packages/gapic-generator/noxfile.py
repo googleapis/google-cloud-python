@@ -18,18 +18,18 @@
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
-from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
+
 import os
+import shutil
 import sys
 import tempfile
 import typing
-import nox  # type: ignore
-
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from os import path
-import shutil
+from pathlib import Path
 
+import nox  # type: ignore
 
 nox.options.error_on_missing_interpreters = True
 
@@ -354,6 +354,7 @@ def showcase_library(
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",
+            f"google/showcase/v1beta1/sequence.proto",
         )
         session.run(
             *cmd_tup,
@@ -404,14 +405,23 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
+        # In monorepo development, install the local google-api-core package from source
+        local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+        if local_core.is_dir():
+            session.install("-e", str(local_core))
+
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
             "py.test",
-            "--quiet",
             *(session.posargs or [str(test_directory)]),
         ]
         if ignore_file:
@@ -439,6 +449,11 @@ def showcase_w_rest_async(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -498,7 +513,13 @@ def showcase_pqc(
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
         session.install("--upgrade", "grpcio>=1.83.0", "grpcio-status>=1.83.0")
-        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--tls",
+            *(session.posargs or ["tests/system/test_pqc.py"]),
+            env=env,
+        )
 
 
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
@@ -508,6 +529,8 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest-cov",
         "pytest-xdist",
         "pytest-asyncio",
+        "opentelemetry-api",
+        "opentelemetry-sdk",
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")

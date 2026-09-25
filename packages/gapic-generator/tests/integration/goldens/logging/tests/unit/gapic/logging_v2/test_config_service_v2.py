@@ -736,6 +736,194 @@ def test_config_service_v2_client_client_options_from_dict():
         )
 
 
+def test_config_service_v2_client_otel_channel_injection_enabled():
+    mock_obs = mock.Mock()
+    mock_obs.is_otel_capabilities_enabled.return_value = True
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = ConfigServiceV2Client(transport="grpc")
+
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert called_kwargs.get("client_options") == client._client_options
+
+
+def test_config_service_v2_client_otel_channel_injection_disabled():
+    mock_obs = mock.Mock()
+    mock_obs.is_otel_capabilities_enabled.return_value = False
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.client._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = ConfigServiceV2Client(transport="grpc")
+
+        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert not called_kwargs.get("client_options")
+
+
+def test_config_service_v2_grpc_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.ConfigServiceV2GrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_config_service_v2_grpc_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.transports.grpc._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch.object(
+            grpc_helpers,
+            "apply_channel_interceptors",
+            return_value=mock_channel,
+            create=True,
+        ) as mock_apply_interceptors,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.ConfigServiceV2GrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_otel_interceptor]
+        )
+        assert transport.grpc_channel == mock_channel
+
+
+def test_config_service_v2_grpc_transport_custom_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch.object(
+        grpc_helpers,
+        "apply_channel_interceptors",
+        return_value=mock_custom_channel,
+        create=True,
+    ) as mock_apply_interceptors:
+        transport = transports.ConfigServiceV2GrpcTransport(
+            channel=mock_custom_channel,
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_custom_channel, [mock_interceptor]
+        )
+        assert transport.grpc_channel == mock_custom_channel
+
+
+def test_config_service_v2_grpc_asyncio_transport_channel_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with mock.patch.object(
+        transports.ConfigServiceV2GrpcAsyncIOTransport,
+        "create_channel",
+        return_value=mock_channel,
+    ) as mock_create_channel:
+        transport = transports.ConfigServiceV2GrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            interceptors=[mock_interceptor],
+        )
+
+        assert mock_create_channel.call_count == 1
+        assert mock_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_config_service_v2_grpc_asyncio_transport_otel_channel_interceptor():
+    mock_otel_interceptor = mock.Mock()
+    mock_obs = mock.Mock()
+    mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
+    mock_channel = mock.Mock()
+    mock_channel._unary_unary_interceptors = []
+
+    with (
+        mock.patch(
+            "google.cloud.logging_v2.services.config_service_v2.transports.grpc_asyncio._observability",
+            mock_obs,
+        ),
+        mock.patch.object(
+            transports.ConfigServiceV2GrpcAsyncIOTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ) as mock_create_channel,
+    ):
+        options = client_options.ClientOptions()
+        transport = transports.ConfigServiceV2GrpcAsyncIOTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_options=options,
+        )
+
+        mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
+        assert mock_create_channel.call_count == 1
+        assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
+        assert transport.grpc_channel == mock_channel
+
+
+def test_config_service_v2_grpc_asyncio_transport_custom_channel():
+    mock_custom_channel = mock.Mock(spec=aio.Channel)
+
+    with mock.patch.object(
+        transports.ConfigServiceV2GrpcAsyncIOTransport,
+        "create_channel",
+    ) as mock_create_channel:
+        transport = transports.ConfigServiceV2GrpcAsyncIOTransport(
+            channel=mock_custom_channel,
+        )
+
+        assert mock_create_channel.call_count == 0
+        assert transport.grpc_channel == mock_custom_channel
+
+
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc", grpc_helpers),
     (ConfigServiceV2AsyncClient, transports.ConfigServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
@@ -12654,13 +12842,7 @@ def test_config_service_v2_base_transport():
     with pytest.raises(NotImplementedError):
         transport.operations_client
 
-    # Catch all for all remaining methods and properties
-    remainder = [
-        'kind',
-    ]
-    for r in remainder:
-        with pytest.raises(NotImplementedError):
-            getattr(transport, r)()
+    assert transport.kind == ""
 
 
 def test_config_service_v2_base_transport_with_credentials_file():
@@ -12691,6 +12873,94 @@ def test_config_service_v2_base_transport_with_adc():
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ConfigServiceV2Transport()
         adc.assert_called_once()
+
+
+def test_config_service_v2_base_transport_wrap_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.logging_v2.services.config_service_v2.transports.ConfigServiceV2Transport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.ConfigServiceV2Transport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc"
+
+            # Test modern google-api-core with tracing support
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
+
+            # Test older google-api-core without tracing support
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_method(func, client_options=options, kind="grpc")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test for default/empty kind on base transport
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+
+def test_config_service_v2_base_transport_wrap_async_method():
+    mock_wrap = mock.Mock()
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method", mock_wrap):
+        options = client_options.ClientOptions()
+        with mock.patch.object(google.auth, 'default', autospec=True) as adc, mock.patch('google.cloud.logging_v2.services.config_service_v2.transports.ConfigServiceV2Transport._prep_wrapped_messages') as prep:
+            adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+            transport = transports.ConfigServiceV2Transport(client_options=options)
+
+        # Mock the kind property to return a value
+        with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
+            mock_kind.return_value = "grpc_asyncio"
+
+            # Test modern google-api-core with tracing support
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                func = mock.Mock()
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
+
+            # Test older google-api-core without tracing support
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Test for default/empty kind on base transport
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_async_method(func)
+                assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
 
 
 def test_config_service_v2_auth_adc():

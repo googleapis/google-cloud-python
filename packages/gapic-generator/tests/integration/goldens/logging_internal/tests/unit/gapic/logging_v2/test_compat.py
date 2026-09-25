@@ -24,7 +24,16 @@ from unittest import mock
 import google.auth.transport.mtls
 
 from google.cloud.logging_v2._compat import transcode_request
-from google.cloud.logging_v2._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
+from google.cloud.logging_v2._compat import (
+    get_universe_domain,
+    get_api_endpoint,
+    get_default_mtls_endpoint,
+    should_use_client_cert,
+    read_environment_variables,
+    _observability,
+    trace_http_request,
+    record_http_response,
+)
 
 from google.auth.exceptions import MutualTLSChannelError
 from google.api_core.universe import EmptyUniverseError
@@ -423,3 +432,66 @@ def test_read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "invalid"}):
         with pytest.raises(MutualTLSChannelError):
             read_environment_variables()
+
+
+def test_observability_compat():
+    # _observability is exposed from _compat
+    try:
+        from google.api_core import _observability as core_observability
+        assert _observability is core_observability
+    except ImportError:  # pragma: NO COVER
+        assert _observability is None  # pragma: NO COVER
+
+
+def test_trace_http_request_compat():
+    # trace_http_request is exposed from _compat and callable as context manager
+    with trace_http_request(method="GET", url="https://example.com") as span:
+        pass
+
+
+def test_record_http_response_compat():
+    # record_http_response is exposed from _compat and callable with dummy args
+    record_http_response(None, None)
+
+
+def test_observability_compat_present(monkeypatch):
+    import importlib
+    import sys
+    import google.api_core
+    from google.cloud.logging_v2 import _compat
+
+    # Simulate an environment where google.api_core._observability is available
+    mock_obs = mock.MagicMock()
+    mock_obs.trace_http_request = mock.MagicMock()
+    mock_obs.record_http_response = mock.MagicMock()
+    monkeypatch.setitem(sys.modules, "google.api_core._observability", mock_obs)
+    monkeypatch.setattr(google.api_core, "_observability", mock_obs, raising=False)
+    reloaded = importlib.reload(_compat)
+    try:
+        assert reloaded._observability is mock_obs
+        assert reloaded.trace_http_request is mock_obs.trace_http_request
+        assert reloaded.record_http_response is mock_obs.record_http_response
+    finally:
+        monkeypatch.undo()
+        importlib.reload(_compat)
+
+
+def test_observability_compat_fallback(monkeypatch):
+    import importlib
+    import sys
+    import google.api_core
+    from google.cloud.logging_v2 import _compat
+
+    # Simulate an environment where google.api_core._observability is not available
+    monkeypatch.setitem(sys.modules, "google.api_core._observability", None)
+    monkeypatch.setattr(google.api_core, "_observability", None, raising=False)
+    reloaded = importlib.reload(_compat)
+    try:
+        assert reloaded._observability is None
+        with reloaded.trace_http_request(method="GET", url="https://example.com") as span:
+            assert span is None
+        reloaded.record_http_response(None, None)
+    finally:
+        # Restore _compat to normal environment
+        monkeypatch.undo()
+        importlib.reload(_compat)

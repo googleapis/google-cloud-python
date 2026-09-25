@@ -55,6 +55,7 @@ venv/
 # Test logs
 coverage.xml
 *sponge_log.xml
+raw_spans_output*.json
 
 # System test environment variables.
 **/system_tests/local_test_setup
@@ -72,3 +73,6 @@ bazel-bin
 bazel-gapic-generator
 bazel-out
 bazel-testlogs
+
+# Telemetry raw spans dump
+raw_spans_output-*.json
