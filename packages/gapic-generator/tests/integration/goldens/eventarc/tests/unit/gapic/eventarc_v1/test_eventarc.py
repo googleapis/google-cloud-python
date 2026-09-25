@@ -781,42 +781,31 @@ def test_eventarc_client_client_options_from_dict():
         )
 
 
-def test_eventarc_client_otel_channel_injection_enabled():
-    mock_obs = mock.Mock()
-    mock_obs.is_otel_capabilities_enabled.return_value = True
+@pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
+    pytest.param(True, True, id="otel_injection_enabled"),
+    pytest.param(False, False, id="otel_injection_disabled"),
+])
+def test_eventarc_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
+    from google.cloud.eventarc_v1.services.eventarc.client import _observability
     with (
-        mock.patch(
-            "google.cloud.eventarc_v1.services.eventarc.client._observability",
-            mock_obs,
-        ),
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
+            return_value=capabilities_enabled,
+            autospec=True,
+        ) as mock_is_otel_enabled,
         mock.patch.object(
             transports.EventarcGrpcTransport, "__init__", return_value=None
         ) as patched_transport_init,
     ):
         client = EventarcClient(transport="grpc")
 
-        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
+        mock_is_otel_enabled.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert called_kwargs.get("client_options") == client._client_options
-
-
-def test_eventarc_client_otel_channel_injection_disabled():
-    mock_obs = mock.Mock()
-    mock_obs.is_otel_capabilities_enabled.return_value = False
-    with (
-        mock.patch(
-            "google.cloud.eventarc_v1.services.eventarc.client._observability",
-            mock_obs,
-        ),
-        mock.patch.object(
-            transports.EventarcGrpcTransport, "__init__", return_value=None
-        ) as patched_transport_init,
-    ):
-        client = EventarcClient(transport="grpc")
-
-        mock_obs.is_otel_capabilities_enabled.assert_called_once_with(client._client_options)
-        called_kwargs = patched_transport_init.call_args.kwargs
-        assert not called_kwargs.get("client_options")
+        if expected_options_injected:
+            assert called_kwargs.get("client_options") == client._client_options
+        else:
+            assert not called_kwargs.get("client_options")
 
 
 def test_eventarc_grpc_transport_channel_interceptors():

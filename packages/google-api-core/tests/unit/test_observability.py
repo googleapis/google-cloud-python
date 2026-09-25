@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import sys
+import urllib.parse
 from unittest import mock
 
 import pytest
@@ -92,6 +93,23 @@ def test_is_otel_capabilities_enabled_experimental_enabled_with_config(monkeypat
 
     options = ClientOptions(tracer_provider=mock.Mock())
     assert _observability.is_otel_capabilities_enabled(options)
+
+
+@pytest.mark.parametrize(
+    "boundary_options",
+    [
+        pytest.param(None, id="options_none"),
+        pytest.param({}, id="options_empty_dict"),
+        pytest.param({"irrelevant_field": 123}, id="options_missing_tracer_provider"),
+    ],
+)
+def test_observability_handles_boundary_client_options(boundary_options):
+    """Verifies boundary handling when client options lack telemetry attributes."""
+    enabled = _observability.is_otel_capabilities_enabled(boundary_options)
+    assert enabled is False
+
+    endpoint_attrs = _observability._extract_endpoint_attributes(boundary_options)
+    assert endpoint_attrs == {}
 
 
 def test_get_tracer_provider_default():
@@ -632,7 +650,9 @@ def test_build_http_span_attributes_url_parsing_fallbacks():
     assert attrs["server.port"] == 443
 
     # Malformed URL
-    with mock.patch("urllib.parse.urlsplit", side_effect=ValueError("boom")):
+    with mock.patch.object(
+        urllib.parse, "urlsplit", side_effect=ValueError("boom"), autospec=True
+    ):
         name, attrs, _ = _observability._build_http_span_attributes(
             method="PUT", url="http://[invalid"
         )
@@ -1045,7 +1065,9 @@ def test_trace_http_request_url_parse_exception(monkeypatch):
         mock.Mock(),
     )
 
-    with mock.patch("urllib.parse.urlsplit", side_effect=ValueError("Invalid URL")):
+    with mock.patch.object(
+        urllib.parse, "urlsplit", side_effect=ValueError("Invalid URL"), autospec=True
+    ):
         options = ClientOptions()
         with _observability.trace_http_request(
             client_options=options,
@@ -1218,3 +1240,23 @@ def test_trace_http_request_no_multi_yield_bug(monkeypatch):
             url="https://example.com/api",
         ):
             raise err
+
+
+def test_trace_http_request_initialization_fails_open(monkeypatch):
+    """Proves that unexpected exceptions during telemetry initialization fail open and yield None."""
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.instrumentation.grpc",
+        mock.Mock(),
+    )
+    with mock.patch(
+        "opentelemetry.trace.get_tracer",
+        side_effect=RuntimeError("OTel crashed"),
+    ):
+        with _observability.trace_http_request(
+            client_options=ClientOptions(),
+            method="GET",
+            url="https://example.com",
+        ) as span:
+            assert span is None

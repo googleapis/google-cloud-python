@@ -350,11 +350,14 @@ async def test_wrap_method_async_otel_tracing_skips_span(
     """Proves that under various gating conditions, no async Tier 3 span is created."""
     mock_target = mock.AsyncMock(return_value="success")
     mock_trace = mock.Mock()
+    from google.api_core import _observability
 
     with (
-        mock.patch(
-            "google.api_core._observability.is_otel_capabilities_enabled",
+        mock.patch.object(
+            _observability,
+            "is_otel_capabilities_enabled",
             return_value=capabilities_enabled,
+            autospec=True,
         ),
         mock.patch.dict(
             "sys.modules",
@@ -447,37 +450,31 @@ async def test_wrap_method_async_otel_tracing_coroutine_duration(mock_otel):
 
 
 @pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_custom_client_options(mock_otel):
+@pytest.mark.parametrize(
+    "options_builder",
+    [
+        pytest.param(
+            lambda p: client_options_lib.ClientOptions(tracer_provider=p),
+            id="client_options_object",
+        ),
+        pytest.param(
+            lambda p: {"tracer_provider": p},
+            id="client_options_dict",
+        ),
+    ],
+)
+async def test_wrap_method_async_otel_tracing_client_options(
+    mock_otel, options_builder
+):
     """Proves that providing client_options with a custom tracer_provider uses that provider."""
     mock_target = mock.AsyncMock(return_value="success")
 
     mock_provider = mock.Mock()
     mock_provider.get_tracer.return_value = mock_otel.tracer
 
-    client_options = client_options_lib.ClientOptions(tracer_provider=mock_provider)
-
     wrapped = gapic_v1.method_async.wrap_method(
         mock_target,
-        client_options=client_options,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-    )
-    result = await wrapped()
-
-    assert result == "success"
-    mock_provider.get_tracer.assert_called_once_with("google.api_core")
-
-
-@pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_dict_client_options(mock_otel):
-    """Proves that providing a dict with tracer_provider uses that provider."""
-    mock_target = mock.AsyncMock(return_value="success")
-
-    mock_provider = mock.Mock()
-    mock_provider.get_tracer.return_value = mock_otel.tracer
-
-    wrapped = gapic_v1.method_async.wrap_method(
-        mock_target,
-        client_options={"tracer_provider": mock_provider},
+        client_options=options_builder(mock_provider),
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
     )
     result = await wrapped()
