@@ -80,6 +80,12 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 # transaction before giving up.
 _TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
 
+_DEFAULT_RETRY_TIMEOUT = 3600.0
+_DEFAULT_RETRY_INITIAL = 0.1
+_DEFAULT_RETRY_MAXIMUM = 32.0
+_DEFAULT_RETRY_MULTIPLIER = 1.3
+_DEFAULT_RETRY_PREDICATE = lambda e: isinstance(e, (ServiceUnavailable, ResourceExhausted))
+
 
 @CrossSync.convert
 async def _restart_on_unavailable(
@@ -132,17 +138,25 @@ async def _restart_on_unavailable(
     sleep_iter = None
     retry_predicate = None
     timeout = None
-    if retry is not None and retry is not gapic_v1.method.DEFAULT:
-        timeout = getattr(retry, "_timeout", getattr(retry, "timeout", None))
-        deadline_setting = getattr(retry, "_deadline", getattr(retry, "deadline", None))
-        if deadline_setting is not None:
-            timeout = deadline_setting
+    if retry is not None:
+        if retry is gapic_v1.method.DEFAULT:
+            timeout = _DEFAULT_RETRY_TIMEOUT
+            retry_predicate = _DEFAULT_RETRY_PREDICATE
+            initial = _DEFAULT_RETRY_INITIAL
+            maximum = _DEFAULT_RETRY_MAXIMUM
+            multiplier = _DEFAULT_RETRY_MULTIPLIER
+        else:
+            timeout = getattr(retry, "_timeout", getattr(retry, "timeout", None))
+            deadline_setting = getattr(retry, "_deadline", getattr(retry, "deadline", None))
+            if deadline_setting is not None:
+                timeout = deadline_setting
+            retry_predicate = getattr(retry, "_predicate", getattr(retry, "predicate", None))
+            initial = getattr(retry, "_initial", getattr(retry, "initial", 0.1))
+            maximum = getattr(retry, "_maximum", getattr(retry, "maximum", 32.0))
+            multiplier = getattr(retry, "_multiplier", getattr(retry, "multiplier", 1.3))
+
         if timeout is not None:
             deadline = time.monotonic() + timeout
-        retry_predicate = getattr(retry, "_predicate", getattr(retry, "predicate", None))
-        initial = getattr(retry, "_initial", getattr(retry, "initial", 0.1))
-        maximum = getattr(retry, "_maximum", getattr(retry, "maximum", 32.0))
-        multiplier = getattr(retry, "_multiplier", getattr(retry, "multiplier", 1.3))
         sleep_iter = iter(exponential_sleep_generator(initial, maximum, multiplier=multiplier))
 
     while True:
@@ -196,6 +210,8 @@ async def _restart_on_unavailable(
                     break
 
         except (ServiceUnavailable, ResourceExhausted) as exc:
+            if isinstance(exc, ResourceExhausted) and retry is None:
+                raise _augment_error_with_request_id(exc, current_request_id)
             if retry_predicate is not None and not retry_predicate(exc):
                 raise _augment_error_with_request_id(exc, current_request_id)
             if sleep_iter is not None:
@@ -227,8 +243,6 @@ async def _restart_on_unavailable(
                 for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
             )
             if not resumable_error:
-                raise _augment_error_with_request_id(exc, current_request_id)
-            if retry_predicate is not None and not retry_predicate(exc):
                 raise _augment_error_with_request_id(exc, current_request_id)
             if sleep_iter is not None:
                 try:

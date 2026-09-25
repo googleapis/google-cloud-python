@@ -15,7 +15,7 @@
 import random
 import threading
 
-from google.api_core.exceptions import InvalidArgument
+from google.api_core.exceptions import InvalidArgument, ResourceExhausted
 from google.protobuf.duration_pb2 import Duration
 from google.rpc import code_pb2, status_pb2
 from google.rpc.error_details_pb2 import RetryInfo
@@ -393,6 +393,30 @@ class TestRequestIDHeader(MockServerTestBase):
         self.assertEqual(stream_sql_segments[0][1][5], 1)
         self.assertEqual(stream_sql_segments[1][1][5], 2)
         self.assertEqual(stream_sql_segments[0][1][:5], stream_sql_segments[1][1][:5])
+
+    def test_streaming_resource_exhausted_fails_immediately_when_retry_is_none(self):
+        error = status_pb2.Status(code=code_pb2.RESOURCE_EXHAUSTED, message="Quota exceeded")
+        status = _Status(
+            code=code_to_grpc_status_code(error.code),
+            details=error.message,
+            trailing_metadata=(("grpc-status-details-bin", error.SerializeToString()),),
+        )
+        add_error(SpannerServicer.ExecuteStreamingSql.__name__, status)
+
+        if not getattr(self.database, "_interceptors", None):
+            self.database._interceptors = MockServerTestBase._interceptors
+
+        with self.assertRaises(ResourceExhausted) as ctx:
+            with self.database.snapshot() as snapshot:
+                list(snapshot.execute_sql("select 1", retry=None))
+
+        self.assertTrue(hasattr(ctx.exception, "request_id"))
+        got_stream_segments, _ = self.canonicalize_request_id_headers()
+        stream_sql_segments = [
+            seg for seg in got_stream_segments if seg[0].endswith("/ExecuteStreamingSql")
+        ]
+        self.assertEqual(len(stream_sql_segments), 1)
+        self.assertEqual(stream_sql_segments[0][1][5], 1)
 
     def test_exhaustive_fatal_error_matrix(self):
         fatal_codes = [

@@ -282,12 +282,7 @@ class Batch(_BatchBase):
             MetricsCapture(self._resource_info),
         ):
 
-            nth_request = getattr(database, "_next_nth_request", 0)
-            attempt = 0
-
             def wrapped_method():
-                nonlocal attempt
-                attempt += 1
                 commit_request = CommitRequest(
                     session=session.name,
                     mutations=mutations,
@@ -297,7 +292,7 @@ class Batch(_BatchBase):
                     request_options=request_options,
                 )
                 call_metadata, error_augmenter = database.with_error_augmentation(
-                    nth_request, attempt, metadata, span
+                    getattr(database, "_next_nth_request", 0), 1, metadata, span
                 )
                 commit_method = functools.partial(
                     api.commit, request=commit_request, metadata=call_metadata
