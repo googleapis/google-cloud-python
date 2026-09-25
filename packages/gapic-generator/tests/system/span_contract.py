@@ -65,23 +65,7 @@ class TelemetryComplianceReporter:
         passed: bool,
         details: str = "",
     ) -> None:
-        """Records an evaluation outcome, updating any prior entry for this feature."""
-        for idx, r in enumerate(self._results):
-            if r.feature_id == feature_id:
-                self._results[idx] = ComplianceResult(
-                    feature_id=feature_id,
-                    tier=tier,
-                    transport=transport,
-                    scenario=scenario,
-                    metadata_checked=metadata_checked,
-                    floor_checked=floor_checked,
-                    optional_checked=optional_checked,
-                    invariants_checked=invariants_checked,
-                    passed=passed,
-                    details=details,
-                )
-                return
-
+        """Records an evaluation outcome for this feature."""
         self._results.append(
             ComplianceResult(
                 feature_id=feature_id,
@@ -135,8 +119,7 @@ class TelemetryComplianceReporter:
         return self.export_csv()
 
 
-GLOBAL_COMPLIANCE_REPORTER = TelemetryComplianceReporter()
-COMPLIANCE_REPORTER = GLOBAL_COMPLIANCE_REPORTER
+COMPLIANCE_REPORTER = TelemetryComplianceReporter()
 
 
 # ---------------------------------------------------------------------------
@@ -243,9 +226,7 @@ class SpanContract:
         """Validates a span or sequence of spans against this contract and records compliance."""
         from typing import Sequence
 
-        active_reporter = (
-            reporter if reporter is not None else GLOBAL_COMPLIANCE_REPORTER
-        )
+        active_reporter = reporter if reporter is not None else COMPLIANCE_REPORTER
         effective_label = (
             label
             or f"{self.feature_id} {self.tier} {self.transport} {self.scenario}".strip()
