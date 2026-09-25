@@ -470,8 +470,7 @@ class trace_http_request:
                 if exc_val is not None:
                     record_http_error(self._span, exc_val)
             finally:
-                if self._cm is not None:
-                    self._cm.__exit__(exc_type, exc_val, exc_tb)
+                self._cm.__exit__(exc_type, exc_val, exc_tb)
         # Always return None so caller exceptions are never suppressed
         return None
 
