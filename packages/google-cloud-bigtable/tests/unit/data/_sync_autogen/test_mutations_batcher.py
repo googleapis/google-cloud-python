@@ -958,8 +958,6 @@ class TestMutationsBatcher:
                 assert result == []
 
     def test__execute_mutate_rows_batch_completed_callback_coroutine(self):
-        from google.rpc import code_pb2, status_pb2
-
         with mock.patch.object(
             CrossSync._Sync_Impl, "_MutateRowsOperation"
         ) as mutate_rows:
@@ -972,7 +970,6 @@ class TestMutationsBatcher:
             async_callback = mock.AsyncMock(
                 side_effect=lambda statuses: called_with.append(statuses)
             )
-
             with self._make_one(table) as instance:
                 instance._user_batch_completed_callback = async_callback
                 batch = [self._make_mutation()]
