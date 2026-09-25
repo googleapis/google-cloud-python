@@ -278,106 +278,157 @@ def resolve_expected_value(
     return tier_content.strip()
 
 
-def assert_span_matches_row(
-    span, row: dict[str, str], target_tier: str, attempt_idx: int = 0
+STRING_ATTRIBUTES = [
+    "rpc.system.name",
+    "rpc.method",
+    "rpc.response.status_code",
+    "http.request.method",
+    "url.domain",
+    "url.template",
+    "server.address",
+    "error.type",
+]
+
+INTEGER_ATTRIBUTES = [
+    "http.response.status_code",
+    "rpc.grpc.status_code",
+    "server.port",
+]
+
+
+def _assert_attribute(
+    span,
+    attr: str,
+    raw_expected: str | None,
+    target_tier: str,
+    attempt_idx: int = 0,
+    comparator=None,
 ):
-    """Validates a single span against row specifications for the given tier and attempt index."""
-    span_name = resolve_expected_value(row.get("Span Name"), target_tier, attempt_idx)
-    if span_name != "N/A":
-        assert span.name == span_name, (
+    """Triages and validates a single attribute: handles N/A, NOT SET, and comparison."""
+    expected = resolve_expected_value(raw_expected, target_tier, attempt_idx)
+    if expected == "N/A":
+        return
+
+    if expected == "NOT SET":
+        assert attr not in span.attributes, (
+            f"Attribute {attr} should NOT be set on {target_tier} attempt {attempt_idx}, "
+            f"found: {span.attributes.get(attr)}"
+        )
+        return
+
+    actual = span.attributes.get(attr)
+    assert actual is not None, (
+        f"Attribute {attr} missing on {target_tier} attempt {attempt_idx}, "
+        f"expected '{expected}'"
+    )
+
+    if comparator:
+        comparator(actual, expected)
+    else:
+        assert actual == expected, (
+            f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
+            f"expected '{expected}', got '{actual}'"
+        )
+
+
+def _assert_span_metadata(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int
+):
+    """Validates top-level span header fields (name, kind, and status code)."""
+    expected_name = resolve_expected_value(
+        row.get("Span Name"), target_tier, attempt_idx
+    )
+    if expected_name != "N/A":
+        assert span.name == expected_name, (
             f"Span name mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{span_name}', got '{span.name}'"
+            f"expected '{expected_name}', got '{span.name}'"
         )
 
-    span_kind = resolve_expected_value(row.get("Span Kind"), target_tier, attempt_idx)
-    if span_kind != "N/A":
-        assert span.kind.name == span_kind, (
+    expected_kind = resolve_expected_value(
+        row.get("Span Kind"), target_tier, attempt_idx
+    )
+    if expected_kind != "N/A":
+        assert span.kind.name == expected_kind, (
             f"Span kind mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{span_kind}', got '{span.kind.name}'"
+            f"expected '{expected_kind}', got '{span.kind.name}'"
         )
 
-    span_status = resolve_expected_value(
+    expected_status = resolve_expected_value(
         row.get("Span Status"), target_tier, attempt_idx
     )
-    if span_status != "N/A":
-        assert span.status.status_code.name == span_status, (
+    if expected_status != "N/A":
+        assert span.status.status_code.name == expected_status, (
             f"Span status mismatch on {target_tier} attempt {attempt_idx}: "
-            f"expected '{span_status}', got '{span.status.status_code.name}'"
+            f"expected '{expected_status}', got '{span.status.status_code.name}'"
         )
 
-    # String attributes
-    str_attrs = [
-        "rpc.system.name",
-        "rpc.method",
-        "rpc.response.status_code",
-        "http.request.method",
-        "url.domain",
-        "url.template",
-        "server.address",
-        "error.type",
-    ]
-    for attr in str_attrs:
-        expected = resolve_expected_value(row.get(attr), target_tier, attempt_idx)
-        if expected == "NOT SET":
-            assert attr not in span.attributes, (
-                f"Attribute {attr} should NOT be set on {target_tier} attempt {attempt_idx}, "
-                f"found: {span.attributes.get(attr)}"
-            )
-        elif expected != "N/A":
-            actual = span.attributes.get(attr)
-            assert actual is not None, (
-                f"Attribute {attr} missing on {target_tier} attempt {attempt_idx}, "
-                f"expected '{expected}'"
-            )
-            if expected.endswith("/*"):
-                prefix = expected[:-1]
-                assert str(actual).startswith(prefix), (
-                    f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
-                    f"expected to start with '{prefix}', got '{actual}'"
-                )
-            else:
-                assert actual == expected, (
-                    f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
-                    f"expected '{expected}', got '{actual}'"
-                )
 
-    # Status message (matches exact or substring to allow URL paths)
-    expected_msg = resolve_expected_value(
-        row.get("status.message"), target_tier, attempt_idx
+def _assert_string_attributes(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int
+):
+    """Validates string OpenTelemetry attributes with wildcard template support."""
+
+    def _match_string(actual: Any, expected: str):
+        if expected.endswith("/*"):
+            prefix = expected[:-1]
+            assert str(actual).startswith(prefix), (
+                f"Expected attribute to start with '{prefix}', got '{actual}'"
+            )
+        else:
+            assert actual == expected, f"Expected '{expected}', got '{actual}'"
+
+    for attr in STRING_ATTRIBUTES:
+        _assert_attribute(
+            span,
+            attr,
+            row.get(attr),
+            target_tier,
+            attempt_idx,
+            comparator=_match_string,
+        )
+
+
+def _assert_integer_attributes(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int
+):
+    """Validates integer OpenTelemetry attributes (e.g. status codes, ports)."""
+
+    def _match_int(actual: Any, expected: str):
+        assert actual == int(expected), f"Expected {expected}, got {actual}"
+
+    for attr in INTEGER_ATTRIBUTES:
+        _assert_attribute(
+            span,
+            attr,
+            row.get(attr),
+            target_tier,
+            attempt_idx,
+            comparator=_match_int,
+        )
+
+
+def _assert_status_message(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int
+):
+    """Validates status.message via substring containment."""
+
+    def _match_message(actual: Any, expected: str):
+        assert expected in str(actual), (
+            f"Expected '{expected}' in status.message '{actual}'"
+        )
+
+    _assert_attribute(
+        span,
+        "status.message",
+        row.get("status.message"),
+        target_tier,
+        attempt_idx,
+        comparator=_match_message,
     )
-    if expected_msg == "NOT SET":
-        assert "status.message" not in span.attributes
-    elif expected_msg != "N/A":
-        actual_msg = span.attributes.get("status.message")
-        assert actual_msg is not None, (
-            f"Expected status.message containing '{expected_msg}', got None"
-        )
-        assert expected_msg in actual_msg, (
-            f"status.message on {target_tier} attempt {attempt_idx}: "
-            f"expected '{expected_msg}' in '{actual_msg}'"
-        )
 
-    # Integer attributes
-    int_attrs = [
-        "http.response.status_code",
-        "rpc.grpc.status_code",
-        "server.port",
-    ]
-    for attr in int_attrs:
-        expected = resolve_expected_value(row.get(attr), target_tier, attempt_idx)
-        if expected == "NOT SET":
-            assert attr not in span.attributes, (
-                f"Attribute {attr} should NOT be set on {target_tier} attempt {attempt_idx}, "
-                f"found: {span.attributes.get(attr)}"
-            )
-        elif expected != "N/A":
-            actual = span.attributes.get(attr)
-            assert actual == int(expected), (
-                f"Attribute {attr} on {target_tier} attempt {attempt_idx}: "
-                f"expected {expected}, got {actual}"
-            )
 
-    # Resend count
+def _assert_resend_count(span, row: dict[str, str], target_tier: str, attempt_idx: int):
+    """Validates retry resend counts across HTTP and gRPC attribute variations."""
     expected_resend = resolve_expected_value(
         row.get("resend_count"), target_tier, attempt_idx
     )
@@ -391,10 +442,25 @@ def assert_span_matches_row(
         actual_resend = span.attributes.get(
             "http.request.resend_count"
         ) or span.attributes.get("gcp.grpc.resend_count")
+        assert actual_resend is not None, (
+            f"Resend count missing on {target_tier} attempt {attempt_idx}, "
+            f"expected {expected_resend}"
+        )
         assert actual_resend == int(expected_resend), (
             f"Resend count on {target_tier} attempt {attempt_idx}: "
             f"expected {expected_resend}, got {actual_resend}"
         )
+
+
+def assert_span_matches_row(
+    span, row: dict[str, str], target_tier: str, attempt_idx: int = 0
+):
+    """Validates a single span against row specifications for the given tier and attempt index."""
+    _assert_span_metadata(span, row, target_tier, attempt_idx)
+    _assert_string_attributes(span, row, target_tier, attempt_idx)
+    _assert_integer_attributes(span, row, target_tier, attempt_idx)
+    _assert_status_message(span, row, target_tier, attempt_idx)
+    _assert_resend_count(span, row, target_tier, attempt_idx)
 
 
 # ---------------------------------------------------------------------------
