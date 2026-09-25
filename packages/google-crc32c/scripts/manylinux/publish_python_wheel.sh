@@ -58,18 +58,5 @@ done
 python -m twine check "${REPO_ROOT}/wheels/"*
 echo "Linux wheels successfully built and validated."
 
-# TODO(#16512): Remove legacy PyPI upload branch once OSS Exit Gate release is fully adopted.
-if [[ "${EXIT_GATE_RELEASE}" == "true" ]]; then
-    echo "EXIT_GATE_RELEASE is 'true': Linux wheels ready for Kokoro / OSS Exit Gate collection."
-elif [[ "${PUBLISH_WHEELS}" == "true" ]]; then
-    # Start the releasetool reporter
-    python -m pip install --upgrade gcp-releasetool
-    python -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
+echo "Linux wheels are ready for Kokoro / OSS Exit Gate aggregation."
 
-    # Disable logging
-    set +x
-    TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-3")
-    python -m twine upload --skip-existing --username __token__ --password "${TWINE_PASSWORD}" "${REPO_ROOT}/wheels/"*
-else
-    echo "PUBLISH_WHEELS is not 'true'; skipping PyPI upload after twine check."
-fi
