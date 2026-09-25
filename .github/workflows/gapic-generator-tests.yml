@@ -122,11 +122,11 @@ jobs:
           ./gapic-showcase run &
           sleep 2
           curl -s http://localhost:7469/ > /dev/null || true
-      - name: Run Showcase System Tracing Compliance Tests
+      - name: Run Showcase System Tests
         run: |
           pip install nox
           cd packages/gapic-generator
-          nox -s showcase-3.10 -- tests/system/test_span_compliance.py
+          nox -s showcase-3.10
 
   showcase-mypy:
     needs: python_config
