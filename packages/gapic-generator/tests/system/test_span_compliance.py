@@ -117,14 +117,12 @@ def run_echo_call(
     scenario: str,
     transport: str,
     client_options: ClientOptions,
-    use_mtls: bool = False,
 ):
     """Executes unary RPC calls against EchoClient."""
     client = construct_observability_client(
         EchoClient,
         transport=transport,
         client_options=client_options,
-        use_mtls=use_mtls,
     )
     if scenario in ("Happy Path", "Tracing Off"):
         client.echo(showcase.EchoRequest(content="hello"))
@@ -157,14 +155,12 @@ def run_sequence_retry_call(
     transport: str,
     client_options: ClientOptions,
     exporter: InMemorySpanExporter,
-    use_mtls: bool = False,
 ):
     """Executes retry sequences against SequenceServiceClient."""
     client = construct_observability_client(
         SequenceServiceClient,
         transport=transport,
         client_options=client_options,
-        use_mtls=use_mtls,
     )
     is_exhaust = scenario == "Retries Exhausted"
     if is_exhaust:
@@ -227,7 +223,6 @@ def execute_scenario(
     provider: TracerProvider,
     exporter: InMemorySpanExporter,
     monkeypatch: pytest.MonkeyPatch,
-    use_mtls: bool = False,
 ):
     """Dispatches execution based on the scenario column in the requirements matrix."""
     transport = "grpc" if "grpc" in transport_str.lower() else "rest"
@@ -236,11 +231,11 @@ def execute_scenario(
     if scenario == "Tracing Off":
         monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
         client_options = ClientOptions()
-        run_echo_call(scenario, transport, client_options, use_mtls)
+        run_echo_call(scenario, transport, client_options)
     elif scenario in ("Happy Path", "Server Failure", "Client Timeout"):
-        run_echo_call(scenario, transport, client_options, use_mtls)
+        run_echo_call(scenario, transport, client_options)
     else:
-        run_sequence_retry_call(scenario, transport, client_options, exporter, use_mtls)
+        run_sequence_retry_call(scenario, transport, client_options, exporter)
 
 
 # ---------------------------------------------------------------------------
@@ -419,15 +414,13 @@ def assert_span_matches_row(
         for fid in FEATURE_MATRIX
     ],
 )
-def test_feature(feature_id: str, span_exporter, use_mtls, monkeypatch):
+def test_feature(feature_id: str, span_exporter, monkeypatch):
     """Executes each feature scenario and validates 1-to-1 against matrix specifications."""
     row = FEATURE_MATRIX[feature_id]
     exporter, provider = span_exporter
 
     # 1. Execute physical scenario
-    execute_scenario(
-        row["Scenario"], row["Transport"], provider, exporter, monkeypatch, use_mtls
-    )
+    execute_scenario(row["Scenario"], row["Transport"], provider, exporter, monkeypatch)
     spans = exporter.get_finished_spans()
 
     # 2. Archive raw spans for downstream inspection
