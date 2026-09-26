@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.10.2...google-resumable-media-v2.11.0) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.10.2](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.10.1...google-resumable-media-v2.10.2) (2026-08-21)
 
 
