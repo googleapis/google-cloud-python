@@ -320,9 +320,7 @@ class Client(ClientWithProject):
                 raise ValueError(
                     "Both username and password must be specified for Omni authentication"
                 )
-            from google.cloud.spanner_v1.omni.credentials import (
-                SpannerOmniCredentials,
-            )
+            from google.cloud.spanner_v1.omni.credentials import SpannerOmniCredentials
 
             if has_username and has_password:
                 credentials = SpannerOmniCredentials(
@@ -339,11 +337,10 @@ class Client(ClientWithProject):
             disable_builtin_metrics = True
         elif isinstance(credentials, AnonymousCredentials):
             self._emulator_host = self._client_options.api_endpoint
-        else:
-            if username is not None or password is not None:
-                raise ValueError(
-                    "username and password can only be used when instance_type='omni'."
-                )
+        elif username is not None or password is not None:
+            raise ValueError(
+                "username and password can only be used when instance_type='omni'."
+            )
         super(Client, self).__init__(
             project=project,
             credentials=credentials,

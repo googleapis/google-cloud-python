@@ -701,6 +701,93 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             call_args.kwargs["request"].request_options.transaction_tag, "tag"
         )
 
+    async def test_read_w_transaction_tag_default_request_options(self):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = "tag"
+        snapshot._read_only = False
+
+        api.streaming_read.return_value = _MockIterator(PartialResultSet())
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        results = await snapshot.read(TABLE_NAME, COLUMNS, KeySet(all_=True))
+        async for _ in results:
+            pass
+
+        call_args = api.streaming_read.call_args
+        self.assertIsNotNone(call_args, "streaming_read should have been called")
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag, "tag"
+        )
+
+    async def test_read_w_request_options_dict_with_transaction_tag(self):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = "tag"
+        snapshot._read_only = False
+
+        api.streaming_read.return_value = _MockIterator(PartialResultSet())
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        raw_dict_options = {
+            "request_tag": "r-tag",
+            "transaction_tag": "caller-tx-tag",
+        }
+        results = await snapshot.read(
+            TABLE_NAME, COLUMNS, KeySet(all_=True), request_options=raw_dict_options
+        )
+        async for _ in results:
+            pass
+
+        call_args = api.streaming_read.call_args
+        self.assertIsNotNone(call_args, "streaming_read should have been called")
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.request_tag, "r-tag"
+        )
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag, "tag"
+        )
+
+    async def test_read_w_request_options_caller_tag_preserved_when_snapshot_tag_is_none(
+        self,
+    ):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = None
+        snapshot._read_only = False
+
+        api.streaming_read.return_value = _MockIterator(PartialResultSet())
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        raw_dict_options = {
+            "request_tag": "r-tag",
+            "transaction_tag": "caller-tx-tag",
+        }
+        results = await snapshot.read(
+            TABLE_NAME, COLUMNS, KeySet(all_=True), request_options=raw_dict_options
+        )
+        async for _ in results:
+            pass
+
+        call_args = api.streaming_read.call_args
+        self.assertIsNotNone(call_args, "streaming_read should have been called")
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.request_tag, "r-tag"
+        )
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag,
+            "caller-tx-tag",
+        )
+
     async def test_execute_sql_w_request_options_dict(self):
         database = _Database()
         api = database.spanner_api
@@ -825,6 +912,84 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         call_args = api.execute_streaming_sql.call_args
         self.assertEqual(
             call_args.kwargs["request"].request_options.transaction_tag, "tag"
+        )
+
+    async def test_execute_sql_w_transaction_tag_default_request_options(self):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = "tag"
+        snapshot._read_only = False
+
+        api.execute_streaming_sql.return_value = _MockIterator(PartialResultSet())
+        results = await snapshot.execute_sql(SQL_QUERY)
+        async for _ in results:
+            pass
+
+        call_args = api.execute_streaming_sql.call_args
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag, "tag"
+        )
+
+    async def test_execute_sql_w_request_options_dict_with_transaction_tag(self):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = "tag"
+        snapshot._read_only = False
+
+        api.execute_streaming_sql.return_value = _MockIterator(PartialResultSet())
+        raw_dict_options = {
+            "request_tag": "r-tag",
+            "transaction_tag": "caller-tx-tag",
+        }
+        results = await snapshot.execute_sql(
+            SQL_QUERY, request_options=raw_dict_options
+        )
+        async for _ in results:
+            pass
+
+        call_args = api.execute_streaming_sql.call_args
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.request_tag, "r-tag"
+        )
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag, "tag"
+        )
+
+    async def test_execute_sql_w_request_options_caller_tag_preserved_when_snapshot_tag_is_none(
+        self,
+    ):
+        database = _Database()
+        api = database.spanner_api
+        session = _Session(database)
+        snapshot = self._make_snapshot(session)
+        snapshot._transaction_id = TXN_ID
+        snapshot.transaction_tag = None
+        snapshot._read_only = False
+
+        api.execute_streaming_sql.return_value = _MockIterator(PartialResultSet())
+        raw_dict_options = {
+            "request_tag": "r-tag",
+            "transaction_tag": "caller-tx-tag",
+        }
+        results = await snapshot.execute_sql(
+            SQL_QUERY, request_options=raw_dict_options
+        )
+        async for _ in results:
+            pass
+
+        call_args = api.execute_streaming_sql.call_args
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.request_tag, "r-tag"
+        )
+        self.assertEqual(
+            call_args.kwargs["request"].request_options.transaction_tag,
+            "caller-tx-tag",
         )
 
     def test_ctor_incompatible_options(self):
