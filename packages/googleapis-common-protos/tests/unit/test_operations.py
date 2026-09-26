@@ -15,6 +15,7 @@
 import uuid
 from unittest import mock
 
+import pytest
 from google.protobuf import descriptor_pb2, descriptor_pool
 
 
@@ -86,11 +87,15 @@ def test_downstream_dependency_resolution():
     ]
 
 
-def test_grpc_stubs_coverage():
-    """Exercises gRPC stubs to achieve 100% coverage."""
+def test_operations_servicer_interface():
+    """Verifies OperationsServicer default method implementations raise NotImplementedError."""
     from google.longrunning import operations_pb2_grpc
 
     servicer = operations_pb2_grpc.OperationsServicer()
+    context = mock.Mock()
+    request = mock.Mock()
+
+    # Servicer interface must define all RPCs and default to NotImplementedError
     for method in [
         servicer.ListOperations,
         servicer.GetOperation,
@@ -98,30 +103,68 @@ def test_grpc_stubs_coverage():
         servicer.CancelOperation,
         servicer.WaitOperation,
     ]:
-        try:
-            method(mock.Mock(), mock.Mock())
-        except NotImplementedError:
-            pass
+        with pytest.raises(NotImplementedError):
+            method(request, context)
 
+
+def test_add_operations_servicer_to_server():
+    """Verifies server handler registration for OperationsServicer."""
+    from google.longrunning import operations_pb2_grpc
+
+    servicer = operations_pb2_grpc.OperationsServicer()
     mock_server = mock.Mock()
-    operations_pb2_grpc.add_OperationsServicer_to_server(servicer, mock_server)
-    assert mock_server.add_generic_rpc_handlers.called
 
+    operations_pb2_grpc.add_OperationsServicer_to_server(servicer, mock_server)
+
+    # Assert that generic RPC handlers were registered with the server
+    assert mock_server.add_generic_rpc_handlers.called
+    assert mock_server.add_generic_rpc_handlers.call_count == 1
+
+    # Verify the handler structure passed to the server
+    handlers = mock_server.add_generic_rpc_handlers.call_args[0][0]
+    assert len(handlers) == 1
+    assert hasattr(handlers[0], "service_name")
+    assert handlers[0].service_name() == "google.longrunning.Operations"
+
+
+def test_operations_client_stubs_and_static_methods():
+    """Verifies OperationsStub client calls and static method dispatch."""
+    from google.longrunning import operations_pb2_grpc
+
+    # 1. Test OperationsStub channel binding and RPC dispatch
+    mock_callable = mock.Mock(return_value=mock.Mock())
     mock_channel = mock.Mock()
-    dummy_callable = mock.Mock(return_value=mock.Mock())
-    mock_channel.unary_unary = mock.Mock(return_value=dummy_callable)
-    mock_channel.unary_stream = mock.Mock(return_value=dummy_callable)
+    mock_channel.unary_unary = mock.Mock(return_value=mock_callable)
+    mock_channel.unary_stream = mock.Mock(return_value=mock_callable)
 
     stub = operations_pb2_grpc.OperationsStub(mock_channel)
-    stub.ListOperations(mock.Mock())
-    stub.GetOperation(mock.Mock())
-    stub.DeleteOperation(mock.Mock())
-    stub.CancelOperation(mock.Mock())
-    stub.WaitOperation(mock.Mock())
+    assert mock_channel.unary_unary.call_count == 5
 
-    with mock.patch("grpc.experimental.unary_unary", return_value=mock.Mock()):
-        operations_pb2_grpc.Operations.ListOperations(mock.Mock(), "target")
-        operations_pb2_grpc.Operations.GetOperation(mock.Mock(), "target")
-        operations_pb2_grpc.Operations.DeleteOperation(mock.Mock(), "target")
-        operations_pb2_grpc.Operations.CancelOperation(mock.Mock(), "target")
-        operations_pb2_grpc.Operations.WaitOperation(mock.Mock(), "target")
+    request = mock.Mock()
+    for rpc in [
+        stub.ListOperations,
+        stub.GetOperation,
+        stub.DeleteOperation,
+        stub.CancelOperation,
+        stub.WaitOperation,
+    ]:
+        response = rpc(request)
+        assert response is not None
+
+    assert mock_callable.call_count == 5
+
+    # 2. Test Operations static invocation helpers
+    with mock.patch(
+        "grpc.experimental.unary_unary", return_value=mock.Mock()
+    ) as mock_unary:
+        for static_rpc in [
+            operations_pb2_grpc.Operations.ListOperations,
+            operations_pb2_grpc.Operations.GetOperation,
+            operations_pb2_grpc.Operations.DeleteOperation,
+            operations_pb2_grpc.Operations.CancelOperation,
+            operations_pb2_grpc.Operations.WaitOperation,
+        ]:
+            result = static_rpc(request, "localhost:50051")
+            assert result is not None
+
+        assert mock_unary.call_count == 5

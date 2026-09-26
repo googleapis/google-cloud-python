@@ -228,7 +228,7 @@ def unit(session, protobuf_implementation):
         "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
-        "--cov-report=term",
+        "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
