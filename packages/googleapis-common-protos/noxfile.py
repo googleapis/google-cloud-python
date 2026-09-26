@@ -52,7 +52,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
-UNIT_TEST_EXTRAS: List[str] = []
+UNIT_TEST_EXTRAS: List[str] = ["grpc"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = [
@@ -228,7 +228,7 @@ def unit(session, protobuf_implementation):
         "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
-        "--cov-report=",
+        "--cov-report=term",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,

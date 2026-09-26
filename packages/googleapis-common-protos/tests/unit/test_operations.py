@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import uuid
+from unittest import mock
 
 from google.protobuf import descriptor_pb2, descriptor_pool
 
@@ -83,3 +84,44 @@ def test_downstream_dependency_resolution():
     assert "google/longrunning/operations.proto" in [
         dep.name for dep in file_descriptor.dependencies
     ]
+
+
+def test_grpc_stubs_coverage():
+    """Exercises gRPC stubs to achieve 100% coverage."""
+    from google.longrunning import operations_pb2_grpc
+
+    servicer = operations_pb2_grpc.OperationsServicer()
+    for method in [
+        servicer.ListOperations,
+        servicer.GetOperation,
+        servicer.DeleteOperation,
+        servicer.CancelOperation,
+        servicer.WaitOperation,
+    ]:
+        try:
+            method(mock.Mock(), mock.Mock())
+        except NotImplementedError:
+            pass
+
+    mock_server = mock.Mock()
+    operations_pb2_grpc.add_OperationsServicer_to_server(servicer, mock_server)
+    assert mock_server.add_generic_rpc_handlers.called
+
+    mock_channel = mock.Mock()
+    dummy_callable = mock.Mock(return_value=mock.Mock())
+    mock_channel.unary_unary = mock.Mock(return_value=dummy_callable)
+    mock_channel.unary_stream = mock.Mock(return_value=dummy_callable)
+
+    stub = operations_pb2_grpc.OperationsStub(mock_channel)
+    stub.ListOperations(mock.Mock())
+    stub.GetOperation(mock.Mock())
+    stub.DeleteOperation(mock.Mock())
+    stub.CancelOperation(mock.Mock())
+    stub.WaitOperation(mock.Mock())
+
+    with mock.patch("grpc.experimental.unary_unary", return_value=mock.Mock()):
+        operations_pb2_grpc.Operations.ListOperations(mock.Mock(), "target")
+        operations_pb2_grpc.Operations.GetOperation(mock.Mock(), "target")
+        operations_pb2_grpc.Operations.DeleteOperation(mock.Mock(), "target")
+        operations_pb2_grpc.Operations.CancelOperation(mock.Mock(), "target")
+        operations_pb2_grpc.Operations.WaitOperation(mock.Mock(), "target")
