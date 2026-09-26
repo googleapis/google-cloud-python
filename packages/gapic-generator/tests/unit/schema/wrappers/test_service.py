@@ -95,6 +95,14 @@ def test_service_scopes():
     assert "https://foo/admin/" in service.oauth_scopes
 
 
+def test_service_shortname():
+    service = make_service(host="thingdoer")
+    assert service.shortname == "thingdoer"
+
+    service = make_service(host="thingdoer:12345")
+    assert service.shortname == "thingdoer"
+
+
 def test_service_names():
     service = make_service(
         name="ThingDoer",
