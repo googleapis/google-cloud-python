@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import importlib
+import sys
 import uuid
 from unittest import mock
 
@@ -76,7 +78,7 @@ def test_downstream_dependency_resolution():
     downstream_file.dependency.append("google/longrunning/operations.proto")
 
     # 1. This step will throw the TypeError if operations.proto is missing (under C++ runtime).
-    file_descriptor = pool.Add(downstream_file)
+    pool.Add(downstream_file)
 
     # 2. Retrieve the descriptor from the pool (required because pool.Add() returns None).
     file_descriptor = pool.FindFileByName(unique_name)
@@ -168,3 +170,32 @@ def test_operations_client_stubs_and_static_methods():
             assert result is not None
 
         assert mock_unary.call_count == 5
+
+
+def test_operations_pb2_non_grpc_fallback_environment():
+    """Verifies module loading and class contract in non-gRPC environments.
+
+    In environments where gRPC is unsupported, the module must fall back to pure
+    protobuf-only imports without throwing exceptions, and all message classes
+    must remain instantiable.
+    """
+    # 1. Simulate an environment where the gRPC-dependent pb2 module is unavailable
+    with mock.patch.dict(sys.modules, {"google.longrunning.operations_grpc_pb2": None}):
+        # Reload to force execution of the fallback import path
+        if "google.longrunning.operations_pb2" in sys.modules:
+            fallback_module = importlib.reload(
+                sys.modules["google.longrunning.operations_pb2"]
+            )
+        else:
+            import google.longrunning.operations_pb2 as fallback_module  # pragma: NO COVER
+
+        # 2. Assert that canonical messages can still be resolved and instantiated
+        assert hasattr(fallback_module, "Operation")
+        assert hasattr(fallback_module, "GetOperationRequest")
+
+        op = fallback_module.Operation(name="operations/789", done=True)
+        assert op.name == "operations/789"
+        assert op.done is True
+
+    # 3. Restore the environment back to its gRPC-enabled state
+    importlib.reload(sys.modules["google.longrunning.operations_pb2"])
