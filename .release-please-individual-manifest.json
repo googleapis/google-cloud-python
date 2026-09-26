@@ -2,7 +2,7 @@
   "packages/google-auth": "2.58.1",
   "packages/google-cloud-apptopology": "0.1.0",
   "packages/google-cloud-ftp": "0.1.0",
-  "packages/google-cloud-spanner": "3.71.0",
+  "packages/google-cloud-spanner": "3.72.0",
   "packages/google-cloud-spanner-dbapi-driver": "0.0.0",
   "packages/google-cloud-sql": "0.1.1",
   "packages/google-cloud-workloadidentity": "0.1.0",
