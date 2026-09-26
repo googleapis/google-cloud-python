@@ -71,7 +71,10 @@ def test_downstream_dependency_resolution():
     downstream_file.dependency.append("google/longrunning/operations.proto")
 
     # Add to pool: raises TypeError if 'google/longrunning/operations.proto' is missing
-    file_descriptor = pool.Add(downstream_file)
+    try:
+        file_descriptor = pool.FindFileByName(downstream_file.name)
+    except KeyError:
+        file_descriptor = pool.Add(downstream_file)
     assert file_descriptor is not None
     assert "google/longrunning/operations.proto" in [
         dep.name for dep in file_descriptor.dependencies
