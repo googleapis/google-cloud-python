@@ -2019,7 +2019,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-sql
-    version: 0.1.1
+    version: 0.1.2
     apis:
       - path: google/cloud/sql/v1
       - path: google/cloud/sql/v1beta4
