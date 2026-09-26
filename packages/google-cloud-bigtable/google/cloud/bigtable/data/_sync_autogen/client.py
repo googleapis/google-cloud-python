@@ -932,7 +932,7 @@ class _DataApiTarget(abc.ABC):
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
 
-        # Optional in-process accelerator daemon, scoped to this Table's
+        # Optional in-process accelerator daemon, scoped to this data target's
         # (project, instance_id, app_profile_id) tuple. Enabled by default;
         # controlled by the client's ``use_accelerator`` option.
         self._accelerator_daemon: AcceleratorDaemon | None = None

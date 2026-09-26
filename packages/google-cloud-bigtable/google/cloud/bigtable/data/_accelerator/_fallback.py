@@ -49,8 +49,8 @@ _LOGGER = logging.getLogger(__name__)
 class _AcceleratorFallback(Exception):
     """Internal signal that an accelerator attempt should be retried natively.
 
-    Never escapes the Table method that raises it: the method catches it and
-    falls through to the native code path.
+    Never escapes the data target method that raises it: the method catches it
+    and falls through to the native code path.
     """
 
 
