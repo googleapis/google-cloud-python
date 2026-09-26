@@ -24,15 +24,21 @@ from google.api_core.exceptions import (
     ServiceUnavailable,
 )
 
-from google.cloud.spanner_v1._async.snapshot import Snapshot
+from google.cloud.spanner_v1._async.snapshot import Snapshot, _SnapshotBase
+from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
 from google.cloud.spanner_v1.types.result_set import PartialResultSet, ResultSetMetadata
 from google.cloud.spanner_v1.types.spanner import (
     ExecuteSqlRequest,
     Partition,
     PartitionResponse,
 )
-from google.cloud.spanner_v1.types.transaction import Transaction as TransactionPB
-from google.cloud.spanner_v1.types.transaction import TransactionSelector
+from google.cloud.spanner_v1.types.transaction import (
+    Transaction as TransactionPB,
+)
+from google.cloud.spanner_v1.types.transaction import (
+    TransactionOptions,
+    TransactionSelector,
+)
 from google.cloud.spanner_v1.types.type import StructType, Type, TypeCode
 
 TABLE_NAME = "citizens"
@@ -41,6 +47,16 @@ SQL_QUERY = """SELECT first_name, last_name, age FROM citizens ORDER BY age"""
 TXN_ID = b"DEAFBEAD"
 TIMESTAMP = datetime.datetime.now(datetime.timezone.utc)
 DURATION = timedelta(seconds=3)
+
+
+class _Derived(_SnapshotBase):
+    """A minimally-implemented _SnapshotBase-derived class for testing."""
+
+    transaction_tag = None
+    TRANSACTION_OPTIONS = TransactionOptions()
+
+    def _build_transaction_options_pb(self) -> TransactionOptions:
+        return self.TRANSACTION_OPTIONS
 
 
 class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
@@ -61,13 +77,81 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.patch_trace.stop()
 
     def _make_snapshot(self, *args, **kwargs):
-        s = Snapshot(*args, **kwargs)
-        # FORCE _lock to exist if it doesn't (though constructor should handle it)
-        if not hasattr(s, "_lock"):
-            from google.cloud.aio._cross_sync.cross_sync import CrossSync
+        return Snapshot(*args, **kwargs)
 
-            s._lock = CrossSync.Lock()
-        return s
+    def test_derived_constructor(self):
+        session = _Session()
+        derived = _Derived(session=session)
+        self.assertTrue(derived._read_only)
+        self.assertFalse(derived._multi_use)
+        self.assertIsNone(derived._lock)
+        self.assertIsNone(derived._transaction_begin_event)
+
+    def test_derived_constructor_multi_use(self):
+        session = _Session()
+        derived = _Derived(session=session, multi_use=True)
+        self.assertTrue(derived._read_only)
+        self.assertTrue(derived._multi_use)
+        self.assertIsInstance(derived._lock, type(asyncio.Lock()))
+        self.assertIsInstance(derived._transaction_begin_event, type(asyncio.Event()))
+
+    def test_ctor_single_use_no_lock(self):
+        snapshot = self._make_snapshot(_Session(), multi_use=False)
+        self.assertFalse(snapshot._multi_use)
+        self.assertIsNone(snapshot._lock)
+        self.assertIsNone(snapshot._transaction_begin_event)
+
+    def test_ctor_multi_use(self):
+        snapshot = self._make_snapshot(_Session(), multi_use=True)
+        self.assertTrue(snapshot._multi_use)
+        self.assertIsInstance(snapshot._lock, type(asyncio.Lock()))
+        self.assertIsInstance(snapshot._transaction_begin_event, type(asyncio.Event()))
+
+    async def test_wait_for_transaction_begin_twice_single_use_raises(self):
+        snapshot = self._make_snapshot(_Session(), multi_use=False)
+        await snapshot._wait_for_transaction_begin()
+        self.assertTrue(snapshot._begin_request_sent)
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            await snapshot._wait_for_transaction_begin()
+
+    async def test_update_for_precommit_token_pb_multi_use(self):
+        token = MultiplexedSessionPrecommitToken(seq_num=1)
+        snapshot = self._make_snapshot(_Session(), multi_use=True)
+        await snapshot._update_for_precommit_token_pb(token)
+        self.assertEqual(snapshot._precommit_token, token)
+
+    async def test_update_for_precommit_token_pb_single_use(self):
+        token = MultiplexedSessionPrecommitToken(seq_num=1)
+        snapshot = self._make_snapshot(_Session(), multi_use=False)
+        await snapshot._update_for_precommit_token_pb(token)
+        self.assertEqual(snapshot._precommit_token, token)
+
+    async def test_execute_sql_twice_single_use_fails(self):
+        session = _Session()
+        session._database.spanner_api.execute_streaming_sql.return_value = (
+            _MockIterator(PartialResultSet())
+        )
+        snapshot = self._make_snapshot(session, multi_use=False)
+        result_set = await snapshot.execute_sql("SELECT 1")
+        async for _ in result_set:
+            pass
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            await snapshot.execute_sql("SELECT 1")
+
+    async def test_read_twice_single_use_fails(self):
+        from google.cloud.spanner_v1.keyset import KeySet
+
+        session = _Session()
+        session._database.spanner_api.streaming_read.return_value = _MockIterator(
+            PartialResultSet()
+        )
+        snapshot = self._make_snapshot(session, multi_use=False)
+        keyset = KeySet(all_=True)
+        result_set = await snapshot.read(TABLE_NAME, COLUMNS, keyset)
+        async for _ in result_set:
+            pass
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            await snapshot.read(TABLE_NAME, COLUMNS, keyset)
 
     async def test_read_errors(self):
         snapshot = self._make_snapshot(_Session(), multi_use=False)
@@ -140,11 +224,20 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(tokens, [token_1])
 
     def test__update_for_transaction_pb(self):
-        snapshot = self._make_snapshot(_Session())
+        snapshot = self._make_snapshot(_Session(), multi_use=False)
         pb = TransactionPB(id=TXN_ID, read_timestamp=TIMESTAMP)
         snapshot._update_for_transaction_pb(pb)
         self.assertEqual(snapshot._transaction_id, TXN_ID)
         self.assertEqual(snapshot._transaction_read_timestamp, TIMESTAMP)
+
+    def test__update_for_transaction_pb_multi_use(self):
+        snapshot = self._make_snapshot(_Session(), multi_use=True)
+        self.assertFalse(snapshot._transaction_begin_event.is_set())
+        pb = TransactionPB(id=TXN_ID, read_timestamp=TIMESTAMP)
+        snapshot._update_for_transaction_pb(pb)
+        self.assertEqual(snapshot._transaction_id, TXN_ID)
+        self.assertEqual(snapshot._transaction_read_timestamp, TIMESTAMP)
+        self.assertTrue(snapshot._transaction_begin_event.is_set())
 
     async def test_restart_on_unavailable_precommit(self):
         from google.cloud.spanner_v1._async.snapshot import _restart_on_unavailable
