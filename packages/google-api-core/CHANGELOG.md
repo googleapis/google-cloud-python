@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.39.0...google-api-core-v2.40.0) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.38.0...google-api-core-v2.39.0) (2026-09-24)
 
 

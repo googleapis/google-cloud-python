@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.4...proto-plus-v1.29.0) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [1.28.4](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.3...proto-plus-v1.28.4) (2026-08-21)
 
 

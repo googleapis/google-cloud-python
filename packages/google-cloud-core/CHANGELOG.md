@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.7.0...google-cloud-core-v2.8.0) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-core-v2.6.1...google-cloud-core-v2.7.0) (2026-08-21)
 
 

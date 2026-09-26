@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.47.0...google-cloud-bigtable-v2.48.0) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.46.0...google-cloud-bigtable-v2.47.0) (2026-09-24)
 
 

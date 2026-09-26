@@ -2,6 +2,13 @@
 
 [1]: https://pypi.org/project/google-auth-httplib2/#history
 
+## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.4.2...google-auth-httplib2-v0.4.3) (2026-09-26)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.4.1...google-auth-httplib2-v0.4.2) (2026-08-21)
 
 

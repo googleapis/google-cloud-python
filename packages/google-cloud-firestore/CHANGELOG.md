@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.32.0...google-cloud-firestore-v2.33.0) (2026-09-26)
+
+
+### Features
+
+* **firestore:** add BSON cross-type query ordering support ([#18405](https://github.com/googleapis/google-cloud-python/issues/18405)) ([13be295](https://github.com/googleapis/google-cloud-python/commit/13be2950a8f1111a55617421bbed87c62eca470d))
+* **firestore:** add BSON read deserialization support ([#18402](https://github.com/googleapis/google-cloud-python/issues/18402)) ([ce2544f](https://github.com/googleapis/google-cloud-python/commit/ce2544fa7563f37ce33f42b5b93ee2f084be3472))
+* **firestore:** add PyMongo duck-typing serialization support ([#18406](https://github.com/googleapis/google-cloud-python/issues/18406)) ([a1e0e00](https://github.com/googleapis/google-cloud-python/commit/a1e0e009c89f87237e9f8292566b053e573b00cc))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.31.0...google-cloud-firestore-v2.32.0) (2026-09-24)
 
 
