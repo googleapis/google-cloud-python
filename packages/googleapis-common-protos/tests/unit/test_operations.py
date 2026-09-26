@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from google.protobuf import descriptor_pb2
-from google.protobuf import descriptor_pool
+from google.protobuf import descriptor_pb2, descriptor_pool
+
 
 def test_operations_descriptor_name():
     """Validates the canonical proto name registered in the descriptor pool."""
@@ -34,8 +34,7 @@ def test_operations_descriptor_name():
 
 def test_operations_message_instantiation():
     """Validates message instantiation from both public module entry points."""
-    from google.longrunning import operations_pb2
-    from google.longrunning import operations_proto_pb2
+    from google.longrunning import operations_pb2, operations_proto_pb2
 
     op1 = operations_pb2.Operation(name="operations/123", done=True)
     assert op1.name == "operations/123"
@@ -57,7 +56,7 @@ def test_downstream_dependency_resolution():
     ```
         _descriptor_pool.Default().AddSerializedFile(...)
     ```
-    
+
     which checks that 'google/longrunning/operations.proto' exists in the pool.
     """
     # Ensure operations_pb2 is imported and registered
