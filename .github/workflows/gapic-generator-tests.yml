@@ -178,6 +178,8 @@ jobs:
       - name: Run Goldens
         env:
           LATEST_STABLE_PYTHON: ${{ needs.python_config.outputs.latest_stable_python }}
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+        # Add pkg 'showcase' once enum field header formatting in test_compliance.py is fixed.
         run: |
           pip install nox
           cd packages/gapic-generator
@@ -192,7 +194,7 @@ jobs:
         run: |
           pip install --quiet pylint
           cd packages/gapic-generator/tests/integration/goldens
-          for pkg in credentials eventarc logging redis; do
+          for pkg in credentials eventarc logging redis showcase; do
             pylint --rcfile=.pylintrc --errors-only --recursive=y "$pkg/google"
           done
 
@@ -216,6 +218,8 @@ jobs:
       - name: Install System Deps
         run: sudo apt-get update && sudo apt-get install -y pandoc
       - name: Run Goldens (Prerelease)
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+        # Add pkg 'showcase' once enum field header formatting in test_compliance.py is fixed.
         run: |
           pip install nox
           cd packages/gapic-generator
