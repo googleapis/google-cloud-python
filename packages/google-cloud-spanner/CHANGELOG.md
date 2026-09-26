@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.72.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.71.0...google-cloud-spanner-v3.72.0) (2026-09-26)
+
+
+### Features
+
+* **spanner:** auth login support for Spanner Omni endpoints ([#18273](https://github.com/googleapis/google-cloud-python/issues/18273)) ([9e0548d](https://github.com/googleapis/google-cloud-python/commit/9e0548de1f8292968e0b0047ea5ddda175830908))
+
+
+### Bug Fixes
+
+* **spanner:** release transaction lock if inline begin fails ([#18409](https://github.com/googleapis/google-cloud-python/issues/18409)) ([dd24029](https://github.com/googleapis/google-cloud-python/commit/dd2402999bdaae9b96380486c8bfd7d89c612b31))
+
+
+### Performance Improvements
+
+* **spanner:** add fast-path for multiplexed session acquisition ([#18317](https://github.com/googleapis/google-cloud-python/issues/18317)) ([9569b39](https://github.com/googleapis/google-cloud-python/commit/9569b3989e94de9808c9343039535c2492204a72))
+* **spanner:** optimize row popping in StreamedResultSet ([#18316](https://github.com/googleapis/google-cloud-python/issues/18316)) ([e66103d](https://github.com/googleapis/google-cloud-python/commit/e66103d450af97e8aa51319e1e814e075d3a89c7))
+
 ## [3.71.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.70.0...google-cloud-spanner-v3.71.0) (2026-09-03)
 
 
