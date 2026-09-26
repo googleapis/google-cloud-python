@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import uuid
 
 from google.protobuf import descriptor_pb2, descriptor_pool
 
@@ -64,15 +65,21 @@ def test_downstream_dependency_resolution():
 
     pool = descriptor_pool.Default()
 
-    # Construct a synthetic downstream FileDescriptorProto depending on operations.proto
+    # Create a uniquely named proto to avoid collision during repeated test runs
+    unique_name = f"google/test/downstream_{uuid.uuid4().hex}.proto"
+
     downstream_file = descriptor_pb2.FileDescriptorProto()
-    downstream_file.name = "google/test/downstream_operations_test.proto"
+    downstream_file.name = unique_name
     downstream_file.package = "google.test"
     downstream_file.dependency.append("google/longrunning/operations.proto")
 
-    # Add to pool: raises TypeError if 'google/longrunning/operations.proto' is missing
+    # 1. This step will throw the TypeError if operations.proto is missing (under C++ runtime).
     file_descriptor = pool.Add(downstream_file)
+
+    # 2. Retrieve the descriptor from the pool (required because pool.Add() returns None).
+    file_descriptor = pool.FindFileByName(unique_name)
     assert file_descriptor is not None
+    assert file_descriptor.name == unique_name
     assert "google/longrunning/operations.proto" in [
         dep.name for dep in file_descriptor.dependencies
     ]
