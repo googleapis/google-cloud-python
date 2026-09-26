@@ -530,11 +530,17 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            metrics_header = {
-                metrics.API_CLIENT_HEADER: metrics.token_request_id_token_mds()
-            }
+            method, body, headers = _metadata._build_token_request_options(
+                metrics.token_request_id_token_mds()
+            )
+
             id_token = _metadata.get(
-                request, path, params=params, headers=metrics_header
+                request,
+                path,
+                params=params,
+                headers=headers,
+                method=method,
+                body=body,
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
