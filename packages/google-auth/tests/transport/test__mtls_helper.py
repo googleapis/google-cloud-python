@@ -56,7 +56,7 @@ def check_cert_and_key(content, expected_cert, expected_key):
     success = True
 
     cert_match = re.findall(_mtls_helper._CERT_REGEX, content)
-    success = success and len(cert_match) == 1 and cert_match[0] == expected_cert
+    success = success and len(cert_match) >= 1 and b"".join(cert_match) == expected_cert
 
     key_match = re.findall(_mtls_helper._KEY_REGEX, content)
     success = success and len(key_match) == 1 and key_match[0] == expected_key
@@ -67,28 +67,36 @@ def check_cert_and_key(content, expected_cert, expected_key):
 class TestCertAndKeyRegex(object):
     def test_cert_and_key(self):
         # Test single cert and single key
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + pytest.private_key_bytes,
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.private_key_bytes + pytest.public_cert_bytes,
             pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
 
         # Test cert chain and single key
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes
             + pytest.public_cert_bytes
             + pytest.private_key_bytes,
             pytest.public_cert_bytes + pytest.public_cert_bytes,
             pytest.private_key_bytes,
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.private_key_bytes
             + pytest.public_cert_bytes
+            + pytest.public_cert_bytes,
+            pytest.public_cert_bytes + pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+        # Test interleaved key between certificates in a combined bundle
+        assert check_cert_and_key(
+            pytest.public_cert_bytes
+            + pytest.private_key_bytes
             + pytest.public_cert_bytes,
             pytest.public_cert_bytes + pytest.public_cert_bytes,
             pytest.private_key_bytes,
@@ -109,13 +117,13 @@ class TestCertAndKeyRegex(object):
         /fy3ZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQAB
         -----END EC PRIVATE KEY-----"""
 
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + KEY, pytest.public_cert_bytes, KEY
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + RSA_KEY, pytest.public_cert_bytes, RSA_KEY
         )
-        check_cert_and_key(
+        assert check_cert_and_key(
             pytest.public_cert_bytes + EC_KEY, pytest.public_cert_bytes, EC_KEY
         )
 
@@ -199,6 +207,21 @@ class TestRunCertProviderCommand(object):
         assert cert == PUBLIC_CERT_CHAIN_BYTES
         assert key == ENCRYPTED_EC_PRIVATE_KEY
         assert passphrase == PASSPHRASE_VALUE
+
+    @pytest.mark.parametrize(
+        "trailing_bytes",
+        [
+            b"-----BEGIN CERTIFICATE-----\nMIIB\n",
+            b"MIIB\n-----END CERTIFICATE-----\n",
+        ],
+    )
+    @mock.patch("subprocess.Popen", autospec=True)
+    def test_truncated_cert_chain_raises_error(self, mock_popen, trailing_bytes):
+        mock_popen.return_value = self.create_mock_process(
+            pytest.public_cert_bytes + trailing_bytes + pytest.private_key_bytes, b""
+        )
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._run_cert_provider_command(["command"])
 
     @mock.patch("subprocess.Popen", autospec=True)
     def test_missing_cert(self, mock_popen):
@@ -779,6 +802,40 @@ class TestReadCertAndKeyFile(object):
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._read_cert_and_key_files(cert_path, key_path)
 
+    def test_combined_bundle_with_interleaved_key(self, tmp_path):
+        bundle_file = tmp_path / "credentialbundle.pem"
+        bundle_file.write_bytes(
+            pytest.public_cert_bytes.rstrip(b"\n")
+            + pytest.private_key_bytes
+            + pytest.public_cert_bytes
+        )
+        actual_cert, actual_key = _mtls_helper._read_cert_and_key_files(
+            str(bundle_file), str(bundle_file)
+        )
+        assert actual_cert == pytest.public_cert_bytes + pytest.public_cert_bytes
+        assert actual_key == pytest.private_key_bytes
+
+    def test_multiple_keys_raises_error(self, tmp_path):
+        cert_path = os.path.join(pytest.data_dir, "public_cert.pem")
+        key_file = tmp_path / "two_keys.pem"
+        key_file.write_bytes(pytest.private_key_bytes + pytest.private_key_bytes)
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._read_cert_and_key_files(cert_path, str(key_file))
+
+    @pytest.mark.parametrize(
+        "trailing_bytes",
+        [
+            b"-----BEGIN CERTIFICATE-----\nMIIB\n",
+            b"MIIB\n-----END CERTIFICATE-----\n",
+        ],
+    )
+    def test_truncated_multi_cert_raises_error(self, tmp_path, trailing_bytes):
+        cert_file = tmp_path / "truncated_chain.pem"
+        cert_file.write_bytes(pytest.public_cert_bytes + trailing_bytes)
+        key_path = os.path.join(pytest.data_dir, "privatekey.pem")
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._read_cert_and_key_files(str(cert_file), key_path)
+
 
 class TestGetCertConfigPath(object):
     def test_success_with_override(self):
@@ -1222,6 +1279,21 @@ class TestMtlsHelper:
         assert current_fingerprint == "current_fingerprint"
         mock_call_client_cert_callback.assert_called_once()
         mock_agent_identity_utils.get_cached_cert_fingerprint.assert_not_called()
+
+    @mock.patch("google.auth.transport._mtls_helper.call_client_cert_callback")
+    @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
+    def test_check_parameters_for_unauthorized_response_no_call_cert(
+        self, mock_agent_identity_utils, mock_call_client_cert_callback
+    ):
+        mock_call_client_cert_callback.return_value = (None, None)
+
+        result = _mtls_helper.check_parameters_for_unauthorized_response(
+            cached_cert=CERT_MOCK_VAL
+        )
+
+        assert result == (None, None, None, None)
+        mock_call_client_cert_callback.assert_called_once()
+        mock_agent_identity_utils.parse_certificate.assert_not_called()
 
     @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
     def test_call_client_cert_callback(self, mock_get_client_ssl_credentials):
@@ -1913,6 +1985,12 @@ class TestIsMtlsEndpoint(object):
             "https://p.googleapis.com/",
             "https://p.googleapis.com:443/v1",
             "https://p.googleapis.com.",
+            "https://mtls.run.app",
+            "https://mtls.run.app/",
+            "https://my-service-123456.us-central1.mtls.run.app",
+            "https://my-service-123456.us-central1.mtls.run.app/v1/invocations",
+            "https://tag---my-service-123456.us-central1.mtls.run.app.",
+            b"https://my-service-123456.us-central1.mtls.run.app",
         ],
     )
     def test_is_mtls_endpoint_true(self, url):
@@ -1926,6 +2004,11 @@ class TestIsMtlsEndpoint(object):
             "https://storage.googleapis.com:443/b/my-bucket",
             "https://storage.googleapis.com:443/bucket/mtls.googleapis.com?pageSize=10#frag",
             "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://my-service-xyz-uc.a.run.app",
+            "https://my-service-123456.us-central1.run.app",
+            "https://my-service-xyz-uc.a.run.app/mtls.run.app",
+            "https://fake-mtls.run.app/v1",
+            "https://fake-mtls.run.app.attacker.com/v1",
             "https://[2001:db8::1]:443/mtls.googleapis.com",
             "https://[::1]:8443/mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
@@ -1944,6 +2027,7 @@ class TestIsMtlsEndpoint(object):
                 "https://storage.googleapis.com/bucket/mtls.googleapis.com"
             ),
             "https://.",
+            "https://[::1",
             "",
             None,
             123,

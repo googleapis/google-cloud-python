@@ -1819,7 +1819,7 @@ class TestCredentials(object):
             credentials.refresh(None)
 
         assert excinfo.match(
-            "Failed to retrieve certificate bytes for external account credentials"
+            "Failed to retrieve or parse certificate for external account credentials"
         )
 
     @mock.patch.object(
@@ -1835,8 +1835,29 @@ class TestCredentials(object):
         with pytest.raises(exceptions.RefreshError) as excinfo:
             credentials.refresh(None)
 
-        msg = "Failed to retrieve certificate bytes for external"
+        msg = "Failed to retrieve or parse certificate for external"
         assert excinfo.match(msg + " account credentials")
+
+    @mock.patch(
+        "google.auth._agent_identity_utils.parse_certificate",
+        side_effect=ValueError("malformed certificate chain"),
+    )
+    @mock.patch.object(
+        identity_pool.Credentials, "_get_cert_bytes", return_value=b"bad_cert"
+    )
+    def test_refresh_parse_certificate_value_error_raises_refresh_error(
+        self, mock_get_cert_bytes, mock_parse_certificate
+    ):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        assert excinfo.match(
+            "Failed to retrieve or parse certificate for external account credentials"
+        )
 
     @mock.patch("google.auth._agent_identity_utils.parse_certificate")
     @mock.patch(
