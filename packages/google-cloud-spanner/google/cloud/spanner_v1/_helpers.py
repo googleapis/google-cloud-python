@@ -1157,7 +1157,7 @@ class _BoundedStreamDrainer:
     ):
         self._queue_size = queue_size
         self._worker_count = worker_count
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
         self._reset()
 
     def _reset(self):
@@ -1167,7 +1167,7 @@ class _BoundedStreamDrainer:
         self._workers = []
 
     def _reset_after_fork(self):
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
         self._reset()
 
     def _ensure_started(self):
@@ -1208,44 +1208,54 @@ class _BoundedStreamDrainer:
             return
 
         with self._lock:
-            stopped = self._stopped
-
-        # If already shut down or during interpreter exit, drain inline on caller thread.
-        if stopped:
-            try:
-                for _ in iterator:
+            if not self._stopped:
+                try:
+                    self._ensure_started()
+                    self._queue.put_nowait(iterator)
+                    return
+                except Exception:
+                    # Under extreme bursts where the queue is temporarily full, or if thread
+                    # creation fails (e.g. in restricted environments or during shutdown),
+                    # fall through to drain inline on the caller thread.
                     pass
-            except Exception:
-                pass
-            return
 
+        # If already shut down or during interpreter exit, or if the queue is full,
+        # drain inline on caller thread rather than cancelling a successful query.
+        # Because trailers are delivered in sub-millisecond time (<0.5ms),
+        # inline draining adds negligible latency while guaranteeing status OK.
         try:
-            self._ensure_started()
-            self._queue.put_nowait(iterator)
-        except Exception:
-            # Under extreme bursts where the queue is temporarily full, or if thread
-            # creation fails (e.g. in restricted environments or during shutdown),
-            # drain inline on the caller thread rather than cancelling a successful query.
-            # Because trailers are delivered in sub-millisecond time (<0.5ms),
-            # inline draining adds negligible latency while guaranteeing status OK.
-            try:
-                for _ in iterator:
-                    pass
-            except Exception:
+            for _ in iterator:
                 pass
+        except Exception:
+            pass
 
-    def shutdown(self):
-        """Cleanly terminate worker threads during interpreter shutdown."""
+    def shutdown(self, timeout: float = 0.5):
+        """Cleanly terminate worker threads during interpreter shutdown.
+
+        This is a best-effort cleanup at interpreter exit bounded by ``timeout``
+        seconds across all workers.
+        """
         with self._lock:
             if self._stopped:
                 return
             self._stopped = True
-            if self._started:
-                for _ in range(len(self._workers)):
-                    try:
-                        self._queue.put_nowait(None)
-                    except queue.Full:
-                        pass
+
+        if self._started:
+            deadline = time.monotonic() + timeout
+            for _ in range(len(self._workers)):
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                try:
+                    self._queue.put(None, timeout=remaining)
+                except queue.Full:
+                    break
+
+            for worker in self._workers:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                worker.join(timeout=remaining)
 
 
 _GLOBAL_STREAM_DRAINER = _BoundedStreamDrainer()
