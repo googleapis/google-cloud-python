@@ -176,7 +176,7 @@ def _restart_on_unavailable(
                     source_exc, current_request_id
                 )
                 raise final_exc from source_exc
-            CrossSync._Sync_Impl.sleep(next_sleep)
+            time.sleep(next_sleep)
 
     while True:
         try:

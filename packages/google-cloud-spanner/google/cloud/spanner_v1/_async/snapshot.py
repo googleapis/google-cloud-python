@@ -172,7 +172,10 @@ async def _restart_on_unavailable(
                 final_exc = _augment_error_with_request_id(final_exc, current_request_id)
                 source_exc = _augment_error_with_request_id(source_exc, current_request_id)
                 raise final_exc from source_exc
-            await CrossSync.sleep(next_sleep)
+            if CrossSync.is_async:
+                await asyncio.sleep(next_sleep)
+            else:
+                time.sleep(next_sleep)
 
     while True:
         try:
