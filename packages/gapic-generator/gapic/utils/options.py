@@ -225,7 +225,7 @@ class Options:
                     "Expected format is 'resource.path/Name:AliasName'."
                 )
 
-        resumable_upload_prefix = opts.pop("resumable-upload-prefix", ["resumable/upload"])[0]
+        resumable_upload_prefix = opts.pop("resumable-upload-prefix", ["resumable/upload"]).pop()
 
         answer = Options(
             name=opts.pop("name", [""]).pop(),
