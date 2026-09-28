@@ -22,11 +22,8 @@ from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
 from google.cloud.storage import __version__
-from google.cloud.storage.grpc_client import (
-    _DEFAULT_HOST,
-    _resolve_direct_path_interconnect,
-    _rewrite_host_for_interconnect,
-)
+
+_DEFAULT_HOST = "storage.googleapis.com"
 
 
 def _validate_metadata(metadata):
@@ -66,13 +63,6 @@ class AsyncGrpcClient:
     :param attempt_direct_path:
         (Optional) Whether to attempt to use DirectPath for gRPC connections.
         Defaults to ``True``.
-
-    :type attempt_direct_path_xds_over_interconnect: bool
-    :param attempt_direct_path_xds_over_interconnect:
-        (Optional) Whether to attempt DirectPath over Cloud Interconnect
-        using xDS and standard TLS. Can also be overridden via the
-        ``GOOGLE_CLOUD_ENABLE_DIRECT_PATH_XDS_OVER_INTERCONNECT`` environment
-        variable (``"true"`` or ``"false"``). Defaults to ``False``.
     """
 
     def __init__(
@@ -82,7 +72,6 @@ class AsyncGrpcClient:
         client_options=None,
         *,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
     ):
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
@@ -103,16 +92,11 @@ class AsyncGrpcClient:
         if agent_version not in client_info.user_agent:
             client_info.user_agent += f" {agent_version} "
 
-        use_dp_interconnect = _resolve_direct_path_interconnect(
-            attempt_direct_path_xds_over_interconnect
-        )
-
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,
             client_info=client_info,
             client_options=client_options,
             attempt_direct_path=attempt_direct_path,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
         )
 
     def _create_anonymous_client(self, client_options, credentials):
@@ -136,7 +120,6 @@ class AsyncGrpcClient:
         client_info=None,
         client_options=None,
         attempt_direct_path=True,
-        attempt_direct_path_xds_over_interconnect=False,
     ):
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
@@ -146,33 +129,17 @@ class AsyncGrpcClient:
 
         host = _DEFAULT_HOST
         quota_project_id = None
-        if isinstance(client_options, dict):
-            host = client_options.get("api_endpoint") or _DEFAULT_HOST
-            quota_project_id = client_options.get("quota_project_id")
-        elif client_options:
+        if client_options:
             host = getattr(client_options, "api_endpoint", None) or _DEFAULT_HOST
             quota_project_id = getattr(client_options, "quota_project_id", None)
 
-        if attempt_direct_path_xds_over_interconnect:
-            host = _rewrite_host_for_interconnect(host)
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=bool(
-                    attempt_direct_path or attempt_direct_path_xds_over_interconnect
-                ),
-                attempt_direct_path_xds_over_interconnect=True,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
-        else:
-            channel = transport_cls.create_channel(
-                host=host,
-                quota_project_id=quota_project_id,
-                attempt_direct_path=attempt_direct_path,
-                credentials=credentials,
-                options=(("grpc.primary_user_agent", primary_user_agent),),
-            )
+        channel = transport_cls.create_channel(
+            host=host,
+            quota_project_id=quota_project_id,
+            attempt_direct_path=attempt_direct_path,
+            credentials=credentials,
+            options=(("grpc.primary_user_agent", primary_user_agent),),
+        )
         transport = transport_cls(channel=channel)
 
         return storage_v2.StorageAsyncClient(
