@@ -505,47 +505,28 @@ def _get_type_decoder(field_type, field_name, column_info=None):
     """
 
     type_code = field_type.code
-    # Note: STRING and BOOL use operator.attrgetter because direct attribute extraction
-    # is faster in Python. Other types require type transformation, so they use lambdas.
-    if type_code == TypeCode.STRING:
-        return operator.attrgetter("string_value")
-    elif type_code == TypeCode.BYTES:
-        return lambda value_pb: value_pb.string_value.encode("utf8")
-    elif type_code == TypeCode.BOOL:
-        return operator.attrgetter("bool_value")
-    elif type_code == TypeCode.INT64:
-        return lambda value_pb: int(value_pb.string_value)
-    elif type_code == TypeCode.FLOAT64:
-        return _parse_float
-    elif type_code == TypeCode.FLOAT32:
-        return _parse_float
-    elif type_code == TypeCode.DATE:
-        return lambda value_pb: _date_fromisoformat(value_pb.string_value)
-    elif type_code == TypeCode.TIMESTAMP:
-        return _parse_timestamp
-    elif type_code == TypeCode.NUMERIC:
-        return lambda value_pb: _Decimal(value_pb.string_value)
-    elif type_code == TypeCode.JSON:
-        return lambda value_pb: _json_from_str(value_pb.string_value)
-    elif type_code == TypeCode.UUID:
-        return lambda value_pb: _uuid_UUID(value_pb.string_value)
-    elif type_code == TypeCode.PROTO:
+    try:
+        type_code_integer = int(type_code)
+    except (TypeError, ValueError):
+        type_code_integer = None
+
+    if type_code_integer in _SCALAR_DECODERS:
+        return _SCALAR_DECODERS[type_code_integer]
+    elif type_code_integer == _PROTO_TYPE_CODE:
         return lambda value_pb: _parse_proto(value_pb, column_info, field_name)
-    elif type_code == TypeCode.ENUM:
+    elif type_code_integer == _ENUM_TYPE_CODE:
         return lambda value_pb: _parse_proto_enum(value_pb, column_info, field_name)
-    elif type_code == TypeCode.ARRAY:
+    elif type_code_integer == _ARRAY_TYPE_CODE:
         element_decoder = _get_type_decoder(
             field_type.array_element_type, field_name, column_info
         )
         return lambda value_pb: _parse_array(value_pb, element_decoder)
-    elif type_code == TypeCode.STRUCT:
+    elif type_code_integer == _STRUCT_TYPE_CODE:
         element_decoders = [
             _get_type_decoder(item_field.type_, field_name, column_info)
             for item_field in field_type.struct_type.fields
         ]
         return lambda value_pb: _parse_struct(value_pb, element_decoders)
-    elif type_code == TypeCode.INTERVAL:
-        return _parse_interval
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
 
@@ -700,6 +681,29 @@ def _parse_interval(value_pb):
     if hasattr(value_pb, "string_value"):
         return Interval.from_str(value_pb.string_value)
     return Interval.from_str(value_pb)
+
+
+# Note: STRING and BOOL use operator.attrgetter because direct attribute extraction
+# is faster in Python. Other types require type transformation, so they use lambdas.
+_SCALAR_DECODERS = {
+    int(TypeCode.STRING): operator.attrgetter("string_value"),
+    int(TypeCode.BYTES): lambda value_pb: value_pb.string_value.encode("utf8"),
+    int(TypeCode.BOOL): operator.attrgetter("bool_value"),
+    int(TypeCode.INT64): lambda value_pb: int(value_pb.string_value),
+    int(TypeCode.FLOAT64): _parse_float,
+    int(TypeCode.FLOAT32): _parse_float,
+    int(TypeCode.DATE): lambda value_pb: _date_fromisoformat(value_pb.string_value),
+    int(TypeCode.TIMESTAMP): _parse_timestamp,
+    int(TypeCode.NUMERIC): lambda value_pb: _Decimal(value_pb.string_value),
+    int(TypeCode.JSON): lambda value_pb: _json_from_str(value_pb.string_value),
+    int(TypeCode.UUID): lambda value_pb: _uuid_UUID(value_pb.string_value),
+    int(TypeCode.INTERVAL): _parse_interval,
+}
+
+_PROTO_TYPE_CODE = int(TypeCode.PROTO)
+_ENUM_TYPE_CODE = int(TypeCode.ENUM)
+_ARRAY_TYPE_CODE = int(TypeCode.ARRAY)
+_STRUCT_TYPE_CODE = int(TypeCode.STRUCT)
 
 
 class _SessionWrapper(object):
