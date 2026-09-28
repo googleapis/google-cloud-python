@@ -54,10 +54,18 @@ class Test_to_query_options(unittest.TestCase):
         self.assertEqual(result, options)
 
     def test_invalid_type(self):
-        with self.assertRaises(TypeError):
-            self._callFUT("invalid")
-        with self.assertRaises(TypeError):
-            self._callFUT(123)
+        for invalid_value in ("invalid", 123, "", [], False):
+            with self.subTest(invalid_value=invalid_value):
+                with self.assertRaises(TypeError):
+                    self._callFUT(invalid_value)
+
+    def test_unknown_key_with_empty_value_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": ""})
+
+    def test_unknown_key_with_non_empty_value_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": "1"})
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -214,10 +222,24 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(merge.optimizer_statistics_package, "")
 
     def test_invalid_type_raises_error(self):
-        with self.assertRaises(TypeError):
-            self._callFUT("invalid", None)
-        with self.assertRaises(TypeError):
-            self._callFUT(None, 123)
+        for invalid_value in ("invalid", 123, "", [], False):
+            with self.subTest(invalid_value=invalid_value):
+                with self.assertRaises(TypeError):
+                    self._callFUT(invalid_value, None)
+                with self.assertRaises(TypeError):
+                    self._callFUT(None, invalid_value)
+
+    def test_unknown_key_in_base_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": ""}, None)
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": "1"}, None)
+
+    def test_unknown_key_in_merge_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT(None, {"optmizer_version": ""})
+        with self.assertRaises(ValueError):
+            self._callFUT(None, {"optmizer_version": "1"})
 
 
 class Test_get_cloud_region(unittest.TestCase):

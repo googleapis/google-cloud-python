@@ -160,6 +160,11 @@ def _try_to_coerce_bytes(bytestring):
         )
 
 
+_VALID_QUERY_OPTIONS_KEYS = frozenset(
+    ExecuteSqlRequest.QueryOptions._meta.fields.keys()
+)
+
+
 def _to_query_options(options):
     """Normalize dict or QueryOptions to a non-empty QueryOptions, or None.
 
@@ -176,11 +181,13 @@ def _to_query_options(options):
 
     :raises TypeError:
         If options is not a QueryOptions, dict, or None.
+    :raises ValueError:
+        If options is a dict containing unknown fields.
     """
     if options is None:
         return None
     if isinstance(options, dict):
-        if not any(options.values()):
+        if options.keys() <= _VALID_QUERY_OPTIONS_KEYS and not any(options.values()):
             return None
         options = ExecuteSqlRequest.QueryOptions(options)
     elif not isinstance(options, ExecuteSqlRequest.QueryOptions):
