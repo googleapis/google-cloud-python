@@ -102,7 +102,9 @@ class BucketMetadataCache:
         except api_exceptions.Forbidden:
             # On 403 (Forbidden), cache fallback values permanently to avoid retry storms
             self.update_cache(
-                bucket_name, f"//storage.googleapis.com/projects/_/buckets/{bucket_name}", "global"
+                bucket_name,
+                f"//storage.googleapis.com/projects/_/buckets/{bucket_name}",
+                "global",
             )
         except Exception as e:
             logger.debug(
@@ -129,7 +131,9 @@ class BucketMetadataCache:
         if project_number:
             destination_id = f"//storage.googleapis.com/projects/{project_number}/buckets/{bucket.name}"
         else:
-            destination_id = f"//storage.googleapis.com/projects/_/buckets/{bucket.name}"
+            destination_id = (
+                f"//storage.googleapis.com/projects/_/buckets/{bucket.name}"
+            )
 
         self.update_cache(bucket.name, destination_id, location)
 
