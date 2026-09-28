@@ -41,9 +41,9 @@ DEFAULT = _MethodDefault._DEFAULT_VALUE
 """Sentinel value indicating that a retry, timeout, or compression argument was unspecified,
 so the default should be used."""
 
-TRANSPORT_KIND_GRPC = "grpc"
-TRANSPORT_KIND_REST = "rest"
-DEFAULT_TRANSPORT_KIND = TRANSPORT_KIND_GRPC
+_TRANSPORT_KIND_GRPC = "grpc"
+_TRANSPORT_KIND_REST = "rest"
+_DEFAULT_TRANSPORT_KIND = _TRANSPORT_KIND_GRPC
 
 
 def _is_not_none_or_false(value):
@@ -286,7 +286,7 @@ class _GapicCallable(object):
         method_name=None,
         is_streaming=False,
         client_info=None,
-        kind=DEFAULT_TRANSPORT_KIND,
+        kind=_DEFAULT_TRANSPORT_KIND,
     ):
         self._target = target
         self._retry = retry
@@ -309,7 +309,7 @@ class _GapicCallable(object):
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in (TRANSPORT_KIND_GRPC, TRANSPORT_KIND_REST)
+            and kind in (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -329,7 +329,7 @@ class _GapicCallable(object):
                 span_name, _, _ = _extract_rpc_identity(method_name)
                 span_attributes = {
                     "rpc.system.name": "http"
-                    if kind == TRANSPORT_KIND_REST
+                    if kind == _TRANSPORT_KIND_REST
                     else "grpc",
                     "rpc.method": span_name,
                 }
@@ -417,7 +417,7 @@ def wrap_method(
     client_options=None,
     method_name=None,
     is_streaming=False,
-    kind=DEFAULT_TRANSPORT_KIND,
+    kind=_DEFAULT_TRANSPORT_KIND,
 ):
     """Wrap an RPC method with common behavior.
 
