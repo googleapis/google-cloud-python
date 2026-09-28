@@ -499,13 +499,14 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
     """
 
     allow_reuse_address = False
+    _PROBE_TIMEOUT_SECONDS = 0.1
 
     def __init__(self, *args, **kwargs):
         self._ipv6_socket = None
         super().__init__(*args, **kwargs)
 
     @staticmethod
-    def _is_listener_present(family, addr, port):
+    def is_listener_present(family: int, addr: str, port: int) -> bool:
         """Check if another process is already listening on (addr, port) by
         attempting a test connection.
 
@@ -515,10 +516,15 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
         """
         try:
             with socket.socket(family, socket.SOCK_STREAM) as probe:
-                probe.settimeout(0.1)
+                probe.settimeout(_ExclusiveWSGIServer._PROBE_TIMEOUT_SECONDS)
                 return probe.connect_ex((addr, port)) == 0
         except OSError:
             return False
+
+    @staticmethod
+    def _set_exclusive_addr_use(sock: socket.socket) -> None:
+        if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
 
     def _close_ipv6_socket(self):
         if self._ipv6_socket is not None:
@@ -527,23 +533,19 @@ class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
 
     def server_bind(self):
         host = self.server_address[0]
-        if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        self._set_exclusive_addr_use(self.socket)
         super().server_bind()
         port = self.server_address[1]
         # Reserve IPv6 loopback (::1) so another process cannot intercept localhost callbacks.
         if host == "localhost" and port and hasattr(socket, "AF_INET6"):
             # base class (TCPServer) calls server_close on error
-            if self._is_listener_present(socket.AF_INET6, "::1", port):
+            if self.is_listener_present(socket.AF_INET6, "::1", port):
                 raise OSError(errno.EADDRINUSE, "Address already in use")
             # Hold `::1` without calling `listen()` so no other process can claim
             # the port while the browser falls back from `::1` to `127.0.0.1`.
             try:
                 self._ipv6_socket = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-                if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
-                    self._ipv6_socket.setsockopt(
-                        socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1
-                    )
+                self._set_exclusive_addr_use(self._ipv6_socket)
                 self._ipv6_socket.bind(("::1", port))
             except OSError:
                 self._close_ipv6_socket()

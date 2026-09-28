@@ -53,7 +53,7 @@ def is_port_open(port):
     # Also verify that no process is already listening on IPv6 loopback (::1).
     if is_open and hasattr(socket, "AF_INET6"):
         is_open = (
-            not google_auth_oauthlib.flow._ExclusiveWSGIServer._is_listener_present(
+            not google_auth_oauthlib.flow._ExclusiveWSGIServer.is_listener_present(
                 socket.AF_INET6, "::1", port
             )
         )

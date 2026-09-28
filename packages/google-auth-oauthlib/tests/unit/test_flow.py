@@ -628,9 +628,9 @@ class TestExclusiveWSGIServer(object):
                 with pytest.raises(OSError):
                     server.server_bind()
 
-            # 2. _is_listener_present returns False when socket() raises OSError
+            # 2. is_listener_present returns False when socket() raises OSError
             mock_socket.socket.side_effect = OSError("socket error")
-            assert not flow._ExclusiveWSGIServer._is_listener_present(
+            assert not flow._ExclusiveWSGIServer.is_listener_present(
                 socket.AF_INET6, "::1", 8085
             )
 
@@ -645,7 +645,7 @@ class TestExclusiveWSGIServer(object):
         with (
             mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"),
             mock.patch.object(
-                flow._ExclusiveWSGIServer, "_is_listener_present", return_value=True
+                flow._ExclusiveWSGIServer, "is_listener_present", return_value=True
             ) as is_listener_present,
         ):
             server.server_bind()
@@ -664,7 +664,7 @@ class TestExclusiveWSGIServer(object):
         with (
             mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"),
             mock.patch.object(
-                flow._ExclusiveWSGIServer, "_is_listener_present", return_value=False
+                flow._ExclusiveWSGIServer, "is_listener_present", return_value=False
             ),
             mock.patch("google_auth_oauthlib.flow.socket") as mock_socket,
         ):
