@@ -990,7 +990,7 @@ class Client(ClientWithProject):
                 ):
                     try:
                         self._bucket_metadata_cache.update_cache(
-                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                            bucket_name, f"//storage.googleapis.com/projects/_/buckets/{bucket_name}", "global"
                         )
                     except Exception:
                         pass
@@ -1066,7 +1066,7 @@ class Client(ClientWithProject):
                 ):
                     try:
                         self._bucket_metadata_cache.update_cache(
-                            bucket_name, f"projects/_/buckets/{bucket_name}", "global"
+                            bucket_name, f"//storage.googleapis.com/projects/_/buckets/{bucket_name}", "global"
                         )
                     except Exception:
                         pass
