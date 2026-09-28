@@ -162,9 +162,7 @@ class GrpcClient(ClientWithProject):
             channel_kwargs = {
                 "host": host,
                 "credentials": credentials,
-                "attempt_direct_path": bool(
-                    attempt_direct_path or attempt_direct_path_xds_over_interconnect
-                ),
+                "attempt_direct_path": True,
                 "attempt_direct_path_xds_over_interconnect": True,
             }
             if quota_project_id is not None:

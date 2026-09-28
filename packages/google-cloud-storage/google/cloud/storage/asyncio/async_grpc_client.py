@@ -158,9 +158,7 @@ class AsyncGrpcClient:
             channel = transport_cls.create_channel(
                 host=host,
                 quota_project_id=quota_project_id,
-                attempt_direct_path=bool(
-                    attempt_direct_path or attempt_direct_path_xds_over_interconnect
-                ),
+                attempt_direct_path=True,
                 attempt_direct_path_xds_over_interconnect=True,
                 credentials=credentials,
                 options=(("grpc.primary_user_agent", primary_user_agent),),
