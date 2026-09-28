@@ -330,8 +330,11 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
             _observability is not None
             and (otel_interceptors := _observability.get_otel_async_interceptor(self._client_options)) is not None
         ):
-            otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]
-            channel_interceptors.extend(otel_list)
+            # NOTE: Coverage tool ignores async interceptors in environments running
+            # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
+            # Lifecycle: Can be lifted once lowest constraints require google-api-core >= 2.36.0.
+            otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
+            channel_interceptors.extend(otel_list)  # pragma: NO COVER
 
         # Fallback for older versions of google-api-core where apply_channel_interceptors is unavailable.
         def _fallback_apply_interceptors(channel, interceptors):  # pragma: NO COVER

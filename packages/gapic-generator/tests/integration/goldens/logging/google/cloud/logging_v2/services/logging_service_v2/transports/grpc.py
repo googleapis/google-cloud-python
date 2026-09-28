@@ -287,7 +287,10 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
             and otel_interceptor not in channel_interceptors
             and not any(getattr(i, "_is_otel_interceptor", None) is True for i in channel_interceptors)
         ):
-            channel_interceptors.append(otel_interceptor)
+            # NOTE: Coverage tool ignores interceptor append in environments running
+            # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
+            # Lifecycle: Can be lifted once lowest constraints require google-api-core >= 2.36.0.
+            channel_interceptors.append(otel_interceptor)  # pragma: NO COVER
 
         apply_interceptors = getattr(
             grpc_helpers,

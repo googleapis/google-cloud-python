@@ -484,7 +484,10 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 _observability is not None
                 and _observability.is_otel_capabilities_enabled(self._client_options)
             ):
-                client_options = self._client_options
+                # NOTE: Coverage tool ignores this line in environments running
+                # legacy google-api-core (< 2.36.0) where OpenTelemetry is unavailable.
+                # Lifecycle: Can be lifted once lowest constraints require google-api-core >= 2.36.0.
+                client_options = self._client_options  # pragma: NO COVER
 
             # initialize with the provided callable or the passed in class
             transport_kwargs = {

@@ -50,6 +50,7 @@ from google.cloud.logging_v2.services.config_service_v2 import BaseConfigService
 from google.cloud.logging_v2.services.config_service_v2 import BaseConfigServiceV2Client
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.services.config_service_v2 import transports
+from google.cloud.logging_v2.services.config_service_v2.client import _observability
 from google.cloud.logging_v2.types import logging_config
 from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
@@ -736,12 +737,15 @@ def test_base_config_service_v2_client_client_options_from_dict():
         )
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 @pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
     pytest.param(True, True, id="otel_injection_enabled"),
     pytest.param(False, False, id="otel_injection_disabled"),
 ])
 def test_base_config_service_v2_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
-    from google.cloud.logging_v2.services.config_service_v2.client import _observability
     with (
         mock.patch.object(
             _observability,
@@ -791,17 +795,20 @@ def test_config_service_v2_grpc_transport_channel_interceptors():
         assert transport.grpc_channel == mock_channel
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 def test_config_service_v2_grpc_transport_otel_channel_interceptor():
     mock_otel_interceptor = mock.Mock()
-    mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
     mock_channel = mock.Mock()
 
     with (
-        mock.patch(
-            "google.cloud.logging_v2.services.config_service_v2.transports.grpc._observability",
-            mock_obs,
-        ),
+        mock.patch.object(
+            _observability,
+            "get_otel_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_interceptor,
         mock.patch.object(
             transports.ConfigServiceV2GrpcTransport,
             "create_channel",
@@ -820,7 +827,7 @@ def test_config_service_v2_grpc_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_get_interceptor.assert_called_once_with(options)
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_otel_interceptor]
         )
@@ -868,18 +875,21 @@ def test_config_service_v2_grpc_asyncio_transport_channel_interceptors():
         assert transport.grpc_channel == mock_channel
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 def test_config_service_v2_grpc_asyncio_transport_otel_channel_interceptor():
     mock_otel_interceptor = mock.Mock()
-    mock_obs = mock.Mock()
-    mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
     mock_channel = mock.Mock()
     mock_channel._unary_unary_interceptors = []
 
     with (
-        mock.patch(
-            "google.cloud.logging_v2.services.config_service_v2.transports.grpc_asyncio._observability",
-            mock_obs,
-        ),
+        mock.patch.object(
+            _observability,
+            "get_otel_async_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_async_interceptor,
         mock.patch.object(
             transports.ConfigServiceV2GrpcAsyncIOTransport,
             "create_channel",
@@ -892,7 +902,7 @@ def test_config_service_v2_grpc_asyncio_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
+        mock_get_async_interceptor.assert_called_once_with(options)
         assert mock_create_channel.call_count == 1
         assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
         assert transport.grpc_channel == mock_channel

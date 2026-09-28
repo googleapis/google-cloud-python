@@ -56,6 +56,7 @@ from google.cloud.eventarc_v1.services.eventarc import EventarcAsyncClient
 from google.cloud.eventarc_v1.services.eventarc import EventarcClient
 from google.cloud.eventarc_v1.services.eventarc import pagers
 from google.cloud.eventarc_v1.services.eventarc import transports
+from google.cloud.eventarc_v1.services.eventarc.client import _observability
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection
@@ -781,12 +782,15 @@ def test_eventarc_client_client_options_from_dict():
         )
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 @pytest.mark.parametrize("capabilities_enabled, expected_options_injected", [
     pytest.param(True, True, id="otel_injection_enabled"),
     pytest.param(False, False, id="otel_injection_disabled"),
 ])
 def test_eventarc_client_otel_channel_injection(capabilities_enabled, expected_options_injected):
-    from google.cloud.eventarc_v1.services.eventarc.client import _observability
     with (
         mock.patch.object(
             _observability,
@@ -836,17 +840,20 @@ def test_eventarc_grpc_transport_channel_interceptors():
         assert transport.grpc_channel == mock_channel
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 def test_eventarc_grpc_transport_otel_channel_interceptor():
     mock_otel_interceptor = mock.Mock()
-    mock_obs = mock.Mock()
-    mock_obs.get_otel_interceptor.return_value = mock_otel_interceptor
     mock_channel = mock.Mock()
 
     with (
-        mock.patch(
-            "google.cloud.eventarc_v1.services.eventarc.transports.grpc._observability",
-            mock_obs,
-        ),
+        mock.patch.object(
+            _observability,
+            "get_otel_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_interceptor,
         mock.patch.object(
             transports.EventarcGrpcTransport,
             "create_channel",
@@ -865,7 +872,7 @@ def test_eventarc_grpc_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_obs.get_otel_interceptor.assert_called_once_with(options)
+        mock_get_interceptor.assert_called_once_with(options)
         mock_apply_interceptors.assert_called_once_with(
             mock_channel, [mock_otel_interceptor]
         )
@@ -913,18 +920,21 @@ def test_eventarc_grpc_asyncio_transport_channel_interceptors():
         assert transport.grpc_channel == mock_channel
 
 
+@pytest.mark.skipif(
+    _observability is None,
+    reason="Requires google-api-core with OpenTelemetry support (>= 2.36.0)",
+)
 def test_eventarc_grpc_asyncio_transport_otel_channel_interceptor():
     mock_otel_interceptor = mock.Mock()
-    mock_obs = mock.Mock()
-    mock_obs.get_otel_async_interceptor.return_value = mock_otel_interceptor
     mock_channel = mock.Mock()
     mock_channel._unary_unary_interceptors = []
 
     with (
-        mock.patch(
-            "google.cloud.eventarc_v1.services.eventarc.transports.grpc_asyncio._observability",
-            mock_obs,
-        ),
+        mock.patch.object(
+            _observability,
+            "get_otel_async_interceptor",
+            return_value=mock_otel_interceptor,
+        ) as mock_get_async_interceptor,
         mock.patch.object(
             transports.EventarcGrpcAsyncIOTransport,
             "create_channel",
@@ -937,7 +947,7 @@ def test_eventarc_grpc_asyncio_transport_otel_channel_interceptor():
             client_options=options,
         )
 
-        mock_obs.get_otel_async_interceptor.assert_called_once_with(options)
+        mock_get_async_interceptor.assert_called_once_with(options)
         assert mock_create_channel.call_count == 1
         assert mock_otel_interceptor in transport.grpc_channel._unary_unary_interceptors
         assert transport.grpc_channel == mock_channel
