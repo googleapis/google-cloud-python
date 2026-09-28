@@ -16,11 +16,15 @@
 
 from __future__ import absolute_import
 
+import collections
+import copy
 import functools
 import http.client as http_client
 import logging
 import numbers
+import threading
 import time
+import urllib.parse as urllib_parse
 from typing import Optional
 
 try:
@@ -141,6 +145,18 @@ class Request(transport.Request):
             session = requests.Session()
 
         self.session = session
+        self._mtls_adapter = None
+        self._mtls_unavailable = False
+        self._mtls_lock = threading.Lock()
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_mtls_lock"] = None
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self._mtls_lock = threading.Lock()
 
     def __del__(self):
         try:
@@ -151,6 +167,67 @@ class Request(transport.Request):
             # might not be considered a normal Python exception causing
             # TypeError.
             pass
+
+    def _configure_mtls_if_needed(self, url):
+        """Lazily mounts a mutual TLS adapter onto the session for mTLS endpoints.
+
+        Args:
+            url (str): The target request URL.
+        """
+        if not _mtls_helper.is_mtls_endpoint(url):
+            return
+
+        # Mount on the specific origin rather than globally on "https://" so client
+        # certificates are not sent to other hosts sharing this session. The trailing
+        # slash prevents requests' startswith() matching from matching lookalike domains.
+        parsed = urllib_parse.urlparse(url)
+        prefix = f"{parsed.scheme}://{parsed.netloc.lower()}/"
+        with self._mtls_lock:
+            session_adapter = self.session.get_adapter(url if parsed.path else prefix)
+            # Skip if _MutualTlsAdapter is already mounted or the caller mounted a custom adapter.
+            if type(session_adapter) is not requests.adapters.HTTPAdapter:
+                return
+
+            if self._mtls_adapter is None:
+                if self._mtls_unavailable or not _mtls_helper.check_use_client_cert():
+                    return
+                has_cert, cert, key = _mtls_helper.get_client_cert_and_key()
+                if not has_cert:
+                    self._mtls_unavailable = True
+                    return
+
+                kwargs = {
+                    "max_retries": getattr(session_adapter, "max_retries", 0),
+                    "pool_connections": getattr(
+                        session_adapter,
+                        "_pool_connections",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    ),
+                    "pool_maxsize": getattr(
+                        session_adapter,
+                        "_pool_maxsize",
+                        requests.adapters.DEFAULT_POOLSIZE,
+                    ),
+                    "pool_block": getattr(
+                        session_adapter,
+                        "_pool_block",
+                        requests.adapters.DEFAULT_POOLBLOCK,
+                    ),
+                }
+                self._mtls_adapter = _MutualTlsAdapter(cert, key, **kwargs)
+
+            # Replace session.adapters atomically instead of calling session.mount(),
+            # which mutates the OrderedDict in place and can raise RuntimeError if
+            # another thread is iterating over session.adapters in get_adapter().
+            new_adapters = self.session.adapters.copy()
+            new_adapters[prefix] = self._mtls_adapter
+            self.session.adapters = collections.OrderedDict(
+                sorted(
+                    new_adapters.items(),
+                    key=lambda item: len(item[0]),
+                    reverse=True,
+                )
+            )
 
     def __call__(
         self,
@@ -182,13 +259,19 @@ class Request(transport.Request):
             google.auth.exceptions.TransportError: If any exception occurred.
         """
         try:
+            self._configure_mtls_if_needed(url)
             _helpers.request_log(_LOGGER, method, url, body, headers)
             response = self.session.request(
                 method, url, data=body, headers=headers, timeout=timeout, **kwargs
             )
             _helpers.response_log(_LOGGER, response)
             return _Response(response)
-        except requests.exceptions.RequestException as caught_exc:
+        except (
+            requests.exceptions.RequestException,
+            exceptions.MutualTLSChannelError,
+            exceptions.ClientCertError,
+            OSError,
+        ) as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
             raise new_exc from caught_exc
 
@@ -250,6 +333,14 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         self._ctx_proxymanager = ctx_proxymanager
 
         super(_MutualTlsAdapter, self).__init__(**kwargs)
+
+    def __deepcopy__(self, memo):
+        new_adapter = object.__new__(type(self))
+        memo[id(self)] = new_adapter
+        new_adapter._ctx_poolmanager = self._ctx_poolmanager
+        new_adapter._ctx_proxymanager = self._ctx_proxymanager
+        new_adapter.__setstate__(copy.deepcopy(self.__getstate__(), memo))
+        return new_adapter
 
     def init_poolmanager(self, *args, **kwargs):
         kwargs["ssl_context"] = self._ctx_poolmanager
