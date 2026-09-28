@@ -159,6 +159,21 @@ async def _restart_on_unavailable(
             deadline = time.monotonic() + timeout
         sleep_iter = iter(exponential_sleep_generator(initial, maximum, multiplier=multiplier))
 
+    async def sleep_or_raise(exc):
+        if sleep_iter is not None:
+            try:
+                next_sleep = next(sleep_iter)
+            except StopIteration:
+                next_sleep = 0
+            if deadline is not None and time.monotonic() + next_sleep > deadline:
+                final_exc, source_exc = build_retry_error(
+                    [exc], RetryFailureReason.TIMEOUT, timeout
+                )
+                final_exc = _augment_error_with_request_id(final_exc, current_request_id)
+                source_exc = _augment_error_with_request_id(source_exc, current_request_id)
+                raise final_exc from source_exc
+            await CrossSync.sleep(next_sleep)
+
     while True:
         try:
             # Get results iterator.
@@ -214,19 +229,7 @@ async def _restart_on_unavailable(
                 raise _augment_error_with_request_id(exc, current_request_id)
             if retry_predicate is not None and not retry_predicate(exc):
                 raise _augment_error_with_request_id(exc, current_request_id)
-            if sleep_iter is not None:
-                try:
-                    next_sleep = next(sleep_iter)
-                except StopIteration:
-                    next_sleep = 0
-                if deadline is not None and time.monotonic() + next_sleep > deadline:
-                    final_exc, source_exc = build_retry_error(
-                        [exc], RetryFailureReason.TIMEOUT, timeout
-                    )
-                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
-                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
-                    raise final_exc from source_exc
-                await asyncio.sleep(next_sleep)
+            await sleep_or_raise(exc)
 
             del item_buffer[:]
             request.resume_token = resume_token
@@ -244,19 +247,7 @@ async def _restart_on_unavailable(
             )
             if not resumable_error:
                 raise _augment_error_with_request_id(exc, current_request_id)
-            if sleep_iter is not None:
-                try:
-                    next_sleep = next(sleep_iter)
-                except StopIteration:
-                    next_sleep = 0
-                if deadline is not None and time.monotonic() + next_sleep > deadline:
-                    final_exc, source_exc = build_retry_error(
-                        [exc], RetryFailureReason.TIMEOUT, timeout
-                    )
-                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
-                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
-                    raise final_exc from source_exc
-                await asyncio.sleep(next_sleep)
+            await sleep_or_raise(exc)
 
             del item_buffer[:]
             request.resume_token = resume_token

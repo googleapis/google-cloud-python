@@ -77,12 +77,13 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "Received unexpected EOS on DATA frame from server",
 )
 _TRANSACTION_BEGIN_TIMEOUT_SECONDS = 30.0
-
 _DEFAULT_RETRY_TIMEOUT = 3600.0
 _DEFAULT_RETRY_INITIAL = 0.1
 _DEFAULT_RETRY_MAXIMUM = 32.0
 _DEFAULT_RETRY_MULTIPLIER = 1.3
-_DEFAULT_RETRY_PREDICATE = lambda e: isinstance(e, (ServiceUnavailable, ResourceExhausted))
+_DEFAULT_RETRY_PREDICATE = lambda e: isinstance(
+    e, (ServiceUnavailable, ResourceExhausted)
+)
 
 
 def _restart_on_unavailable(
@@ -126,7 +127,6 @@ def _restart_on_unavailable(
     attempt = 1
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
     current_request_id = None
-
     deadline = None
     sleep_iter = None
     retry_predicate = None
@@ -140,17 +140,43 @@ def _restart_on_unavailable(
             multiplier = _DEFAULT_RETRY_MULTIPLIER
         else:
             timeout = getattr(retry, "_timeout", getattr(retry, "timeout", None))
-            deadline_setting = getattr(retry, "_deadline", getattr(retry, "deadline", None))
+            deadline_setting = getattr(
+                retry, "_deadline", getattr(retry, "deadline", None)
+            )
             if deadline_setting is not None:
                 timeout = deadline_setting
-            retry_predicate = getattr(retry, "_predicate", getattr(retry, "predicate", None))
+            retry_predicate = getattr(
+                retry, "_predicate", getattr(retry, "predicate", None)
+            )
             initial = getattr(retry, "_initial", getattr(retry, "initial", 0.1))
             maximum = getattr(retry, "_maximum", getattr(retry, "maximum", 32.0))
-            multiplier = getattr(retry, "_multiplier", getattr(retry, "multiplier", 1.3))
-
+            multiplier = getattr(
+                retry, "_multiplier", getattr(retry, "multiplier", 1.3)
+            )
         if timeout is not None:
             deadline = time.monotonic() + timeout
-        sleep_iter = iter(exponential_sleep_generator(initial, maximum, multiplier=multiplier))
+        sleep_iter = iter(
+            exponential_sleep_generator(initial, maximum, multiplier=multiplier)
+        )
+
+    def sleep_or_raise(exc):
+        if sleep_iter is not None:
+            try:
+                next_sleep = next(sleep_iter)
+            except StopIteration:
+                next_sleep = 0
+            if deadline is not None and time.monotonic() + next_sleep > deadline:
+                final_exc, source_exc = build_retry_error(
+                    [exc], RetryFailureReason.TIMEOUT, timeout
+                )
+                final_exc = _augment_error_with_request_id(
+                    final_exc, current_request_id
+                )
+                source_exc = _augment_error_with_request_id(
+                    source_exc, current_request_id
+                )
+                raise final_exc from source_exc
+            CrossSync._Sync_Impl.sleep(next_sleep)
 
     while True:
         try:
@@ -190,22 +216,9 @@ def _restart_on_unavailable(
         except (ServiceUnavailable, ResourceExhausted) as exc:
             if isinstance(exc, ResourceExhausted) and retry is None:
                 raise _augment_error_with_request_id(exc, current_request_id)
-            if retry_predicate is not None and not retry_predicate(exc):
+            if retry_predicate is not None and (not retry_predicate(exc)):
                 raise _augment_error_with_request_id(exc, current_request_id)
-            if sleep_iter is not None:
-                try:
-                    next_sleep = next(sleep_iter)
-                except StopIteration:
-                    next_sleep = 0
-                if deadline is not None and time.monotonic() + next_sleep > deadline:
-                    final_exc, source_exc = build_retry_error(
-                        [exc], RetryFailureReason.TIMEOUT, timeout
-                    )
-                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
-                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
-                    raise final_exc from source_exc
-                time.sleep(next_sleep)
-
+            sleep_or_raise(exc)
             del item_buffer[:]
             request.resume_token = resume_token
             if transaction is not None:
@@ -223,20 +236,7 @@ def _restart_on_unavailable(
             )
             if not resumable_error:
                 raise _augment_error_with_request_id(exc, current_request_id)
-            if sleep_iter is not None:
-                try:
-                    next_sleep = next(sleep_iter)
-                except StopIteration:
-                    next_sleep = 0
-                if deadline is not None and time.monotonic() + next_sleep > deadline:
-                    final_exc, source_exc = build_retry_error(
-                        [exc], RetryFailureReason.TIMEOUT, timeout
-                    )
-                    final_exc = _augment_error_with_request_id(final_exc, current_request_id)
-                    source_exc = _augment_error_with_request_id(source_exc, current_request_id)
-                    raise final_exc from source_exc
-                time.sleep(next_sleep)
-
+            sleep_or_raise(exc)
             del item_buffer[:]
             request.resume_token = resume_token
             if transaction is not None:
