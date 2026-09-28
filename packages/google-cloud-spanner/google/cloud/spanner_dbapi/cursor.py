@@ -232,11 +232,16 @@ class Cursor(object):
         """This function should only be used in autocommit mode."""
         self.connection._transaction = transaction
         self.connection._snapshot = None
+        kwargs = {
+            "params": params,
+            "param_types": get_param_types(params),
+            "last_statement": True,
+        }
+        if self.connection.timeout is not None:
+            kwargs["timeout"] = self.connection.timeout
         self._result_set = transaction.execute_sql(
             sql,
-            params=params,
-            param_types=get_param_types(params),
-            last_statement=True,
+            **kwargs,
         )
         self._itr = BufferedIterator(self._result_set)
         self._row_count = None
@@ -551,11 +556,14 @@ class Cursor(object):
         return rows
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
+        kwargs = {"request_options": self.request_options}
+        if self.connection.timeout is not None:
+            kwargs["timeout"] = self.connection.timeout
         self._result_set = snapshot.execute_sql(
             sql,
             params,
             get_param_types(params),
-            request_options=self.request_options,
+            **kwargs,
         )
         # Read the first element so that the StreamedResultSet can
         # return the metadata after a DQL statement.
@@ -644,8 +652,12 @@ class Cursor(object):
             raise ValueError("Database needs to be passed for this operation")
         self.connection.run_prior_DDL_statements()
 
+        kwargs = {}
+        if self.connection.timeout is not None:
+            kwargs["timeout"] = self.connection.timeout
+
         with self.connection.database.snapshot() as snapshot:
-            return list(snapshot.execute_sql(sql, params, param_types))
+            return list(snapshot.execute_sql(sql, params, param_types, **kwargs))
 
     def get_table_column_schema(self, table_name, schema_name=""):
         rows = self.run_sql_in_snapshot(
