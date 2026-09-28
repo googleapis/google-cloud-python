@@ -109,7 +109,12 @@ class StreamedResultSet(object):
         return merged
 
     def _append_to_current_row(self, values):
-        """Append cells to the in-progress partial row."""
+        """Append cells to the in-progress partial row.
+
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check."""
         if self._lazy_decode:
             self._current_row.extend(values)
         else:
@@ -136,7 +141,12 @@ class StreamedResultSet(object):
             )
 
     def _decode_eager_rows(self, values, values_offset, batch_end, width):
-        """Decode complete row batches into typed Python values."""
+        """Decode complete row batches into typed Python values.
+
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check."""
         if width == 1:
             decoder = self._decoders[0]
             self._rows.extend(
@@ -161,11 +171,6 @@ class StreamedResultSet(object):
 
     def _merge_values(self, values):
         """Merge values into rows.
-
-        Note: We manually check value.HasField("null_value") here instead of
-        wrapping every decoder in _parse_nullable to avoid the overhead of
-        an extra Python function call layer for every cell value decoded in this loop.
-        If the nullable check logic is updated in _parse_nullable, update this check.
 
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set."""
