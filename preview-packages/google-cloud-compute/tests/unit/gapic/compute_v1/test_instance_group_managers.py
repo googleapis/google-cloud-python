@@ -3932,7 +3932,7 @@ def test_insert_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -3978,7 +3978,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4129,7 +4129,7 @@ def test_insert_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4175,7 +4175,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5405,7 +5405,7 @@ def test_patch_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5452,7 +5452,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5612,7 +5612,7 @@ def test_patch_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5659,7 +5659,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -11734,7 +11734,9 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -12718,7 +12720,9 @@ def test_patch_rest_call_success(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],

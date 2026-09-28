@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
         "CloudSqlDatabaseReference",
         "LookerExploreReferences",
         "LookerExploreReference",
+        "BigQueryPropertyGraphReference",
         "PrivateLookerInstanceInfo",
         "Datasource",
         "Schema",
@@ -173,12 +174,20 @@ class DatasourceReferences(proto.Message):
 
 class BigQueryTableReferences(proto.Message):
     r"""Message representing references to BigQuery tables and property
-    graphs. At least one of ``table_references`` or
-    ``property_graph_references`` must be populated.
+    graphs. At least one of ``table_references``,
+    ``property_graph_references``, or ``search_scope`` must be
+    populated.
 
     Attributes:
         table_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.BigQueryTableReference]):
             Optional. References to BigQuery tables.
+        property_graph_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.BigQueryPropertyGraphReference]):
+            Optional. References to BigQuery graphs.
+
+            Note: "property graph" is the former name for
+            BigQuery Graph. The field and message names
+            retain the original term for backward
+            compatibility; both refer to the same resource.
         agent_context_reference (google.cloud.geminidataanalytics_v1alpha.types.AgentContextReference):
             Optional. Parameters for retrieving data from
             Agent Context.
@@ -188,6 +197,13 @@ class BigQueryTableReferences(proto.Message):
         proto.MESSAGE,
         number=1,
         message="BigQueryTableReference",
+    )
+    property_graph_references: MutableSequence["BigQueryPropertyGraphReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BigQueryPropertyGraphReference",
+        )
     )
     agent_context_reference: agent_context.AgentContextReference = proto.Field(
         proto.MESSAGE,
@@ -236,7 +252,8 @@ class StudioDatasourceReferences(proto.Message):
 
     Attributes:
         studio_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.StudioDatasourceReference]):
-            The references to the studio datasources.
+            Optional. The references to the studio
+            datasources.
     """
 
     studio_references: MutableSequence["StudioDatasourceReference"] = (
@@ -754,8 +771,8 @@ class LookerExploreReferences(proto.Message):
         explore_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerExploreReference]):
             Required. References to Looker explores.
         credentials (google.cloud.geminidataanalytics_v1alpha.types.Credentials):
-            Optional. The credentials to use when calling the Looker
-            API.
+            Optional. Deprecated: Use credentials in ChatRequest. The
+            credentials to use when calling the Looker API.
 
             Currently supports both OAuth token and API key-based
             credentials, as described in `Authentication with an
@@ -832,6 +849,35 @@ class LookerExploreReference(proto.Message):
     )
 
 
+class BigQueryPropertyGraphReference(proto.Message):
+    r"""Message representing a reference to a single BigQuery
+    property graph.
+
+    Attributes:
+        project_id (str):
+            Required. The project that the property graph
+            belongs to.
+        dataset_id (str):
+            Required. The dataset that the property graph
+            belongs to.
+        property_graph_id (str):
+            Required. The property graph id.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    property_graph_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class PrivateLookerInstanceInfo(proto.Message):
     r"""Message representing a private Looker instance info required
     if the Looker instance is behind a private network.
@@ -893,6 +939,10 @@ class Datasource(proto.Message):
             A reference to a Bigtable instance.
 
             This field is a member of `oneof`_ ``reference``.
+        bigquery_property_graph_reference (google.cloud.geminidataanalytics_v1alpha.types.BigQueryPropertyGraphReference):
+            A reference to a BigQuery property graph.
+
+            This field is a member of `oneof`_ ``reference``.
         firestore_reference (google.cloud.geminidataanalytics_v1alpha.types.FirestoreReference):
             A reference to a Firestore database.
 
@@ -949,6 +999,12 @@ class Datasource(proto.Message):
         number=15,
         oneof="reference",
         message="BigtableReference",
+    )
+    bigquery_property_graph_reference: "BigQueryPropertyGraphReference" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="reference",
+        message="BigQueryPropertyGraphReference",
     )
     firestore_reference: "FirestoreReference" = proto.Field(
         proto.MESSAGE,
@@ -1058,9 +1114,7 @@ class Field(proto.Message):
             schema structures.
         category (str):
             Optional. Field category, not required,
-            currently only useful for Looker. We are using a
-            string to avoid depending on an external package
-            and keep this package self-contained.
+            currently only useful for Looker.
         value_format (str):
             Optional. Looker only. Value format of the
             field. Ref:

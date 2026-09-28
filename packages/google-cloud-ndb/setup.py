@@ -45,7 +45,7 @@ def main():
         "protobuf >= 6.33.5, < 8.0.0",
         "pymemcache >= 2.1.0, < 5.0.0",
         "pytz >= 2022.1",
-        "redis >= 3.0.0, < 8.0.0",
+        "redis >= 3.0.0, < 9.0.0",
     ]
 
     setuptools.setup(
@@ -73,6 +73,7 @@ def main():
             "Programming Language :: Python :: 3.12",
             "Programming Language :: Python :: 3.13",
             "Programming Language :: Python :: 3.14",
+            "Programming Language :: Python :: 3.15",
             "Operating System :: OS Independent",
             "Topic :: Internet",
         ],

@@ -1067,6 +1067,20 @@
         }
       }
     },
+    "DaiSessionService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiSessionServiceClient",
+          "rpcs": {
+            "GetDaiSession": {
+              "methods": [
+                "get_dai_session"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DeviceCapabilityService": {
       "clients": {
         "rest": {

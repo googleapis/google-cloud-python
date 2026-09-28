@@ -17,7 +17,7 @@ try:
     from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
-import pytest  # noqa: I202
+import pytest
 
 from ..helpers import warn_deprecated_credentials_file
 

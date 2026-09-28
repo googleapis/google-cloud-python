@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-parametermanager/#history
 
+## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.4.1...google-cloud-parametermanager-v0.4.2) (2026-09-24)
+
+
+### Features
+
+* update API sources and regenerate ([#18446](https://github.com/googleapis/google-cloud-python/issues/18446)) ([54f1019](https://github.com/googleapis/google-cloud-python/commit/54f10190a4ab7b3772010bf9006de55266f74da9))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.4.0...google-cloud-parametermanager-v0.4.1) (2026-06-22)
 
 

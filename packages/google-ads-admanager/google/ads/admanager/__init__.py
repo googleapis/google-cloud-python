@@ -88,6 +88,9 @@ from google.ads.admanager_v1.services.dai_authentication_key_service.client impo
 from google.ads.admanager_v1.services.dai_encoding_profile_service.client import (
     DaiEncodingProfileServiceClient,
 )
+from google.ads.admanager_v1.services.dai_session_service.client import (
+    DaiSessionServiceClient,
+)
 from google.ads.admanager_v1.services.device_capability_service.client import (
     DeviceCapabilityServiceClient,
 )
@@ -683,6 +686,23 @@ from google.ads.admanager_v1.types.dai_encoding_profile_service import (
     ListDaiEncodingProfilesResponse,
     UpdateDaiEncodingProfileRequest,
 )
+from google.ads.admanager_v1.types.dai_session_enums import (
+    AdBreakFindingTypeEnum,
+    AdRequestFindingTypeEnum,
+    AdResponseTypeEnum,
+    BreakTypeEnum,
+    CreativeFindingTypeEnum,
+    CreativeIdTypeEnum,
+    PodFindingTypeEnum,
+    PrefetchStageTypeEnum,
+    ReportingTypeEnum,
+    SessionFindingSeverityEnum,
+    SlateFindingTypeEnum,
+    StitchingTypeEnum,
+    TrackingPingFindingTypeEnum,
+)
+from google.ads.admanager_v1.types.dai_session_messages import DaiSession
+from google.ads.admanager_v1.types.dai_session_service import GetDaiSessionRequest
 from google.ads.admanager_v1.types.deal_buyer_permission_type_enum import (
     DealBuyerPermissionTypeEnum,
 )
@@ -1261,6 +1281,7 @@ __all__ = (
     "CustomTargetingValueServiceClient",
     "DaiAuthenticationKeyServiceClient",
     "DaiEncodingProfileServiceClient",
+    "DaiSessionServiceClient",
     "DeviceCapabilityServiceClient",
     "DeviceCategoryServiceClient",
     "DeviceManufacturerServiceClient",
@@ -1675,6 +1696,21 @@ __all__ = (
     "ListDaiEncodingProfilesRequest",
     "ListDaiEncodingProfilesResponse",
     "UpdateDaiEncodingProfileRequest",
+    "AdBreakFindingTypeEnum",
+    "AdRequestFindingTypeEnum",
+    "AdResponseTypeEnum",
+    "BreakTypeEnum",
+    "CreativeFindingTypeEnum",
+    "CreativeIdTypeEnum",
+    "PodFindingTypeEnum",
+    "PrefetchStageTypeEnum",
+    "ReportingTypeEnum",
+    "SessionFindingSeverityEnum",
+    "SlateFindingTypeEnum",
+    "StitchingTypeEnum",
+    "TrackingPingFindingTypeEnum",
+    "DaiSession",
+    "GetDaiSessionRequest",
     "DealBuyerPermissionTypeEnum",
     "DealPriorityTierEnum",
     "CompanionDeliveryOptionEnum",

@@ -22,10 +22,7 @@ from unittest import mock
 import pytest  # type: ignore
 import requests
 
-from google.auth import _helpers
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import transport
+from google.auth import _helpers, environment_vars, exceptions, transport
 from google.auth.compute_engine import _metadata
 from google.auth.transport import requests as google_auth_requests
 

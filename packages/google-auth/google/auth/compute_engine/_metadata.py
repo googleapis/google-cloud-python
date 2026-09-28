@@ -27,14 +27,9 @@ from urllib.parse import urljoin
 
 import requests
 
-from google.auth import _helpers
-from google.auth import environment_vars
-from google.auth import exceptions
-from google.auth import metrics
-from google.auth import transport
+from google.auth import _helpers, environment_vars, exceptions, metrics, transport
 from google.auth._exponential_backoff import ExponentialBackoff
 from google.auth.compute_engine import _mtls
-
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -56,6 +56,9 @@
         }
       ]
     },
+    "packages/google-cloud-spanner-dbapi-driver": {
+      "component": "google-cloud-spanner-dbapi-driver"
+    },
     "packages/google-cloud-sql": {
       "component": "google-cloud-sql",
       "extra-files": [

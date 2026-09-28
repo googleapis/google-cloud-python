@@ -57,7 +57,7 @@ run_package_test() {
   local PROJECT_ID
   local GOOGLE_APPLICATION_CREDENTIALS
   local NOX_FILE
-  # Inherit NOX_SESSION from environment to allow configs (like prerelease.cfg) to pass it in
+  # Inherit NOX_SESSION from environment to allow configs to pass it in
   local NOX_SESSION="${NOX_SESSION}"
 
   # ISOLATION: Create a unique gcloud config dir for this run
@@ -77,9 +77,8 @@ run_package_test() {
 
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/google-auth-project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/google-auth-service-account.json"
-      # Note: system.sh is also reused for monorepo-wide continuous unit test jobs
-      # like `core_deps_from_source` and `prerelease_deps`. For google-auth, we only
-      # want to override NOX_FILE to system_tests/noxfile.py when running actual system tests.
+      # Note: For google-auth, we only want to override NOX_FILE to system_tests/noxfile.py
+      # when running actual system tests.
       if [[ -z "${NOX_SESSION}" || "${NOX_SESSION}" == "system-"* ]]; then
         NOX_FILE="system_tests/noxfile.py"
         NOX_SESSION=""
