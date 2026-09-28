@@ -14,22 +14,22 @@
 
 import asyncio
 import collections.abc
-from contextlib import asynccontextmanager
 import functools
 import http.client as http_client
 import inspect
 import logging
 import time
-from typing import Mapping, Optional, TYPE_CHECKING, Union
 import urllib.parse
 import warnings
+from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING, Mapping, Optional, Union
 
+import google.auth.transport._mtls_helper
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
-import google.auth.transport._mtls_helper
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -165,6 +165,7 @@ class AsyncAuthorizedSession:
         self._auth_request = _auth_request
         self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
+        self._mtls_reconfig_counter = 0
         self._refresh_lock: Optional[asyncio.Lock] = None
         self._refresh_counter = 0
 
@@ -326,6 +327,7 @@ class AsyncAuthorizedSession:
         start_time = time.monotonic()
         refresh_counter_at_error = self._refresh_counter
         check_counter_at_error = self._mtls_check_counter
+        reconfig_counter_at_error = self._mtls_reconfig_counter
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -430,11 +432,11 @@ class AsyncAuthorizedSession:
                                                         "channel."
                                                     )
                                                     if self._mtls_init_task is not None:
-                                                        if (
-                                                            not self._mtls_init_task.done()
-                                                        ):
+                                                        if not self._mtls_init_task.done():
                                                             try:
-                                                                await self._mtls_init_task
+                                                                await (
+                                                                    self._mtls_init_task
+                                                                )
                                                             except Exception:
                                                                 pass
                                                         self._mtls_init_task = None
@@ -444,6 +446,7 @@ class AsyncAuthorizedSession:
                                                             call_key_bytes,
                                                         )
                                                     )
+                                                    self._mtls_reconfig_counter += 1
                                                 except Exception as e:
                                                     _LOGGER.error(
                                                         "Failed to reconfigure mTLS channel: %s",
@@ -485,7 +488,17 @@ class AsyncAuthorizedSession:
                                     _LOGGER.debug(
                                         "Credentials do not implement refresh()."
                                     )
-                                    return response
+                                    # A retry only helps when an mTLS reconfiguration
+                                    # occurred for this mTLS endpoint. Short-circuit on
+                                    # non-mTLS endpoints first so that a concurrent
+                                    # rotation (which bumps the session-wide counter)
+                                    # cannot trigger a spurious retry here.
+                                    if (
+                                        not is_mtls_endpoint
+                                        or self._mtls_reconfig_counter
+                                        <= reconfig_counter_at_error
+                                    ):
+                                        return response
                                 except (
                                     exceptions.RefreshError,
                                     getattr(exceptions, "InvalidOperation", Exception),

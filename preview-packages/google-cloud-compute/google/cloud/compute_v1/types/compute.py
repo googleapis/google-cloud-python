@@ -230,6 +230,27 @@ __protobuf__ = proto.module(
         "CancelRegionInstanceGroupManagerResizeRequestRequest",
         "CancelRequestRemovePeeringNetworkRequest",
         "CancelRolloutRequest",
+        "CapacityAdviceRequest",
+        "CapacityAdviceRequestDistributionPolicy",
+        "CapacityAdviceRequestDistributionPolicyZoneConfiguration",
+        "CapacityAdviceRequestInstanceFlexibilityPolicy",
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection",
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk",
+        "CapacityAdviceRequestInstanceProperties",
+        "CapacityAdviceRequestInstancePropertiesScheduling",
+        "CapacityAdviceResponse",
+        "CapacityAdviceResponseRecommendation",
+        "CapacityAdviceResponseRecommendationScores",
+        "CapacityAdviceResponseRecommendationShard",
+        "CapacityAdviceRpcRequest",
+        "CapacityHistoryAdviceRequest",
+        "CapacityHistoryRequest",
+        "CapacityHistoryRequestInstanceProperties",
+        "CapacityHistoryRequestInstancePropertiesScheduling",
+        "CapacityHistoryRequestLocationPolicy",
+        "CapacityHistoryResponse",
+        "CapacityHistoryResponsePreemptionRecord",
+        "CapacityHistoryResponsePriceRecord",
         "CircuitBreakers",
         "CloneRulesFirewallPolicyRequest",
         "CloneRulesNetworkFirewallPolicyRequest",
@@ -590,6 +611,7 @@ __protobuf__ = proto.module(
         "GetPacketMirroringRuleNetworkFirewallPolicyRequest",
         "GetPreviewFeatureRequest",
         "GetProjectRequest",
+        "GetProjectViewRequest",
         "GetPublicAdvertisedPrefixeRequest",
         "GetPublicDelegatedPrefixeRequest",
         "GetRegionAutoscalerRequest",
@@ -1023,6 +1045,7 @@ __protobuf__ = proto.module(
         "InterconnectRemoteLocationPermittedConnections",
         "InterconnectsGetDiagnosticsResponse",
         "InterconnectsGetMacsecConfigResponse",
+        "Interval",
         "InvalidateCacheUrlMapRequest",
         "Items",
         "License",
@@ -1203,6 +1226,7 @@ __protobuf__ = proto.module(
         "Metadata",
         "MetadataFilter",
         "MetadataFilterLabelMatch",
+        "Money",
         "MoveAddressRequest",
         "MoveDiskProjectRequest",
         "MoveFirewallPolicyRequest",
@@ -1392,6 +1416,7 @@ __protobuf__ = proto.module(
         "PreviewFeatureStatusReleaseStatus",
         "PreviewRouterRequest",
         "Project",
+        "ProjectView",
         "ProjectsDisableXpnResourceRequest",
         "ProjectsEnableXpnResourceRequest",
         "ProjectsGetXpnResources",
@@ -22258,10 +22283,11 @@ class BackendServiceHAPolicyLeaderNetworkEndpoint(proto.Message):
             attached to the NEG specified in the
             haPolicy.leader.backendGroup.
 
-            The name must be 1-63 characters long, and
-            comply with RFC1035. Authorization requires the
-            following IAM permission on the specified
-            resource instance: compute.instances.use
+            The value must be a valid RFC1035 name (1-63
+            characters) or a valid instance URL.
+            Authorization requires the following IAM
+            permission on the specified resource instance:
+            compute.instances.use
 
             This field is a member of `oneof`_ ``_instance``.
     """
@@ -25657,6 +25683,819 @@ class CancelRolloutRequest(proto.Message):
     )
 
 
+class CapacityAdviceRequest(proto.Message):
+    r"""A request to provide Assistant Scores. These scores determine
+    VM obtainability and preemption likelihood.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        distribution_policy (google.cloud.compute_v1.types.CapacityAdviceRequestDistributionPolicy):
+            Policy specifying the distribution of
+            instances across zones within the requested
+            region.
+
+            This field is a member of `oneof`_ ``_distribution_policy``.
+        instance_flexibility_policy (google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicy):
+            Policy for instance selectors.
+
+            This field is a member of `oneof`_ ``_instance_flexibility_policy``.
+        instance_properties (google.cloud.compute_v1.types.CapacityAdviceRequestInstanceProperties):
+            Instance properties for this request.
+
+            This field is a member of `oneof`_ ``_instance_properties``.
+        size (int):
+            The number of VM instances to request.
+
+            This field is a member of `oneof`_ ``_size``.
+    """
+
+    distribution_policy: "CapacityAdviceRequestDistributionPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=534558541,
+        optional=True,
+        message="CapacityAdviceRequestDistributionPolicy",
+    )
+    instance_flexibility_policy: "CapacityAdviceRequestInstanceFlexibilityPolicy" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=26937090,
+            optional=True,
+            message="CapacityAdviceRequestInstanceFlexibilityPolicy",
+        )
+    )
+    instance_properties: "CapacityAdviceRequestInstanceProperties" = proto.Field(
+        proto.MESSAGE,
+        number=215355165,
+        optional=True,
+        message="CapacityAdviceRequestInstanceProperties",
+    )
+    size: int = proto.Field(
+        proto.INT32,
+        number=3530753,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestDistributionPolicy(proto.Message):
+    r"""Distribution policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        target_shape (str):
+            Target distribution shape. You can specify the following
+            values:ANY, ANY_SINGLE_ZONE, or BALANCED. Check the
+            TargetShape enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_target_shape``.
+        zones (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceRequestDistributionPolicyZoneConfiguration]):
+            Zones where Capacity Advisor looks for
+            capacity.
+    """
+
+    class TargetShape(proto.Enum):
+        r"""Target distribution shape. You can specify the following values:ANY,
+        ANY_SINGLE_ZONE, or BALANCED.
+
+        Values:
+            UNDEFINED_TARGET_SHAPE (0):
+                A value indicating that the enum field is not
+                set.
+            ANY (64972):
+                Picks zones for creating VM instances to
+                fulfill the requested number of VMs within
+                present resource constraints.
+            ANY_SINGLE_ZONE (61100880):
+                Creates all VM instances within a single
+                zone. The zone is selected based on the present
+                resource constraints.
+            BALANCED (468409608):
+                Prioritizes acquisition of resources,
+                scheduling VMs in zones where resources are
+                available while distributing VMs as evenly as
+                possible across selected zones to minimize the
+                impact of zonal failure.
+            TARGET_SHAPE_UNSPECIFIED (449316907):
+                Default value, unused.
+        """
+
+        UNDEFINED_TARGET_SHAPE = 0
+        ANY = 64972
+        ANY_SINGLE_ZONE = 61100880
+        BALANCED = 468409608
+        TARGET_SHAPE_UNSPECIFIED = 449316907
+
+    target_shape: str = proto.Field(
+        proto.STRING,
+        number=338621299,
+        optional=True,
+    )
+    zones: MutableSequence[
+        "CapacityAdviceRequestDistributionPolicyZoneConfiguration"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=116085319,
+        message="CapacityAdviceRequestDistributionPolicyZoneConfiguration",
+    )
+
+
+class CapacityAdviceRequestDistributionPolicyZoneConfiguration(proto.Message):
+    r"""Zone configuration for the distribution policy.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        zone (str):
+            The URL of the zone. It can be a
+            partial or full URL. For example, the following
+            are valid values:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone
+               - projects/project/zones/zone
+               - zones/zone
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicy(proto.Message):
+    r"""Specification of alternative, flexible instance
+    configurations.
+
+    Attributes:
+        instance_selections (MutableMapping[str, google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection]):
+            Named instance selections to configure
+            properties. The key is an arbitrary, unique
+            RFC1035 string that identifies the instance
+            selection.
+    """
+
+    instance_selections: MutableMapping[
+        str, "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection"
+    ] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=22954577,
+        message="CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection",
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelection(proto.Message):
+    r"""Machine specification.
+
+    Attributes:
+        disks (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk]):
+            Local SSDs.
+        guest_accelerators (MutableSequence[google.cloud.compute_v1.types.AcceleratorConfig]):
+            Accelerators configuration.
+        machine_types (MutableSequence[str]):
+            Full machine-type names, e.g.
+            "n1-standard-16".
+    """
+
+    disks: MutableSequence[
+        "CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=95594102,
+        message="CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk",
+    )
+    guest_accelerators: MutableSequence["AcceleratorConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=463595119,
+        message="AcceleratorConfig",
+    )
+    machine_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=79720065,
+    )
+
+
+class CapacityAdviceRequestInstanceFlexibilityPolicyInstanceSelectionAttachedDisk(
+    proto.Message
+):
+    r"""Attached disk configuration.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        type_ (str):
+            Specifies the type of the disk.
+            Check the Type enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_type``.
+    """
+
+    class Type(proto.Enum):
+        r"""Specifies the type of the disk.
+
+        Values:
+            UNDEFINED_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            DISK_TYPE_UNSPECIFIED (333621236):
+                Default value, unspecified disk type.
+            SCRATCH (496778970):
+                Scratch disk (Local SSD).
+        """
+
+        UNDEFINED_TYPE = 0
+        DISK_TYPE_UNSPECIFIED = 333621236
+        SCRATCH = 496778970
+
+    type_: str = proto.Field(
+        proto.STRING,
+        number=3575610,
+        optional=True,
+    )
+
+
+class CapacityAdviceRequestInstanceProperties(proto.Message):
+    r"""Instance provisioning properties.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scheduling (google.cloud.compute_v1.types.CapacityAdviceRequestInstancePropertiesScheduling):
+            Specifies the scheduling options.
+
+            This field is a member of `oneof`_ ``_scheduling``.
+    """
+
+    scheduling: "CapacityAdviceRequestInstancePropertiesScheduling" = proto.Field(
+        proto.MESSAGE,
+        number=386688404,
+        optional=True,
+        message="CapacityAdviceRequestInstancePropertiesScheduling",
+    )
+
+
+class CapacityAdviceRequestInstancePropertiesScheduling(proto.Message):
+    r"""Defines the instance scheduling options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        provisioning_model (str):
+            Specifies the provisioning model.
+            Check the ProvisioningModel enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""Specifies the provisioning model.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+
+
+class CapacityAdviceResponse(proto.Message):
+    r"""A response contains scoring recommendations.
+
+    Attributes:
+        recommendations (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceResponseRecommendation]):
+            Initially the API will provide one
+            recommendation which balances the individual
+            scores according to the service provider's
+            preference.
+    """
+
+    recommendations: MutableSequence["CapacityAdviceResponseRecommendation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=324515802,
+            message="CapacityAdviceResponseRecommendation",
+        )
+    )
+
+
+class CapacityAdviceResponseRecommendation(proto.Message):
+    r"""Recommendation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scores (google.cloud.compute_v1.types.CapacityAdviceResponseRecommendationScores):
+            Scores for the recommendation.
+
+            This field is a member of `oneof`_ ``_scores``.
+        shards (MutableSequence[google.cloud.compute_v1.types.CapacityAdviceResponseRecommendationShard]):
+            Shards represent blocks of uniform capacity
+            in recommendations.
+    """
+
+    scores: "CapacityAdviceResponseRecommendationScores" = proto.Field(
+        proto.MESSAGE,
+        number=165975073,
+        optional=True,
+        message="CapacityAdviceResponseRecommendationScores",
+    )
+    shards: MutableSequence["CapacityAdviceResponseRecommendationShard"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=170175573,
+            message="CapacityAdviceResponseRecommendationShard",
+        )
+    )
+
+
+class CapacityAdviceResponseRecommendationScores(proto.Message):
+    r"""Groups information about a shard of capacity.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        estimated_uptime (str):
+            The estimated run time of the majority of
+            Spot VMs in the request before preemption. The
+            estimate is best-effort only. It is based on
+            historical data and current conditions.
+
+            This field is a member of `oneof`_ ``_estimated_uptime``.
+        obtainability (float):
+            The obtainability score indicates the
+            likelihood of successfully obtaining
+            (provisioning) the requested number of VMs. The
+            score range is 0.0 through 1.0. Higher is
+            better.
+
+            This field is a member of `oneof`_ ``_obtainability``.
+    """
+
+    estimated_uptime: str = proto.Field(
+        proto.STRING,
+        number=223976779,
+        optional=True,
+    )
+    obtainability: float = proto.Field(
+        proto.DOUBLE,
+        number=260735205,
+        optional=True,
+    )
+
+
+class CapacityAdviceResponseRecommendationShard(proto.Message):
+    r"""Shards represent blocks of uniform capacity in
+    recommendations. Each shard is for a single zone and a single
+    machine shape. Each shard defines a size expressed as the number
+    of VMs.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_count (int):
+            The number of instances.
+
+            This field is a member of `oneof`_ ``_instance_count``.
+        machine_type (str):
+            The machine type corresponds to the instance
+            selection in the request.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        provisioning_model (str):
+            The provisioning model that you want to view
+            recommendations for. Check the ProvisioningModel
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+        zone (str):
+            Output only. The zone name for this shard.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""The provisioning model that you want to view recommendations
+        for.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    instance_count: int = proto.Field(
+        proto.INT32,
+        number=77317349,
+        optional=True,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class CapacityAdviceRpcRequest(proto.Message):
+    r"""A request message for Advice.Capacity. See the method
+    description for details.
+
+    Attributes:
+        capacity_advice_request_resource (google.cloud.compute_v1.types.CapacityAdviceRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    capacity_advice_request_resource: "CapacityAdviceRequest" = proto.Field(
+        proto.MESSAGE,
+        number=176354208,
+        message="CapacityAdviceRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
+class CapacityHistoryAdviceRequest(proto.Message):
+    r"""A request message for Advice.CapacityHistory. See the method
+    description for details.
+
+    Attributes:
+        capacity_history_request_resource (google.cloud.compute_v1.types.CapacityHistoryRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+    """
+
+    capacity_history_request_resource: "CapacityHistoryRequest" = proto.Field(
+        proto.MESSAGE,
+        number=182030318,
+        message="CapacityHistoryRequest",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
+class CapacityHistoryRequest(proto.Message):
+    r"""A request to get the capacity history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance_properties (google.cloud.compute_v1.types.CapacityHistoryRequestInstanceProperties):
+            Instance properties for this request.
+
+            This field is a member of `oneof`_ ``_instance_properties``.
+        location_policy (google.cloud.compute_v1.types.CapacityHistoryRequestLocationPolicy):
+            Location policy for this request.
+
+            This field is a member of `oneof`_ ``_location_policy``.
+        types (MutableSequence[str]):
+            List of history types to get capacity history
+            for. Check the Types enum for the list of
+            possible values.
+    """
+
+    class Types(proto.Enum):
+        r"""
+
+        Values:
+            UNDEFINED_TYPES (0):
+                A value indicating that the enum field is not
+                set.
+            HISTORY_TYPE_UNSPECIFIED (58549757):
+                Default value, unused.
+            PREEMPTION (512869337):
+                Preemption history.
+            PRICE (76396841):
+                Price history.
+        """
+
+        UNDEFINED_TYPES = 0
+        HISTORY_TYPE_UNSPECIFIED = 58549757
+        PREEMPTION = 512869337
+        PRICE = 76396841
+
+    instance_properties: "CapacityHistoryRequestInstanceProperties" = proto.Field(
+        proto.MESSAGE,
+        number=215355165,
+        optional=True,
+        message="CapacityHistoryRequestInstanceProperties",
+    )
+    location_policy: "CapacityHistoryRequestLocationPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=465689852,
+        optional=True,
+        message="CapacityHistoryRequestLocationPolicy",
+    )
+    types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=110844025,
+    )
+
+
+class CapacityHistoryRequestInstanceProperties(proto.Message):
+    r"""Instance properties for this request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        machine_type (str):
+            The machine type for the VM, such as ``n2-standard-4``.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        scheduling (google.cloud.compute_v1.types.CapacityHistoryRequestInstancePropertiesScheduling):
+            Specifies the scheduling options.
+
+            This field is a member of `oneof`_ ``_scheduling``.
+    """
+
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    scheduling: "CapacityHistoryRequestInstancePropertiesScheduling" = proto.Field(
+        proto.MESSAGE,
+        number=386688404,
+        optional=True,
+        message="CapacityHistoryRequestInstancePropertiesScheduling",
+    )
+
+
+class CapacityHistoryRequestInstancePropertiesScheduling(proto.Message):
+    r"""Scheduling options.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        provisioning_model (str):
+            The provisioning model to get capacity
+            history for. This field must be set to SPOT.
+
+            For more information, see
+            Compute Engine instances provisioning models.
+            Check the ProvisioningModel enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_provisioning_model``.
+    """
+
+    class ProvisioningModel(proto.Enum):
+        r"""The provisioning model to get capacity history for.
+        This field must be set to SPOT.
+
+        For more information, see
+        Compute Engine instances provisioning models.
+
+        Values:
+            UNDEFINED_PROVISIONING_MODEL (0):
+                A value indicating that the enum field is not
+                set.
+            FLEX_START (101746812):
+                Instance is provisioned using the Flex Start
+                provisioning model and has a limited runtime.
+            RESERVATION_BOUND (293538571):
+                Bound to the lifecycle of the reservation in
+                which it is provisioned.
+            SPOT (2552066):
+                Heavily discounted, no guaranteed runtime.
+            STANDARD (484642493):
+                Standard provisioning with user controlled
+                runtime, no discounts.
+        """
+
+        UNDEFINED_PROVISIONING_MODEL = 0
+        FLEX_START = 101746812
+        RESERVATION_BOUND = 293538571
+        SPOT = 2552066
+        STANDARD = 484642493
+
+    provisioning_model: str = proto.Field(
+        proto.STRING,
+        number=494423,
+        optional=True,
+    )
+
+
+class CapacityHistoryRequestLocationPolicy(proto.Message):
+    r"""Location policy for this request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        location (str):
+            The region or zone to get capacity history
+            for.
+            It can be a partial or full URL. For example,
+            the following are valid values:
+
+
+                 -
+              https://www.googleapis.com/compute/v1/projects/project/zones/zone
+               - projects/project/zones/zone
+               - zones/zone
+
+            This field is optional.
+
+            This field is a member of `oneof`_ ``_location``.
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=290430901,
+        optional=True,
+    )
+
+
+class CapacityHistoryResponse(proto.Message):
+    r"""Contains the capacity history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        location (str):
+            Output only. The location (region or zone)
+            for which the capacity history is returned. It
+            is returned as a URL - For
+            example,https://www.googleapis.com/compute/v1/projects/project/zones/zone.
+
+            This field is a member of `oneof`_ ``_location``.
+        machine_type (str):
+            The machine type for which the capacity
+            history is returned.
+
+            This field is a member of `oneof`_ ``_machine_type``.
+        preemption_history (MutableSequence[google.cloud.compute_v1.types.CapacityHistoryResponsePreemptionRecord]):
+            The preemption history for the requested
+            machine type and location.
+        price_history (MutableSequence[google.cloud.compute_v1.types.CapacityHistoryResponsePriceRecord]):
+            The price history for the requested machine
+            type and location.
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=290430901,
+        optional=True,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=227711026,
+        optional=True,
+    )
+    preemption_history: MutableSequence["CapacityHistoryResponsePreemptionRecord"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=364018222,
+            message="CapacityHistoryResponsePreemptionRecord",
+        )
+    )
+    price_history: MutableSequence["CapacityHistoryResponsePriceRecord"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=326230942,
+            message="CapacityHistoryResponsePriceRecord",
+        )
+    )
+
+
+class CapacityHistoryResponsePreemptionRecord(proto.Message):
+    r"""A record of Spot VM preemption history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interval (google.cloud.compute_v1.types.Interval):
+            The time interval for this preemption record.
+
+            This field is a member of `oneof`_ ``_interval``.
+        preemption_rate (float):
+            The preemption rate during the interval,
+            representing the fraction of Spot VMs that were
+            preempted. Range: 0.0 to 1.0. Preemption rate is
+            calculated as (total preempted Spots) / (total
+            Spots that stopped running).
+
+            This field is a member of `oneof`_ ``_preemption_rate``.
+    """
+
+    interval: "Interval" = proto.Field(
+        proto.MESSAGE,
+        number=33547461,
+        optional=True,
+        message="Interval",
+    )
+    preemption_rate: float = proto.Field(
+        proto.DOUBLE,
+        number=140651910,
+        optional=True,
+    )
+
+
+class CapacityHistoryResponsePriceRecord(proto.Message):
+    r"""A record of price history.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        interval (google.cloud.compute_v1.types.Interval):
+            The time interval for this price record.
+
+            This field is a member of `oneof`_ ``_interval``.
+        list_price (google.cloud.compute_v1.types.Money):
+            The Spot VM list price during the interval.
+
+            This field is a member of `oneof`_ ``_list_price``.
+    """
+
+    interval: "Interval" = proto.Field(
+        proto.MESSAGE,
+        number=33547461,
+        optional=True,
+        message="Interval",
+    )
+    list_price: "Money" = proto.Field(
+        proto.MESSAGE,
+        number=167990888,
+        optional=True,
+        message="Money",
+    )
+
+
 class CircuitBreakers(proto.Message):
     r"""Settings controlling the volume of requests, connections and
     retries to this backend service.
@@ -26117,12 +26956,14 @@ class Commitment(proto.Message):
             GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED,
             GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
             MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
-            STORAGE_OPTIMIZED_Z3. For example, type MEMORY_OPTIMIZED
-            specifies a commitment that applies only to eligible
-            resources of memory optimized M1 and M2 machine series. Type
-            GENERAL_PURPOSE specifies a commitment that applies only to
-            eligible resources of general purpose N1 machine series.
-            Check the Type enum for the list of possible values.
+            STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
+            STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T. For example,
+            type MEMORY_OPTIMIZED specifies a commitment that applies
+            only to eligible resources of memory optimized M1 and M2
+            machine series. Type GENERAL_PURPOSE specifies a commitment
+            that applies only to eligible resources of general purpose
+            N1 machine series. Check the Type enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -26226,11 +27067,13 @@ class Commitment(proto.Message):
         GENERAL_PURPOSE_N2D,GENERAL_PURPOSE_N4,
         GENERAL_PURPOSE_T2D,GRAPHICS_OPTIMIZED,
         GRAPHICS_OPTIMIZED_G4,GRAPHICS_OPTIMIZED_G4_VGPU,MEMORY_OPTIMIZED,
-        MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4, STORAGE_OPTIMIZED_Z3. For
-        example, type MEMORY_OPTIMIZED specifies a commitment that applies
-        only to eligible resources of memory optimized M1 and M2 machine
-        series. Type GENERAL_PURPOSE specifies a commitment that applies
-        only to eligible resources of general purpose N1 machine series.
+        MEMORY_OPTIMIZED_M3,MEMORY_OPTIMIZED_X4,
+        STORAGE_OPTIMIZED_Z3,STORAGE_OPTIMIZED_Z4DS,
+        STORAGE_OPTIMIZED_Z4DH,STORAGE_OPTIMIZED_Z4D4T. For example, type
+        MEMORY_OPTIMIZED specifies a commitment that applies only to
+        eligible resources of memory optimized M1 and M2 machine series.
+        Type GENERAL_PURPOSE specifies a commitment that applies only to
+        eligible resources of general purpose N1 machine series.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -26328,6 +27171,12 @@ class Commitment(proto.Message):
                 CUD bucket for NETWORK_OPTIMIZED_U4S machines.
             STORAGE_OPTIMIZED_Z3 (316796085):
                 No description available.
+            STORAGE_OPTIMIZED_Z4D4T (18503022):
+                CUD bucket for Z4D-4T machines.
+            STORAGE_OPTIMIZED_Z4DH (35233722):
+                CUD bucket for Z4DH machines.
+            STORAGE_OPTIMIZED_Z4DS (35233733):
+                CUD bucket for Z4DS machines.
             TYPE_UNSPECIFIED (437714322):
                 Note for internal users: When adding a new enum Type for v1,
                 make sure to also add it in the comment for the
@@ -26379,6 +27228,9 @@ class Commitment(proto.Message):
         NETWORK_OPTIMIZED_U4P = 147044872
         NETWORK_OPTIMIZED_U4S = 147044875
         STORAGE_OPTIMIZED_Z3 = 316796085
+        STORAGE_OPTIMIZED_Z4D4T = 18503022
+        STORAGE_OPTIMIZED_Z4DH = 35233722
+        STORAGE_OPTIMIZED_Z4DS = 35233733
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew: bool = proto.Field(
@@ -46881,6 +47733,29 @@ class GetProjectRequest(proto.Message):
     )
 
 
+class GetProjectViewRequest(proto.Message):
+    r"""A request message for ProjectViews.Get. See the method
+    description for details.
+
+    Attributes:
+        project (str):
+            Required. Project ID for this request. This
+            is part of the URL path.
+        region (str):
+            Required. Name of the region for this
+            request. This is part of the URL path.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
 class GetPublicAdvertisedPrefixeRequest(proto.Message):
     r"""A request message for PublicAdvertisedPrefixes.Get. See the
     method description for details.
@@ -50788,6 +51663,9 @@ class GuestOsFeature(proto.Message):
                 set.
             BARE_METAL_LINUX_COMPATIBLE (354232740):
                 No description available.
+            BMSAI_CAPABLE (449302109):
+                Indicates the guest OS is capable of Bare
+                Metal Secure AI (BMSAI) confidential computing.
             CCA_CAPABLE (79012270):
                 No description available.
             FEATURE_TYPE_UNSPECIFIED (531767259):
@@ -50825,6 +51703,7 @@ class GuestOsFeature(proto.Message):
 
         UNDEFINED_TYPE = 0
         BARE_METAL_LINUX_COMPATIBLE = 354232740
+        BMSAI_CAPABLE = 449302109
         CCA_CAPABLE = 79012270
         FEATURE_TYPE_UNSPECIFIED = 531767259
         GVNIC = 68209305
@@ -66753,7 +67632,15 @@ class InstancePropertiesPatch(proto.Message):
     r"""Represents the change that you want to make to the instance
     properties.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        expose_host_topology (bool):
+            This optional flag exposes the hashed
+            physical host ID.
+
+            This field is a member of `oneof`_ ``_expose_host_topology``.
         labels (MutableMapping[str, str]):
             The label key-value pairs that you want to
             patch onto the instance.
@@ -66763,6 +67650,11 @@ class InstancePropertiesPatch(proto.Message):
             see Project and instance metadata.
     """
 
+    expose_host_topology: bool = proto.Field(
+        proto.BOOL,
+        number=428530155,
+        optional=True,
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -75352,6 +76244,47 @@ class InterconnectsGetMacsecConfigResponse(proto.Message):
         number=139315229,
         optional=True,
         message="InterconnectMacsecConfig",
+    )
+
+
+class Interval(proto.Message):
+    r"""Represents a time interval, encoded as a Timestamp start
+    (inclusive) and a Timestamp end (exclusive).
+
+    The start must be less than or equal to the end.
+    When the start equals the end, the interval is empty (matches no
+    time). When both start and end are unspecified, the interval
+    matches any time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        end_time (str):
+            Optional. Exclusive end of the interval.
+
+            If specified, a Timestamp matching this interval
+            will have to be before the end.
+
+            This field is a member of `oneof`_ ``_end_time``.
+        start_time (str):
+            Optional. Inclusive start of the interval.
+
+            If specified, a Timestamp matching this interval
+            will have to be the same or after the start.
+
+            This field is a member of `oneof`_ ``_start_time``.
+    """
+
+    end_time: str = proto.Field(
+        proto.STRING,
+        number=114938801,
+        optional=True,
+    )
+    start_time: str = proto.Field(
+        proto.STRING,
+        number=37467274,
+        optional=True,
     )
 
 
@@ -101709,6 +102642,51 @@ class MetadataFilterLabelMatch(proto.Message):
     )
 
 
+class Money(proto.Message):
+    r"""Represents an amount of money with its currency type.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        currency_code (str):
+            The three-letter currency code defined in ISO
+            4217.
+
+            This field is a member of `oneof`_ ``_currency_code``.
+        nanos (int):
+            Number of nano (10^-9) units of the amount. The value must
+            be between -999,999,999 and +999,999,999 inclusive. If
+            ``units`` is positive, ``nanos`` must be positive or zero.
+            If ``units`` is zero, ``nanos`` can be positive, zero, or
+            negative. If ``units`` is negative, ``nanos`` must be
+            negative or zero. For example $-1.75 is represented as
+            ``units``\ =-1 and ``nanos``\ =-750,000,000.
+
+            This field is a member of `oneof`_ ``_nanos``.
+        units (int):
+            The whole units of the amount. For example if
+            ``currencyCode`` is ``"USD"``, then 1 unit is one US dollar.
+
+            This field is a member of `oneof`_ ``_units``.
+    """
+
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=34986331,
+        optional=True,
+    )
+    nanos: int = proto.Field(
+        proto.INT32,
+        number=104586303,
+        optional=True,
+    )
+    units: int = proto.Field(
+        proto.INT64,
+        number=111433583,
+        optional=True,
+    )
+
+
 class MoveAddressRequest(proto.Message):
     r"""A request message for Addresses.Move. See the method
     description for details.
@@ -117222,6 +118200,35 @@ class Project(proto.Message):
         proto.STRING,
         number=228419265,
         optional=True,
+    )
+
+
+class ProjectView(proto.Message):
+    r"""Represents a ProjectView resource.
+
+    A ProjectView resource contains read-only project data which is
+    available globally.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (google.cloud.compute_v1.types.Project):
+            The project data. The returned Project data does not contain
+            regional or zonal quota usage data. Global quota limits are
+            present. For accurate, real-time quota usage numbers, query
+            the global
+            `projects.get <https://cloud.google.com/compute/docs/reference/rest/v1/projects/get>`__
+            endpoint.
+
+            This field is a member of `oneof`_ ``_project``.
+    """
+
+    project: "Project" = proto.Field(
+        proto.MESSAGE,
+        number=227560217,
+        optional=True,
+        message="Project",
     )
 
 
@@ -133554,6 +134561,12 @@ class Scheduling(proto.Message):
             attached to the instance.
 
             This field is a member of `oneof`_ ``_availability_domain``.
+        expose_host_topology (bool):
+            This optional flag exposes the hashed
+            physical host ID in the ResourceStatus resource
+            of the VM.
+
+            This field is a member of `oneof`_ ``_expose_host_topology``.
         graceful_shutdown (google.cloud.compute_v1.types.SchedulingGracefulShutdown):
 
             This field is a member of `oneof`_ ``_graceful_shutdown``.
@@ -133741,6 +134754,11 @@ class Scheduling(proto.Message):
     availability_domain: int = proto.Field(
         proto.INT32,
         number=252514344,
+        optional=True,
+    )
+    expose_host_topology: bool = proto.Field(
+        proto.BOOL,
+        number=428530155,
         optional=True,
     )
     graceful_shutdown: "SchedulingGracefulShutdown" = proto.Field(

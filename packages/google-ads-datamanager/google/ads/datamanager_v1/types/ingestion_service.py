@@ -96,7 +96,7 @@ class IngestAudienceMembersRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. For hashed user
             identifiers, this is the encoding type of the hashed string.
@@ -192,7 +192,7 @@ class RemoveAudienceMembersRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. Applies to only the
             outer encoding for encrypted user identifiers. For non
@@ -322,7 +322,7 @@ class IngestEventsRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. For hashed user
             identifiers, this is the encoding type of the hashed string.
@@ -402,8 +402,10 @@ class IngestAdEventsRequest(proto.Message):
             Required. Required (at least 1). A list of ad
             events.
         encryption_info (google.ads.datamanager_v1.types.EncryptionInfo):
-            Required. Information about encryption keys
-            which are used to encrypt the data.
+            Optional. Information about encryption keys which are used
+            to encrypt the data. This field must be provided when ad
+            events contain
+            [UserData][google.ads.datamanager.v1.UserData].
         validate_only (bool):
             Optional. If true, the request is validated,
             but not executed.

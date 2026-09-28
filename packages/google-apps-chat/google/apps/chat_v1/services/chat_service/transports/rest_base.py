@@ -26,6 +26,7 @@ from google.apps.chat_v1.types import (
     availability,
     membership,
     message,
+    message_pin,
     reaction,
     section,
     space,
@@ -38,6 +39,7 @@ from google.apps.chat_v1.types import (
 from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import message_pin as gc_message_pin
 from google.apps.chat_v1.types import reaction as gc_reaction
 from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
@@ -179,6 +181,23 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
             ]
             return http_options
 
+    class _BaseCreateMessagePin:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=spaces/*}/messagePins",
+                    "body": "message_pin",
+                },
+            ]
+            return http_options
+
     class _BaseCreateReaction:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -274,6 +293,22 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                 {
                     "method": "delete",
                     "uri": "/v1/{name=spaces/*/messages/*}",
+                },
+            ]
+            return http_options
+
+    class _BaseDeleteMessagePin:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=spaces/*/messagePins/*}",
                 },
             ]
             return http_options
@@ -544,6 +579,22 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=spaces/*}/members",
+                },
+            ]
+            return http_options
+
+    class _BaseListMessagePins:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=spaces/*}/messagePins",
                 },
             ]
             return http_options

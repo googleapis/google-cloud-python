@@ -78,6 +78,10 @@ jobs:
           elif [ -n "$PACKAGES" ]; then
             for pkg_path in $PACKAGES; do
               pkg=$(basename "$pkg_path")
+              if ! grep -q "^  - name: ${pkg}$" librarian.yaml; then
+                echo "Skipping $pkg (not in librarian.yaml)..."
+                continue
+              fi
               echo "Regenerating $pkg..."
               librarian generate "$pkg"
             done

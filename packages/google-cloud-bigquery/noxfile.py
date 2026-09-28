@@ -15,12 +15,12 @@
 from __future__ import absolute_import
 
 import contextlib
+from functools import wraps
 import os
 import pathlib
 import re
 import shutil
 import time
-from functools import wraps
 from typing import Generator
 
 import nox

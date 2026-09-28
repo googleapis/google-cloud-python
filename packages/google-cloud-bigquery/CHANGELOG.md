@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.45.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.1...google-cloud-bigquery-v3.45.2) (2026-09-17)
+
+
+### Bug Fixes
+
+* disambiguate google-cloud-bigquery `to_dataframe` usage from `pandas-gbq` in ua. ([#18369](https://github.com/googleapis/google-cloud-python/issues/18369)) ([0d7d59c](https://github.com/googleapis/google-cloud-python/commit/0d7d59c771ce1b0084cb8c18e4713f37dc73821d))
+
 ## [3.45.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.0...google-cloud-bigquery-v3.45.1) (2026-09-14)
 
 

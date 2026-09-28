@@ -33,6 +33,7 @@ __lazy_modules__ = {
 
 from .services.solar import SolarAsyncClient, SolarClient
 from .types.solar_service import (
+    AdditionalInsights,
     BuildingInsights,
     CashPurchaseSavings,
     DataLayers,
@@ -59,6 +60,7 @@ from .types.solar_service import (
 
 __all__ = (
     "SolarAsyncClient",
+    "AdditionalInsights",
     "BuildingInsights",
     "CashPurchaseSavings",
     "DataLayerView",

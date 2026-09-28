@@ -133,31 +133,6 @@ jobs:
     - name: Install nox and nox-uv
       run: |
         uv pip install --system nox nox-uv
-    # Caches local wheels for Python 3.15+ to avoid repeatedly downloading or building heavy libraries.
-    # Follow https://github.com/grpc/grpc/issues/41010 for updates.
-    - name: Cache Built Python 3.15 Wheels
-      if: matrix.python == '3.15'
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-      with:
-        path: .uv-wheel-cache
-        key: ${{ runner.os }}-uv-wheels-3.15-${{ hashFiles('packages/**/testing/constraints*.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-uv-wheels-3.15-
-    # TODO: Remove this step once official Python 3.15 wheels for grpcio are published to PyPI.
-    # See https://github.com/grpc/grpc/issues/41010#issuecomment-4848264910 for details.
-    - name: Install grpcio wheel for Python 3.15
-      if: matrix.python == '3.15'
-      run: |
-        mkdir -p .uv-wheel-cache
-        WHEEL_FILE=".uv-wheel-cache/grpcio-1.83.0.dev0-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
-        if [ ! -f "$WHEEL_FILE" ]; then
-          curl -L "https://packages.grpc.io/archive/2026/06/5ccdab32010f762634e1082d19be53cf60458456-b37e49c7-5e62-4cbe-870a-c599bb907b04/python/grpcio/grpcio-1.83.0.dev0-cp315-cp315-manylinux2014_x86_64.manylinux_2_17_x86_64.whl" -o "$WHEEL_FILE"
-        fi
-        echo "d7706633cd5d97a8b8d3c6ed36c5940722a9b5cbb47f0d10bc433ee27af36ff0  $WHEEL_FILE" | sha256sum -c
-        uv pip install --system "$WHEEL_FILE"
-        echo "UV_FIND_LINKS=${{ github.workspace }}/.uv-wheel-cache" >> $GITHUB_ENV
-        echo "UV_CACHE_DIR=${{ github.workspace }}/.uv-wheel-cache" >> $GITHUB_ENV
-        echo "UV_PRERELEASE=allow" >> $GITHUB_ENV
     - name: Run unit tests for ${{ matrix.package_shard.description }}
       env:
         BUILD_TYPE: presubmit

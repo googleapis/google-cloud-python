@@ -921,10 +921,26 @@ class CreateMessageRequest(proto.Message):
             usage, see `Start or reply to a message
             thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
         request_id (str):
-            Optional. A unique request ID for this
-            message. Specifying an existing request ID
-            returns the message created with that ID instead
-            of creating a new message.
+            Optional. A unique ID for this request. A random UUID is
+            recommended. Specifying a request ID makes the request
+            idempotent, which ensures that multiple identical requests
+            with the same request ID result in only a single message
+            being created. Subsequent requests with the same request ID
+            return the existing message and do not update the message,
+            even if the requested details differ from the current state.
+
+            To use this field effectively:
+
+            - Ensure that subsequent requests are identical and use the
+              same authentication credentials as the original request.
+            - If a message was already created with the provided request
+              ID, the request returns that message. Note that the
+              returned message might not be fully populated; the API
+              echoes the message in your request with the
+              system-assigned resource names populated. To retrieve the
+              latest metadata for the message, call ``GetMessage``.
+            - Reusing an existing request ID with a different
+              authenticated user results in an error.
         message_reply_option (google.apps.chat_v1.types.CreateMessageRequest.MessageReplyOption):
             Optional. Specifies whether a message starts a thread or
             replies to one. Only supported in named spaces.
@@ -1354,6 +1370,11 @@ class SearchMessagesRequest(proto.Message):
               matches. For example, ``space.display_name:Project``
               searches for messages in the top five spaces that contain
               the word "Project" in their display names.
+            - ``space.space_type``: The type of the space. Only supports
+              ``=``. For example, ``space.space_type="DIRECT_MESSAGE"``
+              returns only messages from direct messages. The possible
+              values are ``DIRECT_MESSAGE``, ``GROUP_CHAT``, and
+              ``SPACE``.
             - ``attachment``: Supports the operator ``:*`` (has any) to
               check for the presence of attachments. If ``attachment:*``
               is specified, only messages that have at least one
@@ -1378,9 +1399,9 @@ class SearchMessagesRequest(proto.Message):
             - ``is_unread()``: Filters out messages that have been read
               by the calling user.
 
-            Using the ``space.display_name`` filter requires that the
-            calling credentials include one of the following
-            `authorization
+            Using the ``space.display_name`` or the ``space.space_type``
+            filters requires that the calling credentials include one of
+            the following `authorization
             scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
 
             - ``https://www.googleapis.com/auth/chat.spaces.readonly``
@@ -1422,6 +1443,9 @@ class SearchMessagesRequest(proto.Message):
               ``space.display_name:Project OR space.display_name:Tasks``
               returns messages that are in spaces with display names
               containing either ``Project`` or ``Tasks`` or both.
+            - ``space.space_type`` supports only the ``OR`` operator,
+              for example:
+              ``space.space_type = "DIRECT_MESSAGE" OR space.space_type = "GROUP_CHAT"``.
             - ``annotations.user_mentions.user.name`` supports the
               operators ``AND`` and ``OR``, but not a mix of both. For
               example:

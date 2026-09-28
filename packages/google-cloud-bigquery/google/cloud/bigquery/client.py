@@ -78,6 +78,9 @@ from google.cloud.bigquery import (
     job,
 )
 from google.cloud.bigquery import exceptions as bq_exceptions
+from google.cloud.bigquery import (
+    version as bq_version,
+)
 from google.cloud.bigquery._helpers import (
     _DEFAULT_HOST,
     _DEFAULT_HOST_TEMPLATE,
@@ -148,7 +151,7 @@ _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 _GENERIC_CONTENT_TYPE = "*/*"
 _READ_LESS_THAN_SIZE = (
-    "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
+    "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
 )
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
@@ -641,9 +644,16 @@ class Client(ClientWithProject):
             pandas_gbq = None  # type: ignore
 
         if pandas_gbq is None:
-            user_agent = "pandas-gbq/0.0.0"
+            # Even if pandas-gbq isn't installed, attribute all
+            # to_dataframe/to_arrow usage the same as we do the recommended
+            # (pandas-gbq) code paths.
+            pandas_user_agent = "pandas-gbq/0.0.0"
         else:
-            user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+            pandas_user_agent = f"pandas-gbq/{pandas_gbq.__version__}"
+
+        # Track the google-cloud-bigquery version as "legacy" because this code
+        # path is intended to be migrated to pandas-gbq itself.
+        user_agent = f"legacy-gcb/{bq_version.__version__} {pandas_user_agent}"
 
         if client_info is None:
             amended_client_info = google.api_core.gapic_v1.client_info.ClientInfo(

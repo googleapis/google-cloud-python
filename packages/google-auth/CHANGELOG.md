@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.58.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.0...google-auth-v2.58.1) (2026-09-24)
+
+
+### Bug Fixes
+
+* **auth:** allow mTLS retry when credentials raise NotImplementedError on refresh ([#18349](https://github.com/googleapis/google-cloud-python/issues/18349)) ([1665e68](https://github.com/googleapis/google-cloud-python/commit/1665e6867e0c5d7ea8e7857681efc3aae827d9b7))
+
 ## [2.58.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.1...google-auth-v2.58.0) (2026-09-09)
 
 

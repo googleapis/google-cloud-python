@@ -1182,6 +1182,7 @@ def test_add_server_ca_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesAddServerCaRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1195,6 +1196,7 @@ def test_add_server_ca_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesAddServerCaRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -1466,6 +1468,7 @@ def test_add_server_certificate_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesAddServerCertificateRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1481,6 +1484,7 @@ def test_add_server_certificate_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesAddServerCertificateRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -1765,6 +1769,7 @@ def test_add_entra_id_certificate_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesAddEntraIdCertificateRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1780,6 +1785,7 @@ def test_add_entra_id_certificate_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesAddEntraIdCertificateRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2062,6 +2068,7 @@ def test_clone_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesCloneRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2075,6 +2082,7 @@ def test_clone_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesCloneRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2343,6 +2351,7 @@ def test_delete_non_empty_request_with_auto_populated_field():
         instance="instance_value",
         project="project_value",
         final_backup_description="final_backup_description_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2357,6 +2366,7 @@ def test_delete_non_empty_request_with_auto_populated_field():
             instance="instance_value",
             project="project_value",
             final_backup_description="final_backup_description_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2624,6 +2634,7 @@ def test_demote_master_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesDemoteMasterRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2637,6 +2648,7 @@ def test_demote_master_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesDemoteMasterRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -2906,6 +2918,7 @@ def test_demote_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesDemoteRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2919,6 +2932,7 @@ def test_demote_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesDemoteRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -3186,6 +3200,7 @@ def test_export_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesExportRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3199,6 +3214,7 @@ def test_export_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesExportRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -3466,6 +3482,7 @@ def test_failover_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesFailoverRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3479,6 +3496,7 @@ def test_failover_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesFailoverRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -3746,6 +3764,7 @@ def test_reencrypt_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesReencryptRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3759,6 +3778,7 @@ def test_reencrypt_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesReencryptRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -4007,6 +4027,7 @@ def test_get(request_type, transport: str = "grpc"):
             primary_dns_name="primary_dns_name_value",
             write_endpoint="write_endpoint_value",
             node_count=1070,
+            database_center_integration=cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED,
         )
         response = client.get(request)
 
@@ -4059,6 +4080,10 @@ def test_get(request_type, transport: str = "grpc"):
     assert response.primary_dns_name == "primary_dns_name_value"
     assert response.write_endpoint == "write_endpoint_value"
     assert response.node_count == 1070
+    assert (
+        response.database_center_integration
+        == cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED
+    )
 
 
 def test_get_non_empty_request_with_auto_populated_field():
@@ -4075,6 +4100,7 @@ def test_get_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesGetRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4088,6 +4114,7 @@ def test_get_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesGetRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -4219,6 +4246,7 @@ async def test_get_async(request_type, transport: str = "grpc_asyncio"):
                 primary_dns_name="primary_dns_name_value",
                 write_endpoint="write_endpoint_value",
                 node_count=1070,
+                database_center_integration=cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED,
             )
         )
         response = await client.get(request)
@@ -4272,6 +4300,10 @@ async def test_get_async(request_type, transport: str = "grpc_asyncio"):
     assert response.primary_dns_name == "primary_dns_name_value"
     assert response.write_endpoint == "write_endpoint_value"
     assert response.node_count == 1070
+    assert (
+        response.database_center_integration
+        == cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED
+    )
 
 
 def test_get_field_headers():
@@ -4405,6 +4437,7 @@ def test_import__non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesImportRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4418,6 +4451,7 @@ def test_import__non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesImportRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -4684,6 +4718,7 @@ def test_insert_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = cloud_sql.SqlInstancesInsertRequest(
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4696,6 +4731,7 @@ def test_insert_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_sql.SqlInstancesInsertRequest(
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -4832,67 +4868,6 @@ async def test_insert_async(request_type, transport: str = "grpc_asyncio"):
     assert response.target_project == "target_project_value"
 
 
-def test_insert_field_headers():
-    client = SqlInstancesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = cloud_sql.SqlInstancesInsertRequest()
-
-    request.project = "project_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.insert), "__call__") as call:
-        call.return_value = cloud_sql_resources.Operation()
-        client.insert(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "project=project_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_insert_field_headers_async():
-    client = SqlInstancesServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = cloud_sql.SqlInstancesInsertRequest()
-
-    request.project = "project_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.insert), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_sql_resources.Operation()
-        )
-        await client.insert(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "project=project_value",
-    ) in kw["metadata"]
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -4946,6 +4921,7 @@ def test_list_non_empty_request_with_auto_populated_field():
         filter="filter_value",
         page_token="page_token_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4960,6 +4936,7 @@ def test_list_non_empty_request_with_auto_populated_field():
             filter="filter_value",
             page_token="page_token_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -5387,6 +5364,7 @@ def test_list_server_cas_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesListServerCasRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5400,6 +5378,7 @@ def test_list_server_cas_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesListServerCasRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -5641,6 +5620,7 @@ def test_list_server_certificates_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesListServerCertificatesRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5656,6 +5636,7 @@ def test_list_server_certificates_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesListServerCertificatesRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -5916,6 +5897,7 @@ def test_list_entra_id_certificates_non_empty_request_with_auto_populated_field(
     request = cloud_sql.SqlInstancesListEntraIdCertificatesRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5931,6 +5913,7 @@ def test_list_entra_id_certificates_non_empty_request_with_auto_populated_field(
         request_msg = cloud_sql.SqlInstancesListEntraIdCertificatesRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -6201,6 +6184,7 @@ def test_patch_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesPatchRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6214,6 +6198,7 @@ def test_patch_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesPatchRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -6481,6 +6466,7 @@ def test_promote_replica_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesPromoteReplicaRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6494,6 +6480,7 @@ def test_promote_replica_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesPromoteReplicaRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -6763,6 +6750,7 @@ def test_switchover_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesSwitchoverRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6776,6 +6764,7 @@ def test_switchover_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesSwitchoverRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -7043,6 +7032,7 @@ def test_reset_ssl_config_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesResetSslConfigRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7056,6 +7046,7 @@ def test_reset_ssl_config_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesResetSslConfigRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -7327,6 +7318,7 @@ def test_restart_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesRestartRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7340,6 +7332,7 @@ def test_restart_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesRestartRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -7607,6 +7600,7 @@ def test_restore_backup_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesRestoreBackupRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7620,6 +7614,7 @@ def test_restore_backup_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesRestoreBackupRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -7889,6 +7884,7 @@ def test_rotate_server_ca_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesRotateServerCaRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7902,6 +7898,7 @@ def test_rotate_server_ca_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesRotateServerCaRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -8175,6 +8172,7 @@ def test_rotate_server_certificate_non_empty_request_with_auto_populated_field()
     request = cloud_sql.SqlInstancesRotateServerCertificateRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8190,6 +8188,7 @@ def test_rotate_server_certificate_non_empty_request_with_auto_populated_field()
         request_msg = cloud_sql.SqlInstancesRotateServerCertificateRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -8474,6 +8473,7 @@ def test_rotate_entra_id_certificate_non_empty_request_with_auto_populated_field
     request = cloud_sql.SqlInstancesRotateEntraIdCertificateRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8489,6 +8489,7 @@ def test_rotate_entra_id_certificate_non_empty_request_with_auto_populated_field
         request_msg = cloud_sql.SqlInstancesRotateEntraIdCertificateRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -8771,6 +8772,7 @@ def test_start_replica_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesStartReplicaRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8784,6 +8786,7 @@ def test_start_replica_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesStartReplicaRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -9053,6 +9056,7 @@ def test_stop_replica_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesStopReplicaRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9066,6 +9070,7 @@ def test_stop_replica_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesStopReplicaRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -9335,6 +9340,7 @@ def test_truncate_log_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesTruncateLogRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9348,6 +9354,7 @@ def test_truncate_log_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesTruncateLogRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -9617,6 +9624,7 @@ def test_update_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesUpdateRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9630,6 +9638,7 @@ def test_update_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesUpdateRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -9891,6 +9900,7 @@ def test_create_ephemeral_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesCreateEphemeralCertRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9904,6 +9914,7 @@ def test_create_ephemeral_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesCreateEphemeralCertRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -10171,6 +10182,7 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesRescheduleMaintenanceRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10186,6 +10198,7 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesRescheduleMaintenanceRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -10456,6 +10469,7 @@ def test_verify_external_sync_settings_non_empty_request_with_auto_populated_fie
     request = cloud_sql.SqlInstancesVerifyExternalSyncSettingsRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10471,6 +10485,7 @@ def test_verify_external_sync_settings_non_empty_request_with_auto_populated_fie
         request_msg = cloud_sql.SqlInstancesVerifyExternalSyncSettingsRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -10741,6 +10756,7 @@ def test_start_external_sync_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesStartExternalSyncRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10756,6 +10772,7 @@ def test_start_external_sync_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesStartExternalSyncRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -11037,6 +11054,7 @@ def test_perform_disk_shrink_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesPerformDiskShrinkRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11052,6 +11070,7 @@ def test_perform_disk_shrink_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesPerformDiskShrinkRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -11321,6 +11340,7 @@ def test_get_disk_shrink_config_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesGetDiskShrinkConfigRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11336,6 +11356,7 @@ def test_get_disk_shrink_config_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesGetDiskShrinkConfigRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -11610,6 +11631,7 @@ def test_reset_replica_size_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesResetReplicaSizeRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11625,6 +11647,7 @@ def test_reset_replica_size_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesResetReplicaSizeRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -11888,6 +11911,7 @@ def test_get_latest_recovery_time_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesGetLatestRecoveryTimeRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11903,6 +11927,7 @@ def test_get_latest_recovery_time_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesGetLatestRecoveryTimeRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -12146,6 +12171,7 @@ def test_execute_sql_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesExecuteSqlRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12159,6 +12185,7 @@ def test_execute_sql_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesExecuteSqlRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -12391,6 +12418,7 @@ def test_acquire_ssrs_lease_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesAcquireSsrsLeaseRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12406,6 +12434,7 @@ def test_acquire_ssrs_lease_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesAcquireSsrsLeaseRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -12651,6 +12680,7 @@ def test_release_ssrs_lease_non_empty_request_with_auto_populated_field():
     request = cloud_sql.SqlInstancesReleaseSsrsLeaseRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12666,6 +12696,7 @@ def test_release_ssrs_lease_non_empty_request_with_auto_populated_field():
         request_msg = cloud_sql.SqlInstancesReleaseSsrsLeaseRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -12929,6 +12960,7 @@ def test_pre_check_major_version_upgrade_non_empty_request_with_auto_populated_f
     request = cloud_sql.SqlInstancesPreCheckMajorVersionUpgradeRequest(
         instance="instance_value",
         project="project_value",
+        location="location_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12944,6 +12976,7 @@ def test_pre_check_major_version_upgrade_non_empty_request_with_auto_populated_f
         request_msg = cloud_sql.SqlInstancesPreCheckMajorVersionUpgradeRequest(
             instance="instance_value",
             project="project_value",
+            location="location_value",
         )
         assert args[0] == request_msg
 
@@ -13561,6 +13594,9 @@ def test_add_server_certificate_rest_required_fields(
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
 
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
+
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
     assert jsonified_request["instance"] == "instance_value"
@@ -13680,6 +13716,9 @@ def test_add_entra_id_certificate_rest_required_fields(
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -13901,6 +13940,9 @@ def test_demote_rest_required_fields(request_type=cloud_sql.SqlInstancesDemoteRe
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -14377,6 +14419,9 @@ def test_list_server_certificates_rest_required_fields(
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
 
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
+
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
     assert jsonified_request["instance"] == "instance_value"
@@ -14500,6 +14545,9 @@ def test_list_entra_id_certificates_rest_required_fields(
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -14881,6 +14929,9 @@ def test_rotate_server_certificate_rest_required_fields(
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
 
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
+
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
     assert jsonified_request["instance"] == "instance_value"
@@ -15001,6 +15052,9 @@ def test_rotate_entra_id_certificate_rest_required_fields(
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -15584,6 +15638,9 @@ def test_execute_sql_rest_required_fields(
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
 
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
+
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
     assert jsonified_request["instance"] == "instance_value"
@@ -15703,6 +15760,9 @@ def test_acquire_ssrs_lease_rest_required_fields(
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -15826,6 +15886,9 @@ def test_release_ssrs_lease_rest_required_fields(
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
 
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
+
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
     assert jsonified_request["instance"] == "instance_value"
@@ -15947,6 +16010,9 @@ def test_pre_check_major_version_upgrade_rest_required_fields(
 
     jsonified_request["instance"] = "instance_value"
     jsonified_request["project"] = "project_value"
+
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("location",))
 
     # verify required fields with non-default values are left alone
     assert "instance" in jsonified_request
@@ -17122,6 +17188,54 @@ def test_point_in_time_restore_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_insert_routing_parameters_request_1_grpc():
+    client = SqlInstancesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        call.return_value = cloud_sql_resources.Operation()
+        client.insert(request={"project": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(**{"project": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"project": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_insert_routing_parameters_request_2_grpc():
+    client = SqlInstancesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        call.return_value = cloud_sql_resources.Operation()
+        client.insert(request={"body": {"region": "sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(
+            **{"body": {"region": "sample1"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"region": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_transport_kind_grpc_asyncio():
     transport = SqlInstancesServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -17524,6 +17638,7 @@ async def test_get_empty_call_grpc_asyncio():
                 primary_dns_name="primary_dns_name_value",
                 write_endpoint="write_endpoint_value",
                 node_count=1070,
+                database_center_integration=cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED,
             )
         )
         await client.get(request=None)
@@ -18573,6 +18688,82 @@ async def test_point_in_time_restore_empty_call_grpc_asyncio():
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_sql.SqlInstancesPointInTimeRestoreRequest()
         assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_insert_routing_parameters_request_1_grpc_asyncio():
+    client = SqlInstancesServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_sql_resources.Operation(
+                kind="kind_value",
+                target_link="target_link_value",
+                status=cloud_sql_resources.Operation.SqlOperationStatus.PENDING,
+                user="user_value",
+                operation_type=cloud_sql_resources.Operation.SqlOperationType.IMPORT,
+                name="name_value",
+                target_id="target_id_value",
+                self_link="self_link_value",
+                target_project="target_project_value",
+            )
+        )
+        await client.insert(request={"project": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(**{"project": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"project": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_insert_routing_parameters_request_2_grpc_asyncio():
+    client = SqlInstancesServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_sql_resources.Operation(
+                kind="kind_value",
+                target_link="target_link_value",
+                status=cloud_sql_resources.Operation.SqlOperationStatus.PENDING,
+                user="user_value",
+                operation_type=cloud_sql_resources.Operation.SqlOperationType.IMPORT,
+                name="name_value",
+                target_id="target_id_value",
+                self_link="self_link_value",
+                target_project="target_project_value",
+            )
+        )
+        await client.insert(request={"body": {"region": "sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(
+            **{"body": {"region": "sample1"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"region": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
 
 
 def test_transport_kind_rest():
@@ -20643,6 +20834,7 @@ def test_get_rest_call_success(request_type):
             primary_dns_name="primary_dns_name_value",
             write_endpoint="write_endpoint_value",
             node_count=1070,
+            database_center_integration=cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -20700,6 +20892,10 @@ def test_get_rest_call_success(request_type):
     assert response.primary_dns_name == "primary_dns_name_value"
     assert response.write_endpoint == "write_endpoint_value"
     assert response.node_count == 1070
+    assert (
+        response.database_center_integration
+        == cloud_sql_resources.DatabaseInstance.DatabaseCenterIntegration.ENABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -21405,6 +21601,7 @@ def test_insert_rest_call_success(request_type):
         ],
         "dns_names": {},
         "database_center_integration_enabled": {},
+        "database_center_integration": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -22531,6 +22728,7 @@ def test_patch_rest_call_success(request_type):
         ],
         "dns_names": {},
         "database_center_integration_enabled": {},
+        "database_center_integration": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23700,6 +23898,7 @@ def test_restore_backup_rest_call_success(request_type):
             ],
             "dns_names": {},
             "database_center_integration_enabled": {},
+            "database_center_integration": 1,
         },
         "restore_instance_clear_overrides_field_names": [
             "restore_instance_clear_overrides_field_names_value1",
@@ -25464,6 +25663,7 @@ def test_update_rest_call_success(request_type):
         ],
         "dns_names": {},
         "database_center_integration_enabled": {},
+        "database_center_integration": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -28225,6 +28425,7 @@ def test_point_in_time_restore_rest_call_success(request_type):
             ],
             "dns_names": {},
             "database_center_integration_enabled": {},
+            "database_center_integration": 1,
         },
         "target_instance_clear_settings_field_names": [
             "target_instance_clear_settings_field_names_value1",
@@ -29266,6 +29467,52 @@ def test_point_in_time_restore_empty_call_rest():
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_sql.SqlInstancesPointInTimeRestoreRequest()
         assert args[0] == request_msg
+
+
+def test_insert_routing_parameters_request_1_rest():
+    client = SqlInstancesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        client.insert(request={"project": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(**{"project": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"project": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_insert_routing_parameters_request_2_rest():
+    client = SqlInstancesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        client.insert(request={"body": {"region": "sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = cloud_sql.SqlInstancesInsertRequest(
+            **{"body": {"region": "sample1"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"region": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
 
 
 def test_transport_grpc_default():
