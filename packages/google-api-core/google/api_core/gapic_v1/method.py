@@ -41,6 +41,10 @@ DEFAULT = _MethodDefault._DEFAULT_VALUE
 """Sentinel value indicating that a retry, timeout, or compression argument was unspecified,
 so the default should be used."""
 
+TRANSPORT_KIND_GRPC = "grpc"
+TRANSPORT_KIND_REST = "rest"
+DEFAULT_TRANSPORT_KIND = TRANSPORT_KIND_GRPC
+
 
 def _is_not_none_or_false(value):
     return value is not None and value is not False
@@ -282,7 +286,7 @@ class _GapicCallable(object):
         method_name=None,
         is_streaming=False,
         client_info=None,
-        kind="grpc",
+        kind=DEFAULT_TRANSPORT_KIND,
     ):
         self._target = target
         self._retry = retry
@@ -301,11 +305,11 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Configure the OpenTelemetry span factory once at initialization.
-        # For now, method tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
+        # For now, method tracing is gated to non-streaming calls where an explicit method_name is provided.
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in ("grpc", "rest")
+            and kind in (TRANSPORT_KIND_GRPC, TRANSPORT_KIND_REST)
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -323,9 +327,10 @@ class _GapicCallable(object):
                     tracer = trace.get_tracer("google.api_core")
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
-                is_rest = kind in ("rest", "rest_asyncio")
                 span_attributes = {
-                    "rpc.system.name": "http" if is_rest else "grpc",
+                    "rpc.system.name": "http"
+                    if kind == TRANSPORT_KIND_REST
+                    else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
@@ -412,7 +417,7 @@ def wrap_method(
     client_options=None,
     method_name=None,
     is_streaming=False,
-    kind="grpc",
+    kind=DEFAULT_TRANSPORT_KIND,
 ):
     """Wrap an RPC method with common behavior.
 

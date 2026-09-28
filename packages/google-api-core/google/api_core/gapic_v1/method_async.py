@@ -40,7 +40,10 @@ from google.api_core.gapic_v1.method import (  # noqa: F401
 )
 from google.api_core.timeout import TimeToDeadlineTimeout
 
-_DEFAULT_ASYNC_TRANSPORT_KIND = "grpc_asyncio"
+TRANSPORT_KIND_GRPC_ASYNC = "grpc_asyncio"
+TRANSPORT_KIND_REST_ASYNC = "rest_asyncio"
+DEFAULT_ASYNC_TRANSPORT_KIND = TRANSPORT_KIND_GRPC_ASYNC
+_DEFAULT_ASYNC_TRANSPORT_KIND = DEFAULT_ASYNC_TRANSPORT_KIND
 
 
 class _AsyncGapicCallable(object):
@@ -84,7 +87,7 @@ class _AsyncGapicCallable(object):
         method_name=None,
         is_streaming=False,
         client_info=None,
-        kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
+        kind=DEFAULT_ASYNC_TRANSPORT_KIND,
     ):
         self._target = target
         self._retry = retry
@@ -106,7 +109,7 @@ class _AsyncGapicCallable(object):
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in ("grpc_asyncio", "rest_asyncio")
+            and kind in (TRANSPORT_KIND_GRPC_ASYNC, TRANSPORT_KIND_REST_ASYNC)
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -124,9 +127,10 @@ class _AsyncGapicCallable(object):
                     tracer = trace.get_tracer("google.api_core")
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
-                is_rest = kind in ("rest", "rest_asyncio")
                 span_attributes = {
-                    "rpc.system.name": "http" if is_rest else "grpc",
+                    "rpc.system.name": "http"
+                    if kind == TRANSPORT_KIND_REST_ASYNC
+                    else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
@@ -211,7 +215,7 @@ def wrap_method(
     default_timeout=None,
     default_compression=None,
     client_info=client_info.DEFAULT_CLIENT_INFO,
-    kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
+    kind=DEFAULT_ASYNC_TRANSPORT_KIND,
     *,
     client_options=None,
     method_name=None,
@@ -219,12 +223,39 @@ def wrap_method(
 ):
     """Wrap an async RPC method with common behavior.
 
+    Args:
+        func (Callable): The low-level async RPC method.
+        default_retry (Optional[google.api_core.retry_async.AsyncRetry]): The default
+            retry strategy. If ``None``, the method will not retry by default.
+        default_timeout (Optional[Union[google.api_core.timeout.Timeout, float]]): The
+            default timeout strategy. Can also be specified as an int or float. If
+            ``None``, the method will not have a timeout specified by default.
+        default_compression (Optional[grpc.Compression]): The default
+            grpc.Compression. If ``None``, the method will not have
+            compression specified by default.
+        client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+            Client information used to create a user-agent string that's
+            passed as gRPC metadata to the method. If unspecified, then
+            a sane default will be used. If ``None``, then no user agent
+            metadata will be provided to the RPC method.
+        kind (str): The transport kind for the RPC method. Defaults to "grpc_asyncio".
+            Allowed values for OpenTelemetry method tracing are "grpc_asyncio" and "rest_asyncio".
+        client_options
+            (Optional[google.api_core.client_options.ClientOptions]):
+                Client options used to configure client-level behavior, such as
+                custom OpenTelemetry tracer providers. Defaults to None.
+        method_name (Optional[str]): Optional explicit full RPC method name
+            (e.g. "/google.cloud.secretmanager.v1.SecretManagerService/AccessSecretVersion").
+            Used to identify the RPC for observability.
+        is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
+            Streaming methods are currently gated and do not generate Tier 3 spans.
+
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
             and ``compression`` arguments and applies the common error mapping,
             retry, timeout, metadata, and compression behavior to the low-level RPC method.
     """
-    if kind == _DEFAULT_ASYNC_TRANSPORT_KIND:
+    if kind == DEFAULT_ASYNC_TRANSPORT_KIND:
         func = grpc_helpers_async.wrap_errors(func)
 
     metadata = [client_info.to_grpc_metadata()] if client_info is not None else None

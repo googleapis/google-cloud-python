@@ -374,8 +374,18 @@ async def test_wrap_method_async_otel_tracing_skips_span(
     mock_trace.get_tracer.assert_not_called()
 
 
+@pytest.mark.parametrize(
+    "kind,expected_rpc_system",
+    [
+        ("grpc_asyncio", "grpc"),
+        ("rest_asyncio", "http"),
+    ],
+    ids=["grpc_asyncio", "rest_asyncio"],
+)
 @pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
+async def test_wrap_method_async_otel_tracing_enabled_success(
+    mock_otel, kind, expected_rpc_system
+):
     """Proves that when OpenTelemetry tracing is enabled and method_name is passed, a T3 client span is started and awaited."""
     mock_target = mock.AsyncMock(return_value="async_success")
 
@@ -383,7 +393,7 @@ async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
         mock_target,
         default_timeout=60,
         method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="grpc_asyncio",
+        kind=kind,
     )
     result = await wrapped()
 
@@ -392,32 +402,7 @@ async def test_wrap_method_async_otel_tracing_enabled_success(mock_otel):
         "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         kind="CLIENT",
         attributes={
-            "rpc.system.name": "grpc",
-            "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        },
-    )
-    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
-
-
-@pytest.mark.asyncio
-async def test_wrap_method_async_otel_tracing_enabled_rest_asyncio(mock_otel):
-    """Proves that when kind is 'rest_asyncio', a T3 client span is started."""
-    mock_target = mock.AsyncMock(return_value="rest_success")
-
-    wrapped = gapic_v1.method_async.wrap_method(
-        mock_target,
-        default_timeout=60,
-        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="rest_asyncio",
-    )
-    result = await wrapped()
-
-    assert result == "rest_success"
-    mock_otel.tracer.start_as_current_span.assert_called_once_with(
-        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
-        kind="CLIENT",
-        attributes={
-            "rpc.system.name": "http",
+            "rpc.system.name": expected_rpc_system,
             "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
         },
     )
