@@ -446,6 +446,11 @@ def showcase_w_rest_async(
     with showcase_library(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
     ):
+        # In monorepo development, install the local google-api-core package from source
+        local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+        if local_core.is_dir():
+            session.install("-e", str(local_core))
+
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
