@@ -120,10 +120,11 @@ MIGRATION_TEST_DEPENDENCIES = [
 
 SQLALCHEMY_14_DEPENDENCIES = [
     "sqlalchemy>=1.4,<2.0",
+    "alembic<1.20",
 ]
 
 SQLALCHEMY_20_DEPENDENCIES = [
-    "sqlalchemy>=2.0",
+    "sqlalchemy>=2.0,<2.1",
 ]
 
 UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]

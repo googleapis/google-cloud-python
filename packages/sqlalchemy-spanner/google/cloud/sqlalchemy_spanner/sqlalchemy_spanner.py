@@ -70,6 +70,8 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
 
         dbapi_conn.staleness = None
         dbapi_conn.read_only = False
+        if hasattr(dbapi_conn, "timeout"):
+            dbapi_conn.timeout = None
 
 
 # register a method to get a single value of a JSON object
@@ -200,7 +202,12 @@ def engine_to_connection(function):
     return wrapper
 
 
+_UNSET = object()
+
+
 class SpannerExecutionContext(DefaultExecutionContext):
+    _previous_timeout = _UNSET
+
     def pre_exec(self):
         """
         Apply execution options to the DB API connection before
@@ -228,6 +235,12 @@ class SpannerExecutionContext(DefaultExecutionContext):
         if request_tag:
             self.cursor.request_tag = request_tag
 
+        if "timeout" in self.execution_options:
+            conn = getattr(self._dbapi_connection, "connection", self._dbapi_connection)
+            if conn is not None and hasattr(conn, "timeout"):
+                self._previous_timeout = conn.timeout
+                conn.timeout = self.execution_options["timeout"]
+
         ignore_transaction_warnings = self.execution_options.get(
             "ignore_transaction_warnings"
         )
@@ -237,6 +250,26 @@ class SpannerExecutionContext(DefaultExecutionContext):
                 conn._connection_variables["ignore_transaction_warnings"] = (
                     ignore_transaction_warnings
                 )
+
+    def _restore_connection_timeout(self):
+        if self._previous_timeout is not _UNSET:
+            try:
+                conn = getattr(
+                    self._dbapi_connection, "connection", self._dbapi_connection
+                )
+                if conn is not None and hasattr(conn, "timeout"):
+                    conn.timeout = self._previous_timeout
+            except Exception:
+                pass
+            self._previous_timeout = _UNSET
+
+    def post_exec(self):
+        super(SpannerExecutionContext, self).post_exec()
+        self._restore_connection_timeout()
+
+    def handle_dbapi_exception(self, e):
+        self._restore_connection_timeout()
+        super(SpannerExecutionContext, self).handle_dbapi_exception(e)
 
     def fire_sequence(self, seq, type_):
         """Builds a statement for fetching next value of the sequence."""

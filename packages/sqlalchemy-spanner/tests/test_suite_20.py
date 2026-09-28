@@ -78,7 +78,11 @@ from sqlalchemy.testing.suite.test_ddl import (
     LongNameBlowoutTest as _LongNameBlowoutTest,
 )
 from sqlalchemy.testing.suite.test_ddl import TableDDLTest as _TableDDLTest
-from sqlalchemy.testing.suite.test_deprecations import *  # noqa: F401, F403
+
+try:
+    from sqlalchemy.testing.suite.test_deprecations import *  # noqa: F401, F403
+except ImportError:
+    pass
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import (
     DifficultParametersTest as _DifficultParametersTest,
