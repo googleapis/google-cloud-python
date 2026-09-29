@@ -274,3 +274,54 @@ async def test_wrap_method_without_wrap_errors():
         await wrapped_method()
 
         method.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "kind,expected_rpc_system",
+    [
+        ("grpc_asyncio", "grpc"),
+        ("rest_asyncio", "http"),
+    ],
+)
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_enabled_success(
+    mock_otel, kind, expected_rpc_system
+):
+    mock_target = mock.AsyncMock(return_value="async_success")
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        default_timeout=60,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind=kind,
+    )
+    result = await wrapped()
+
+    assert result == "async_success"
+    mock_otel.tracer.start_as_current_span.assert_called_once_with(
+        "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        kind="CLIENT",
+        attributes={
+            "rpc.system.name": expected_rpc_system,
+            "rpc.method": "google.cloud.secretmanager.v1.SecretManagerService/ListSecrets",
+        },
+    )
+    mock_otel.span.set_attribute.assert_called_with("rpc.response.status_code", "OK")
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_otel_tracing_enabled_error(mock_otel):
+    error = exceptions.NotFound("Secret not found")
+    mock_target = mock.AsyncMock(side_effect=error)
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(exceptions.NotFound):
+        await wrapped()
+
+    mock_otel.span.set_attribute.assert_any_call(
+        "rpc.response.status_code", "NOT_FOUND"
+    )

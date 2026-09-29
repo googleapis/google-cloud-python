@@ -30,6 +30,20 @@ from google.api_core.gapic_v1.method import (  # noqa: F401
 _DEFAULT_ASYNC_TRANSPORT_KIND = "grpc_asyncio"
 
 
+class _AsyncGapicCallable(_GapicCallable):
+    """Async callable that applies retry, timeout, metadata, and OpenTelemetry tracing."""
+
+    _SUPPORTED_TRACING_KINDS = ("grpc_asyncio", "rest_asyncio")
+
+    async def __call__(
+        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
+    ):
+        """Invoke the low-level async RPC with retry, timeout, compression, and metadata."""
+        wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
+        with self._trace_span():
+            return await wrapped_func(*args, **kwargs)
+
+
 def wrap_method(
     func,
     default_retry=None,
@@ -37,8 +51,39 @@ def wrap_method(
     default_compression=None,
     client_info=client_info.DEFAULT_CLIENT_INFO,
     kind=_DEFAULT_ASYNC_TRANSPORT_KIND,
+    *,
+    client_options=None,
+    method_name=None,
+    is_streaming=False,
 ):
     """Wrap an async RPC method with common behavior.
+
+    Args:
+        func (Callable[Any]): The async function to wrap.
+        default_retry (Optional[google.api_core.retry_async.AsyncRetry]): The
+            default retry strategy. If ``None``, the method will not retry by
+            default.
+        default_timeout (Optional[google.api_core.Timeout]): The default
+            timeout strategy. If ``None``, the method will not have timeout
+            specified by default.
+        default_compression (Optional[grpc.Compression]): The default
+            grpc.Compression. If ``None``, the method will not have
+            compression specified by default.
+        client_info
+            (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+                Client information used to create a user-agent string that's
+                passed as gRPC metadata to the method.
+        kind (str): The transport kind for the RPC method. Defaults to
+            "grpc_asyncio". Allowed values for OpenTelemetry method tracing
+            are "grpc_asyncio" and "rest_asyncio".
+        client_options
+            (Optional[google.api_core.client_options.ClientOptions]):
+                Client options used to configure client-level behavior, such as
+                custom OpenTelemetry tracer providers. Defaults to None.
+        method_name (Optional[str]): Optional explicit full RPC method name
+            used to identify the RPC for observability.
+        is_streaming (bool): Whether the RPC method is streaming. Defaults to
+            False.
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
@@ -51,11 +96,16 @@ def wrap_method(
     metadata = [client_info.to_grpc_metadata()] if client_info is not None else None
 
     return functools.wraps(func)(
-        _GapicCallable(
+        _AsyncGapicCallable(
             func,
             default_retry,
             default_timeout,
             default_compression,
             metadata=metadata,
+            client_options=client_options,
+            method_name=method_name,
+            is_streaming=is_streaming,
+            client_info=client_info,
+            kind=kind,
         )
     )

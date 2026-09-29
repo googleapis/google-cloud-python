@@ -216,10 +216,19 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     reason = getattr(source, "reason", None)
     if reason:
         attrs["error.type"] = reason
+    else:
+        attrs["error.type"] = _extract_status_code(target_exc)
     metadata = getattr(source, "metadata", None)
     if metadata:
         for k, v in metadata.items():
             attrs[f"gcp.errors.metadata.{k}"] = str(v)
+
+    msg = getattr(target_exc, "message", None)
+    if not isinstance(msg, str) or not msg:
+        details_fn = getattr(target_exc, "details", None)
+        msg = details_fn() if callable(details_fn) else str(target_exc)
+    if msg:
+        attrs["status.message"] = msg
 
     return attrs
 
@@ -254,8 +263,10 @@ class _GapicCallable(object):
         client_info (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
             Client information used for metadata headers. Defaults to None.
         kind (str): The transport kind for the RPC method. Defaults to "grpc".
-            Allowed values for OpenTelemetry method tracing are "grpc" and "grpc_asyncio".
+            Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
     """
+
+    _SUPPORTED_TRACING_KINDS = ("grpc", "rest")
 
     def __init__(
         self,
@@ -287,11 +298,11 @@ class _GapicCallable(object):
             self._default_metadata = self._static_metadata
 
         # Configure the OpenTelemetry span factory once at initialization.
-        # For now, method tracing is gated to non-streaming gRPC calls where an explicit method_name is provided.
+        # For now, method tracing is gated to non-streaming calls where an explicit method_name is provided.
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind == "grpc"
+            and kind in self._SUPPORTED_TRACING_KINDS
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -310,7 +321,7 @@ class _GapicCallable(object):
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
                 span_attributes = {
-                    "rpc.system.name": "grpc",
+                    "rpc.system.name": "http" if kind.startswith("rest") else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
@@ -323,11 +334,7 @@ class _GapicCallable(object):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._start_span_fn = None
 
-    def __call__(
-        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
-    ):
-        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
-
+    def _prepare_call(self, timeout, retry, compression, kwargs):
         if retry is DEFAULT:
             retry = self._retry
 
@@ -361,6 +368,10 @@ class _GapicCallable(object):
         if self._compression is not None:
             kwargs["compression"] = compression
 
+        return wrapped_func
+
+    @contextlib.contextmanager
+    def _trace_span(self):
         span_cm = contextlib.nullcontext()
         if self._start_span_fn is not None:
             try:
@@ -370,10 +381,9 @@ class _GapicCallable(object):
 
         with span_cm as span:
             try:
-                result = wrapped_func(*args, **kwargs)
+                yield
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute("rpc.response.status_code", "OK")
-                return result
             except Exception as exc:
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute(
@@ -382,6 +392,14 @@ class _GapicCallable(object):
                     for k, v in _extract_error_attributes(exc).items():
                         span.set_attribute(k, v)
                 raise
+
+    def __call__(
+        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
+    ):
+        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
+        wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
+        with self._trace_span():
+            return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(
@@ -489,8 +507,7 @@ def wrap_method(
         is_streaming (bool): Whether the RPC method is streaming. Defaults to False.
             Streaming methods are currently gated and do not generate Tier 3 spans.
         kind (str): The transport kind for the RPC method. Defaults to "grpc".
-            Non-gRPC transports (e.g. "rest") are currently gated and do not generate
-            Tier 3 method spans.
+            Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
 
     Returns:
         Callable: A new callable that takes optional ``retry``, ``timeout``,
