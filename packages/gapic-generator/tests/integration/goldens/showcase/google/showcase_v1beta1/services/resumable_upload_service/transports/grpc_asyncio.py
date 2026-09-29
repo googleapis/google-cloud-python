@@ -362,7 +362,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                 # call rather than during __init__ (_prep_wrapped_messages), since
                 # GrpcAsyncIOTransport may be initialized with synchronous
                 # google.auth.credentials.Credentials that AsyncAuthorizedSession
-                # rejects, and gRPC async unit tests expect a non-coroutine __call__
+                # rejects, and gRPC async stubs expose a synchronous __call__
                 # returning an awaitable.
                 class _AsyncRestStub:  # pragma: NO COVER
                     def __init__(_self):  # pragma: NO COVER
