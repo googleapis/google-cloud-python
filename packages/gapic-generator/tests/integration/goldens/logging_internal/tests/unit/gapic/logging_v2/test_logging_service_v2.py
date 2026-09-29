@@ -3496,7 +3496,7 @@ def test_logging_service_v2_base_transport_wrap_method():
                 mock_wrap.reset_mock()
                 transport._wrap_method(func, client_options=options, kind="grpc")
                 assert "client_options" not in mock_wrap.call_args.kwargs
-                assert "kind" not in mock_wrap.call_args.kwargs
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
 
             # Test for default/empty kind on base transport
             with mock.patch(
@@ -3540,7 +3540,7 @@ def test_logging_service_v2_base_transport_wrap_async_method():
                 mock_wrap.reset_mock()
                 transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
                 assert "client_options" not in mock_wrap.call_args.kwargs
-                assert "kind" not in mock_wrap.call_args.kwargs
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
 
             # Test for default/empty kind on base transport
             with mock.patch(
