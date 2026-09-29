@@ -15,6 +15,7 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
+import contextlib
 import os
 import json
 

@@ -3332,9 +3332,25 @@ def test_metrics_service_v2_base_transport_wrap_async_method():
                 assert mock_wrap.call_args.kwargs.get("client_options") == options
                 assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
 
-            # Test older google-api-core without tracing support
+            # Test intermediate google-api-core without tracing support but with kind support (>= 2.19.1)
             with mock.patch(
                 "google.cloud.logging_v2.services.metrics_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.logging_v2.services.metrics_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
+
+            # Test ancient google-api-core without tracing support or kind support (< 2.19.1)
+            with mock.patch(
+                "google.cloud.logging_v2.services.metrics_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.logging_v2.services.metrics_service_v2.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
                 False,
             ):
                 mock_wrap.reset_mock()

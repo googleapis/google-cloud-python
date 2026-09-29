@@ -39,12 +39,15 @@ DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 # Check once at module load time whether google-api-core's wrap_methods support
 # OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
-# to avoid recurring inspect.signature latency during client instantiation.
+# or transport kind arguments, to avoid recurring inspect.signature latency during client instantiation.
 _WRAP_METHOD_SUPPORTS_TRACING = (
     "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
 )
 _ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
     "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
+_ASYNC_WRAP_METHOD_SUPPORTS_KIND = (
+    "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
 )
 
 
@@ -171,22 +174,43 @@ class CloudRedisTransport(abc.ABC):
         """Wrap an async RPC method with common client-level features.
 
         Applies asynchronous retry, timeout, metadata, and tracing wrappers
-        to the underlying RPC method callable. Transport attributes (`kind`
-        and, if supported by the runtime `google-api-core` version, `client_options`)
-        are injected. Tracing-specific arguments (`client_options`, `method_name`,
-        `is_streaming`) are stripped when unsupported for backward compatibility
-        with older `google-api-core` versions.
+        to the underlying RPC method callable.
+
+        This method adapts dynamically across three historical generations of
+        `google-api-core`:
+        1. Modern core with OpenTelemetry tracing (PR #18274 / #18433):
+           Supports `client_options`, `kind`, `method_name`, and `is_streaming`.
+        2. Intermediate core with async transport discrimination (>= 2.19.1, PR #688):
+           Supports `kind` to avoid erroneous gRPC error mapping on REST transports,
+           but does not yet accept tracing arguments (`client_options`, etc.).
+        3. Ancient core (< 2.19.1):
+           Accepts neither `client_options` nor `kind`. Both must be stripped to
+           prevent `TypeError: unexpected keyword argument`.
         """
+        # Generation 1: Full OpenTelemetry tracing support in modern google-api-core
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
             if self.kind:
                 kwargs["kind"] = self.kind
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+        # Fallback for older runtime versions of google-api-core:
+        # Strip tracing-only arguments (client_options, method_name, is_streaming)
+        # unsupported in google-api-core < 2.26.0/tracing release.
+        for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
+
+        # Generation 2 vs Generation 3 fallback check:
+        # In google-api-core >= 2.19.1, method_async.wrap_method introduced the `kind`
+        # parameter (commit 8a04ec045c1, PR #688) to distinguish gRPC from REST transports
+        # and prevent REST callables from being wrapped with gRPC error handlers.
+        # If supported, inject `kind` from the transport; otherwise (Generation 3,
+        # google-api-core < 2.19.1), strip `kind` to avoid a TypeError.
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and self.kind:
+            kwargs["kind"] = self.kind
+        else:
+            kwargs.pop("kind", None)
+
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):
