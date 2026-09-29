@@ -1395,3 +1395,14 @@ def test_create_channel_interconnect_gated_by_attempt_direct_path(
         compression=None,
         options=(("grpc.default_authority", "storage.googleapis.com"),),
     )
+
+    # When target already starts with google-c2p:/// and attempt_direct_path=False, preserve target
+    grpc_helpers.create_channel(
+        "google-c2p:///storage-direct.googleapis.com",
+        attempt_direct_path=False,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com",
+        compute_creds,
+        compression=None,
+    )
