@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.41.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.40.0...gapic-generator-v1.41.0) (2026-09-29)
+
+
+### Features
+
+* **gapic-generator:** add schema support for resumable uploads ([#18480](https://github.com/googleapis/google-cloud-python/issues/18480)) ([78ff458](https://github.com/googleapis/google-cloud-python/commit/78ff458d055a6104a385dc96990773f02a138f7d))
+
+
+### Bug Fixes
+
+* **gapic-generator:** init mock response in version header test ([#18488](https://github.com/googleapis/google-cloud-python/issues/18488)) ([7871fa9](https://github.com/googleapis/google-cloud-python/commit/7871fa9d142807248e225cb9d24d2ffda88e1b90))
+
 ## [1.40.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.39.0...gapic-generator-v1.40.0) (2026-09-24)
 
 
