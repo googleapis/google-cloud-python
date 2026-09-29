@@ -511,7 +511,9 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
             resp = resumable_upload.UploadMediaResponse()
             pb_resp = resumable_upload.UploadMediaResponse.pb(resp)
 
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            # Resumable upload start responses return session metadata in headers with an empty body.
+            if response.content and response.content.strip():
+                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upload_media(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]

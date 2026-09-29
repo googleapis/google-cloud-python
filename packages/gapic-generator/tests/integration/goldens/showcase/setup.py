@@ -53,6 +53,9 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
 ]
 extras = {
+    "async_rest": [
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0"
+    ],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-showcase"
 
