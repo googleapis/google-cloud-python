@@ -42,13 +42,15 @@ def frozen_time():
 
 @pytest.fixture
 def workload_cert_config(tmpdir, monkeypatch):
+    cert_file = tmpdir.join("public_cert.pem")
+    cert_file.write_binary(pytest.public_cert_bytes)
     config_file = tmpdir.join("certificate_config.json")
     config_file.write(
         json.dumps(
             {
                 "cert_configs": {
                     "workload": {
-                        "cert_path": os.path.join(pytest.data_dir, "public_cert.pem"),
+                        "cert_path": str(cert_file),
                         "key_path": os.path.join(pytest.data_dir, "privatekey.pem"),
                     }
                 }
@@ -59,6 +61,11 @@ def workload_cert_config(tmpdir, monkeypatch):
     monkeypatch.delenv(
         environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, raising=False
     )
+    monkeypatch.delenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    return cert_file
 
 
 CERT_MOCK_VAL = b"-----BEGIN CERTIFICATE-----\nMIIDIzCCAgugAwIBAgIJAMfISuBQ5m+5MA0GCSqGSIb3DQEBBQUAMBUxEzARBgNV\nBAMTCnVuaXQtdGVzdHMwHhcNMTExMjA2MTYyNjAyWhcNMjExMjAzMTYyNjAyWjAV\nMRMwEQYDVQQDEwp1bml0LXRlc3RzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEA4ej0p7bQ7L/r4rVGUz9RN4VQWoej1Bg1mYWIDYslvKrk1gpj7wZgkdmM\n7oVK2OfgrSj/FCTkInKPqaCR0gD7K80q+mLBrN3PUkDrJQZpvRZIff3/xmVU1Wer\nuQLFJjnFb2dqu0s/FY/2kWiJtBCakXvXEOb7zfbINuayL+MSsCGSdVYsSliS5qQp\ngyDap+8b5fpXZVJkq92hrcNtbkg7hCYUJczt8n9hcCTJCfUpApvaFQ18pe+zpyl4\n+WzkP66I28hniMQyUlA1hBiskT7qiouq0m8IOodhv2fagSZKjOTTU2xkSBc//fy3\nZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQABo3YwdDAdBgNVHQ4EFgQU2RQ8yO+O\ngN8oVW2SW7RLrfYd9jEwRQYDVR0jBD4wPIAU2RQ8yO+OgN8oVW2SW7RLrfYd9jGh\nGaQXMBUxEzARBgNVBAMTCnVuaXQtdGVzdHOCCQDHyErgUOZvuTAMBgNVHRMEBTAD\nAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQBRv+M/6+FiVu7KXNjFI5pSN17OcW5QUtPr\nodJMlWrJBtynn/TA1oJlYu3yV5clc/71Vr/AxuX5xGP+IXL32YDF9lTUJXG/uUGk\n+JETpKmQviPbRsvzYhz4pf6ZIOZMc3/GIcNq92ECbseGO+yAgyWUVKMmZM0HqXC9\novNslqe0M8C1sLm1zAR5z/h/litE7/8O2ietija3Q/qtl2TOXJdCA6sgjJX2WUql\nybrC55ct18NKf3qhpcEkGQvFU40rVYApJpi98DiZPYFdx1oBDp/f4uZ3ojpxRVFT\ncDwcJLfNRCPUhormsY7fDS9xSyThiHsW9mjJYdcaKQkwYZ0F11yB\n-----END CERTIFICATE-----\n"
@@ -112,7 +119,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
         list(adapters_iter)
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
-        request("https://sts.mtls.googleapis.com")
+        request("https://STS.mtls.googleapis.com")
 
         mtls_adapter = session.adapters["https://iamcredentials.mtls.googleapis.com/"]
         assert isinstance(
@@ -166,58 +173,61 @@ class TestRequestResponse(compliance.RequestResponseTests):
             session.get_adapter("https://iamcredentials.mtls.googleapis.com/v1/token")
             is custom_adapter
         )
+        assert request._mtls_adapter is None
 
-    @pytest.mark.parametrize("use_cert,has_cert", [(False, True), (True, False)])
+    @pytest.mark.parametrize(
+        "use_cert,request_kwargs",
+        [
+            ("false", {}),
+            ("true", {"cert": ("cert.pem", "key.pem")}),
+        ],
+    )
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
-    @mock.patch.object(google.auth.transport._mtls_helper, "get_client_cert_and_key")
-    def test_mtls_skips_when_disabled_or_no_cert(
-        self, mock_get_cert, mock_send, use_cert, has_cert, monkeypatch
+    def test_mtls_skips_when_disabled_or_explicit_cert(
+        self,
+        mock_send,
+        use_cert,
+        request_kwargs,
+        workload_cert_config,
+        monkeypatch,
     ):
         mock_send.return_value = make_response()
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            "true" if use_cert else "false",
-        )
-        mock_get_cert.return_value = (has_cert, None, None)
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, use_cert)
+        session = requests.Session()
+        request = google.auth.transport.requests.Request(session)
+
+        request("https://iamcredentials.mtls.googleapis.com/v1/token", **request_kwargs)
+
+        assert "https://iamcredentials.mtls.googleapis.com/" not in session.adapters
+        assert request._mtls_adapter is None
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    @mock.patch.object(
+        google.auth.transport._mtls_helper,
+        "get_client_cert_and_key",
+        return_value=(False, None, None),
+    )
+    def test_mtls_no_cert_caches_unavailable(
+        self, mock_get_cert, mock_send, monkeypatch
+    ):
+        mock_send.return_value = make_response()
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "true")
         session = requests.Session()
         request = google.auth.transport.requests.Request(session)
 
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
 
         assert "https://iamcredentials.mtls.googleapis.com/" not in session.adapters
-        assert request._mtls_adapter is None
-        if use_cert and not has_cert:
-            assert request._mtls_unavailable is True
-            request("https://iamcredentials.mtls.googleapis.com/v1/token")
-            mock_get_cert.assert_called_once()
-        else:
-            mock_get_cert.assert_not_called()
+        assert request._mtls_unavailable is True
+        mock_get_cert.assert_called_once()
 
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
     def test_mtls_missing_cert_file_raises_transport_error(
-        self, mock_send, tmpdir, monkeypatch
+        self, mock_send, workload_cert_config
     ):
         mock_send.return_value = make_response()
-        cert_file = tmpdir.join("missing_cert.pem")
-        config_file = tmpdir.join("certificate_config.json")
-        config_file.write(
-            json.dumps(
-                {
-                    "cert_configs": {
-                        "workload": {
-                            "cert_path": str(cert_file),
-                            "key_path": os.path.join(pytest.data_dir, "privatekey.pem"),
-                        }
-                    }
-                }
-            )
-        )
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_file)
-        )
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, raising=False
-        )
+        workload_cert_config.remove()
         request = google.auth.transport.requests.Request(requests.Session())
 
         with pytest.raises(exceptions.TransportError) as exc_info:
@@ -225,7 +235,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
         assert isinstance(exc_info.value.__cause__, FileNotFoundError)
         assert request._mtls_unavailable is False
 
-        cert_file.write_binary(pytest.public_cert_bytes)
+        workload_cert_config.write_binary(pytest.public_cert_bytes)
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
         assert isinstance(
             request._mtls_adapter,

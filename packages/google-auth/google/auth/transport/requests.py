@@ -259,7 +259,8 @@ class Request(transport.Request):
             google.auth.exceptions.TransportError: If any exception occurred.
         """
         try:
-            self._configure_mtls_if_needed(url)
+            if not kwargs.get("cert"):
+                self._configure_mtls_if_needed(url)
             _helpers.request_log(_LOGGER, method, url, body, headers)
             response = self.session.request(
                 method, url, data=body, headers=headers, timeout=timeout, **kwargs
