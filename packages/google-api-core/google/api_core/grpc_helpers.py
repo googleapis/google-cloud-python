@@ -60,16 +60,24 @@ def _resolve_direct_path_interconnect(
     return bool(attempt_direct_path_xds_over_interconnect)
 
 
-def _extract_direct_path_authority(target: str) -> Optional[str]:
-    """Extracts the canonical TLS/HTTP2 authority for a ``-direct.googleapis.com`` target."""
+def _extract_target_host(target: str) -> str:
+    """Extracts the host from a target URI or address."""
     clean_host = target
     for prefix in ("google-c2p:///", "dns:///", "https://", "http://"):
         if clean_host.startswith(prefix):
             clean_host = clean_host[len(prefix) :]
             break
-    clean_host = clean_host.split("?", 1)[0].split("/", 1)[0].split(":", 1)[0]
-    if "-direct.googleapis.com" in clean_host:
-        return clean_host.replace("-direct.googleapis.com", ".googleapis.com", 1)
+    return clean_host.split("?", 1)[0].split("/", 1)[0].split(":", 1)[0]
+
+
+def _extract_direct_path_authority(target: str) -> Optional[str]:
+    """Extracts the canonical TLS/HTTP2 authority for a ``-direct.googleapis.com`` target."""
+    clean_host = _extract_target_host(target)
+    suffix = "-direct.googleapis.com"
+    if clean_host.endswith(suffix):
+        service_prefix = clean_host[: -len(suffix)]
+        if service_prefix:
+            return f"{service_prefix}.googleapis.com"
     return None
 
 
@@ -348,6 +356,107 @@ def _create_composite_credentials(
         return grpc.compute_engine_channel_credentials(google_auth_credentials)
 
 
+def _setup_direct_path_and_credentials(
+    target,
+    credentials=None,
+    scopes=None,
+    ssl_credentials=None,
+    credentials_file=None,
+    quota_project_id=None,
+    default_scopes=None,
+    default_host=None,
+    attempt_direct_path: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
+    **kwargs,
+):
+    """Configures credentials, options, and target for DirectPath and Interconnect.
+
+    Args:
+        target (str): The target service address in the format 'hostname:port'.
+        credentials (google.auth.credentials.Credentials): The credentials. If
+            not specified, then this function will attempt to ascertain the
+            credentials from the environment using :func:`google.auth.default`.
+        scopes (Sequence[str]): A optional list of scopes needed for this
+            service. These are only used when credentials are not specified and
+            are passed to :func:`google.auth.default`.
+        ssl_credentials (grpc.ChannelCredentials): Optional SSL channel
+            credentials. This can be used to specify different certificates.
+        credentials_file (str): Deprecated. A file with credentials that can be
+            loaded with :func:`google.auth.load_credentials_from_file`.
+        quota_project_id (str): An optional project to use for billing and quota.
+        default_scopes (Sequence[str]): Default scopes passed by a Google client
+            library. Use 'scopes' for user-defined scopes.
+        default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
+        attempt_direct_path (Optional[bool]): If set, Direct Path will be attempted.
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
+            DirectPath over Cloud Interconnect will be attempted using standard
+            TLS credentials and ``?force-xds`` C2P target resolution.
+        kwargs: Additional key-word args passed to the channel creation function.
+
+    Returns:
+        tuple[str, grpc.ChannelCredentials, dict]: A tuple containing the resolved
+            target, composite credentials, and kwargs.
+
+    Raises:
+        google.api_core.DuplicateCredentialArgs: If both a credentials object
+            and credentials_file are passed.
+        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
+            set to `True` without `attempt_direct_path_xds_over_interconnect`.
+    """
+    if attempt_direct_path_xds_over_interconnect:
+        use_dp_interconnect = _resolve_direct_path_interconnect(True)
+    elif attempt_direct_path:
+        use_dp_interconnect = _resolve_direct_path_interconnect(
+            attempt_direct_path_xds_over_interconnect
+        )
+    else:
+        use_dp_interconnect = False
+
+    # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
+    # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
+    # See https://github.com/googleapis/python-api-core/issues/590
+    if ssl_credentials and attempt_direct_path and not use_dp_interconnect:
+        raise ValueError("Using ssl_credentials with Direct Path is not supported")
+
+    if use_dp_interconnect and ssl_credentials is None:
+        ssl_credentials = grpc.ssl_channel_credentials()
+
+    composite_credentials = _create_composite_credentials(
+        credentials=credentials,
+        credentials_file=credentials_file,
+        default_scopes=default_scopes,
+        scopes=scopes,
+        ssl_credentials=ssl_credentials,
+        quota_project_id=quota_project_id,
+        default_host=default_host,
+    )
+
+    if use_dp_interconnect:
+        authority = _extract_direct_path_authority(target)
+        if authority:
+            existing_options = tuple(kwargs.get("options") or ())
+            option_keys = {opt[0] for opt in existing_options}
+            if (
+                "grpc.ssl_target_name_override" not in option_keys
+                and "grpc.default_authority" not in option_keys
+            ):
+                kwargs["options"] = existing_options + (
+                    ("grpc.default_authority", authority),
+                )
+
+    if attempt_direct_path or use_dp_interconnect:
+        target = _modify_target_for_direct_path(
+            target,
+            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+        )
+    elif not target.startswith("google-c2p:///"):
+        clean_host = _extract_target_host(target)
+        if clean_host.endswith("-direct.googleapis.com"):
+            target = target.replace("-direct.googleapis.com", ".googleapis.com")
+
+    return target, composite_credentials, kwargs
+
+
 def create_channel(
     target,
     credentials=None,
@@ -427,49 +536,19 @@ def create_channel(
             set to `True` without `attempt_direct_path_xds_over_interconnect`.
     """
 
-    use_dp_interconnect = _resolve_direct_path_interconnect(
-        attempt_direct_path_xds_over_interconnect
-    )
-
-    # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
-    # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
-    # See https://github.com/googleapis/python-api-core/issues/590
-    if ssl_credentials and attempt_direct_path and not use_dp_interconnect:
-        raise ValueError("Using ssl_credentials with Direct Path is not supported")
-
-    if use_dp_interconnect and ssl_credentials is None:
-        ssl_credentials = grpc.ssl_channel_credentials()
-
-    composite_credentials = _create_composite_credentials(
+    target, composite_credentials, kwargs = _setup_direct_path_and_credentials(
+        target=target,
         credentials=credentials,
-        credentials_file=credentials_file,
-        default_scopes=default_scopes,
         scopes=scopes,
         ssl_credentials=ssl_credentials,
+        credentials_file=credentials_file,
         quota_project_id=quota_project_id,
+        default_scopes=default_scopes,
         default_host=default_host,
+        attempt_direct_path=attempt_direct_path,
+        attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
+        **kwargs,
     )
-
-    if use_dp_interconnect:
-        authority = _extract_direct_path_authority(target)
-        if authority:
-            existing_options = tuple(kwargs.get("options") or ())
-            option_keys = {opt[0] for opt in existing_options}
-            if (
-                "grpc.ssl_target_name_override" not in option_keys
-                and "grpc.default_authority" not in option_keys
-            ):
-                kwargs["options"] = existing_options + (
-                    ("grpc.ssl_target_name_override", authority),
-                )
-
-    if attempt_direct_path or use_dp_interconnect:
-        target = _modify_target_for_direct_path(
-            target,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
-        )
-    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
-        target = target.replace("-direct.googleapis.com", ".googleapis.com")
 
     return grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs

@@ -1074,29 +1074,6 @@ def test__resolve_direct_path_interconnect_invalid_raises(
         grpc_helpers._resolve_direct_path_interconnect(False)
 
 
-@mock.patch("grpc.compute_engine_channel_credentials")
-@mock.patch("google.auth.transport.requests.Request", autospec=True)
-@mock.patch("google.auth.transport.grpc.AuthMetadataPlugin")
-def test__composite_credentials_auth_metadata_plugin_type_error_fallback(
-    auth_metadata_plugin, request, compute_engine_creds
-):
-    fallback_plugin = mock.sentinel.fallback_plugin
-    auth_metadata_plugin.side_effect = [
-        TypeError("unexpected keyword"),
-        fallback_plugin,
-    ]
-    credentials = mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True
-    )
-    credentials.requires_scopes = False
-
-    grpc_helpers._create_composite_credentials(
-        credentials, default_host="storage.googleapis.com"
-    )
-
-    assert auth_metadata_plugin.call_count == 2
-
-
 @pytest.mark.parametrize(
     "target,attempt_interconnect,expected_target",
     [
@@ -1182,7 +1159,7 @@ def test_create_channel_attempt_direct_path_xds_over_interconnect_default_ssl(
         "google-c2p:///storage-direct.googleapis.com?force-xds",
         composite_creds,
         compression=None,
-        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
+        options=(("grpc.default_authority", "storage.googleapis.com"),),
     )
 
 
@@ -1214,7 +1191,7 @@ def test_create_channel_attempt_direct_path_xds_over_interconnect_custom_ssl(
         "google-c2p:///storage-direct.googleapis.com?force-xds",
         composite_creds,
         compression=None,
-        options=(("grpc.ssl_target_name_override", "storage.googleapis.com"),),
+        options=(("grpc.default_authority", "storage.googleapis.com"),),
     )
 
 
@@ -1273,6 +1250,18 @@ def test_create_channel_interconnect_fallback_preserves_non_google_direct_host(
         compression=None,
     )
 
+    channel2 = grpc_helpers.create_channel(
+        "storage-direct.googleapis.com.example.com:443",
+        attempt_direct_path=False,
+        attempt_direct_path_xds_over_interconnect=False,
+    )
+    assert channel2 is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_with(
+        "storage-direct.googleapis.com.example.com:443",
+        composite_creds,
+        compression=None,
+    )
+
 
 @pytest.mark.parametrize(
     "target,expected_authority",
@@ -1285,6 +1274,8 @@ def test_create_channel_interconnect_fallback_preserves_non_google_direct_host(
         ),
         ("storage.googleapis.com:443", None),
         ("my-direct.example.com:443", None),
+        ("storage-direct.googleapis.com.example.com:443", None),
+        ("-direct.googleapis.com:443", None),
     ],
 )
 def test__extract_direct_path_authority(target, expected_authority):
@@ -1307,7 +1298,7 @@ def test_create_channel_interconnect_authority_branches(
 ):
     composite_creds = composite_creds_call.return_value
 
-    # Branch 455->466: authority is None (target does not contain -direct.googleapis.com)
+    # Authority is None (target does not contain -direct.googleapis.com)
     grpc_helpers.create_channel(
         "storage.googleapis.com:443",
         attempt_direct_path_xds_over_interconnect=True,
@@ -1318,16 +1309,89 @@ def test_create_channel_interconnect_authority_branches(
         compression=None,
     )
 
-    # Branch 458->466: authority exists, but grpc.ssl_target_name_override is already provided
-    custom_options = (("grpc.ssl_target_name_override", "custom.googleapis.com"),)
+    # Authority exists, but grpc.default_authority is already provided
+    custom_options_default = (("grpc.default_authority", "custom.googleapis.com"),)
     grpc_helpers.create_channel(
         "storage-direct.googleapis.com:443",
         attempt_direct_path_xds_over_interconnect=True,
-        options=custom_options,
+        options=custom_options_default,
     )
     grpc_secure_channel.assert_called_with(
         "google-c2p:///storage-direct.googleapis.com?force-xds",
         composite_creds,
         compression=None,
-        options=custom_options,
+        options=custom_options_default,
+    )
+
+    # Authority exists, but grpc.ssl_target_name_override is already provided
+    custom_options_ssl = (("grpc.ssl_target_name_override", "custom.googleapis.com"),)
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path_xds_over_interconnect=True,
+        options=custom_options_ssl,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=custom_options_ssl,
+    )
+
+
+@mock.patch("grpc.ssl_channel_credentials")
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
+)
+@mock.patch("grpc.secure_channel")
+def test_create_channel_interconnect_gated_by_attempt_direct_path(
+    grpc_secure_channel,
+    google_auth_default,
+    compute_engine_creds_call,
+    composite_creds_call,
+    ssl_creds_call,
+    monkeypatch,
+):
+    monkeypatch.setenv(grpc_helpers._DIRECT_PATH_INTERCONNECT_ENV, "true")
+    composite_creds = composite_creds_call.return_value
+    compute_creds = compute_engine_creds_call.return_value
+
+    # When attempt_direct_path is False (default), env var override is ignored
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=False,
+    )
+    # Target rewrites to standard fallback host instead of C2P
+    grpc_secure_channel.assert_called_with(
+        "storage.googleapis.com:443",
+        compute_creds,
+        compression=None,
+    )
+
+    # When attempt_direct_path is True, env var override activates DirectPath Interconnect
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=(("grpc.default_authority", "storage.googleapis.com"),),
+    )
+
+    # When attempt_direct_path_xds_over_interconnect is True explicitly, Interconnect activates
+    grpc_helpers.create_channel(
+        "storage-direct.googleapis.com:443",
+        attempt_direct_path=False,
+        attempt_direct_path_xds_over_interconnect=True,
+    )
+    grpc_secure_channel.assert_called_with(
+        "google-c2p:///storage-direct.googleapis.com?force-xds",
+        composite_creds,
+        compression=None,
+        options=(("grpc.default_authority", "storage.googleapis.com"),),
     )

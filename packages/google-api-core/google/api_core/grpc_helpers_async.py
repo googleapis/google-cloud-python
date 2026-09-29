@@ -290,49 +290,21 @@ def create_channel(
     if credentials_file is not None:
         warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
 
-    use_dp_interconnect = grpc_helpers._resolve_direct_path_interconnect(
-        attempt_direct_path_xds_over_interconnect
-    )
-
-    # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
-    # raise ValueError as this is not yet supported for GCE ALTS DirectPath.
-    # See https://github.com/googleapis/python-api-core/issues/590
-    if ssl_credentials and attempt_direct_path and not use_dp_interconnect:
-        raise ValueError("Using ssl_credentials with Direct Path is not supported")
-
-    if use_dp_interconnect and ssl_credentials is None:
-        ssl_credentials = grpc.ssl_channel_credentials()
-
-    composite_credentials = grpc_helpers._create_composite_credentials(
-        credentials=credentials,
-        credentials_file=credentials_file,
-        scopes=scopes,
-        default_scopes=default_scopes,
-        ssl_credentials=ssl_credentials,
-        quota_project_id=quota_project_id,
-        default_host=default_host,
-    )
-
-    if use_dp_interconnect:
-        authority = grpc_helpers._extract_direct_path_authority(target)
-        if authority:
-            existing_options = tuple(kwargs.get("options") or ())
-            option_keys = {opt[0] for opt in existing_options}
-            if (
-                "grpc.ssl_target_name_override" not in option_keys
-                and "grpc.default_authority" not in option_keys
-            ):
-                kwargs["options"] = existing_options + (
-                    ("grpc.ssl_target_name_override", authority),
-                )
-
-    if attempt_direct_path or use_dp_interconnect:
-        target = grpc_helpers._modify_target_for_direct_path(
-            target,
-            attempt_direct_path_xds_over_interconnect=use_dp_interconnect,
+    target, composite_credentials, kwargs = (
+        grpc_helpers._setup_direct_path_and_credentials(
+            target=target,
+            credentials=credentials,
+            scopes=scopes,
+            ssl_credentials=ssl_credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=default_scopes,
+            default_host=default_host,
+            attempt_direct_path=attempt_direct_path,
+            attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
+            **kwargs,
         )
-    elif "-direct.googleapis.com" in target and not target.startswith("google-c2p:///"):
-        target = target.replace("-direct.googleapis.com", ".googleapis.com")
+    )
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
