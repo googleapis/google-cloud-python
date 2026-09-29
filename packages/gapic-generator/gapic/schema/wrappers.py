@@ -1463,6 +1463,7 @@ class MixinMethod:
     name: str
     request_type: str
     response_type: str
+    rpc_name: str = ""
 
 
 @dataclasses.dataclass(frozen=True)

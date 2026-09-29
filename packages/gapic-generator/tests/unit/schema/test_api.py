@@ -2836,6 +2836,9 @@ def test_mixin_api_signatures():
     api_schema = api.API.build(fd, "google.example.v1", opts=opts)
     res = api_schema.mixin_api_signatures
     assert res == mixins.MIXINS_MAP
+    assert res["GetOperation"].rpc_name == "google.longrunning.Operations/GetOperation"
+    assert res["GetIamPolicy"].rpc_name == "google.iam.v1.IAMPolicy/GetIamPolicy"
+    assert res["GetLocation"].rpc_name == "google.cloud.location.Locations/GetLocation"
 
 
 def test_mixin_http_options():
