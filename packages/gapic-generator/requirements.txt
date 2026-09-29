@@ -611,17 +611,17 @@ frozenlist==1.8.0 \
     # via
     #   aiohttp
     #   aiosignal
-google-api-core==2.39.0 \
-    --hash=sha256:40a5d1c892bc1798f3b75ab10c665b85717979088519c714ca5774ee81d1e3c5 \
-    --hash=sha256:824ee414a10adefefae33fc5e2ba28dc6f0f7089d011c9cc98ea9178e61299e9
+google-api-core==2.40.0 \
+    --hash=sha256:4b9e0a80024c269ae173136d5439f4ed284651d6e5e2773ba5c694f481f9c0f4 \
+    --hash=sha256:ebee7d1b138b5362beecec260e6e8988ac97346562c7382ccb6f0ad8435c599f
     # via -r requirements.in
-google-auth==2.58.1 \
-    --hash=sha256:1480461d8b2347e679af758f4003700ea79a59b603c9134e18bfa95e8004ee70 \
-    --hash=sha256:66a63572d0ab629554768544df04018d79178c0bd7439ba31683ac576b79024d
+google-auth==2.59.0 \
+    --hash=sha256:43e47b1d3067fb90d77bd9ba21f139bb0577b3f2b9f3e2516fc00f37435efcad \
+    --hash=sha256:eb32f44f89f6b577947ebee5887c1db46e6b1a278889ba369a88179643f32240
     # via google-api-core
-googleapis-common-protos==1.75.4 \
-    --hash=sha256:4587babdc82a8d7e5a3d4f5a6697e064bf44a598b4d08341c212b68185eadbcd \
-    --hash=sha256:e8eb9cffa9a9f3423090cc7a086012004196abab388a0561690e81887fd79cc1
+googleapis-common-protos==1.75.5 \
+    --hash=sha256:c7a866fc34ed29a3b10af627a4b9b1dc2433313ca6e959f0ae4feb132047ed72 \
+    --hash=sha256:d7285525c23039db98f2463e6d5a4f9b958b94d497f03a844ece3259c4e72d5d
     # via
     #   -r requirements.in
     #   google-api-core
@@ -1201,9 +1201,9 @@ propcache==0.5.4 \
     # via
     #   aiohttp
     #   yarl
-proto-plus==1.28.4 \
-    --hash=sha256:4b01341272f8a348db3f003b6143109f83ab43091019d5181b3fcdf500ab32aa \
-    --hash=sha256:5ff7ecad828e032a491fcb86947801768e32237f99dd049b649965b892ae9a63
+proto-plus==1.29.0 \
+    --hash=sha256:8acd070469a7aaf43f440b022ef9757c8cac1a9f866e933f59ae98669ddc6c8b \
+    --hash=sha256:cfb4e62ad7e13dd18f346cabbda00cab39930d36a05791fd81ddb074d6ee884f
     # via
     #   -r requirements.in
     #   google-api-core
