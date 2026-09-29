@@ -15,7 +15,6 @@
 #
 """A compatibility module for older versions of google-api-core."""
 
-import contextlib
 import os
 import json
 import uuid
@@ -124,7 +123,7 @@ def _fallback_apply_interceptors(
 if grpc_helpers_async is not None and hasattr(
     grpc_helpers_async, "apply_channel_interceptors"
 ):
-    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors
+    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors  # pragma: NO COVER
 else:  # pragma: NO COVER
     apply_channel_interceptors = _fallback_apply_interceptors
 

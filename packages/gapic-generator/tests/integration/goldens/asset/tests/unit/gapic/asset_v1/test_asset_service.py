@@ -17572,7 +17572,7 @@ def test_asset_service_base_transport_wrap_async_method():
         with mock.patch.object(type(transport), "kind", new_callable=mock.PropertyMock) as mock_kind:
             mock_kind.return_value = "grpc_asyncio"
 
-            # Test modern google-api-core with tracing support
+            # Generation 1: Modern google-api-core with tracing support
             with mock.patch(
                 "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
                 True,
@@ -17582,33 +17582,7 @@ def test_asset_service_base_transport_wrap_async_method():
                 assert mock_wrap.call_args.kwargs.get("client_options") == options
                 assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
 
-            # Test intermediate google-api-core without tracing support but with kind support (>= 2.19.1)
-            with mock.patch(
-                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
-                False,
-            ), mock.patch(
-                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
-                True,
-            ):
-                mock_wrap.reset_mock()
-                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
-                assert "client_options" not in mock_wrap.call_args.kwargs
-                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
-
-            # Test ancient google-api-core without tracing support or kind support (< 2.19.1)
-            with mock.patch(
-                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
-                False,
-            ), mock.patch(
-                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
-                False,
-            ):
-                mock_wrap.reset_mock()
-                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
-                assert "client_options" not in mock_wrap.call_args.kwargs
-                assert "kind" not in mock_wrap.call_args.kwargs
-
-            # Test for default/empty kind on base transport
+            # Generation 1 with default/empty kind on base transport
             with mock.patch(
                 "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
                 True,
@@ -17617,6 +17591,51 @@ def test_asset_service_base_transport_wrap_async_method():
                 mock_kind.return_value = ""
                 transport._wrap_async_method(func)
                 assert mock_wrap.call_args.kwargs.get("client_options") == options
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Reset kind back to grpc_asyncio
+            mock_kind.return_value = "grpc_asyncio"
+
+            # Generation 2: Intermediate google-api-core (supports kind, but not tracing)
+            with mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_async_method(func, client_options=options, method_name="foo", is_streaming=True)
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "method_name" not in mock_wrap.call_args.kwargs
+                assert "is_streaming" not in mock_wrap.call_args.kwargs
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc_asyncio"
+
+            # Generation 2 with default/empty kind (strips kind)
+            with mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = ""
+                transport._wrap_async_method(func, kind="grpc_asyncio")
+                assert "kind" not in mock_wrap.call_args.kwargs
+
+            # Generation 3: Ancient google-api-core (supports neither kind nor tracing)
+            with mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.asset_v1.services.asset_service.transports.base._ASYNC_WRAP_METHOD_SUPPORTS_KIND",
+                False,
+            ):
+                mock_wrap.reset_mock()
+                mock_kind.return_value = "grpc_asyncio"
+                transport._wrap_async_method(func, client_options=options, kind="grpc_asyncio")
+                assert "client_options" not in mock_wrap.call_args.kwargs
                 assert "kind" not in mock_wrap.call_args.kwargs
 
 

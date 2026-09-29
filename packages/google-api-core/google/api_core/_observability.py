@@ -501,13 +501,12 @@ class _TraceContext:
             return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        if self._span is not None:
+        if self._cm is not None:
             try:
-                if exc_val is not None:
+                if exc_val is not None and self._span is not None:
                     self.record_error(exc_val)
             finally:
-                if self._cm is not None:
-                    self._cm.__exit__(exc_type, exc_val, exc_tb)
+                self._cm.__exit__(exc_type, exc_val, exc_tb)
         # Always return None so caller exceptions are never suppressed
         return None
 

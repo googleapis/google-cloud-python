@@ -13,7 +13,6 @@ falling back to the local implementation if not present. #}
 {# TODO(https://github.com/googleapis/google-cloud-python/issues/17883):
 Backfill compatibility functions being removed from the client layer. #}
 
-import contextlib
 import os
 import json
 {% if has_auto_populated_fields %}
@@ -128,7 +127,7 @@ def _fallback_apply_interceptors(
 if grpc_helpers_async is not None and hasattr(
     grpc_helpers_async, "apply_channel_interceptors"
 ):
-    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors
+    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors  # pragma: NO COVER
 else:  # pragma: NO COVER
     apply_channel_interceptors = _fallback_apply_interceptors
 

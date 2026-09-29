@@ -774,6 +774,21 @@ def test_record_http_error(monkeypatch):
     mock_span.set_attribute.assert_any_call("status.message", "Network failure")
 
 
+def test_record_http_error_with_trace_context(monkeypatch):
+    """Proves that record_http_error unwraps a _TraceContext instance."""
+    mock_span = mock.Mock()
+    mock_ctx = _observability._TraceContext()
+    mock_ctx._span = mock_span
+    exc = ValueError("Network failure in context")
+
+    mock_status_mod = mock.Mock()
+    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
+
+    _observability.record_http_error(mock_ctx, exc)
+    mock_span.record_exception.assert_called_once_with(exc)
+    mock_span.set_status.assert_called_once()
+
+
 def test_trace_http_request_with_kwargs(monkeypatch):
     """Proves that trace_http_request works when invoked using keyword arguments only."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
