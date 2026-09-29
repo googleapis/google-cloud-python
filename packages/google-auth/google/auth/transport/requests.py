@@ -140,6 +140,9 @@ class Request(transport.Request):
     .. automethod:: __call__
     """
 
+    _mtls_adapter = None
+    _mtls_unavailable = False
+
     def __init__(self, session: Optional[requests.Session] = None) -> None:
         if not session:
             session = requests.Session()
@@ -157,6 +160,8 @@ class Request(transport.Request):
     def __setstate__(self, state):
         self.__dict__.update(state)
         self._mtls_lock = threading.Lock()
+        if not isinstance(self._mtls_adapter, _MutualTlsAdapter):
+            self._mtls_adapter = None
 
     def __del__(self):
         try:
@@ -350,6 +355,9 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         new_adapter._ctx_proxymanager = self._ctx_proxymanager
         new_adapter.__setstate__(copy.deepcopy(self.__getstate__(), memo))
         return new_adapter
+
+    def __reduce_ex__(self, protocol):
+        return (requests.adapters.HTTPAdapter, (), self.__getstate__())
 
     def init_poolmanager(self, *args, **kwargs):
         kwargs["ssl_context"] = self._ctx_poolmanager

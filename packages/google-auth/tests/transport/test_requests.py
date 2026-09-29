@@ -18,6 +18,7 @@ import functools
 import http.client as http_client
 import json
 import os
+import pickle
 import ssl
 from unittest import mock
 
@@ -269,9 +270,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
             {"cert": ("/nonexistent/path/cert.pem", "/nonexistent/path/key.pem")},
         ],
     )
-    def test_session_request_missing_cert_or_ca_raises_oserror(
-        self, request_kwargs
-    ):
+    def test_session_request_missing_cert_or_ca_raises_oserror(self, request_kwargs):
         request = google.auth.transport.requests.Request(requests.Session())
 
         with pytest.raises(OSError) as exc_info:
@@ -304,6 +303,64 @@ class TestRequestResponse(compliance.RequestResponseTests):
             is not request._mtls_adapter.poolmanager
         )
         assert mock_send.call_args_list[1].args[0] is copied_request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_pickle(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+        unpickled_request = pickle.loads(pickle.dumps(request))
+
+        assert unpickled_request.session is not request.session
+        assert unpickled_request._mtls_lock is not request._mtls_lock
+        assert unpickled_request._mtls_adapter is None
+        assert unpickled_request._mtls_unavailable is False
+        assert (
+            type(unpickled_request.session.adapters[prefix])
+            is requests.adapters.HTTPAdapter
+        )
+
+        unpickled_request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert isinstance(
+            unpickled_request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert (
+            unpickled_request.session.adapters[prefix]
+            is unpickled_request._mtls_adapter
+        )
+        assert mock_send.call_args_list[1].args[0] is unpickled_request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_legacy_pickle(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+        with mock.patch.object(
+            google.auth.transport.requests.Request,
+            "__getstate__",
+            return_value={"session": request.session},
+        ):
+            legacy_pickled = pickle.dumps(request)
+        unpickled_legacy = pickle.loads(legacy_pickled)
+        assert unpickled_legacy._mtls_adapter is None
+        assert unpickled_legacy._mtls_unavailable is False
+
+        unpickled_legacy("https://iamcredentials.mtls.googleapis.com/v1/token")
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        assert isinstance(
+            unpickled_legacy._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert (
+            unpickled_legacy.session.adapters[prefix] is unpickled_legacy._mtls_adapter
+        )
+        assert mock_send.call_args.args[0] is unpickled_legacy._mtls_adapter
 
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
     def test_mtls_request_verify_false(self, mock_send, workload_cert_config):
