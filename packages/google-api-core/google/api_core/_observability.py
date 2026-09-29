@@ -371,7 +371,7 @@ def _build_http_span_attributes(
     return span_name, span_attributes, resolved_headers
 
 
-class trace_http_request:
+class _TraceContext:
     """Context manager for tracing an HTTP wire request with OpenTelemetry.
 
     Manages span creation, semantic attribute attachment, W3C traceparent injection,
@@ -404,17 +404,60 @@ class trace_http_request:
         self._cm: Any = None
 
     def record_response(self, response: Any) -> None:
-        """Record HTTP response attributes on the active span."""
-        if self._span is not None:
-            record_http_response(self._span, response)
+        """Record HTTP response attributes on the active span.
 
-    def record_http_response(self, response: Any) -> None:
-        """Alias for record_response."""
-        self.record_response(response)
+        Args:
+            response (Any): The HTTP response object (e.g. requests.Response).
+        """
+        span = self._span
+        if span is None or not hasattr(span, "set_attribute"):
+            return
 
-    def __enter__(self) -> Any:
+        try:
+            from opentelemetry.trace.status import (  # type: ignore[import-not-found]
+                Status,
+                StatusCode,
+            )
+
+            status_code = getattr(
+                response, "status_code", getattr(response, "status", None)
+            )
+            if status_code is not None:
+                span.set_attribute("http.response.status_code", int(status_code))
+                if int(status_code) >= 400:
+                    span.set_status(Status(StatusCode.ERROR))
+                else:
+                    span.set_status(Status(StatusCode.OK))
+
+            headers = getattr(response, "headers", None)
+            if headers and "Content-Length" in headers:
+                try:
+                    span.set_attribute(
+                        "http.response.body.size", int(headers["Content-Length"])
+                    )
+                except (ValueError, TypeError):
+                    pass
+            elif hasattr(response, "_content") and response._content is not None:
+                try:
+                    span.set_attribute(
+                        "http.response.body.size", len(response._content)
+                    )
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    def record_error(self, exc: BaseException) -> None:
+        """Record an HTTP error/exception on the active span.
+
+        Args:
+            exc (BaseException): The exception raised during dispatch.
+        """
+        record_http_error(self._span, exc)
+
+    def __enter__(self) -> "_TraceContext":
         if not is_otel_capabilities_enabled(self._client_options):
-            return None
+            return self
 
         try:
             from opentelemetry import trace
@@ -450,65 +493,43 @@ class trace_http_request:
                 except Exception:  # Fail-open on header injection failure
                     pass
 
-            return self._span
+            return self
         except Exception:
             # Fail-open: telemetry failures must never disrupt core RPC execution
-            return None
+            return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         if self._span is not None:
             try:
                 if exc_val is not None:
-                    record_http_error(self._span, exc_val)
+                    self.record_error(exc_val)
             finally:
-                self._cm.__exit__(exc_type, exc_val, exc_tb)
+                if self._cm is not None:
+                    self._cm.__exit__(exc_type, exc_val, exc_tb)
         # Always return None so caller exceptions are never suppressed
         return None
 
 
-def record_http_response(span: Any, response: Any) -> None:
-    """Record HTTP response attributes on the wire span.
-
-    Args:
-        span (Optional[Any]): The active OpenTelemetry span or trace context.
-        response (Any): The HTTP response object (e.g. requests.Response).
-    """
-    if isinstance(span, trace_http_request):
-        span = span._span
-    if span is None or not hasattr(span, "set_attribute"):
-        return
-
-    try:
-        from opentelemetry.trace.status import (  # type: ignore[import-not-found]
-            Status,
-            StatusCode,
-        )
-
-        status_code = getattr(
-            response, "status_code", getattr(response, "status", None)
-        )
-        if status_code is not None:
-            span.set_attribute("http.response.status_code", int(status_code))
-            if int(status_code) >= 400:
-                span.set_status(Status(StatusCode.ERROR))
-            else:
-                span.set_status(Status(StatusCode.OK))
-
-        headers = getattr(response, "headers", None)
-        if headers and "Content-Length" in headers:
-            try:
-                span.set_attribute(
-                    "http.response.body.size", int(headers["Content-Length"])
-                )
-            except (ValueError, TypeError):
-                pass
-        elif hasattr(response, "_content") and response._content is not None:
-            try:
-                span.set_attribute("http.response.body.size", len(response._content))
-            except Exception:
-                pass
-    except Exception:
-        pass
+def trace_http_request(
+    request: Any = None,
+    *,
+    method: str | None = None,
+    url: str | None = None,
+    url_template: str | None = None,
+    headers: dict[str, Any] | None = None,
+    body: Any = None,
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> _TraceContext:
+    """Context manager factory for tracing an HTTP wire request with OpenTelemetry."""
+    return _TraceContext(
+        request=request,
+        method=method,
+        url=url,
+        url_template=url_template,
+        headers=headers,
+        body=body,
+        client_options=client_options,
+    )
 
 
 def record_http_error(span: Any, exc: BaseException) -> None:
@@ -518,7 +539,7 @@ def record_http_error(span: Any, exc: BaseException) -> None:
         span (Optional[Any]): The active OpenTelemetry span or trace context.
         exc (BaseException): The exception raised during dispatch.
     """
-    if isinstance(span, trace_http_request):
+    if isinstance(span, _TraceContext):
         span = span._span
     if span is None:
         return

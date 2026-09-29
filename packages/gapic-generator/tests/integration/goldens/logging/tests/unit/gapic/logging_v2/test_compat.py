@@ -32,7 +32,7 @@ from google.cloud.logging_v2._compat import (
     read_environment_variables,
     _observability,
     trace_http_request,
-    record_http_response,
+    apply_channel_interceptors,
 )
 
 from google.auth.exceptions import MutualTLSChannelError
@@ -445,13 +445,8 @@ def test_observability_compat():
 
 def test_trace_http_request_compat():
     # trace_http_request is exposed from _compat and callable as context manager
-    with trace_http_request(method="GET", url="https://example.com") as span:
-        pass
-
-
-def test_record_http_response_compat():
-    # record_http_response is exposed from _compat and callable with dummy args
-    record_http_response(None, None)
+    with trace_http_request(method="GET", url="https://example.com") as trace_ctx:
+        trace_ctx.record_response(None)
 
 
 def test_observability_compat_present(monkeypatch):
@@ -463,14 +458,12 @@ def test_observability_compat_present(monkeypatch):
     # Simulate an environment where google.api_core._observability is available
     mock_obs = mock.MagicMock()
     mock_obs.trace_http_request = mock.MagicMock()
-    mock_obs.record_http_response = mock.MagicMock()
     monkeypatch.setitem(sys.modules, "google.api_core._observability", mock_obs)
     monkeypatch.setattr(google.api_core, "_observability", mock_obs, raising=False)
     reloaded = importlib.reload(_compat)
     try:
         assert reloaded._observability is mock_obs
         assert reloaded.trace_http_request is mock_obs.trace_http_request
-        assert reloaded.record_http_response is mock_obs.record_http_response
     finally:
         monkeypatch.undo()
         importlib.reload(_compat)
@@ -488,10 +481,16 @@ def test_observability_compat_fallback(monkeypatch):
     reloaded = importlib.reload(_compat)
     try:
         assert reloaded._observability is None
-        with reloaded.trace_http_request(method="GET", url="https://example.com") as span:
-            assert span is None
-        reloaded.record_http_response(None, None)
+        with reloaded.trace_http_request(method="GET", url="https://example.com") as trace_ctx:
+            trace_ctx.record_response(None)
     finally:
         # Restore _compat to normal environment
         monkeypatch.undo()
         importlib.reload(_compat)
+
+
+def test_apply_channel_interceptors_compat():
+    # apply_channel_interceptors is exposed from _compat and callable
+    dummy_channel = mock.Mock()
+    result = apply_channel_interceptors(dummy_channel, None)
+    assert result is dummy_channel

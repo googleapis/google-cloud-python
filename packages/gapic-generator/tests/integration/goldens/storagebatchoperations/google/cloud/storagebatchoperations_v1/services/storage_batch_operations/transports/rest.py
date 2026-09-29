@@ -24,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.cloud.storagebatchoperations_v1._compat import transcode_request, trace_http_request, record_http_response
+from google.cloud.storagebatchoperations_v1._compat import transcode_request, trace_http_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -680,7 +680,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
@@ -688,7 +688,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -827,7 +827,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
@@ -835,7 +835,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -975,14 +975,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1087,14 +1087,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1235,14 +1235,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1382,14 +1382,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1530,14 +1530,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1735,14 +1735,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -1880,14 +1880,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -2025,7 +2025,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
@@ -2033,7 +2033,7 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                     data=body,
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -2146,14 +2146,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -2265,14 +2265,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,
@@ -2410,14 +2410,14 @@ class StorageBatchOperationsRestTransport(_BaseStorageBatchOperationsRestTranspo
                 url_template=uri,
                 headers=headers,
                 body=body,
-            ) as span:
+            ) as trace_ctx:
                 response = getattr(session, method)(
                     url,
                     timeout=timeout,
                     headers=headers,
                     params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-                record_http_response(span, response)
+                trace_ctx.record_response(response)
                 return response
 
         def __call__(self,

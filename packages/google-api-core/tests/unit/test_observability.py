@@ -661,12 +661,14 @@ def test_build_http_span_attributes_url_parsing_fallbacks():
 
 
 def test_trace_http_request_disabled():
-    """Proves that trace_http_request yields None when tracing is disabled."""
+    """Proves that trace_http_request yields a context with no active span when tracing is disabled."""
     request = mock.Mock(method="GET", url="https://example.com/api", headers={})
     with _observability.trace_http_request(
         request, client_options=ClientOptions()
-    ) as span:
-        assert span is None
+    ) as ctx:
+        assert isinstance(ctx, _observability._TraceContext)
+        assert ctx._span is None
+        ctx.record_response(mock.Mock())
 
 
 def test_trace_http_request_active(monkeypatch):
@@ -712,8 +714,8 @@ def test_trace_http_request_active(monkeypatch):
 
     with _observability.trace_http_request(
         request, url_template="/v1/test", client_options=options
-    ) as span:
-        assert span is mock_span
+    ) as ctx:
+        assert ctx._span is mock_span
 
     mock_tracer.start_as_current_span.assert_called_once()
     call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
@@ -727,28 +729,32 @@ def test_trace_http_request_active(monkeypatch):
     mock_propagator.inject.assert_called_once_with(headers)
 
 
-def test_record_http_response_success(monkeypatch):
-    """Proves that record_http_response records status code and size attributes."""
+def test_trace_context_record_response_success(monkeypatch):
+    """Proves that _TraceContext.record_response records status code and size attributes."""
     mock_span = mock.Mock()
     response = mock.Mock(status_code=200, headers={"Content-Length": "42"})
 
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    _observability.record_http_response(mock_span, response)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_response(response)
     mock_span.set_attribute.assert_any_call("http.response.status_code", 200)
     mock_span.set_attribute.assert_any_call("http.response.body.size", 42)
 
 
-def test_record_http_response_error_status(monkeypatch):
-    """Proves that record_http_response sets error status on 4xx/5xx responses."""
+def test_trace_context_record_response_error_status(monkeypatch):
+    """Proves that _TraceContext.record_response sets error status on 4xx/5xx responses."""
     mock_span = mock.Mock()
     response = mock.Mock(status_code=503, headers={})
 
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    _observability.record_http_response(mock_span, response)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_response(response)
     mock_span.set_attribute.assert_any_call("http.response.status_code", 503)
     mock_span.set_status.assert_called_once()
 
@@ -810,8 +816,8 @@ def test_trace_http_request_with_kwargs(monkeypatch):
         body="string-payload",
         url_template="/v1/test",
         client_options=options,
-    ) as span:
-        assert span is mock_span
+    ) as ctx:
+        assert ctx._span is mock_span
 
     call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
     assert call_args[0] == "POST"
@@ -861,11 +867,11 @@ def test_trace_http_request_client_options(monkeypatch):
         url="https://custom.googleapis.com:8443/v1/test",
         client_options=options,
     )
-    with ctx as span:
-        assert span is mock_span
+    with ctx as trace_ctx:
+        assert trace_ctx._span is mock_span
         # Test record_response method on trace context
         mock_resp = mock.Mock(status_code=200, headers={"Content-Length": "42"})
-        ctx.record_response(mock_resp)
+        trace_ctx.record_response(mock_resp)
         mock_span.set_attribute.assert_any_call("http.response.status_code", 200)
         mock_span.set_attribute.assert_any_call("http.response.body.size", 42)
 
@@ -901,8 +907,8 @@ def test_trace_http_request_default_tracer_and_url_parse(monkeypatch):
         client_options=options,
         method="GET",
         url="https://parsed-host.org:9443/v1/items",
-    ) as span:
-        assert span is mock_span
+    ) as ctx:
+        assert ctx._span is mock_span
 
     mock_otel.trace.get_tracer.assert_called_once_with("google.api_core")
     call_args, call_kwargs = mock_tracer.start_as_current_span.call_args
@@ -949,8 +955,8 @@ def test_trace_http_request_propagator_error(monkeypatch):
         method="GET",
         url="https://example.com",
         headers=headers,
-    ) as span:
-        assert span is mock_span
+    ) as ctx:
+        assert ctx._span is mock_span
 
 
 def test_trace_http_request_unexpected_error(monkeypatch):
@@ -972,18 +978,27 @@ def test_trace_http_request_unexpected_error(monkeypatch):
         client_options=options,
         method="GET",
         url="https://example.com",
-    ) as span:
-        assert span is None
+    ) as ctx:
+        assert isinstance(ctx, _observability._TraceContext)
+        assert ctx._span is None
+        ctx.record_response(mock.Mock())
 
 
-def test_record_http_response_none_or_missing_attribute():
-    """Proves that record_http_response handles None or non-span gracefully."""
-    _observability.record_http_response(None, mock.Mock())
-    _observability.record_http_response(object(), mock.Mock())
+def test_trace_context_record_response_none_or_missing_attribute():
+    """Proves that _TraceContext.record_response handles None or non-span gracefully."""
+    ctx_none = _observability._TraceContext()
+    ctx_none._span = None
+    ctx_none.record_response(mock.Mock())
+
+    ctx_obj = _observability._TraceContext()
+    ctx_obj._span = object()
+    ctx_obj.record_response(mock.Mock())
 
 
-def test_record_http_response_content_fallback_and_invalid_content_length(monkeypatch):
-    """Proves that record_http_response handles invalid Content-Length and falls back to _content."""
+def test_trace_context_record_response_content_fallback_and_invalid_content_length(
+    monkeypatch,
+):
+    """Proves that _TraceContext.record_response handles invalid Content-Length and falls back to _content."""
     mock_span = mock.Mock()
     # Invalid Content-Length string
     response_invalid_len = mock.Mock(
@@ -992,7 +1007,9 @@ def test_record_http_response_content_fallback_and_invalid_content_length(monkey
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    _observability.record_http_response(mock_span, response_invalid_len)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_response(response_invalid_len)
     mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
 
     mock_span.reset_mock()
@@ -1000,23 +1017,23 @@ def test_record_http_response_content_fallback_and_invalid_content_length(monkey
     response_with_content = mock.Mock(
         status_code=None, headers={}, _content=b"hello-content"
     )
-    _observability.record_http_response(mock_span, response_with_content)
+    ctx.record_response(response_with_content)
     mock_span.set_attribute.assert_called_once_with(
         "http.response.body.size", len(b"hello-content")
     )
 
 
-def test_record_http_response_exception_handled(monkeypatch):
-    """Proves that record_http_response catches exceptions gracefully."""
+def test_trace_context_record_response_exception_handled(monkeypatch):
+    """Proves that _TraceContext.record_response catches exceptions gracefully."""
     mock_span = mock.Mock()
     mock_span.set_attribute.side_effect = RuntimeError("attribute error")
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
     # Should not raise
-    _observability.record_http_response(
-        mock_span, mock.Mock(status_code=200, headers={})
-    )
+    ctx.record_response(mock.Mock(status_code=200, headers={}))
 
 
 def test_record_http_error_none_span():
@@ -1084,8 +1101,8 @@ def test_trace_http_request_url_parse_exception(monkeypatch):
             client_options=options,
             method="GET",
             url="http://[invalid-url",
-        ) as span:
-            assert span is mock_span
+        ) as ctx:
+            assert ctx._span is mock_span
 
 
 def test_trace_http_request_empty_url(monkeypatch):
@@ -1116,12 +1133,12 @@ def test_trace_http_request_empty_url(monkeypatch):
         client_options=options,
         method="GET",
         url="",
-    ) as span:
-        assert span is mock_span
+    ) as ctx:
+        assert ctx._span is mock_span
 
 
-def test_record_http_response_content_len_error(monkeypatch):
-    """Proves record_http_response catches errors in response._content length calculation."""
+def test_trace_context_record_response_content_len_error(monkeypatch):
+    """Proves _TraceContext.record_response catches errors in response._content length calculation."""
     mock_span = mock.Mock()
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
@@ -1130,7 +1147,9 @@ def test_record_http_response_content_len_error(monkeypatch):
     # Set _content to an object that raises TypeError on len()
     response._content = object()
 
-    _observability.record_http_response(mock_span, response)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_response(response)
 
 
 def test_record_http_error_partial_span(monkeypatch):
@@ -1167,14 +1186,16 @@ def test_record_http_error_partial_span(monkeypatch):
     assert span2.recorded is True
 
 
-def test_record_http_response_no_content_length_and_no_content(monkeypatch):
-    """Proves that record_http_response handles responses with neither Content-Length nor _content."""
+def test_trace_context_record_response_no_content_length_and_no_content(monkeypatch):
+    """Proves that _TraceContext.record_response handles responses with neither Content-Length nor _content."""
     mock_span = mock.Mock()
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
     response = mock.Mock(spec=["status_code", "headers"], status_code=200, headers={})
-    _observability.record_http_response(mock_span, response)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_response(response)
     mock_span.set_attribute.assert_called_once_with("http.response.status_code", 200)
 
 
@@ -1269,5 +1290,7 @@ def test_trace_http_request_initialization_fails_open(monkeypatch):
             client_options=ClientOptions(),
             method="GET",
             url="https://example.com",
-        ) as span:
-            assert span is None
+        ) as ctx:
+            assert isinstance(ctx, _observability._TraceContext)
+            assert ctx._span is None
+            ctx.record_response(mock.Mock())

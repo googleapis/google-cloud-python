@@ -177,7 +177,7 @@ def _get_http_options():
         url_template=uri,
         headers=headers,
         body=body,
-    ) as span:
+    ) as trace_ctx:
         response = {{ await_prefix }}getattr(session, method)(
             url,
             timeout=timeout,
@@ -190,7 +190,7 @@ def _get_http_options():
             stream=True,
             {% endif %}
         )
-        record_http_response(span, response)
+        trace_ctx.record_response(response)
         return response
 {% endmacro %}
 

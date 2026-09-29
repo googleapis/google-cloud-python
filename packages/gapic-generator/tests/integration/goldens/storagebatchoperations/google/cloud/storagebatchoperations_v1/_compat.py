@@ -21,7 +21,7 @@ import json
 import uuid
 import google.protobuf.message
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 from typing import TYPE_CHECKING, Union
 
 from google.api_core import path_template
@@ -45,16 +45,18 @@ if _observability is not None and hasattr(_observability, "trace_http_request"):
     trace_http_request = _observability.trace_http_request
 else:  # pragma: NO COVER
     # Fallback for older versions of google-api-core without HTTP tracing.
-    @contextlib.contextmanager
-    def trace_http_request(*args: Any, **kwargs: Any):
-        yield None
+    class _FallbackTraceContext:
+        def __enter__(self) -> "_FallbackTraceContext":
+            return self
 
-if _observability is not None and hasattr(_observability, "record_http_response"):
-    record_http_response = _observability.record_http_response
-else:  # pragma: NO COVER
-    # Fallback for older versions of google-api-core without HTTP tracing.
-    def record_http_response(span: Any, response: Any) -> None:
-        pass
+        def __exit__(self, *args: Any) -> None:
+            pass
+
+        def record_response(self, response: Any) -> None:
+            pass
+
+    def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:
+        return _FallbackTraceContext()
 
 try:
     from google.api_core import grpc_helpers_async
@@ -62,7 +64,7 @@ except ImportError:  # pragma: NO COVER
     grpc_helpers_async = None  # type: ignore[assignment]
 
 
-def _fallback_apply_interceptors(channel: Any, interceptors: List[Any]) -> Any:  # pragma: NO COVER
+def _fallback_apply_interceptors(channel: Any, interceptors: Optional[Sequence[Any]] = None) -> Any:  # pragma: NO COVER
     """Fallback for older versions of google-api-core where apply_channel_interceptors is unavailable."""
     mapping = (
         ("intercept_unary_unary", "_unary_unary_interceptors"),
@@ -70,18 +72,19 @@ def _fallback_apply_interceptors(channel: Any, interceptors: List[Any]) -> Any: 
         ("intercept_stream_unary", "_stream_unary_interceptors"),
         ("intercept_stream_stream", "_stream_stream_interceptors"),
     )
-    for interceptor in interceptors:
-        matched = False
-        for method_name, attr_name in mapping:
-            if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
-                target_list = getattr(channel, attr_name)
-                if isinstance(target_list, list) and interceptor not in target_list:
-                    target_list.append(interceptor)
-                matched = True
-        if not matched and hasattr(channel, "_unary_unary_interceptors"):
-            unary_interceptors = channel._unary_unary_interceptors
-            if isinstance(unary_interceptors, list) and interceptor not in unary_interceptors:
-                unary_interceptors.append(interceptor)
+    if interceptors:
+        for interceptor in interceptors:
+            matched = False
+            for method_name, attr_name in mapping:
+                if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
+                    target_list = getattr(channel, attr_name)
+                    if isinstance(target_list, list) and interceptor not in target_list:
+                        target_list.append(interceptor)
+                    matched = True
+            if not matched and hasattr(channel, "_unary_unary_interceptors"):
+                unary_interceptors = channel._unary_unary_interceptors
+                if isinstance(unary_interceptors, list) and interceptor not in unary_interceptors:
+                    unary_interceptors.append(interceptor)
     return channel
 
 
