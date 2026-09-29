@@ -170,7 +170,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     return target.__class__.__name__
 
 
-def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
+def _extract_error_attributes(exc: Optional[BaseException]) -> dict[str, Any]:
     """Extract gcp.errors.* and error.type attributes from an exception.
 
     Error details and ErrorInfo structures are resolved by inspecting the following locations:
@@ -180,7 +180,7 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     * Unified attribute extraction: Extracts domain, reason, and metadata from ErrorInfo or exception attributes.
 
     Args:
-        exc (Optional[Exception]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+        exc (Optional[BaseException]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
 
     Returns:
         dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
@@ -235,7 +235,7 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     if not message and hasattr(target_exc, "details"):
         details = target_exc.details
         message = details() if callable(details) else details
-    if not message and isinstance(target_exc, Exception):
+    if not message and isinstance(target_exc, BaseException):
         message = str(target_exc)
     if message:
         attrs["status.message"] = str(message)

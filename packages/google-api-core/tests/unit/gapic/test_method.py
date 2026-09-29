@@ -935,6 +935,20 @@ def test_extract_error_attributes_variations():
         "error.type": "ValueError",
     }
 
+    # 11. status.message extraction from BaseException subclasses (e.g. asyncio.CancelledError)
+    import asyncio
+
+    exc_cancelled_with_msg = asyncio.CancelledError("async task cancelled")
+    assert _extract_error_attributes(exc_cancelled_with_msg) == {
+        "error.type": "CancelledError",
+        "status.message": "async task cancelled",
+    }
+
+    exc_cancelled_empty = asyncio.CancelledError()
+    assert _extract_error_attributes(exc_cancelled_empty) == {
+        "error.type": "CancelledError",
+    }
+
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):
     """Proves handling when span has or lacks set_attribute."""
