@@ -25,7 +25,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 from google.api_core import operations_v1
 from google.api_core import client_options as client_options_lib
-from google.cloud.storagebatchoperations_v1._compat import _observability
+from google.cloud.storagebatchoperations_v1._compat import _observability, apply_channel_interceptors
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
@@ -337,34 +337,7 @@ class StorageBatchOperationsGrpcAsyncIOTransport(StorageBatchOperationsTransport
             otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
             channel_interceptors.extend(otel_list)  # pragma: NO COVER
 
-        # Fallback for older versions of google-api-core where apply_channel_interceptors is unavailable.
-        def _fallback_apply_interceptors(channel, interceptors):  # pragma: NO COVER
-            mapping = (
-                ("intercept_unary_unary", "_unary_unary_interceptors"),
-                ("intercept_unary_stream", "_unary_stream_interceptors"),
-                ("intercept_stream_unary", "_stream_unary_interceptors"),
-                ("intercept_stream_stream", "_stream_stream_interceptors"),
-            )
-            for interceptor in interceptors:
-                matched = False
-                for method_name, attr_name in mapping:
-                    if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
-                        target_list = getattr(channel, attr_name)
-                        if isinstance(target_list, list) and interceptor not in target_list:
-                            target_list.append(interceptor)
-                        matched = True
-                if not matched and hasattr(channel, "_unary_unary_interceptors"):
-                    unary_interceptors = channel._unary_unary_interceptors
-                    if isinstance(unary_interceptors, list) and interceptor not in unary_interceptors:
-                        unary_interceptors.append(interceptor)
-            return channel
-
-        apply_interceptors = getattr(
-            grpc_helpers_async,
-            "apply_channel_interceptors",
-            _fallback_apply_interceptors,
-        )
-        self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
+        self._grpc_channel = apply_channel_interceptors(self._grpc_channel, channel_interceptors)
 
         # In async gRPC, interceptors must be supplied at channel construction time;
         # there is no post-creation interceptor wrapping like sync's grpc.intercept_channel.

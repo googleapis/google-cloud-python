@@ -57,6 +57,43 @@ else:  # pragma: NO COVER
         pass
 
 try:
+    from google.api_core import grpc_helpers_async
+except ImportError:  # pragma: NO COVER
+    grpc_helpers_async = None  # type: ignore[assignment]
+
+
+def _fallback_apply_interceptors(channel: Any, interceptors: List[Any]) -> Any:  # pragma: NO COVER
+    """Fallback for older versions of google-api-core where apply_channel_interceptors is unavailable."""
+    mapping = (
+        ("intercept_unary_unary", "_unary_unary_interceptors"),
+        ("intercept_unary_stream", "_unary_stream_interceptors"),
+        ("intercept_stream_unary", "_stream_unary_interceptors"),
+        ("intercept_stream_stream", "_stream_stream_interceptors"),
+    )
+    for interceptor in interceptors:
+        matched = False
+        for method_name, attr_name in mapping:
+            if hasattr(interceptor, method_name) and hasattr(channel, attr_name):
+                target_list = getattr(channel, attr_name)
+                if isinstance(target_list, list) and interceptor not in target_list:
+                    target_list.append(interceptor)
+                matched = True
+        if not matched and hasattr(channel, "_unary_unary_interceptors"):
+            unary_interceptors = channel._unary_unary_interceptors
+            if isinstance(unary_interceptors, list) and interceptor not in unary_interceptors:
+                unary_interceptors.append(interceptor)
+    return channel
+
+
+if grpc_helpers_async is not None and hasattr(
+    grpc_helpers_async, "apply_channel_interceptors"
+):
+    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors
+else:  # pragma: NO COVER
+    apply_channel_interceptors = _fallback_apply_interceptors
+
+
+try:
     # note: `#type: ignore` is added because the return type for `should_use_client_cert`
     # is different than that of the fallback implementation below. This will be removed once
     # we bump the minimum supported version of google-auth.

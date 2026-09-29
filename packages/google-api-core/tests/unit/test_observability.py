@@ -629,13 +629,13 @@ def test_build_http_span_attributes_with_kwargs():
     assert res_headers is headers
 
 
-def test_build_http_span_attributes_first_arg_client_options():
-    """Proves that _build_http_span_attributes shifts client_options when passed positionally."""
+def test_build_http_span_attributes_client_options():
+    """Proves that _build_http_span_attributes extracts server.address from client_options."""
     options = ClientOptions(api_endpoint="custom.endpoint.com:443")
     name, attrs, res_headers = _observability._build_http_span_attributes(
-        options,
         method="GET",
         url="https://custom.endpoint.com:443/test",
+        client_options=options,
     )
     assert name == "GET"
     assert attrs["server.address"] == "custom.endpoint.com"
@@ -821,8 +821,8 @@ def test_trace_http_request_with_kwargs(monkeypatch):
     mock_propagator.inject.assert_called_once_with(headers)
 
 
-def test_trace_http_request_first_arg_client_options(monkeypatch):
-    """Proves that trace_http_request shifts client_options when passed as first positional arg."""
+def test_trace_http_request_client_options(monkeypatch):
+    """Proves that trace_http_request respects client_options when passed as keyword argument."""
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_tracer = mock.MagicMock()
@@ -842,6 +842,11 @@ def test_trace_http_request_first_arg_client_options(monkeypatch):
     )
     monkeypatch.setitem(
         sys.modules,
+        "opentelemetry.trace.status",
+        mock.Mock(),
+    )
+    monkeypatch.setitem(
+        sys.modules,
         "opentelemetry.instrumentation.grpc",
         mock.Mock(),
     )
@@ -851,12 +856,18 @@ def test_trace_http_request_first_arg_client_options(monkeypatch):
         tracer_provider=mock_provider,
     )
 
-    with _observability.trace_http_request(
-        options,
+    ctx = _observability.trace_http_request(
         method="GET",
         url="https://custom.googleapis.com:8443/v1/test",
-    ) as span:
+        client_options=options,
+    )
+    with ctx as span:
         assert span is mock_span
+        # Test record_response method on trace context
+        mock_resp = mock.Mock(status_code=200, headers={"Content-Length": "42"})
+        ctx.record_response(mock_resp)
+        mock_span.set_attribute.assert_any_call("http.response.status_code", 200)
+        mock_span.set_attribute.assert_any_call("http.response.body.size", 42)
 
 
 def test_trace_http_request_default_tracer_and_url_parse(monkeypatch):

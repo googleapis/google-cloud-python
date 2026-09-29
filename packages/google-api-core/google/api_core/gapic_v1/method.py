@@ -232,8 +232,9 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
 
     # 5. Extract human-readable error description for cross-language PRD parity
     message = getattr(target_exc, "message", None)
-    if not message and hasattr(target_exc, "details") and callable(target_exc.details):
-        message = target_exc.details()
+    if not message and hasattr(target_exc, "details"):
+        details = target_exc.details
+        message = details() if callable(details) else details
     if not message and isinstance(target_exc, Exception):
         message = str(target_exc)
     if message:
@@ -275,6 +276,8 @@ class _GapicCallable(object):
             Allowed values for OpenTelemetry method tracing are "grpc" and "rest".
     """
 
+    _SUPPORTED_TRACING_KINDS = (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
+
     def __init__(
         self,
         target,
@@ -309,7 +312,7 @@ class _GapicCallable(object):
         self._start_span_fn = None
         if (
             not is_streaming
-            and kind in (_TRANSPORT_KIND_GRPC, _TRANSPORT_KIND_REST)
+            and kind in self._SUPPORTED_TRACING_KINDS
             and method_name is not None
             and _observability.is_otel_capabilities_enabled(client_options)
         ):
@@ -328,9 +331,7 @@ class _GapicCallable(object):
 
                 span_name, _, _ = _extract_rpc_identity(method_name)
                 span_attributes = {
-                    "rpc.system.name": "http"
-                    if kind == _TRANSPORT_KIND_REST
-                    else "grpc",
+                    "rpc.system.name": "http" if kind.startswith("rest") else "grpc",
                     "rpc.method": span_name,
                 }
                 self._start_span_fn = functools.partial(
@@ -343,11 +344,7 @@ class _GapicCallable(object):
                 # Gracefully disable tracing if OpenTelemetry or custom provider fails
                 self._start_span_fn = None
 
-    def __call__(
-        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
-    ):
-        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
-
+    def _prepare_call(self, timeout, retry, compression, kwargs):
         if retry is DEFAULT:
             retry = self._retry
 
@@ -381,22 +378,26 @@ class _GapicCallable(object):
         if compression is not None:
             kwargs["compression"] = compression
 
+        return wrapped_func
+
+    @contextlib.contextmanager
+    def _trace_span(self):
         span_cm = contextlib.nullcontext()
         if self._start_span_fn is not None:
             try:
                 span_cm = self._start_span_fn()
-            except (
-                Exception
-            ):  # Fail-open: proceed without span if tracing initialization fails
+            except Exception:
+                # Fail-open: proceed without span if tracing initialization fails
                 span_cm = contextlib.nullcontext()
 
         with span_cm as span:
             try:
-                result = wrapped_func(*args, **kwargs)
+                yield
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute("rpc.response.status_code", "OK")
-                return result
-            except Exception as exc:
+            except (KeyboardInterrupt, SystemExit, GeneratorExit):
+                raise
+            except BaseException as exc:
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute(
                         "rpc.response.status_code", _extract_status_code(exc)
@@ -404,6 +405,14 @@ class _GapicCallable(object):
                     for k, v in _extract_error_attributes(exc).items():
                         span.set_attribute(k, v)
                 raise
+
+    def __call__(
+        self, *args, timeout=DEFAULT, retry=DEFAULT, compression=DEFAULT, **kwargs
+    ):
+        """Invoke the low-level RPC with retry, timeout, compression, and metadata."""
+        wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
+        with self._trace_span():
+            return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(

@@ -159,8 +159,10 @@ class IAMCredentialsTransport(abc.ABC):
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+        for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
+        if self.kind:
+            kwargs["kind"] = self.kind
         return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
@@ -180,8 +182,10 @@ class IAMCredentialsTransport(abc.ABC):
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+        for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
+        if self.kind:
+            kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def _prep_wrapped_messages(self, client_info):

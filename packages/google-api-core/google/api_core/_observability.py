@@ -328,15 +328,6 @@ def _build_http_span_attributes(
     Returns:
         tuple[str, dict[str, Any], Any]: A tuple of (span_name, attributes, resolved_headers).
     """
-    # Defensively handle case where client_options was passed as the first positional argument
-    if (
-        isinstance(request, (ClientOptions, dict))
-        and client_options is None
-        and method is not None
-    ):
-        client_options = request
-        request = None
-
     if request is not None:
         resolved_method = getattr(request, "method", "HTTP") or "HTTP"
         resolved_url = getattr(request, "url", "") or ""
@@ -402,15 +393,6 @@ class trace_http_request:
         body: Any = None,
         client_options: ClientOptions | dict[str, Any] | None = None,
     ):
-        # Defensively handle case where client_options was passed as the first positional argument
-        if (
-            isinstance(request, (ClientOptions, dict))
-            and client_options is None
-            and method is not None
-        ):
-            client_options = request
-            request = None
-
         self._request = request
         self._method = method
         self._url = url
@@ -420,6 +402,15 @@ class trace_http_request:
         self._client_options = client_options
         self._span: Any = None
         self._cm: Any = None
+
+    def record_response(self, response: Any) -> None:
+        """Record HTTP response attributes on the active span."""
+        if self._span is not None:
+            record_http_response(self._span, response)
+
+    def record_http_response(self, response: Any) -> None:
+        """Alias for record_response."""
+        self.record_response(response)
 
     def __enter__(self) -> Any:
         if not is_otel_capabilities_enabled(self._client_options):
@@ -479,9 +470,11 @@ def record_http_response(span: Any, response: Any) -> None:
     """Record HTTP response attributes on the wire span.
 
     Args:
-        span (Optional[Any]): The active OpenTelemetry span.
+        span (Optional[Any]): The active OpenTelemetry span or trace context.
         response (Any): The HTTP response object (e.g. requests.Response).
     """
+    if isinstance(span, trace_http_request):
+        span = span._span
     if span is None or not hasattr(span, "set_attribute"):
         return
 
@@ -522,9 +515,11 @@ def record_http_error(span: Any, exc: BaseException) -> None:
     """Record an HTTP error/exception on the wire span.
 
     Args:
-        span (Optional[Any]): The active OpenTelemetry span.
+        span (Optional[Any]): The active OpenTelemetry span or trace context.
         exc (BaseException): The exception raised during dispatch.
     """
+    if isinstance(span, trace_http_request):
+        span = span._span
     if span is None:
         return
 

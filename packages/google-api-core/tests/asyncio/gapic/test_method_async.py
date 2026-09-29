@@ -488,6 +488,31 @@ async def test_wrap_method_async_otel_tracing_enabled_error(mock_otel):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("interrupt_exc", [KeyboardInterrupt, SystemExit])
+async def test_wrap_method_async_otel_tracing_interrupt_bypasses_error_attributes(
+    mock_otel, interrupt_exc
+):
+    """Proves that process-level interrupts in async calls are re-raised without polluting span error attributes."""
+    mock_target = mock.AsyncMock(side_effect=interrupt_exc())
+
+    wrapped = gapic_v1.method_async.wrap_method(
+        mock_target,
+        method_name="/google.cloud.secretmanager.v1.SecretManagerService/GetSecret",
+    )
+
+    with pytest.raises(interrupt_exc):
+        await wrapped()
+
+    for call in mock_otel.span.set_attribute.call_args_list:
+        attr_name = call[0][0]
+        assert attr_name not in (
+            "rpc.response.status_code",
+            "error.type",
+            "status.message",
+        )
+
+
+@pytest.mark.asyncio
 async def test_wrap_method_async_otel_tracing_records_gcp_error_attributes(mock_otel):
     """Proves that GCP error attributes (domain, reason, metadata) are recorded on the span."""
     error_info = mock.Mock(
