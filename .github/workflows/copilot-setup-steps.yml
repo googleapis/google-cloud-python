@@ -1,0 +1,89 @@
+- name: Authenticate to Google Cloud
+  # You may pin to the exact commit or the version.
+  # uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093
+  uses: google-github-actions/auth@v3
+  with:
+    # ID of the default project to use for future API calls and invocations. If
+unspecified, this action will attempt to extract the value from other
+inputs such as "service_account" or "credentials_json".
+    project_id: # optional
+    # The full identifier of the Workload Identity Provider, including the
+project number, pool name, and provider name. If provided, this must be
+the full identifier which includes all parts, for example:
+"projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider".
+This is mutually exclusive with "credentials_json".
+    workload_identity_provider: # optional
+    # Email address or unique identifier of the Google Cloud service account for
+which to generate credentials. This is required if
+"workload_identity_provider" is specified.
+    service_account: # optional
+    # The value for the audience (aud) parameter in GitHub's generated OIDC
+token. This value defaults to the value of "workload_identity_provider",
+which is also the default value Google Cloud expects for the audience
+parameter on the token.
+    audience: # optional, default is 
+    # The Google Cloud JSON service account key to use for authentication. This
+is mutually exclusive with "workload_identity_provider".
+    credentials_json: # optional
+    # If true, the action will securely generate a credentials file which can be
+used for authentication via gcloud and Google Cloud SDKs.
+    create_credentials_file: # optional, default is true
+    # If true, the action will export common environment variables which are
+known to be consumed by popular downstream libraries and tools, including:
+
+- CLOUDSDK_PROJECT
+- CLOUDSDK_CORE_PROJECT
+- GCP_PROJECT
+- GCLOUD_PROJECT
+- GOOGLE_CLOUD_PROJECT
+
+If "create_credentials_file" is true, additional environment variables are
+exported:
+
+- CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+- GOOGLE_APPLICATION_CREDENTIALS
+- GOOGLE_GHA_CREDS_PATH
+
+If false, the action will not export any environment variables, meaning
+future steps are unlikely to be automatically authenticated to Google
+Cloud.
+    export_environment_variables: # optional, default is true
+    # Output format for the generated authentication token. For OAuth 2.0 access
+tokens, specify "access_token". For OIDC tokens, specify "id_token". To
+skip token generation, leave this value empty.
+    token_format: # optional, default is 
+    # List of additional service account emails or unique identities to use for
+impersonation in the chain.
+    delegates: # optional, default is 
+    # The Google Cloud universe to use for constructing API endpoints. The
+default universe is "googleapis.com", which corresponds to
+https://cloud.google.com. Trusted Partner Cloud and Google Distributed
+Hosted Cloud should set this to their universe address.
+    universe: # optional, default is googleapis.com
+    # An optional Reason Request System Parameter for each API call made by the
+GitHub Action. This will inject the "X-Goog-Request-Reason" HTTP header,
+which will provide user-supplied information in Google Cloud audit logs.
+    request_reason: # optional
+    # If true, the action will remove any created credentials from the
+filesystem upon completion. This only applies if "create_credentials_file"
+is true.
+    cleanup_credentials: # optional, default is true
+    # Desired lifetime duration of the access token, in seconds. This must be
+specified as the number of seconds with a trailing "s" (e.g. 30s). This is
+only valid when "token_format" is "access_token".
+    access_token_lifetime: # optional, default is 3600s
+    # List of OAuth 2.0 access scopes to be included in the generated token.
+This is only valid when "token_format" is "access_token".
+    access_token_scopes: # optional, default is https://www.googleapis.com/auth/cloud-platform
+    # Email address of a user to impersonate for Domain-Wide Delegation Access
+tokens created for Domain-Wide Delegation cannot have a lifetime beyond 1
+hour. This is only valid when "token_format" is "access_token".
+    access_token_subject: # optional, default is 
+    # The audience (aud) for the generated Google Cloud ID Token. This is only
+valid when "token_format" is "id_token".
+    id_token_audience: # optional, default is 
+    # Optional parameter of whether to include the service account email in the
+generated token. If true, the token will contain "email" and
+"email_verified" claims. This is only valid when "token_format" is
+"id_token".
+    id_token_include_email: # optional, default is false
