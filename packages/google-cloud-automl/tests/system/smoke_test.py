@@ -19,6 +19,11 @@ import pytest
 
 from google.cloud import automl_v1
 
+pytest.skip(
+    "Skipping automl smoke tests due to service deprecation: https://docs.cloud.google.com/vertex-ai/docs/deprecations?e=48754805",
+    allow_module_level=True,
+)
+
 
 @pytest.fixture(scope="session")
 def project_id():
