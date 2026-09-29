@@ -190,7 +190,10 @@ class Request(transport.Request):
         with self._mtls_lock:
             session_adapter = self.session.get_adapter(url if parsed.path else prefix)
             # Skip if _MutualTlsAdapter is already mounted or the caller mounted a custom adapter.
-            if type(session_adapter) is not requests.adapters.HTTPAdapter:
+            if (
+                type(session_adapter) is not requests.adapters.HTTPAdapter
+                or self.session.get_adapter(prefix) is not session_adapter
+            ):
                 return
 
             if self._mtls_adapter is None:
@@ -201,25 +204,14 @@ class Request(transport.Request):
                     self._mtls_unavailable = True
                     return
 
-                kwargs = {
-                    "max_retries": getattr(session_adapter, "max_retries", 0),
-                    "pool_connections": getattr(
-                        session_adapter,
-                        "_pool_connections",
-                        requests.adapters.DEFAULT_POOLSIZE,
-                    ),
-                    "pool_maxsize": getattr(
-                        session_adapter,
-                        "_pool_maxsize",
-                        requests.adapters.DEFAULT_POOLSIZE,
-                    ),
-                    "pool_block": getattr(
-                        session_adapter,
-                        "_pool_block",
-                        requests.adapters.DEFAULT_POOLBLOCK,
-                    ),
-                }
-                self._mtls_adapter = _MutualTlsAdapter(cert, key, **kwargs)
+                self._mtls_adapter = _MutualTlsAdapter(
+                    cert,
+                    key,
+                    max_retries=session_adapter.max_retries,
+                    pool_connections=session_adapter._pool_connections,
+                    pool_maxsize=session_adapter._pool_maxsize,
+                    pool_block=session_adapter._pool_block,
+                )
 
             # Replace session.adapters atomically instead of calling session.mount(),
             # which mutates the OrderedDict in place and can raise RuntimeError if

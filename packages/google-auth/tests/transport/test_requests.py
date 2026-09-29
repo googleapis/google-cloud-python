@@ -145,12 +145,22 @@ class TestRequestResponse(compliance.RequestResponseTests):
         ]
 
     @pytest.mark.parametrize(
-        "mount_prefix,use_mtls_adapter",
+        "mount_prefix,adapter_cls",
         [
-            ("https://", False),
-            ("https://iamcredentials.mtls.googleapis.com/", False),
-            ("https://iamcredentials.mtls.googleapis.com/v1/token", False),
-            ("https://", True),
+            ("https://", requests.adapters.BaseAdapter),
+            (
+                "https://iamcredentials.mtls.googleapis.com/",
+                requests.adapters.BaseAdapter,
+            ),
+            (
+                "https://iamcredentials.mtls.googleapis.com/v1/token",
+                requests.adapters.BaseAdapter,
+            ),
+            ("https://", google.auth.transport.requests._MutualTlsAdapter),
+            (
+                "https://iamcredentials.mtls.googleapis.com/v1/",
+                requests.adapters.HTTPAdapter,
+            ),
         ],
     )
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
@@ -158,24 +168,28 @@ class TestRequestResponse(compliance.RequestResponseTests):
         self,
         mock_send,
         mount_prefix,
-        use_mtls_adapter,
+        adapter_cls,
         workload_cert_config,
     ):
         mock_send.return_value = make_response()
         session = requests.Session()
-        custom_adapter = (
-            google.auth.transport.requests._MutualTlsAdapter(
+        if adapter_cls is google.auth.transport.requests._MutualTlsAdapter:
+            custom_adapter = adapter_cls(
                 pytest.public_cert_bytes, pytest.private_key_bytes
             )
-            if use_mtls_adapter
-            else AdapterStub([make_response()])
-        )
+        elif adapter_cls is requests.adapters.BaseAdapter:
+            custom_adapter = AdapterStub([make_response()])
+        else:
+            custom_adapter = adapter_cls()
         session.mount(mount_prefix, custom_adapter)
+        adapters_before = session.adapters
+        adapters_snapshot = session.adapters.copy()
         request = google.auth.transport.requests.Request(session)
 
         request("https://IAMCREDENTIALS.mtls.googleapis.com/v1/token")
 
-        assert session.adapters[mount_prefix] is custom_adapter
+        assert session.adapters is adapters_before
+        assert session.adapters == adapters_snapshot
         assert (
             session.get_adapter("https://iamcredentials.mtls.googleapis.com/v1/token")
             is custom_adapter
