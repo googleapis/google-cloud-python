@@ -299,6 +299,35 @@ class TestQuery(unittest.TestCase):
         ).format(type=METRIC_TYPE, instance=INSTANCE)
         self.assertEqual(query.filter, expected)
 
+    def test_filter_escapes_metric_label_value(self):
+        client = self._create_client()
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
+        query = query.select_metrics(instance_name='a" OR metric.label.x = "b')
+        expected = (
+            'metric.type = "{type}"'
+            ' AND metric.label.instance_name = "a\\" OR metric.label.x = \\"b"'
+        ).format(type=METRIC_TYPE)
+        self.assertEqual(query.filter, expected)
+
+    def test_filter_escapes_resource_label_prefix_value(self):
+        client = self._create_client()
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
+        query = query.select_resources(zone_prefix='europe-" OR zone = "asia')
+        expected = (
+            'metric.type = "{type}"'
+            ' AND resource.label.zone = starts_with("europe-\\" OR zone = \\"asia")'
+        ).format(type=METRIC_TYPE)
+        self.assertEqual(query.filter, expected)
+
+    def test_filter_escapes_backslash_in_label_value(self):
+        client = self._create_client()
+        query = self._make_one(client, PROJECT, METRIC_TYPE)
+        query = query.select_metrics(instance_name="a\\b")
+        expected = (
+            'metric.type = "{type}" AND metric.label.instance_name = "a\\\\b"'
+        ).format(type=METRIC_TYPE)
+        self.assertEqual(query.filter, expected)
+
     def test_request_parameters_minimal(self):
         T1 = datetime.datetime(2016, 4, 7, 2, 30, 0)
 
