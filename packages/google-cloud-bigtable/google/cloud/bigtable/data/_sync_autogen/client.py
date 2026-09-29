@@ -948,6 +948,10 @@ class _DataApiTarget(abc.ABC):
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it."""
+        if getattr(self, "authorized_view_id", None) is not None or getattr(
+            self, "materialized_view_id", None
+        ) is not None:
+            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(
@@ -1753,11 +1757,15 @@ class _DataApiTarget(abc.ABC):
         if self._accelerator_client is not None:
             try:
                 self._accelerator_client.close()
+            except Exception as exc:
+                _LOGGER.warning("Failed to close accelerator client: %s", exc)
             finally:
                 self._accelerator_client = None
         if self._accelerator_daemon is not None:
             try:
                 self._accelerator_daemon.close()
+            except Exception as exc:
+                _LOGGER.warning("Failed to close accelerator daemon: %s", exc)
             finally:
                 self._accelerator_daemon = None
         if self._register_instance_future:

@@ -57,8 +57,9 @@ class _AcceleratorFallback(Exception):
 class AcceleratorBreaker:
     """Tracks accelerator health and decides when to stop using it.
 
-    One instance per Table. Thread-safe so the generated sync client can share a
-    Table across threads. Two triggers permanently bypass the accelerator:
+    One instance per data target (Table, AuthorizedView, MaterializedView).
+    Thread-safe so the generated sync client can share a target across threads.
+    Two triggers permanently bypass the accelerator:
 
     * the first ``UNIMPLEMENTED`` reply (the daemon understands the RPC shape but
       has no working sessions), and
