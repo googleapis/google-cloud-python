@@ -92,6 +92,8 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% elif method.server_streaming %}
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
+    {% elif method.is_resumable_upload %}
+    assert isinstance(response, {{ method.client_output.ident }})
     {% else %}
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
@@ -357,6 +359,8 @@ async def test_{{ method_name }}_async(request_type, transport: str = 'grpc_asyn
     {% elif method.server_streaming %}
     message = await response.read()
     assert isinstance(message, {{ method.output.ident }})
+    {% elif method.is_resumable_upload %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output_async.ident }})
     {% for field in method_output.fields.values() | rejectattr('message') %}
@@ -1730,7 +1734,8 @@ def test_unsupported_parameter_rest_asyncio():
 # into `run_transport_tests_for_config` and make any of the rest specific specific macros which are called within more generic. 
 #}
 {% macro run_transport_tests_for_config(service, api, transport, is_async) %}
-{% for method in service.methods.values() %}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% for method in service.methods.values() if not (transport == 'rest' and is_async) or rest_async_io_enabled or method.is_resumable_upload %}
 {% if is_rest_unsupported_method(method, is_async) == 'True' or not method.http_options %}
 {{ rest_method_not_implemented_error(service, method, transport, is_async) }}
 {% else %}
@@ -1741,12 +1746,14 @@ def test_unsupported_parameter_rest_asyncio():
 {% endif %}{# if 'rest' in transport #}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
 {% endfor %}{# for method in service.methods.values() #}
+{% if not (transport == 'rest' and is_async) or rest_async_io_enabled %}
 {% for name, sig in api.mixin_api_signatures.items() %}
 {% if 'rest' in transport %}
 {{ bad_request_mixins_test(service, api, name, sig, transport, is_async) }}
 {{ call_success_mixins_test(service, api, name, sig, transport, is_async) }}
 {% endif %}{# if 'rest' in transport #}
 {% endfor %}
+{% endif %}
 {{ initialize_client_with_transport_test(service, transport, is_async) }}
 {% endmacro %}
 
@@ -2102,6 +2109,12 @@ def test_initialize_client_w_{{transport_name}}():
     assert response is None
     {% elif method.lro %}
     json_return_value = json_format.MessageToJson(return_value)
+    {% elif method.is_resumable_upload %}
+    {% if is_async %}
+    assert isinstance(response, {{ method.client_output_async.ident }})
+    {% else %}
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% endif %}
     {% else %}
     {% if is_async %}
     assert isinstance(response, {{ method.client_output_async.ident }})
@@ -2202,7 +2215,8 @@ def test_initialize_client_w_{{transport_name}}():
 {% endmacro %}{# call_success_mixins_test #}
 
 {% macro empty_call_test(service, api, transport, is_async) %}
-{% for method in service.methods.values() %}{# method #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% for method in service.methods.values() if not (transport == 'rest' and is_async) or rest_async_io_enabled or method.is_resumable_upload %}{# method #}
 {% if not method.client_streaming %}
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
@@ -2212,7 +2226,8 @@ def test_initialize_client_w_{{transport_name}}():
 {% endmacro %}{# empty_call_test #}
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
-{% for method in service.methods.values() %}{# method #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
+{% for method in service.methods.values() if not (transport == 'rest' and is_async) or rest_async_io_enabled or method.is_resumable_upload %}{# method #}
 {# See existing proposal b/330610501 to add support for explicit routing in BIDI/client side streaming #}
 {% if method.explicit_routing and not method.client_streaming %}
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}

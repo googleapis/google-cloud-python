@@ -30,6 +30,13 @@ from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+try:
+    import aiohttp  # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.api_core.operations_v1 import AsyncOperationsRestClient
+    HAS_ASYNC_REST_EXTRA = True
+except ImportError: # pragma: NO COVER
+    HAS_ASYNC_REST_EXTRA = False
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -47,6 +54,7 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import resumable_transfer
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -842,9 +850,7 @@ def test_upload_media(request_type, transport: str = 'grpc'):
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.ResumableUploadSession)
 
 
 def test_upload_media_non_empty_request_with_auto_populated_field():
@@ -974,9 +980,7 @@ async def test_upload_media_async(request_type, transport: str = 'grpc_asyncio')
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
 
 
 def test_upload_media_rest_use_cached_wrapped_rpc():
@@ -1243,9 +1247,7 @@ def test_upload_media_rest_call_success(request_type):
         response = client.upload_media(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_upload.UploadMediaResponse)
-    assert response.name == 'name_value'
-    assert response.size == 443
+    assert isinstance(response, resumable_transfer.ResumableUploadSession)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1799,6 +1801,174 @@ def test_upload_media_empty_call_rest():
         assert args[0] == request_msg
 
 
+def test_transport_kind_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = ResumableUploadServiceAsyncClient.get_transport_class("rest_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "rest_asyncio"
+
+
+@pytest.mark.asyncio
+async def test_upload_media_rest_asyncio_bad_request(request_type=resumable_upload.UploadMediaRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        await client.upload_media(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  resumable_upload.UploadMediaRequest,
+  dict,
+])
+async def test_upload_media_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resumable_upload.UploadMediaResponse(
+              name='name_value',
+              size=443,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resumable_upload.UploadMediaResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = await client.upload_media(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_upload_media_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncResumableUploadServiceRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncResumableUploadServiceRestInterceptor(),
+        )
+    client = ResumableUploadServiceAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncResumableUploadServiceRestInterceptor, "post_upload_media") as post, \
+        mock.patch.object(transports.AsyncResumableUploadServiceRestInterceptor, "post_upload_media_with_metadata") as post_with_metadata, \
+        mock.patch.object(transports.AsyncResumableUploadServiceRestInterceptor, "pre_upload_media") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = resumable_upload.UploadMediaRequest.pb(resumable_upload.UploadMediaRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resumable_upload.UploadMediaResponse.to_json(resumable_upload.UploadMediaResponse())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = resumable_upload.UploadMediaRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resumable_upload.UploadMediaResponse()
+        post_with_metadata.return_value = resumable_upload.UploadMediaResponse(), metadata
+
+        await client.upload_media(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+def test_initialize_client_w_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_upload_media_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upload_media),
+            '__call__') as call:
+        await client.upload_media(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resumable_upload.UploadMediaRequest()
+        assert args[0] == request_msg
+
+
+def test_unsupported_parameter_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
+        client = ResumableUploadServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport="rest_asyncio",
+            client_options=options
+    )
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ResumableUploadServiceClient(
@@ -2101,6 +2271,61 @@ def test_resumable_upload_service_grpc_asyncio_transport_channel():
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
+
+
+def test_resumable_upload_service_upload_media_grpc_channel_without_credentials_error():
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.ResumableUploadServiceGrpcTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        transport.upload_media(resumable_upload.UploadMediaRequest())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_resumable_upload_service_upload_media_grpc_asyncio_channel_without_credentials_error():
+    channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())
+    transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
+        host="localhost:7469",
+        channel=channel,
+    )
+    with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
+        await transport.upload_media(resumable_upload.UploadMediaRequest())
+    assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+
+def test_resumable_upload_service_upload_media_rest_start_empty_body():
+    client = ResumableUploadServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        response_value = mock.MagicMock()
+        response_value.status_code = 200
+        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.content = b""
+        req.return_value = response_value
+        response = client.upload_media(resumable_upload.UploadMediaRequest())
+        assert isinstance(response, resumable_transfer.ResumableUploadSession)
+
+
+@pytest.mark.asyncio
+async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:
+        response_value = mock.MagicMock()
+        response_value.status_code = 200
+        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.read = mock.AsyncMock(return_value=b"")
+        req.return_value = response_value
+        response = await client.upload_media(resumable_upload.UploadMediaRequest())
+        assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
 
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
@@ -3909,6 +4134,20 @@ def test_transport_close_rest():
     )
     with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        async with client:
             close.assert_not_called()
         close.assert_called_once()
 

@@ -4802,7 +4802,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.showcase_v1beta1.types.UploadMediaResponse",
+        "resultType": "google.api_core.resumable_transfer.AsyncResumableUploadSession",
         "shortName": "upload_media"
       },
       "description": "Sample for UploadMedia",
@@ -4878,7 +4878,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.showcase_v1beta1.types.UploadMediaResponse",
+        "resultType": "google.api_core.resumable_transfer.ResumableUploadSession",
         "shortName": "upload_media"
       },
       "description": "Sample for UploadMedia",
