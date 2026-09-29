@@ -171,6 +171,7 @@ def test_echo_api_version_header(transport_name):
                 type(client.transport.echo),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.EchoResponse()
                 client.echo()
 
         # Establish that the api version header was sent.
@@ -196,6 +197,7 @@ def test_echo_error_details_api_version_header(transport_name):
                 type(client.transport.echo_error_details),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.EchoErrorDetailsResponse()
                 client.echo_error_details()
 
         # Establish that the api version header was sent.
@@ -221,6 +223,7 @@ def test_fail_echo_with_details_api_version_header(transport_name):
                 type(client.transport.fail_echo_with_details),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.FailEchoWithDetailsResponse()
                 client.fail_echo_with_details()
 
         # Establish that the api version header was sent.
@@ -246,6 +249,7 @@ def test_expand_api_version_header(transport_name):
                 type(client.transport.expand),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.EchoResponse()
                 client.expand()
 
         # Establish that the api version header was sent.
@@ -271,6 +275,7 @@ def test_collect_api_version_header(transport_name):
                 type(client.transport.collect),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.EchoResponse()
                 client.collect()
 
         # Establish that the api version header was sent.
@@ -296,6 +301,7 @@ def test_chat_api_version_header(transport_name):
                 type(client.transport.chat),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.EchoResponse()
                 client.chat()
 
         # Establish that the api version header was sent.
@@ -321,6 +327,7 @@ def test_paged_expand_api_version_header(transport_name):
                 type(client.transport.paged_expand),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.PagedExpandResponse()
                 client.paged_expand()
 
         # Establish that the api version header was sent.
@@ -346,6 +353,7 @@ def test_paged_expand_legacy_api_version_header(transport_name):
                 type(client.transport.paged_expand_legacy),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.PagedExpandResponse()
                 client.paged_expand_legacy()
 
         # Establish that the api version header was sent.
@@ -371,6 +379,7 @@ def test_paged_expand_legacy_mapped_api_version_header(transport_name):
                 type(client.transport.paged_expand_legacy_mapped),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.PagedExpandLegacyMappedResponse()
                 client.paged_expand_legacy_mapped()
 
         # Establish that the api version header was sent.
@@ -396,6 +405,7 @@ def test_wait_api_version_header(transport_name):
                 type(client.transport.wait),
                 '__call__'
             ) as call:
+                call.return_value = operations_pb2.Operation()
                 client.wait()
 
         # Establish that the api version header was sent.
@@ -421,6 +431,7 @@ def test_block_api_version_header(transport_name):
                 type(client.transport.block),
                 '__call__'
             ) as call:
+                call.return_value = gs_echo.BlockResponse()
                 client.block()
 
         # Establish that the api version header was sent.
