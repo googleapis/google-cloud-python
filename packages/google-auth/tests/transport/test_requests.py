@@ -106,7 +106,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
         mock_send.return_value = make_response()
         session = requests.Session()
         base_adapter = requests.adapters.HTTPAdapter(
-            max_retries=3, pool_connections=4, pool_maxsize=8
+            max_retries=3, pool_connections=4, pool_maxsize=8, pool_block=True
         )
         session.mount(mount_prefix, base_adapter)
         https_adapter = session.adapters["https://"]
@@ -118,7 +118,11 @@ class TestRequestResponse(compliance.RequestResponseTests):
         next(adapters_iter)
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
         list(adapters_iter)
+        adapters_after_mount = session.adapters
+        adapters_snapshot = session.adapters.copy()
         request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert session.adapters is adapters_after_mount
+        assert session.adapters == adapters_snapshot
         request("https://STS.mtls.googleapis.com")
 
         mtls_adapter = session.adapters["https://iamcredentials.mtls.googleapis.com/"]
@@ -128,6 +132,7 @@ class TestRequestResponse(compliance.RequestResponseTests):
         assert mtls_adapter.max_retries.total == 3
         assert mtls_adapter._pool_connections == 4
         assert mtls_adapter._pool_maxsize == 8
+        assert mtls_adapter._pool_block is True
         assert session.adapters["https://sts.mtls.googleapis.com/"] is mtls_adapter
         sent_adapters = [call.args[0] for call in mock_send.call_args_list]
         assert sent_adapters == [
@@ -222,17 +227,31 @@ class TestRequestResponse(compliance.RequestResponseTests):
         assert request._mtls_unavailable is True
         mock_get_cert.assert_called_once()
 
+    @pytest.mark.parametrize(
+        "cert_bytes,expected_cause",
+        [
+            (None, FileNotFoundError),
+            (b"invalid", exceptions.ClientCertError),
+            (
+                b"-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----\n",
+                exceptions.MutualTLSChannelError,
+            ),
+        ],
+    )
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
-    def test_mtls_missing_cert_file_raises_transport_error(
-        self, mock_send, workload_cert_config
+    def test_mtls_cert_error_raises_transport_error_and_recovers(
+        self, mock_send, cert_bytes, expected_cause, workload_cert_config
     ):
         mock_send.return_value = make_response()
-        workload_cert_config.remove()
-        request = google.auth.transport.requests.Request(requests.Session())
+        if cert_bytes is None:
+            workload_cert_config.remove()
+        else:
+            workload_cert_config.write_binary(cert_bytes)
 
+        request = google.auth.transport.requests.Request(requests.Session())
         with pytest.raises(exceptions.TransportError) as exc_info:
             request("https://iamcredentials.mtls.googleapis.com/v1/token")
-        assert isinstance(exc_info.value.__cause__, FileNotFoundError)
+        assert isinstance(exc_info.value.__cause__, expected_cause)
         assert request._mtls_unavailable is False
 
         workload_cert_config.write_binary(pytest.public_cert_bytes)
@@ -253,6 +272,15 @@ class TestRequestResponse(compliance.RequestResponseTests):
 
         assert copied_request.session is not request.session
         assert copied_request._mtls_lock is not request._mtls_lock
+        assert copied_request._mtls_adapter is not request._mtls_adapter
+        assert (
+            copied_request._mtls_adapter._ctx_poolmanager
+            is request._mtls_adapter._ctx_poolmanager
+        )
+        assert (
+            copied_request._mtls_adapter._ctx_proxymanager
+            is request._mtls_adapter._ctx_proxymanager
+        )
         assert (
             copied_request._mtls_adapter.poolmanager
             is not request._mtls_adapter.poolmanager
