@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.47.0...google-cloud-bigtable-v2.48.0) (2026-09-29)
+
+
+### Features
+
+* **bigtable:** Reroute Mutations Batcher to use data client ([#18200](https://github.com/googleapis/google-cloud-python/issues/18200)) ([0b488a3](https://github.com/googleapis/google-cloud-python/commit/0b488a395542e9c76f535e82a7298fabaee8f4af))
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
 ## [2.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.46.0...google-cloud-bigtable-v2.47.0) (2026-09-24)
 
 

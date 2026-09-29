@@ -55,6 +55,7 @@ from google.cloud.firestore_v1.bson import (
     BSONObjectId,
     BSONRegex,
     BSONTimestamp,
+    BSONType,
 )
 from google.cloud.firestore_v1.client import Client
 from google.cloud.firestore_v1.collection import CollectionReference
@@ -165,6 +166,7 @@ __all__: List[str] = [
     "BSONObjectId",
     "BSONRegex",
     "BSONTimestamp",
+    "BSONType",
     "Client",
     "CountAggregation",
     "CollectionGroup",

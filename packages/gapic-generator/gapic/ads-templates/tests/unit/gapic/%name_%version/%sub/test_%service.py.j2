@@ -664,6 +664,7 @@ def test_{{ method_name }}_api_version_header(transport_name):
                 type(client.transport.{{ method.transport_safe_name|snake_case }}),
                 '__call__'
             ) as call:
+                call.return_value = {{ method.output.ident }}()
                 client.{{ method_name }}()
 
         # Establish that the api version header was sent.

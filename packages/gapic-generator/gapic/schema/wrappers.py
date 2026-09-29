@@ -1501,6 +1501,7 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+    resumable_upload_prefix: str = "resumable/upload"
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -1729,6 +1730,13 @@ class Method:
         # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
         # TODO(yon-mg): enums for http verbs?
         return answer
+
+    @property
+    def is_resumable_upload(self) -> bool:
+        """Return True if this method is a resumable upload method."""
+        # Resumable upload method names are temporarily hardcoded here until
+        # the resumable upload proto annotation exists and is published.
+        return self.name in ("UploadMedia", "CreateYouTubeVideoUpload")
 
     @property
     def path_params(self) -> Sequence[str]:
@@ -2211,6 +2219,16 @@ class Service:
         return any(m.paged_result_field for m in self.methods.values())
 
     @property
+    def has_resumable_upload_methods(self) -> bool:
+        """Return whether this specific service has resumable upload methods.
+
+        Used during per-service file generation and in service-level templates
+        to conditionally emit resumable upload imports, transports, and client
+        methods only for services that define resumable upload RPCs.
+        """
+        return any(m.is_resumable_upload for m in self.methods.values())
+
+    @property
     def host(self) -> str:
         """Return the hostname for this service, if specified.
 
@@ -2243,7 +2261,7 @@ class Service:
         # Get the shortname from the host
         # Real APIs are expected to have format:
         # "{api_shortname}.googleapis.com"
-        return self.host.split(".")[0]
+        return self.host.split(".")[0].split(":")[0]
 
     @property
     def oauth_scopes(self) -> Sequence[str]:

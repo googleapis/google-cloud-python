@@ -31,18 +31,18 @@ from google.cloud.firestore_v1.bson import (
     BSONObjectId,
     BSONRegex,
     BSONTimestamp,
-    _BSONType,
+    BSONType,
 )
 
 
 def test_bson_type_abc_cannot_be_instantiated():
     with pytest.raises(TypeError):
-        _BSONType()  # type: ignore
+        BSONType()  # type: ignore
 
 
 def test_bson_type_inheritance():
     oid = BSONObjectId("507f191e810c19729de860ea")
-    assert isinstance(oid, _BSONType)
+    assert isinstance(oid, BSONType)
 
 
 def test_bson_object_id_from_hex_string():
@@ -601,3 +601,13 @@ def test_bson_decimal128_copy():
 def test_bson_decimal128_pickle():
     d = BSONDecimal128("123.45")
     assert pickle.loads(pickle.dumps(d)) == d
+
+
+def test_bson_from_dict_exception_fallback():
+    # Corrupted or malformed BSON wire dictionary shapes gracefully return None
+    assert BSONType._from_dict({"__int__": "not-an-int"}) is None
+    assert BSONType._from_dict({"__oid__": "short"}) is None
+    assert BSONType._from_dict({"__decimal128__": "invalid-decimal"}) is None
+    assert BSONType._from_dict({"__unknown__": "value"}) is None
+    assert BSONType._from_dict("not-a-dict") is None
+    assert BSONType._from_dict({"a": 1, "b": 2}) is None

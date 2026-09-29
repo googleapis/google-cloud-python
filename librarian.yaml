@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.45.0
+version: v0.46.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
@@ -88,11 +88,11 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
-    version: 5.1.0
+    version: 5.2.0
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.40.0
+    version: 1.41.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.39.0
+    version: 2.40.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -245,15 +245,15 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.58.1
+    version: 2.59.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
-    version: 0.4.2
+    version: 0.4.3
     python:
       library_type: AUTH
   - name: google-auth-oauthlib
-    version: 1.4.1
+    version: 1.5.0
     python:
       library_type: AUTH
   - name: google-backstory
@@ -664,7 +664,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.47.0
+    version: 2.48.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -882,7 +882,7 @@ libraries:
       metadata_name_override: contentwarehouse
       default_version: v1
   - name: google-cloud-core
-    version: 2.7.0
+    version: 2.8.0
     python:
       library_type: CORE
   - name: google-cloud-data-fusion
@@ -1074,7 +1074,7 @@ libraries:
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
-    version: 0.37.1
+    version: 0.37.2
     python:
       library_type: REST
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559772
@@ -1088,7 +1088,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.17.3
+    version: 0.17.4
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
@@ -1174,7 +1174,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.32.0
+    version: 2.33.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1536,7 +1536,7 @@ libraries:
           - python-gapic-namespace=google.cloud
       default_version: v1
   - name: google-cloud-ndb
-    version: 2.6.1
+    version: 2.7.0
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
@@ -1833,7 +1833,7 @@ libraries:
       metadata_name_override: run
       default_version: v2
   - name: google-cloud-runtimeconfig
-    version: 0.37.1
+    version: 0.37.2
     python:
       library_type: GAPIC_MANUAL
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559663
@@ -2034,7 +2034,7 @@ libraries:
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
-    version: 3.15.0
+    version: 3.15.1
     apis:
       - path: google/storage/v2
     python:
@@ -2112,7 +2112,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-testutils
-    version: 1.9.3
+    version: 1.10.0
     python:
       library_type: OTHER
       metadata_name_override: google-cloud-test-utils
@@ -2443,7 +2443,7 @@ libraries:
     python:
       default_version: v1
   - name: google-resumable-media
-    version: 2.10.2
+    version: 2.11.0
     python:
       library_type: CORE
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-resumable-media/latest
@@ -2622,7 +2622,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.75.4
+    version: 1.75.5
     apis:
       - path: google/api
       - path: google/cloud
@@ -2668,7 +2668,7 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.4
+    version: 1.29.0
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
