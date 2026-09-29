@@ -325,3 +325,15 @@ async def test_wrap_method_async_otel_tracing_enabled_error(mock_otel):
     mock_otel.span.set_attribute.assert_any_call(
         "rpc.response.status_code", "NOT_FOUND"
     )
+
+
+@pytest.mark.asyncio
+async def test_wrap_method_async_synchronous_return_value():
+    """Proves that wrap_method handles callables returning synchronous non-awaitable values."""
+
+    def sync_callable(*args, **kwargs):
+        return "synchronous_result"
+
+    wrapped = gapic_v1.method_async.wrap_method(sync_callable, kind="rest_asyncio")
+    result = await wrapped(mock.sentinel.request)
+    assert result == "synchronous_result"

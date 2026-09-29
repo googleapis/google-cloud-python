@@ -728,7 +728,6 @@ def test_extract_error_attributes_with_error_info():
         "error.type": "SERVICE_DISABLED",
         "gcp.errors.metadata.service": "secretmanager.googleapis.com",
         "gcp.errors.metadata.consumer": "projects/123",
-        "status.message": str(exc),
     }
 
 
@@ -828,7 +827,6 @@ def test_extract_error_attributes_variations():
         "gcp.errors.domain": "d",
         "error.type": "r",
         "gcp.errors.metadata.k": "v",
-        "status.message": str(inner_err),
     }
 
     # 2. rpc_call with trailing_metadata parsed via _parse_grpc_error_details
@@ -845,7 +843,6 @@ def test_extract_error_attributes_variations():
             "gcp.errors.domain": "parse_d",
             "error.type": "parse_r",
             "gcp.errors.metadata.foo": "bar",
-            "status.message": str(exc_with_call),
         }
 
     # 3. rpc_call with response attribute holding trailing_metadata and _parse_grpc_error_details raising Exception
@@ -857,17 +854,13 @@ def test_extract_error_attributes_variations():
         side_effect=ValueError("bad proto"),
     ):
         assert _extract_error_attributes(exc_with_resp) == {
-            "error.type": "SimpleNamespace",
-            "status.message": str(exc_with_resp),
+            "error.type": "SimpleNamespace"
         }
 
     # 4. error_info with empty domain, empty reason, empty metadata
     error_info_empty = types.SimpleNamespace(domain="", reason="", metadata=None)
     exc_empty = types.SimpleNamespace(error_info=error_info_empty)
-    assert _extract_error_attributes(exc_empty) == {
-        "error.type": "SimpleNamespace",
-        "status.message": str(exc_empty),
-    }
+    assert _extract_error_attributes(exc_empty) == {"error.type": "SimpleNamespace"}
 
     # 5. else fallback where target_exc directly has domain, reason, and metadata
     exc_fallback = types.SimpleNamespace(
@@ -879,7 +872,6 @@ def test_extract_error_attributes_variations():
         "gcp.errors.domain": "fallback_d",
         "error.type": "fallback_r",
         "gcp.errors.metadata.f_key": "42",
-        "status.message": str(exc_fallback),
     }
 
     # 6. else fallback with empty attributes (e.g. domain="", reason="", metadata={})
@@ -889,17 +881,35 @@ def test_extract_error_attributes_variations():
         metadata={},
     )
     assert _extract_error_attributes(exc_fallback_empty) == {
-        "error.type": "SimpleNamespace",
-        "status.message": str(exc_fallback_empty),
+        "error.type": "SimpleNamespace"
     }
 
-    assert _extract_error_attributes(types.SimpleNamespace(message="failed"))[
-        "status.message"
-    ] == "failed"
-    assert _extract_error_attributes(types.SimpleNamespace(details=lambda: "timeout"))[
-        "status.message"
-    ] == "timeout"
-    assert _extract_error_attributes(ValueError("")) == {"error.type": "ValueError"}
+    # 7. status.message extraction from .message attribute
+    exc_with_msg = types.SimpleNamespace(message="api call failed")
+    assert _extract_error_attributes(exc_with_msg) == {
+        "error.type": "SimpleNamespace",
+        "status.message": "api call failed",
+    }
+
+    # 8. status.message extraction from .details() callable (e.g. gRPC RpcError)
+    exc_with_details = types.SimpleNamespace(details=lambda: "rpc deadline exceeded")
+    assert _extract_error_attributes(exc_with_details) == {
+        "error.type": "SimpleNamespace",
+        "status.message": "rpc deadline exceeded",
+    }
+
+    # 9. status.message extraction from Exception string representation
+    exc_standard = ValueError("invalid argument passed")
+    assert _extract_error_attributes(exc_standard) == {
+        "error.type": "ValueError",
+        "status.message": "invalid argument passed",
+    }
+
+    # 10. Exception with empty message string does not populate status.message
+    exc_empty_msg = ValueError("")
+    assert _extract_error_attributes(exc_empty_msg) == {
+        "error.type": "ValueError",
+    }
 
 
 def test_wrap_method_otel_tracing_partial_span_capabilities(mock_otel):

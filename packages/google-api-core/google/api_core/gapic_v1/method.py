@@ -122,7 +122,7 @@ def _extract_rpc_identity(
     return method_str, service, method
 
 
-def _extract_status_code(exc: Optional[Exception]) -> str:
+def _extract_status_code(exc: Optional[BaseException]) -> str:
     """Extract canonical status code name string from an exception.
 
     Status code name strings are resolved by inspecting the following locations:
@@ -132,7 +132,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     * Fallback: Defaults to the exception class name for standard Python errors.
 
     Args:
-        exc (Optional[Exception]): The exception to extract the status code name from.
+        exc (Optional[BaseException]): The exception to extract the status code name from.
 
     Returns:
         str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE") or class name.
@@ -166,7 +166,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     return target.__class__.__name__
 
 
-def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
+def _extract_error_attributes(exc: Optional[BaseException]) -> dict[str, Any]:
     """Extract gcp.errors.* and error.type attributes from an exception.
 
     Error details and ErrorInfo structures are resolved by inspecting the following locations:
@@ -176,7 +176,7 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
     * Unified attribute extraction: Extracts domain, reason, and metadata from ErrorInfo or exception attributes.
 
     Args:
-        exc (Optional[Exception]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
+        exc (Optional[BaseException]): An exception (such as GoogleAPICallError or grpc.RpcError) or ErrorInfo object.
 
     Returns:
         dict[str, Any]: Extracted error attributes (e.g. gcp.errors.domain, error.type, gcp.errors.metadata.*).
@@ -223,12 +223,15 @@ def _extract_error_attributes(exc: Optional[Exception]) -> dict[str, Any]:
         for k, v in metadata.items():
             attrs[f"gcp.errors.metadata.{k}"] = str(v)
 
-    msg = getattr(target_exc, "message", None)
-    if not isinstance(msg, str) or not msg:
-        details_fn = getattr(target_exc, "details", None)
-        msg = details_fn() if callable(details_fn) else str(target_exc)
-    if msg:
-        attrs["status.message"] = msg
+    # 5. Extract human-readable error description for cross-language PRD parity
+    message = getattr(target_exc, "message", None)
+    details_fn = getattr(target_exc, "details", None)
+    if not message and callable(details_fn):
+        message = details_fn()
+    if not message and isinstance(target_exc, Exception):
+        message = str(target_exc)
+    if message:
+        attrs["status.message"] = str(message)
 
     return attrs
 
@@ -384,7 +387,7 @@ class _GapicCallable(object):
                 yield
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute("rpc.response.status_code", "OK")
-            except Exception as exc:
+            except BaseException as exc:
                 if span is not None and hasattr(span, "set_attribute"):
                     span.set_attribute(
                         "rpc.response.status_code", _extract_status_code(exc)

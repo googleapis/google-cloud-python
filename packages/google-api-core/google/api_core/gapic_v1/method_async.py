@@ -18,6 +18,7 @@ compression, pagination, and long-running operations to gRPC methods.
 """
 
 import functools
+import inspect
 
 from google.api_core import grpc_helpers_async
 from google.api_core.gapic_v1 import client_info
@@ -41,7 +42,10 @@ class _AsyncGapicCallable(_GapicCallable):
         """Invoke the low-level async RPC with retry, timeout, compression, and metadata."""
         wrapped_func = self._prepare_call(timeout, retry, compression, kwargs)
         with self._trace_span():
-            return await wrapped_func(*args, **kwargs)
+            result = wrapped_func(*args, **kwargs)
+            if inspect.isawaitable(result):
+                return await result
+            return result
 
 
 def wrap_method(
