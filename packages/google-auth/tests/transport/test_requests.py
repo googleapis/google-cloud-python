@@ -18,6 +18,7 @@ import functools
 import http.client as http_client
 import json
 import os
+import ssl
 from unittest import mock
 
 import freezegun
@@ -261,6 +262,23 @@ class TestRequestResponse(compliance.RequestResponseTests):
             google.auth.transport.requests._MutualTlsAdapter,
         )
 
+    @pytest.mark.parametrize(
+        "request_kwargs",
+        [
+            {"verify": "/nonexistent/path/ca.pem"},
+            {"cert": ("/nonexistent/path/cert.pem", "/nonexistent/path/key.pem")},
+        ],
+    )
+    def test_session_request_missing_cert_or_ca_raises_oserror(
+        self, request_kwargs
+    ):
+        request = google.auth.transport.requests.Request(requests.Session())
+
+        with pytest.raises(OSError) as exc_info:
+            request("https://oauth2.googleapis.com/token", **request_kwargs)
+
+        assert not isinstance(exc_info.value, exceptions.TransportError)
+
     @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
     def test_mtls_deepcopy(self, mock_send, workload_cert_config):
         mock_send.return_value = make_response()
@@ -286,6 +304,23 @@ class TestRequestResponse(compliance.RequestResponseTests):
             is not request._mtls_adapter.poolmanager
         )
         assert mock_send.call_args_list[1].args[0] is copied_request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_request_verify_false(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+
+        response = request(
+            "https://iamcredentials.mtls.googleapis.com/v1/token", verify=False
+        )
+
+        assert response.status == http_client.OK
+        mock_send.assert_called_once()
+        assert isinstance(
+            mock_send.call_args.args[0],
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert mock_send.call_args.kwargs["verify"] is False
 
 
 class TestTimeoutGuard(object):
@@ -404,11 +439,24 @@ class TestMutualTlsAdapter(object):
             pytest.public_cert_bytes, pytest.private_key_bytes
         )
 
+        assert adapter._ctx_poolmanager.check_hostname is False
+        assert adapter._ctx_proxymanager.check_hostname is False
+
         adapter.init_poolmanager()
         mock_init_poolmanager.assert_called_with(ssl_context=adapter._ctx_poolmanager)
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+    def test_verify_false_compatibility(self):
+        adapter = google.auth.transport.requests._MutualTlsAdapter(
+            pytest.public_cert_bytes, pytest.private_key_bytes
+        )
+
+        adapter._ctx_poolmanager.verify_mode = ssl.CERT_NONE
+        adapter._ctx_proxymanager.verify_mode = ssl.CERT_NONE
+        assert adapter._ctx_poolmanager.verify_mode == ssl.CERT_NONE
+        assert adapter._ctx_proxymanager.verify_mode == ssl.CERT_NONE
 
     def test_invalid_cert_or_key(self):
         with pytest.raises(exceptions.MutualTLSChannelError):

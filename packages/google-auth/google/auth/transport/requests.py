@@ -258,21 +258,27 @@ class Request(transport.Request):
         Raises:
             google.auth.exceptions.TransportError: If any exception occurred.
         """
-        try:
-            if not kwargs.get("cert"):
+        if not kwargs.get("cert"):
+            try:
                 self._configure_mtls_if_needed(url)
+            except (
+                exceptions.MutualTLSChannelError,
+                exceptions.ClientCertError,
+                OSError,
+            ) as caught_exc:
+                new_exc = exceptions.TransportError(caught_exc)
+                raise new_exc from caught_exc
+
+        # Missing CA bundles or cert paths raised by requests must bubble up
+        # unwrapped to fail immediately rather than triggering client retries.
+        try:
             _helpers.request_log(_LOGGER, method, url, body, headers)
             response = self.session.request(
                 method, url, data=body, headers=headers, timeout=timeout, **kwargs
             )
             _helpers.response_log(_LOGGER, response)
             return _Response(response)
-        except (
-            requests.exceptions.RequestException,
-            exceptions.MutualTLSChannelError,
-            exceptions.ClientCertError,
-            OSError,
-        ) as caught_exc:
+        except requests.exceptions.RequestException as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
             raise new_exc from caught_exc
 
@@ -296,9 +302,11 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
         import certifi
 
         ctx_poolmanager = create_urllib3_context()
+        ctx_poolmanager.check_hostname = False
         ctx_poolmanager.load_verify_locations(cafile=certifi.where())
 
         ctx_proxymanager = create_urllib3_context()
+        ctx_proxymanager.check_hostname = False
         ctx_proxymanager.load_verify_locations(cafile=certifi.where())
 
         try:
