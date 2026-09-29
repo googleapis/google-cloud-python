@@ -52,7 +52,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Repository = "https://github.com/googleapis/python-bigquery"
+Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery"
 
 [project.optional-dependencies]
 # bqstorage had a period where it was a required dependency, and has been

@@ -34,7 +34,7 @@ setup(
     author_email="googleapis-packages@google.com",
     description="Google Authentication Library: httplib2 transport",
     long_description=long_description,
-    url="https://github.com/googleapis/google-cloud-python/packages/google-auth-httplib2",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth-httplib2",
     py_modules=["google_auth_httplib2"],
     python_requires=">=3.10",
     install_requires=DEPENDENCIES,
