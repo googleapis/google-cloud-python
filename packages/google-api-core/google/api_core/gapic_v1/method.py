@@ -126,7 +126,7 @@ def _extract_rpc_identity(
     return method_str, service, method
 
 
-def _extract_status_code(exc: Optional[Exception]) -> str:
+def _extract_status_code(exc: Optional[BaseException]) -> str:
     """Extract canonical status code name string from an exception.
 
     Status code name strings are resolved by inspecting the following locations:
@@ -136,7 +136,7 @@ def _extract_status_code(exc: Optional[Exception]) -> str:
     * Fallback: Defaults to the exception class name for standard Python errors.
 
     Args:
-        exc (Optional[Exception]): The exception to extract the status code name from.
+        exc (Optional[BaseException]): The exception to extract the status code name from.
 
     Returns:
         str: The canonical status code name (e.g. "NOT_FOUND", "UNAVAILABLE") or class name.

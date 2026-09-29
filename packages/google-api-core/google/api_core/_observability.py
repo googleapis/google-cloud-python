@@ -289,88 +289,6 @@ def get_otel_async_interceptor(
 _TRACE_CONTEXT_PROPAGATOR: Any = None
 
 
-def _get_trace_context_propagator() -> Any:
-    global _TRACE_CONTEXT_PROPAGATOR
-    if _TRACE_CONTEXT_PROPAGATOR is None:
-        from opentelemetry.trace.propagation.tracecontext import (  # type: ignore[import-not-found]
-            TraceContextTextMapPropagator,
-        )
-
-        _TRACE_CONTEXT_PROPAGATOR = TraceContextTextMapPropagator()
-    return _TRACE_CONTEXT_PROPAGATOR
-
-
-# The HTTP tracing context manager deliberately supports two distinct invocation styles:
-# 1. Bundled Request Object: `trace_http_request(request, ...)`
-#    Used when callers already possess an HTTP request instance (such as
-#    requests.PreparedRequest or urllib.request.Request) with `.method`, `.url`, etc.
-# 2. Unpacked Keyword Arguments: `trace_http_request(method=..., url=..., headers=..., body=...)`
-#    Used by generated GAPIC REST transports (_shared_macros.j2).
-#    In GAPIC templates, requests are assembled from local strings and dictionaries before
-#    hitting the session. Supporting keyword arguments avoids the CPU and memory overhead
-#    of instantiating a throwaway dummy request object on every single RPC execution.
-def _build_http_span_attributes(
-    request: Any = None,
-    *,
-    method: str | None = None,
-    url: str | None = None,
-    url_template: str | None = None,
-    headers: dict[str, Any] | None = None,
-    body: Any = None,
-    client_options: ClientOptions | dict[str, Any] | None = None,
-) -> tuple[str, dict[str, Any], Any]:
-    """Extract span name, semantic attributes dictionary, and resolved headers.
-
-    Supports two calling conventions:
-    - Pass a single `request` object (such as `requests.PreparedRequest`).
-    - Pass explicit keyword arguments (`method`, `url`, `headers`, `body`, `client_options`).
-
-    Returns:
-        tuple[str, dict[str, Any], Any]: A tuple of (span_name, attributes, resolved_headers).
-    """
-    if request is not None:
-        resolved_method = getattr(request, "method", "HTTP") or "HTTP"
-        resolved_url = getattr(request, "url", "") or ""
-        resolved_headers = getattr(request, "headers", None)
-        resolved_body = getattr(request, "body", None)
-    else:
-        resolved_method = method or "HTTP"
-        resolved_url = url or ""
-        resolved_headers = headers
-        resolved_body = body
-
-    resolved_method = resolved_method.upper()
-    endpoint_attrs = _extract_endpoint_attributes(client_options)
-
-    server_address = endpoint_attrs.get("server.address")
-    server_port = endpoint_attrs.get("server.port")
-    if not server_address and resolved_url:
-        try:
-            parsed = urllib.parse.urlsplit(resolved_url)
-            server_address = parsed.hostname
-            if not server_port and parsed.port:
-                server_port = parsed.port
-        except Exception:  # Fail-open on malformed URL parsing
-            pass
-
-    span_name = resolved_method
-    span_attributes: dict[str, Any] = {
-        "http.request.method": resolved_method,
-        "server.address": server_address or "",
-        "server.port": server_port or 443,
-        "url.domain": endpoint_attrs.get("url.domain", "googleapis.com"),
-    }
-    if url_template:
-        span_attributes["url.template"] = url_template
-    if resolved_url:
-        span_attributes["url.full"] = resolved_url
-
-    if resolved_body is not None and isinstance(resolved_body, (bytes, str)):
-        span_attributes["http.request.body.size"] = len(resolved_body)
-
-    return span_name, span_attributes, resolved_headers
-
-
 class _TraceContext:
     """Context manager for tracing an HTTP wire request with OpenTelemetry.
 
@@ -381,6 +299,88 @@ class _TraceContext:
     - Pass a single `request` object (such as `requests.PreparedRequest`).
     - Pass explicit keyword arguments (`method`, `url`, `headers`, `body`, `client_options`).
     """
+
+    @staticmethod
+    def _get_trace_context_propagator() -> Any:
+        global _TRACE_CONTEXT_PROPAGATOR
+        if _TRACE_CONTEXT_PROPAGATOR is None:
+            from opentelemetry.trace.propagation.tracecontext import (  # type: ignore[import-not-found]
+                TraceContextTextMapPropagator,
+            )
+
+            _TRACE_CONTEXT_PROPAGATOR = TraceContextTextMapPropagator()
+        return _TRACE_CONTEXT_PROPAGATOR
+
+    # The HTTP tracing context manager deliberately supports two distinct invocation styles:
+    # 1. Bundled Request Object: `trace_http_request(request, ...)`
+    #    Used when callers already possess an HTTP request instance (such as
+    #    requests.PreparedRequest or urllib.request.Request) with `.method`, `.url`, etc.
+    # 2. Unpacked Keyword Arguments: `trace_http_request(method=..., url=..., headers=..., body=...)`
+    #    Used by generated GAPIC REST transports (_shared_macros.j2).
+    #    In GAPIC templates, requests are assembled from local strings and dictionaries before
+    #    hitting the session. Supporting keyword arguments avoids the CPU and memory overhead
+    #    of instantiating a throwaway dummy request object on every single RPC execution.
+    @staticmethod
+    def _build_http_span_attributes(
+        request: Any = None,
+        *,
+        method: str | None = None,
+        url: str | None = None,
+        url_template: str | None = None,
+        headers: dict[str, Any] | None = None,
+        body: Any = None,
+        client_options: ClientOptions | dict[str, Any] | None = None,
+    ) -> tuple[str, dict[str, Any], Any]:
+        """Extract span name, semantic attributes dictionary, and resolved headers.
+
+        Supports two calling conventions:
+        - Pass a single `request` object (such as `requests.PreparedRequest`).
+        - Pass explicit keyword arguments (`method`, `url`, `headers`, `body`, `client_options`).
+
+        Returns:
+            tuple[str, dict[str, Any], Any]: A tuple of (span_name, attributes, resolved_headers).
+        """
+        if request is not None:
+            resolved_method = getattr(request, "method", "HTTP") or "HTTP"
+            resolved_url = getattr(request, "url", "") or ""
+            resolved_headers = getattr(request, "headers", None)
+            resolved_body = getattr(request, "body", None)
+        else:
+            resolved_method = method or "HTTP"
+            resolved_url = url or ""
+            resolved_headers = headers
+            resolved_body = body
+
+        resolved_method = resolved_method.upper()
+        endpoint_attrs = _extract_endpoint_attributes(client_options)
+
+        server_address = endpoint_attrs.get("server.address")
+        server_port = endpoint_attrs.get("server.port")
+        if not server_address and resolved_url:
+            try:
+                parsed = urllib.parse.urlsplit(resolved_url)
+                server_address = parsed.hostname
+                if not server_port and parsed.port:
+                    server_port = parsed.port
+            except Exception:  # Fail-open on malformed URL parsing
+                pass
+
+        span_name = resolved_method
+        span_attributes: dict[str, Any] = {
+            "http.request.method": resolved_method,
+            "server.address": server_address or "",
+            "server.port": server_port or 443,
+            "url.domain": endpoint_attrs.get("url.domain", "googleapis.com"),
+        }
+        if url_template:
+            span_attributes["url.template"] = url_template
+        if resolved_url:
+            span_attributes["url.full"] = resolved_url
+
+        if resolved_body is not None and isinstance(resolved_body, (bytes, str)):
+            span_attributes["http.request.body.size"] = len(resolved_body)
+
+        return span_name, span_attributes, resolved_headers
 
     def __init__(
         self,
@@ -468,14 +468,16 @@ class _TraceContext:
             else:
                 tracer = trace.get_tracer("google.api_core")
 
-            span_name, span_attributes, resolved_headers = _build_http_span_attributes(
-                self._request,
-                method=self._method,
-                url=self._url,
-                url_template=self._url_template,
-                headers=self._headers,
-                body=self._body,
-                client_options=self._client_options,
+            span_name, span_attributes, resolved_headers = (
+                self._build_http_span_attributes(
+                    self._request,
+                    method=self._method,
+                    url=self._url,
+                    url_template=self._url_template,
+                    headers=self._headers,
+                    body=self._body,
+                    client_options=self._client_options,
+                )
             )
 
             self._cm = tracer.start_as_current_span(
@@ -489,7 +491,7 @@ class _TraceContext:
                 resolved_headers, "__setitem__"
             ):
                 try:
-                    _get_trace_context_propagator().inject(resolved_headers)
+                    self._get_trace_context_propagator().inject(resolved_headers)
                 except Exception:  # Fail-open on header injection failure
                     pass
 
@@ -508,6 +510,11 @@ class _TraceContext:
                     self._cm.__exit__(exc_type, exc_val, exc_tb)
         # Always return None so caller exceptions are never suppressed
         return None
+
+
+# Module-level aliases for backwards compatibility with tests and callers
+_get_trace_context_propagator = _TraceContext._get_trace_context_propagator
+_build_http_span_attributes = _TraceContext._build_http_span_attributes
 
 
 def trace_http_request(

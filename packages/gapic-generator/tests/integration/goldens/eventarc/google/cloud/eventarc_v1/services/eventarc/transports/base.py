@@ -167,16 +167,15 @@ class EventarcTransport(abc.ABC):
         stripped for backward compatibility with older `google-api-core`
         versions.
         """
-        if self.kind:
-            kwargs["kind"] = self.kind
-
         if _WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming"]:
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
             kwargs.pop(k, None)
         return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
@@ -190,16 +189,15 @@ class EventarcTransport(abc.ABC):
         `is_streaming`) are stripped when unsupported for backward compatibility
         with older `google-api-core` versions.
         """
-        if self.kind:
-            kwargs["kind"] = self.kind
-
         if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
             kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
             return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
         # The fallback below strips tracing-specific arguments when an older version
         # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming"]:
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
             kwargs.pop(k, None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
