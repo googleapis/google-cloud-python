@@ -948,10 +948,6 @@ class _DataApiTarget(abc.ABC):
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it."""
-        if getattr(self, "authorized_view_id", None) is not None or getattr(
-            self, "materialized_view_id", None
-        ) is not None:
-            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(

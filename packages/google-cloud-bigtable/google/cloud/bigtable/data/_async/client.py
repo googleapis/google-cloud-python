@@ -1202,11 +1202,6 @@ class _DataApiTargetAsync(abc.ABC):
         hard error rather than a silent fallback, both for the emulator (a
         genuine misconfiguration) and for a daemon that fails to start.
         """
-        if getattr(self, "authorized_view_id", None) is not None or getattr(
-            self, "materialized_view_id", None
-        ) is not None:
-            # Accelerator only supports plain table targets; skip for views.
-            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(
