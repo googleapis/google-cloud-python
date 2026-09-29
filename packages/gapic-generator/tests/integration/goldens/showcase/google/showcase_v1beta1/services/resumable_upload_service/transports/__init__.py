@@ -14,13 +14,22 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from typing import Dict, Type
+from typing import Dict, Type, Tuple
 
 from .base import ResumableUploadServiceTransport
 from .grpc import ResumableUploadServiceGrpcTransport
 from .grpc_asyncio import ResumableUploadServiceGrpcAsyncIOTransport
 from .rest import ResumableUploadServiceRestTransport
 from .rest import ResumableUploadServiceRestInterceptor
+ASYNC_REST_CLASSES: Tuple[str, ...]
+try:
+    from .rest_asyncio import AsyncResumableUploadServiceRestTransport
+    from .rest_asyncio import AsyncResumableUploadServiceRestInterceptor
+    ASYNC_REST_CLASSES = ('AsyncResumableUploadServiceRestTransport', 'AsyncResumableUploadServiceRestInterceptor')
+    HAS_REST_ASYNC = True
+except ImportError:  # pragma: NO COVER
+    ASYNC_REST_CLASSES = ()
+    HAS_REST_ASYNC = False
 
 
 # Compile a registry of transports.
@@ -28,6 +37,8 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[ResumableUploadServi
 _transport_registry['grpc'] = ResumableUploadServiceGrpcTransport
 _transport_registry['grpc_asyncio'] = ResumableUploadServiceGrpcAsyncIOTransport
 _transport_registry['rest'] = ResumableUploadServiceRestTransport
+if HAS_REST_ASYNC:  # pragma: NO COVER
+    _transport_registry['rest_asyncio'] = AsyncResumableUploadServiceRestTransport
 
 __all__ = (
     'ResumableUploadServiceTransport',
@@ -35,4 +46,4 @@ __all__ = (
     'ResumableUploadServiceGrpcAsyncIOTransport',
     'ResumableUploadServiceRestTransport',
     'ResumableUploadServiceRestInterceptor',
-)
+) + ASYNC_REST_CLASSES

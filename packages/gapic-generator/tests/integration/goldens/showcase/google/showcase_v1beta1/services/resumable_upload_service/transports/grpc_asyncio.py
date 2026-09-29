@@ -40,6 +40,11 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.showcase_v1beta1.types import resumable_upload
 from .base import ResumableUploadServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import ResumableUploadServiceGrpcTransport
+try:
+    from .rest_asyncio import AsyncResumableUploadServiceRestTransport
+    HAS_ASYNC_REST = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_ASYNC_REST = False
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -343,11 +348,32 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'upload_media' not in self._stubs:
-            self._stubs['upload_media'] = self._logged_channel.unary_unary(
-                '/google.showcase.v1beta1.ResumableUploadService/UploadMedia',
-                request_serializer=resumable_upload.UploadMediaRequest.serialize,
-                response_deserializer=resumable_upload.UploadMediaResponse.deserialize,
-            )
+            if not self._credentials:
+                class _ErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _error():
+                            raise core_exceptions.GoogleAPICallError(
+                                "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                            )
+                        return _error()
+                self._stubs['upload_media'] = _ErrorStub()
+            elif HAS_ASYNC_REST:  # pragma: NO COVER
+                class _AsyncRestStub:  # pragma: NO COVER
+                    def __call__(_self, *args, **kwargs):  # pragma: NO COVER
+                        rest_transport = AsyncResumableUploadServiceRestTransport(
+                            host=self._host,
+                            credentials=self._credentials,
+                            client_info=self._client_info,
+                        )
+                        return rest_transport.upload_media(*args, **kwargs)
+                self._stubs['upload_media'] = _AsyncRestStub()
+            else:  # pragma: NO COVER
+                class _UnsupportedStub:  # pragma: NO COVER
+                    def __call__(self, *args, **kwargs):  # pragma: NO COVER
+                        async def _unsupported():
+                            raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                        return _unsupported()
+                self._stubs['upload_media'] = _UnsupportedStub()
         return self._stubs['upload_media']
 
     def _prep_wrapped_messages(self, client_info):
