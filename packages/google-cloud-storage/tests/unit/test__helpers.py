@@ -15,7 +15,7 @@
 import unittest
 
 import mock
-
+import pytest
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
@@ -720,7 +720,7 @@ class Test__bucket_bound_hostname_url(unittest.TestCase):
         self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
 
 
-class Test__parse_bool_env(unittest.TestCase):
+class Test__parse_bool_env:
     @staticmethod
     def _call_fut(*args, **kwargs):
         from google.cloud.storage._helpers import _parse_bool_env
@@ -729,19 +729,23 @@ class Test__parse_bool_env(unittest.TestCase):
 
     def test_not_set_default_false(self):
         with mock.patch("os.getenv", return_value=None):
-            self.assertFalse(self._call_fut("TEST_VAR"))
+            assert not self._call_fut("TEST_VAR")
 
     def test_not_set_default_true(self):
         with mock.patch("os.getenv", return_value=None):
-            self.assertTrue(self._call_fut("TEST_VAR", default=True))
+            assert self._call_fut("TEST_VAR", default=True)
 
-    def test_truthy_values(self):
-        for val in ("true", "True", "TRUE", "1", "yes", "YES", "on", "ON", " true "):
-            with mock.patch("os.getenv", return_value=val):
-                self.assertTrue(self._call_fut("TEST_VAR"), f"Failed for {val}")
+    @pytest.mark.parametrize(
+        "val",
+        ("true", "True", "TRUE", "1", "yes", "YES", "on", "ON", " true "),
+    )
+    def test_truthy_values(self, val):
+        with mock.patch("os.getenv", return_value=val):
+            assert self._call_fut("TEST_VAR")
 
-    def test_falsy_values(self):
-        for val in (
+    @pytest.mark.parametrize(
+        "val",
+        (
             "false",
             "False",
             "FALSE",
@@ -751,23 +755,23 @@ class Test__parse_bool_env(unittest.TestCase):
             "off",
             "OFF",
             " false ",
-        ):
-            with mock.patch("os.getenv", return_value=val):
-                self.assertFalse(self._call_fut("TEST_VAR"), f"Failed for {val}")
+        ),
+    )
+    def test_falsy_values(self, val):
+        with mock.patch("os.getenv", return_value=val):
+            assert not self._call_fut("TEST_VAR")
 
-    def test_empty_or_whitespace_raises(self):
-        for val in ("", "   ", "\t\n"):
-            with mock.patch("os.getenv", return_value=val):
-                with self.assertRaises(ValueError) as cm:
-                    self._call_fut("TEST_VAR")
-                self.assertIn("cannot be empty or whitespace-only", str(cm.exception))
+    @pytest.mark.parametrize("val", ("", "   ", "\t\n"))
+    def test_empty_or_whitespace_raises(self, val):
+        with mock.patch("os.getenv", return_value=val):
+            with pytest.raises(ValueError, match="cannot be empty or whitespace-only"):
+                self._call_fut("TEST_VAR")
 
-    def test_invalid_value_raises(self):
-        for val in ("invalid", "2", "foo", "bar"):
-            with mock.patch("os.getenv", return_value=val):
-                with self.assertRaises(ValueError) as cm:
-                    self._call_fut("TEST_VAR")
-                self.assertIn("Invalid value for TEST_VAR", str(cm.exception))
+    @pytest.mark.parametrize("val", ("invalid", "2", "foo", "bar"))
+    def test_invalid_value_raises(self, val):
+        with mock.patch("os.getenv", return_value=val):
+            with pytest.raises(ValueError, match="Invalid value for TEST_VAR"):
+                self._call_fut("TEST_VAR")
 
 
 class _MD5Hash(object):
