@@ -139,6 +139,9 @@ jobs:
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/18532):
+        # Remove UV_PRERELEASE once Python 3.15 is officially released and upstream binary wheels are available.
+        UV_PRERELEASE: ${{ matrix.python == '3.15' && 'allow' || '' }}
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
