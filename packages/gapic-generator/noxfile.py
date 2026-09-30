@@ -405,10 +405,12 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
-        # In monorepo development, install the local google-api-core package from source
-        local_core = Path(__file__).resolve().parent.parent / "google-api-core"
-        if local_core.is_dir():
-            session.install("-e", str(local_core))
+        # When opt-in environment variable is set (e.g. in canary CI or local testing),
+        # install the local google-api-core package from source.
+        if os.getenv("INSTALL_LOCAL_CORE") == "true":
+            local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+            if local_core.is_dir():
+                session.install("-e", str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -422,6 +424,7 @@ def showcase(
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
             "py.test",
+            "--quiet",
             *(session.posargs or [str(test_directory)]),
         ]
         if ignore_file:
@@ -446,10 +449,12 @@ def showcase_w_rest_async(
     with showcase_library(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
     ):
-        # In monorepo development, install the local google-api-core package from source
-        local_core = Path(__file__).resolve().parent.parent / "google-api-core"
-        if local_core.is_dir():
-            session.install("-e", str(local_core))
+        # When opt-in environment variable is set (e.g. in canary CI or local testing),
+        # install the local google-api-core package from source.
+        if os.getenv("INSTALL_LOCAL_CORE") == "true":
+            local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+            if local_core.is_dir():
+                session.install("-e", str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399

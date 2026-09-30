@@ -150,6 +150,61 @@ jobs:
             path: packages/gapic-generator/tests/system/raw_spans_output.json
             if-no-files-found: ignore
 
+  showcase-canary:
+      needs: python_config
+      strategy:
+        # Run canary tests with local monorepo google-api-core on bookend runtimes
+        matrix:
+          python: ["${{ needs.python_config.outputs.oldest_python }}", "${{ needs.python_config.outputs.latest_stable_python }}"]
+          target: [showcase, showcase_w_rest_async]
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+          with:
+            persist-credentials: false
+        - name: Set up Python "${{ matrix.python }}"
+          uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+          with:
+            python-version: "${{ matrix.python }}"
+            cache: 'pip'
+        - name: Install system dependencies.
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip
+        - name: Install showcase
+          run: |
+            sudo mkdir -p /usr/src/showcase
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz --output /usr/src/showcase/showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz
+            cd /usr/src/showcase/
+            tar -xf showcase-*
+            ./gapic-showcase run &
+            cd -
+        - name: Install nox.
+          run: python -m pip install nox
+        - name: Install protoc
+          run: |
+              sudo mkdir -p /usr/src/protoc/
+              sudo chown -R ${USER} /usr/src/
+              curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+              cd /usr/src/protoc/
+              unzip protoc-${PROTOC_VERSION}.zip
+              sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+        - name: Run showcase canary with local google-api-core.
+          env:
+            INSTALL_LOCAL_CORE: "true"
+            MATRIX_PYTHON: ${{ matrix.python }}
+          run: |
+            cd packages/gapic-generator
+            nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
+        - name: Upload Raw Spans Artifact
+          if: always()
+          uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+          with:
+            name: raw-spans-canary-${{ matrix.target }}-${{ matrix.python }}
+            path: packages/gapic-generator/tests/system/raw_spans_output.json
+            if-no-files-found: ignore
+
   showcase-mypy:
     needs: python_config
     runs-on: ubuntu-latest
