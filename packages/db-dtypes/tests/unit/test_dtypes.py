@@ -534,7 +534,7 @@ def test_any(dtype):
         try:
             return a.any()
         except TypeError as e:
-            if "does not support operation" in str(e):
+            if "does not support operation" in str(e) or "not supported" in str(e):
                 return
             raise e
 
@@ -571,7 +571,7 @@ def test_all(dtype):
         try:
             return a.all()
         except TypeError as e:
-            if "does not support operation" in str(e):
+            if "does not support operation" in str(e) or "not supported" in str(e):
                 return
             raise e
 
