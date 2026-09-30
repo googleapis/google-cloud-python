@@ -536,26 +536,43 @@ def intercepted_echo_rest_async():
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
-    """Prints a Telemetry Span Compliance summary to the console at session end.
+    """Prints a Telemetry Span Compliance summary to the console.
 
-    Enables developers to view and copy all compliance test names and pass/fail states
-    directly from CI/console output without enabling verbose output for unrelated tests.
+    Enables developers to view and copy all compliance test names and
+    pass/fail/error states directly from CI/console output without enabling
+    verbose output for unrelated tests.
     """
     reports = (
         terminalreporter.getreports("passed")
         + terminalreporter.getreports("failed")
         + terminalreporter.getreports("skipped")
+        + terminalreporter.getreports("error")
     )
     compliance_reports = [
-        r for r in reports if "test_span_compliance.py" in r.nodeid and r.when == "call"
+        r
+        for r in reports
+        if "test_span_compliance.py" in r.nodeid
+        and (r.when == "call" or r.failed or r.skipped)
     ]
     if not compliance_reports:
         return
 
+    # Aggregate status per test nodeid so setup/call/teardown don't
+    # produce duplicate lines. Priority: ERROR > FAILED > SKIPPED > PASSED
+    status_by_test = {}
+    for rep in compliance_reports:
+        test_name = rep.nodeid.split("::")[-1]
+        if rep.when != "call" and rep.failed:
+            rep_status = "ERROR"
+        else:
+            rep_status = rep.outcome.upper()
+
+        current = status_by_test.get(test_name)
+        if current is None or rep_status in ("ERROR", "FAILED"):
+            status_by_test[test_name] = rep_status
+
     terminalreporter.section(
         "Telemetry Span Compliance Verification", sep="=", green=True
     )
-    for rep in compliance_reports:
-        test_name = rep.nodeid.split("::")[-1]
-        status = rep.outcome.upper()
+    for test_name, status in status_by_test.items():
         terminalreporter.write_line(f"[{status:6}] {test_name}")
