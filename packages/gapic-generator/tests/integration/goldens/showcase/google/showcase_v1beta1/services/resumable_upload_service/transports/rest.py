@@ -23,6 +23,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
+from google.api_core import resumable_transfer
 from google.showcase_v1beta1._compat import transcode_request
 import google.protobuf
 
@@ -416,40 +417,20 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
         def __hash__(self):
             return hash("ResumableUploadServiceRestTransport.UploadMedia")
 
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
         def __call__(self,
                 request: resumable_upload.UploadMediaRequest, *,
+                config: Optional[resumable_transfer.ResumableUploadConfig]=None,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> resumable_upload.UploadMediaResponse:
+                ) -> resumable_transfer.ResumableUploadSession:
             r"""Call the upload media method over HTTP.
 
             Args:
                 request (~.resumable_upload.UploadMediaRequest):
                     The request object.
+                config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
+                    Optional configuration for the resumable upload session.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -459,10 +440,11 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                     be of type `bytes`.
 
             Returns:
-                ~.resumable_upload.UploadMediaResponse:
+                ~.resumable_transfer.ResumableUploadSession:
+                    An object representing a resumable
+                upload session.
 
             """
-
             http_options = _BaseResumableUploadServiceRestTransport._BaseUploadMedia._get_http_options()
             request, metadata = self._interceptor.pre_upload_media(request, metadata)
             transcoded_request, body, query_params = transcode_request(
@@ -476,73 +458,33 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                 rest_numeric_enums=True,
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.showcase_v1beta1.ResumableUploadServiceClient.UploadMedia",
-                    extra = {
-                        "serviceName": "google.showcase.v1beta1.ResumableUploadService",
-                        "rpcName": "UploadMedia",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
+            uri = transcoded_request["uri"]
+            upload_url = f"{self._host}{uri}"
+            headers = dict(metadata)
+            if config is None:
+                config = resumable_transfer.ResumableUploadConfig(headers=headers)
+            else:
+                if config.headers:
+                    headers.update(dict(config.headers))
+                config = dataclasses.replace(config, headers=headers)
 
-            # Send the request
-            response = ResumableUploadServiceRestTransport._UploadMedia._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = resumable_upload.UploadMediaResponse()
-            pb_resp = resumable_upload.UploadMediaResponse.pb(resp)
-
-            # Resumable upload start responses return session metadata in headers with an empty body.
-            if response.content and response.content.strip():
-                json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_upload_media(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upload_media_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = resumable_upload.UploadMediaResponse.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.showcase_v1beta1.ResumableUploadServiceClient.upload_media",
-                    extra = {
-                        "serviceName": "google.showcase.v1beta1.ResumableUploadService",
-                        "rpcName": "UploadMedia",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
+            return resumable_transfer.ResumableUploadSession(
+                upload_url=upload_url,
+                config=config,
+                transport=self._session,
+                response_type=resumable_upload.UploadMediaResponse,
+                start_retry=retry if isinstance(retry, retries.Retry) else None,
+                **(
+                    {"start_timeout": timeout}
+                    if isinstance(timeout, (int, float))
+                    else {}
+                ),
+            )
 
     @property
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
-            resumable_upload.UploadMediaResponse]:
+            resumable_transfer.ResumableUploadSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UploadMedia(self._session, self._host, self._interceptor) # type: ignore

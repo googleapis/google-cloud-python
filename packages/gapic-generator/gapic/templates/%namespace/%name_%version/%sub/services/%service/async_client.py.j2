@@ -424,6 +424,9 @@ class {{ service.async_client_name }}:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            {% if method.is_resumable_upload %}
+            config=config,
+            {% endif %}
         )
         {% if method.lro %}
 
@@ -445,13 +448,6 @@ class {{ service.async_client_name }}:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
-        )
-        {% elif method.is_resumable_upload %}
-
-        # Wrap the response in a resumable upload session.
-        response = {{ method.client_output_async.ident }}(
-            config=config,
-            response_type={{ method.output.ident }},
         )
         {% endif %}
         {% if not method.void %}
