@@ -4,6 +4,7 @@ substitutions:
   _VM_NAME: "py-sdk-sys-test-${_SHORT_BUILD_ID}"
   _ULIMIT: "10000" # 10k, for gRPC bidi streams
   _CROSS_REGION_BUCKET: ""
+  # Note: _ZONAL_BUCKET is retained in Cloud Build substitutions for trigger compatibility.
   _ZONAL_BUCKET: ""
   _ZONAL_VM_SERVICE_ACCOUNT: ""
 
