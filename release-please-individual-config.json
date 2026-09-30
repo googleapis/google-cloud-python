@@ -104,6 +104,9 @@
         }
       ]
     },
+    "packages/sqlalchemy-spanner": {
+      "component": "sqlalchemy-spanner"
+    },
     "preview-packages/google-cloud-compute": {
       "draft-pull-request": true,
       "extra-files": [
@@ -115,9 +118,6 @@
       "prerelease-type": "preview",
       "versioning": "prerelease"
     }
-  },
-  "packages/sqlalchemy-spanner": {
-    "component": "sqlalchemy-spanner"
   },
   "release-type": "python-librarian",
   "separate-pull-requests": true
