@@ -25,8 +25,8 @@ from google.api_core import exceptions
 from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import FailedPrecondition, NotFound, OutOfRange
 
-# current library imports
 from google.cloud import kms
+from google.cloud.storage._helpers import _parse_bool_env
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     _DEFAULT_FLUSH_INTERVAL_BYTES,
     AsyncAppendableObjectWriter,
@@ -44,8 +44,8 @@ PREPROD_GRPC_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
 # Run system test for either Rapid (formerly zonal) or RCU. But not both => XOR
 pytestmark = pytest.mark.skipif(
     not (
-        (os.getenv("RUN_ZONAL_SYSTEM_TESTS") == "True")
-        ^ (os.getenv("RUN_RCU_SYSTEM_TESTS") == "True")
+        _parse_bool_env("RUN_ZONAL_SYSTEM_TESTS", default=False)
+        ^ _parse_bool_env("RUN_RCU_SYSTEM_TESTS", default=False)
     ),
     reason="Any one of Zonal or RCU system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
 )
@@ -57,7 +57,7 @@ _ZONAL_BUCKET = os.getenv("ZONAL_BUCKET")
 _CROSS_REGION_BUCKET = os.getenv("CROSS_REGION_BUCKET")
 _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
-RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
+RCU_SYSTEM_TESTS = _parse_bool_env("RUN_RCU_SYSTEM_TESTS", default=False)
 _RCU_BUCKET = os.getenv("RCU_BUCKET")
 _BUCKET_UNDER_TEST = _RCU_BUCKET if RCU_SYSTEM_TESTS else _ZONAL_BUCKET
 

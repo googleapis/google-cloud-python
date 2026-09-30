@@ -32,6 +32,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 
 import tests.perf.microbenchmarks.writes.config as config
+from google.cloud.storage._helpers import _parse_bool_env
 from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
@@ -45,7 +46,7 @@ from tests.perf.microbenchmarks.conftest import publish_resource_metrics
 
 # Get write parameters
 all_params = config.get_write_params()
-RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
+RCU_SYSTEM_TESTS = _parse_bool_env("RUN_RCU_SYSTEM_TESTS", default=False)
 
 
 async def create_client():

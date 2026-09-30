@@ -720,6 +720,46 @@ class Test__bucket_bound_hostname_url(unittest.TestCase):
         self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
 
 
+class Test__parse_bool_env(unittest.TestCase):
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage._helpers import _parse_bool_env
+
+        return _parse_bool_env(*args, **kwargs)
+
+    def test_not_set_default_false(self):
+        with mock.patch("os.getenv", return_value=None):
+            self.assertFalse(self._call_fut("TEST_VAR"))
+
+    def test_not_set_default_true(self):
+        with mock.patch("os.getenv", return_value=None):
+            self.assertTrue(self._call_fut("TEST_VAR", default=True))
+
+    def test_truthy_values(self):
+        for val in ("true", "True", "TRUE", "1", "yes", "YES", "on", "ON", " true "):
+            with mock.patch("os.getenv", return_value=val):
+                self.assertTrue(self._call_fut("TEST_VAR"), f"Failed for {val}")
+
+    def test_falsy_values(self):
+        for val in ("false", "False", "FALSE", "0", "no", "NO", "off", "OFF", " false "):
+            with mock.patch("os.getenv", return_value=val):
+                self.assertFalse(self._call_fut("TEST_VAR"), f"Failed for {val}")
+
+    def test_empty_or_whitespace_raises(self):
+        for val in ("", "   ", "\t\n"):
+            with mock.patch("os.getenv", return_value=val):
+                with self.assertRaises(ValueError) as cm:
+                    self._call_fut("TEST_VAR")
+                self.assertIn("cannot be empty or whitespace-only", str(cm.exception))
+
+    def test_invalid_value_raises(self):
+        for val in ("invalid", "2", "foo", "bar"):
+            with mock.patch("os.getenv", return_value=val):
+                with self.assertRaises(ValueError) as cm:
+                    self._call_fut("TEST_VAR")
+                self.assertIn("Invalid value for TEST_VAR", str(cm.exception))
+
+
 class _MD5Hash(object):
     def __init__(self, digest_val):
         self.digest_val = digest_val
