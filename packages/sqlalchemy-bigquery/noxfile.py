@@ -294,9 +294,6 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-# NOTE: venv_backend=VENV_BACKEND is used to bypass an upstream packaging issue
-# in sqlalchemy (duplicate normalized extra name 'mssql-pymssql' under strict uv
-# PEP 621 parsing in sqlalchemy==2.1.0rc2, pulled via global UV_PRERELEASE=allow).
 @nox.session(python=ALL_PYTHON, venv_backend=VENV_BACKEND)
 @nox.parametrize(
     "protobuf_implementation",
