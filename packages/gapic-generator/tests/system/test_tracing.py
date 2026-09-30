@@ -33,11 +33,14 @@ except ImportError:
 if not HAS_OPENTELEMETRY:
     pytest.skip("OpenTelemetry is not installed", allow_module_level=True)
 
-import inspect
+try:
+    from google.api_core import _observability
 
-from google.api_core.gapic_v1 import method
+    HAS_TIER3_TRACING = hasattr(_observability, "_TraceContext")
+except ImportError:
+    HAS_TIER3_TRACING = False
 
-if "client_options" not in inspect.signature(method.wrap_method).parameters:
+if not HAS_TIER3_TRACING:
     pytest.skip(
         "Installed google-api-core lacks Tier 3 OpenTelemetry tracing",
         allow_module_level=True,

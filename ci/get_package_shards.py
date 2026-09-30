@@ -54,8 +54,11 @@ CORE_PACKAGES = {
 # extra name 'mssql-pymssql' under strict uv PEP 621 parsing in sqlalchemy==2.1.0rc2,
 # pulled via global UV_PRERELEASE=allow). Awaiting team feedback on a long-term
 # solution (e.g. package migration out of the monorepo or adjusting workflow settings).
+# NOTE: 'gcp-sphinx-docfx-yaml' is temporarily excluded due to legacy build dependencies
+# (unify/untokenize) failing to build under modern setuptools/uv.
 EXCLUDED_PACKAGES = {
     "sqlalchemy-bigquery",
+    "gcp-sphinx-docfx-yaml",
 }
 
 
