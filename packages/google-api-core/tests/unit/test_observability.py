@@ -597,7 +597,7 @@ def test_build_http_span_attributes_with_request():
         headers=headers,
         body=b"bytes-payload",
     )
-    name, attrs, res_headers = _observability._build_http_span_attributes(
+    name, attrs, res_headers = _observability._TraceContext._build_http_span_attributes(
         request, url_template="/v1/echo"
     )
     assert name == "POST"
@@ -614,7 +614,7 @@ def test_build_http_span_attributes_with_kwargs():
     """Proves that _build_http_span_attributes works with explicit kwargs and string body."""
     headers = {"key": "val"}
     options = ClientOptions(api_endpoint="custom.endpoint.com:9443")
-    name, attrs, res_headers = _observability._build_http_span_attributes(
+    name, attrs, res_headers = _observability._TraceContext._build_http_span_attributes(
         method="get",
         url="https://custom.endpoint.com:9443/v1/items",
         url_template="/v1/items",
@@ -632,7 +632,7 @@ def test_build_http_span_attributes_with_kwargs():
 def test_build_http_span_attributes_client_options():
     """Proves that _build_http_span_attributes extracts server.address from client_options."""
     options = ClientOptions(api_endpoint="custom.endpoint.com:443")
-    name, attrs, res_headers = _observability._build_http_span_attributes(
+    name, attrs, res_headers = _observability._TraceContext._build_http_span_attributes(
         method="GET",
         url="https://custom.endpoint.com:443/test",
         client_options=options,
@@ -644,7 +644,9 @@ def test_build_http_span_attributes_client_options():
 def test_build_http_span_attributes_url_parsing_fallbacks():
     """Proves that _build_http_span_attributes gracefully handles empty or invalid URLs."""
     # Empty url
-    name, attrs, _ = _observability._build_http_span_attributes(method="DELETE", url="")
+    name, attrs, _ = _observability._TraceContext._build_http_span_attributes(
+        method="DELETE", url=""
+    )
     assert name == "DELETE"
     assert attrs["server.address"] == ""
     assert attrs["server.port"] == 443
@@ -653,7 +655,7 @@ def test_build_http_span_attributes_url_parsing_fallbacks():
     with mock.patch.object(
         urllib.parse, "urlsplit", side_effect=ValueError("boom"), autospec=True
     ):
-        name, attrs, _ = _observability._build_http_span_attributes(
+        name, attrs, _ = _observability._TraceContext._build_http_span_attributes(
             method="PUT", url="http://[invalid"
         )
         assert name == "PUT"
@@ -759,34 +761,26 @@ def test_trace_context_record_response_error_status(monkeypatch):
     mock_span.set_status.assert_called_once()
 
 
-def test_record_http_error(monkeypatch):
-    """Proves that record_http_error records exception and error attributes."""
+def test_trace_context_record_error(monkeypatch):
+    """Proves that _TraceContext.record_error records exception and error attributes."""
     mock_span = mock.Mock()
     exc = ValueError("Network failure")
 
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    _observability.record_http_error(mock_span, exc)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_error(exc)
     mock_span.record_exception.assert_called_once_with(exc)
     mock_span.set_status.assert_called_once()
     mock_span.set_attribute.assert_any_call("error.type", "ValueError")
     mock_span.set_attribute.assert_any_call("status.message", "Network failure")
 
-
-def test_record_http_error_with_trace_context(monkeypatch):
-    """Proves that record_http_error unwraps a _TraceContext instance."""
-    mock_span = mock.Mock()
-    mock_ctx = _observability._TraceContext()
-    mock_ctx._span = mock_span
-    exc = ValueError("Network failure in context")
-
-    mock_status_mod = mock.Mock()
-    monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
-
-    _observability.record_http_error(mock_ctx, exc)
+    # Also verify record_http_error alias
+    mock_span.reset_mock()
+    ctx.record_http_error(exc)
     mock_span.record_exception.assert_called_once_with(exc)
-    mock_span.set_status.assert_called_once()
 
 
 def test_trace_http_request_with_kwargs(monkeypatch):
@@ -1051,13 +1045,15 @@ def test_trace_context_record_response_exception_handled(monkeypatch):
     ctx.record_response(mock.Mock(status_code=200, headers={}))
 
 
-def test_record_http_error_none_span():
-    """Proves that record_http_error handles span=None gracefully."""
-    _observability.record_http_error(None, ValueError("test"))
+def test_trace_context_record_error_none_span():
+    """Proves that _TraceContext.record_error handles span=None gracefully."""
+    ctx = _observability._TraceContext()
+    ctx._span = None
+    ctx.record_error(ValueError("test"))
 
 
-def test_record_http_error_with_status_code_and_empty_msg(monkeypatch):
-    """Proves that record_http_error uses exc.code or exc.status_code when present,
+def test_trace_context_record_error_with_status_code_and_empty_msg(monkeypatch):
+    """Proves that _TraceContext.record_error uses exc.code or exc.status_code when present,
     and skips status.message when str(exc) is empty.
     """
     mock_span = mock.Mock()
@@ -1067,22 +1063,26 @@ def test_record_http_error_with_status_code_and_empty_msg(monkeypatch):
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    _observability.record_http_error(mock_span, exc)
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_error(exc)
     mock_span.set_attribute.assert_any_call("error.type", "404")
     # str(exc) is empty, status.message should not be set
     calls = [c[0][0] for c in mock_span.set_attribute.call_args_list]
     assert "status.message" not in calls
 
 
-def test_record_http_error_exception_handled(monkeypatch):
-    """Proves that record_http_error catches exceptions gracefully."""
+def test_trace_context_record_error_exception_handled(monkeypatch):
+    """Proves that _TraceContext.record_error catches exceptions gracefully."""
     mock_span = mock.Mock()
     mock_span.record_exception.side_effect = RuntimeError("crash")
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
     # Should not raise
-    _observability.record_http_error(mock_span, ValueError("test"))
+    ctx = _observability._TraceContext()
+    ctx._span = mock_span
+    ctx.record_error(ValueError("test"))
 
 
 def test_trace_http_request_url_parse_exception(monkeypatch):
@@ -1167,8 +1167,8 @@ def test_trace_context_record_response_content_len_error(monkeypatch):
     ctx.record_response(response)
 
 
-def test_record_http_error_partial_span(monkeypatch):
-    """Proves that record_http_error handles spans with missing methods."""
+def test_trace_context_record_error_partial_span(monkeypatch):
+    """Proves that _TraceContext.record_error handles spans with missing methods."""
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
@@ -1181,7 +1181,9 @@ def test_record_http_error_partial_span(monkeypatch):
             self.attrs[k] = v
 
     span = MinimalSpan()
-    _observability.record_http_error(span, ValueError("partial span"))
+    ctx = _observability._TraceContext()
+    ctx._span = span
+    ctx.record_error(ValueError("partial span"))
     assert span.attrs["error.type"] == "ValueError"
 
     # Object lacking set_attribute
@@ -1197,7 +1199,9 @@ def test_record_http_error_partial_span(monkeypatch):
             self.status = status
 
     span2 = NoAttrSpan()
-    _observability.record_http_error(span2, ValueError("no attr span"))
+    ctx2 = _observability._TraceContext()
+    ctx2._span = span2
+    ctx2.record_error(ValueError("no attr span"))
     assert span2.recorded is True
 
 
@@ -1236,13 +1240,11 @@ def test_trace_http_request_records_error_and_reraises(monkeypatch):
         "opentelemetry.instrumentation.grpc",
         mock.Mock(),
     )
-
-    record_error_called = []
-
-    def mock_record_http_error(span, exc):
-        record_error_called.append((span, exc))
-
-    monkeypatch.setattr(_observability, "record_http_error", mock_record_http_error)
+    monkeypatch.setitem(
+        sys.modules,
+        "opentelemetry.trace.status",
+        mock_otel.trace.status,
+    )
 
     err = RuntimeError("network broke")
     with pytest.raises(RuntimeError, match="network broke"):
@@ -1253,8 +1255,10 @@ def test_trace_http_request_records_error_and_reraises(monkeypatch):
         ):
             raise err
 
-    assert len(record_error_called) == 1
-    assert record_error_called[0] == (mock_span, err)
+    mock_span.record_exception.assert_called_once_with(err)
+    mock_span.set_status.assert_called_once()
+    mock_span.set_attribute.assert_any_call("error.type", "RuntimeError")
+    mock_span.set_attribute.assert_any_call("status.message", "network broke")
 
 
 def test_trace_http_request_no_multi_yield_bug(monkeypatch):

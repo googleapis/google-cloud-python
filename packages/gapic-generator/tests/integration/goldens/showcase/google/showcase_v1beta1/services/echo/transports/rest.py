@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import contextlib
 import logging
 import json  # type: ignore
 
@@ -23,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.showcase_v1beta1._compat import transcode_request
+from google.showcase_v1beta1._compat import transcode_request, trace_http_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -42,6 +43,7 @@ from google.showcase_v1beta1.types import echo as gs_echo
 from google.longrunning import operations_pb2  # type: ignore
 
 
+from google.api_core import client_options as client_options_lib
 from .rest_base import _BaseEchoRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
@@ -678,6 +680,7 @@ class EchoRestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: EchoRestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class EchoRestTransport(_BaseEchoRestTransport):
@@ -712,6 +715,8 @@ class EchoRestTransport(_BaseEchoRestTransport):
             url_scheme: str = 'https',
             interceptor: Optional[EchoRestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -755,6 +760,9 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -766,7 +774,9 @@ class EchoRestTransport(_BaseEchoRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -837,20 +847,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.BlockRequest, *,
@@ -913,7 +937,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._Block._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._Block._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -925,7 +958,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.BlockResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_block(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_block_with_metadata(resp, response_metadata)
@@ -988,20 +1020,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.EchoRequest, *,
@@ -1071,7 +1117,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._Echo._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._Echo._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1083,7 +1138,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.EchoResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_echo(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_echo_with_metadata(resp, response_metadata)
@@ -1120,20 +1174,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.EchoErrorDetailsRequest, *,
@@ -1199,7 +1267,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._EchoErrorDetails._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._EchoErrorDetails._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1211,7 +1288,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.EchoErrorDetailsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_echo_error_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_echo_error_details_with_metadata(resp, response_metadata)
@@ -1248,21 +1324,35 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                stream=True,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                    stream=True,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.ExpandRequest, *,
@@ -1328,7 +1418,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._Expand._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._Expand._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1337,7 +1436,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
             # Return the response
             resp = rest_streaming.ResponseIterator(response, gs_echo.EchoResponse)
-
             resp = self._interceptor.post_expand(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_expand_with_metadata(resp, response_metadata)
@@ -1369,20 +1467,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.FailEchoWithDetailsRequest, *,
@@ -1449,7 +1561,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._FailEchoWithDetails._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._FailEchoWithDetails._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1461,7 +1582,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.FailEchoWithDetailsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_fail_echo_with_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_fail_echo_with_details_with_metadata(resp, response_metadata)
@@ -1498,20 +1618,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.PagedExpandRequest, *,
@@ -1577,7 +1711,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._PagedExpand._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._PagedExpand._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1589,7 +1732,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.PagedExpandResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_paged_expand(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_paged_expand_with_metadata(resp, response_metadata)
@@ -1626,20 +1768,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.PagedExpandLegacyRequest, *,
@@ -1709,7 +1865,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._PagedExpandLegacy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._PagedExpandLegacy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1721,7 +1886,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.PagedExpandResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_paged_expand_legacy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_paged_expand_legacy_with_metadata(resp, response_metadata)
@@ -1758,20 +1922,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.PagedExpandRequest, *,
@@ -1836,7 +2014,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._PagedExpandLegacyMapped._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._PagedExpandLegacyMapped._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1848,7 +2035,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             pb_resp = gs_echo.PagedExpandLegacyMappedResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_paged_expand_legacy_mapped(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_paged_expand_legacy_mapped_with_metadata(resp, response_metadata)
@@ -1885,20 +2071,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_echo.WaitRequest, *,
@@ -1964,7 +2164,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._Wait._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._Wait._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1974,7 +2183,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_wait(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_wait_with_metadata(resp, response_metadata)
@@ -2005,7 +2213,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.BlockResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Block(self._session, self._host, self._interceptor) # type: ignore
+        return self._Block(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def chat(self) -> Callable[
@@ -2013,7 +2221,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.EchoResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Chat(self._session, self._host, self._interceptor) # type: ignore
+        return self._Chat(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def collect(self) -> Callable[
@@ -2021,7 +2229,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.EchoResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Collect(self._session, self._host, self._interceptor) # type: ignore
+        return self._Collect(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def echo(self) -> Callable[
@@ -2029,7 +2237,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.EchoResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Echo(self._session, self._host, self._interceptor) # type: ignore
+        return self._Echo(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def echo_error_details(self) -> Callable[
@@ -2037,7 +2245,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.EchoErrorDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._EchoErrorDetails(self._session, self._host, self._interceptor) # type: ignore
+        return self._EchoErrorDetails(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def expand(self) -> Callable[
@@ -2045,7 +2253,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.EchoResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Expand(self._session, self._host, self._interceptor) # type: ignore
+        return self._Expand(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def fail_echo_with_details(self) -> Callable[
@@ -2053,7 +2261,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.FailEchoWithDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FailEchoWithDetails(self._session, self._host, self._interceptor) # type: ignore
+        return self._FailEchoWithDetails(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def paged_expand(self) -> Callable[
@@ -2061,7 +2269,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.PagedExpandResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PagedExpand(self._session, self._host, self._interceptor) # type: ignore
+        return self._PagedExpand(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def paged_expand_legacy(self) -> Callable[
@@ -2069,7 +2277,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.PagedExpandResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PagedExpandLegacy(self._session, self._host, self._interceptor) # type: ignore
+        return self._PagedExpandLegacy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def paged_expand_legacy_mapped(self) -> Callable[
@@ -2077,7 +2285,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
             gs_echo.PagedExpandLegacyMappedResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PagedExpandLegacyMapped(self._session, self._host, self._interceptor) # type: ignore
+        return self._PagedExpandLegacyMapped(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def wait(self) -> Callable[
@@ -2085,11 +2293,11 @@ class EchoRestTransport(_BaseEchoRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._Wait(self._session, self._host, self._interceptor) # type: ignore
+        return self._Wait(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListLocations(_BaseEchoRestTransport._BaseListLocations, EchoRestStub):
         def __hash__(self):
@@ -2103,19 +2311,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.ListLocationsRequest, *,
@@ -2178,7 +2400,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2212,7 +2442,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetLocation(_BaseEchoRestTransport._BaseGetLocation, EchoRestStub):
         def __hash__(self):
@@ -2226,19 +2456,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.GetLocationRequest, *,
@@ -2301,7 +2545,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2335,7 +2587,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _SetIamPolicy(_BaseEchoRestTransport._BaseSetIamPolicy, EchoRestStub):
         def __hash__(self):
@@ -2349,20 +2601,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.SetIamPolicyRequest, *,
@@ -2425,7 +2691,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._SetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2459,7 +2734,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetIamPolicy(_BaseEchoRestTransport._BaseGetIamPolicy, EchoRestStub):
         def __hash__(self):
@@ -2473,19 +2748,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.GetIamPolicyRequest, *,
@@ -2548,7 +2837,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2582,7 +2879,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _TestIamPermissions(_BaseEchoRestTransport._BaseTestIamPermissions, EchoRestStub):
         def __hash__(self):
@@ -2596,20 +2893,34 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.TestIamPermissionsRequest, *,
@@ -2672,7 +2983,16 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._TestIamPermissions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EchoRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2706,7 +3026,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListOperations(_BaseEchoRestTransport._BaseListOperations, EchoRestStub):
         def __hash__(self):
@@ -2720,19 +3040,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.ListOperationsRequest, *,
@@ -2795,7 +3129,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2829,7 +3171,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetOperation(_BaseEchoRestTransport._BaseGetOperation, EchoRestStub):
         def __hash__(self):
@@ -2843,19 +3185,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
@@ -2918,7 +3274,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2952,7 +3316,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _DeleteOperation(_BaseEchoRestTransport._BaseDeleteOperation, EchoRestStub):
         def __hash__(self):
@@ -2966,19 +3330,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.DeleteOperationRequest, *,
@@ -3038,7 +3416,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3049,7 +3435,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _CancelOperation(_BaseEchoRestTransport._BaseCancelOperation, EchoRestStub):
         def __hash__(self):
@@ -3063,19 +3449,33 @@ class EchoRestTransport(_BaseEchoRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.CancelOperationRequest, *,
@@ -3135,7 +3535,15 @@ class EchoRestTransport(_BaseEchoRestTransport):
                 )
 
             # Send the request
-            response = EchoRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EchoRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import contextlib
 import logging
 import json  # type: ignore
 
@@ -23,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.showcase_v1beta1._compat import transcode_request
+from google.showcase_v1beta1._compat import transcode_request, trace_http_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -41,6 +42,7 @@ from google.showcase_v1beta1.types import compliance
 from google.longrunning import operations_pb2  # type: ignore
 
 
+from google.api_core import client_options as client_options_lib
 from .rest_base import _BaseComplianceRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
@@ -721,6 +723,7 @@ class ComplianceRestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: ComplianceRestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class ComplianceRestTransport(_BaseComplianceRestTransport):
@@ -753,6 +756,8 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             url_scheme: str = 'https',
             interceptor: Optional[ComplianceRestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -796,6 +801,9 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -807,7 +815,9 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -828,19 +838,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.EnumRequest, *,
@@ -903,7 +927,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._GetEnum._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._GetEnum._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -915,7 +947,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.EnumResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_get_enum(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_enum_with_metadata(resp, response_metadata)
@@ -952,20 +983,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1028,7 +1073,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataBody._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._RepeatDataBody._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1040,7 +1094,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_body(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_body_with_metadata(resp, response_metadata)
@@ -1077,20 +1130,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1153,7 +1220,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataBodyInfo._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._RepeatDataBodyInfo._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1165,7 +1241,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_body_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_body_info_with_metadata(resp, response_metadata)
@@ -1202,20 +1277,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1278,7 +1367,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataBodyPatch._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._RepeatDataBodyPatch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1290,7 +1388,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_body_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_body_patch_with_metadata(resp, response_metadata)
@@ -1327,20 +1424,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1403,7 +1514,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataBodyPut._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._RepeatDataBodyPut._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1415,7 +1535,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_body_put(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_body_put_with_metadata(resp, response_metadata)
@@ -1452,19 +1571,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1527,7 +1660,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataPathResource._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._RepeatDataPathResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1539,7 +1680,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_path_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_path_resource_with_metadata(resp, response_metadata)
@@ -1576,19 +1716,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1652,7 +1806,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataPathTrailingResource._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._RepeatDataPathTrailingResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1664,7 +1826,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_path_trailing_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_path_trailing_resource_with_metadata(resp, response_metadata)
@@ -1701,19 +1862,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1776,7 +1951,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._RepeatDataQuery._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1788,7 +1971,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_query_with_metadata(resp, response_metadata)
@@ -1825,19 +2007,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.RepeatRequest, *,
@@ -1900,7 +2096,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._RepeatDataSimplePath._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._RepeatDataSimplePath._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1912,7 +2116,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.RepeatResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_repeat_data_simple_path(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_repeat_data_simple_path_with_metadata(resp, response_metadata)
@@ -1949,19 +2152,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: compliance.EnumResponse, *,
@@ -2024,7 +2241,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._VerifyEnum._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._VerifyEnum._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2036,7 +2261,6 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             pb_resp = compliance.EnumResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_verify_enum(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_verify_enum_with_metadata(resp, response_metadata)
@@ -2067,7 +2291,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.EnumResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetEnum(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetEnum(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_body(self) -> Callable[
@@ -2075,7 +2299,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataBody(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataBody(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_body_info(self) -> Callable[
@@ -2083,7 +2307,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataBodyInfo(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataBodyInfo(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_body_patch(self) -> Callable[
@@ -2091,7 +2315,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataBodyPatch(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataBodyPatch(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_body_put(self) -> Callable[
@@ -2099,7 +2323,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataBodyPut(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataBodyPut(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_path_resource(self) -> Callable[
@@ -2107,7 +2331,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataPathResource(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataPathResource(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_path_trailing_resource(self) -> Callable[
@@ -2115,7 +2339,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataPathTrailingResource(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataPathTrailingResource(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_query(self) -> Callable[
@@ -2123,7 +2347,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataQuery(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataQuery(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def repeat_data_simple_path(self) -> Callable[
@@ -2131,7 +2355,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.RepeatResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RepeatDataSimplePath(self._session, self._host, self._interceptor) # type: ignore
+        return self._RepeatDataSimplePath(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def verify_enum(self) -> Callable[
@@ -2139,11 +2363,11 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             compliance.EnumResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._VerifyEnum(self._session, self._host, self._interceptor) # type: ignore
+        return self._VerifyEnum(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListLocations(_BaseComplianceRestTransport._BaseListLocations, ComplianceRestStub):
         def __hash__(self):
@@ -2157,19 +2381,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.ListLocationsRequest, *,
@@ -2232,7 +2470,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2266,7 +2512,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetLocation(_BaseComplianceRestTransport._BaseGetLocation, ComplianceRestStub):
         def __hash__(self):
@@ -2280,19 +2526,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.GetLocationRequest, *,
@@ -2355,7 +2615,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2389,7 +2657,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _SetIamPolicy(_BaseComplianceRestTransport._BaseSetIamPolicy, ComplianceRestStub):
         def __hash__(self):
@@ -2403,20 +2671,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.SetIamPolicyRequest, *,
@@ -2479,7 +2761,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._SetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2513,7 +2804,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetIamPolicy(_BaseComplianceRestTransport._BaseGetIamPolicy, ComplianceRestStub):
         def __hash__(self):
@@ -2527,19 +2818,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.GetIamPolicyRequest, *,
@@ -2602,7 +2907,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2636,7 +2949,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _TestIamPermissions(_BaseComplianceRestTransport._BaseTestIamPermissions, ComplianceRestStub):
         def __hash__(self):
@@ -2650,20 +2963,34 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.TestIamPermissionsRequest, *,
@@ -2726,7 +3053,16 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._TestIamPermissions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = ComplianceRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2760,7 +3096,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListOperations(_BaseComplianceRestTransport._BaseListOperations, ComplianceRestStub):
         def __hash__(self):
@@ -2774,19 +3110,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.ListOperationsRequest, *,
@@ -2849,7 +3199,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2883,7 +3241,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetOperation(_BaseComplianceRestTransport._BaseGetOperation, ComplianceRestStub):
         def __hash__(self):
@@ -2897,19 +3255,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
@@ -2972,7 +3344,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3006,7 +3386,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _DeleteOperation(_BaseComplianceRestTransport._BaseDeleteOperation, ComplianceRestStub):
         def __hash__(self):
@@ -3020,19 +3400,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.DeleteOperationRequest, *,
@@ -3092,7 +3486,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3103,7 +3505,7 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _CancelOperation(_BaseComplianceRestTransport._BaseCancelOperation, ComplianceRestStub):
         def __hash__(self):
@@ -3117,19 +3519,33 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.CancelOperationRequest, *,
@@ -3189,7 +3605,15 @@ class ComplianceRestTransport(_BaseComplianceRestTransport):
                 )
 
             # Send the request
-            response = ComplianceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = ComplianceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.

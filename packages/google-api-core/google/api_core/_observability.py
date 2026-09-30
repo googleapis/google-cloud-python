@@ -447,13 +447,45 @@ class _TraceContext:
         except Exception:
             pass
 
-    def record_error(self, exc: BaseException) -> None:
+    # Alias for method name parity with Daniel's suggested convention
+    record_http_response = record_response
+
+    def record_error(self, exc: BaseException | None) -> None:
         """Record an HTTP error/exception on the active span.
 
         Args:
-            exc (BaseException): The exception raised during dispatch.
+            exc (Optional[BaseException]): The exception raised during dispatch.
         """
-        record_http_error(self._span, exc)
+        span = self._span
+        if span is None or exc is None:
+            return
+
+        try:
+            from opentelemetry.trace.status import (  # type: ignore[import-not-found]
+                Status,
+                StatusCode,
+            )
+
+            if hasattr(span, "record_exception"):
+                span.record_exception(exc)
+            if hasattr(span, "set_status"):
+                span.set_status(Status(StatusCode.ERROR))
+            if hasattr(span, "set_attribute"):
+                status_code = getattr(exc, "code", None) or getattr(
+                    exc, "status_code", None
+                )
+                if status_code:
+                    span.set_attribute("error.type", str(status_code))
+                else:
+                    span.set_attribute("error.type", exc.__class__.__name__)
+                msg = str(exc)
+                if msg:
+                    span.set_attribute("status.message", msg)
+        except Exception:  # Fail-open on error attribute extraction failure
+            pass
+
+    # Alias for method name parity with Daniel's suggested convention
+    record_http_error = record_error
 
     def __enter__(self) -> "_TraceContext":
         if not is_otel_capabilities_enabled(self._client_options):
@@ -511,11 +543,6 @@ class _TraceContext:
         return None
 
 
-# Module-level aliases for backwards compatibility with tests and callers
-_get_trace_context_propagator = _TraceContext._get_trace_context_propagator
-_build_http_span_attributes = _TraceContext._build_http_span_attributes
-
-
 def trace_http_request(
     request: Any = None,
     *,
@@ -526,7 +553,34 @@ def trace_http_request(
     body: Any = None,
     client_options: ClientOptions | dict[str, Any] | None = None,
 ) -> _TraceContext:
-    """Context manager factory for tracing an HTTP wire request with OpenTelemetry."""
+    """Context manager factory for tracing an HTTP wire request with OpenTelemetry.
+
+    Manages span creation, semantic attribute attachment, W3C traceparent injection,
+    and automatic error recording on failure without suppressing caller exceptions.
+
+    Supports two calling conventions:
+    1. Bundled Request Object: `trace_http_request(request, ...)`
+       Used when callers already possess an HTTP request instance (such as
+       `requests.PreparedRequest` or `urllib.request.Request`) with `.method`, `.url`, etc.
+    2. Unpacked Keyword Arguments: `trace_http_request(method=..., url=..., headers=..., body=...)`
+       Used by generated GAPIC REST transports (_shared_macros.j2).
+       In GAPIC templates, requests are assembled from local strings and dictionaries before
+       hitting the session. Supporting keyword arguments avoids the CPU and memory overhead
+       of instantiating a throwaway dummy request object on every single RPC execution.
+
+    Args:
+        request (Optional[Any]): Bundled HTTP request object with .method, .url, .headers.
+        method (Optional[str]): Explicit HTTP method (e.g. "GET", "POST").
+        url (Optional[str]): Fully qualified request URL.
+        url_template (Optional[str]): Parameterized path template for url.template.
+        headers (Optional[dict[str, Any]]): Mutable dictionary of request headers.
+        body (Optional[Any]): Request payload (used for body size calculation).
+        client_options (Optional[Union[ClientOptions, dict[str, Any]]]): Client options
+            containing custom endpoint and tracer provider configurations.
+
+    Returns:
+        _TraceContext: An active context manager managing the HTTP client span.
+    """
     return _TraceContext(
         request=request,
         method=method,
@@ -536,40 +590,3 @@ def trace_http_request(
         body=body,
         client_options=client_options,
     )
-
-
-def record_http_error(span: Any, exc: BaseException) -> None:
-    """Record an HTTP error/exception on the wire span.
-
-    Args:
-        span (Optional[Any]): The active OpenTelemetry span or trace context.
-        exc (BaseException): The exception raised during dispatch.
-    """
-    if isinstance(span, _TraceContext):
-        span = span._span
-    if span is None:
-        return
-
-    try:
-        from opentelemetry.trace.status import (  # type: ignore[import-not-found]
-            Status,
-            StatusCode,
-        )
-
-        if hasattr(span, "record_exception"):
-            span.record_exception(exc)
-        if hasattr(span, "set_status"):
-            span.set_status(Status(StatusCode.ERROR))
-        if hasattr(span, "set_attribute"):
-            status_code = getattr(exc, "code", None) or getattr(
-                exc, "status_code", None
-            )
-            if status_code:
-                span.set_attribute("error.type", str(status_code))
-            else:
-                span.set_attribute("error.type", exc.__class__.__name__)
-            msg = str(exc)
-            if msg:
-                span.set_attribute("status.message", msg)
-    except Exception:  # Fail-open on error attribute extraction failure
-        pass

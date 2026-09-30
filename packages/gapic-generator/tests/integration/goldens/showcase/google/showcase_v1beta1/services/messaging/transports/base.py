@@ -14,12 +14,14 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.showcase_v1beta1 import gapic_version as package_version
 
 import google.auth  # type: ignore
 import google.api_core
+from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -37,6 +39,19 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+
+# Check once at module load time whether google-api-core's wrap_methods support
+# OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
+# or transport kind arguments, to avoid recurring inspect.signature latency during client instantiation.
+_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
+)
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
+    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
+_ASYNC_WRAP_METHOD_SUPPORTS_KIND = (
+    "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+)
 
 
 class MessagingTransport(abc.ABC):
@@ -57,6 +72,7 @@ class MessagingTransport(abc.ABC):
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -87,6 +103,9 @@ class MessagingTransport(abc.ABC):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
 
         # Save the scopes.
@@ -124,21 +143,88 @@ class MessagingTransport(abc.ABC):
             host += ':443'
         self._host = host
 
+        self._client_options = client_options
         self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
         return self._host
 
+    def _wrap_method(self, func, *args, **kwargs):
+        """Wrap an RPC method with common client-level features.
+
+        Applies retry, timeout, metadata, and tracing wrappers to the
+        underlying RPC method callable. If the runtime `google-api-core`
+        version supports tracing, transport attributes (`client_options` and
+        `kind`) are injected. Otherwise, tracing-specific arguments are
+        stripped for backward compatibility with older `google-api-core`
+        versions.
+        """
+        if _WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
+            return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
+        # The fallback below strips tracing-specific arguments when an older version
+        # of google-api-core is installed (which does not accept client_options, etc.).
+        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+            kwargs.pop(k, None)
+        return gapic_v1.method.wrap_method(func, *args, **kwargs)
+
+    def _wrap_async_method(self, func, *args, **kwargs):
+        """Wrap an async RPC method with common client-level features.
+
+        Applies asynchronous retry, timeout, metadata, and tracing wrappers
+        to the underlying RPC method callable.
+
+        This method adapts dynamically across three historical generations of
+        `google-api-core`:
+        1. Modern core with OpenTelemetry tracing (PR #18274 / #18433):
+           Supports `client_options`, `kind`, `method_name`, and `is_streaming`.
+        2. Intermediate core with async transport discrimination (>= 2.19.1, PR #688):
+           Supports `kind` to avoid erroneous gRPC error mapping on REST transports,
+           but does not yet accept tracing arguments (`client_options`, etc.).
+        3. Ancient core (< 2.19.1):
+           Accepts neither `client_options` nor `kind`. Both must be stripped to
+           prevent `TypeError: unexpected keyword argument`.
+        """
+        # Generation 1: Full OpenTelemetry tracing support in modern google-api-core
+        if _ASYNC_WRAP_METHOD_SUPPORTS_TRACING:
+            kwargs["client_options"] = self._client_options
+            if self.kind:
+                kwargs["kind"] = self.kind
+            return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
+        # Fallback for older runtime versions of google-api-core:
+        # Strip tracing-only arguments (client_options, method_name, is_streaming)
+        # unsupported in google-api-core < 2.26.0/tracing release.
+        for k in ["client_options", "method_name", "is_streaming"]:
+            kwargs.pop(k, None)
+
+        # Generation 2 vs Generation 3 fallback check:
+        # In google-api-core >= 2.19.1, method_async.wrap_method introduced the `kind`
+        # parameter (commit 8a04ec045c1, PR #688) to distinguish gRPC from REST transports
+        # and prevent REST callables from being wrapped with gRPC error handlers.
+        # If supported, inject `kind` from the transport; otherwise (Generation 3,
+        # google-api-core < 2.19.1), strip `kind` to avoid a TypeError.
+        if _ASYNC_WRAP_METHOD_SUPPORTS_KIND and self.kind:
+            kwargs["kind"] = self.kind
+        else:
+            kwargs.pop("kind", None)
+
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def _prep_wrapped_messages(self, client_info):
-        # Precompute the wrapped methods.
+        """Precompute and cache wrapped methods for RPC dispatch."""
         self._wrapped_methods = {
-            self.create_room: gapic_v1.method.wrap_method(
+            self.create_room: self._wrap_method(
                 self.create_room,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/CreateRoom",
             ),
-            self.get_room: gapic_v1.method.wrap_method(
+            self.get_room: self._wrap_method(
                 self.get_room,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -152,18 +238,21 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/GetRoom",
             ),
-            self.update_room: gapic_v1.method.wrap_method(
+            self.update_room: self._wrap_method(
                 self.update_room,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/UpdateRoom",
             ),
-            self.delete_room: gapic_v1.method.wrap_method(
+            self.delete_room: self._wrap_method(
                 self.delete_room,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/DeleteRoom",
             ),
-            self.list_rooms: gapic_v1.method.wrap_method(
+            self.list_rooms: self._wrap_method(
                 self.list_rooms,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -177,13 +266,15 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/ListRooms",
             ),
-            self.create_blurb: gapic_v1.method.wrap_method(
+            self.create_blurb: self._wrap_method(
                 self.create_blurb,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/CreateBlurb",
             ),
-            self.get_blurb: gapic_v1.method.wrap_method(
+            self.get_blurb: self._wrap_method(
                 self.get_blurb,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -197,18 +288,21 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/GetBlurb",
             ),
-            self.update_blurb: gapic_v1.method.wrap_method(
+            self.update_blurb: self._wrap_method(
                 self.update_blurb,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/UpdateBlurb",
             ),
-            self.delete_blurb: gapic_v1.method.wrap_method(
+            self.delete_blurb: self._wrap_method(
                 self.delete_blurb,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/DeleteBlurb",
             ),
-            self.list_blurbs: gapic_v1.method.wrap_method(
+            self.list_blurbs: self._wrap_method(
                 self.list_blurbs,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -222,8 +316,9 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/ListBlurbs",
             ),
-            self.search_blurbs: gapic_v1.method.wrap_method(
+            self.search_blurbs: self._wrap_method(
                 self.search_blurbs,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -237,18 +332,23 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/SearchBlurbs",
             ),
-            self.stream_blurbs: gapic_v1.method.wrap_method(
+            self.stream_blurbs: self._wrap_method(
                 self.stream_blurbs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/StreamBlurbs",
+                is_streaming=True,
             ),
-            self.send_blurbs: gapic_v1.method.wrap_method(
+            self.send_blurbs: self._wrap_method(
                 self.send_blurbs,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/SendBlurbs",
+                is_streaming=True,
             ),
-            self.connect: gapic_v1.method.wrap_method(
+            self.connect: self._wrap_method(
                 self.connect,
                 default_retry=retries.Retry(
                     initial=0.1,
@@ -262,51 +362,62 @@ class MessagingTransport(abc.ABC):
                 ),
                 default_timeout=10.0,
                 client_info=client_info,
+                method_name="google.showcase.v1beta1.Messaging/Connect",
+                is_streaming=True,
             ),
-            self.list_locations: gapic_v1.method.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/ListLocations",
             ),
-            self.get_location: gapic_v1.method.wrap_method(
+            self.get_location: self._wrap_method(
                 self.get_location,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.cloud.location.Locations/GetLocation",
             ),
-            self.set_iam_policy: gapic_v1.method.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.iam.v1.IAMPolicy/SetIamPolicy",
             ),
-            self.get_iam_policy: gapic_v1.method.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.iam.v1.IAMPolicy/GetIamPolicy",
             ),
-            self.test_iam_permissions: gapic_v1.method.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.iam.v1.IAMPolicy/TestIamPermissions",
             ),
-            self.list_operations: gapic_v1.method.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/ListOperations",
             ),
-            self.get_operation: gapic_v1.method.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/GetOperation",
             ),
-            self.delete_operation: gapic_v1.method.wrap_method(
+            self.delete_operation: self._wrap_method(
                 self.delete_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/DeleteOperation",
             ),
-            self.cancel_operation: gapic_v1.method.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
+                method_name="google.longrunning.Operations/CancelOperation",
             ),
          }
 
@@ -534,7 +645,7 @@ class MessagingTransport(abc.ABC):
 
     @property
     def kind(self) -> str:
-        raise NotImplementedError()
+        return ""
 
 
 __all__ = (

@@ -54,6 +54,13 @@ else:  # pragma: NO COVER
         def record_response(self, response: Any) -> None:
             pass
 
+        record_http_response = record_response
+
+        def record_error(self, exc: BaseException | None) -> None:
+            pass
+
+        record_http_error = record_error
+
     def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:
         return _FallbackTraceContext()
 
