@@ -470,7 +470,7 @@ def system_noextras(session):
     _run_system_test_logic(session, "system_noextras")
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1], venv_backend=VENV_BACKEND)
+@nox.session(python=DEFAULT_PYTHON_VERSION, venv_backend=VENV_BACKEND)
 @_calculate_duration
 def compliance(session):
     """Run the SQLAlchemy dialect-compliance system tests"""
