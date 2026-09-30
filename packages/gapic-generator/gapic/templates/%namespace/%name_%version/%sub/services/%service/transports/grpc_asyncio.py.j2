@@ -10,7 +10,7 @@ import json
 import pickle
 import logging as std_logging
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import {% if service.has_resumable_upload_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
@@ -18,6 +18,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 {% if service.has_lro %}
 from google.api_core import operations_v1
+{% endif %}
+{% if service.has_resumable_upload_methods %}
+from google.api_core import resumable_transfer
 {% endif %}
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -242,6 +245,9 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
+        {% if service.has_resumable_upload_methods %}
+        self._rest_transport: Optional[Any] = None
+        {% endif %}
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -346,7 +352,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     @property
     def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
-            Awaitable[{{ method.output.ident }}]]:
+            Awaitable[{% if method.is_resumable_upload %}{{ method.client_output_async.ident }}{% else %}{{ method.output.ident }}{% endif %}]]:
         r"""Return a callable for the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
@@ -356,7 +362,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    Awaitable[~.{{ method.output.name }}]]:
+                    Awaitable[~.{% if method.is_resumable_upload %}{{ method.client_output_async.name }}{% else %}{{ method.output.name }}{% endif %}]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,18 +391,14 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 # validates for async credentials.
                 transport = self
                 class _AsyncRestStub:
-                    def __init__(self):
-                        self._rest_stub = None
-
                     def __call__(self, *args, **kwargs):
-                        if self._rest_stub is None:
-                            rest_transport = Async{{ service.name }}RestTransport(
+                        if transport._rest_transport is None:
+                            transport._rest_transport = Async{{ service.name }}RestTransport(
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
                             )
-                            self._rest_stub = rest_transport.{{ method.transport_safe_name|snake_case }}
-                        return self._rest_stub(*args, **kwargs)
+                        return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()
             else:
                 class _UnsupportedStub:
@@ -502,8 +504,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
+    {% if service.has_resumable_upload_methods %}
+    async def close(self):
+        await self._logged_channel.close()
+        if self._rest_transport is not None:
+            await self._rest_transport.close()
+    {% else %}
     def close(self):
         return self._logged_channel.close()
+    {% endif %}
     
     @property
     def kind(self) -> str:

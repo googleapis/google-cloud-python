@@ -16,6 +16,9 @@ from google.api_core import retry as retries
 {% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
+{% if service.has_resumable_upload_methods %}
+from google.api_core import resumable_transfer
+{% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 import google.protobuf
@@ -215,10 +218,18 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
+            {% if method.is_resumable_upload %}
+            Union[
+                {{ method.client_output.ident }},
+                {{ method.client_output_async.ident }},
+                Awaitable[{{ method.client_output_async.ident }}]
+            ]]:
+            {% else %}
             Union[
                 {{ method.output.ident }},
                 Awaitable[{{ method.output.ident }}]
             ]]:
+            {% endif %}
         raise NotImplementedError()
     {% endfor %}
 

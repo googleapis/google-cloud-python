@@ -2287,6 +2287,21 @@ def test_resumable_upload_service_upload_media_grpc_channel_without_credentials_
     with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
         transport.upload_media(resumable_upload.UploadMediaRequest())
     assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+    transport.close()
+
+
+def test_resumable_upload_service_upload_media_grpc_rest_stub():
+    transport = transports.ResumableUploadServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    rest_transport = transport._rest_transport
+    assert rest_transport is not None
+    transport._stubs.pop("upload_media", None)
+    _ = transport.upload_media
+    assert transport._rest_transport is rest_transport
+    with mock.patch.object(rest_transport, "close") as mock_rest_close:
+        transport.close()
+        mock_rest_close.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -2299,6 +2314,7 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_channel_withou
     with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
         await transport.upload_media(resumable_upload.UploadMediaRequest())
     assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+    await transport.close()
 
 
 @pytest.mark.asyncio
@@ -2309,6 +2325,7 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub():
         create=True,
     ) as mock_rest_transport_cls:
         mock_rest_transport = mock.MagicMock()
+        mock_rest_transport.close = mock.AsyncMock()
         expected_session = resumable_transfer.AsyncResumableUploadSession()
         mock_rest_transport.upload_media = mock.AsyncMock(
             return_value=expected_session
@@ -2332,6 +2349,8 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub():
             client_info=transport._client_info,
         )
         assert mock_rest_transport.upload_media.call_count == 2
+        await transport.close()
+        mock_rest_transport.close.assert_called_once()
 
 
 @pytest.mark.asyncio
