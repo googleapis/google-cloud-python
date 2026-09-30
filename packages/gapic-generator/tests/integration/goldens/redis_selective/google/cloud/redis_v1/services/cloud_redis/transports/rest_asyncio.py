@@ -1338,31 +1338,31 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
-            operations_pb2.Operation]:
+operations_pb2.Operation]:
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
-            operations_pb2.Operation]:
+operations_pb2.Operation]:
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
-            cloud_redis.Instance]:
+cloud_redis.Instance]:
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
             [cloud_redis.ListInstancesRequest],
-            cloud_redis.ListInstancesResponse]:
+cloud_redis.ListInstancesResponse]:
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
-            operations_pb2.Operation]:
+operations_pb2.Operation]:
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property

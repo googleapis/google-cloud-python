@@ -610,12 +610,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
-        )
-
-        # Wrap the response in a resumable upload session.
-        response = resumable_transfer.ResumableUploadSession(
             config=config,
-            response_type=resumable_upload.UploadMediaResponse,
         )
 
         # Done; return the response.
