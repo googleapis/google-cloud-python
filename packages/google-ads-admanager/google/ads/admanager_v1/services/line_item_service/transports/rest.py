@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import line_item_messages, line_item_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -395,15 +396,16 @@ class LineItemServiceRestTransport(_BaseLineItemServiceRestTransport):
             http_options = (
                 _BaseLineItemServiceRestTransport._BaseGetLineItem._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_line_item(request, metadata)
-            transcoded_request = _BaseLineItemServiceRestTransport._BaseGetLineItem._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLineItemServiceRestTransport._BaseGetLineItem._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLineItemServiceRestTransport._BaseGetLineItem,
+                    "_BaseGetLineItem__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -541,15 +543,16 @@ class LineItemServiceRestTransport(_BaseLineItemServiceRestTransport):
             http_options = (
                 _BaseLineItemServiceRestTransport._BaseListLineItems._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_line_items(request, metadata)
-            transcoded_request = _BaseLineItemServiceRestTransport._BaseListLineItems._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLineItemServiceRestTransport._BaseListLineItems._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLineItemServiceRestTransport._BaseListLineItems,
+                    "_BaseListLineItems__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -704,17 +707,18 @@ class LineItemServiceRestTransport(_BaseLineItemServiceRestTransport):
             """
 
             http_options = _BaseLineItemServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseLineItemServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLineItemServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLineItemServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -821,15 +825,16 @@ class LineItemServiceRestTransport(_BaseLineItemServiceRestTransport):
             http_options = (
                 _BaseLineItemServiceRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseLineItemServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseLineItemServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLineItemServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

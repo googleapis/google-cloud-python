@@ -24,10 +24,12 @@ __protobuf__ = proto.module(
     manifest={
         "ProcessingErrorReason",
         "ProcessingWarningReason",
+        "WarningReason",
         "ErrorInfo",
         "ErrorCount",
         "WarningInfo",
         "WarningCount",
+        "FieldWarning",
     },
 )
 
@@ -156,6 +158,10 @@ class ProcessingErrorReason(proto.Enum):
         PROCESSING_ERROR_REASON_CLICK_NOT_FOUND (43):
             A corresponding click can't be found that
             matches the provided attributes.
+        PROCESSING_ERROR_REASON_EXTERNAL_ATTRIBUTION_DATA_MISSING (44):
+            External attribution data is missing. Sending
+            events to a destination for an external
+            attribution conversion action isn't supported.
     """
 
     PROCESSING_ERROR_REASON_UNSPECIFIED = 0
@@ -204,6 +210,7 @@ class ProcessingErrorReason(proto.Enum):
     PROCESSING_ERROR_REASON_INVALID_CLICK = 41
     PROCESSING_ERROR_REASON_INVALID_OPERATING_ACCOUNT_FOR_CLICK = 42
     PROCESSING_ERROR_REASON_CLICK_NOT_FOUND = 43
+    PROCESSING_ERROR_REASON_EXTERNAL_ATTRIBUTION_DATA_MISSING = 44
 
 
 class ProcessingWarningReason(proto.Enum):
@@ -248,6 +255,92 @@ class ProcessingWarningReason(proto.Enum):
     PROCESSING_WARNING_REASON_USER_IDENTIFIER_DECRYPTION_ERROR = 7
     PROCESSING_WARNING_REASON_INTERNAL_ERROR = 8
     PROCESSING_WARNING_REASON_AWS_AUTH_FAILED = 9
+
+
+class WarningReason(proto.Enum):
+    r"""Reasons for non-blocking warnings returned during ingestion.
+
+    Values:
+        WARNING_REASON_UNSPECIFIED (0):
+            Unspecified warning reason.
+        WARNING_REASON_CUSTOM_VARIABLE_NOT_ENABLED (1):
+            A custom variable in
+            [``custom_variables``][google.ads.datamanager.v1.Event.custom_variables]
+            is not enabled in the account.
+        WARNING_REASON_CUSTOM_VARIABLE_NOT_PREDEFINED (2):
+            A custom variable value in
+            [``custom_variables``][google.ads.datamanager.v1.Event.custom_variables]
+            is not among the predefined allowed values configured for
+            the custom variable on the destination account.
+        WARNING_REASON_CART_DATA_NOT_SUPPORTED_WITH_GBRAID_OR_WBRAID (3):
+            The
+            [``cart_data``][google.ads.datamanager.v1.Event.cart_data]
+            is not supported with
+            [``gbraid``][google.ads.datamanager.v1.AdIdentifiers.gbraid]
+            or
+            [``wbraid``][google.ads.datamanager.v1.AdIdentifiers.wbraid].
+        WARNING_REASON_CART_DATA_ITEM_MERCHANT_PRODUCT_ID_MISSING (4):
+            The
+            [``merchant_product_id``][google.ads.datamanager.v1.Item.merchant_product_id]
+            is missing in the cart item.
+        WARNING_REASON_CART_DATA_ITEM_UNIT_PRICE_MISSING (5):
+            The
+            [``unit_price``][google.ads.datamanager.v1.Item.unit_price]
+            is missing in the cart item.
+        WARNING_REASON_GENERIC (6):
+            Generic warning reason for issues that do not
+            fit into other specific categories.
+        WARNING_REASON_INVALID_CLIENT_ID (7):
+            The
+            [``client_id``][google.ads.datamanager.v1.Event.client_id]
+            is invalid.
+        WARNING_REASON_INVALID_SUBDIVISION_CODE (8):
+            The
+            [``subdivision_code``][google.ads.datamanager.v1.EventLocation.subdivision_code]
+            is invalid.
+        WARNING_REASON_INVALID_REGION_CODE (9):
+            The
+            [``region_code``][google.ads.datamanager.v1.EventLocation.region_code]
+            is invalid.
+        WARNING_REASON_INVALID_SUBCONTINENT_CODE (10):
+            The
+            [``subcontinent_code``][google.ads.datamanager.v1.EventLocation.subcontinent_code]
+            is invalid.
+        WARNING_REASON_INVALID_CONTINENT_CODE (11):
+            The
+            [``continent_code``][google.ads.datamanager.v1.EventLocation.continent_code]
+            is invalid.
+        WARNING_REASON_INVALID_DEVICE_CATEGORY (12):
+            The device
+            [``category``][google.ads.datamanager.v1.DeviceInfo.category]
+            is invalid.
+        WARNING_REASON_INVALID_DEVICE_SCREEN_RESOLUTION (13):
+            The device
+            [``screen_height``][google.ads.datamanager.v1.DeviceInfo.screen_height]
+            or
+            [``screen_width``][google.ads.datamanager.v1.DeviceInfo.screen_width]
+            is invalid.
+        WARNING_REASON_INVALID_MERCHANT_ID (14):
+            The
+            [``merchant_id``][google.ads.datamanager.v1.CartData.merchant_id]
+            is invalid.
+    """
+
+    WARNING_REASON_UNSPECIFIED = 0
+    WARNING_REASON_CUSTOM_VARIABLE_NOT_ENABLED = 1
+    WARNING_REASON_CUSTOM_VARIABLE_NOT_PREDEFINED = 2
+    WARNING_REASON_CART_DATA_NOT_SUPPORTED_WITH_GBRAID_OR_WBRAID = 3
+    WARNING_REASON_CART_DATA_ITEM_MERCHANT_PRODUCT_ID_MISSING = 4
+    WARNING_REASON_CART_DATA_ITEM_UNIT_PRICE_MISSING = 5
+    WARNING_REASON_GENERIC = 6
+    WARNING_REASON_INVALID_CLIENT_ID = 7
+    WARNING_REASON_INVALID_SUBDIVISION_CODE = 8
+    WARNING_REASON_INVALID_REGION_CODE = 9
+    WARNING_REASON_INVALID_SUBCONTINENT_CODE = 10
+    WARNING_REASON_INVALID_CONTINENT_CODE = 11
+    WARNING_REASON_INVALID_DEVICE_CATEGORY = 12
+    WARNING_REASON_INVALID_DEVICE_SCREEN_RESOLUTION = 13
+    WARNING_REASON_INVALID_MERCHANT_ID = 14
 
 
 class ErrorInfo(proto.Message):
@@ -322,6 +415,36 @@ class WarningCount(proto.Message):
         proto.ENUM,
         number=2,
         enum="ProcessingWarningReason",
+    )
+
+
+class FieldWarning(proto.Message):
+    r"""Detailed row-level warning with field paths.
+
+    Attributes:
+        reason (google.ads.datamanager_v1.types.WarningReason):
+            The warning reason.
+        description (str):
+            The detailed warning message describing the
+            issue.
+        field (str):
+            The field path that triggered the warning. Uses the same
+            format as
+            [google.rpc.BadRequest.FieldViolation.field][google.rpc.BadRequest.FieldViolation.field].
+    """
+
+    reason: "WarningReason" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="WarningReason",
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    field: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

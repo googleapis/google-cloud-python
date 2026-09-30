@@ -50,6 +50,11 @@
                 "disable_anywhere_cache"
               ]
             },
+            "DisableRapidCache": {
+              "methods": [
+                "disable_rapid_cache"
+              ]
+            },
             "GetAnywhereCache": {
               "methods": [
                 "get_anywhere_cache"
@@ -193,6 +198,11 @@
             "UpdateRapidCache": {
               "methods": [
                 "update_rapid_cache"
+              ]
+            },
+            "ViewObjectFullContext": {
+              "methods": [
+                "view_object_full_context"
               ]
             }
           }
@@ -240,6 +250,11 @@
                 "disable_anywhere_cache"
               ]
             },
+            "DisableRapidCache": {
+              "methods": [
+                "disable_rapid_cache"
+              ]
+            },
             "GetAnywhereCache": {
               "methods": [
                 "get_anywhere_cache"
@@ -383,6 +398,11 @@
             "UpdateRapidCache": {
               "methods": [
                 "update_rapid_cache"
+              ]
+            },
+            "ViewObjectFullContext": {
+              "methods": [
+                "view_object_full_context"
               ]
             }
           }
@@ -430,6 +450,11 @@
                 "disable_anywhere_cache"
               ]
             },
+            "DisableRapidCache": {
+              "methods": [
+                "disable_rapid_cache"
+              ]
+            },
             "GetAnywhereCache": {
               "methods": [
                 "get_anywhere_cache"
@@ -573,6 +598,11 @@
             "UpdateRapidCache": {
               "methods": [
                 "update_rapid_cache"
+              ]
+            },
+            "ViewObjectFullContext": {
+              "methods": [
+                "view_object_full_context"
               ]
             }
           }

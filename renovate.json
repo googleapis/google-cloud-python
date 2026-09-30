@@ -1,8 +1,7 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     "group:all",
-    ":disableDependencyDashboard",
     "schedule:weekly"
   ],
   "ignorePaths": [

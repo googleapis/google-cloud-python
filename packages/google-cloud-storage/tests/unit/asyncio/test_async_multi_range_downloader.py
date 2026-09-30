@@ -61,6 +61,7 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.generation_number = _TEST_GENERATION_NUMBER
         mock_stream.persisted_size = _TEST_OBJECT_SIZE
         mock_stream.read_handle = _TEST_READ_HANDLE
+        mock_stream.object_metadata = mock.Mock()
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(
             mock_client, bucket_name, object_name, generation, read_handle
@@ -94,6 +95,7 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.read_handle == _TEST_READ_HANDLE
         assert mrd.persisted_size == _TEST_OBJECT_SIZE
         assert mrd.is_stream_open
+        assert mrd.object_metadata == mrd.read_obj_str.object_metadata
         assert mrd._open_retries == 0
 
     @mock.patch(
@@ -276,6 +278,7 @@ class TestAsyncMultiRangeDownloader:
 
         # Assert
         assert not mrd.is_stream_open
+        assert mrd.object_metadata is None
 
     @pytest.mark.asyncio
     async def test_close_mrd_not_opened_should_throw_error(self):

@@ -1,3 +1,0 @@
-CREATE MODEL IF NOT EXISTS `my_model`
-OPTIONS(model_type = 'KMEANS')
-AS SELECT * FROM t

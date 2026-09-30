@@ -34,7 +34,7 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.44.2")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -759,6 +759,17 @@ def lint(session):
     )
 
     session.install("flake8", RUFF_VERSION)
+
+    # 1. Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
 
     # 2. Check formatting
     session.run(

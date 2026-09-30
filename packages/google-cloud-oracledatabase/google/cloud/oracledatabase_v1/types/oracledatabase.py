@@ -76,6 +76,9 @@ __protobuf__ = proto.module(
         "RestartAutonomousDatabaseRequest",
         "SwitchoverAutonomousDatabaseRequest",
         "FailoverAutonomousDatabaseRequest",
+        "GetAutonomousDatabaseRefreshableClonesRequest",
+        "AutonomousDatabaseRefreshableClones",
+        "RefreshAutonomousDatabaseRequest",
         "GenerateAutonomousDatabaseWalletRequest",
         "GenerateAutonomousDatabaseWalletResponse",
         "ListAutonomousDbVersionsRequest",
@@ -660,8 +663,9 @@ class ListGiVersionsRequest(proto.Message):
             results the server should return.
         filter (str):
             Optional. An expression for filtering the results of the
-            request. Only the shape, gcp_oracle_zone and gi_version
-            fields are supported in this format: ``shape="{shape}"``.
+            request. Only the ``shape`` and ``gcp_oracle_zone_id``
+            fields are supported in the following format:
+            ``shape="{shape}" AND gcp_oracle_zone_id="{gcp_oracle_zone_id}"``.
     """
 
     parent: str = proto.Field(
@@ -728,8 +732,10 @@ class ListDbSystemShapesRequest(proto.Message):
             results the server should return.
         filter (str):
             Optional. An expression for filtering the results of the
-            request. Only the gcp_oracle_zone_id field is supported in
-            this format: ``gcp_oracle_zone_id="{gcp_oracle_zone_id}"``.
+            request. The ``gcp_oracle_zone_id``, ``shape_family``, and
+            ``database_edition`` fields are supported in the following
+            format:
+            ``gcp_oracle_zone_id="{gcp_oracle_zone_id}" AND shape_family="{shape_family}" AND database_edition="{database_edition}"``.
     """
 
     parent: str = proto.Field(
@@ -1189,6 +1195,69 @@ class FailoverAutonomousDatabaseRequest(proto.Message):
     peer_autonomous_database: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GetAutonomousDatabaseRefreshableClonesRequest(proto.Message):
+    r"""Request message for getting refreshable clones for an
+    Autonomous Database.
+
+    Attributes:
+        name (str):
+            Required. The Autonomous Database resource whose refreshable
+            clones are to be listed. Format:
+            projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AutonomousDatabaseRefreshableClones(proto.Message):
+    r"""Response message for getting the Autonomous Database
+    refreshable clones.
+
+    Attributes:
+        autonomous_database_refreshable_clones (MutableSequence[google.cloud.oracledatabase_v1.types.AutonomousDatabaseRefreshableClone]):
+            The list of Autonomous Database refreshable
+            clones.
+    """
+
+    autonomous_database_refreshable_clones: MutableSequence[
+        gco_autonomous_database.AutonomousDatabaseRefreshableClone
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gco_autonomous_database.AutonomousDatabaseRefreshableClone,
+    )
+
+
+class RefreshAutonomousDatabaseRequest(proto.Message):
+    r"""Request message for RefreshAutonomousDatabase method.
+
+    Attributes:
+        name (str):
+            Required. The name of the AutonomousDatabase resource.
+            Format:
+            projects/{project}/location/{location}/autonomousDatabases/{autonomous_database}
+        refresh_cutoff_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. The timestamp to which the
+            Autonomous Database refreshable clone will be
+            refreshed. Changes made in the primary database
+            after this timestamp are not part of the data
+            refresh.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    refresh_cutoff_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 

@@ -87,6 +87,16 @@
               "methods": [
                 "calendar_mode"
               ]
+            },
+            "Capacity": {
+              "methods": [
+                "capacity"
+              ]
+            },
+            "CapacityHistory": {
+              "methods": [
+                "capacity_history"
+              ]
             }
           }
         }
@@ -1062,6 +1072,30 @@
             "Update": {
               "methods": [
                 "update"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Hosts": {
+      "clients": {
+        "rest": {
+          "libraryClient": "HostsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetVersion": {
+              "methods": [
+                "get_version"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
               ]
             }
           }
@@ -2856,6 +2890,20 @@
         }
       }
     },
+    "ProjectViews": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ProjectViewsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Projects": {
       "clients": {
         "rest": {
@@ -4495,6 +4543,25 @@
         }
       }
     },
+    "ReliabilityRisks": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ReliabilityRisksClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ReservationBlocks": {
       "clients": {
         "rest": {
@@ -4542,6 +4609,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetHealth": {
+              "methods": [
+                "get_health"
               ]
             },
             "GetVersion": {

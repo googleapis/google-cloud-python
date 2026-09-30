@@ -22,7 +22,50 @@ import mock
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.semconv.resource import ResourceAttributes
 
-from google.cloud.spanner_v1 import TransactionOptions, _helpers
+from google.cloud.spanner_v1 import ExecuteSqlRequest, TransactionOptions, _helpers
+
+
+class Test_to_query_options(unittest.TestCase):
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _to_query_options
+
+        return _to_query_options(*args, **kw)
+
+    def test_none(self):
+        self.assertIsNone(self._callFUT(None))
+
+    def test_empty_dict(self):
+        self.assertIsNone(self._callFUT({}))
+
+    def test_dict_with_empty_values(self):
+        self.assertIsNone(self._callFUT({"optimizer_version": ""}))
+
+    def test_valid_dict(self):
+        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({"optimizer_version": "1"})
+        self.assertEqual(result, expected)
+
+    def test_empty_proto_object(self):
+        self.assertIsNone(self._callFUT(ExecuteSqlRequest.QueryOptions()))
+
+    def test_populated_proto_object(self):
+        options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(options)
+        self.assertEqual(result, options)
+
+    def test_invalid_type(self):
+        for invalid_value in ("invalid", 123, "", [], False):
+            with self.subTest(invalid_value=invalid_value):
+                with self.assertRaises(TypeError):
+                    self._callFUT(invalid_value)
+
+    def test_unknown_key_with_empty_value_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": ""})
+
+    def test_unknown_key_with_non_empty_value_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": "1"})
 
 
 class Test_merge_query_options(unittest.TestCase):
@@ -37,8 +80,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_base_dict_and_merge_none(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = {
             "optimizer_version": "2",
             "optimizer_statistics_package": "auto_20191128_14_47_22UTC",
@@ -52,16 +93,12 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_empty_and_merge_empty(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions()
         merge = ExecuteSqlRequest.QueryOptions()
         result = self._callFUT(base, merge)
         self.assertIsNone(result)
 
     def test_base_none_merge_object(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = ExecuteSqlRequest.QueryOptions(
             optimizer_version="3",
@@ -71,8 +108,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, merge)
 
     def test_base_none_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = None
         merge = {"optimizer_version": "3"}
         expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
@@ -80,8 +115,6 @@ class Test_merge_query_options(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_base_object_merge_dict(self):
-        from google.cloud.spanner_v1 import ExecuteSqlRequest
-
         base = ExecuteSqlRequest.QueryOptions(
             optimizer_version="1",
             optimizer_statistics_package="auto_20191128_14_47_22UTC",
@@ -93,6 +126,120 @@ class Test_merge_query_options(unittest.TestCase):
         )
         result = self._callFUT(base, merge)
         self.assertEqual(result, expected)
+
+    def test_base_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, None)
+        self.assertEqual(result, base)
+
+    def test_base_empty_object_and_merge_none(self):
+        base = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(base, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_empty_object(self):
+        merge = ExecuteSqlRequest.QueryOptions()
+        result = self._callFUT(None, merge)
+        self.assertIsNone(result)
+
+    def test_base_object_not_mutated_on_merge(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        merge = {"optimizer_version": "3"}
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="3",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+
+    def test_base_dict_merge_dict(self):
+        base = {"optimizer_version": "1"}
+        merge = {"optimizer_statistics_package": "auto_20191128_14_47_22UTC"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_override_dict(self):
+        base = {
+            "optimizer_version": "1",
+            "optimizer_statistics_package": "pkg1",
+        }
+        merge = {"optimizer_version": "2"}
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        result = self._callFUT(base, merge)
+        self.assertEqual(result, expected)
+
+    def test_base_dict_empty_merge_none(self):
+        result = self._callFUT({}, None)
+        self.assertIsNone(result)
+
+    def test_base_none_merge_dict_empty(self):
+        result = self._callFUT(None, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_empty_dict(self):
+        result = self._callFUT({}, {})
+        self.assertIsNone(result)
+
+    def test_base_empty_dict_merge_object(self):
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT({}, merge)
+        self.assertEqual(result, merge)
+
+    def test_base_object_merge_empty_dict(self):
+        base = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        result = self._callFUT(base, {})
+        self.assertEqual(result, base)
+
+    def test_base_object_merge_object(self):
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="pkg1",
+        )
+        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
+        result = self._callFUT(base, merge)
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="pkg1",
+        )
+        self.assertEqual(result, expected)
+        self.assertEqual(base.optimizer_version, "1")
+        self.assertEqual(base.optimizer_statistics_package, "pkg1")
+        self.assertEqual(merge.optimizer_version, "2")
+        self.assertEqual(merge.optimizer_statistics_package, "")
+
+    def test_invalid_type_raises_error(self):
+        for invalid_value in ("invalid", 123, "", [], False):
+            with self.subTest(invalid_value=invalid_value):
+                with self.assertRaises(TypeError):
+                    self._callFUT(invalid_value, None)
+                with self.assertRaises(TypeError):
+                    self._callFUT(None, invalid_value)
+
+    def test_unknown_key_in_base_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": ""}, None)
+        with self.assertRaises(ValueError):
+            self._callFUT({"optmizer_version": "1"}, None)
+
+    def test_unknown_key_in_merge_raises_error(self):
+        with self.assertRaises(ValueError):
+            self._callFUT(None, {"optmizer_version": ""})
+        with self.assertRaises(ValueError):
+            self._callFUT(None, {"optmizer_version": "1"})
 
 
 class Test_get_cloud_region(unittest.TestCase):
@@ -1862,3 +2009,291 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.months, case["expected_months"])
                     self.assertEqual(result.days, case["expected_days"])
                     self.assertEqual(result.nanos, case["expected_nanos"])
+
+
+class Test_get_type_decoder(unittest.TestCase):
+    def _callFUT(self, *args, **kwargs):
+        from google.cloud.spanner_v1._helpers import _get_type_decoder
+
+        return _get_type_decoder(*args, **kwargs)
+
+    def test_scalar_decoders(self):
+        import datetime
+        import decimal
+        import uuid
+
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+        from google.cloud.spanner_v1._helpers import _SCALAR_DECODERS
+        from google.cloud.spanner_v1.data_types import Interval, JsonObject
+
+        test_cases = [
+            (TypeCode.STRING, Value(string_value="hello"), "hello"),
+            (TypeCode.BYTES, Value(string_value="bytes"), b"bytes"),
+            (TypeCode.BOOL, Value(bool_value=True), True),
+            (TypeCode.INT64, Value(string_value="42"), 42),
+            (TypeCode.FLOAT64, Value(string_value="3.14"), 3.14),
+            (TypeCode.FLOAT32, Value(string_value="2.5"), 2.5),
+            (
+                TypeCode.DATE,
+                Value(string_value="2026-03-15"),
+                datetime.date(2026, 3, 15),
+            ),
+            (
+                TypeCode.TIMESTAMP,
+                Value(string_value="2026-03-15T12:00:00Z"),
+                datetime.datetime(2026, 3, 15, 12, 0, tzinfo=datetime.timezone.utc),
+            ),
+            (TypeCode.NUMERIC, Value(string_value="99.99"), decimal.Decimal("99.99")),
+            (TypeCode.JSON, Value(string_value='{"a": 1}'), JsonObject({"a": 1})),
+            (
+                TypeCode.UUID,
+                Value(string_value="12345678-1234-5678-1234-567812345678"),
+                uuid.UUID("12345678-1234-5678-1234-567812345678"),
+            ),
+            (TypeCode.INTERVAL, Value(string_value="P1Y"), Interval.from_str("P1Y")),
+        ]
+        for type_code, sample_value_pb, expected_result in test_cases:
+            field_type = Type(code=type_code)
+            decoder = self._callFUT(field_type, "column_name")
+            self.assertIs(decoder, _SCALAR_DECODERS[int(type_code)])
+            self.assertEqual(decoder(sample_value_pb), expected_result)
+
+    def test_proto_and_enum(self):
+        from google.protobuf.struct_pb2 import Value
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        proto_type = Type(code=TypeCode.PROTO)
+        proto_decoder = self._callFUT(proto_type, "proto_column")
+        self.assertTrue(callable(proto_decoder))
+
+        enum_type = Type(code=TypeCode.ENUM)
+        enum_decoder = self._callFUT(enum_type, "enum_column")
+        self.assertTrue(callable(enum_decoder))
+        self.assertEqual(enum_decoder(Value(string_value="1")), 1)
+
+    def test_array_and_struct(self):
+        from google.cloud.spanner_v1 import StructType, Type, TypeCode
+
+        array_type = Type(
+            code=TypeCode.ARRAY,
+            array_element_type=Type(code=TypeCode.STRING),
+        )
+        array_decoder = self._callFUT(array_type, "array_column")
+        self.assertTrue(callable(array_decoder))
+
+        struct_field = StructType.Field(
+            name="subfield", type_=Type(code=TypeCode.STRING)
+        )
+        struct_type = Type(
+            code=TypeCode.STRUCT,
+            struct_type=StructType(fields=[struct_field]),
+        )
+        struct_decoder = self._callFUT(struct_type, "struct_column")
+        self.assertTrue(callable(struct_decoder))
+
+    def test_unknown_and_unspecified_types(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import Type, TypeCode
+
+        unspecified_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
+        with self.assertRaises(ValueError):
+            self._callFUT(unspecified_type, "unspecified")
+
+        unknown_type = mock.Mock(code=999)
+        with self.assertRaises(ValueError):
+            self._callFUT(unknown_type, "unknown")
+
+        invalid_code_type = mock.Mock(code="invalid")
+        with self.assertRaises(ValueError):
+            self._callFUT(invalid_code_type, "invalid")
+
+
+class TestCreateSpannerOmniTransport(unittest.TestCase):
+    def test_create_spanner_omni_transport_plaintext_with_auth_interceptor(self):
+        import grpc
+
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        mock_creds = mock.MagicMock()
+        mock_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds.create_auth_interceptor.return_value = mock_interceptor
+
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    credentials=mock_creds,
+                )
+                mock_insecure.assert_called_once_with(target="localhost:9010")
+                mock_intercept.assert_called_once_with(
+                    mock_insecure.return_value, mock_interceptor
+                )
+                mock_factory.assert_called_once_with(
+                    channel=mock_intercept.return_value, credentials=mock_creds
+                )
+
+    def test_create_spanner_omni_transport_tls_and_mtls(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_creds:
+                with mock.patch("grpc.secure_channel") as mock_secure:
+                    # TLS only
+                    _helpers._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate=None,
+                        client_key=None,
+                    )
+                    mock_ssl_creds.assert_called_with(root_certificates=b"cert_data")
+                    mock_secure.assert_called_with(
+                        "omni-host:15000", mock_ssl_creds.return_value
+                    )
+
+                    # mTLS
+                    _helpers._create_spanner_omni_transport(
+                        mock_factory,
+                        "omni-host:15000",
+                        use_plain_text=False,
+                        ca_certificate="ca.pem",
+                        client_certificate="client.pem",
+                        client_key="key.pem",
+                    )
+                    mock_ssl_creds.assert_called_with(
+                        root_certificates=b"cert_data",
+                        private_key=b"cert_data",
+                        certificate_chain=b"cert_data",
+                    )
+
+    def test_create_spanner_omni_transport_validation_errors(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        # Missing ca_certificate
+        with self.assertRaises(ValueError) as cm:
+            _helpers._create_spanner_omni_transport(
+                mock_factory,
+                "omni-host:15000",
+                use_plain_text=False,
+                ca_certificate=None,
+                client_certificate=None,
+                client_key=None,
+            )
+        self.assertIn("TLS/mTLS connection requires ca_certificate", str(cm.exception))
+
+        # Missing client_key when client_certificate provided
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with self.assertRaises(ValueError) as cm:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate="client.pem",
+                    client_key=None,
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )
+
+        # Missing client_certificate when client_key provided
+        with mock.patch("builtins.open", mock.mock_open(read_data=b"cert_data")):
+            with self.assertRaises(ValueError) as cm:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "omni-host:15000",
+                    use_plain_text=False,
+                    ca_certificate="ca.pem",
+                    client_certificate=None,
+                    client_key="key.pem",
+                )
+            self.assertIn(
+                "Both client_certificate and client_key must be provided for mTLS connection",
+                str(cm.exception),
+            )
+
+    def test_create_spanner_omni_transport_interceptors_and_credentials_fallback(self):
+        import grpc
+        from google.auth.credentials import AnonymousCredentials
+
+        from google.cloud.spanner_v1 import _helpers
+
+        mock_factory = mock.MagicMock()
+        existing_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds = mock.MagicMock(spec=["create_auth_interceptor"])
+        auth_interceptor = mock.MagicMock(spec=grpc.UnaryUnaryClientInterceptor)
+        mock_creds.create_auth_interceptor.return_value = auth_interceptor
+
+        # Case 1: credentials with interceptor and existing interceptors
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=[existing_interceptor],
+                    credentials=mock_creds,
+                )
+                mock_intercept.assert_called_once_with(
+                    mock_insecure.return_value, existing_interceptor, auth_interceptor
+                )
+                mock_factory.assert_called_once_with(
+                    channel=mock_intercept.return_value, credentials=mock_creds
+                )
+
+        # Case 2: credentials without create_auth_interceptor, no interceptors
+        mock_plain_creds = mock.MagicMock(spec=[])
+        mock_factory.reset_mock()
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=None,
+                    credentials=mock_plain_creds,
+                )
+                mock_intercept.assert_not_called()
+                mock_factory.assert_called_once_with(
+                    channel=mock_insecure.return_value, credentials=mock_plain_creds
+                )
+
+        # Case 3: credentials is None -> uses AnonymousCredentials
+        mock_factory.reset_mock()
+        with mock.patch("grpc.insecure_channel") as mock_insecure:
+            with mock.patch("grpc.intercept_channel") as mock_intercept:
+                _helpers._create_spanner_omni_transport(
+                    mock_factory,
+                    "localhost:9010",
+                    use_plain_text=True,
+                    ca_certificate=None,
+                    client_certificate=None,
+                    client_key=None,
+                    interceptors=None,
+                    credentials=None,
+                )
+                mock_intercept.assert_not_called()
+                self.assertEqual(mock_factory.call_count, 1)
+                self.assertIsInstance(
+                    mock_factory.call_args[1]["credentials"], AnonymousCredentials
+                )

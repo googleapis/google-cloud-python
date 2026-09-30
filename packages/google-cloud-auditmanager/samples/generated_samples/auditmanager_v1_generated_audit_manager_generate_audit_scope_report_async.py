@@ -41,7 +41,6 @@ async def sample_generate_audit_scope_report():
     # Initialize request argument(s)
     request = auditmanager_v1.GenerateAuditScopeReportRequest(
         scope="scope_value",
-        compliance_standard="compliance_standard_value",
         report_format="AUDIT_SCOPE_REPORT_FORMAT_ODF",
         compliance_framework="compliance_framework_value",
     )

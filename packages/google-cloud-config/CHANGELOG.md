@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-config/#history
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.7.0...google-cloud-config-v0.7.1) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.6.0...google-cloud-config-v0.7.0) (2026-06-02)
 
 

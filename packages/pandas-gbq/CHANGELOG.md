@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.2](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.1...pandas-gbq-v0.35.2) (2026-08-21)
+
+
+### Bug Fixes
+
+* **pandas-gbq:** reject backticks in parse_table_id ([#18156](https://github.com/googleapis/google-cloud-python/issues/18156)) ([f687060](https://github.com/googleapis/google-cloud-python/commit/f68706084a7c44f4fb0865230568f65ad7dff22c))
+
 ## [0.35.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.0...pandas-gbq-v0.35.1) (2026-08-06)
 
 

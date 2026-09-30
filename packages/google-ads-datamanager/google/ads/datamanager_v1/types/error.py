@@ -355,6 +355,21 @@ class ErrorReason(proto.Enum):
             of baseline location failed.
         INSIGHTS_MISSING_FOR_DIMENSION (123):
             Insights missing for this dimension.
+        REQUIRED_PREREQUISITE_LINK_MISSING (124):
+            A required prerequisite link (such as a
+            Google Ads link) must exist for the Google
+            Analytics property to perform this operation.
+        INVALID_REMOVE_AS_OF_TIME (125):
+            The remove as of time must be in the past or
+            present. Future timestamps are not permitted for
+            removing audience members.
+        REQUEST_TOO_OLD (126):
+            Request status is only available for
+            approximately 50 days after the API receives a
+            request.
+        CONVERSION_ACTION_TOO_RECENTLY_CREATED (127):
+            The conversion action was created too
+            recently.
     """
 
     ERROR_REASON_UNSPECIFIED = 0
@@ -480,6 +495,10 @@ class ErrorReason(proto.Enum):
     CUSTOM_VARIABLE_NOT_FOUND = 120
     BASELINE_LOCATION_AUTO_DETECTION_FAILED = 122
     INSIGHTS_MISSING_FOR_DIMENSION = 123
+    REQUIRED_PREREQUISITE_LINK_MISSING = 124
+    INVALID_REMOVE_AS_OF_TIME = 125
+    REQUEST_TOO_OLD = 126
+    CONVERSION_ACTION_TOO_RECENTLY_CREATED = 127
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

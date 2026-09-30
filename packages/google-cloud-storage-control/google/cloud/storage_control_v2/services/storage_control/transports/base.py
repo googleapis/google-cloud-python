@@ -435,6 +435,11 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.disable_rapid_cache: gapic_v1.method.wrap_method(
+                self.disable_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_rapid_cache: gapic_v1.method.wrap_method(
                 self.get_rapid_cache,
                 default_timeout=None,
@@ -645,6 +650,11 @@ class StorageControlTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.view_object_full_context: gapic_v1.method.wrap_method(
+                self.view_object_full_context,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -862,6 +872,15 @@ class StorageControlTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def disable_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.DisableRapidCacheRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_rapid_cache(
         self,
     ) -> Callable[
@@ -1040,6 +1059,18 @@ class StorageControlTransport(abc.ABC):
         Union[
             storage_control.ListIntelligenceFindingRevisionsResponse,
             Awaitable[storage_control.ListIntelligenceFindingRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        Union[
+            storage_control.ObjectFullContext,
+            Awaitable[storage_control.ObjectFullContext],
         ],
     ]:
         raise NotImplementedError()

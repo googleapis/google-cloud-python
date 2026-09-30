@@ -25,6 +25,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.recaptchaenterprise.v1",
     manifest={
+        "ChallengeType",
         "CreateAssessmentRequest",
         "TransactionEvent",
         "PhoneAuthenticationEvent",
@@ -71,6 +72,7 @@ __protobuf__ = proto.module(
         "AndroidKeySettings",
         "IOSKeySettings",
         "ExpressKeySettings",
+        "UniversalKeySettings",
         "AppleDeveloperId",
         "ScoreDistribution",
         "ScoreMetrics",
@@ -94,9 +96,38 @@ __protobuf__ = proto.module(
         "RelatedAccountGroup",
         "WafSettings",
         "AssessmentEnvironment",
+        "PolicyEvaluation",
+        "ChallengeRuleEvaluation",
         "IpOverrideData",
+        "GetPolicyRequest",
+        "UpdatePolicyRequest",
+        "Policy",
+        "ChallengeRuleGroup",
+        "ChallengeRule",
+        "ClientSettings",
+        "ProtectedEndpointGroup",
+        "ProtectedEndpoint",
     },
 )
+
+
+class ChallengeType(proto.Enum):
+    r"""Enum of challenge types for Universal, ``POLICY_BASED_CHALLENGE``
+    and ``INVISIBLE`` keys. Ensure that applications can handle values
+    not explicitly listed.
+
+    Values:
+        CHALLENGE_TYPE_UNSPECIFIED (0):
+            Default unspecified type.
+        CHALLENGE_TYPE_VISUAL (1):
+            A visual challenge.
+        CHALLENGE_TYPE_AUDIO (2):
+            An audio challenge.
+    """
+
+    CHALLENGE_TYPE_UNSPECIFIED = 0
+    CHALLENGE_TYPE_VISUAL = 1
+    CHALLENGE_TYPE_AUDIO = 2
 
 
 class CreateAssessmentRequest(proto.Message):
@@ -711,8 +742,8 @@ class Assessment(proto.Message):
             must include a token and site key to use this
             feature.
         account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
-            Output only. Assessment returned by account
-            defender when an account identifier is provided.
+            Output only. Assessment returned by Account
+            defense when an account identifier is provided.
         private_password_leak_verification (google.cloud.recaptchaenterprise_v1.types.PrivatePasswordLeakVerification):
             Optional. The private password leak
             verification field contains the parameters that
@@ -730,13 +761,16 @@ class Assessment(proto.Message):
             users involved in a payment transaction.
         phone_fraud_assessment (google.cloud.recaptchaenterprise_v1.types.PhoneFraudAssessment):
             Output only. Assessment returned when a site key, a token,
-            and a phone number as ``user_id`` are provided. Account
-            defender and SMS toll fraud protection need to be enabled.
+            and a phone number as ``user_id`` are provided. SMS defense
+            needs to be enabled.
         assessment_environment (google.cloud.recaptchaenterprise_v1.types.AssessmentEnvironment):
             Optional. The environment creating the
             assessment. This describes your environment (the
             system invoking CreateAssessment), NOT the
             environment of your user.
+        policy_evaluation (google.cloud.recaptchaenterprise_v1.types.PolicyEvaluation):
+            Output only. Provides information about the
+            policy evaluation for this assessment.
     """
 
     name: str = proto.Field(
@@ -798,6 +832,11 @@ class Assessment(proto.Message):
         number=14,
         message="AssessmentEnvironment",
     )
+    policy_evaluation: "PolicyEvaluation" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="PolicyEvaluation",
+    )
 
 
 class Event(proto.Message):
@@ -824,7 +863,7 @@ class Event(proto.Message):
             of event. This should be the same action
             provided at token generation time on client-side
             platforms already integrated with recaptcha
-            enterprise.
+            enterprise. Required for Universal keys.
         hashed_account_id (bytes):
             Optional. Deprecated: use ``user_info.account_id`` instead.
             Unique stable hashed user identifier for the request. The
@@ -1088,7 +1127,7 @@ class TransactionData(proto.Message):
         Attributes:
             account_id (str):
                 Optional. Unique account identifier for this user. If using
-                account defender, this should match the hashed_account_id
+                Account defense, this should match the hashed_account_id
                 field. Otherwise, a unique and persistent identifier for
                 this account.
             creation_ms (int):
@@ -1365,12 +1404,19 @@ class RiskAnalysis(proto.Message):
             Output only. Reasons contributing to the risk
             analysis verdict.
         extended_verdict_reasons (MutableSequence[str]):
-            Output only. Extended verdict reasons to be
-            used for experimentation only. The set of
-            possible reasons is subject to change.
+            Output only. Additional reasons contributing
+            to the risk analysis verdict. These reasons are
+            available to Enterprise tier projects only.
+            Contact sales for more information.
+            The set of reasons is subject to change.
+        last_challenge_type (google.cloud.recaptchaenterprise_v1.types.ChallengeType):
+            Output only. Type of the last challenge presented to the
+            user for Universal, ``POLICY_BASED_CHALLENGE`` and
+            ``INVISIBLE`` keys. The field is only set when a challenge
+            was presented to the user.
         challenge (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.Challenge):
-            Output only. Challenge information for
-            POLICY_BASED_CHALLENGE and INVISIBLE keys.
+            Output only. Challenge information for Universal,
+            ``POLICY_BASED_CHALLENGE`` and ``INVISIBLE`` keys.
         verified_bots (MutableSequence[google.cloud.recaptchaenterprise_v1.types.Bot]):
             Output only. Bots with identities that have
             been verified by reCAPTCHA and detected in the
@@ -1402,11 +1448,17 @@ class RiskAnalysis(proto.Message):
                 this site thus far to generate quality risk
                 analysis.
             SUSPECTED_CARDING (6):
-                The request matches behavioral
-                characteristics of a carding attack.
+                Deprecated: Use
+                [FraudPreventionAssessment.transaction_risk][google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.transaction_risk]
+                and
+                [FraudPreventionAssessment.RiskReason.Reason.EXCESSIVE_ENUMERATION_PATTERN][google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.RiskReason.Reason.EXCESSIVE_ENUMERATION_PATTERN]
+                instead.
             SUSPECTED_CHARGEBACK (7):
-                The request matches behavioral
-                characteristics of chargebacks for fraud.
+                Deprecated: Use
+                [FraudPreventionAssessment.transaction_risk][google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.transaction_risk]
+                and
+                [FraudPreventionAssessment.RiskReason.Reason.ASSOCIATED_WITH_FRAUD_CLUSTER][google.cloud.recaptchaenterprise.v1.FraudPreventionAssessment.RiskReason.Reason.ASSOCIATED_WITH_FRAUD_CLUSTER]
+                instead.
         """
 
         CLASSIFICATION_REASON_UNSPECIFIED = 0
@@ -1419,8 +1471,9 @@ class RiskAnalysis(proto.Message):
         SUSPECTED_CHARGEBACK = 7
 
     class Challenge(proto.Enum):
-        r"""Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE keys.
-        Ensure that applications can handle values not explicitly listed.
+        r"""Challenge information for Universal, ``POLICY_BASED_CHALLENGE`` and
+        ``INVISIBLE`` keys. Ensure that applications can handle values not
+        explicitly listed.
 
         Values:
             CHALLENGE_UNSPECIFIED (0):
@@ -1452,6 +1505,11 @@ class RiskAnalysis(proto.Message):
         proto.STRING,
         number=3,
     )
+    last_challenge_type: "ChallengeType" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="ChallengeType",
+    )
     challenge: Challenge = proto.Field(
         proto.ENUM,
         number=4,
@@ -1469,9 +1527,32 @@ class Bot(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Enumerated string value that
-            indicates the identity of the bot, formatted in
-            kebab-case.
+            Optional. Enumerated string value that indicates the
+            identity of the bot, formatted in kebab-case. Current
+            example values include the following:
+
+            - google-agent - AI_AGENT
+            - browser-base - AI_AGENT
+            - chat-gpt - AI_AGENT
+            - aws-bedrock - AI_AGENT
+            - cybaa-bot - AI_AGENT
+            - cloudflare - AI_AGENT
+            - payhawk - AI_AGENT
+            - duck-duck-go - SEARCH_INDEXER
+            - mediaboard - CONTENT_SCRAPER
+            - marker-io - AI_AGENT
+            - broadcom - AI_AGENT
+            - anchor-browser - AI_AGENT
+            - shopify - AI_AGENT
+            - stackscope - CONTENT_SCRAPER
+            - manus - AI_AGENT
+            - kernel-sh - AI_AGENT
+            - zvelo - SEARCH_INDEXER
+
+            Ensure that your applications can handle identifier values
+            not explicitly listed here. Deprecated values might take
+            some time to stop showing up in responses. New values can be
+            pushed so this list should be taken as non exhaustive.
         bot_type (google.cloud.recaptchaenterprise_v1.types.Bot.BotType):
             Optional. Enumerated field representing the
             type of bot.
@@ -1518,12 +1599,10 @@ class TokenProperties(proto.Message):
 
     Attributes:
         valid (bool):
-            Output only. Whether the provided user response token is
-            valid. When valid = false, the reason could be specified in
-            invalid_reason or it could also be due to a user failing to
-            solve a challenge or a sitekey mismatch (i.e the sitekey
-            used to generate the token was different than the one
-            specified in the assessment).
+            Output only. Indicates whether the provided user response
+            token is valid. If ``false``, the token is invalid, either
+            because the user failed the challenge or for a reason
+            provided in the ``invalid_reason`` field.
         invalid_reason (google.cloud.recaptchaenterprise_v1.types.TokenProperties.InvalidReason):
             Output only. Reason associated with the
             response when valid = false.
@@ -1578,6 +1657,13 @@ class TokenProperties(proto.Message):
                   integration type
                 - you set an action score threshold higher than 0.0
                 - you provided a non-empty ``expected_action``
+            KEY_MISMATCH (8):
+                The key used to generate the token does not match the
+                ``site_key``.
+            DOMAIN_MISMATCH (9):
+                The domain of the page on which the token was generated does
+                not match the ``allowed_domains`` configured in the
+                ``site_key``.
         """
 
         INVALID_REASON_UNSPECIFIED = 0
@@ -1588,6 +1674,8 @@ class TokenProperties(proto.Message):
         MISSING = 5
         BROWSER_ERROR = 6
         UNEXPECTED_ACTION = 7
+        KEY_MISMATCH = 8
+        DOMAIN_MISMATCH = 9
 
     valid: bool = proto.Field(
         proto.BOOL,
@@ -1920,15 +2008,18 @@ class PhoneFraudAssessment(proto.Message):
 
 
 class AccountDefenderAssessment(proto.Message):
-    r"""Account defender risk assessment.
+    r"""Account defense risk assessment.
 
     Attributes:
         labels (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
             Output only. Labels for this request.
+        account_takeover_verdict (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountTakeoverVerdict):
+            Output only. Account takeover risk assessment
+            for this request.
     """
 
     class AccountDefenderLabel(proto.Enum):
-        r"""Labels returned by account defender for this request.
+        r"""Labels returned by Account defense for this request.
         Ensure that applications can handle values not explicitly
         listed.
 
@@ -1936,8 +2027,8 @@ class AccountDefenderAssessment(proto.Message):
             ACCOUNT_DEFENDER_LABEL_UNSPECIFIED (0):
                 Default unspecified type.
             PROFILE_MATCH (1):
-                The request matches a known good profile for
-                the user.
+                The request matches a trusted profile
+                associated with this account.
             SUSPICIOUS_LOGIN_ACTIVITY (2):
                 The request is potentially a suspicious login
                 event and must be further verified either
@@ -1960,10 +2051,150 @@ class AccountDefenderAssessment(proto.Message):
         SUSPICIOUS_ACCOUNT_CREATION = 3
         RELATED_ACCOUNTS_NUMBER_HIGH = 4
 
+    class AccountTakeoverVerdict(proto.Message):
+        r"""Account takeover risk assessment.
+
+        Attributes:
+            risk (float):
+                Output only. Account takeover attempt
+                probability. Values are from 0.0 (lowest risk)
+                to 1.0 (highest risk).
+            risk_reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountRiskReason]):
+                Output only. Unordered list. Reasons why the
+                request appears risky. Risk reasons can be
+                returned even if the risk is low, as trustworthy
+                requests can still have some risk signals.
+            trust_reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountTrustReason]):
+                Output only. Unordered list. Reasons why the
+                request appears trustworthy. Trust reasons can
+                be returned even if the risk is high, as risky
+                requests can still have some trust signals.
+        """
+
+        risk: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        risk_reasons: MutableSequence["AccountDefenderAssessment.AccountRiskReason"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="AccountDefenderAssessment.AccountRiskReason",
+            )
+        )
+        trust_reasons: MutableSequence[
+            "AccountDefenderAssessment.AccountTrustReason"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="AccountDefenderAssessment.AccountTrustReason",
+        )
+
+    class AccountRiskReason(proto.Message):
+        r"""Risk explainability reasons for Account defense.
+
+        Attributes:
+            reason (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountRiskReason.RiskReason):
+                Output only. A risk reason associated with
+                this request.
+        """
+
+        class RiskReason(proto.Enum):
+            r"""Risk explainability reasons for Account defense.
+            Ensure that applications can handle values not explicitly
+            listed.
+
+            Values:
+                RISK_REASON_UNSPECIFIED (0):
+                    Default unspecified type.
+                CLIENT_HISTORICAL_BOT_ACTIVITY (1):
+                    The client has been observed sending bot-like
+                    traffic to this site in the past. This reason
+                    incorporates historical reputation and indicates
+                    that the client is known to use bots, even if
+                    the current request is being made by a human.
+                ACCOUNT_IN_LARGE_RELATED_GROUP (2):
+                    The account is part of a large group of
+                    related accounts, indicating that it may be part
+                    of a fraudulent network. Related accounts are
+                    identified based on having similar traffic
+                    patterns and request characteristics.
+                CLIENT_ACCESSED_MANY_ACCOUNTS (3):
+                    The client has been observed accessing many
+                    accounts on this site.
+                DISPOSABLE_EMAIL_DOMAIN (4):
+                    This email domain is a suspected provider of
+                    disposable email addresses.
+            """
+
+            RISK_REASON_UNSPECIFIED = 0
+            CLIENT_HISTORICAL_BOT_ACTIVITY = 1
+            ACCOUNT_IN_LARGE_RELATED_GROUP = 2
+            CLIENT_ACCESSED_MANY_ACCOUNTS = 3
+            DISPOSABLE_EMAIL_DOMAIN = 4
+
+        reason: "AccountDefenderAssessment.AccountRiskReason.RiskReason" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AccountDefenderAssessment.AccountRiskReason.RiskReason",
+        )
+
+    class AccountTrustReason(proto.Message):
+        r"""Trust explainability reasons for Account defense.
+
+        Attributes:
+            reason (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountTrustReason.TrustReason):
+                Output only. A trust reason associated with
+                this request.
+        """
+
+        class TrustReason(proto.Enum):
+            r"""Trust explainability reasons for Account defense.
+            Ensure that applications can handle values not explicitly
+            listed.
+
+            Values:
+                TRUST_REASON_UNSPECIFIED (0):
+                    Default unspecified type.
+                PROFILE_MATCH (1):
+                    The request matches a trusted profile associated with this
+                    account. Equivalent to
+                    ``AccountDefenderLabel.PROFILE_MATCH``.
+                ACCOUNT_HISTORY_REPUTABLE (2):
+                    The account's historical activity is
+                    reputable. It is unlikely that the account has
+                    been compromised in the past.
+                IDENTITY_GLOBAL_ACTIVITY_REPUTABLE (3):
+                    The identity shows a global pattern of reputable activity
+                    based on ``userInfo`` and associated identifiers.
+                IDENTITY_HISTORY_REPUTABLE (4):
+                    The identity shows a long-standing history of reputable
+                    activity based on ``userInfo`` and associated identifiers.
+            """
+
+            TRUST_REASON_UNSPECIFIED = 0
+            PROFILE_MATCH = 1
+            ACCOUNT_HISTORY_REPUTABLE = 2
+            IDENTITY_GLOBAL_ACTIVITY_REPUTABLE = 3
+            IDENTITY_HISTORY_REPUTABLE = 4
+
+        reason: "AccountDefenderAssessment.AccountTrustReason.TrustReason" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="AccountDefenderAssessment.AccountTrustReason.TrustReason",
+            )
+        )
+
     labels: MutableSequence[AccountDefenderLabel] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=AccountDefenderLabel,
+    )
+    account_takeover_verdict: AccountTakeoverVerdict = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=AccountTakeoverVerdict,
     )
 
 
@@ -2420,6 +2651,11 @@ class Key(proto.Message):
             reCAPTCHA Express.
 
             This field is a member of `oneof`_ ``platform_settings``.
+        universal_settings (google.cloud.recaptchaenterprise_v1.types.UniversalKeySettings):
+            Settings for keys that are configured through
+            their Policy.
+
+            This field is a member of `oneof`_ ``platform_settings``.
         labels (MutableMapping[str, str]):
             Optional. See [Creating and managing labels]
             (https://cloud.google.com/recaptcha/docs/labels).
@@ -2465,6 +2701,12 @@ class Key(proto.Message):
         number=11,
         oneof="platform_settings",
         message="ExpressKeySettings",
+    )
+    universal_settings: "UniversalKeySettings" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="platform_settings",
+        message="UniversalKeySettings",
     )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -2788,6 +3030,10 @@ class ExpressKeySettings(proto.Message):
     Express.
 
     """
+
+
+class UniversalKeySettings(proto.Message):
+    r"""Settings for keys that are configured through their Policy."""
 
 
 class AppleDeveloperId(proto.Message):
@@ -3637,6 +3883,29 @@ class AssessmentEnvironment(proto.Message):
     )
 
 
+class PolicyEvaluation(proto.Message):
+    r"""Information about the policy evaluation.
+
+    Attributes:
+        challenge_rule_evaluation (google.cloud.recaptchaenterprise_v1.types.ChallengeRuleEvaluation):
+            Output only. Populated if one or more
+            Challenge rules were matched. Its presence in
+            the assessment indicates that at least one
+            challenge rule was matched and determined
+            whether a challenge was presented to the user.
+    """
+
+    challenge_rule_evaluation: "ChallengeRuleEvaluation" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ChallengeRuleEvaluation",
+    )
+
+
+class ChallengeRuleEvaluation(proto.Message):
+    r"""Information about the evaluation of a ``ChallengeRule``."""
+
+
 class IpOverrideData(proto.Message):
     r"""Information about the IP or IP range override.
 
@@ -3680,6 +3949,295 @@ class IpOverrideData(proto.Message):
         proto.ENUM,
         number=3,
         enum=OverrideType,
+    )
+
+
+class GetPolicyRequest(proto.Message):
+    r"""The request message to get a policy.
+
+    Attributes:
+        name (str):
+            Required. The name of the policy to get, in the format
+            ``projects/{project}/keys/{key}/policy``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdatePolicyRequest(proto.Message):
+    r"""The request message to update a policy.
+
+    Attributes:
+        policy (google.cloud.recaptchaenterprise_v1.types.Policy):
+            Required. The Policy's name is used to identify the policy
+            to update, in the format
+            ``projects/{project}/keys/{key}/policy``.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The mask to control which fields of
+            the policy get updated. If the mask is not
+            present, all fields are updated.
+    """
+
+    policy: "Policy" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Policy",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class Policy(proto.Message):
+    r"""A complete configuration set containing multiple grouped
+    rules defining the behavior of reCAPTCHA for fraud detection and
+    prevention.
+
+    Attributes:
+        name (str):
+            Identifier. Resource name for this policy.
+            Format: "projects/{project}/keys/{key}/policy"
+            for a policy under a key.
+        client_settings (google.cloud.recaptchaenterprise_v1.types.ClientSettings):
+            Required. Configuration for clients protected
+            by this policy.
+        challenge_rule_groups (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ChallengeRuleGroup]):
+            Optional. Rules to configure the behavior of
+            reCAPTCHA for showing a challenge. Rule groups
+            are evaluated in order. Evaluation stops when
+            the first matching rule group is found.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_settings: "ClientSettings" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ClientSettings",
+    )
+    challenge_rule_groups: MutableSequence["ChallengeRuleGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ChallengeRuleGroup",
+    )
+
+
+class ChallengeRuleGroup(proto.Message):
+    r"""A collection of challenge rules that applies to one or more
+    actions.
+
+    Attributes:
+        actions (MutableSequence[str]):
+            Required. Action name provided at token generation. The
+            action name is not case-sensitive and can only contain
+            alphanumeric characters, slashes, and underscores. If "\*"
+            is provided, the rule group applies to all actions. If
+            multiple actions are provided, the rule group is applied to
+            all of them. This field is required.
+        challenge_rules (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ChallengeRule]):
+            Required. A list of rules that configure when
+            and how reCAPTCHA presents a challenge.
+            reCAPTCHA evaluates these rules in order and
+            applies the first one that matches.
+    """
+
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    challenge_rules: MutableSequence["ChallengeRule"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ChallengeRule",
+    )
+
+
+class ChallengeRule(proto.Message):
+    r"""A rule to configure the behavior of reCAPTCHA for
+    conditionally presenting a challenge.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        condition (str):
+            Optional. A CEL condition that must be met for this rule to
+            apply. If unspecified, the rule applies unconditionally. The
+            following fields can be referenced in the condition:
+
+            - ``score``
+            - ``user_ip_address``
+            - ``user_asn``
+            - ``user_agent``
+            - ``verified_bots.name``
+            - ``verified_bots.bot_type``
+
+            Examples:
+
+            - ``score < 0.5``
+            - ``user_ip_address == "123.45.67.89"``
+            - ``user_agent.contains("Chrome")``
+            - ``score < 0.5 && user_ip_address == "123.45.67.89"``
+        no_challenge (google.cloud.recaptchaenterprise_v1.types.ChallengeRule.NoChallengeOutcome):
+            Do not present a challenge to the user.
+
+            This field is a member of `oneof`_ ``outcome``.
+        challenge (google.cloud.recaptchaenterprise_v1.types.ChallengeRule.ChallengeOutcome):
+            Present a challenge to the user.
+
+            This field is a member of `oneof`_ ``outcome``.
+    """
+
+    class NoChallengeOutcome(proto.Message):
+        r"""An outcome that indicates that no challenge should be
+        presented to the user.
+
+        """
+
+    class ChallengeOutcome(proto.Message):
+        r"""An outcome that indicates that a challenge of a specified
+        difficulty should be presented to the user.
+
+        Attributes:
+            difficulty (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.ChallengeSecurityPreference):
+                Optional. The difficulty of the challenge to present to the
+                user. If unspecified, ``BALANCE`` is used.
+        """
+
+        difficulty: "WebKeySettings.ChallengeSecurityPreference" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="WebKeySettings.ChallengeSecurityPreference",
+        )
+
+    condition: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    no_challenge: NoChallengeOutcome = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="outcome",
+        message=NoChallengeOutcome,
+    )
+    challenge: ChallengeOutcome = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="outcome",
+        message=ChallengeOutcome,
+    )
+
+
+class ClientSettings(proto.Message):
+    r"""Configuration for clients to protect with reCAPTCHA.
+
+    Attributes:
+        allowed_domains (MutableSequence[str]):
+            Optional. Domains or subdomains of websites allowed to use
+            the policy. All subdomains of an allowed domain are
+            automatically allowed. A valid domain requires a host and
+            must not include any path, port, query or fragment.
+            Examples: 'example.com' or 'subdomain.example.com' Each
+            policy supports a maximum of 250 domains. To use a policy on
+            more domains, set ``allow_all_domains`` to true. When this
+            is set, you are responsible for validating the hostname by
+            checking the ``token_properties.hostname`` field in each
+            assessment response against your list of allowed domains.
+        allow_all_domains (bool):
+            Optional. If set to true, it means allowed_domains are not
+            enforced.
+        protected_endpoint_group (google.cloud.recaptchaenterprise_v1.types.ProtectedEndpointGroup):
+            Optional. Configuration for all API endpoints
+            to protect with reCAPTCHA. If this field is not
+            set, reCAPTCHA will not automatically request
+            tokens on any API endpoints.
+    """
+
+    allowed_domains: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    allow_all_domains: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    protected_endpoint_group: "ProtectedEndpointGroup" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ProtectedEndpointGroup",
+    )
+
+
+class ProtectedEndpointGroup(proto.Message):
+    r"""Configuration for API endpoints to protect with reCAPTCHA.
+
+    Attributes:
+        protected_endpoints (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ProtectedEndpoint]):
+            Optional. List of API endpoints to
+            automatically protect with reCAPTCHA. If any of
+            these endpoints is invoked from a page where a
+            key bound to this policy is installed, a
+            reCAPTCHA token is automatically generated and
+            attached to the request. If multiple protected
+            endpoints match a given API endpoint, the first
+            one in the list is used.
+    """
+
+    protected_endpoints: MutableSequence["ProtectedEndpoint"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ProtectedEndpoint",
+    )
+
+
+class ProtectedEndpoint(proto.Message):
+    r"""Configuration for an API endpoint to protect with reCAPTCHA.
+
+    Attributes:
+        path (str):
+            Required. URI path of the API endpoint to protect. Must
+            start with '/'. Supports glob characters '*' to match a
+            single path segment and '\*\*' to match multiple path
+            segments. Standalone root catch-alls ('/*' and '/\*\*') are
+            invalid because it can negatively impact performance to
+            trigger reCAPTCHA on every single request to your backend.
+
+            Matching is evaluated against the URL path only (domain,
+            scheme, and query parameters are ignored).
+
+            Examples:
+
+            - ``/login`` matches ``/login``,
+              ``https://example.com/login``, and ``/login?query=1``, but
+              not ``/login/step1``.
+            - ``/products/*`` matches ``/products/123``, but not
+              ``/products/123/456``.
+            - ``/content/**`` matches ``/content/articles/2024/01/01``.
+        action (str):
+            Required. Action name to be used for token
+            generation for this endpoint. The action name
+            can only contain alphanumeric characters,
+            slashes, and underscores.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    action: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

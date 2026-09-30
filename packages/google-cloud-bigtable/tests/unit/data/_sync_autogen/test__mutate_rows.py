@@ -52,8 +52,11 @@ class TestMutateRowsOperation:
         mutation.size = lambda: size
         return mutation
 
-    def _mock_stream(self, mutation_list, error_dict):
+    def _mock_stream(self, mutation_list, error_dict, omit_indices=None):
+        omit_indices = omit_indices or set()
         for idx, entry in enumerate(mutation_list):
+            if idx in omit_indices:
+                continue
             code = error_dict.get(idx, 0)
             yield MutateRowsResponse(
                 entries=[
@@ -63,12 +66,12 @@ class TestMutateRowsOperation:
                 ]
             )
 
-    def _make_mock_gapic(self, mutation_list, error_dict=None):
+    def _make_mock_gapic(self, mutation_list, error_dict=None, omit_indices=None):
         mock_fn = CrossSync._Sync_Impl.Mock()
         if error_dict is None:
             error_dict = {}
         mock_fn.side_effect = lambda *args, **kwargs: self._mock_stream(
-            mutation_list, error_dict
+            mutation_list, error_dict, omit_indices
         )
         return mock_fn
 
@@ -323,3 +326,43 @@ class TestMutateRowsOperation:
         assert len(instance.errors[1]) == 1
         assert instance.errors[1][0].grpc_status_code == 300
         assert 2 not in instance.errors
+
+    def test_run_attempt_missing_entry_retryable(self):
+        """If the server closes the stream successfully but omits a response
+        entry, the unanswered mutation must not be treated as successful. It
+        should be recorded as a retryable _MutateRowsIncomplete error so
+        idempotent entries are retried."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [
+            self._make_mutation(),
+            self._make_mutation(),
+            self._make_mutation(),
+        ]
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: True
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            with pytest.raises(_MutateRowsIncomplete):
+                instance._run_attempt()
+        assert instance.remaining_indices == [1]
+        assert 0 not in instance.errors
+        assert len(instance.errors[1]) == 1
+        assert isinstance(instance.errors[1][0], _MutateRowsIncomplete)
+        assert 2 not in instance.errors
+
+    def test_run_attempt_missing_entry_non_retryable(self):
+        """A missing response entry for a non-retryable mutation is surfaced as
+        a failure rather than being silently dropped."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [self._make_mutation(), self._make_mutation()]
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={0})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: False
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            instance._run_attempt()
+        assert instance.remaining_indices == []
+        assert len(instance.errors[0]) == 1
+        assert isinstance(instance.errors[0][0], _MutateRowsIncomplete)
+        assert 1 not in instance.errors

@@ -1,4 +1,0 @@
-CREATE MODEL `my_model`
-TRANSFORM (ML.STANDARD_SCALER(c1) OVER() AS c1_scaled, c2)
-OPTIONS(model_type = 'LINEAR_REG')
-AS SELECT c1, c2, label FROM t

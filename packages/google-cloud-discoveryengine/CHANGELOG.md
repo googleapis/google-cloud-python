@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.20.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.20.3...google-cloud-discoveryengine-v0.20.4) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
+## [0.20.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.20.2...google-cloud-discoveryengine-v0.20.3) (2026-09-03)
+
+
+### Features
+
+* update googleapis and regenerate ([#18229](https://github.com/googleapis/google-cloud-python/issues/18229)) ([d4f8a57](https://github.com/googleapis/google-cloud-python/commit/d4f8a57abadd282ad95472e77daa59d8fb98cbcf))
+
 ## [0.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.20.1...google-cloud-discoveryengine-v0.20.2) (2026-07-16)
 
 

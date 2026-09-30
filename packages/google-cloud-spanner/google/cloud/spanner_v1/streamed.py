@@ -108,44 +108,101 @@ class StreamedResultSet(object):
         self._pending_chunk = None
         return merged
 
+    def _append_to_current_row(self, values):
+        """Append cells to the in-progress partial row.
+
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check."""
+        if self._lazy_decode:
+            self._current_row.extend(values)
+        else:
+            decoders = self._decoders
+            start_column = len(self._current_row)
+            for column_offset, value in enumerate(values):
+                if value.HasField("null_value"):
+                    self._current_row.append(None)
+                else:
+                    self._current_row.append(
+                        decoders[start_column + column_offset](value)
+                    )
+
+    def _decode_lazy_rows(self, values, values_offset, batch_end, width):
+        """Slice raw protobuf values into rows for lazy decoding."""
+        if width == 1:
+            self._rows.extend([[value] for value in values[values_offset:batch_end]])
+        else:
+            self._rows.extend(
+                [
+                    values[row_start : row_start + width]
+                    for row_start in range(values_offset, batch_end, width)
+                ]
+            )
+
+    def _decode_eager_rows(self, values, values_offset, batch_end, width):
+        """Decode complete row batches into typed Python values.
+
+        Note: We manually check value.HasField("null_value") here instead of
+        wrapping every decoder in _parse_nullable to avoid the overhead of
+        an extra Python function call layer for every cell value decoded in this loop.
+        If the nullable check logic is updated in _parse_nullable, update this check."""
+        if width == 1:
+            decoder = self._decoders[0]
+            self._rows.extend(
+                [
+                    [None if value.HasField("null_value") else decoder(value)]
+                    for value in values[values_offset:batch_end]
+                ]
+            )
+        else:
+            decoders = self._decoders
+            rows_append = self._rows.append
+            column_indices = list(range(width))
+            for row_start in range(values_offset, batch_end, width):
+                rows_append(
+                    [
+                        None
+                        if values[row_start + column_index].HasField("null_value")
+                        else decoders[column_index](values[row_start + column_index])
+                        for column_index in column_indices
+                    ]
+                )
+
     def _merge_values(self, values):
         """Merge values into rows.
 
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set."""
-        decoders = self._decoders
+        if not values:
+            return
         width = len(self.fields)
-        index = len(self._current_row)
-        current_row = self._current_row
-        rows = self._rows
-        current_row_append = current_row.append
-        rows_append = rows.append
+        if width == 0:
+            return
+        values_offset = 0
+        total_values = len(values)
+        if self._current_row:
+            needed = width - len(self._current_row)
+            fill_count = min(needed, total_values)
+            self._append_to_current_row(values[:fill_count])
+            values_offset = fill_count
+            if len(self._current_row) == width:
+                self._rows.append(self._current_row)
+                self._current_row = []
+            else:
+                return
+        remaining_values = total_values - values_offset
+        if remaining_values == 0:
+            return
+        row_count = remaining_values // width
+        full_values_count = row_count * width
+        batch_end = values_offset + full_values_count
         if self._lazy_decode:
-            for value in values:
-                current_row_append(value)
-                index += 1
-                if index == width:
-                    rows_append(current_row)
-                    current_row = []
-                    current_row_append = current_row.append
-                    index = 0
+            self._decode_lazy_rows(values, values_offset, batch_end, width)
         else:
-            for value in values:
-                # Note: We manually check value.HasField("null_value") here instead of
-                # wrapping every decoder in _parse_nullable to avoid the overhead of
-                # an extra Python function call layer for every cell value decoded in this loop.
-                # If the nullable check logic is updated in _parse_nullable, update this check.
-                if value.HasField("null_value"):
-                    current_row_append(None)
-                else:
-                    current_row_append(decoders[index](value))
-                index += 1
-                if index == width:
-                    rows_append(current_row)
-                    current_row = []
-                    current_row_append = current_row.append
-                    index = 0
-        self._current_row = current_row
+            self._decode_eager_rows(values, values_offset, batch_end, width)
+        if remaining_values > full_values_count:
+            self._append_to_current_row(values[batch_end:])
 
     def _consume_next(self):
         """Consume the next partial result set from the stream.
@@ -168,9 +225,9 @@ class StreamedResultSet(object):
 
     def __iter__(self):
         while True:
-            iter_rows, self._rows[:] = (self._rows[:], ())
-            while iter_rows:
-                yield iter_rows.pop(0)
+            iter_rows, self._rows = (self._rows, [])
+            for row in iter_rows:
+                yield row
             if self._done:
                 return
             try:
@@ -184,8 +241,7 @@ class StreamedResultSet(object):
            The array that is returned by this function is the same as the array
            that would have been returned by the rows iterator if ``lazy_decoding=False``.
 
-        :returns: an array containing the decoded values of all the columns in the given row
-        """
+        :returns: an array containing the decoded values of all the columns in the given row"""
         if not hasattr(row, "__len__"):
             raise TypeError("row", "row must be an array of protobuf values")
         decoders = self._decoders

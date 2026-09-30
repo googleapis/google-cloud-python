@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+import logging
 from typing import List, Optional, Tuple
 
 from google.api_core.bidi_async import AsyncBidiRpc
@@ -21,6 +23,8 @@ from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+
+logger = logging.getLogger(__name__)
 
 
 class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
@@ -126,40 +130,53 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             initial_request=self.first_bidi_read_req,
             metadata=current_metadata,
         )
-        await self.socket_like_rpc.open()  # this is actually 1 send
-        response = await self.socket_like_rpc.recv()
-        # populated only in the first response of bidi-stream and when opened
-        # without using `read_handle`
-        if hasattr(response, "metadata") and response.metadata:
-            if self.generation_number is None:
-                self.generation_number = response.metadata.generation
-            # update persisted size
-            self.persisted_size = response.metadata.size
-            self.object_metadata = response.metadata
-            if (
-                hasattr(response.metadata, "finalize_time")
-                and response.metadata.finalize_time
-                and response.metadata.finalize_time.second > 0
-            ):
-                self.is_finalized = True
+        try:
+            await self.socket_like_rpc.open()  # this is actually 1 send
+            response = await self.socket_like_rpc.recv()
+            # populated only in the first response of bidi-stream and when opened
+            # without using `read_handle`
+            if hasattr(response, "metadata") and response.metadata:
+                if self.generation_number is None:
+                    self.generation_number = response.metadata.generation
+                # update persisted size
+                self.persisted_size = response.metadata.size
+                self.object_metadata = response.metadata
                 if (
-                    hasattr(response.metadata, "checksums")
-                    and response.metadata.checksums
+                    hasattr(response.metadata, "finalize_time")
+                    and response.metadata.finalize_time
+                    and response.metadata.finalize_time.second > 0
                 ):
-                    self.full_obj_server_crc32c = response.metadata.checksums.crc32c
+                    self.is_finalized = True
+                    if (
+                        hasattr(response.metadata, "checksums")
+                        and response.metadata.checksums
+                    ):
+                        self.full_obj_server_crc32c = response.metadata.checksums.crc32c
 
-        if response and response.read_handle:
-            self.read_handle = response.read_handle
+            if response and response.read_handle:
+                self.read_handle = response.read_handle
 
-        self._is_stream_open = True
+            self._is_stream_open = True
+        except (asyncio.CancelledError, Exception):
+            await self._close_socket_like_rpc()
+            raise
+
+    async def _close_socket_like_rpc(self) -> None:
+        try:
+            await self.socket_like_rpc.close()
+        except Exception as exc:
+            logger.debug("Error while closing the read bidi-gRPC stream: %s", exc)
 
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
-        await self.requests_done()
-        await self.socket_like_rpc.close()
-        self._is_stream_open = False
+        try:
+            if self.socket_like_rpc.is_active:
+                await self.requests_done()
+        finally:
+            self._is_stream_open = False
+            await self._close_socket_like_rpc()
 
     async def requests_done(self):
         """Signals that all requests have been sent."""

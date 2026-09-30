@@ -18,7 +18,7 @@ from typing import Callable
 from unittest import TestCase
 
 from google.api_core.exceptions import BadRequest, FailedPrecondition
-from mock import Mock, patch
+from mock import MagicMock, Mock, patch
 
 from google.cloud.spanner_v1.database_sessions_manager import (
     DatabaseSessionsManager,
@@ -249,6 +249,313 @@ class TestDatabaseSessionManager(TestCase):
                 "test_concurrent_get_multiplexed_session_no_deadlock timed out (DEADLOCK)!"
             )
 
+    def test_get_multiplexed_session_fast_path(self):
+        manager = self._manager
+        mock_session = Mock()
+        manager._multiplexed_session = mock_session
+        manager._init_lock = Mock(wraps=manager._init_lock)
+
+        session = manager._get_multiplexed_session()
+        self.assertIs(session, mock_session)
+        manager._init_lock.acquire.assert_not_called()
+        self.assertIsNone(manager._multiplexed_session_lock)
+
+    def test_get_multiplexed_session_fast_path_lock_already_created(self):
+        manager = self._manager
+        mock_session = Mock()
+        manager._multiplexed_session = mock_session
+        mock_lock = MagicMock()
+        manager._multiplexed_session_lock = mock_lock
+        manager._init_lock = Mock(wraps=manager._init_lock)
+
+        session = manager._get_multiplexed_session()
+        self.assertIs(session, mock_session)
+        manager._init_lock.acquire.assert_not_called()
+        mock_lock.acquire.assert_not_called()
+        mock_lock.__enter__.assert_not_called()
+
+    def test_maintain_multiplexed_session_swaps_before_deleting_old_session(self):
+        import threading
+        from weakref import ref
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        manager._multiplexed_session_terminate_event = Mock()
+        manager._multiplexed_session_terminate_event.is_set.side_effect = [False, True]
+
+        old_session = Mock()
+        new_session = Mock()
+        manager._multiplexed_session = old_session
+
+        def verify_swap_on_delete():
+            self.assertIs(manager._multiplexed_session, new_session)
+
+        old_session.delete.side_effect = verify_swap_on_delete
+
+        call_count = 0
+
+        def mock_time():
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                return 0
+            return 1000000
+
+        with patch(
+            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
+            side_effect=mock_time,
+        ):
+            with patch.object(
+                manager, "_build_multiplexed_session", return_value=new_session
+            ) as mock_build:
+                DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
+                mock_build.assert_called_once()
+                old_session.delete.assert_called_once()
+                self.assertIs(manager._multiplexed_session, new_session)
+
+    def test_close_branches(self):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+
+        # Branch where thread is None
+        manager.close()
+
+        # Branch where thread is not None
+        mock_thread = Mock()
+        mock_session = Mock()
+        manager._multiplexed_session_thread = mock_thread
+        manager._multiplexed_session = mock_session
+        manager._multiplexed_session_terminate_event = Mock()
+
+        manager.close()
+        manager._multiplexed_session_terminate_event.set.assert_called_once()
+        mock_thread.join.assert_called_once()
+        self.assertIsNone(manager._multiplexed_session)
+        mock_session.delete.assert_called_once()
+
+    def test_maintain_multiplexed_session_handles_build_failure(self):
+        import threading
+        from weakref import ref
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        manager._multiplexed_session_terminate_event = Mock()
+        manager._multiplexed_session_terminate_event.is_set.side_effect = [
+            False,
+            True,
+        ]
+
+        current_session = Mock()
+        manager._multiplexed_session = current_session
+
+        call_count = 0
+
+        def mock_time():
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                return 0
+            return 1000000
+
+        with patch(
+            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
+            side_effect=mock_time,
+        ):
+            with patch.object(
+                manager,
+                "_build_multiplexed_session",
+                side_effect=Exception("network error"),
+            ) as mock_build:
+                with patch(
+                    "google.cloud.spanner_v1.database_sessions_manager.CrossSync._Sync_Impl.event_wait"
+                ) as mock_event_wait:
+                    DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
+                    mock_build.assert_called_once()
+                    mock_event_wait.assert_called_once()
+                    current_session.delete.assert_not_called()
+                    self.assertIs(manager._multiplexed_session, current_session)
+
+    def test_maintain_multiplexed_session_handles_delete_failure(self):
+        import threading
+        from weakref import ref
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        manager._multiplexed_session_terminate_event = Mock()
+        manager._multiplexed_session_terminate_event.is_set.side_effect = [False, True]
+
+        old_session = Mock()
+        old_session.delete.side_effect = Exception("delete failed")
+        new_session = Mock()
+        manager._multiplexed_session = old_session
+
+        call_count = 0
+
+        def mock_time():
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                return 0
+            return 1000000
+
+        with patch(
+            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
+            side_effect=mock_time,
+        ):
+            with patch.object(
+                manager, "_build_multiplexed_session", return_value=new_session
+            ):
+                DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
+                old_session.delete.assert_called_once()
+                self.assertIs(manager._multiplexed_session, new_session)
+
+    def test_maintain_multiplexed_session_old_session_none(self):
+        import threading
+        from weakref import ref
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        manager._multiplexed_session_terminate_event = Mock()
+        manager._multiplexed_session_terminate_event.is_set.side_effect = [False, True]
+
+        new_session = Mock()
+        manager._multiplexed_session = None
+
+        call_count = 0
+
+        def mock_time():
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                return 0
+            return 1000000
+
+        with patch(
+            "google.cloud.spanner_v1.database_sessions_manager.time.monotonic",
+            side_effect=mock_time,
+        ):
+            with patch.object(
+                manager, "_build_multiplexed_session", return_value=new_session
+            ):
+                DatabaseSessionsManager._maintain_multiplexed_session(ref(manager))
+                self.assertIs(manager._multiplexed_session, new_session)
+
+    def test_get_multiplexed_session_initial_failure_allows_retry(self):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session = None
+
+        with patch.object(
+            manager,
+            "_build_multiplexed_session",
+            side_effect=Exception("create failed"),
+        ):
+            with self.assertRaises(Exception):
+                manager._get_multiplexed_session()
+            self.assertIsNone(manager._multiplexed_session)
+
+        # Subsequent call succeeds and creates session and maintenance thread
+        mock_session = Mock()
+        mock_thread = Mock()
+        mock_thread.is_alive.return_value = False
+        with patch.object(
+            manager, "_build_multiplexed_session", return_value=mock_session
+        ):
+            with patch.object(
+                manager, "_build_maintenance_thread", return_value=mock_thread
+            ):
+                session = manager._get_multiplexed_session()
+                self.assertIs(session, mock_session)
+                mock_thread.start.assert_called_once()
+
+    def test_get_multiplexed_session_concurrent_initialization_double_checked(
+        self,
+    ):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session = None
+
+        concurrent_session = Mock()
+        mock_lock = MagicMock()
+
+        def lock_enter():
+            manager._multiplexed_session = concurrent_session
+            return mock_lock
+
+        mock_lock.__enter__.side_effect = lock_enter
+
+        with patch.object(manager, "_build_multiplexed_session") as mock_build:
+            with patch(
+                "google.cloud.spanner_v1.database_sessions_manager.CrossSync._Sync_Impl.Lock",
+                return_value=mock_lock,
+            ):
+                session = manager._get_multiplexed_session()
+                self.assertIs(session, concurrent_session)
+                mock_build.assert_not_called()
+
+    def test_get_multiplexed_session_maintenance_thread_failure_allows_retry(
+        self,
+    ):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session = None
+
+        mock_session = Mock()
+        with patch.object(
+            manager, "_build_multiplexed_session", return_value=mock_session
+        ):
+            with patch.object(
+                manager,
+                "_build_maintenance_thread",
+                side_effect=RuntimeError("thread spawn failed"),
+            ):
+                with self.assertRaises(RuntimeError):
+                    manager._get_multiplexed_session()
+                self.assertIsNone(manager._multiplexed_session)
+
+    def test_build_maintenance_thread(self):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        mock_session = Mock()
+        mock_session.session_id = "sync-test-session-456"
+
+        thread = manager._build_maintenance_thread(mock_session)
+        self.assertIsNotNone(thread)
+        self.assertEqual(
+            thread.name, "maintenance-multiplexed-session-sync-test-session-456"
+        )
+        self.assertTrue(thread.daemon)
+
+        # Backward compatibility when session is omitted
+        manager._multiplexed_session = mock_session
+        thread_default = manager._build_maintenance_thread()
+        self.assertIsNotNone(thread_default)
+        self.assertEqual(
+            thread_default.name,
+            "maintenance-multiplexed-session-sync-test-session-456",
+        )
+        self.assertTrue(thread_default.daemon)
+
+    def test_maintain_multiplexed_session_manager_gone(self):
+        from weakref import ref
+
+        class Fake:
+            pass
+
+        fake = Fake()
+        reference = ref(fake)
+        del fake
+        DatabaseSessionsManager._maintain_multiplexed_session(reference)
+
+    def test_maintain_multiplexed_session_manager_collected_in_loop(self):
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        call_count = 0
+
+        def mock_ref():
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                return manager
+            return None
+
+        DatabaseSessionsManager._maintain_multiplexed_session(mock_ref)
+        self.assertGreaterEqual(call_count, 2)
+
     def test_exception_bad_request(self):
         manager = self._manager
         api = manager._database.spanner_api
@@ -339,6 +646,59 @@ class TestDatabaseSessionManager(TestCase):
         self.assertTrue(
             DatabaseSessionsManager._use_multiplexed(TransactionType.READ_ONLY)
         )
+
+    def test_rotate_multiplexed_session_success(self):
+        import threading
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        old_session = Mock()
+        new_session = Mock()
+        manager._multiplexed_session = old_session
+
+        with patch.object(
+            manager, "_build_multiplexed_session", return_value=new_session
+        ):
+            result = manager._rotate_multiplexed_session()
+            self.assertTrue(result)
+            self.assertIs(manager._multiplexed_session, new_session)
+            old_session.delete.assert_called_once()
+
+    def test_rotate_multiplexed_session_build_failure(self):
+        import threading
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        current_session = Mock()
+        manager._multiplexed_session = current_session
+
+        with patch.object(
+            manager,
+            "_build_multiplexed_session",
+            side_effect=Exception("network down"),
+        ):
+            result = manager._rotate_multiplexed_session()
+            self.assertFalse(result)
+            self.assertIs(manager._multiplexed_session, current_session)
+            current_session.delete.assert_not_called()
+
+    def test_rotate_multiplexed_session_delete_failure(self):
+        import threading
+
+        manager = DatabaseSessionsManager(self._manager._database, self._manager._pool)
+        manager._multiplexed_session_lock = threading.Lock()
+        old_session = Mock()
+        old_session.delete.side_effect = Exception("delete failed")
+        new_session = Mock()
+        manager._multiplexed_session = old_session
+
+        with patch.object(
+            manager, "_build_multiplexed_session", return_value=new_session
+        ):
+            result = manager._rotate_multiplexed_session()
+            self.assertTrue(result)
+            self.assertIs(manager._multiplexed_session, new_session)
+            old_session.delete.assert_called_once()
 
     def _assert_true_with_timeout(self, condition: Callable) -> None:
         """Asserts that the given condition is met within a timeout period.

@@ -772,6 +772,10 @@ class PrivateOffer(proto.Message):
             revenue_share (google.cloud.commerceproducer_v1beta.types.PrivateOffer.SingleProductOffer.RevenueShare):
                 Output only. Revenue share information for this Private
                 Offer. Not included for ``PRIVATE_OFFER_VIEW_BASIC``.
+            additional_contract_value (google.cloud.commerceproducer_v1beta.types.PrivateOffer.SingleProductOffer.AdditionalContractValue):
+                Optional. Additional contract value that the
+                customer is legally obligated to spend on the
+                product over the duration of the offer.
         """
 
         class Feature(proto.Message):
@@ -1397,6 +1401,69 @@ class PrivateOffer(proto.Message):
                 message=decimal_pb2.Decimal,
             )
 
+        class AdditionalContractValue(proto.Message):
+            r"""Additional contract value that represents a spend obligation
+            or target contract value tracked out-of-band by the partner.
+
+            Attributes:
+                contract_value (google.type.money_pb2.Money):
+                    Optional. The absolute, cumulative contract value of the
+                    customer's spend obligation that is added on top of the
+                    automatically billed fees from Google. This amount is not
+                    automatically billed or invoiced by Google; instead, it is
+                    tracked as a legal spend guarantee to be met via usage
+                    reporting and manually trued-up by partners.
+
+                    The overall total contract value of the offer is calculated
+                    as the sum of Google-billed fees (from installments), plus
+                    this additional contract value.
+
+                    For amendments, this field must be set to the new cumulative
+                    additional total.
+
+                    For example:
+
+                    - Initial Offer: 3 installments of $15 (total $45 billed by
+                      Google) plus an ``additional_contract_value`` of $100
+                      (billed by Partner, with true-ups happening at the end of
+                      the offer's term). The overall total contract value of the
+                      offer is $145 ($45 + $100).
+                    - Amended Offer: 6 installments of $15 (total $90 billed by
+                      Google) plus an ``additional_contract_value`` of $70
+                      (billed by Partner, with true-ups happening at the end of
+                      the offer's term). The overall total contract value of the
+                      amended offer is $160 ($90 + $70).
+
+                    Must be non-negative. The maximum allowed value is
+                    1,000,000,000 USD.
+                eligible_skus (MutableSequence[str]):
+                    Optional. The resource names of the SKUs
+                    whose tracked usage is eligible to contribute
+                    toward satisfying this additional contract value
+                    obligation.
+
+                    This list explicitly separates core spend
+                    obligations from exclusions like overage fees,
+                    which do not count toward meeting the customer's
+                    legal spend commitment.
+
+                    Must be non-empty for the offer to be published.
+
+                    Format:
+
+                    projects/{project}/locations/{location}/services/{service}/skus/{sku}
+            """
+
+            contract_value: money_pb2.Money = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message=money_pb2.Money,
+            )
+            eligible_skus: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
         amended_private_offer: str = proto.Field(
             proto.STRING,
             number=3,
@@ -1456,6 +1523,11 @@ class PrivateOffer(proto.Message):
             proto.MESSAGE,
             number=12,
             message="PrivateOffer.SingleProductOffer.RevenueShare",
+        )
+        additional_contract_value: "PrivateOffer.SingleProductOffer.AdditionalContractValue" = proto.Field(
+            proto.MESSAGE,
+            number=13,
+            message="PrivateOffer.SingleProductOffer.AdditionalContractValue",
         )
 
     single_product_offer: SingleProductOffer = proto.Field(

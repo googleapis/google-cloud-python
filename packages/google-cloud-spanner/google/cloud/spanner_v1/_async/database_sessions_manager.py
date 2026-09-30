@@ -18,6 +18,7 @@ __CROSS_SYNC_OUTPUT__ = "google.cloud.spanner_v1.database_sessions_manager"
 
 import asyncio
 import threading
+import time
 from datetime import timedelta
 from enum import Enum
 from os import getenv
@@ -128,6 +129,10 @@ class DatabaseSessionsManager(object):
 
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a multiplexed session."""
+        session = self._multiplexed_session
+        if session is not None:
+            return session
+
         with self._init_lock:
             if self._multiplexed_session_lock is None:
                 self._multiplexed_session_lock = CrossSync.Lock()
@@ -136,10 +141,12 @@ class DatabaseSessionsManager(object):
 
         async with self._multiplexed_session_lock:
             if self._multiplexed_session is None:
-                self._multiplexed_session = await self._build_multiplexed_session()
-                self._multiplexed_session_thread = self._build_maintenance_thread()
+                session = await self._build_multiplexed_session()
+                maintenance_thread = self._build_maintenance_thread(session)
                 if not CrossSync.is_async:
-                    self._multiplexed_session_thread.start()
+                    maintenance_thread.start()
+                self._multiplexed_session_thread = maintenance_thread
+                self._multiplexed_session = session
             return self._multiplexed_session
 
     @CrossSync.convert
@@ -156,25 +163,62 @@ class DatabaseSessionsManager(object):
         await session.create()
         return session
 
-    def _build_maintenance_thread(self) -> CrossSync.Task:
+    def _build_maintenance_thread(
+        self, session: Optional[Session] = None
+    ) -> CrossSync.Task:
         """Builds and returns a multiplexed session maintenance thread for
         the database session manager. This thread will periodically delete
         and recreate the multiplexed session to ensure that it is always valid.
 
+        :type session: :class:`~google.cloud.spanner_v1.session.Session`
+        :param session: (Optional) The multiplexed session to maintain.
+
         :rtype: :class:`CrossSync.Task`
         :returns: a multiplexed session maintenance thread."""
+        session_to_maintain = (
+            session if session is not None else self._multiplexed_session
+        )
         session_manager_ref = ref(self)
         if CrossSync.is_async:
             return CrossSync.create_task(
                 self._maintain_multiplexed_session, session_manager_ref
             )
         else:
+            session_id = (
+                session_to_maintain.session_id
+                if session_to_maintain is not None
+                else ""
+            )
             return Thread(
                 target=self._maintain_multiplexed_session,
-                name=f"maintenance-multiplexed-session-{self._multiplexed_session.session_id}",
+                name=f"maintenance-multiplexed-session-{session_id}",
                 args=[session_manager_ref],
                 daemon=True,
             )
+
+    @CrossSync.convert
+    async def _rotate_multiplexed_session(self) -> bool:
+        """Rotates the multiplexed session by building and swapping in a new session.
+
+        :rtype: bool
+        :returns: True if the session was successfully refreshed, False otherwise.
+        """
+        try:
+            new_session = await self._build_multiplexed_session()
+        except Exception:
+            return False
+
+        async with self._multiplexed_session_lock:
+            old_session = self._multiplexed_session
+            self._multiplexed_session = new_session
+
+        if old_session is not None:
+            try:
+                await CrossSync.run_if_async(old_session.delete)
+            except Exception:
+                pass
+
+        return True
 
     @staticmethod
     @CrossSync.convert
@@ -196,24 +240,26 @@ class DatabaseSessionsManager(object):
         refresh_interval_seconds = (
             manager._MAINTENANCE_THREAD_REFRESH_INTERVAL.total_seconds()
         )
-        from time import time
-
-        session_created_time = time()
+        session_created_time = time.monotonic()
         while True:
             manager = session_manager_ref()
             if manager is None:
                 return
-            if manager._multiplexed_session_terminate_event.is_set():
+            terminate_event = manager._multiplexed_session_terminate_event
+            if terminate_event.is_set():
                 return
-            if time() - session_created_time < refresh_interval_seconds:
-                await CrossSync.sleep(polling_interval_seconds)
-                continue
-            async with manager._multiplexed_session_lock:
-                await CrossSync.run_if_async(manager._multiplexed_session.delete)
-                manager._multiplexed_session = (
-                    await manager._build_multiplexed_session()
-                )
-            session_created_time = time()
+
+            if time.monotonic() - session_created_time >= refresh_interval_seconds:
+                if await manager._rotate_multiplexed_session():
+                    session_created_time = time.monotonic()
+                    manager = None
+                    continue
+
+            manager = None
+            await CrossSync.event_wait(
+                terminate_event,
+                timeout=polling_interval_seconds,
+            )
 
     @classmethod
     def _use_multiplexed(cls, transaction_type: TransactionType) -> bool:
@@ -247,5 +293,6 @@ class DatabaseSessionsManager(object):
             else:
                 self._multiplexed_session_thread.join()
         if self._multiplexed_session is not None:
-            await self._multiplexed_session.delete()
+            session_to_delete = self._multiplexed_session
             self._multiplexed_session = None
+            await session_to_delete.delete()

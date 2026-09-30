@@ -17,9 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.datamanager_v1.types import ad_event, audience, destination, event
+from google.ads.datamanager_v1.types import (
+    ad_event,
+    audience,
+    destination,
+    event,
+    processing_errors,
+)
 from google.ads.datamanager_v1.types import consent as gad_consent
 from google.ads.datamanager_v1.types import encryption_info as gad_encryption_info
 from google.ads.datamanager_v1.types import (
@@ -35,6 +42,8 @@ __protobuf__ = proto.module(
         "IngestAudienceMembersResponse",
         "RemoveAudienceMembersRequest",
         "RemoveAudienceMembersResponse",
+        "RemoveAllAudienceMembersRequest",
+        "RemoveAllAudienceMembersResponse",
         "IngestEventsRequest",
         "IngestEventsResponse",
         "IngestAdEventsRequest",
@@ -87,7 +96,7 @@ class IngestAudienceMembersRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. For hashed user
             identifiers, this is the encoding type of the hashed string.
@@ -150,11 +159,20 @@ class IngestAudienceMembersResponse(proto.Message):
     Attributes:
         request_id (str):
             The auto-generated ID of the request.
+        field_warnings (MutableSequence[google.ads.datamanager_v1.types.FieldWarning]):
+            Detailed row-level warnings with field paths.
     """
 
     request_id: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    field_warnings: MutableSequence[processing_errors.FieldWarning] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=processing_errors.FieldWarning,
+        )
     )
 
 
@@ -174,7 +192,7 @@ class RemoveAudienceMembersRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. Applies to only the
             outer encoding for encrypted user identifiers. For non
@@ -228,6 +246,58 @@ class RemoveAudienceMembersResponse(proto.Message):
     )
 
 
+class RemoveAllAudienceMembersRequest(proto.Message):
+    r"""Request to remove all users from an audience in the provided
+    destinations. Returns a
+    [RemoveAllAudienceMembersResponse][google.ads.datamanager.v1.RemoveAllAudienceMembersResponse].
+
+    Attributes:
+        destinations (MutableSequence[google.ads.datamanager_v1.types.Destination]):
+            Required. The list of destinations to remove
+            the users from.
+        remove_as_of_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The remove as of time. If set, only
+            audience members last added before this time
+            will be removed. If not set, it defaults to
+            current time. The remove as of time must not be
+            in the future.
+        validate_only (bool):
+            Optional. For testing purposes. If ``true``, the request is
+            validated but not executed. Only errors are returned, not
+            results.
+    """
+
+    destinations: MutableSequence[destination.Destination] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=destination.Destination,
+    )
+    remove_as_of_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class RemoveAllAudienceMembersResponse(proto.Message):
+    r"""Response from the
+    [RemoveAllAudienceMembersRequest][google.ads.datamanager.v1.RemoveAllAudienceMembersRequest].
+
+    Attributes:
+        request_id (str):
+            The auto-generated ID of the request.
+    """
+
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class IngestEventsRequest(proto.Message):
     r"""Request to upload audience members to the provided destinations.
     Returns an
@@ -252,7 +322,7 @@ class IngestEventsRequest(proto.Message):
             validated but not executed. Only errors are returned, not
             results.
         encoding (google.ads.datamanager_v1.types.Encoding):
-            Optional. Required for
+            Optional. Must be provided for
             [UserData][google.ads.datamanager.v1.UserData] uploads. The
             encoding type of the user identifiers. For hashed user
             identifiers, this is the encoding type of the hashed string.
@@ -307,11 +377,20 @@ class IngestEventsResponse(proto.Message):
     Attributes:
         request_id (str):
             The auto-generated ID of the request.
+        field_warnings (MutableSequence[google.ads.datamanager_v1.types.FieldWarning]):
+            Detailed row-level warnings with field paths.
     """
 
     request_id: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    field_warnings: MutableSequence[processing_errors.FieldWarning] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=processing_errors.FieldWarning,
+        )
     )
 
 
@@ -323,8 +402,10 @@ class IngestAdEventsRequest(proto.Message):
             Required. Required (at least 1). A list of ad
             events.
         encryption_info (google.ads.datamanager_v1.types.EncryptionInfo):
-            Optional. Information about encryption keys
-            which are used to encrypt the data.
+            Optional. Information about encryption keys which are used
+            to encrypt the data. This field must be provided when ad
+            events contain
+            [UserData][google.ads.datamanager.v1.UserData].
         validate_only (bool):
             Optional. If true, the request is validated,
             but not executed.

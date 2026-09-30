@@ -495,3 +495,20 @@ class TimestampPrecision(enum.Enum):
     """
     For TIMESTAMP type with picosecond precision.
     """
+
+
+class QueryResultsFormat(str, enum.Enum):
+    """[Beta] Format for query results response."""
+
+    ARROW = "ARROW"
+    """Specifies Apache Arrow format for query results."""
+
+
+class QueryResultsCompressionCodec(str, enum.Enum):
+    """[Beta] Compression codec for Arrow query results serialization."""
+
+    LZ4_FRAME = "LZ4_FRAME"
+    """Specifies LZ4_FRAME compression codec."""
+
+    ZSTD = "ZSTD"
+    """Specifies ZSTD compression codec."""

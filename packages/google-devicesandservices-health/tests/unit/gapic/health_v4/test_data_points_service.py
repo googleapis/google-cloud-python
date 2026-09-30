@@ -84,6 +84,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -139,215 +151,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert DataPointsServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
-    assert (
-        DataPointsServiceClient._get_default_mtls_endpoint(custom_endpoint)
-        == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert DataPointsServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                DataPointsServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert DataPointsServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            DataPointsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert DataPointsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert DataPointsServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert DataPointsServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert DataPointsServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                DataPointsServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert DataPointsServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert DataPointsServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -381,99 +184,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    DataPointsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataPointsServiceClient),
-)
-@mock.patch.object(
-    DataPointsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataPointsServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = DataPointsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = DataPointsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = DataPointsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        DataPointsServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == DataPointsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
-        == DataPointsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == DataPointsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        DataPointsServiceClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        DataPointsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        DataPointsServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        DataPointsServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        DataPointsServiceClient._get_universe_domain(None, None)
-        == DataPointsServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        DataPointsServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -1001,6 +711,7 @@ def test_data_points_service_client_get_mtls_endpoint_and_cert_source(client_cla
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -1055,6 +766,7 @@ def test_data_points_service_client_get_mtls_endpoint_and_cert_source(client_cla
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -1382,9 +1094,19 @@ def test_data_points_service_client_create_channel_credentials_file(
             quota_project_id=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             scopes=None,
             default_host="health.googleapis.com",
@@ -4855,19 +4577,19 @@ def test_get_data_point_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_data_point._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetDataPoint,
+        "_BaseGetDataPoint__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_data_point._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -4913,15 +4635,6 @@ def test_get_data_point_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_data_point_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_data_point._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_data_point_rest_flattened():
@@ -5034,27 +4747,28 @@ def test_list_data_points_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_data_points._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListDataPoints,
+        "_BaseListDataPoints__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_data_points._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -5100,24 +4814,6 @@ def test_list_data_points_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_data_points_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_data_points._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_data_points_rest_flattened():
@@ -5300,19 +4996,19 @@ def test_create_data_point_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_data_point._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateDataPoint,
+        "_BaseCreateDataPoint__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_data_point._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -5356,23 +5052,6 @@ def test_create_data_point_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_data_point_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_data_point._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "dataPoint",
-            )
-        )
-    )
 
 
 def test_create_data_point_rest_flattened():
@@ -5500,17 +5179,17 @@ def test_update_data_point_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_data_point._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateDataPoint,
+        "_BaseUpdateDataPoint__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_data_point._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -5552,15 +5231,6 @@ def test_update_data_point_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_data_point_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_data_point._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("dataPoint",)))
 
 
 def test_update_data_point_rest_flattened():
@@ -5693,19 +5363,19 @@ def test_batch_delete_data_points_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_data_points._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseBatchDeleteDataPoints,
+        "_BaseBatchDeleteDataPoints__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["names"] = "names_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).batch_delete_data_points._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "names" in jsonified_request
@@ -5749,15 +5419,6 @@ def test_batch_delete_data_points_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_batch_delete_data_points_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.batch_delete_data_points._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("names",)))
 
 
 def test_reconcile_data_points_rest_use_cached_wrapped_rpc():
@@ -5816,28 +5477,29 @@ def test_reconcile_data_points_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).reconcile_data_points._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseReconcileDataPoints,
+        "_BaseReconcileDataPoints__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).reconcile_data_points._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "data_source_family",
+            "dataSourceFamily",
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -5883,25 +5545,6 @@ def test_reconcile_data_points_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_reconcile_data_points_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.reconcile_data_points._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "dataSourceFamily",
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_reconcile_data_points_rest_pager(transport: str = "rest"):
@@ -6025,19 +5668,19 @@ def test_roll_up_data_points_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).roll_up_data_points._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRollUpDataPoints,
+        "_BaseRollUpDataPoints__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).roll_up_data_points._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -6084,24 +5727,6 @@ def test_roll_up_data_points_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_roll_up_data_points_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.roll_up_data_points._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "range",
-                "windowSize",
-            )
-        )
-    )
 
 
 def test_roll_up_data_points_rest_pager(transport: str = "rest"):
@@ -6226,19 +5851,19 @@ def test_daily_roll_up_data_points_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).daily_roll_up_data_points._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDailyRollUpDataPoints,
+        "_BaseDailyRollUpDataPoints__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).daily_roll_up_data_points._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -6285,23 +5910,6 @@ def test_daily_roll_up_data_points_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_daily_roll_up_data_points_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.daily_roll_up_data_points._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "range",
-            )
-        )
-    )
 
 
 def test_export_exercise_tcx_rest_use_cached_wrapped_rpc():
@@ -6359,21 +5967,22 @@ def test_export_exercise_tcx_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_exercise_tcx._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseExportExerciseTcx,
+        "_BaseExportExerciseTcx__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_exercise_tcx._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("partial_data",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("partialData",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -6419,15 +6028,6 @@ def test_export_exercise_tcx_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_export_exercise_tcx_rest_unset_required_fields():
-    transport = transports.DataPointsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.export_exercise_tcx._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("partialData",)) & set(("name",)))
 
 
 def test_export_exercise_tcx_rest_flattened():
@@ -7412,6 +7012,7 @@ def test_create_data_point_rest_call_success(request_type):
                 "nap": True,
                 "manually_edited": True,
                 "external_id": "external_id_value",
+                "main_sleep": True,
             },
             "summary": {
                 "minutes_in_sleep_period": 2453,
@@ -7423,6 +7024,7 @@ def test_create_data_point_rest_call_success(request_type):
             },
             "create_time": {},
             "update_time": {},
+            "short_awakenings": {},
         },
         "daily_resting_heart_rate": {
             "date": {},
@@ -7438,7 +7040,7 @@ def test_create_data_point_rest_call_success(request_type):
         },
         "exercise": {
             "interval": {},
-            "exercise_type": 1,
+            "exercise_type": 13,
             "splits": [
                 {
                     "start_time": {},
@@ -7673,6 +7275,10 @@ def test_create_data_point_rest_call_success(request_type):
             "specimen": 1,
             "notes": "notes_value",
         },
+        "menstrual_period": {"interval": {}, "notes": "notes_value"},
+        "ovulation_test": {"sample_time": {}, "result": 1},
+        "symptoms": {"sample_time": {}, "symptoms": [1]},
+        "moods": {"sample_time": {}, "moods": [1], "valences": [1]},
         "name": "name_value",
         "data_source": {
             "recording_method": 1,
@@ -7947,6 +7553,7 @@ def test_update_data_point_rest_call_success(request_type):
                 "nap": True,
                 "manually_edited": True,
                 "external_id": "external_id_value",
+                "main_sleep": True,
             },
             "summary": {
                 "minutes_in_sleep_period": 2453,
@@ -7958,6 +7565,7 @@ def test_update_data_point_rest_call_success(request_type):
             },
             "create_time": {},
             "update_time": {},
+            "short_awakenings": {},
         },
         "daily_resting_heart_rate": {
             "date": {},
@@ -7973,7 +7581,7 @@ def test_update_data_point_rest_call_success(request_type):
         },
         "exercise": {
             "interval": {},
-            "exercise_type": 1,
+            "exercise_type": 13,
             "splits": [
                 {
                     "start_time": {},
@@ -8208,6 +7816,10 @@ def test_update_data_point_rest_call_success(request_type):
             "specimen": 1,
             "notes": "notes_value",
         },
+        "menstrual_period": {"interval": {}, "notes": "notes_value"},
+        "ovulation_test": {"sample_time": {}, "result": 1},
+        "symptoms": {"sample_time": {}, "symptoms": [1]},
+        "moods": {"sample_time": {}, "moods": [1], "valences": [1]},
         "name": "users/sample1/dataTypes/sample2/dataPoints/sample3",
         "data_source": {
             "recording_method": 1,
@@ -9339,9 +8951,19 @@ def test_data_points_service_base_transport_with_credentials_file():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id="octopus",
         )
@@ -9370,9 +8992,19 @@ def test_data_points_service_auth_adc():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id=None,
         )
@@ -9395,9 +9027,19 @@ def test_data_points_service_transport_auth_adc(transport_class):
             scopes=["1", "2"],
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id="octopus",
         )
@@ -9453,9 +9095,19 @@ def test_data_points_service_transport_create_channel(transport_class, grpc_help
             quota_project_id="octopus",
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             scopes=["1", "2"],
             default_host="health.googleapis.com",

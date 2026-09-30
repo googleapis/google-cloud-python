@@ -25,6 +25,7 @@ Services for Google Cloud Compute v1 API
     global_public_delegated_prefixes
     global_vm_extension_policies
     health_checks
+    hosts
     image_family_views
     images
     instance_group_manager_resize_requests
@@ -58,6 +59,7 @@ Services for Google Cloud Compute v1 API
     packet_mirrorings
     preview_features
     projects
+    project_views
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers
@@ -93,6 +95,7 @@ Services for Google Cloud Compute v1 API
     region_target_tcp_proxies
     region_url_maps
     region_zones
+    reliability_risks
     reservation_blocks
     reservations
     reservation_slots

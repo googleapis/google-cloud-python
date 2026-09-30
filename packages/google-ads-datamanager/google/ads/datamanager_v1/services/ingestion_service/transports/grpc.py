@@ -390,6 +390,38 @@ class IngestionServiceGrpcTransport(IngestionServiceTransport):
         return self._stubs["remove_audience_members"]
 
     @property
+    def remove_all_audience_members(
+        self,
+    ) -> Callable[
+        [ingestion_service.RemoveAllAudienceMembersRequest],
+        ingestion_service.RemoveAllAudienceMembersResponse,
+    ]:
+        r"""Return a callable for the remove all audience members method over gRPC.
+
+        Removes all audience members from the provided
+        destinations.
+
+        Returns:
+            Callable[[~.RemoveAllAudienceMembersRequest],
+                    ~.RemoveAllAudienceMembersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_all_audience_members" not in self._stubs:
+            self._stubs["remove_all_audience_members"] = (
+                self._logged_channel.unary_unary(
+                    "/google.ads.datamanager.v1.IngestionService/RemoveAllAudienceMembers",
+                    request_serializer=ingestion_service.RemoveAllAudienceMembersRequest.serialize,
+                    response_deserializer=ingestion_service.RemoveAllAudienceMembersResponse.deserialize,
+                )
+            )
+        return self._stubs["remove_all_audience_members"]
+
+    @property
     def ingest_events(
         self,
     ) -> Callable[

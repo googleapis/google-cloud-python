@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from datetime import datetime, timedelta
-from threading import Lock
+from threading import Event, Lock, Thread
 from typing import Mapping
 
 import mock
@@ -695,11 +695,68 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertFalse(derived._multi_use)
         self.assertEqual(derived._execute_sql_request_count, 0)
         self.assertEqual(derived._read_request_count, 0)
+        self.assertFalse(derived._begin_request_sent)
         self.assertIsNone(derived._transaction_id)
         self.assertIsNone(derived._precommit_token)
         self.assertIsInstance(derived._lock, type(Lock()))
+        self.assertFalse(derived._transaction_begin_event.is_set())
 
         self.assertNoSpans()
+
+    def test__wait_for_transaction_begin_claims_inline_begin(self):
+        derived = _build_snapshot_derived(multi_use=True)
+
+        derived._wait_for_transaction_begin()
+
+        # The first request is the one that begins the transaction inline.
+        self.assertTrue(derived._begin_request_sent)
+
+    def test__wait_for_transaction_begin_wo_multi_use(self):
+        derived = _build_snapshot_derived(multi_use=False)
+        derived._read_request_count = 1
+
+        with self.assertRaisesRegex(ValueError, "Cannot re-use single-use snapshot."):
+            derived._wait_for_transaction_begin()
+
+    def test__wait_for_transaction_begin_waits_for_concurrent_begin(self):
+        """A concurrent request must wait for the in-flight inline begin.
+
+        Regression test: without the begin event, the second request observes
+        ``_transaction_id is None`` and wrongly raises "Transaction has not begun."
+        """
+
+        from google.cloud.spanner_v1 import Transaction as TransactionPB
+
+        derived = _build_snapshot_derived(multi_use=True)
+
+        # First request claims the inline begin, but has not completed yet, so
+        # no transaction id is available.
+        derived._wait_for_transaction_begin()
+
+        errors = []
+        released = Event()
+
+        def concurrent_request():
+            try:
+                derived._wait_for_transaction_begin()
+            except Exception as exc:  # pragma: no cover - only on regression
+                errors.append(exc)
+            finally:
+                released.set()
+
+        thread = Thread(target=concurrent_request, daemon=True)
+        thread.start()
+
+        # The concurrent request blocks while the transaction id is unknown.
+        self.assertFalse(released.wait(timeout=0.1))
+
+        # Completing the inline begin releases it.
+        derived._update_for_transaction_pb(TransactionPB(id=TXN_ID))
+        self.assertTrue(released.wait(timeout=10))
+
+        thread.join(timeout=10)
+        self.assertFalse(thread.is_alive())
+        self.assertEqual(errors, [])
 
     def test__build_transaction_selector_pb_single_use(self):
         derived = _build_snapshot_derived(multi_use=False)
@@ -1203,8 +1260,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",
         return_value="global",
     )
+    @mock.patch(
+        "google.cloud.spanner_v1.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS", 0.01
+    )
     def test_read_w_multi_use_w_first_w_count_gt_0(self, mock_region):
-        with self.assertRaises(ValueError):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             self._execute_read(multi_use=True, first=True, count=1)
 
     @mock.patch(
@@ -1510,8 +1574,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
     def test_execute_sql_w_multi_use_w_first(self, mock_region):
         self._execute_sql_helper(multi_use=True, first=True)
 
+    @mock.patch(
+        "google.cloud.spanner_v1.snapshot._TRANSACTION_BEGIN_TIMEOUT_SECONDS", 0.01
+    )
     def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
-        with self.assertRaises(ValueError):
+        # No concurrent request ever begins the transaction, so this request
+        # waits for the begin timeout to expire before giving up.
+        with self.assertRaisesRegex(
+            ValueError, "Timed out waiting for transaction to begin."
+        ):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
 
     @mock.patch(

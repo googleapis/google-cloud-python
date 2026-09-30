@@ -300,8 +300,8 @@ class Space(proto.Message):
             SPACE_THREADING_STATE_UNSPECIFIED (0):
                 Reserved.
             THREADED_MESSAGES (2):
-                Named spaces that support message threads.
-                When users respond to a message, they can reply
+                Spaces that support message threads. When
+                users respond to a message, they can reply
                 in-thread, which keeps their response in the
                 context of the original message.
             GROUPED_MESSAGES (3):
@@ -309,8 +309,13 @@ class Space(proto.Message):
                 organized by topic. Topics and their replies are
                 grouped together.
             UNTHREADED_MESSAGES (4):
-                Direct messages (DMs) between two people and
-                group conversations between 3 or more people.
+                Spaces that don't support message threading. This space
+                threading state is only used for special cases including:
+
+                - Continuous meeting chat where threading is intentionally
+                  turned off.
+                - Legacy group conversations that were created prior to
+                  2022.
         """
 
         SPACE_THREADING_STATE_UNSPECIFIED = 0
@@ -489,6 +494,18 @@ class Space(proto.Message):
             join_space_setting (google.apps.chat_v1.types.Space.AccessPermissionSetting):
                 Optional. Access permission setting for
                 joining the space.
+            view_space_membership_setting (google.apps.chat_v1.types.Space.AccessPermissionSetting):
+                Optional. Access permission setting for viewing space
+                membership. Must be specified together with
+                ``PermissionSettings.view_space_membership`` in the update
+                mask and request body when updating who can view space
+                membership. When granting view access to a target audience,
+                you must also grant
+                ``PermissionSettings.view_space_membership`` to all members
+                in the same request. To remove an existing target audience
+                (for example, to restrict view access to space managers or
+                assistant managers only), specify an empty
+                ``AccessPermissionSetting`` (with no ``principals``).
         """
 
         discover_space_setting: "Space.AccessPermissionSetting" = proto.Field(
@@ -499,6 +516,11 @@ class Space(proto.Message):
         join_space_setting: "Space.AccessPermissionSetting" = proto.Field(
             proto.MESSAGE,
             number=2,
+            message="Space.AccessPermissionSetting",
+        )
+        view_space_membership_setting: "Space.AccessPermissionSetting" = proto.Field(
+            proto.MESSAGE,
+            number=3,
             message="Space.AccessPermissionSetting",
         )
 
@@ -587,6 +609,21 @@ class Space(proto.Message):
                 a space.
 
                 This field is a member of `oneof`_ ``_reply_messages``.
+            view_space_membership (google.apps.chat_v1.types.Space.PermissionSetting):
+                Optional. Setting for viewing space membership. Must be
+                specified together with
+                ``AccessPermissionSettings.view_space_membership_setting``
+                in the update mask and request body when updating who can
+                view space membership. When restricting view access to
+                specific roles (for example, space managers or assistant
+                managers only), specify the desired role permissions here
+                and provide an empty
+                ``AccessPermissionSettings.view_space_membership_setting``
+                in the same request. If a target audience is configured in
+                ``AccessPermissionSettings.view_space_membership_setting``,
+                this setting must be granted to all members.
+
+                This field is a member of `oneof`_ ``_view_space_membership``.
         """
 
         manage_members_and_groups: "Space.PermissionSetting" = proto.Field(
@@ -634,6 +671,12 @@ class Space(proto.Message):
         reply_messages: "Space.PermissionSetting" = proto.Field(
             proto.MESSAGE,
             number=8,
+            optional=True,
+            message="Space.PermissionSetting",
+        )
+        view_space_membership: "Space.PermissionSetting" = proto.Field(
+            proto.MESSAGE,
+            number=9,
             optional=True,
             message="Space.PermissionSetting",
         )
@@ -794,14 +837,26 @@ class CreateSpaceRequest(proto.Message):
             The space ``name`` is assigned on the server so anything
             specified in this field will be ignored.
         request_id (str):
-            Optional. A unique identifier for this
-            request. A random UUID is recommended.
-            Specifying an existing request ID returns the
-            space created with that ID instead of creating a
-            new space.
-            Specifying an existing request ID from the same
-            Chat app with a different authenticated user
-            returns an error.
+            Optional. A unique ID for this request. A random UUID is
+            recommended. Specifying a request ID makes the request
+            idempotent, which ensures that multiple identical requests
+            with the same request ID result in only a single space being
+            created. Subsequent requests with the same request ID return
+            the existing space and do not update the space, even if the
+            requested details differ from the current state.
+
+            To use this field effectively:
+
+            - Ensure that subsequent requests are identical and use the
+              same authentication credentials as the original request.
+            - If a space was already created with the provided request
+              ID, the request returns that space. Note that the returned
+              space might not be fully populated; the API echoes the
+              space in your request with the system-assigned resource
+              name populated. To retrieve the latest metadata for the
+              space, call ``GetSpace``.
+            - Reusing an existing request ID with a different
+              authenticated user results in an error.
     """
 
     space: "Space" = proto.Field(
@@ -1146,6 +1201,7 @@ class UpdateSpaceRequest(proto.Message):
 
             - ``access_settings.access_permission_settings.discoverSpaceSetting``
             - ``access_settings.access_permission_settings.joinSpaceSetting``
+            - ``access_settings.access_permission_settings.viewSpaceMembershipSetting``
 
             ``permission_settings``: Supports changing the `permission
             settings <https://support.google.com/chat/answer/13340792>`__
@@ -1161,6 +1217,7 @@ class UpdateSpaceRequest(proto.Message):
             - ``permission_settings.manageApps``
             - ``permission_settings.manageWebhooks``
             - ``permission_settings.replyMessages``
+            - ``permission_settings.viewSpaceMembership``
         use_admin_access (bool):
             Optional. When ``true``, the method runs using the user's
             Google Workspace administrator privileges.
@@ -1207,18 +1264,16 @@ class SearchSpacesRequest(proto.Message):
             Requires either the ``chat.admin.spaces.readonly`` or
             ``chat.admin.spaces`` `OAuth 2.0
             scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__.
-
-            This method currently only supports admin access, thus only
-            ``true`` is accepted for this field.
         page_size (int):
-            The maximum number of spaces to return. The
-            service may return fewer than this value.
+            The maximum number of spaces to return. The service may
+            return fewer than this value.
 
             If unspecified, at most 100 spaces are returned.
 
-            The maximum value is 1000. If you use a value
-            more than 1000, it's automatically changed to
-            1000.
+            The maximum value is 1000 when ``useAdminAccess`` is set to
+            ``true``. Otherwise, the maximum value is 100. If you use a
+            value more than the maximum value, it's automatically
+            changed to the maximum value.
         page_token (str):
             A token, received from the previous search
             spaces call. Provide this parameter to retrieve
@@ -1231,7 +1286,8 @@ class SearchSpacesRequest(proto.Message):
         query (str):
             Required. A search query.
 
-            You can search by using the following parameters:
+            You can search by using the following parameters when
+            ``useAdminAccess`` is set to ``true``:
 
             - ``create_time``
             - ``customer``
@@ -1241,14 +1297,21 @@ class SearchSpacesRequest(proto.Message):
             - ``space_history_state``
             - ``space_type``
 
+            When ``useAdminAccess`` is set to ``false``:
+
+            - ``display_name``
+            - ``external_user_allowed``
+            - ``space_type``
+
             ``create_time`` and ``last_active_time`` accept a timestamp
             in `RFC-3339 <https://www.rfc-editor.org/rfc/rfc3339>`__
             format and the supported comparison operators are: ``=``,
             ``<``, ``>``, ``<=``, ``>=``.
 
-            ``customer`` is required and is used to indicate which
-            customer to fetch spaces from. ``customers/my_customer`` is
-            the only supported value.
+            ``customer`` is required when ``useAdminAccess`` is set to
+            ``true``, and is used to indicate which customer to fetch
+            spaces from. ``customers/my_customer`` is the only supported
+            value.
 
             ``display_name`` only accepts the ``HAS`` (``:``) operator.
             The text to match is first tokenized into tokens and each
@@ -1256,7 +1319,10 @@ class SearchSpacesRequest(proto.Message):
             as a substring anywhere in the space's ``display_name``. For
             example, ``Fun Eve`` matches ``Fun event`` or
             ``The evening was fun``, but not ``notFun event`` or
-            ``even``.
+            ``even``. When ``useAdminAccess`` is set to ``false``,
+            ``display_name`` is required to retrieve meaningful results.
+            Otherwise, the default behavior is to return an empty
+            response.
 
             ``external_user_allowed`` accepts either ``true`` or
             ``false``.
@@ -1283,7 +1349,8 @@ class SearchSpacesRequest(proto.Message):
             ``AND`` can only be used to represent an interval, such as
             ``last_active_time < "2022-01-01T00:00:00+00:00" AND last_active_time > "2023-01-01T00:00:00+00:00"``.
 
-            The following example queries are valid:
+            The following example queries are valid when
+            ``useAdminAccess`` is set to ``true``:
 
             ::
 
@@ -1305,6 +1372,26 @@ class SearchSpacesRequest(proto.Message):
                (create_time > "2019-01-01T00:00:00+00:00" AND create_time <
                "2020-01-01T00:00:00+00:00") AND (external_user_allowed = "true") AND
                (space_history_state = "HISTORY_ON" OR space_history_state = "HISTORY_OFF")
+
+            The following example queries are valid when
+            ``useAdminAccess`` is set to ``false``:
+
+            ::
+
+               display_name:"Hello World" AND space_type = "SPACE"
+
+               (display_name:"Hello" OR display_name:"Fun") AND space_type = "SPACE"
+
+               (external_user_allowed = "true" AND space_type = "SPACE") // Returns an
+               empty response.
+
+               (external_user_allowed = "true" AND display_name:"Hello" AND space_type =
+               "SPACE")
+
+            The maximum query length is 1,000 characters.
+
+            Invalid queries are rejected by the server with an
+            ``INVALID_ARGUMENT`` error.
         order_by (str):
             Optional. How the list of spaces is ordered.
 
@@ -1317,13 +1404,18 @@ class SearchSpacesRequest(proto.Message):
               item is added to any topic of this space.
             - ``create_time`` — Denotes the time of the space creation.
 
+            When ``useAdminAccess`` is ``false``, only ``create_time``
+            and ``relevance`` are supported for ordering. Only ``DESC``
+            is supported for these fields in non-admin searches.
+
             Valid ordering operation values are:
 
             - ``ASC`` for ascending. Default value.
 
             - ``DESC`` for descending.
 
-            The supported syntax are:
+            The supported syntax are when ``useAdminAccess`` is set to
+            ``true``:
 
             - ``membership_count.joined_direct_human_user_count DESC``
             - ``membership_count.joined_direct_human_user_count ASC``
@@ -1331,6 +1423,12 @@ class SearchSpacesRequest(proto.Message):
             - ``last_active_time ASC``
             - ``create_time DESC``
             - ``create_time ASC``
+
+            When ``useAdminAccess`` is set to ``false``:
+
+            - ``create_time DESC``
+            - ``relevance DESC`` `Developer
+              Preview <https://developers.google.com/workspace/preview>`__.
     """
 
     use_admin_access: bool = proto.Field(
@@ -1361,16 +1459,39 @@ class SearchSpacesResponse(proto.Message):
 
     Attributes:
         spaces (MutableSequence[google.apps.chat_v1.types.Space]):
-            A page of the requested spaces.
+            Deprecated: Please use the new ``results`` field instead. A
+            page of the requested spaces. This field will be populated
+            only when ``useAdminAccess`` is set to ``true`` and
+            deprecated in favor of the new ``results`` field.
         next_page_token (str):
-            A token that can be used to retrieve the next
-            page. If this field is empty, there are no
-            subsequent pages.
+            A token that can be used to retrieve the next page. If this
+            field is empty, there are no subsequent pages.
+
+            Only populated when ``useAdminAccess`` is set to ``true``.
         total_size (int):
-            The total number of spaces that match the
-            query, across all pages. If the result is over
-            10,000 spaces, this value is an estimate.
+            The total number of spaces that match the query, across all
+            pages. If the result is over 10,000 spaces, this value is an
+            estimate.
+
+            Only populated when ``useAdminAccess`` is set to ``true``.
+        results (MutableSequence[google.apps.chat_v1.types.SearchSpacesResponse.SearchSpaceResult]):
+            Output only. The list of search results that
+            matched the query.
     """
+
+    class SearchSpaceResult(proto.Message):
+        r"""A single result item from a space search.
+
+        Attributes:
+            space (google.apps.chat_v1.types.Space):
+                Output only. The matched space.
+        """
+
+        space: "Space" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Space",
+        )
 
     @property
     def raw_page(self):
@@ -1388,6 +1509,11 @@ class SearchSpacesResponse(proto.Message):
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    results: MutableSequence[SearchSpaceResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=SearchSpaceResult,
     )
 
 

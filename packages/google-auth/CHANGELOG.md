@@ -4,6 +4,60 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.59.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.0...google-auth-v2.59.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **auth:** support mTLS in requests.Request for token refresh and impersonation ([#18486](https://github.com/googleapis/google-cloud-python/issues/18486)) ([590376d](https://github.com/googleapis/google-cloud-python/commit/590376df522bf5f89e0d23b956a85db61c4d48d7))
+
+## [2.59.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.1...google-auth-v2.59.0) (2026-09-28)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
+## [2.58.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.0...google-auth-v2.58.1) (2026-09-24)
+
+
+### Bug Fixes
+
+* **auth:** allow mTLS retry when credentials raise NotImplementedError on refresh ([#18349](https://github.com/googleapis/google-cloud-python/issues/18349)) ([1665e68](https://github.com/googleapis/google-cloud-python/commit/1665e6867e0c5d7ea8e7857681efc3aae827d9b7))
+
+## [2.58.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.1...google-auth-v2.58.0) (2026-09-09)
+
+
+### Features
+
+* [aiohttp] Add mTLS reconfiguration logic when certificate mismatch ([906ace7](https://github.com/googleapis/google-cloud-python/commit/906ace77a2a4cfe57954b3da727232e2fd481c22))
+* **auth:** [aiohttp] Add mTLS reconfiguration logic when certificate mismatch for existing credentials & Agent Identity workloads  ([#18224](https://github.com/googleapis/google-cloud-python/issues/18224)) ([906ace7](https://github.com/googleapis/google-cloud-python/commit/906ace77a2a4cfe57954b3da727232e2fd481c22))
+
+## [2.57.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.57.0...google-auth-v2.57.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **auth:** parse hostname for mTLS and PSC endpoint certificate rotation ([#18147](https://github.com/googleapis/google-cloud-python/issues/18147)) ([#18201](https://github.com/googleapis/google-cloud-python/issues/18201)) ([b18bb4c](https://github.com/googleapis/google-cloud-python/commit/b18bb4cb749d2dd10d0e2f7d8505460d305e54fc))
+
+## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.3...google-auth-v2.57.0) (2026-08-21)
+
+
+### Features
+
+* **auth:** add deprecation warning for grpcio &lt; 1.83.0 (PQC support) ([#18070](https://github.com/googleapis/google-cloud-python/issues/18070)) ([68bdaba](https://github.com/googleapis/google-cloud-python/commit/68bdaba04c706706bf614587adbda0774d15d81d))
+
+
+### Bug Fixes
+
+* **auth:** parse hostname for mTLS and PSC endpoint certificate rotat… ([#18153](https://github.com/googleapis/google-cloud-python/issues/18153)) ([b642373](https://github.com/googleapis/google-cloud-python/commit/b6423734a2470acd01a7081a4133e4373206f325))
+* **auth:** prevent TypeError and support home-dir cert fallback for X… ([#18016](https://github.com/googleapis/google-cloud-python/issues/18016)) ([b9a1379](https://github.com/googleapis/google-cloud-python/commit/b9a1379fd673a1cf3b8c1676400ed9789e12de6a))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.56.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.2...google-auth-v2.56.3) (2026-08-06)
 
 

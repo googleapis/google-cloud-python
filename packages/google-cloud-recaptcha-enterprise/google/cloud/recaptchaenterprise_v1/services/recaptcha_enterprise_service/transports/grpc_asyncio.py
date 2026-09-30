@@ -732,6 +732,62 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["get_metrics"]
 
     @property
+    def get_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.GetPolicyRequest], Awaitable[recaptchaenterprise.Policy]
+    ]:
+        r"""Return a callable for the get policy method over gRPC.
+
+        Get the policy for a key.
+
+        Returns:
+            Callable[[~.GetPolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_policy" not in self._stubs:
+            self._stubs["get_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetPolicy",
+                request_serializer=recaptchaenterprise.GetPolicyRequest.serialize,
+                response_deserializer=recaptchaenterprise.Policy.deserialize,
+            )
+        return self._stubs["get_policy"]
+
+    @property
+    def update_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.UpdatePolicyRequest], Awaitable[recaptchaenterprise.Policy]
+    ]:
+        r"""Return a callable for the update policy method over gRPC.
+
+        Updates the policy for a key.
+
+        Returns:
+            Callable[[~.UpdatePolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_policy" not in self._stubs:
+            self._stubs["update_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdatePolicy",
+                request_serializer=recaptchaenterprise.UpdatePolicyRequest.serialize,
+                response_deserializer=recaptchaenterprise.Policy.deserialize,
+            )
+        return self._stubs["update_policy"]
+
+    @property
     def create_firewall_policy(
         self,
     ) -> Callable[
@@ -1067,6 +1123,16 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
             ),
             self.get_metrics: self._wrap_method(
                 self.get_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_policy: self._wrap_method(
+                self.get_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_policy: self._wrap_method(
+                self.update_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),

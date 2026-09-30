@@ -567,6 +567,71 @@ def test_db_batch_insert_then_db_snapshot_read(shared_database):
     sd._check_rows_data(from_snap)
 
 
+def test_db_batch_send_and_ack(
+    not_emulator, spanner_client, database_dialect, shared_instance
+):
+    import uuid
+
+    from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
+    from google.cloud.spanner_admin_database_v1 import DatabaseDialect
+
+    db_id = f"test-db-{uuid.uuid4().hex[:8]}"
+    queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
+
+    try:
+        test_database = shared_instance.database(
+            db_id, database_dialect=database_dialect
+        )
+        operation = test_database.create()
+        operation.result(300)
+
+        # Create the Queue
+        if database_dialect == DatabaseDialect.POSTGRESQL:
+            queue_ddl = f"""CREATE QUEUE {queue_name} (
+                id bigint NOT NULL,
+                "Payload" varchar NOT NULL,
+                PRIMARY KEY (id)
+            )"""
+        else:
+            queue_ddl = f"""CREATE QUEUE {queue_name} (
+                Id INT64 NOT NULL,
+                Payload STRING(MAX) NOT NULL
+            ) PRIMARY KEY (Id)"""
+        try:
+            operation = test_database.update_ddl([queue_ddl])
+            operation.result(600)
+        except MethodNotImplemented as e:
+            pytest.skip(f"Queues are not implemented yet: {e}")
+        except GoogleAPIError as e:
+            grpc_status_name = getattr(
+                getattr(e, "grpc_status_code", None), "name", None
+            )
+            if (
+                getattr(e, "code", None) == 501
+                or grpc_status_name == "UNIMPLEMENTED"
+                or "UNIMPLEMENTED" in str(e)
+            ):
+                pytest.skip(f"Queues are not implemented yet: {e}")
+            raise
+
+        with test_database.batch() as batch:
+            batch.send(
+                queue=queue_name,
+                key=(2,),
+                payload="Hello, Queues!",
+            )
+
+        with test_database.batch() as batch:
+            batch.ack(
+                queue=queue_name,
+                key=(2,),
+            )
+
+    finally:
+        test_database.drop()
+
+
 def test_db_run_in_transaction_then_snapshot_execute_sql(shared_database):
     _helpers.retry_has_all_dll(shared_database.reload)()
     sd = _sample_data

@@ -179,10 +179,24 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install(FLAKE8_VERSION, BLACK_VERSION)
+    session.install(FLAKE8_VERSION, RUFF_VERSION)
+    # 1. Check imports
     session.run(
-        "black",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
         "--check",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -706,16 +720,27 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install("-e", install_target, "-c", constraints_path)
 
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = next(
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
+    )
+
+    local_paths = [
+        str(deps_dir / dep)
+        for dep in core_dependencies_from_source
+        if (deps_dir / dep).exists()
+    ]
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+        print(
+            f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+        )
 
     tests_path = os.path.join("tests", "unit")
     session.run(

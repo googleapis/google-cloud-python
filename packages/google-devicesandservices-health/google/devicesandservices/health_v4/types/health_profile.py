@@ -468,8 +468,6 @@ class Settings(proto.Message):
         distance_unit (google.devicesandservices.health_v4.types.Settings.DistanceUnit):
             Optional. The measurement unit defined in the
             user's account settings.
-            Updates to this field are currently not
-            supported.
         glucose_unit (google.devicesandservices.health_v4.types.Settings.GlucoseUnit):
             Optional. The measurement unit defined in the
             user's account settings.

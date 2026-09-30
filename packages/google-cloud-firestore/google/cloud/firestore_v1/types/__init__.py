@@ -23,6 +23,7 @@ from .bloom_filter import (
 from .common import (
     DocumentMask,
     Precondition,
+    RequestOptions,
     TransactionOptions,
 )
 from .document import (
@@ -99,6 +100,7 @@ __all__ = (
     "BloomFilter",
     "DocumentMask",
     "Precondition",
+    "RequestOptions",
     "TransactionOptions",
     "ArrayValue",
     "Document",

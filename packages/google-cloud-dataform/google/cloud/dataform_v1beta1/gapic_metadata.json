@@ -15,6 +15,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -70,6 +75,11 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -120,6 +130,11 @@
                 "delete_workspace"
               ]
             },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
+              ]
+            },
             "FetchFileDiff": {
               "methods": [
                 "fetch_file_diff"
@@ -143,6 +158,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -338,6 +358,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {
@@ -390,6 +415,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -445,6 +475,11 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -495,6 +530,11 @@
                 "delete_workspace"
               ]
             },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
+              ]
+            },
             "FetchFileDiff": {
               "methods": [
                 "fetch_file_diff"
@@ -518,6 +558,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -713,6 +758,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {
@@ -765,6 +815,11 @@
                 "cancel_workflow_invocation"
               ]
             },
+            "CheckoutWorkspaceBranch": {
+              "methods": [
+                "checkout_workspace_branch"
+              ]
+            },
             "CommitRepositoryChanges": {
               "methods": [
                 "commit_repository_changes"
@@ -820,6 +875,11 @@
                 "create_workspace"
               ]
             },
+            "DeleteBranch": {
+              "methods": [
+                "delete_branch"
+              ]
+            },
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
@@ -870,6 +930,11 @@
                 "delete_workspace"
               ]
             },
+            "FetchCurrentWorkspaceBranch": {
+              "methods": [
+                "fetch_current_workspace_branch"
+              ]
+            },
             "FetchFileDiff": {
               "methods": [
                 "fetch_file_diff"
@@ -893,6 +958,11 @@
             "FetchRepositoryHistory": {
               "methods": [
                 "fetch_repository_history"
+              ]
+            },
+            "FetchWorkspaceBranches": {
+              "methods": [
+                "fetch_workspace_branches"
               ]
             },
             "GetCompilationResult": {
@@ -1088,6 +1158,11 @@
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SyncWorkspaceRefs": {
+              "methods": [
+                "sync_workspace_refs"
               ]
             },
             "TestIamPermissions": {

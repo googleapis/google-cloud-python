@@ -24,8 +24,9 @@ import warnings
 from google.auth import exceptions
 from google.auth import transport
 from google.auth.transport import _mtls_helper
-from google.auth.transport import mtls_interceptor‎
+from google.auth.transport import mtls_interceptor
 from google.auth.transport import mtls
+
 from google.oauth2 import service_account
 
 from typing import Optional
@@ -50,7 +51,7 @@ if isinstance(_grpc_ver_str, str):
     if _parts and tuple(_parts) < (1, 83, 0):
         warnings.warn(
             "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
-            "Support for non-PQC environments is deprecated. In October 2026, "
+            "Support for non-PQC environments is deprecated. In April 2027, "
             "google-auth will raise its minimum requirements "
             "to enforce grpcio >= 1.83.0. "
             "For more details on Google Cloud's post-quantum security migration, visit: "
@@ -136,7 +137,7 @@ def secure_authorized_channel(
     target,
     ssl_credentials=None,
     client_cert_callback=None,
-    **kwargs
+    **kwargs,
 ):
     """Creates a secure authorized gRPC channel.
 

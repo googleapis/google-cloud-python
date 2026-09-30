@@ -1,0 +1,281 @@
+# -*- coding: utf-8 -*-
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+"""OpenTelemetry helpers for resolving and instantiating interceptors."""
+
+from __future__ import annotations
+
+import urllib.parse
+from typing import TYPE_CHECKING, Any, Callable, Sequence
+
+from google.api_core import _feature_gating_helpers
+from google.api_core.client_options import ClientOptions
+
+if TYPE_CHECKING:
+    # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
+    # The 'noqa: F401' comment avoids flake8 "imported but not used" errors.
+    import grpc  # noqa: F401
+    import opentelemetry.trace  # noqa: F401
+
+    from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
+
+_TRACER_PROVIDER = "tracer_provider"
+
+
+def is_otel_capabilities_enabled(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+    env_var: str = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+) -> bool:
+    """Checks if OTel capabilities are enabled and installed.
+
+    Args:
+        client_options: The client options object or dictionary.
+        env_var: The environment variable to check for enablement.
+
+    Returns:
+        bool: True if enabled and installed, False otherwise.
+    """
+    is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+        env_var=env_var,
+        feature_key=_TRACER_PROVIDER,
+        configuration=client_options,
+    )
+
+    if is_tracing_enabled:
+        try:
+            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found] # noqa: F401
+
+            return True
+        except ImportError:
+            pass
+
+    return False
+
+
+def _extract_endpoint_attributes(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Extracts server.address, server.port (if non-default), and url.domain from client options if present.
+
+    Args:
+        client_options: The client options object or dictionary.
+
+    Returns:
+        dict[str, Any]: A dictionary containing url.domain and, if an api_endpoint is configured,
+            server.address and non-default server.port.
+    """
+    attrs: dict[str, Any] = {}
+    endpoint = None
+    universe_domain = None
+
+    if isinstance(client_options, dict):
+        endpoint = client_options.get("api_endpoint")
+        universe_domain = client_options.get("universe_domain")
+    elif client_options is not None:
+        endpoint = getattr(client_options, "api_endpoint", None)
+        universe_domain = getattr(client_options, "universe_domain", None)
+
+    attrs["url.domain"] = universe_domain or "googleapis.com"
+
+    if endpoint and isinstance(endpoint, str):
+        target = endpoint if "//" in endpoint else f"//{endpoint}"
+        parsed = None
+        hostname = None
+        port = None
+        try:
+            parsed = urllib.parse.urlsplit(target)
+            hostname = parsed.hostname
+            port = parsed.port
+        except ValueError:
+            pass
+
+        if hostname:
+            attrs["server.address"] = hostname
+        if port and parsed:
+            scheme = parsed.scheme.lower()
+            is_default_port = (port == 443 and scheme in ("https", "")) or (
+                port == 80 and scheme == "http"
+            )
+            if not is_default_port:
+                attrs["server.port"] = port
+    return attrs
+
+
+def _make_grpc_client_request_hook(
+    endpoint_attrs: dict[str, Any] | None = None,
+) -> Callable[[Any, Any], None]:
+    """Creates an OpenTelemetry gRPC client request hook with optional endpoint attributes.
+
+    Args:
+        endpoint_attrs: Optional static endpoint attributes to attach to every span.
+
+    Returns:
+        Callable[[Any, Any], None]: The request hook callback.
+    """
+    static_attrs = dict(endpoint_attrs) if endpoint_attrs else {}
+
+    def client_request_hook(span: Any, request: Any) -> None:
+        if span is None or not getattr(span, "is_recording", lambda: True)():
+            return
+
+        # Upstream opentelemetry-instrumentation-grpc may format span names with a
+        # leading slash (e.g. "/package.Service/Method"). Normalize the span name
+        # and ensure rpc.method is always captured as the clean, fully-qualified name.
+        span_name = getattr(span, "name", None)
+        if isinstance(span_name, str) and span_name:
+            clean_method_name = span_name.lstrip("/")
+            if span_name.startswith("/") and hasattr(span, "update_name"):
+                span.update_name(clean_method_name)
+            span.set_attribute("rpc.method", clean_method_name)
+
+        attrs: dict[str, Any] = {
+            "rpc.system.name": "grpc",
+        }
+        if static_attrs:
+            attrs.update(static_attrs)
+        for key, value in attrs.items():
+            span.set_attribute(key, value)
+
+    return client_request_hook
+
+
+_grpc_client_request_hook = _make_grpc_client_request_hook()
+
+
+def _grpc_client_response_hook(span: Any, response: Any) -> None:
+    """OpenTelemetry gRPC client response hook to record successful response status.
+
+    Upstream ``opentelemetry-instrumentation-grpc`` sets the integer status code
+    ``rpc.grpc.status_code`` (e.g. 0), but does not record the modern string status
+    ``rpc.response.status_code`` (e.g. "OK") required by Cloud Trace and current
+    OpenTelemetry semantic conventions (v1.27.0+).
+
+    This hook enriches successful RPC attempt spans with ``rpc.response.status_code = "OK"``.
+    Errors and non-OK statuses are handled at the Tier 3 method span layer or upstream.
+
+    Upstream handles synchronous and asynchronous invocations differently:
+    - **Synchronous gRPC**: Upstream only invokes the response hook when an RPC call
+      succeeds. On failure, the hook is bypassed entirely.
+    - **Asynchronous gRPC**: Upstream invokes the response hook unconditionally for
+      both successes and failures (passing exception details on error). However, it
+      always marks ``span.status`` with an error status before calling the hook.
+
+    Because of this disparity, this hook checks ``span.status`` to guard against
+    async failure callbacks while allowing synchronous and successful asynchronous
+    calls to be marked "OK".
+
+    Note:
+        If upstream ``opentelemetry-instrumentation-grpc`` adds native support for
+        modern ``rpc.response.status_code`` in future releases, this hook can be retired.
+
+    Args:
+        span: The OpenTelemetry span.
+        response: The gRPC response object or details.
+    """
+    if not span.is_recording():
+        return
+
+    # Guard against upstream async calls that invoke this hook on failures.
+    status = getattr(span, "status", None)
+    status_code = getattr(status, "status_code", None)
+    if (
+        getattr(status_code, "name", None) == "ERROR"
+        or getattr(status_code, "value", None) == 2
+    ):
+        return
+
+    span.set_attribute("rpc.response.status_code", "OK")
+
+
+def _get_tracer_provider(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> opentelemetry.trace.TracerProvider | None:
+    """Extracts the OpenTelemetry tracer provider from client options if present.
+
+    Args:
+        client_options: The client options object or dictionary.
+
+    Returns:
+        opentelemetry.trace.TracerProvider | None: The tracer provider if present,
+            None otherwise.
+    """
+    if isinstance(client_options, dict):
+        return client_options.get(_TRACER_PROVIDER)
+    elif client_options is not None:
+        return getattr(client_options, _TRACER_PROVIDER, None)
+    return None
+
+
+def get_otel_interceptor(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> Callable[[grpc.Channel], grpc.Channel] | None:
+    """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
+
+    Args:
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+
+    Returns:
+        Callable[[grpc.Channel], grpc.Channel] | None: An interceptor callable if OpenTelemetry
+            tracing is enabled and installed, None otherwise.
+    """
+    if not is_otel_capabilities_enabled(client_options):
+        return None
+
+    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+
+    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    request_hook = _make_grpc_client_request_hook(endpoint_attrs)
+
+    interceptor: ClientInterceptor = otel_grpc.client_interceptor(
+        tracer_provider=_get_tracer_provider(client_options),
+        request_hook=request_hook,
+        response_hook=_grpc_client_response_hook,
+    )
+
+    def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
+        return otel_grpc.intercept_channel(channel, interceptor)
+
+    return otel_interceptor
+
+
+def get_otel_async_interceptor(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> Sequence[grpc.aio.ClientInterceptor] | None:
+    """Returns async gRPC client interceptors for OpenTelemetry tracing.
+
+    Args:
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+
+    Returns:
+        Sequence[grpc.aio.ClientInterceptor] | None: Instantiated OpenTelemetry async
+            client interceptors if tracing is enabled and installed, None otherwise.
+    """
+    if not is_otel_capabilities_enabled(client_options):
+        return None
+
+    # Ignored by mypy: Optional dependency only loaded if early-return is skipped
+    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+
+    endpoint_attrs = _extract_endpoint_attributes(client_options)
+    request_hook = _make_grpc_client_request_hook(endpoint_attrs)
+
+    return otel_grpc.aio_client_interceptors(
+        tracer_provider=_get_tracer_provider(client_options),
+        request_hook=request_hook,
+        response_hook=_grpc_client_response_hook,
+    )
