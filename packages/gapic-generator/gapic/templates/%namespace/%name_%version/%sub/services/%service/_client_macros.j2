@@ -168,6 +168,9 @@
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            {% if method.is_resumable_upload %}
+            config=config,
+            {% endif %}
         )
         {% if method.lro %}
 
@@ -189,13 +192,6 @@
             retry=retry,
             timeout=timeout,
             metadata=metadata,
-        )
-        {% elif method.is_resumable_upload %}
-
-        # Wrap the response in a resumable upload session.
-        response = {{ method.client_output.ident }}(
-            config=config,
-            response_type={{ method.output.ident }},
         )
         {% elif method.extended_lro and full_extended_lro %}
 {{ extended_operation_service_setup(api, method) }}
