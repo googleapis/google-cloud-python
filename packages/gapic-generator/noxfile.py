@@ -332,24 +332,30 @@ def showcase_library(
                     "transport=grpc+rest",
                 )
             )
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+        # Add compliance.proto once this bug is fixed
+        # We should use `"google/showcase/v1beta1/*.proto",`
+        protos = (
+            "google/showcase/v1beta1/echo.proto",
+            "google/showcase/v1beta1/identity.proto",
+            "google/showcase/v1beta1/messaging.proto",
+            "google/showcase/v1beta1/rest_error.proto",
+            "google/showcase/v1beta1/sequence.proto",
+            "google/showcase/v1beta1/testing.proto",
+        )
+        if templates == "DEFAULT":
+            protos += ("google/showcase/v1beta1/resumable_upload.proto",)
         cmd_tup = (
             "python",
             "-m",
             "grpc_tools.protoc",
-            f"--experimental_allow_proto3_optional",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
             f"--python_gapic_out={tmp_dir}",
-            # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
-            # Add compliance.proto once this bug is fixed
-            f"google/showcase/v1beta1/echo.proto",
-            f"google/showcase/v1beta1/identity.proto",
-            f"google/showcase/v1beta1/messaging.proto",
-            f"google/showcase/v1beta1/rest_error.proto",
-            f"google/showcase/v1beta1/resumable_upload.proto",
-            f"google/showcase/v1beta1/sequence.proto",
-            f"google/showcase/v1beta1/testing.proto",
+            *protos,
         )
+
         session.run(
             *cmd_tup,
             external=True,
