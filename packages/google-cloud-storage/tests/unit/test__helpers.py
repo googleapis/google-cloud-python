@@ -741,7 +741,17 @@ class Test__parse_bool_env(unittest.TestCase):
                 self.assertTrue(self._call_fut("TEST_VAR"), f"Failed for {val}")
 
     def test_falsy_values(self):
-        for val in ("false", "False", "FALSE", "0", "no", "NO", "off", "OFF", " false "):
+        for val in (
+            "false",
+            "False",
+            "FALSE",
+            "0",
+            "no",
+            "NO",
+            "off",
+            "OFF",
+            " false ",
+        ):
             with mock.patch("os.getenv", return_value=val):
                 self.assertFalse(self._call_fut("TEST_VAR"), f"Failed for {val}")
 
