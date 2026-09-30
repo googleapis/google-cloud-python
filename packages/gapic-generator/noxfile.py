@@ -408,8 +408,11 @@ def showcase(
         # install the local google-api-core package from source.
         if os.getenv("INSTALL_LOCAL_CORE") == "true":
             local_core = Path(__file__).resolve().parent.parent / "google-api-core"
-            if local_core.is_dir():
-                session.install("-e", str(local_core))
+            if not local_core.is_dir():
+                session.error(
+                    f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
+                )
+            session.install("-e", str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -447,8 +450,11 @@ def showcase_w_rest_async(
         # install the local google-api-core package from source.
         if os.getenv("INSTALL_LOCAL_CORE") == "true":
             local_core = Path(__file__).resolve().parent.parent / "google-api-core"
-            if local_core.is_dir():
-                session.install("-e", str(local_core))
+            if not local_core.is_dir():
+                session.error(
+                    f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
+                )
+            session.install("-e", str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
