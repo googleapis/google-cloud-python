@@ -86,10 +86,6 @@ class ResumableUploadServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_upload_media(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
         transport = ResumableUploadServiceRestTransport(interceptor=MyCustomResumableUploadServiceInterceptor())
         client = ResumableUploadServiceClient(transport=transport)
 
@@ -102,34 +98,6 @@ class ResumableUploadServiceRestInterceptor:
         before they are sent to the ResumableUploadService server.
         """
         return request, metadata
-
-    def post_upload_media(self, response: resumable_upload.UploadMediaResponse) -> resumable_upload.UploadMediaResponse:
-        """Post-rpc interceptor for upload_media
-
-        DEPRECATED. Please use the `post_upload_media_with_metadata`
-        interceptor instead.
-
-        Override in a subclass to read or manipulate the response
-        after it is returned by the ResumableUploadService server but before
-        it is returned to user code. This `post_upload_media` interceptor runs
-        before the `post_upload_media_with_metadata` interceptor.
-        """
-        return response
-
-    def post_upload_media_with_metadata(self, response: resumable_upload.UploadMediaResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[resumable_upload.UploadMediaResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for upload_media
-
-        Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the ResumableUploadService server but before it is returned to user code.
-
-        We recommend only using this `post_upload_media_with_metadata`
-        interceptor in new development instead of the `post_upload_media` interceptor.
-        When both interceptors are used, this `post_upload_media_with_metadata` interceptor runs after the
-        `post_upload_media` interceptor. The (possibly modified) response returned by
-        `post_upload_media` will be passed to
-        `post_upload_media_with_metadata`.
-        """
-        return response, metadata
 
     def pre_list_locations(
         self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
@@ -460,12 +428,10 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
 
             uri = transcoded_request["uri"]
             upload_url = f"{self._host}{uri}"
-            headers = dict(metadata)
+            headers = {**dict(metadata), **dict((config.headers or {}) if config else {})}
             if config is None:
                 config = resumable_transfer.ResumableUploadConfig(headers=headers)
             else:
-                if config.headers:
-                    headers.update(dict(config.headers))
                 config = dataclasses.replace(config, headers=headers)
 
             return resumable_transfer.ResumableUploadSession(

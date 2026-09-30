@@ -402,7 +402,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-    {% if not method.void %}
+    {% if not method.void and not method.is_resumable_upload %}
             {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response):
                 logging.log(f"Received response: {response}")
                 return response
@@ -425,7 +425,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         """
         return request, metadata
 
-    {% if not method.void %}
+    {% if not method.void and not method.is_resumable_upload %}
     {% if not method.server_streaming %}
     {{ async_prefix }}def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
     {% else %}
