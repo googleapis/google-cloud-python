@@ -1233,19 +1233,29 @@ def test_upload_media_rest_call_success(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
+        response_value = mock.MagicMock()
         response_value.status_code = 200
 
         # Convert return value to protobuf type
         return_value = resumable_upload.UploadMediaResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        start_response = mock.MagicMock()
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.content = b""
+        response_value.ok = True
+        req.side_effect = [start_response, response_value]
         response = client.upload_media(request)
+        assert isinstance(response, resumable_transfer.ResumableUploadSession)
+        response = response.upload(b"test data")
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_transfer.ResumableUploadSession)
+    assert isinstance(response, resumable_upload.UploadMediaResponse)
+    assert response.name == 'name_value'
+    assert response.size == 443
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1844,7 +1854,7 @@ async def test_upload_media_rest_asyncio_call_success(request_type):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
+    with mock.patch.object(type(client.transport._session), 'request', new_callable=mock.MagicMock) as req:
         # Designate an appropriate value for the returned response.
         return_value = resumable_upload.UploadMediaResponse(
               name='name_value',
@@ -1852,19 +1862,32 @@ async def test_upload_media_rest_asyncio_call_success(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = mock.Mock()
+        response_value = mock.MagicMock()
         response_value.status_code = 200
 
         # Convert return value to protobuf type
         return_value = resumable_upload.UploadMediaResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
-        req.return_value = response_value
-        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        start_response = mock.MagicMock()
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
+        start_response.status = 200
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.__aenter__ = mock.AsyncMock(return_value=start_response)
+        start_response.__aexit__ = mock.AsyncMock(return_value=None)
+        response_value.status = 200
+        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
+        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        req.side_effect = [start_response, response_value]
         response = await client.upload_media(request)
+        assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
+        response = await response.upload(b"test data")
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
+    assert isinstance(response, resumable_upload.UploadMediaResponse)
+    assert response.name == 'name_value'
+    assert response.size == 443
 
 
 @pytest.mark.asyncio
