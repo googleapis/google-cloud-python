@@ -45,6 +45,7 @@ from tests.perf.microbenchmarks.conftest import publish_resource_metrics
 
 # Get write parameters
 all_params = config.get_write_params()
+RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
 
 
 async def create_client():
@@ -67,7 +68,10 @@ async def upload_chunks_using_grpc_async(client, filename, other_params):
     start_time = time.monotonic_ns()
 
     writer = AsyncAppendableObjectWriter(
-        client=client, bucket_name=other_params.bucket_name, object_name=filename
+        client=client,
+        bucket_name=other_params.bucket_name,
+        object_name=filename,
+        storage_class="RAPID" if RCU_SYSTEM_TESTS else None,
     )
     await writer.open()
 
@@ -80,7 +84,7 @@ async def upload_chunks_using_grpc_async(client, filename, other_params):
         data = os.urandom(bytes_to_upload)
         await writer.append(data)
         uploaded_bytes += bytes_to_upload
-    await writer.close()
+    await writer.close(finalize_on_close=True)
 
     # print('writer flush count', writer._flush_count)
 
