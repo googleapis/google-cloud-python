@@ -116,6 +116,9 @@
       "versioning": "prerelease"
     }
   },
+  "packages/sqlalchemy-spanner": {
+    "component": "sqlalchemy-spanner"
+  },
   "release-type": "python-librarian",
   "separate-pull-requests": true
 }

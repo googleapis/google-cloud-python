@@ -3914,9 +3914,6 @@
     },
     "packages/sqlalchemy-bigquery": {
       "component": "sqlalchemy-bigquery"
-    },
-    "packages/sqlalchemy-spanner": {
-      "component": "sqlalchemy-spanner"
     }
   },
   "release-type": "python-librarian"
