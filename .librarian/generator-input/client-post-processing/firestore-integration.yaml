@@ -782,3 +782,15 @@ replacements:
       google-cloud-core>=2
       grpcio>=1
     count: 2
+  - paths: [
+      "packages/google-cloud-firestore/README.rst",
+    ]
+    before: |
+      Code samples and snippets live in the `samples/`_ folder\.
+
+      \.\. _samples/: https://github\.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-firestore/samples
+    after: |
+      Code samples and snippets live in the `python-docs-samples`_ repo.
+
+      .. _`python-docs-samples`: https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/firestore
+    count: 1
