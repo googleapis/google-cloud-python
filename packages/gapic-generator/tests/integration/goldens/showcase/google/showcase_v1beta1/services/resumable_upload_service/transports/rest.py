@@ -428,23 +428,24 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
 
             uri = transcoded_request["uri"]
             upload_url = f"{self._host}{uri}"
-            headers = {**dict(metadata), **dict((config.headers or {}) if config else {})}
+            headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
             if config is None:
                 config = resumable_transfer.ResumableUploadConfig(headers=headers)
             else:
                 config = dataclasses.replace(config, headers=headers)
 
+            session_kwargs: Dict[str, Any] = (
+                {"start_timeout": timeout}
+                if isinstance(timeout, (int, float))
+                else {}
+            )
             return resumable_transfer.ResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
                 response_type=resumable_upload.UploadMediaResponse,
                 start_retry=retry if isinstance(retry, retries.Retry) else None,
-                **(
-                    {"start_timeout": timeout}
-                    if isinstance(timeout, (int, float))
-                    else {}
-                ),
+                **session_kwargs,
             )
 
     @property

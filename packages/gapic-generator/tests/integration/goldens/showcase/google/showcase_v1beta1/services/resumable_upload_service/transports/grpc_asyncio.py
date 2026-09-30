@@ -18,12 +18,13 @@ import json
 import pickle
 import logging as std_logging
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
+from google.api_core import resumable_transfer
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
@@ -247,6 +248,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._rest_transport: Optional[Any] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -332,14 +334,14 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
     @property
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
-            Awaitable[resumable_upload.UploadMediaResponse]]:
+            Awaitable[resumable_transfer.AsyncResumableUploadSession]]:
         r"""Return a callable for the upload media method over gRPC.
 
         A method with media_upload annotation enabled.
 
         Returns:
             Callable[[~.UploadMediaRequest],
-                    Awaitable[~.UploadMediaResponse]]:
+                    Awaitable[~.AsyncResumableUploadSession]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -367,18 +369,14 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                 # validates for async credentials.
                 transport = self
                 class _AsyncRestStub:
-                    def __init__(self):
-                        self._rest_stub = None
-
                     def __call__(self, *args, **kwargs):
-                        if self._rest_stub is None:
-                            rest_transport = AsyncResumableUploadServiceRestTransport(
+                        if transport._rest_transport is None:
+                            transport._rest_transport = AsyncResumableUploadServiceRestTransport(
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
                             )
-                            self._rest_stub = rest_transport.upload_media
-                        return self._rest_stub(*args, **kwargs)
+                        return transport._rest_transport.upload_media(*args, **kwargs)
                 self._stubs['upload_media'] = _AsyncRestStub()
             else:
                 class _UnsupportedStub:
@@ -449,8 +447,10 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
-    def close(self):
-        return self._logged_channel.close()
+    async def close(self):
+        await self._logged_channel.close()
+        if self._rest_transport is not None:
+            await self._rest_transport.close()
 
     @property
     def kind(self) -> str:

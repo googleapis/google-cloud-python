@@ -20,6 +20,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import exceptions as core_exceptions
+from google.api_core import resumable_transfer
 from google.api_core import grpc_helpers
 from google.api_core import gapic_v1
 import google.auth                         # type: ignore
@@ -196,6 +197,7 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._rest_transport: Optional[ResumableUploadServiceRestTransport] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -323,14 +325,14 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
     @property
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
-            resumable_upload.UploadMediaResponse]:
+            resumable_transfer.ResumableUploadSession]:
         r"""Return a callable for the upload media method over gRPC.
 
         A method with media_upload annotation enabled.
 
         Returns:
             Callable[[~.UploadMediaRequest],
-                    ~.UploadMediaResponse]:
+                    ~.ResumableUploadSession]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -347,16 +349,19 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
                         )
                 self._stubs['upload_media'] = _ErrorStub()
             else:
-                rest_transport = ResumableUploadServiceRestTransport(
-                    host=self._host,
-                    credentials=self._credentials,
-                    client_info=self._client_info,
-                )
-                self._stubs['upload_media'] = rest_transport.upload_media
+                if self._rest_transport is None:
+                    self._rest_transport = ResumableUploadServiceRestTransport(
+                        host=self._host,
+                        credentials=self._credentials,
+                        client_info=self._client_info,
+                    )
+                self._stubs['upload_media'] = self._rest_transport.upload_media
         return self._stubs['upload_media']
 
     def close(self):
         self._logged_channel.close()
+        if self._rest_transport is not None:
+            self._rest_transport.close()
 
     @property
     def delete_operation(
