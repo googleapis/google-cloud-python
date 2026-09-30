@@ -88,10 +88,14 @@ from .ingestion_service import (
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    IngestUsersRequest,
+    IngestUsersResponse,
     RemoveAllAudienceMembersRequest,
     RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
+    RemoveUsersRequest,
+    RemoveUsersResponse,
     RetrieveRequestStatusRequest,
     RetrieveRequestStatusResponse,
 )
@@ -132,6 +136,9 @@ from .request_status_per_destination import (
 from .terms_of_service import (
     TermsOfService,
     TermsOfServiceStatus,
+)
+from .user import (
+    User,
 )
 from .user_data import (
     AddressInfo,
@@ -257,10 +264,14 @@ __all__ = (
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
     "IngestEventsResponse",
+    "IngestUsersRequest",
+    "IngestUsersResponse",
     "RemoveAllAudienceMembersRequest",
     "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
+    "RemoveUsersRequest",
+    "RemoveUsersResponse",
     "RetrieveRequestStatusRequest",
     "RetrieveRequestStatusResponse",
     "Encoding",
@@ -288,6 +299,7 @@ __all__ = (
     "RequestStatusPerDestination",
     "TermsOfService",
     "TermsOfServiceStatus",
+    "User",
     "AddressInfo",
     "UserData",
     "UserIdentifier",

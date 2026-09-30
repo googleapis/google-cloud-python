@@ -103,5 +103,21 @@ class _BaseImageViewsRestTransport(ImageViewsTransport):
             ]
             return http_options
 
+    class _BaseList:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/regions/{region}/imageViews",
+                },
+            ]
+            return http_options
+
 
 __all__ = ("_BaseImageViewsRestTransport",)
