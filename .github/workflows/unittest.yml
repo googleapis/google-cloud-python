@@ -139,7 +139,6 @@ jobs:
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
-        UV_PRERELEASE: ${{ matrix.python == '3.15' && 'allow' || 'disallow' }}
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
