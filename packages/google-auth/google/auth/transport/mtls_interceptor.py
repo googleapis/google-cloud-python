@@ -407,6 +407,7 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                         _LOGGER.warning("Callback failed: %s", e)
                 return
 
+            status_code = None
             exc = inner_future.exception()
             if isinstance(exc, grpc.RpcError):
                 status_code = exc.code()
