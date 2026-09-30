@@ -18,6 +18,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import contextlib
+import os
 import re
 import traceback
 
@@ -33,6 +34,7 @@ from sqlalchemy.testing.plugin.pytestplugin import (
 )
 
 import sqlalchemy_bigquery.base
+import sqlalchemy_bigquery.provision  # noqa: F401
 
 sqlalchemy_bigquery.BigQueryDialect.preexecute_autoincrement_sequences = True
 
@@ -70,14 +72,35 @@ sqlalchemy_bigquery.base.BigQueryCompiler.visit_delete = visit_delete
 
 
 def pytest_sessionstart(session):
-    dataset_id = prefixer.create_prefix()
-    session.config.option.dburi = [f"bigquery:///{dataset_id}"]
+    if hasattr(session.config, "workerinput"):
+        # In a pytest-xdist worker process:
+        # Dataset creation and URL binding are dynamically provisioned
+        # per-worker by sqlalchemy_bigquery.provision hooks.
+        _pytest_sessionstart(session)
+        return
+
+    # Master process (or single-process sequential run):
+    run_prefix = prefixer.create_prefix()
+    os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
+    master_dataset_id = f"{run_prefix}_master"
+    session.config.option.dburi = [f"bigquery:///{master_dataset_id}"]
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        client.create_dataset(dataset_id)
+        dataset_ref = google.cloud.bigquery.DatasetReference(
+            client.project, master_dataset_id
+        )
+        dataset = google.cloud.bigquery.Dataset(dataset_ref)
+        dataset.default_table_expiration_ms = 3600 * 1000
+        client.create_dataset(dataset, exists_ok=True)
     _pytest_sessionstart(session)
 
 
 def pytest_sessionfinish(session):
+    if hasattr(session.config, "workerinput"):
+        # Worker dataset teardown is handled by provision.drop_follower_db
+        # on the controller node.
+        _pytest_sessionfinish(session)
+        return
+
     dataset_id = config.db.dialect.dataset_id
     _pytest_sessionfinish(session)
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
