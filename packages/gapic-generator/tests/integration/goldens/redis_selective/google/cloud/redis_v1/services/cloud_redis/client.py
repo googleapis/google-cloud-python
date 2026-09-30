@@ -62,13 +62,11 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
-ASYNC_REST_EXCEPTION = None
 try:
     from .transports.rest_asyncio import AsyncCloudRedisRestTransport
     HAS_ASYNC_REST_DEPENDENCIES = True
-except ImportError as e: # pragma: NO COVER
+except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
-    ASYNC_REST_EXCEPTION = e
 
 
 class CloudRedisClientMeta(type):
@@ -99,7 +97,9 @@ class CloudRedisClientMeta(type):
         """
         # If a specific transport is requested, return that one.
         if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
-            raise ASYNC_REST_EXCEPTION
+            raise ImportError(
+                "`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-cloud-redis[async_rest]`"
+            )
         if label:
             return cls._transport_registry[label]
 
