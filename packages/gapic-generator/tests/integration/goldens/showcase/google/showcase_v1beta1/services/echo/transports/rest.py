@@ -715,10 +715,6 @@ class EchoRestTransport(_BaseEchoRestTransport):
             ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
-
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'localhost:7469').
@@ -886,7 +882,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseBlock__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1044,7 +1040,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseEcho__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1172,7 +1168,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseEchoErrorDetails__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1301,7 +1297,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseExpand__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1422,7 +1418,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseFailEchoWithDetails__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1550,7 +1546,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BasePagedExpand__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1682,7 +1678,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BasePagedExpandLegacy__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1809,7 +1805,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BasePagedExpandLegacyMapped__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1937,7 +1933,7 @@ class EchoRestTransport(_BaseEchoRestTransport):
                     "_BaseWait__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER

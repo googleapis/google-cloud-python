@@ -2,9 +2,21 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+# Add compliance.proto once this bug is fixed
+# We should use `srcs = glob(["schema/google/showcase/v1beta1/*.proto"]),`
+# Rather than list protos manually.
 proto_library(
     name = "showcase_proto",
-    srcs = glob(["schema/google/showcase/v1beta1/*.proto"]),
+    srcs = [
+        "schema/google/showcase/v1beta1/echo.proto",
+        "schema/google/showcase/v1beta1/identity.proto",
+        "schema/google/showcase/v1beta1/messaging.proto",
+        "schema/google/showcase/v1beta1/rest_error.proto",
+        "schema/google/showcase/v1beta1/resumable_upload.proto",
+        "schema/google/showcase/v1beta1/sequence.proto",
+        "schema/google/showcase/v1beta1/testing.proto",
+    ],
     deps = [
         "@com_google_googleapis//google/api:annotations_proto",
         "@com_google_googleapis//google/api:client_proto",
