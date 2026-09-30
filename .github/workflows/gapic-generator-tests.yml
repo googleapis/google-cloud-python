@@ -71,7 +71,7 @@ jobs:
         with:
           python-version: "${{ matrix.python }}"
           allow-prereleases: true
-          # Caches compiled wheels locally to prevent building heavy libraries 
+          # Caches compiled wheels locally to prevent building heavy libraries
           # such as grpcio, which we build from scratch on every run for Python 3.15+.
           # Follow https://github.com/grpc/grpc/issues/41010 for updates.
           cache: 'pip'
@@ -142,6 +142,13 @@ jobs:
           run: |
             cd packages/gapic-generator
             nox -s ${{ matrix.target }}-${MATRIX_PYTHON}
+        - name: Upload Raw Spans Artifact
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
+            name: raw-spans-${{ matrix.target }}-${{ matrix.python }}${{ matrix.logging_scope && format('-{0}', matrix.logging_scope) || '' }}
+            path: packages/gapic-generator/tests/system/raw_spans_output.json
+            if-no-files-found: ignore
 
   showcase-mypy:
     needs: python_config
@@ -210,7 +217,7 @@ jobs:
         with:
           python-version: ${{ needs.python_config.outputs.prerelease_python }}
           allow-prereleases: true
-          # Caches compiled wheels locally to prevent building heavy libraries 
+          # Caches compiled wheels locally to prevent building heavy libraries
           # such as grpcio, which we build from scratch on every run for Python 3.15+.
           # Follow https://github.com/grpc/grpc/issues/41010 for updates.
           cache: 'pip'
@@ -242,7 +249,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           allow-prereleases: true
-          # Caches compiled wheels locally to prevent building heavy libraries 
+          # Caches compiled wheels locally to prevent building heavy libraries
           # such as grpcio, which we build from scratch on every run for Python 3.15+.
           # Follow https://github.com/grpc/grpc/issues/41010 for updates.
           cache: 'pip'
@@ -287,13 +294,13 @@ jobs:
 
       - name: Run Bazel Integration Tests
         run: |
-          # We need to move into the package directory if the 
+          # We need to move into the package directory if the
           # WORKSPACE file is located there.
           cd packages/gapic-generator
           bazelisk test //tests/integration/... --test_output=errors
 
   # Final job to simplify branch protection rules.
-  # This job will be reported as 'Success' if all its dependencies either 
+  # This job will be reported as 'Success' if all its dependencies either
   # pass or are skipped due to path filtering.
   status:
     needs: [check_changes, python_config, showcase-unit, showcase, showcase-mypy, goldens, goldens-prerelease, fragment-snippet, integration]
@@ -314,4 +321,3 @@ jobs:
             exit 1
           fi
           echo "All checks passed or were successfully skipped."
-

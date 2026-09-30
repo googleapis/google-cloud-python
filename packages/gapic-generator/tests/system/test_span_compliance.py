@@ -46,7 +46,7 @@ The engine operates across five distinct phases:
    Validates span names, kinds, status codes, string attributes (with wildcard support),
    integer attributes, substring status messages, and protocol-specific resend counts.
 
-5. Diagnostic Archival (`RAW_SPANS_CATALOG` & `test_z_dump_raw_spans`):
+5. Diagnostic Archival (`RAW_SPANS_CATALOG` & `dump_raw_spans` fixture):
    Serializes every captured span in full JSON format to `raw_spans_output.json`, enabling
    offline auditability and regression post-mortems without re-running the live server.
 """
@@ -804,13 +804,16 @@ def test_feature(feature_id: str, span_exporter, monkeypatch):
 # ---------------------------------------------------------------------------
 
 
-def test_z_dump_raw_spans():
-    """Serializes all captured raw spans to raw_spans_output.json for audit and review.
+@pytest.fixture(scope="session", autouse=True)
+def dump_raw_spans():
+    """Serializes all captured raw spans to raw_spans_output.json upon session completion.
 
-    Named with 'test_z_' prefix to guarantee it runs after all 22 feature tests have
-    populated `RAW_SPANS_CATALOG`. This generated JSON file serves as an immutable
-    diagnostic artifact showing every span's exact attributes, timing, and hierarchy.
+    This autouse session fixture runs after all tests complete, writing an immutable
+    diagnostic artifact showing every span's exact attributes, timing, and hierarchy
+    ready for upload by CI.
     """
-    output_path = Path(__file__).parent / "raw_spans_output.json"
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(RAW_SPANS_CATALOG, f, indent=2)
+    yield
+    if RAW_SPANS_CATALOG:
+        output_path = Path(__file__).parent / "raw_spans_output.json"
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(RAW_SPANS_CATALOG, f, indent=2)

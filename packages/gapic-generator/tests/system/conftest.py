@@ -533,3 +533,29 @@ def intercepted_echo_rest_async():
     )
 
     return EchoAsyncClient(transport=transport), interceptor
+
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    """Prints a Telemetry Span Compliance summary to the console at session end.
+
+    Enables developers to view and copy all compliance test names and pass/fail states
+    directly from CI/console output without enabling verbose output for unrelated tests.
+    """
+    reports = (
+        terminalreporter.getreports("passed")
+        + terminalreporter.getreports("failed")
+        + terminalreporter.getreports("skipped")
+    )
+    compliance_reports = [
+        r for r in reports if "test_span_compliance.py" in r.nodeid and r.when == "call"
+    ]
+    if not compliance_reports:
+        return
+
+    terminalreporter.section(
+        "Telemetry Span Compliance Verification", sep="=", green=True
+    )
+    for rep in compliance_reports:
+        test_name = rep.nodeid.split("::")[-1]
+        status = rep.outcome.upper()
+        terminalreporter.write_line(f"[{status:6}] {test_name}")
