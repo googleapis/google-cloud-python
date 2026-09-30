@@ -401,7 +401,11 @@ def showcase(
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
 ):
-    """Run the Showcase test suite."""
+    """Run the Showcase test suite.
+
+    Set INSTALL_LOCAL_CORE=true to install packages/google-api-core from source
+    (useful for local testing and canary validation).
+    """
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         # When opt-in environment variable is set (e.g. in canary CI or local testing),
@@ -441,7 +445,11 @@ def showcase_w_rest_async(
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
 ):
-    """Run the Showcase test suite."""
+    """Run the Showcase test suite with async rest transport.
+
+    Set INSTALL_LOCAL_CORE=true to install packages/google-api-core from source
+    (useful for local testing and canary validation).
+    """
 
     with showcase_library(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
