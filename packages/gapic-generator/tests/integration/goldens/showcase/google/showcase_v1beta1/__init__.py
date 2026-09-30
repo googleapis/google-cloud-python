@@ -26,14 +26,12 @@ __version__ = package_version.__version__
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
-"google.showcase_v1beta1.services.compliance",
 "google.showcase_v1beta1.services.echo",
 "google.showcase_v1beta1.services.identity",
 "google.showcase_v1beta1.services.messaging",
 "google.showcase_v1beta1.services.resumable_upload_service",
 "google.showcase_v1beta1.services.sequence_service",
 "google.showcase_v1beta1.services.testing",
-"google.showcase_v1beta1.types.compliance",
 "google.showcase_v1beta1.types.echo",
 "google.showcase_v1beta1.types.identity",
 "google.showcase_v1beta1.types.messaging",
@@ -44,8 +42,6 @@ __lazy_modules__ = {
 }
 
 
-from .services.compliance import ComplianceClient
-from .services.compliance import ComplianceAsyncClient
 from .services.echo import EchoClient
 from .services.echo import EchoAsyncClient
 from .services.identity import IdentityClient
@@ -59,16 +55,6 @@ from .services.sequence_service import SequenceServiceAsyncClient
 from .services.testing import TestingClient
 from .services.testing import TestingAsyncClient
 
-from .types.compliance import ComplianceData
-from .types.compliance import ComplianceDataChild
-from .types.compliance import ComplianceDataGrandchild
-from .types.compliance import ComplianceGroup
-from .types.compliance import ComplianceSuite
-from .types.compliance import EnumRequest
-from .types.compliance import EnumResponse
-from .types.compliance import RepeatRequest
-from .types.compliance import RepeatResponse
-from .types.compliance import Continent
 from .types.echo import BlockRequest
 from .types.echo import BlockResponse
 from .types.echo import EchoErrorDetailsRequest
@@ -150,7 +136,6 @@ from .types.testing import VerifyTestRequest
 from .types.testing import VerifyTestResponse
 
 __all__ = (
-    'ComplianceAsyncClient',
     'EchoAsyncClient',
     'IdentityAsyncClient',
     'MessagingAsyncClient',
@@ -163,14 +148,7 @@ __all__ = (
 'BlockRequest',
 'BlockResponse',
 'Blurb',
-'ComplianceClient',
-'ComplianceData',
-'ComplianceDataChild',
-'ComplianceDataGrandchild',
-'ComplianceGroup',
-'ComplianceSuite',
 'ConnectRequest',
-'Continent',
 'CreateBlurbRequest',
 'CreateRoomRequest',
 'CreateSequenceRequest',
@@ -187,8 +165,6 @@ __all__ = (
 'EchoErrorDetailsResponse',
 'EchoRequest',
 'EchoResponse',
-'EnumRequest',
-'EnumResponse',
 'ErrorWithMultipleDetails',
 'ErrorWithSingleDetail',
 'ExpandRequest',
@@ -219,8 +195,6 @@ __all__ = (
 'PagedExpandResponse',
 'PagedExpandResponseList',
 'PoetryError',
-'RepeatRequest',
-'RepeatResponse',
 'ReportSessionRequest',
 'ReportSessionResponse',
 'RestError',

@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .compliance import (
-    ComplianceData,
-    ComplianceDataChild,
-    ComplianceDataGrandchild,
-    ComplianceGroup,
-    ComplianceSuite,
-    EnumRequest,
-    EnumResponse,
-    RepeatRequest,
-    RepeatResponse,
-    Continent,
-)
 from .echo import (
     BlockRequest,
     BlockResponse,
@@ -120,16 +108,6 @@ from .testing import (
 )
 
 __all__ = (
-    'ComplianceData',
-    'ComplianceDataChild',
-    'ComplianceDataGrandchild',
-    'ComplianceGroup',
-    'ComplianceSuite',
-    'EnumRequest',
-    'EnumResponse',
-    'RepeatRequest',
-    'RepeatResponse',
-    'Continent',
     'BlockRequest',
     'BlockResponse',
     'EchoErrorDetailsRequest',

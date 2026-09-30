@@ -5007,6 +5007,7 @@ def test_get_room_rest_required_fields(request_type=messaging.GetRoomRequest):
             response = client.get_room(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -5199,6 +5200,7 @@ def test_delete_room_rest_required_fields(request_type=messaging.DeleteRoomReque
             response = client.delete_room(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -5458,6 +5460,7 @@ def test_create_blurb_rest_required_fields(request_type=messaging.CreateBlurbReq
             response = client.create_blurb(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -5623,6 +5626,7 @@ def test_get_blurb_rest_required_fields(request_type=messaging.GetBlurbRequest):
             response = client.get_blurb(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -5815,6 +5819,7 @@ def test_delete_blurb_rest_required_fields(request_type=messaging.DeleteBlurbReq
             response = client.delete_blurb(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -5977,6 +5982,7 @@ def test_list_blurbs_rest_required_fields(request_type=messaging.ListBlurbsReque
             response = client.list_blurbs(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -6205,6 +6211,7 @@ def test_search_blurbs_rest_required_fields(request_type=messaging.SearchBlurbsR
             response = client.search_blurbs(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -6370,6 +6377,7 @@ def test_stream_blurbs_rest_required_fields(request_type=messaging.StreamBlurbsR
                 response = client.stream_blurbs(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)

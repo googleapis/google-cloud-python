@@ -18,8 +18,6 @@ from google.showcase import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.showcase_v1beta1.services.compliance.client import ComplianceClient
-from google.showcase_v1beta1.services.compliance.async_client import ComplianceAsyncClient
 from google.showcase_v1beta1.services.echo.client import EchoClient
 from google.showcase_v1beta1.services.echo.async_client import EchoAsyncClient
 from google.showcase_v1beta1.services.identity.client import IdentityClient
@@ -33,16 +31,6 @@ from google.showcase_v1beta1.services.sequence_service.async_client import Seque
 from google.showcase_v1beta1.services.testing.client import TestingClient
 from google.showcase_v1beta1.services.testing.async_client import TestingAsyncClient
 
-from google.showcase_v1beta1.types.compliance import ComplianceData
-from google.showcase_v1beta1.types.compliance import ComplianceDataChild
-from google.showcase_v1beta1.types.compliance import ComplianceDataGrandchild
-from google.showcase_v1beta1.types.compliance import ComplianceGroup
-from google.showcase_v1beta1.types.compliance import ComplianceSuite
-from google.showcase_v1beta1.types.compliance import EnumRequest
-from google.showcase_v1beta1.types.compliance import EnumResponse
-from google.showcase_v1beta1.types.compliance import RepeatRequest
-from google.showcase_v1beta1.types.compliance import RepeatResponse
-from google.showcase_v1beta1.types.compliance import Continent
 from google.showcase_v1beta1.types.echo import BlockRequest
 from google.showcase_v1beta1.types.echo import BlockResponse
 from google.showcase_v1beta1.types.echo import EchoErrorDetailsRequest
@@ -123,9 +111,7 @@ from google.showcase_v1beta1.types.testing import TestRun
 from google.showcase_v1beta1.types.testing import VerifyTestRequest
 from google.showcase_v1beta1.types.testing import VerifyTestResponse
 
-__all__ = ('ComplianceClient',
-    'ComplianceAsyncClient',
-    'EchoClient',
+__all__ = ('EchoClient',
     'EchoAsyncClient',
     'IdentityClient',
     'IdentityAsyncClient',
@@ -137,16 +123,6 @@ __all__ = ('ComplianceClient',
     'SequenceServiceAsyncClient',
     'TestingClient',
     'TestingAsyncClient',
-    'ComplianceData',
-    'ComplianceDataChild',
-    'ComplianceDataGrandchild',
-    'ComplianceGroup',
-    'ComplianceSuite',
-    'EnumRequest',
-    'EnumResponse',
-    'RepeatRequest',
-    'RepeatResponse',
-    'Continent',
     'BlockRequest',
     'BlockResponse',
     'EchoErrorDetailsRequest',

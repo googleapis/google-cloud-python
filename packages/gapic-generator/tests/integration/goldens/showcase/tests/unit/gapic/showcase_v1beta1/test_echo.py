@@ -3864,6 +3864,7 @@ def test_paged_expand_rest_required_fields(request_type=gs_echo.PagedExpandReque
             response = client.paged_expand(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -4037,6 +4038,7 @@ def test_paged_expand_legacy_rest_required_fields(request_type=gs_echo.PagedExpa
             response = client.paged_expand_legacy(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -4210,6 +4212,7 @@ def test_paged_expand_legacy_mapped_rest_required_fields(request_type=gs_echo.Pa
             response = client.paged_expand_legacy_mapped(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
