@@ -357,30 +357,32 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                             )
                         return _error()
                 self._stubs['upload_media'] = _ErrorStub()
-            elif HAS_ASYNC_REST:  # pragma: NO COVER
-                # Lazily instantiate and cache the AsyncRestTransport stub on first
-                # call rather than during __init__ (_prep_wrapped_messages), since
-                # GrpcAsyncIOTransport may be initialized with synchronous
-                # google.auth.credentials.Credentials that AsyncAuthorizedSession
-                # rejects, and gRPC async stubs expose a synchronous __call__
-                # returning an awaitable.
-                class _AsyncRestStub:  # pragma: NO COVER
-                    def __init__(_self):  # pragma: NO COVER
-                        _self._rest_stub = None
+            elif HAS_ASYNC_REST:
+                # Defer instantiating AsyncResumableUploadServiceRestTransport until the
+                # resumable upload RPC is called so that initializing
+                # ResumableUploadServiceGrpcAsyncIOTransport with synchronous
+                # google.auth.credentials.Credentials (e.g. via ADC or service
+                # account helpers) for standard gRPC calls does not fail in
+                # __init__ (_prep_wrapped_messages) when AsyncAuthorizedSession
+                # validates for async credentials.
+                transport = self
+                class _AsyncRestStub:
+                    def __init__(self):
+                        self._rest_stub = None
 
-                    def __call__(_self, *args, **kwargs):  # pragma: NO COVER
-                        if _self._rest_stub is None:
+                    def __call__(self, *args, **kwargs):
+                        if self._rest_stub is None:
                             rest_transport = AsyncResumableUploadServiceRestTransport(
-                                host=self._host,
-                                credentials=self._credentials,
-                                client_info=self._client_info,
+                                host=transport._host,
+                                credentials=transport._credentials,
+                                client_info=transport._client_info,
                             )
-                            _self._rest_stub = rest_transport.upload_media
-                        return _self._rest_stub(*args, **kwargs)
+                            self._rest_stub = rest_transport.upload_media
+                        return self._rest_stub(*args, **kwargs)
                 self._stubs['upload_media'] = _AsyncRestStub()
-            else:  # pragma: NO COVER
-                class _UnsupportedStub:  # pragma: NO COVER
-                    def __call__(self, *args, **kwargs):  # pragma: NO COVER
+            else:
+                class _UnsupportedStub:
+                    def __call__(self, *args, **kwargs):
                         async def _unsupported():
                             raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
                         return _unsupported()

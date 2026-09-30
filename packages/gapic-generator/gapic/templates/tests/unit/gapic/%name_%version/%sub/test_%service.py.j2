@@ -1545,6 +1545,50 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
     with pytest.raises(core_exceptions.GoogleAPICallError) as exc_info:
         await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
     assert "operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_rest_stub():
+    with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", True), mock.patch.object(
+        transports.grpc_asyncio,
+        "Async{{ service.name }}RestTransport",
+        create=True,
+    ) as mock_rest_transport_cls:
+        mock_rest_transport = mock.MagicMock()
+        expected_session = {{ method.client_output_async.ident }}()
+        mock_rest_transport.{{ method.transport_safe_name|snake_case }} = mock.AsyncMock(
+            return_value=expected_session
+        )
+        mock_rest_transport_cls.return_value = mock_rest_transport
+
+        transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+            credentials=async_anonymous_credentials(),
+        )
+        mock_rest_transport_cls.assert_not_called()
+
+        stub = transport.{{ method.transport_safe_name|snake_case }}
+        result1 = await stub({{ method.input.ident }}())
+        result2 = await stub({{ method.input.ident }}())
+
+        assert result1 is expected_session
+        assert result2 is expected_session
+        mock_rest_transport_cls.assert_called_once_with(
+            host=transport._host,
+            credentials=transport._credentials,
+            client_info=transport._client_info,
+        )
+        assert mock_rest_transport.{{ method.transport_safe_name|snake_case }}.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_without_async_rest_error():
+    with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", False):
+        transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+            credentials=async_anonymous_credentials(),
+        )
+        with pytest.raises(NotImplementedError) as exc_info:
+            await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+        assert "Async REST transport is required for async resumable upload methods." in str(exc_info.value)
 {% endfor %}
 {% endif %}
 
@@ -1556,13 +1600,40 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_e
         transport="rest",
     )
     with mock.patch.object(type(client.transport._session), "request") as req:
-        response_value = mock.MagicMock()
-        response_value.status_code = 200
-        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
-        response_value.content = b""
-        req.return_value = response_value
-        response = client.{{ method.client_method_name|snake_case }}({{ method.input.ident }}())
+        start_response = mock.MagicMock()
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.content = b""
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.ok = True
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.content = json_return_value.encode("UTF-8")
+
+        req.side_effect = [start_response, upload_response]
+        response = client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            timeout=10.0,
+        )
         assert isinstance(response, {{ method.client_output.ident }})
+        result = response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
 
 
 {% if rest_async_io_enabled %}
@@ -1574,14 +1645,45 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
     )
-    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.AsyncMock) as req:
-        response_value = mock.MagicMock()
-        response_value.status_code = 200
-        response_value.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
-        response_value.read = mock.AsyncMock(return_value=b"")
-        req.return_value = response_value
-        response = await client.{{ method.client_method_name|snake_case }}({{ method.input.ident }}())
+    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.MagicMock) as req:
+        start_response = mock.MagicMock()
+        start_response.status = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_ctx = mock.MagicMock()
+        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
+        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_ctx = mock.MagicMock()
+        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
+        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_ctx, upload_ctx]
+        response = await client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            timeout=10.0,
+        )
         assert isinstance(response, {{ method.client_output_async.ident }})
+        result = await response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
 {% endif %}
 {% endfor %}
 {% endif %}
