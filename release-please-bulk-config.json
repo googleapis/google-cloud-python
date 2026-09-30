@@ -3540,7 +3540,13 @@
       "component": "google-maps-mapmanagement",
       "extra-files": [
         "google/maps/mapmanagement/gapic_version.py",
+        "google/maps/mapmanagement_v2/gapic_version.py",
         "google/maps/mapmanagement_v2beta/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2.json",
+          "type": "json"
+        },
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2beta.json",
