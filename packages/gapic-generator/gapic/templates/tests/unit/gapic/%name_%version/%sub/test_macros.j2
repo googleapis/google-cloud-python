@@ -2041,7 +2041,7 @@ def test_initialize_client_w_{{transport_name}}():
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
+    with mock.patch.object(type(client.transport._session), 'request'{% if is_async and method.is_resumable_upload %}, new_callable=mock.MagicMock{% endif %}) as req:
         # Designate an appropriate value for the returned response.
         {% if method.void %}
         return_value = None
@@ -2080,7 +2080,11 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}{# method.void #}
 
         # Wrap the value into a proper Response obj
+        {% if method.is_resumable_upload %}
+        response_value = mock.MagicMock()
+        {% else %}
         response_value = mock.Mock()
+        {% endif %}
         response_value.status_code = 200
         {% if method.void %}
         json_return_value = ''
@@ -2106,9 +2110,37 @@ def test_initialize_client_w_{{transport_name}}():
         response_value.content = json_return_value.encode('UTF-8')
         {% endif %}{# is_async #}
         {% endif %}{# method.server_streaming #}
+        {% if method.is_resumable_upload %}
+        start_response = mock.MagicMock()
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
+        {% if is_async %}
+        start_response.status = 200
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.__aenter__ = mock.AsyncMock(return_value=start_response)
+        start_response.__aexit__ = mock.AsyncMock(return_value=None)
+        response_value.status = 200
+        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
+        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        {% else %}
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.content = b""
+        response_value.ok = True
+        {% endif %}
+        req.side_effect = [start_response, response_value]
+        response = {{ await_prefix }}client.{{ method_name }}(request)
+        {% if is_async %}
+        assert isinstance(response, {{ method.client_output_async.ident }})
+        {% else %}
+        assert isinstance(response, {{ method.client_output.ident }})
+        {% endif %}
+        response = {{ await_prefix }}response.upload(b"test data")
+        {% else %}
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = {{ await_prefix }}client.{{ method_name }}(request)
+        {% endif %}
     {% if "next_page_token" in method_output.fields.values()|map(attribute='name', default="") and not method.paged_result_field %}
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2199): The following assert statement is added to force
      # code coverage for bad paginated methods. Investigate what bad paginated methods are, and follow up on why this assertion is required.
@@ -2132,14 +2164,10 @@ def test_initialize_client_w_{{transport_name}}():
     assert response is None
     {% elif method.lro %}
     json_return_value = json_format.MessageToJson(return_value)
-    {% elif method.is_resumable_upload %}
-    {% if is_async %}
-    assert isinstance(response, {{ method.client_output_async.ident }})
     {% else %}
-    assert isinstance(response, {{ method.client_output.ident }})
-    {% endif %}
-    {% else %}
-    {% if is_async %}
+    {% if method.is_resumable_upload %}
+    assert isinstance(response, {{ method.output.ident }})
+    {% elif is_async %}
     assert isinstance(response, {{ method.client_output_async.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
