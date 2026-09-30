@@ -289,7 +289,7 @@ def install_unittest_dependencies(session, *constraints):
         session.install("-e", ".", *constraints)
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=ALL_PYTHON, venv_backend="virtualenv")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -450,7 +450,7 @@ def _run_system_test_logic(session, test_type):
         )
 
 
-@nox.session(python="3.12")
+@nox.session(python="3.12", venv_backend="virtualenv")
 @nox.parametrize("test_type", ["system", "system_noextras", "compliance"])
 @_calculate_duration
 def system(session, test_type):
@@ -458,21 +458,21 @@ def system(session, test_type):
     _run_system_test_logic(session, test_type)
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS, venv_backend="virtualenv")
 @_calculate_duration
 def system_noextras(session):
     """Run the system test suite without extras."""
     _run_system_test_logic(session, "system_noextras")
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1], venv_backend="virtualenv")
 @_calculate_duration
 def compliance(session):
     """Run the SQLAlchemy dialect-compliance system tests"""
     _run_system_test_logic(session, "compliance")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=DEFAULT_PYTHON_VERSION, venv_backend="virtualenv")
 @_calculate_duration
 def cover(session):
     """Run the final coverage report.
@@ -486,7 +486,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.10", venv_backend="virtualenv")
 @_calculate_duration
 def docs(session):
     """Build the docs for this library."""
@@ -524,7 +524,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.10", venv_backend="virtualenv")
 @_calculate_duration
 def docfx(session):
     """Build the docfx yaml files for this library."""
@@ -573,7 +573,7 @@ def docfx(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=DEFAULT_PYTHON_VERSION, venv_backend="virtualenv")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
@@ -697,7 +697,7 @@ def mypy(session):
     session.skip("mypy tests are not yet supported")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.session(python=DEFAULT_PYTHON_VERSION, venv_backend="virtualenv")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb"],
