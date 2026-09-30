@@ -2389,7 +2389,7 @@ libraries:
     python:
       default_version: v1
   - name: google-maps-mapmanagement
-    version: 0.1.1
+    version: 0.1.2
     apis:
       - path: google/maps/mapmanagement/v2
       - path: google/maps/mapmanagement/v2beta
