@@ -12,6 +12,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 {% if service.has_resumable_upload_methods %}
 from google.api_core import exceptions as core_exceptions
+from google.api_core import resumable_transfer
 {% endif %}
 from google.api_core import grpc_helpers
 {% if service.has_lro %}
@@ -192,6 +193,9 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsClient] = None
         {% endif %}
+        {% if service.has_resumable_upload_methods %}
+        self._rest_transport: Optional[{{ service.name }}RestTransport] = None
+        {% endif %}
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -340,7 +344,11 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     @property
     def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
+            {% if method.is_resumable_upload %}
+            {{ method.client_output.ident }}]:
+            {% else %}
             {{ method.output.ident }}]:
+            {% endif %}
         r"""Return a callable for the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
@@ -350,7 +358,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    ~.{{ method.output.name }}]:
+                    ~.{% if method.is_resumable_upload %}{{ method.client_output.name }}{% else %}{{ method.output.name }}{% endif %}]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -368,12 +376,13 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                         )
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
             else:
-                rest_transport = {{ service.name }}RestTransport(
-                    host=self._host,
-                    credentials=self._credentials,
-                    client_info=self._client_info,
-                )
-                self._stubs['{{ method.transport_safe_name|snake_case }}'] = rest_transport.{{ method.transport_safe_name|snake_case }}
+                if self._rest_transport is None:
+                    self._rest_transport = {{ service.name }}RestTransport(
+                        host=self._host,
+                        credentials=self._credentials,
+                        client_info=self._client_info,
+                    )
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._rest_transport.{{ method.transport_safe_name|snake_case }}
             {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
@@ -468,6 +477,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
     def close(self):
         self._logged_channel.close()
+        {% if service.has_resumable_upload_methods %}
+        if self._rest_transport is not None:
+            self._rest_transport.close()
+        {% endif %}
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 

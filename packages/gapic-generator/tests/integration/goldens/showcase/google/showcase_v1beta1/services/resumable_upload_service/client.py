@@ -62,13 +62,11 @@ from .transports.base import ResumableUploadServiceTransport, DEFAULT_CLIENT_INF
 from .transports.grpc import ResumableUploadServiceGrpcTransport
 from .transports.grpc_asyncio import ResumableUploadServiceGrpcAsyncIOTransport
 from .transports.rest import ResumableUploadServiceRestTransport
-ASYNC_REST_EXCEPTION = None
 try:
     from .transports.rest_asyncio import AsyncResumableUploadServiceRestTransport
     HAS_ASYNC_REST_DEPENDENCIES = True
-except ImportError as e: # pragma: NO COVER
+except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
-    ASYNC_REST_EXCEPTION = e
 
 
 class ResumableUploadServiceClientMeta(type):
@@ -99,7 +97,9 @@ class ResumableUploadServiceClientMeta(type):
         """
         # If a specific transport is requested, return that one.
         if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
-            raise ASYNC_REST_EXCEPTION
+            raise ImportError(
+                "`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-showcase[async_rest]`"
+            )
         if label:
             return cls._transport_registry[label]
 
