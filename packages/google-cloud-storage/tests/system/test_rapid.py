@@ -80,6 +80,7 @@ def rapid_kms_key(storage_client, kms_client):
     location = bucket.location.lower()
 
     project = storage_client.project
+    # Keep legacy "zonal" naming to reuse existing KMS resources in the test project.
     keyring_name = "gcs-test-zonal-ring"
     key_name = "gcs-test-zonal-key"
 
