@@ -104,6 +104,9 @@
         }
       ]
     },
+    "packages/sqlalchemy-spanner": {
+      "component": "sqlalchemy-spanner"
+    },
     "preview-packages/google-cloud-compute": {
       "draft-pull-request": true,
       "extra-files": [
