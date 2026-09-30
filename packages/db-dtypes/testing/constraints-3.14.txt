@@ -1,35 +1,10 @@
-# -----------------------------------------------------------------------------
-# Constraints for Python 3.14
-# -----------------------------------------------------------------------------
+# When testing with `pandas >= 3.1.0` (currently in pre-release as `pandas==3.1.0rc0`),
+# the `db-dtypes` compliance test suite (`tests/compliance`) fails due to upstream
+# changes in pandas internal utilities and ExtensionArray interface contracts.
+# To prevent presubmit PR CI from failing unexpectedly on developer branches, a
+# temporary ceiling constraint (`pandas < 3.1.0dev0`) was added.
 #
-# What is this file?
-# This file tells our package installer (like pip or uv) which specific versions
-# of external libraries it is allowed to use when running tests on Python 3.14.
-#
-# Why do we need a limit on pandas here?
-# In our automated testing environment on GitHub, the installer is configured to
-# allow "pre-releases" (early, unfinished test versions of packages, such as
-# alphas, betas, and release candidates).
-#
-# Because pandas published an early release candidate (version 3.1.0rc0), the
-# installer automatically selected that test version instead of the official,
-# stable release (version 3.0.x).
-#
-# Version 3.1 of pandas introduces several breaking changes to how custom data
-# types work (specifically, changes to the ExtensionArray interface contracts,
-# how missing values are filled with fillna(), and the removal of internal helper
-# functions like np_version_gt2).
-#
-# Updating db-dtypes to support these new pandas 3.1 changes is a separate,
-# dedicated feature effort that is being tracked in our project issue tracker.
-#
-# Until that feature work is finished and merged, this constraint makes sure
-# our regular pull request tests run against the latest official, stable release
-# of pandas (version 3.0.x), where all 1,174 compliance tests pass cleanly.
-#
-# Forward-looking tests against upcoming, unreleased versions of pandas and
-# other dependencies continue to run in our dedicated nightly pre-release
-# test suite.
-# -----------------------------------------------------------------------------
+# Forward-looking tests against upcoming, unreleased versions of pandas and other
+# dependencies continue to run in our dedicated pre-release test suite.
 
 pandas < 3.1.0dev0
