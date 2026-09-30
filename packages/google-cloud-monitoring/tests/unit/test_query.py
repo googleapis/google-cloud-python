@@ -582,8 +582,17 @@ class Test__build_label_filter(unittest.TestCase):
 
     def test_metric_label_response_code_not_equal(self):
         actual = self._call_fut("metric", response_code_notequal=200)
-        expected = "metric.label.response_code != 200"
+        expected = 'metric.label.response_code != "200"'
         self.assertEqual(actual, expected)
+
+    def test_notequal_escapes_value(self):
+        actual = self._call_fut("metric", instance_name_notequal='a" OR x = "b')
+        expected = 'metric.label.instance_name != "a\\" OR x = \\"b"'
+        self.assertEqual(actual, expected)
+
+    def test_numeric_comparison_rejects_non_numeric_value(self):
+        with self.assertRaises(ValueError):
+            self._call_fut("metric", response_code_greater='500 OR x = "y"')
 
     def test_metric_label_response_code_greater_less(self):
         actual = self._call_fut(

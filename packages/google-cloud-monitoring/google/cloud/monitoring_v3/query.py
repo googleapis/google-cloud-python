@@ -276,7 +276,7 @@ class Query(object):
 
         ``<label>_notequal=<value>`` generates::
 
-            metric.label.<label> != <value>
+            metric.label.<label> != "<value>"
 
         By adding ``"_prefix"`` or ``"_suffix"`` to the keyword, you can specify
         a partial match.
@@ -609,6 +609,22 @@ def _escape_filter_value(value):
     return str(value).replace("\\", "\\\\").replace('"', '\\"')
 
 
+def _numeric_filter_value(value):
+    """Validate a value used in an unquoted numeric filter comparison.
+
+    The comparison operators (``<``, ``<=``, ``>``, ``>=``) apply to INT64
+    labels and are emitted without quotes, so a non-numeric value could inject
+    additional filter syntax. Reject anything that is not a number.
+    """
+    try:
+        float(value)
+    except (TypeError, ValueError):
+        raise ValueError(
+            "filter comparison value must be numeric, got {!r}".format(value)
+        )
+    return value
+
+
 def _build_label_filter(category, *args, **kwargs):
     """Construct a filter string to filter on metric or resource labels."""
     terms = list(args)
@@ -643,14 +659,19 @@ def _build_label_filter(category, *args, **kwargs):
             value = _escape_filter_value(value)
         elif suffix == "greater":
             term = "{key} > {value}"
+            value = _numeric_filter_value(value)
         elif suffix == "greaterequal":
             term = "{key} >= {value}"
+            value = _numeric_filter_value(value)
         elif suffix == "less":
             term = "{key} < {value}"
+            value = _numeric_filter_value(value)
         elif suffix == "lessequal":
             term = "{key} <= {value}"
+            value = _numeric_filter_value(value)
         elif suffix == "notequal":
-            term = "{key} != {value}"
+            term = '{key} != "{value}"'
+            value = _escape_filter_value(value)
         else:
             term = '{key} = "{value}"'
             value = _escape_filter_value(value)
