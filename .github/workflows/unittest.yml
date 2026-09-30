@@ -22,7 +22,6 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
-  UV_PRERELEASE: "allow"
   # Note: PARALLEL_WORKERS must remain "1" for unit tests because running pytest concurrently
   # on the same runner VM can cause socket/IPC/process deadlocks across packages.
   PARALLEL_WORKERS: "1"
@@ -140,6 +139,7 @@ jobs:
         TEST_TYPE: unit
         PY_VERSION: ${{ matrix.python }}
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
+        UV_PRERELEASE: ${{ matrix.python == '3.15' && 'allow' || 'disallow' }}
       run: |
         ci/run_conditional_tests.sh
     - name: Upload coverage results
