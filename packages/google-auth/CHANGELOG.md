@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.59.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.0...google-auth-v2.59.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **auth:** support mTLS in requests.Request for token refresh and impersonation ([#18486](https://github.com/googleapis/google-cloud-python/issues/18486)) ([590376d](https://github.com/googleapis/google-cloud-python/commit/590376df522bf5f89e0d23b956a85db61c4d48d7))
+
 ## [2.59.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.58.1...google-auth-v2.59.0) (2026-09-28)
 
 
