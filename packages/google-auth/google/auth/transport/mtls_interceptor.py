@@ -270,6 +270,52 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
     def details(self):
         return self._details
 
+class _BaseCallWrapper(grpc.Future, grpc.Call):
+    """A generic wrapper that delegates standard grpc.Call and grpc.Future
+    methods to an underlying call object.
+    """
+
+    def cancel(self):
+        return self._call.cancel()
+
+    def cancelled(self):
+        return self._call.cancelled()
+
+    def running(self):
+        return self._call.running()
+
+    def done(self):
+        return self._call.done()
+
+    def result(self, timeout=None):
+        return self._call.result(timeout=timeout)
+
+    def exception(self, timeout=None):
+        return self._call.exception(timeout=timeout)
+
+    def traceback(self, timeout=None):
+        return self._call.traceback(timeout=timeout)
+
+    def add_done_callback(self, fn):
+        self._call.add_done_callback(fn)
+
+    def initial_metadata(self):
+        return self._call.initial_metadata()
+
+    def trailing_metadata(self):
+        return self._call.trailing_metadata()
+
+    def code(self):
+        return self._call.code()
+
+    def details(self):
+        return self._call.details()
+
+    def time_remaining(self):
+        return self._call.time_remaining()
+
+    def add_callback(self, callback):
+        self._call.add_callback(callback)
 
 class _RetryableUnaryResponseFuture(_BaseCallWrapper):
     def __init__(
@@ -674,50 +720,3 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                 fn(self)
             except Exception:
                 pass
-
-class _BaseCallWrapper(grpc.Future, grpc.Call):
-    """A generic wrapper that delegates standard grpc.Call and grpc.Future
-    methods to an underlying call object.
-    """
-
-    def cancel(self):
-        return self._call.cancel()
-
-    def cancelled(self):
-        return self._call.cancelled()
-
-    def running(self):
-        return self._call.running()
-
-    def done(self):
-        return self._call.done()
-
-    def result(self, timeout=None):
-        return self._call.result(timeout=timeout)
-
-    def exception(self, timeout=None):
-        return self._call.exception(timeout=timeout)
-
-    def traceback(self, timeout=None):
-        return self._call.traceback(timeout=timeout)
-
-    def add_done_callback(self, fn):
-        self._call.add_done_callback(fn)
-
-    def initial_metadata(self):
-        return self._call.initial_metadata()
-
-    def trailing_metadata(self):
-        return self._call.trailing_metadata()
-
-    def code(self):
-        return self._call.code()
-
-    def details(self):
-        return self._call.details()
-
-    def time_remaining(self):
-        return self._call.time_remaining()
-
-    def add_callback(self, callback):
-        self._call.add_callback(callback)
