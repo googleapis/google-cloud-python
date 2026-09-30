@@ -16,6 +16,7 @@ import unittest
 
 import mock
 import pytest
+
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
