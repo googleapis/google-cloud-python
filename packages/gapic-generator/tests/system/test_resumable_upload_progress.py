@@ -21,7 +21,7 @@ from google.api_core.resumable_transfer import (
     ResumableUploadSession,
     UploadProgress,
 )
-from google.showcase import UploadMediaResponse
+from google.showcase import UploadMediaRequest, UploadMediaResponse
 
 from conftest import make_resumable_upload
 
@@ -254,3 +254,23 @@ def test_standalone_finalize_unseekable_stream(intercepted_resumable_upload_rest
     ]
     assert offsets == [0, 262_144, 524_288, 786_432, 786_432]
     assert all(p.total_bytes is None for p in progress_records)
+
+
+def test_client_upload_media_passes_request_body(intercepted_resumable_upload_rest):
+    """ Verify that invoking `client.upload_media(request=UploadMediaRequest(...))`
+    and calling `session.upload(stream=...)` forwards the serialized request body
+    on the initial upload session start request so the server echoes back the
+    expected resource name in `UploadMediaResponse.name`."""
+    client, _ = intercepted_resumable_upload_rest
+    payload = b"0123456789" * 100
+    stream = io.BytesIO(payload)
+
+    session = client.upload_media(
+        request=UploadMediaRequest(name="client_upload_media.txt"),
+    )
+    response = session.upload(stream=stream)
+
+    assert isinstance(response, UploadMediaResponse)
+    assert response.name == "client_upload_media.txt"
+    assert response.size == len(payload)
+
