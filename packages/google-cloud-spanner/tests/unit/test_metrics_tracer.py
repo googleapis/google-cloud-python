@@ -383,6 +383,14 @@ def test_extract_front_end_latencies():
         [("server-timing", "afe; dur=20"), ("server-timing", "gfet4t7; dur=30")]
     ) == (30, 20)
 
+    # Extremely large latency value (>308 digits) handled safely without raising OverflowError
+    assert MetricsTracer.extract_front_end_latencies(
+        [("server-timing", "gfet4t7; dur=" + ("9" * 400))]
+    ) == (None, None)
+    assert MetricsTracer.extract_front_end_latencies(
+        [("server-timing", "afe; dur=" + ("9" * 400))]
+    ) == (None, None)
+
 
 def test_record_front_end_metrics(metrics_tracer):
     mock_gfe_latency = mock.create_autospec(Histogram, instance=True)
@@ -567,6 +575,14 @@ def test_attribute_caching_and_invalidation(metrics_tracer):
     metrics_tracer.client_attributes["to_pop"] = "val"
     metrics_tracer.client_attributes.popitem()
 
+    # In-place union (|=) triggers invalidation
+    attrs = metrics_tracer.client_attributes
+    attrs |= {"instance_id": "updated_via_ior"}
+    assert (
+        metrics_tracer._create_attempt_otel_attributes()["instance_id"]
+        == "updated_via_ior"
+    )
+
     # ObservableDict with no on_change callback
     from google.cloud.spanner_v1.metrics.metrics_tracer import _ObservableDict
 
@@ -574,6 +590,7 @@ def test_attribute_caching_and_invalidation(metrics_tracer):
     no_callback_dict["b"] = 2
     del no_callback_dict["a"]
     no_callback_dict.update({"c": 3})
+    no_callback_dict |= {"e": 5}
     no_callback_dict.setdefault("d", 4)
     no_callback_dict.pop("c")
     no_callback_dict.popitem()

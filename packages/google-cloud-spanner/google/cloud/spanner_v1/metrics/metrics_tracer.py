@@ -60,7 +60,7 @@ def _extract_metric_latency(pattern: re.Pattern, text: str) -> Optional[int]:
     if match:
         try:
             return int(float(match.group(1)))
-        except ValueError:
+        except (ValueError, OverflowError):
             pass
     return None
 
@@ -114,6 +114,12 @@ class _ObservableDict(dict):
 
     def copy(self):
         return dict(self)
+
+    def __ior__(self, other):
+        super().__ior__(other)
+        if self._on_change is not None:
+            self._on_change()
+        return self
 
 
 class MetricAttemptTracer:
