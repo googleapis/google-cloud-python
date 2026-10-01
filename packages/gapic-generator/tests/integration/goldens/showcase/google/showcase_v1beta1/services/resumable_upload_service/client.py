@@ -64,7 +64,7 @@ from .transports.grpc_asyncio import ResumableUploadServiceGrpcAsyncIOTransport
 from .transports.rest import ResumableUploadServiceRestTransport
 try:
     from .transports.rest_asyncio import AsyncResumableUploadServiceRestTransport
-    HAS_ASYNC_REST_DEPENDENCIES = True
+    HAS_ASYNC_REST_DEPENDENCIES = True  # pragma: NO COVER
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
 
@@ -473,7 +473,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                 else cast(Callable[..., ResumableUploadServiceTransport], transport)
             )
 
-            if "rest_asyncio" in str(transport_init):
+            if "rest_asyncio" in str(transport_init):  # pragma: NO COVER
                 unsupported_params = {
                     "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
                     "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,
