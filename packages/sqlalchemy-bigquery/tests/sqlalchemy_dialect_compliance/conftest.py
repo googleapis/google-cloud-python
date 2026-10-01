@@ -27,6 +27,9 @@ import test_utils.prefixer
 from sqlalchemy.testing import config
 from sqlalchemy.testing.plugin.pytestplugin import *  # noqa
 from sqlalchemy.testing.plugin.pytestplugin import (
+    pytest_configure as _pytest_configure,
+)
+from sqlalchemy.testing.plugin.pytestplugin import (
     pytest_sessionfinish as _pytest_sessionfinish,
 )
 from sqlalchemy.testing.plugin.pytestplugin import (
@@ -71,6 +74,21 @@ def visit_delete(self, delete_stmt, *args, **kw):
 sqlalchemy_bigquery.base.BigQueryCompiler.visit_delete = visit_delete
 
 
+def pytest_configure(config):
+    if hasattr(config, "workerinput"):
+        prefix = config.workerinput.get("compliance_run_prefix")
+        if prefix:
+            os.environ["COMPLIANCE_RUN_PREFIX"] = prefix
+    else:
+        if "COMPLIANCE_RUN_PREFIX" not in os.environ:
+            os.environ["COMPLIANCE_RUN_PREFIX"] = prefixer.create_prefix()
+    _pytest_configure(config)
+
+
+def pytest_configure_node(node):
+    node.workerinput["compliance_run_prefix"] = os.environ.get("COMPLIANCE_RUN_PREFIX")
+
+
 def pytest_sessionstart(session):
     if hasattr(session.config, "workerinput"):
         # In a pytest-xdist worker process:
@@ -80,8 +98,10 @@ def pytest_sessionstart(session):
         return
 
     # Master process (or single-process sequential run):
-    run_prefix = prefixer.create_prefix()
-    os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
+    run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
+    if not run_prefix:
+        run_prefix = prefixer.create_prefix()
+        os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
     master_dataset_id = f"{run_prefix}_master"
     session.config.option.dburi = [f"bigquery:///{master_dataset_id}"]
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
@@ -101,10 +121,17 @@ def pytest_sessionfinish(session):
         _pytest_sessionfinish(session)
         return
 
-    dataset_id = config.db.dialect.dataset_id
     _pytest_sessionfinish(session)
+    run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+        if hasattr(config, "db") and config.db is not None:
+            dataset_id = config.db.dialect.dataset_id
+            client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+        elif run_prefix:
+            client.delete_dataset(
+                f"{run_prefix}_master", delete_contents=True, not_found_ok=True
+            )
+
         for dataset in client.list_datasets():
             if prefixer.should_cleanup(dataset.dataset_id):
                 client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)

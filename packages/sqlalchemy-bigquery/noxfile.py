@@ -433,7 +433,10 @@ def _run_system_test_logic(session, test_type):
     if test_type == "compliance":
         num_workers = os.environ.get("COMPLIANCE_WORKERS", "4")
         xdist_args = []
-        if not any(arg.startswith("-n") for arg in session.posargs):
+        if not any(
+            arg.startswith("-n") or arg.startswith("--numprocesses")
+            for arg in session.posargs
+        ):
             if num_workers not in ("0", "1"):
                 xdist_args = [f"-n={num_workers}", "--dist=loadscope"]
 

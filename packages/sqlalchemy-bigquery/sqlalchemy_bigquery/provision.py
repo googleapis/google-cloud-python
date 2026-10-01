@@ -34,6 +34,7 @@ def _dataset_id_from_ident(ident: str) -> str:
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     if not run_prefix:
         run_prefix = prefixer.create_prefix()
+        os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
     return f"{run_prefix}_{ident}"
 
 
