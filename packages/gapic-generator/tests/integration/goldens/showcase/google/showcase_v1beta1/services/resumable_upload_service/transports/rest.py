@@ -23,6 +23,8 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
+import functools
+import urllib.parse
 from google.api_core import resumable_transfer
 from google.showcase_v1beta1._compat import transcode_request
 import google.protobuf
@@ -427,7 +429,9 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
             )
 
             uri = transcoded_request["uri"]
-            upload_url = f"{self._host}{uri}"
+            params = rest_helpers.flatten_query_params(query_params, strict=True)
+            query_string = f"?{urllib.parse.urlencode(params)}" if params else ""
+            upload_url = f"{self._host}{uri}{query_string}"
             headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
             if config is None:
                 config = resumable_transfer.ResumableUploadConfig(headers=headers)
@@ -439,7 +443,7 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                 if isinstance(timeout, (int, float))
                 else {}
             )
-            return resumable_transfer.ResumableUploadSession(
+            session = resumable_transfer.ResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
@@ -447,6 +451,9 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                 start_retry=retry if isinstance(retry, retries.Retry) else None,
                 **session_kwargs,
             )
+            session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
+            session.iter_upload = functools.partial(session.iter_upload, request_body=body or "")  # type: ignore[method-assign]
+            return session
 
     @property
     def upload_media(self) -> Callable[
