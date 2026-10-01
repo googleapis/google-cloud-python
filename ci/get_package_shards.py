@@ -58,7 +58,6 @@ CORE_PACKAGES = {
 # (unify/untokenize) failing to build under modern setuptools/uv.
 EXCLUDED_PACKAGES = {
     "sqlalchemy-bigquery",
-    "gcp-sphinx-docfx-yaml",
 }
 
 
