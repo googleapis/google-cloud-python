@@ -44,6 +44,7 @@ try:
 except ImportError:
     HAS_RESUMABLE_UPLOAD_CLIENT = False
 
+HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = False
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from grpc.experimental import aio
     import asyncio
@@ -67,6 +68,16 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
+    try:
+        from google.showcase import ResumableUploadServiceAsyncClient
+        from google.showcase_v1beta1.services.resumable_upload_service.transports import (
+            AsyncResumableUploadServiceRestTransport,
+            AsyncResumableUploadServiceRestInterceptor,
+        )
+
+        HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT = False
 
     _GRPC_VERSION = grpc.__version__
 
@@ -344,6 +355,19 @@ if HAS_ASYNC_REST_ECHO_TRANSPORT:
             return request, metadata
 
 
+if HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT:
+
+    class ResumableUploadMetadataClientRestAsyncInterceptor(
+        AsyncResumableUploadServiceRestInterceptor
+    ):
+        request_metadata: Sequence[Tuple[str, str]] = []
+        response_metadata: Sequence[Tuple[str, str]] = []
+
+        async def pre_upload_media(self, request, metadata):
+            self.request_metadata = metadata
+            return request, metadata
+
+
 class EchoMetadataClientGrpcInterceptor(
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
@@ -574,6 +598,27 @@ def intercepted_resumable_upload_rest(use_mtls, use_tls):
         transport._session.cert = (CERT_PATH, KEY_PATH)
 
     return ResumableUploadServiceClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_resumable_upload_rest_async():
+    if not HAS_ASYNC_REST_RESUMABLE_UPLOAD_TRANSPORT:
+        pytest.skip("Skipping test with async rest.")
+
+    transport_name = "rest_asyncio"
+    transport_cls = ResumableUploadServiceAsyncClient.get_transport_class(
+        transport_name
+    )
+    interceptor = ResumableUploadMetadataClientRestAsyncInterceptor()
+
+    transport = transport_cls(
+        credentials=async_anonymous_credentials(),
+        host="localhost:7469",
+        url_scheme="http",
+        interceptor=interceptor,
+    )
+
+    return ResumableUploadServiceAsyncClient(transport=transport), interceptor
 
 
 try:

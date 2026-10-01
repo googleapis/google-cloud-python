@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import io
+import os
+import pytest
 
 from google.api_core.resumable_transfer import (
     DEFAULT_CHUNK_SIZE,
@@ -274,3 +276,59 @@ def test_client_upload_media_passes_request_body(intercepted_resumable_upload_re
     assert response.name == "client_upload_media.txt"
     assert response.size == len(payload)
 
+
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
+
+    @pytest.mark.asyncio
+    async def test_async_client_upload_media_end_to_end(
+        intercepted_resumable_upload_rest_async,
+    ):
+        """Verify end-to-end async resumable upload via ResumableUploadServiceAsyncClient."""
+        client, _ = intercepted_resumable_upload_rest_async
+        payload = b"0123456789" * 100
+        stream = io.BytesIO(payload)
+
+        session = await client.upload_media(
+            request=UploadMediaRequest(name="async_client_upload_media.txt"),
+            config=ResumableUploadConfig(chunk_size=256),
+        )
+        response = await session.upload(stream=stream)
+
+        assert isinstance(response, UploadMediaResponse)
+        assert response.name == "async_client_upload_media.txt"
+        assert response.size == len(payload)
+
+    @pytest.mark.asyncio
+    async def test_async_client_upload_media_progress_tracking(
+        intercepted_resumable_upload_rest_async,
+    ):
+        """Verify async progress iteration over ResumableUploadServiceAsyncClient.upload_media."""
+        client, _ = intercepted_resumable_upload_rest_async
+        chunk_size = 262_144  # 256 KiB
+        total_size = 600_000
+        payload = b"A" * total_size
+        stream = io.BytesIO(payload)
+
+        session = await client.upload_media(
+            request=UploadMediaRequest(name="async_multi_chunk.bin"),
+            config=ResumableUploadConfig(chunk_size=chunk_size),
+        )
+
+        progress_records = [
+            p async for p in session.upload(stream=stream, size=total_size)
+        ]
+
+        assert isinstance(session.response, UploadMediaResponse)
+        assert session.response.name == "async_multi_chunk.bin"
+        assert session.response.size == total_size
+
+        phases = [p.state for p in progress_records]
+        offsets = [p.bytes_uploaded for p in progress_records]
+        assert phases == [
+            ProgressState.STARTED,
+            ProgressState.UPLOADING,
+            ProgressState.UPLOADING,
+            ProgressState.FINALIZED,
+        ]
+        assert offsets == [0, 262_144, 524_288, 600_000]
+        assert all(p.total_bytes == total_size for p in progress_records)

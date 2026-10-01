@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import io
+import os
 import pytest
 
 from google.api_core import exceptions
@@ -21,7 +22,7 @@ from google.api_core.resumable_transfer import (
     ResumableUploadConfig,
     ResumableUploadSession,
 )
-from google.showcase import UploadMediaResponse
+from google.showcase import UploadMediaRequest, UploadMediaResponse
 
 from conftest import resume_resumable_upload
 
@@ -500,3 +501,110 @@ def test_golden_user_style_resume_seekable(intercepted_resumable_upload_rest):
     assert isinstance(session2.response, UploadMediaResponse)
     assert session2.response.name == "golden_user_resume.mp4"
     assert session2.response.size == total_size
+
+
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
+
+    @pytest.mark.asyncio
+    async def test_async_client_upload_media_resume_direct(
+        intercepted_resumable_upload_rest_async,
+    ):
+        """Verify direct async resumption via ResumableUploadServiceAsyncClient."""
+        client, _ = intercepted_resumable_upload_rest_async
+        total_size = 1_500_000
+        chunk_size = 524_288  # 512 KiB
+        data = b"R" * total_size
+        stream = io.BytesIO(data)
+
+        class _ClientPauseError(Exception):
+            pass
+
+        session1 = await client.upload_media(
+            request=UploadMediaRequest(name="async_resume_direct.txt"),
+            config=ResumableUploadConfig(chunk_size=chunk_size),
+        )
+        with pytest.raises(_ClientPauseError):
+            async for progress in session1.upload(stream=stream, size=total_size):
+                if progress.bytes_uploaded >= chunk_size:
+                    raise _ClientPauseError("Simulated user pause after first chunk")
+
+        saved_url = session1.upload_url
+        saved_chunk_size = session1.chunk_size
+        assert saved_url is not None
+        assert saved_chunk_size == chunk_size
+
+        stream.seek(0)
+        session2 = await client.upload_media(
+            request=UploadMediaRequest(name="async_resume_direct.txt"),
+            config=ResumableUploadConfig(chunk_size=saved_chunk_size),
+        )
+        response = await session2.resume(
+            upload_url=saved_url,
+            stream=stream,
+            size=total_size,
+            chunk_size=saved_chunk_size,
+        )
+
+        assert session2.finished
+        assert isinstance(response, UploadMediaResponse)
+        assert response.name == "async_resume_direct.txt"
+        assert response.size == total_size
+
+    @pytest.mark.asyncio
+    async def test_async_client_upload_media_resume_seekable(
+        intercepted_resumable_upload_rest_async,
+    ):
+        """Verify async progress iteration during resumption via ResumableUploadServiceAsyncClient."""
+        client, _ = intercepted_resumable_upload_rest_async
+        total_size = 1_500_000
+        chunk_size = 524_288  # 512 KiB
+        data = b"G" * total_size
+        stream = io.BytesIO(data)
+
+        class _ClientPauseError(Exception):
+            pass
+
+        session1 = await client.upload_media(
+            request=UploadMediaRequest(name="async_golden_user_resume.mp4"),
+            config=ResumableUploadConfig(chunk_size=chunk_size),
+        )
+        session1_snapshots = []
+        with pytest.raises(_ClientPauseError):
+            async for progress in session1.upload(stream=stream, size=total_size):
+                session1_snapshots.append(progress)
+                if progress.bytes_uploaded >= chunk_size:
+                    raise _ClientPauseError("Simulated user pause after first chunk")
+
+        saved_url = session1.upload_url
+        saved_chunk_size = session1.chunk_size
+        assert saved_url is not None
+        assert saved_chunk_size == chunk_size
+        assert [(p.state, p.bytes_uploaded) for p in session1_snapshots] == [
+            (ProgressState.STARTED, 0),
+            (ProgressState.UPLOADING, 524_288),
+        ]
+
+        stream.seek(0)
+        session2 = await client.upload_media(
+            request=UploadMediaRequest(name="async_golden_user_resume.mp4"),
+            config=ResumableUploadConfig(chunk_size=saved_chunk_size),
+        )
+        session2_snapshots = [
+            p
+            async for p in session2.resume(
+                upload_url=saved_url,
+                stream=stream,
+                size=total_size,
+                chunk_size=saved_chunk_size,
+            )
+        ]
+
+        assert [(p.state, p.bytes_uploaded) for p in session2_snapshots] == [
+            (ProgressState.OFFSET_RECEIVED, 524_288),
+            (ProgressState.UPLOADING, 1_048_576),
+            (ProgressState.FINALIZED, 1_500_000),
+        ]
+        assert session2.finished
+        assert isinstance(session2.response, UploadMediaResponse)
+        assert session2.response.name == "async_golden_user_resume.mp4"
+        assert session2.response.size == total_size
