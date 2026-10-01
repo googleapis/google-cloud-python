@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import datetime
 import functools
 import http.client as http_client
+import json
 import os
+import pickle
+import ssl
 from unittest import mock
 
 import freezegun
@@ -36,6 +40,34 @@ from tests.transport import compliance
 def frozen_time():
     with freezegun.freeze_time("1970-01-01 00:00:00", tick=False) as frozen:
         yield frozen
+
+
+@pytest.fixture
+def workload_cert_config(tmpdir, monkeypatch):
+    cert_file = tmpdir.join("public_cert.pem")
+    cert_file.write_binary(pytest.public_cert_bytes)
+    config_file = tmpdir.join("certificate_config.json")
+    config_file.write(
+        json.dumps(
+            {
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": str(cert_file),
+                        "key_path": os.path.join(pytest.data_dir, "privatekey.pem"),
+                    }
+                }
+            }
+        )
+    )
+    monkeypatch.setenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, str(config_file))
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, raising=False
+    )
+    monkeypatch.delenv(
+        environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE,
+        raising=False,
+    )
+    return cert_file
 
 
 CERT_MOCK_VAL = b"-----BEGIN CERTIFICATE-----\nMIIDIzCCAgugAwIBAgIJAMfISuBQ5m+5MA0GCSqGSIb3DQEBBQUAMBUxEzARBgNV\nBAMTCnVuaXQtdGVzdHMwHhcNMTExMjA2MTYyNjAyWhcNMjExMjAzMTYyNjAyWjAV\nMRMwEQYDVQQDEwp1bml0LXRlc3RzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEA4ej0p7bQ7L/r4rVGUz9RN4VQWoej1Bg1mYWIDYslvKrk1gpj7wZgkdmM\n7oVK2OfgrSj/FCTkInKPqaCR0gD7K80q+mLBrN3PUkDrJQZpvRZIff3/xmVU1Wer\nuQLFJjnFb2dqu0s/FY/2kWiJtBCakXvXEOb7zfbINuayL+MSsCGSdVYsSliS5qQp\ngyDap+8b5fpXZVJkq92hrcNtbkg7hCYUJczt8n9hcCTJCfUpApvaFQ18pe+zpyl4\n+WzkP66I28hniMQyUlA1hBiskT7qiouq0m8IOodhv2fagSZKjOTTU2xkSBc//fy3\nZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQABo3YwdDAdBgNVHQ4EFgQU2RQ8yO+O\ngN8oVW2SW7RLrfYd9jEwRQYDVR0jBD4wPIAU2RQ8yO+OgN8oVW2SW7RLrfYd9jGh\nGaQXMBUxEzARBgNVBAMTCnVuaXQtdGVzdHOCCQDHyErgUOZvuTAMBgNVHRMEBTAD\nAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQBRv+M/6+FiVu7KXNjFI5pSN17OcW5QUtPr\nodJMlWrJBtynn/TA1oJlYu3yV5clc/71Vr/AxuX5xGP+IXL32YDF9lTUJXG/uUGk\n+JETpKmQviPbRsvzYhz4pf6ZIOZMc3/GIcNq92ECbseGO+yAgyWUVKMmZM0HqXC9\novNslqe0M8C1sLm1zAR5z/h/litE7/8O2ietija3Q/qtl2TOXJdCA6sgjJX2WUql\nybrC55ct18NKf3qhpcEkGQvFU40rVYApJpi98DiZPYFdx1oBDp/f4uZ3ojpxRVFT\ncDwcJLfNRCPUhormsY7fDS9xSyThiHsW9mjJYdcaKQkwYZ0F11yB\n-----END CERTIFICATE-----\n"
@@ -64,6 +96,302 @@ class TestRequestResponse(compliance.RequestResponseTests):
         request = google.auth.transport.requests.Request(http)
         request.__del__()
         http.close.assert_called_with()
+
+    @pytest.mark.parametrize(
+        "mount_prefix",
+        ["https://", "https://iamcredentials.mtls.googleapis.com/"],
+    )
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_origin_mount_and_reuse(
+        self, mock_send, mount_prefix, workload_cert_config
+    ):
+        mock_send.return_value = make_response()
+        session = requests.Session()
+        base_adapter = requests.adapters.HTTPAdapter(
+            max_retries=3, pool_connections=4, pool_maxsize=8, pool_block=True
+        )
+        session.mount(mount_prefix, base_adapter)
+        https_adapter = session.adapters["https://"]
+        request = google.auth.transport.requests.Request(session)
+
+        request("https://oauth2.googleapis.com/token")
+        # Verify mounting replaces session.adapters rather than mutating it in place.
+        adapters_iter = iter(session.adapters.items())
+        next(adapters_iter)
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        list(adapters_iter)
+        adapters_after_mount = session.adapters
+        adapters_snapshot = session.adapters.copy()
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert session.adapters is adapters_after_mount
+        assert session.adapters == adapters_snapshot
+        request("https://STS.mtls.googleapis.com")
+
+        mtls_adapter = session.adapters["https://iamcredentials.mtls.googleapis.com/"]
+        assert isinstance(
+            mtls_adapter, google.auth.transport.requests._MutualTlsAdapter
+        )
+        assert mtls_adapter.max_retries.total == 3
+        assert mtls_adapter._pool_connections == 4
+        assert mtls_adapter._pool_maxsize == 8
+        assert mtls_adapter._pool_block is True
+        assert session.adapters["https://sts.mtls.googleapis.com/"] is mtls_adapter
+        sent_adapters = [call.args[0] for call in mock_send.call_args_list]
+        assert sent_adapters == [
+            https_adapter,
+            mtls_adapter,
+            mtls_adapter,
+            mtls_adapter,
+        ]
+
+    @pytest.mark.parametrize(
+        "mount_prefix,adapter_cls",
+        [
+            ("https://", requests.adapters.BaseAdapter),
+            (
+                "https://iamcredentials.mtls.googleapis.com/",
+                requests.adapters.BaseAdapter,
+            ),
+            (
+                "https://iamcredentials.mtls.googleapis.com/v1/token",
+                requests.adapters.BaseAdapter,
+            ),
+            ("https://", google.auth.transport.requests._MutualTlsAdapter),
+            (
+                "https://iamcredentials.mtls.googleapis.com/v1/",
+                requests.adapters.HTTPAdapter,
+            ),
+        ],
+    )
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_preserves_custom_adapter(
+        self,
+        mock_send,
+        mount_prefix,
+        adapter_cls,
+        workload_cert_config,
+    ):
+        mock_send.return_value = make_response()
+        session = requests.Session()
+        if adapter_cls is google.auth.transport.requests._MutualTlsAdapter:
+            custom_adapter = adapter_cls(
+                pytest.public_cert_bytes, pytest.private_key_bytes
+            )
+        elif adapter_cls is requests.adapters.BaseAdapter:
+            custom_adapter = AdapterStub([make_response()])
+        else:
+            custom_adapter = adapter_cls()
+        session.mount(mount_prefix, custom_adapter)
+        adapters_before = session.adapters
+        adapters_snapshot = session.adapters.copy()
+        request = google.auth.transport.requests.Request(session)
+
+        request("https://IAMCREDENTIALS.mtls.googleapis.com/v1/token")
+
+        assert session.adapters is adapters_before
+        assert session.adapters == adapters_snapshot
+        assert (
+            session.get_adapter("https://iamcredentials.mtls.googleapis.com/v1/token")
+            is custom_adapter
+        )
+        assert request._mtls_adapter is None
+
+    @pytest.mark.parametrize(
+        "use_cert,request_kwargs",
+        [
+            ("false", {}),
+            ("true", {"cert": ("cert.pem", "key.pem")}),
+        ],
+    )
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_skips_when_disabled_or_explicit_cert(
+        self,
+        mock_send,
+        use_cert,
+        request_kwargs,
+        workload_cert_config,
+        monkeypatch,
+    ):
+        mock_send.return_value = make_response()
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, use_cert)
+        session = requests.Session()
+        request = google.auth.transport.requests.Request(session)
+
+        request("https://iamcredentials.mtls.googleapis.com/v1/token", **request_kwargs)
+
+        assert "https://iamcredentials.mtls.googleapis.com/" not in session.adapters
+        assert request._mtls_adapter is None
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    @mock.patch.object(
+        google.auth.transport._mtls_helper,
+        "get_client_cert_and_key",
+        return_value=(False, None, None),
+    )
+    def test_mtls_no_cert_caches_unavailable(
+        self, mock_get_cert, mock_send, monkeypatch
+    ):
+        mock_send.return_value = make_response()
+        monkeypatch.setenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, "true")
+        session = requests.Session()
+        request = google.auth.transport.requests.Request(session)
+
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+
+        assert "https://iamcredentials.mtls.googleapis.com/" not in session.adapters
+        assert request._mtls_unavailable is True
+        mock_get_cert.assert_called_once()
+
+    @pytest.mark.parametrize(
+        "cert_bytes,expected_cause",
+        [
+            (None, FileNotFoundError),
+            (b"invalid", exceptions.ClientCertError),
+            (
+                b"-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----\n",
+                exceptions.MutualTLSChannelError,
+            ),
+        ],
+    )
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_cert_error_raises_transport_error_and_recovers(
+        self, mock_send, cert_bytes, expected_cause, workload_cert_config
+    ):
+        mock_send.return_value = make_response()
+        if cert_bytes is None:
+            workload_cert_config.remove()
+        else:
+            workload_cert_config.write_binary(cert_bytes)
+
+        request = google.auth.transport.requests.Request(requests.Session())
+        with pytest.raises(exceptions.TransportError) as exc_info:
+            request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert isinstance(exc_info.value.__cause__, expected_cause)
+        assert request._mtls_unavailable is False
+
+        workload_cert_config.write_binary(pytest.public_cert_bytes)
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+    @pytest.mark.parametrize(
+        "request_kwargs",
+        [
+            {"verify": "/nonexistent/path/ca.pem"},
+            {"cert": ("/nonexistent/path/cert.pem", "/nonexistent/path/key.pem")},
+        ],
+    )
+    def test_session_request_missing_cert_or_ca_raises_oserror(self, request_kwargs):
+        request = google.auth.transport.requests.Request(requests.Session())
+
+        with pytest.raises(OSError) as exc_info:
+            request("https://oauth2.googleapis.com/token", **request_kwargs)
+
+        assert not isinstance(exc_info.value, exceptions.TransportError)
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_deepcopy(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+
+        copied_request = copy.deepcopy(request)
+        copied_request("https://iamcredentials.mtls.googleapis.com/v1/token")
+
+        assert copied_request.session is not request.session
+        assert copied_request._mtls_lock is not request._mtls_lock
+        assert copied_request._mtls_adapter is not request._mtls_adapter
+        assert (
+            copied_request._mtls_adapter._ctx_poolmanager
+            is request._mtls_adapter._ctx_poolmanager
+        )
+        assert (
+            copied_request._mtls_adapter._ctx_proxymanager
+            is request._mtls_adapter._ctx_proxymanager
+        )
+        assert (
+            copied_request._mtls_adapter.poolmanager
+            is not request._mtls_adapter.poolmanager
+        )
+        assert mock_send.call_args_list[1].args[0] is copied_request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_pickle(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+        request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        assert isinstance(
+            request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+
+        unpickled_request = pickle.loads(pickle.dumps(request))
+
+        assert unpickled_request.session is not request.session
+        assert unpickled_request._mtls_lock is not request._mtls_lock
+        assert unpickled_request._mtls_adapter is None
+        assert unpickled_request._mtls_unavailable is False
+        assert (
+            type(unpickled_request.session.adapters[prefix])
+            is requests.adapters.HTTPAdapter
+        )
+
+        unpickled_request("https://iamcredentials.mtls.googleapis.com/v1/token")
+        assert isinstance(
+            unpickled_request._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert (
+            unpickled_request.session.adapters[prefix]
+            is unpickled_request._mtls_adapter
+        )
+        assert mock_send.call_args_list[1].args[0] is unpickled_request._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_legacy_pickle(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+        with mock.patch.object(
+            google.auth.transport.requests.Request,
+            "__getstate__",
+            return_value={"session": request.session},
+        ):
+            legacy_pickled = pickle.dumps(request)
+        unpickled_legacy = pickle.loads(legacy_pickled)
+        assert unpickled_legacy._mtls_adapter is None
+        assert unpickled_legacy._mtls_unavailable is False
+
+        unpickled_legacy("https://iamcredentials.mtls.googleapis.com/v1/token")
+        prefix = "https://iamcredentials.mtls.googleapis.com/"
+        assert isinstance(
+            unpickled_legacy._mtls_adapter,
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert (
+            unpickled_legacy.session.adapters[prefix] is unpickled_legacy._mtls_adapter
+        )
+        assert mock_send.call_args.args[0] is unpickled_legacy._mtls_adapter
+
+    @mock.patch.object(requests.adapters.HTTPAdapter, "send", autospec=True)
+    def test_mtls_request_verify_false(self, mock_send, workload_cert_config):
+        mock_send.return_value = make_response()
+        request = google.auth.transport.requests.Request(requests.Session())
+
+        response = request(
+            "https://iamcredentials.mtls.googleapis.com/v1/token", verify=False
+        )
+
+        assert response.status == http_client.OK
+        mock_send.assert_called_once()
+        assert isinstance(
+            mock_send.call_args.args[0],
+            google.auth.transport.requests._MutualTlsAdapter,
+        )
+        assert mock_send.call_args.kwargs["verify"] is False
 
 
 class TestTimeoutGuard(object):
@@ -182,11 +510,24 @@ class TestMutualTlsAdapter(object):
             pytest.public_cert_bytes, pytest.private_key_bytes
         )
 
+        assert adapter._ctx_poolmanager.check_hostname is False
+        assert adapter._ctx_proxymanager.check_hostname is False
+
         adapter.init_poolmanager()
         mock_init_poolmanager.assert_called_with(ssl_context=adapter._ctx_poolmanager)
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+    def test_verify_false_compatibility(self):
+        adapter = google.auth.transport.requests._MutualTlsAdapter(
+            pytest.public_cert_bytes, pytest.private_key_bytes
+        )
+
+        adapter._ctx_poolmanager.verify_mode = ssl.CERT_NONE
+        adapter._ctx_proxymanager.verify_mode = ssl.CERT_NONE
+        assert adapter._ctx_poolmanager.verify_mode == ssl.CERT_NONE
+        assert adapter._ctx_proxymanager.verify_mode == ssl.CERT_NONE
 
     def test_invalid_cert_or_key(self):
         with pytest.raises(exceptions.MutualTLSChannelError):

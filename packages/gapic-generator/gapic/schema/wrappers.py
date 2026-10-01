@@ -36,39 +36,39 @@ import re
 from itertools import chain
 from typing import (
     Any,
-    cast,
+    ClassVar,
     Dict,
     FrozenSet,
-    Iterator,
     Iterable,
+    Iterator,
     List,
     Mapping,
-    ClassVar,
     Optional,
+    Pattern,
     Sequence,
     Set,
     Tuple,
     Union,
-    Pattern,
+    cast,
 )
-from google.api import annotations_pb2  # type: ignore
-from google.api import client_pb2
-from google.api import field_behavior_pb2
-from google.api import field_info_pb2
-from google.api import http_pb2
-from google.api import resource_pb2
-from google.api import routing_pb2
-from google.api_core import exceptions
-from google.api_core import path_template
+
+from google.api import (
+    annotations_pb2,  # type: ignore
+    client_pb2,
+    field_behavior_pb2,
+    field_info_pb2,
+    http_pb2,
+    resource_pb2,
+    routing_pb2,
+)
+from google.api_core import exceptions, path_template
 from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
 from gapic import utils
 from gapic.schema import metadata
-from gapic.utils import cached_proto_context
-from gapic.utils import uri_sample
-from gapic.utils import make_private
+from gapic.utils import cached_proto_context, make_private, uri_sample
 
 
 @dataclasses.dataclass(frozen=True)
@@ -690,7 +690,7 @@ class MessageType:
         resource = self.options.Extensions[resource_pb2.resource]
         if not resource.type:
             return None
-            
+
         default_type = resource.type[resource.type.find("/") + 1 :]
 
         return self.resource_name_aliases.get(resource.type, default_type)
@@ -1466,7 +1466,6 @@ class MixinMethod:
     rpc_name: str = ""
 
 
-
 @dataclasses.dataclass(frozen=True)
 class MixinHttpRule(HttpRule):
     def path_fields(self, uri):
@@ -2100,7 +2099,6 @@ class Method:
             return None
 
 
-
 @dataclasses.dataclass(frozen=True)
 class CommonResource:
     type_name: str
@@ -2108,8 +2106,16 @@ class CommonResource:
     resource_name_aliases: Mapping[str, str] = dataclasses.field(default_factory=dict)
 
     @classmethod
-    def build(cls, resource: resource_pb2.ResourceDescriptor, aliases: Optional[Mapping[str, str]] = None):
-        return cls(type_name=resource.type, pattern=next(iter(resource.pattern)), resource_name_aliases=aliases or {})
+    def build(
+        cls,
+        resource: resource_pb2.ResourceDescriptor,
+        aliases: Optional[Mapping[str, str]] = None,
+    ):
+        return cls(
+            type_name=resource.type,
+            pattern=next(iter(resource.pattern)),
+            resource_name_aliases=aliases or {},
+        )
 
     @utils.cached_property
     def message_type(self):
@@ -2314,7 +2320,7 @@ class Service:
         return frozenset(answer)
 
     @utils.cached_property
-    def resource_messages(self) -> Sequence['MessageType']:
+    def resource_messages(self) -> Sequence["MessageType"]:
         """Returns all the resource message types used in all
         request and response fields in the service."""
 
@@ -2355,8 +2361,7 @@ class Service:
         # Convert the set to a sorted tuple using the resource path or message name.
         # This is needed to prevent non-deterministic code generation.
         sorted_messages = sorted(
-            unique_messages,
-            key=lambda m: m.resource_type_full_path or m.name
+            unique_messages, key=lambda m: m.resource_type_full_path or m.name
         )
 
         # Fail-fast collision detection
@@ -2369,7 +2374,7 @@ class Service:
                     f"\n\nFatal: Message '{msg.name}' defines a resource pattern but is missing a resource type. "
                     f"This violates AIP-123 (https://google.aip.dev/123). Please define a 'type' in the google.api.resource option."
                 )
-                
+
             if res_type in seen_types:
                 incumbent = seen_types[res_type]
                 raise ValueError(
@@ -2519,7 +2524,8 @@ class Service:
             new_v = v.with_selective_generation(
                 generate_omitted_as_internal=generate_omitted_as_internal,
                 public_methods=public_methods,
-                excluded_addresses=excluded_addresses)
+                excluded_addresses=excluded_addresses,
+            )
             if new_v:
                 methods[k] = new_v
 

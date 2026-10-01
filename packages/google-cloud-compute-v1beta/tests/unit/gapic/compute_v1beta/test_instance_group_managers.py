@@ -14235,12 +14235,18 @@ def test_insert_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -14359,7 +14365,7 @@ def test_insert_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",
@@ -15236,12 +15242,18 @@ def test_patch_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -15360,7 +15372,7 @@ def test_patch_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",
@@ -18735,12 +18747,18 @@ def test_update_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -18859,7 +18877,7 @@ def test_update_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",

@@ -3001,6 +3001,7 @@ def test_get_sequence_report_rest_required_fields(request_type=sequence.GetSeque
             response = client.get_sequence_report(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -3162,6 +3163,7 @@ def test_get_streaming_sequence_report_rest_required_fields(request_type=sequenc
             response = client.get_streaming_sequence_report(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -3321,6 +3323,7 @@ def test_attempt_sequence_rest_required_fields(request_type=sequence.AttemptSequ
             response = client.attempt_sequence(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -3484,6 +3487,7 @@ def test_attempt_streaming_sequence_rest_required_fields(request_type=sequence.A
                 response = client.attempt_streaming_sequence(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)

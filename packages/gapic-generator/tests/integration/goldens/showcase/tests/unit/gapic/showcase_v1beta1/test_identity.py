@@ -2764,6 +2764,7 @@ def test_get_user_rest_required_fields(request_type=identity.GetUserRequest):
             response = client.get_user(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
@@ -2956,6 +2957,7 @@ def test_delete_user_rest_required_fields(request_type=identity.DeleteUserReques
             response = client.delete_user(request)
 
             expected_params = [
+                ('$alt', 'json;enum-encoding=int')
             ]
             actual_params = req.call_args.kwargs['params']
             assert sorted(expected_params) == sorted(actual_params)
