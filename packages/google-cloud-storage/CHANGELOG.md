@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.15.1...google-cloud-storage-v3.16.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.15.0...google-cloud-storage-v3.15.1) (2026-09-29)
 
 

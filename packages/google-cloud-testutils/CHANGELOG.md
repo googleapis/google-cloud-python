@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.10.0...google-cloud-testutils-v1.10.1) (2026-10-01)
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.3...google-cloud-testutils-v1.10.0) (2026-09-29)
 
 
