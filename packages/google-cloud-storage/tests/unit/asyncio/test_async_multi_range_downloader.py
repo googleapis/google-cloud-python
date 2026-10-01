@@ -20,13 +20,14 @@ from unittest.mock import AsyncMock
 import google_crc32c
 import pytest
 from google.api_core import exceptions
+from google.rpc import error_details_pb2, status_pb2
+
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
 from google.cloud.storage.exceptions import DataCorruption
-from google.rpc import error_details_pb2, status_pb2
 
 _TEST_BUCKET_NAME = "test-bucket"
 _TEST_OBJECT_NAME = "test-object"

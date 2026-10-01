@@ -24,6 +24,7 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
+
 from google.cloud import _storage_v2
 from google.cloud.storage._helpers import generate_random_56_bit_integer
 from google.cloud.storage.asyncio._stream_multiplexer import (
@@ -281,10 +282,6 @@ class AsyncMultiRangeDownloader:
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
-        min_connections: int = 1,
-        max_connections: int = 8,
-        target_io_depth: int = 8,
-        target_bytes: int = 8 * 1024 * 1024,
         stream_config: Optional[MRDStreamConfig] = None,
         **kwargs,
     ) -> AsyncMultiRangeDownloader:
@@ -314,20 +311,10 @@ class AsyncMultiRangeDownloader:
         :type metadata: List[Tuple[str, str]]
         :param metadata: (Optional) The metadata to be sent with the ``open`` request.
 
-        :type min_connections: int
-        :param min_connections: (Optional) Minimum number of streams to open initially. Defaults to 1.
-
-        :type max_connections: int
-        :param max_connections: (Optional) Maximum number of concurrent streams allowed. Defaults to 8.
-
-        :type target_io_depth: int
-        :param target_io_depth: (Optional) Desired requests outstanding per connection before scale-up. Defaults to 8.
-
-        :type target_bytes: int
-        :param target_bytes: (Optional) Desired bytes outstanding per connection. Defaults to 8 MB.
-
         :type stream_config: Optional[MRDStreamConfig]
-        :param stream_config: (Optional) Configuration dataclass grouping all multi-stream parameters.
+        :param stream_config: (Optional) Configuration dataclass grouping all multi-stream
+                              parameters. If None, multi-stream is disabled and a single
+                              stream is used.
 
         :rtype: :class:`~google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader`
         :returns: An initialized AsyncMultiRangeDownloader instance for reading.
@@ -338,10 +325,6 @@ class AsyncMultiRangeDownloader:
             object_name,
             generation=generation,
             read_handle=read_handle,
-            min_connections=min_connections,
-            max_connections=max_connections,
-            target_io_depth=target_io_depth,
-            target_bytes=target_bytes,
             stream_config=stream_config,
             **kwargs,
         )
@@ -355,15 +338,11 @@ class AsyncMultiRangeDownloader:
         object_name: str,
         generation: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
-        min_connections: int = 1,
-        max_connections: int = 8,
-        target_io_depth: int = 8,
-        target_bytes: int = 8 * 1024 * 1024,
         stream_config: Optional[MRDStreamConfig] = None,
         **kwargs,
     ) -> None:
-        """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
-         use it directly. Instead it's adviced to use the classmethod `create_mrd`.
+        """Constructor for AsyncMultiRangeDownloader, clients are not advised to
+        use it directly. Instead it's advised to use the classmethod `create_mrd`.
 
         :type client: :class:`~google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient`
         :param client: The asynchronous client to use for making API requests.
@@ -381,20 +360,10 @@ class AsyncMultiRangeDownloader:
         :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing read handle.
 
-        :type min_connections: int
-        :param min_connections: (Optional) Minimum number of streams to open initially. Defaults to 1.
-
-        :type max_connections: int
-        :param max_connections: (Optional) Maximum number of concurrent streams allowed. Defaults to 8.
-
-        :type target_io_depth: int
-        :param target_io_depth: (Optional) Desired requests outstanding per connection before scale-up. Defaults to 8.
-
-        :type target_bytes: int
-        :param target_bytes: (Optional) Desired bytes outstanding per connection. Defaults to 8 MB.
-
         :type stream_config: Optional[MRDStreamConfig]
-        :param stream_config: (Optional) Configuration dataclass grouping all multi-stream parameters.
+        :param stream_config: (Optional) Configuration dataclass grouping all multi-stream
+                              parameters. If None, multi-stream is disabled and a single
+                              stream is used.
         """
         if "generation_number" in kwargs:
             if generation is not None:
@@ -407,12 +376,6 @@ class AsyncMultiRangeDownloader:
                 "major release. Please use 'generation' instead."
             )
             generation = kwargs.pop("generation_number")
-
-        if stream_config is not None:
-            min_connections = stream_config.min_connections
-            max_connections = stream_config.max_connections
-            target_io_depth = stream_config.target_io_depth
-            target_bytes = stream_config.target_bytes
 
         self.client = client
         self.bucket_name = bucket_name
@@ -429,10 +392,12 @@ class AsyncMultiRangeDownloader:
         self.full_obj_server_crc32c: Optional[int] = None
 
         self.stream_config = stream_config
-        self.min_connections = min_connections
-        self.max_connections = max_connections
-        self.target_io_depth = target_io_depth
-        self.target_bytes = target_bytes
+        self.min_connections = stream_config.min_connections if stream_config else 1
+        self.max_connections = stream_config.max_connections if stream_config else 1
+        self.target_io_depth = stream_config.target_io_depth if stream_config else 8
+        self.target_bytes = (
+            stream_config.target_bytes if stream_config else 8 * 1024 * 1024
+        )
         self._pool: Optional[_StreamPool] = None
         self._primary_worker: Optional[_ManagedStream] = None
         self._metadata: Optional[List[Tuple[str, str]]] = None
