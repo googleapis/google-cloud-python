@@ -20,10 +20,12 @@ import threading
 import time
 
 import grpc
+
 from google.auth import transport
 from google.auth.transport import _mtls_helper
 
 _LOGGER = logging.getLogger(__name__)
+
 
 class CertRotationInterceptor(
     grpc.UnaryUnaryClientInterceptor,
@@ -132,8 +134,7 @@ class MTLSRefreshingChannel(grpc.Channel):
             )
 
             self._channel = self._create_channel_fn(
-                ssl_credentials=new_ssl_credentials,
-                client_cert_callback=None
+                ssl_credentials=new_ssl_credentials, client_cert_callback=None
             )
 
             self._cached_cert = call_cert_bytes
@@ -265,6 +266,7 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
     def details(self):
         return self._details
 
+
 class _BaseCallWrapper(grpc.Future, grpc.Call):
     """A generic wrapper that delegates standard grpc.Call and grpc.Future
     methods to an underlying call object.
@@ -314,6 +316,7 @@ class _BaseCallWrapper(grpc.Future, grpc.Call):
 
     def add_callback(self, callback):
         self._call.add_callback(callback)
+
 
 class _RetryableUnaryResponseFuture(_BaseCallWrapper):
     def __init__(
@@ -413,7 +416,9 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                 can_replay = (
                     True
                     if self._uses_factory
-                    else (self._payload.can_replay() if self._is_client_stream else True)
+                    else (
+                        self._payload.can_replay() if self._is_client_stream else True
+                    )
                 )
 
                 should_retry, call_cert, call_key = self._interceptor._should_retry(
@@ -446,9 +451,7 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                 ) = self._interceptor._should_retry(status_code, 0, self._attempt_cert)
                 if chk_should_retry:
                     try:
-                        self._interceptor._wrapper.refresh_logic(
-                            1, chk_cert, chk_key
-                        )
+                        self._interceptor._wrapper.refresh_logic(1, chk_cert, chk_key)
                     except Exception:
                         pass
             with self._lock:
@@ -527,6 +530,7 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
             if hasattr(self._terminal_exception, "details"):
                 return self._terminal_exception.details()
             return self._call.details()
+
 
 class _RetryableStreamResponseIterator(_BaseCallWrapper):
     def __init__(
@@ -652,7 +656,9 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                         True
                         if self._uses_factory
                         else (
-                            self._payload.can_replay() if self._is_client_stream else True
+                            self._payload.can_replay()
+                            if self._is_client_stream
+                            else True
                         )
                     )
 

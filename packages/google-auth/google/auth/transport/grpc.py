@@ -19,18 +19,11 @@ from __future__ import absolute_import
 import functools
 import logging
 import warnings
-
-
-from google.auth import exceptions
-from google.auth import transport
-from google.auth.transport import _mtls_helper
-from google.auth.transport import mtls_interceptor
-from google.auth.transport import mtls
-
-from google.oauth2 import service_account
-
 from typing import Optional
 
+from google.auth import exceptions
+from google.auth.transport import _mtls_helper, mtls, mtls_interceptor
+from google.oauth2 import service_account
 
 try:
     import grpc  # type: ignore
@@ -323,10 +316,12 @@ def secure_authorized_channel(
             credentials=credentials,
             request=request,
             target=target,
-            _is_recreation=True, # Hidden flag to stop recursion
-            **kwargs
+            _is_recreation=True,  # Hidden flag to stop recursion
+            **kwargs,
         )
-        wrapper = mtls_interceptor.MTLSRefreshingChannel(target, create_channel_fn, channel, cached_cert)
+        wrapper = mtls_interceptor.MTLSRefreshingChannel(
+            target, create_channel_fn, channel, cached_cert
+        )
         interceptor = mtls_interceptor.CertRotationInterceptor(wrapper=wrapper)
         return grpc.intercept_channel(wrapper, interceptor)
     return channel

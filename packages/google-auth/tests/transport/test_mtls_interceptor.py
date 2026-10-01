@@ -32,7 +32,9 @@ pytestmark = pytest.mark.skipif(not HAS_GRPC, reason="gRPC is unavailable.")
 CHECK_PARAMS = (
     "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
 )
-SHOULD_RETRY = "google.auth.transport.mtls_interceptor.CertRotationInterceptor._should_retry"
+SHOULD_RETRY = (
+    "google.auth.transport.mtls_interceptor.CertRotationInterceptor._should_retry"
+)
 
 
 # ---------------------------------------------------------------------------
@@ -279,7 +281,9 @@ class TestCertRotationInterceptor(object):
             mtls_interceptor._RetryableUnaryResponseFuture,
         )
         assert isinstance(
-            interceptor.intercept_unary_stream(stream_continuation, call_details(), "r"),
+            interceptor.intercept_unary_stream(
+                stream_continuation, call_details(), "r"
+            ),
             mtls_interceptor._RetryableStreamResponseIterator,
         )
         assert isinstance(
@@ -364,14 +368,16 @@ class TestMTLSRefreshingChannel(object):
     )
     def test_multicallables_use_current_channel(self, method):
         channel, _, old_channel, new_channel = self.make_channel()
-        assert getattr(channel, method)("/svc/M") is getattr(
-            old_channel, method
-        ).return_value
+        assert (
+            getattr(channel, method)("/svc/M")
+            is getattr(old_channel, method).return_value
+        )
 
         channel._channel = new_channel
-        assert getattr(channel, method)("/svc/M", "extra", kw=1) is getattr(
-            new_channel, method
-        ).return_value
+        assert (
+            getattr(channel, method)("/svc/M", "extra", kw=1)
+            is getattr(new_channel, method).return_value
+        )
         getattr(new_channel, method).assert_called_once_with("/svc/M", "extra", kw=1)
 
     def test_subscribe_unsubscribe_close(self):
@@ -591,8 +597,11 @@ class TestRetryableUnaryResponseFuture(object):
             return_value=CompletedFuture(exception=unauthenticated())
         )
 
-        with mock.patch(SHOULD_RETRY) as should_retry, mock.patch.object(
-            mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 2000.0]
+        with (
+            mock.patch(SHOULD_RETRY) as should_retry,
+            mock.patch.object(
+                mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 2000.0]
+            ),
         ):
             should_retry.side_effect = [
                 (True, b"c", b"k"),
@@ -617,8 +626,11 @@ class TestRetryableUnaryResponseFuture(object):
             ]
         )
 
-        with mock.patch(SHOULD_RETRY) as should_retry, mock.patch.object(
-            mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 1002.0]
+        with (
+            mock.patch(SHOULD_RETRY) as should_retry,
+            mock.patch.object(
+                mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 1002.0]
+            ),
         ):
             should_retry.return_value = (True, b"c", b"k")
             future = interceptor.intercept_unary_unary(
@@ -654,9 +666,12 @@ class TestRetryableUnaryResponseFuture(object):
             return_value=CompletedFuture(exception=unauthenticated())
         )
 
-        with mock.patch.object(
-            mtls_interceptor._ReplayableIterator, "can_replay", return_value=False
-        ), mock.patch(SHOULD_RETRY) as should_retry:
+        with (
+            mock.patch.object(
+                mtls_interceptor._ReplayableIterator, "can_replay", return_value=False
+            ),
+            mock.patch(SHOULD_RETRY) as should_retry,
+        ):
             should_retry.return_value = (True, b"c", b"k")
             future = interceptor.intercept_stream_unary(
                 continuation, call_details(), iter([b"a"])
@@ -762,7 +777,9 @@ class TestRetryableStreamResponseIterator(object):
 
     def test_retries_unauthenticated_before_first_response(self):
         interceptor, wrapper = make_interceptor()
-        first = FakeStreamCall([unauthenticated()], code=grpc.StatusCode.UNAUTHENTICATED)
+        first = FakeStreamCall(
+            [unauthenticated()], code=grpc.StatusCode.UNAUTHENTICATED
+        )
         second = FakeStreamCall([b"r1"])
         continuation = mock.Mock(side_effect=[first, second])
 
@@ -780,7 +797,9 @@ class TestRetryableStreamResponseIterator(object):
         # A 401 on the first attempt must not complete the outer stream while a
         # retry may still follow.
         interceptor, _ = make_interceptor()
-        first = FakeStreamCall([unauthenticated()], code=grpc.StatusCode.UNAUTHENTICATED)
+        first = FakeStreamCall(
+            [unauthenticated()], code=grpc.StatusCode.UNAUTHENTICATED
+        )
         stream = interceptor.intercept_unary_stream(
             lambda details, request: first, call_details(), "request"
         )
@@ -861,8 +880,11 @@ class TestRetryableStreamResponseIterator(object):
         interceptor, _ = make_interceptor()
         continuation = mock.Mock(return_value=FakeStreamCall([unauthenticated()]))
 
-        with mock.patch(SHOULD_RETRY) as should_retry, mock.patch.object(
-            mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 2000.0]
+        with (
+            mock.patch(SHOULD_RETRY) as should_retry,
+            mock.patch.object(
+                mtls_interceptor.time, "monotonic", side_effect=[1000.0, 1000.0, 2000.0]
+            ),
         ):
             should_retry.return_value = (True, b"c", b"k")
             stream = interceptor.intercept_unary_stream(
@@ -944,9 +966,10 @@ def test_base_call_wrapper_delegates(method, args):
 def test_base_call_wrapper_delegates_with_timeout(method):
     wrapper = mtls_interceptor._BaseCallWrapper()
     wrapper._call = mock.Mock()
-    assert getattr(wrapper, method)(timeout=3) is getattr(
-        wrapper._call, method
-    ).return_value
+    assert (
+        getattr(wrapper, method)(timeout=3)
+        is getattr(wrapper._call, method).return_value
+    )
     getattr(wrapper._call, method).assert_called_once_with(timeout=3)
 
 

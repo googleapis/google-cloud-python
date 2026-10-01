@@ -450,9 +450,12 @@ class TestSecureAuthorizedChannel(object):
             return_value=(PUBLIC_CERT_BYTES, PRIVATE_KEY_BYTES)
         )
 
-        with mock.patch.dict(
-            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
-        ), mock.patch("grpc.intercept_channel", autospec=True) as intercept_channel:
+        with (
+            mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+            ),
+            mock.patch("grpc.intercept_channel", autospec=True) as intercept_channel,
+        ):
             channel = google.auth.transport.grpc.secure_authorized_channel(
                 credentials,
                 request,
@@ -473,7 +476,10 @@ class TestSecureAuthorizedChannel(object):
         # The partial rebuilds the channel with the same arguments, marked as a
         # recreation so it is not wrapped again.
         create_channel_fn = wrapper._create_channel_fn
-        assert create_channel_fn.func is google.auth.transport.grpc.secure_authorized_channel
+        assert (
+            create_channel_fn.func
+            is google.auth.transport.grpc.secure_authorized_channel
+        )
         assert create_channel_fn.keywords == {
             "credentials": credentials,
             "request": request,
