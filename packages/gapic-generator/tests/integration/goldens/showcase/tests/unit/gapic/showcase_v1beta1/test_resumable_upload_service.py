@@ -2440,6 +2440,107 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_bo
         assert result == expected_result
 
 
+def test_resumable_upload_service_upload_media_rest_body_and_query_params():
+    client = ResumableUploadServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode:
+        request = resumable_upload.UploadMediaRequest(
+            name='name_value',
+        )
+        pb_request = resumable_upload.UploadMediaRequest.pb(request)
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "post",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.ok = True
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.content = b""
+
+        expected_result = resumable_upload.UploadMediaResponse()
+        json_return_value = resumable_upload.UploadMediaResponse.to_json(expected_result)
+        upload_response = mock.MagicMock()
+        upload_response.ok = True
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.content = json_return_value.encode("UTF-8")
+
+        req.side_effect = [start_response, upload_response]
+        response = client.upload_media(request)
+        result = response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        assert "name=" in start_call.args[1]
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums=True,
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+
+
+@pytest.mark.asyncio
+async def test_resumable_upload_service_upload_media_rest_asyncio_body_and_query_params():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = ResumableUploadServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    with mock.patch.object(
+        type(client.transport._session), "request", new_callable=mock.MagicMock
+    ) as req, mock.patch.object(path_template, "transcode") as transcode:
+        request = resumable_upload.UploadMediaRequest(
+            name='name_value',
+        )
+        pb_request = resumable_upload.UploadMediaRequest.pb(request)
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "post",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.status = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_ctx = mock.MagicMock()
+        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
+        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+
+        expected_result = resumable_upload.UploadMediaResponse()
+        json_return_value = resumable_upload.UploadMediaResponse.to_json(expected_result)
+        upload_response = mock.MagicMock()
+        upload_response.status = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_ctx = mock.MagicMock()
+        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
+        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_ctx, upload_ctx]
+        response = await client.upload_media(request)
+        result = await response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        assert "name=" in start_call.args[1]
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums=True,
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+
+
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.filterwarnings("ignore::FutureWarning")
