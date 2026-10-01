@@ -1672,14 +1672,12 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
     )
-    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.MagicMock) as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         start_response = mock.MagicMock()
-        start_response.status = 200
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_ctx = mock.MagicMock()
-        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
 
         expected_result = {{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message') %}
@@ -1694,14 +1692,12 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         json_return_value = json_format.MessageToJson(expected_result)
         {% endif %}
         upload_response = mock.MagicMock()
-        upload_response.status = 200
+        upload_response.status_code = 200
         upload_response.headers = {"x-goog-upload-status": "final"}
         upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
-        upload_ctx = mock.MagicMock()
-        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
-        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        upload_response.close = mock.AsyncMock(return_value=None)
 
-        req.side_effect = [start_ctx, upload_ctx]
+        req.side_effect = [start_response, upload_response]
         response = await client.{{ method.client_method_name|snake_case }}(
             {{ method.input.ident }}(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
@@ -1789,7 +1785,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         transport="rest_asyncio",
     )
     with mock.patch.object(
-        type(client.transport._session), "request", new_callable=mock.MagicMock
+        type(client.transport._session), "request"
     ) as req, mock.patch.object(path_template, "transcode") as transcode:
         request = {{ method.input.ident }}(
             {% for field in method.input.fields.values() | rejectattr('message') %}
@@ -1811,12 +1807,10 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         }
 
         start_response = mock.MagicMock()
-        start_response.status = 200
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_ctx = mock.MagicMock()
-        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
 
         expected_result = {{ method.output.ident }}()
         {% if method.output.ident.is_proto_plus_type %}
@@ -1825,14 +1819,12 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         json_return_value = json_format.MessageToJson(expected_result)
         {% endif %}
         upload_response = mock.MagicMock()
-        upload_response.status = 200
+        upload_response.status_code = 200
         upload_response.headers = {"x-goog-upload-status": "final"}
         upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
-        upload_ctx = mock.MagicMock()
-        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
-        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        upload_response.close = mock.AsyncMock(return_value=None)
 
-        req.side_effect = [start_ctx, upload_ctx]
+        req.side_effect = [start_response, upload_response]
         response = await client.{{ method.client_method_name|snake_case }}(request)
         result = await response.upload(b"test data")
         assert result == expected_result

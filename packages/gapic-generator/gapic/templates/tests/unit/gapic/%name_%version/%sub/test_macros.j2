@@ -1843,7 +1843,7 @@ def test_initialize_client_w_{{transport_name}}():
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object({{mocked_session}}, 'request'{% if is_async and method.is_resumable_upload %}, new_callable=mock.MagicMock{% endif %}) as req, pytest.raises(core_exceptions.BadRequest):
+    with mock.patch.object({{mocked_session}}, 'request') as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         {% if method.is_resumable_upload %}
         response_value = mock.MagicMock()
@@ -1853,9 +1853,7 @@ def test_initialize_client_w_{{transport_name}}():
         {% if is_async %}
         response_value.read = mock.AsyncMock(return_value=b'{}')
         {% if method.is_resumable_upload %}
-        response_value.status = 400
-        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
-        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        response_value.close = mock.AsyncMock(return_value=None)
         {% endif %}
         {% else %}
         json_return_value = ''
@@ -2041,7 +2039,7 @@ def test_initialize_client_w_{{transport_name}}():
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request'{% if is_async and method.is_resumable_upload %}, new_callable=mock.MagicMock{% endif %}) as req:
+    with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         {% if method.void %}
         return_value = None
@@ -2112,19 +2110,15 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}{# method.server_streaming #}
         {% if method.is_resumable_upload %}
         start_response = mock.MagicMock()
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
         {% if is_async %}
-        start_response.status = 200
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_response.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_response.__aexit__ = mock.AsyncMock(return_value=None)
-        response_value.status = 200
-        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
-        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
+        response_value.close = mock.AsyncMock(return_value=None)
         {% else %}
         start_response.ok = True
-        start_response.status_code = 200
         start_response.content = b""
         response_value.ok = True
         {% endif %}
