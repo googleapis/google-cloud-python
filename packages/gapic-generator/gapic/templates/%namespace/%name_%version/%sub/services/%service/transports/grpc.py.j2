@@ -381,13 +381,17 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                         )
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
             else:
-                if self._rest_transport is None:
-                    self._rest_transport = {{ service.name }}RestTransport(
-                        host=self._host,
-                        credentials=self._credentials,
-                        client_info=self._client_info,
-                    )
-                self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._rest_transport.{{ method.transport_safe_name|snake_case }}
+                transport = self
+                class _RestStub:
+                    def __call__(self, *args, **kwargs):
+                        if transport._rest_transport is None:
+                            transport._rest_transport = {{ service.name }}RestTransport(
+                                host=transport._host,
+                                credentials=transport._credentials,
+                                client_info=transport._client_info,
+                            )
+                        return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _RestStub()
             {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',

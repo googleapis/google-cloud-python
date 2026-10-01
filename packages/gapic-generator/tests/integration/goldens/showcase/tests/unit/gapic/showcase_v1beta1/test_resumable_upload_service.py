@@ -2294,11 +2294,19 @@ def test_resumable_upload_service_upload_media_grpc_rest_stub():
     transport = transports.ResumableUploadServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
+    assert transport._rest_transport is None
+    stub = transport.upload_media
+    assert transport._rest_transport is None
+
+    result1 = stub(resumable_upload.UploadMediaRequest())
     rest_transport = transport._rest_transport
     assert rest_transport is not None
-    transport._stubs.pop("upload_media", None)
-    _ = transport.upload_media
+    assert isinstance(result1, resumable_transfer.ResumableUploadSession)
+
+    result2 = stub(resumable_upload.UploadMediaRequest())
+    assert isinstance(result2, resumable_transfer.ResumableUploadSession)
     assert transport._rest_transport is rest_transport
+
     with mock.patch.object(rest_transport, "close") as mock_rest_close:
         transport.close()
         mock_rest_close.assert_called_once()
