@@ -370,6 +370,10 @@ intersphinx_mapping = {
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
 }
 
+# Check reachability of the Python standard library inventory before attaching it.
+# Because Sphinx is run with `-W` (warnings as errors) in CI, an external network
+# failure or upstream outage on docs.python.org would otherwise treat the missing
+# inventory as a fatal error and fail the build.
 try:
     import urllib.request
 
