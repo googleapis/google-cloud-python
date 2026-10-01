@@ -131,6 +131,19 @@ class _ManagedStream:
         self.pending_ranges = max(0, self.pending_ranges - range_count)
         self.pending_bytes = max(0, self.pending_bytes - byte_count)
 
+    async def close(self) -> None:
+        """Closes the underlying multiplexer and stream cleanly."""
+        try:
+            await self.multiplexer.close()
+        except Exception:
+            pass
+        try:
+            res = self.stream.close()
+            if inspect.isawaitable(res):
+                await res
+        except Exception:
+            pass
+
 
 class _StreamPool:
     """Manages a pool of _ManagedStream instances with dynamic scaling and least-loaded dispatch."""
@@ -196,16 +209,7 @@ class _StreamPool:
             new_worker = await self._stream_factory()
             async with self._lock:
                 if self._closed:
-                    try:
-                        await new_worker.multiplexer.close()
-                    except Exception:
-                        pass
-                    try:
-                        res = new_worker.stream.close()
-                        if inspect.isawaitable(res):
-                            await res
-                    except Exception:
-                        pass
+                    await new_worker.close()
                     return
                 self.workers.append(new_worker)
         except Exception as e:
@@ -228,16 +232,7 @@ class _StreamPool:
             for task in list(self._background_tasks):
                 task.cancel()
         for w in workers:
-            try:
-                await w.multiplexer.close()
-            except Exception:
-                pass
-            try:
-                res = w.stream.close()
-                if inspect.isawaitable(res):
-                    await res
-            except Exception:
-                pass
+            await w.close()
 
 
 class AsyncMultiRangeDownloader:
@@ -392,12 +387,6 @@ class AsyncMultiRangeDownloader:
         self.full_obj_server_crc32c: Optional[int] = None
 
         self.stream_config = stream_config
-        self.min_connections = stream_config.min_connections if stream_config else 1
-        self.max_connections = stream_config.max_connections if stream_config else 1
-        self.target_io_depth = stream_config.target_io_depth if stream_config else 8
-        self.target_bytes = (
-            stream_config.target_bytes if stream_config else 8 * 1024 * 1024
-        )
         self._pool: Optional[_StreamPool] = None
         self._primary_worker: Optional[_ManagedStream] = None
         self._metadata: Optional[List[Tuple[str, str]]] = None
@@ -494,8 +483,6 @@ class AsyncMultiRangeDownloader:
                 self.generation = self.read_obj_str.generation_number
             if self.read_obj_str.read_handle:
                 self.read_handle = self.read_obj_str.read_handle
-            if getattr(self.read_obj_str, "routing_token", None):
-                self._routing_token = self.read_obj_str.routing_token
             if self.read_obj_str.persisted_size is not None:
                 self.persisted_size = self.read_obj_str.persisted_size
             self.is_finalized = self.read_obj_str.is_finalized
@@ -511,14 +498,14 @@ class AsyncMultiRangeDownloader:
         if self.stream_config is not None and self.stream_config.max_connections > 1:
             self._pool = _StreamPool(
                 stream_factory=self._create_new_stream_worker,
-                min_connections=self.min_connections,
-                max_connections=self.max_connections,
-                target_io_depth=self.target_io_depth,
-                target_bytes=self.target_bytes,
+                min_connections=self.stream_config.min_connections,
+                max_connections=self.stream_config.max_connections,
+                target_io_depth=self.stream_config.target_io_depth,
+                target_bytes=self.stream_config.target_bytes,
             )
             await self._pool.add_worker(self._primary_worker)
 
-            for _ in range(self.min_connections - 1):
+            for _ in range(self.stream_config.min_connections - 1):
                 worker = await self._create_new_stream_worker()
                 await self._pool.add_worker(worker)
         else:
@@ -545,8 +532,6 @@ class AsyncMultiRangeDownloader:
             self.generation = stream.generation_number
         if stream.read_handle:
             self.read_handle = stream.read_handle
-        if getattr(stream, "routing_token", None):
-            self._routing_token = stream.routing_token
 
         mux = _StreamMultiplexer(stream)
         return _ManagedStream(stream, mux)
@@ -582,8 +567,6 @@ class AsyncMultiRangeDownloader:
                 self.generation = stream.generation_number
             if stream.read_handle:
                 self.read_handle = stream.read_handle
-            if getattr(stream, "routing_token", None):
-                self._routing_token = stream.routing_token
             self.is_finalized = stream.is_finalized
             self.full_obj_server_crc32c = stream.full_obj_server_crc32c
 
@@ -665,13 +648,10 @@ class AsyncMultiRangeDownloader:
             # Heuristic to detect full object reads:
             # - Implicit full object read: start offset is 0 and length is 0 (read all).
             # - Explicit full object read: start offset is 0 and length matches the exact persisted size.
-            is_full_object_read = self.is_finalized and (
-                (offset == 0 and length == 0)
-                or (
-                    self.persisted_size is not None
-                    and offset == 0
-                    and length == self.persisted_size
-                )
+            is_full_object_read = (offset == 0 and length == 0) or (
+                self.persisted_size is not None
+                and offset == 0
+                and length == self.persisted_size
             )
             download_states[read_id] = _DownloadState(
                 initial_offset=offset,
@@ -685,9 +665,7 @@ class AsyncMultiRangeDownloader:
             "read_handle": self.read_handle,
             "routing_token": None,
             "enable_checksum": enable_checksum,
-            "full_obj_server_crc32c": self.full_obj_server_crc32c
-            if self.is_finalized
-            else None,
+            "full_obj_server_crc32c": self.full_obj_server_crc32c,
         }
 
         read_ids = set(download_states.keys())
@@ -787,8 +765,6 @@ class AsyncMultiRangeDownloader:
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
         finally:
-            if self._multiplexer is not None:
-                self._multiplexer.unregister(read_ids)
             if worker.multiplexer is not None:
                 worker.multiplexer.unregister(read_ids)
 

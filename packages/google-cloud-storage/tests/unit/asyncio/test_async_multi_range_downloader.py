@@ -1029,10 +1029,10 @@ class TestAsyncMultiRangeDownloader:
             mock_client, "b", "o", stream_config=config
         )
 
-        assert mrd.min_connections == 2
-        assert mrd.max_connections == 4
-        assert mrd.target_io_depth == 8
-        assert mrd.target_bytes == 2 * 1024 * 1024
+        assert mrd.stream_config.min_connections == 2
+        assert mrd.stream_config.max_connections == 4
+        assert mrd.stream_config.target_io_depth == 8
+        assert mrd.stream_config.target_bytes == 2 * 1024 * 1024
         # Verified that 2 streams were opened initially for min_connections=2
         assert len(mrd._pool.workers) == 2
         await mrd.close()
@@ -1223,7 +1223,6 @@ class TestAsyncMultiRangeDownloader:
         s1 = mock.MagicMock()
         s1.open = AsyncMock()
         s1.generation_number = 100
-        s1.routing_token = "token-abc"
         s1.read_handle = b"h1"
         s1.persisted_size = 1000
         s1.is_finalized = True
@@ -1231,15 +1230,14 @@ class TestAsyncMultiRangeDownloader:
         mock_cls_async_read_object_stream.return_value = s1
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(mock_client, "b", "o")
-        # Ensure routing token from initial stream was recorded
-        assert mrd._routing_token == "token-abc"
+        # Simulate a redirect having set _routing_token
+        mrd._routing_token = "token-abc"
 
         # Now when a new stream worker is opened via _create_new_stream_worker,
         # it should include routing_token in the metadata
         s2 = mock.MagicMock()
         s2.open = AsyncMock()
         s2.generation_number = 100
-        s2.routing_token = "token-xyz"
         s2.read_handle = b"h2"
         s2.persisted_size = 1000
         mock_cls_async_read_object_stream.return_value = s2
@@ -1251,7 +1249,5 @@ class TestAsyncMultiRangeDownloader:
         assert ("x-goog-request-params", "routing_token=token-abc") in call_kwargs[
             "metadata"
         ]
-        # And after s2 opened, the token should update to s2's routing_token
-        assert mrd._routing_token == "token-xyz"
 
         await mrd.close()
