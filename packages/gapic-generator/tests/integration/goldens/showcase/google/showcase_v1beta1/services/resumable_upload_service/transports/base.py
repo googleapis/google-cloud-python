@@ -116,7 +116,8 @@ class ResumableUploadServiceTransport(abc.ABC):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
-        self._credentials: Any = credentials
+        #self._credentials: Any = credentials
+        self._credentials = credentials
         self._client_info = client_info
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.

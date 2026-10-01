@@ -142,7 +142,8 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the credentials.
         {% if service.has_resumable_upload_methods %}
-        self._credentials: Any = credentials
+        #self._credentials: Any = credentials
+        self._credentials = credentials
         self._client_info = client_info
         {% else %}
         self._credentials = credentials
