@@ -22,6 +22,7 @@ from sqlalchemy.testing.provision import (
     create_db,
     drop_db,
     follower_url_from_main,
+    generate_driver_url,
 )
 
 prefixer = test_utils.prefixer.Prefixer(
@@ -36,6 +37,18 @@ def _dataset_id_from_ident(ident: str) -> str:
         run_prefix = prefixer.create_prefix()
         os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
     return f"{run_prefix}_{ident}"
+
+
+@generate_driver_url.for_db("bigquery")
+def _bigquery_generate_driver_url(url, driver, query_str):
+    url = make_url(url)
+    if driver and driver != "bigquery":
+        new_url = url.set(drivername=f"bigquery+{driver}")
+    else:
+        new_url = url.set(drivername="bigquery")
+    if query_str:
+        new_url = new_url.update_query_string(query_str)
+    return new_url
 
 
 @follower_url_from_main.for_db("bigquery")

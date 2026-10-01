@@ -82,6 +82,10 @@ def pytest_configure(config):
     else:
         if "COMPLIANCE_RUN_PREFIX" not in os.environ:
             os.environ["COMPLIANCE_RUN_PREFIX"] = prefixer.create_prefix()
+
+    run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
+    master_dataset_id = f"{run_prefix}_master"
+    config.option.dburi = [f"bigquery:///{master_dataset_id}"]
     _pytest_configure(config)
 
 
@@ -90,18 +94,29 @@ def pytest_configure_node(node):
 
 
 def pytest_sessionstart(session):
-    if hasattr(session.config, "workerinput"):
-        # In a pytest-xdist worker process:
-        # Dataset creation and URL binding are dynamically provisioned
-        # per-worker by sqlalchemy_bigquery.provision hooks.
-        _pytest_sessionstart(session)
-        return
-
-    # Master process (or single-process sequential run):
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     if not run_prefix:
         run_prefix = prefixer.create_prefix()
         os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
+
+    if hasattr(session.config, "workerinput"):
+        # In a pytest-xdist worker process:
+        # Each worker connects to its own partition ({run_prefix}_{follower_ident}).
+        # Ensure the worker's dataset exists and bind dburi to worker partition.
+        ident = session.config.workerinput.get("follower_ident")
+        worker_dataset_id = f"{run_prefix}_{ident}" if ident else f"{run_prefix}_worker"
+        session.config.option.dburi = [f"bigquery:///{worker_dataset_id}"]
+        with contextlib.closing(google.cloud.bigquery.Client()) as client:
+            dataset_ref = google.cloud.bigquery.DatasetReference(
+                client.project, worker_dataset_id
+            )
+            dataset = google.cloud.bigquery.Dataset(dataset_ref)
+            dataset.default_table_expiration_ms = 3600 * 1000
+            client.create_dataset(dataset, exists_ok=True)
+        _pytest_sessionstart(session)
+        return
+
+    # Master process (or single-process sequential run):
     master_dataset_id = f"{run_prefix}_master"
     session.config.option.dburi = [f"bigquery:///{master_dataset_id}"]
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
