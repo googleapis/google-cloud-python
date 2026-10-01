@@ -274,6 +274,58 @@ def _get_http_options():
 {% endmacro %}
 
 
+{# rest_resumable_upload_call_method_common includes the common code for a rest
+    resumable upload __call__ method to be re-used for sync and async REST
+    __call__ implementation.
+
+    Args:
+        method: The method.
+        service: The service.
+        is_async (bool): Used to determine the code path i.e. whether for sync or async call.
+        rest_numeric_enums (bool): Used to determine whether to encode enums as numbers. #}
+{% macro rest_resumable_upload_call_method_common(method, service, is_async=False, rest_numeric_enums=False) %}
+{% set service_name = service.name %}
+{% set method_name = method.name %}
+{% set await_prefix = "await " if is_async else "" %}
+{% set client_output_ident = method.client_output_async.ident if is_async else method.client_output.ident %}
+{% set retry_class = "retries.AsyncRetry" if is_async else "retries.Retry" %}
+http_options = _Base{{ service_name }}RestTransport._Base{{ method_name }}._get_http_options()
+request, metadata = {{ await_prefix }}self._interceptor.pre_{{ method_name|snake_case }}(request, metadata)
+transcoded_request, body, query_params = transcode_request(
+    http_options,
+    request,
+    required_fields_default_values=getattr(
+        _Base{{ service_name }}RestTransport._Base{{ method_name }},
+        "_Base{{ method_name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        None,
+    ),
+    rest_numeric_enums={{ rest_numeric_enums }},
+)
+
+uri = transcoded_request["uri"]
+upload_url = f"{self._host}{uri}"
+headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
+if config is None:
+    config = resumable_transfer.ResumableUploadConfig(headers=headers)
+else:
+    config = dataclasses.replace(config, headers=headers)
+
+session_kwargs: Dict[str, Any] = (
+    {"start_timeout": timeout}
+    if isinstance(timeout, (int, float))
+    else {}
+)
+return {{ client_output_ident }}(
+    upload_url=upload_url,
+    config=config,
+    transport=self._session,
+    response_type={{ method.output.ident }},
+    start_retry=retry if isinstance(retry, {{ retry_class }}) else None,
+    **session_kwargs,
+)
+{%- endmacro %}
+
+
 {% macro unary_request_interceptor_common(service) %}
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
