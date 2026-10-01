@@ -640,11 +640,9 @@ class TestSchemaField(unittest.TestCase):
         self.assertNotEqual(field, other)
 
     def test___eq___range_element_type_hit(self):
-        from google.cloud.bigquery.schema import FieldElementType
-
         field = self._make_one("R", "RANGE", range_element_type="DATE")
         other = self._make_one(
-            "R", "RANGE", range_element_type=FieldElementType("DATE")
+            "R", "RANGE", range_element_type=schema.FieldElementType("DATE")
         )
         self.assertEqual(field, other)
 

@@ -132,6 +132,19 @@ class FieldElementType(object):
         return f"{self.__class__.__name__}(element_type={self.element_type!r})"
 
 
+class _SchemaFieldKey(typing.NamedTuple):
+    name: str
+    field_type: str
+    mode: str
+    default_value_expression: Optional[str]
+    description: Optional[str]
+    fields: tuple
+    policy_tags: Optional[tuple[str, ...]]
+    timestamp_precision: Optional[int]
+    rounding_mode: Optional[str]
+    foreign_type_definition: Optional[str]
+
+
 class SchemaField(object):
     """Describe a single field within a table schema.
 
@@ -473,20 +486,19 @@ class SchemaField(object):
             if isinstance(self.rounding_mode, enums.RoundingMode)
             else self.rounding_mode
         )
-        foreign_type_definition = self.foreign_type_definition
 
-        return (
-            self.name,
-            field_type,
+        return _SchemaFieldKey(
+            name=self.name,
+            field_type=field_type,
             # Mode is always str, if not given it defaults to a str value
-            self.mode.upper(),  # pytype: disable=attribute-error
-            self.default_value_expression,
-            self.description,
-            self.fields,
-            policy_tags,
-            timestamp_precision,
-            rounding_mode,
-            foreign_type_definition,
+            mode=self.mode.upper(),  # pytype: disable=attribute-error
+            default_value_expression=self.default_value_expression,
+            description=self.description,
+            fields=self.fields,
+            policy_tags=policy_tags,
+            timestamp_precision=timestamp_precision,
+            rounding_mode=rounding_mode,
+            foreign_type_definition=self.foreign_type_definition,
         )
 
     def to_standard_sql(self) -> standard_sql.StandardSqlField:
@@ -537,31 +549,11 @@ class SchemaField(object):
         return hash(self._key())
 
     def __repr__(self):
-        (
-            name,
-            field_type,
-            mode,
-            default_value_expression,
-            description,
-            fields,
-            policy_tags,
-            timestamp_precision_tag,
-            rounding_mode,
-            foreign_type_definition,
-        ) = self._key()
-        policy_tags_inst = None if policy_tags is None else PolicyTagList(policy_tags)
-        adjusted_key = (
-            name,
-            field_type,
-            mode,
-            default_value_expression,
-            description,
-            fields,
-            policy_tags_inst,
-            timestamp_precision_tag,
-            rounding_mode,
-            foreign_type_definition,
+        key = self._key()
+        policy_tags_inst = (
+            None if key.policy_tags is None else PolicyTagList(key.policy_tags)
         )
+        adjusted_key = tuple(key._replace(policy_tags=policy_tags_inst))
         return f"{self.__class__.__name__}{adjusted_key}"
 
 
