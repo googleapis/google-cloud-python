@@ -2,6 +2,13 @@
 
 [1]: https://pypi.org/project/google-auth-httplib2/#history
 
+## [0.4.4](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.4.3...google-auth-httplib2-v0.4.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.4.2...google-auth-httplib2-v0.4.3) (2026-09-29)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.2...google-cloud-bigquery-v3.46.0) (2026-10-01)
+
+
+### Features
+
+* **bigquery:** Declare Python 3.15 support ([#18525](https://github.com/googleapis/google-cloud-python/issues/18525)) ([6ed8447](https://github.com/googleapis/google-cloud-python/commit/6ed844782d453f1d1ebd3f70f8f0484254ff15b1))
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [3.45.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.1...google-cloud-bigquery-v3.45.2) (2026-09-17)
 
 

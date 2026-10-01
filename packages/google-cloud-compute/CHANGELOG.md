@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.55.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.54.0...google-cloud-compute-v1.55.0) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18513](https://github.com/googleapis/google-cloud-python/issues/18513)) ([7d7adca](https://github.com/googleapis/google-cloud-python/commit/7d7adcaee688603077ea53abec678130045c20ed))
+* update Compute v1 API to version 2026-09-01 ([#18523](https://github.com/googleapis/google-cloud-python/issues/18523)) ([d7d3d20](https://github.com/googleapis/google-cloud-python/commit/d7d3d20db46fb996b278ec4d3f74e03365d789a0))
+
+
+### Bug Fixes
+
+* all AggregatedList RPCs behavior is now return_partial_success=true ([d7d3d20](https://github.com/googleapis/google-cloud-python/commit/d7d3d20db46fb996b278ec4d3f74e03365d789a0))
+* all AggregatedList RPCs return_partial_success fields removed ([d7d3d20](https://github.com/googleapis/google-cloud-python/commit/d7d3d20db46fb996b278ec4d3f74e03365d789a0))
+* remove several enums and fields that no longer exist in the API ([d7d3d20](https://github.com/googleapis/google-cloud-python/commit/d7d3d20db46fb996b278ec4d3f74e03365d789a0))
+
+
+### Documentation
+
+* see https://docs.cloud.google.com/compute/docs/release-notes ([d7d3d20](https://github.com/googleapis/google-cloud-python/commit/d7d3d20db46fb996b278ec4d3f74e03365d789a0))
+
 ## [1.54.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.53.0...google-cloud-compute-v1.54.0) (2026-09-17)
 
 
@@ -803,4 +824,3 @@
 ### Features
 
 * generate v1 ([53f9a3d](https://www.github.com/googleapis/python-compute/commit/53f9a3d6f14ef45b5bc3e38a48e3fa17059591eb))
-
