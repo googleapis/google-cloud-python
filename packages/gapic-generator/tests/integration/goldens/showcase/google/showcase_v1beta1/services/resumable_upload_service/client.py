@@ -591,16 +591,6 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.upload_media]
 
-        metadata = () if metadata is None else metadata
-        resumable_metadata = {
-            "x-goog-upload-protocol": "resumable",
-            "x-goog-upload-command": "start",
-        }
-        existing_keys = {k.lower() for k, _ in metadata}
-        metadata = tuple(metadata) + tuple(
-            (k, v) for k, v in resumable_metadata.items() if k not in existing_keys
-        )
-
         # Validate the universe domain.
         self._validate_universe_domain()
 

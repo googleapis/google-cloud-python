@@ -324,16 +324,6 @@ class ResumableUploadServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.upload_media]
 
-        metadata = () if metadata is None else metadata
-        resumable_metadata = {
-            "x-goog-upload-protocol": "resumable",
-            "x-goog-upload-command": "start",
-        }
-        existing_keys = {k.lower() for k, _ in metadata}
-        metadata = tuple(metadata) + tuple(
-            (k, v) for k, v in resumable_metadata.items() if k not in existing_keys
-        )
-
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
