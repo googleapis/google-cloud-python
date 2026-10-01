@@ -34,8 +34,19 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       is_full_run: ${{ steps.check-label.outputs.is_full_run }}
     env:
-      MAX_SHARDS: 8
+      MAX_SHARDS: 5
       MIN_SHARD_WEIGHT: 25
+      # Define weights for packages with large autodoc workloads to balance shard execution time
+      # Default for unset packages is 1
+      PACKAGE_WEIGHTS: |
+        google-ads-admanager: 5
+        google-cloud-compute: 18
+        google-cloud-compute-v1beta: 20
+        google-cloud-dialogflow: 8
+        google-cloud-dialogflow-cx: 8
+        google-cloud-discoveryengine: 12
+        google-cloud-network-security: 7
+        google-cloud-retail: 6
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -63,6 +74,7 @@ jobs:
         TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
         MAX_SHARDS: ${{ env.MAX_SHARDS }}
         MIN_SHARD_WEIGHT: ${{ env.MIN_SHARD_WEIGHT }}
+        PACKAGE_WEIGHTS: ${{ env.PACKAGE_WEIGHTS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
           git fetch --no-tags --quiet origin "$TARGET_BRANCH" || true
