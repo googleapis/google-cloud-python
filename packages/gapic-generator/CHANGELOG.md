@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.41.0...gapic-generator-v1.42.0) (2026-10-01)
+
+
+### Features
+
+* **gapic-generator:** add rpc_name metadata to mixin schema definitions ([#18516](https://github.com/googleapis/google-cloud-python/issues/18516)) ([fc1b469](https://github.com/googleapis/google-cloud-python/commit/fc1b469837256a7a3b59d1b8b0ed1ffe078aab3b))
+
 ## [1.41.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.40.0...gapic-generator-v1.41.0) (2026-09-29)
 
 
