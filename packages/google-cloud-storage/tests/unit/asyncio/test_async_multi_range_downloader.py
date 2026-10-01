@@ -20,14 +20,13 @@ from unittest.mock import AsyncMock
 import google_crc32c
 import pytest
 from google.api_core import exceptions
-from google.rpc import error_details_pb2, status_pb2
-
 from google.cloud import _storage_v2
 from google.cloud.storage.asyncio import async_read_object_stream
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
 from google.cloud.storage.exceptions import DataCorruption
+from google.rpc import error_details_pb2, status_pb2
 
 _TEST_BUCKET_NAME = "test-bucket"
 _TEST_OBJECT_NAME = "test-object"
@@ -1041,9 +1040,7 @@ class TestAsyncMultiRangeDownloader:
         "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
-    async def test_mrd_download_ranges_triggers_pool_scaling(
-        self, mock_cls_stream
-    ):
+    async def test_mrd_download_ranges_triggers_pool_scaling(self, mock_cls_stream):
         from google.cloud.storage.asyncio.async_multi_range_downloader import (
             MRDStreamConfig,
         )
@@ -1078,9 +1075,7 @@ class TestAsyncMultiRangeDownloader:
         )
         assert len(mrd._pool.workers) == 1
 
-        with mock.patch.object(
-            mrd, "_download_ranges_on_worker", new=AsyncMock()
-        ):
+        with mock.patch.object(mrd, "_download_ranges_on_worker", new=AsyncMock()):
             # Download ranges with load > 1.0 (2 ranges, 100 bytes)
             await mrd.download_ranges([(0, 50, BytesIO()), (50, 50, BytesIO())])
             await asyncio.sleep(0.01)

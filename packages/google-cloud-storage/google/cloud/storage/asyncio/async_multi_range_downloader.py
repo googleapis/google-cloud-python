@@ -24,7 +24,6 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
-
 from google.cloud import _storage_v2
 from google.cloud.storage._helpers import generate_random_56_bit_integer
 from google.cloud.storage.asyncio._stream_multiplexer import (
