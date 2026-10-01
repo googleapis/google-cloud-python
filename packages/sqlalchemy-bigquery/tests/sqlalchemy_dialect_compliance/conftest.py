@@ -54,6 +54,7 @@ _where = re.compile(r"\s+WHERE\s+", re.IGNORECASE).search
 
 
 def visit_delete(self, delete_stmt, *args, **kw):
+    """Compile DELETE statements, appending WHERE true during test teardown."""
     text = super(sqlalchemy_bigquery.base.BigQueryCompiler, self).visit_delete(
         delete_stmt, *args, **kw
     )
@@ -81,6 +82,7 @@ def _resolve_dataset_id(cfg) -> str:
 
 
 def pytest_configure(config):
+    """Configure pytest session, establishing compliance run prefix and target dburi."""
     if hasattr(config, "workerinput"):
         prefix = config.workerinput.get("compliance_run_prefix")
         if prefix:
@@ -95,10 +97,12 @@ def pytest_configure(config):
 
 
 def pytest_configure_node(node):
+    """Propagate the compliance run prefix from the controller to worker nodes."""
     node.workerinput["compliance_run_prefix"] = os.environ.get("COMPLIANCE_RUN_PREFIX")
 
 
 def pytest_sessionstart(session):
+    """Ensure the target dataset exists before running compliance tests in the session."""
     dataset_id = _resolve_dataset_id(session.config)
     session.config.option.dburi = [f"bigquery:///{dataset_id}"]
     sqlalchemy_bigquery.provision.ensure_dataset(dataset_id)
@@ -106,6 +110,7 @@ def pytest_sessionstart(session):
 
 
 def pytest_sessionfinish(session):
+    """Tear down datasets and clean up leaked test datasets after session completion."""
     if hasattr(session.config, "workerinput"):
         # Worker dataset teardown is handled by provision.drop_follower_db
         # on the controller node.
