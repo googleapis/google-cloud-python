@@ -387,6 +387,12 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                         return _error()
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
             elif HAS_ASYNC_REST:
+                # TODO(https://github.com/googleapis/google-cloud-python/issues/16268):
+                # Resolve the credential type mismatch between {{ service.grpc_asyncio_transport_name }}
+                # (where grpc_helpers_async.create_channel and the base transport's
+                # google.auth.default() path use synchronous google.auth.credentials.Credentials)
+                # and Async{{ service.name }}RestTransport (where AsyncAuthorizedSession
+                # requires asynchronous google.auth.aio.credentials.Credentials).
                 # Defer instantiating Async{{ service.name }}RestTransport until the
                 # resumable upload RPC is called so that initializing
                 # {{ service.grpc_asyncio_transport_name }} with synchronous
