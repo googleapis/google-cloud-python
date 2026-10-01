@@ -87,7 +87,7 @@ from .transports.rest import {{ service.name }}RestTransport
 {% if rest_async_io_enabled %}
 try:
     from .transports.rest_asyncio import Async{{ service.name }}RestTransport
-    HAS_ASYNC_REST_DEPENDENCIES = True
+    HAS_ASYNC_REST_DEPENDENCIES = True  # pragma: NO COVER
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
@@ -497,7 +497,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 else cast(Callable[..., {{ service.name }}Transport], transport)
             )
 
-            if "rest_asyncio" in str(transport_init):
+            if "rest_asyncio" in str(transport_init):  # pragma: NO COVER
                 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2136): Support the following parameters in async rest: #}
                 unsupported_params = {
                     "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,

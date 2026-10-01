@@ -395,13 +395,13 @@ def showcase_library(
             )
             extras = ""
             if rest_async_io_enabled or install_async_rest_extra:
+                extras = "[async_rest]"
                 async_rest_constraints_path = str(
                     f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
                 )
                 if os.path.exists(async_rest_constraints_path):
                     # use async-rest constraints if available
                     constraints_path = async_rest_constraints_path
-                    extras = "[async_rest]"
                 else:
                     session.log(
                         f"{async_rest_constraints_path} not found. Using base constraints file"

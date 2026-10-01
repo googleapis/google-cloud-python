@@ -64,7 +64,7 @@ from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
 try:
     from .transports.rest_asyncio import AsyncCloudRedisRestTransport
-    HAS_ASYNC_REST_DEPENDENCIES = True
+    HAS_ASYNC_REST_DEPENDENCIES = True  # pragma: NO COVER
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
 
@@ -506,7 +506,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 else cast(Callable[..., CloudRedisTransport], transport)
             )
 
-            if "rest_asyncio" in str(transport_init):
+            if "rest_asyncio" in str(transport_init):  # pragma: NO COVER
                 unsupported_params = {
                     "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
                     "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,

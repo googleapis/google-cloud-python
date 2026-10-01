@@ -24,9 +24,9 @@ from .rest import ResumableUploadServiceRestInterceptor
 ASYNC_REST_CLASSES: Tuple[str, ...]
 try:
     from .rest_asyncio import AsyncResumableUploadServiceRestTransport
-    from .rest_asyncio import AsyncResumableUploadServiceRestInterceptor
-    ASYNC_REST_CLASSES = ('AsyncResumableUploadServiceRestTransport', 'AsyncResumableUploadServiceRestInterceptor')
-    HAS_REST_ASYNC = True
+    from .rest_asyncio import AsyncResumableUploadServiceRestInterceptor  # pragma: NO COVER
+    ASYNC_REST_CLASSES = ('AsyncResumableUploadServiceRestTransport', 'AsyncResumableUploadServiceRestInterceptor')  # pragma: NO COVER
+    HAS_REST_ASYNC = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     ASYNC_REST_CLASSES = ()
     HAS_REST_ASYNC = False
