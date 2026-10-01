@@ -248,6 +248,11 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        # Resumable upload RPCs operate over HTTP/REST rather than gRPC.
+        # Since gRPC is the default transport for GAPIC clients and services
+        # mix standard gRPC RPCs with resumable upload RPCs on the same client,
+        # gRPC transports delegate resumable upload calls to an internal REST
+        # transport instance.
         self._rest_transport: Optional[Any] = None
 
         if api_mtls_endpoint:
