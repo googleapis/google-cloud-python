@@ -42,6 +42,7 @@ import google.auth
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
     client_options,
@@ -3227,6 +3228,334 @@ async def test_streaming_analyze_content_async(
 @pytest.mark.parametrize(
     "request_type",
     [
+        participant.BidiStreamingAnalyzeContentRequest(),
+        {},
+    ],
+)
+def test_bidi_streaming_analyze_content(request_type, transport: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bidi_streaming_analyze_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([participant.BidiStreamingAnalyzeContentResponse()])
+        response = client.bidi_streaming_analyze_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, participant.BidiStreamingAnalyzeContentResponse)
+
+
+def test_bidi_streaming_analyze_content_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ParticipantsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bidi_streaming_analyze_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bidi_streaming_analyze_content
+        ] = mock_rpc
+        request = [{}]
+        client.bidi_streaming_analyze_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.bidi_streaming_analyze_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bidi_streaming_analyze_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ParticipantsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.bidi_streaming_analyze_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.bidi_streaming_analyze_content
+        ] = mock_rpc
+
+        request = [{}]
+        await client.bidi_streaming_analyze_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.bidi_streaming_analyze_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        participant.BidiStreamingAnalyzeContentRequest(),
+        {},
+    ],
+)
+async def test_bidi_streaming_analyze_content_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ParticipantsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bidi_streaming_analyze_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[participant.BidiStreamingAnalyzeContentResponse()]
+        )
+        response = await client.bidi_streaming_analyze_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, participant.BidiStreamingAnalyzeContentResponse)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        participant.StreamingReactiveCompanionSuggestionsRequest(),
+        {},
+    ],
+)
+def test_streaming_reactive_companion_suggestions(
+    request_type, transport: str = "grpc"
+):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_reactive_companion_suggestions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter(
+            [participant.StreamingReactiveCompanionSuggestionsResponse()]
+        )
+        response = client.streaming_reactive_companion_suggestions(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(
+            message, participant.StreamingReactiveCompanionSuggestionsResponse
+        )
+
+
+def test_streaming_reactive_companion_suggestions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ParticipantsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.streaming_reactive_companion_suggestions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.streaming_reactive_companion_suggestions
+        ] = mock_rpc
+        request = [{}]
+        client.streaming_reactive_companion_suggestions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.streaming_reactive_companion_suggestions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_streaming_reactive_companion_suggestions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ParticipantsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.streaming_reactive_companion_suggestions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.streaming_reactive_companion_suggestions
+        ] = mock_rpc
+
+        request = [{}]
+        await client.streaming_reactive_companion_suggestions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.streaming_reactive_companion_suggestions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        participant.StreamingReactiveCompanionSuggestionsRequest(),
+        {},
+    ],
+)
+async def test_streaming_reactive_companion_suggestions_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ParticipantsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.streaming_reactive_companion_suggestions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[participant.StreamingReactiveCompanionSuggestionsResponse()]
+        )
+        response = await client.streaming_reactive_companion_suggestions(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(
+        message, participant.StreamingReactiveCompanionSuggestionsResponse
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         participant.SuggestArticlesRequest(),
         {},
     ],
@@ -5482,6 +5811,28 @@ def test_streaming_analyze_content_rest_no_http_options():
         client.streaming_analyze_content(requests)
 
 
+def test_bidi_streaming_analyze_content_rest_no_http_options():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = participant.BidiStreamingAnalyzeContentRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.bidi_streaming_analyze_content(requests)
+
+
+def test_streaming_reactive_companion_suggestions_rest_no_http_options():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = participant.StreamingReactiveCompanionSuggestionsRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.streaming_reactive_companion_suggestions(requests)
+
+
 def test_suggest_articles_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6136,6 +6487,34 @@ def test_streaming_analyze_content_rest_error():
         client.streaming_analyze_content({})
     assert "Method StreamingAnalyzeContent is not available over REST transport" in str(
         not_implemented_error.value
+    )
+
+
+def test_bidi_streaming_analyze_content_rest_error():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.bidi_streaming_analyze_content({})
+    assert (
+        "Method BidiStreamingAnalyzeContent is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_streaming_reactive_companion_suggestions_rest_error():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.streaming_reactive_companion_suggestions({})
+    assert (
+        "Method StreamingReactiveCompanionSuggestions is not available over REST transport"
+        in str(not_implemented_error.value)
     )
 
 
@@ -7598,6 +7977,32 @@ def test_streaming_analyze_content_rest_error():
     )
 
 
+def test_bidi_streaming_analyze_content_rest_error():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.bidi_streaming_analyze_content({})
+    assert (
+        "Method BidiStreamingAnalyzeContent is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_streaming_reactive_companion_suggestions_rest_error():
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.streaming_reactive_companion_suggestions({})
+    assert (
+        "Method StreamingReactiveCompanionSuggestions is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_suggest_articles_rest_bad_request(
     request_type=participant.SuggestArticlesRequest,
 ):
@@ -8704,6 +9109,8 @@ def test_participants_base_transport():
         "update_participant",
         "analyze_content",
         "streaming_analyze_content",
+        "bidi_streaming_analyze_content",
+        "streaming_reactive_companion_suggestions",
         "suggest_articles",
         "suggest_faq_answers",
         "suggest_smart_replies",
@@ -9004,6 +9411,12 @@ def test_participants_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.streaming_analyze_content._session
     session2 = client2.transport.streaming_analyze_content._session
+    assert session1 != session2
+    session1 = client1.transport.bidi_streaming_analyze_content._session
+    session2 = client2.transport.bidi_streaming_analyze_content._session
+    assert session1 != session2
+    session1 = client1.transport.streaming_reactive_companion_suggestions._session
+    session2 = client2.transport.streaming_reactive_companion_suggestions._session
     assert session1 != session2
     session1 = client1.transport.suggest_articles._session
     session2 = client2.transport.suggest_articles._session

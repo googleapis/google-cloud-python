@@ -38,7 +38,6 @@ dependencies = [
 packages = setuptools.find_packages(".", exclude=["tests"])
 
 extra_setup = dict(
-    setup_requires=["pytest-runner"],
     tests_require=["pytest", "mock"],
 )
 

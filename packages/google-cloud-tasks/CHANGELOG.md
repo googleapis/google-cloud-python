@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.24.0...google-cloud-tasks-v2.25.0) (2026-09-24)
+
+
+### Features
+
+* update API sources and regenerate ([#18446](https://github.com/googleapis/google-cloud-python/issues/18446)) ([54f1019](https://github.com/googleapis/google-cloud-python/commit/54f10190a4ab7b3772010bf9006de55266f74da9))
+
 ## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.23.0...google-cloud-tasks-v2.24.0) (2026-08-06)
 
 

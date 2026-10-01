@@ -29,6 +29,7 @@ __lazy_modules__ = {
     "google.apps.chat_v1.services.chat_service",
     "google.apps.chat_v1.types.action_status",
     "google.apps.chat_v1.types.annotation",
+    "google.apps.chat_v1.types.app_command_metadata",
     "google.apps.chat_v1.types.attachment",
     "google.apps.chat_v1.types.audience",
     "google.apps.chat_v1.types.availability",
@@ -42,6 +43,7 @@ __lazy_modules__ = {
     "google.apps.chat_v1.types.matched_url",
     "google.apps.chat_v1.types.membership",
     "google.apps.chat_v1.types.message",
+    "google.apps.chat_v1.types.message_pin",
     "google.apps.chat_v1.types.reaction",
     "google.apps.chat_v1.types.section",
     "google.apps.chat_v1.types.slash_command",
@@ -70,6 +72,7 @@ from .types.annotation import (
     SlashCommandMetadata,
     UserMentionMetadata,
 )
+from .types.app_command_metadata import AppCommandMetadata
 from .types.attachment import (
     Attachment,
     AttachmentDataRef,
@@ -147,6 +150,13 @@ from .types.message import (
     Thread,
     UpdateMessageRequest,
 )
+from .types.message_pin import (
+    CreateMessagePinRequest,
+    DeleteMessagePinRequest,
+    ListMessagePinsRequest,
+    ListMessagePinsResponse,
+    MessagePin,
+)
 from .types.reaction import (
     CreateCustomEmojiRequest,
     CreateReactionRequest,
@@ -223,6 +233,7 @@ __all__ = (
     "ActionStatus",
     "Annotation",
     "AnnotationType",
+    "AppCommandMetadata",
     "AttachedGif",
     "Attachment",
     "AttachmentDataRef",
@@ -238,6 +249,7 @@ __all__ = (
     "CreateCustomEmojiRequest",
     "CreateMembershipRequest",
     "CreateMessageNotificationOptions",
+    "CreateMessagePinRequest",
     "CreateMessageRequest",
     "CreateReactionRequest",
     "CreateSectionRequest",
@@ -247,6 +259,7 @@ __all__ = (
     "CustomStatus",
     "DeleteCustomEmojiRequest",
     "DeleteMembershipRequest",
+    "DeleteMessagePinRequest",
     "DeleteMessageRequest",
     "DeleteReactionRequest",
     "DeleteSectionRequest",
@@ -279,6 +292,8 @@ __all__ = (
     "ListCustomEmojisResponse",
     "ListMembershipsRequest",
     "ListMembershipsResponse",
+    "ListMessagePinsRequest",
+    "ListMessagePinsResponse",
     "ListMessagesRequest",
     "ListMessagesResponse",
     "ListReactionsRequest",
@@ -310,6 +325,7 @@ __all__ = (
     "MessageBatchUpdatedEventData",
     "MessageCreatedEventData",
     "MessageDeletedEventData",
+    "MessagePin",
     "MessageUpdatedEventData",
     "MoveSectionItemRequest",
     "MoveSectionItemResponse",

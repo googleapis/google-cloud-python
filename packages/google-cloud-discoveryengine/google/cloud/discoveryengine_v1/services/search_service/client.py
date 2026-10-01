@@ -225,6 +225,30 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def control_path(
+        project: str,
+        location: str,
+        data_store: str,
+        control: str,
+    ) -> str:
+        """Returns a fully-qualified control string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/controls/{control}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            control=control,
+        )
+
+    @staticmethod
+    def parse_control_path(path: str) -> Dict[str, str]:
+        """Parses a control path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/controls/(?P<control>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def data_store_path(
         project: str,
         location: str,

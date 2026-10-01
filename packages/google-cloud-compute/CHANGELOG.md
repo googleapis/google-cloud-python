@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.54.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.53.0...google-cloud-compute-v1.54.0) (2026-09-17)
+
+
+### Features
+
+* update API sources and regenerate ([#18396](https://github.com/googleapis/google-cloud-python/issues/18396)) ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+* update API sources and regenerate. ([e9f8e59](https://github.com/googleapis/google-cloud-python/commit/e9f8e590b7b395e660cc5437535166dfb920d246))
+
+## [1.53.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.52.0...google-cloud-compute-v1.53.0) (2026-09-14)
+
+
+### Features
+
+* update API sources and regenerate ([#18324](https://github.com/googleapis/google-cloud-python/issues/18324)) ([0766fb6](https://github.com/googleapis/google-cloud-python/commit/0766fb69c28973d5d51cffc490f195c60e8eee10))
+
 ## [1.52.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.51.0...google-cloud-compute-v1.52.0) (2026-09-03)
 
 
@@ -788,3 +803,4 @@
 ### Features
 
 * generate v1 ([53f9a3d](https://www.github.com/googleapis/python-compute/commit/53f9a3d6f14ef45b5bc3e38a48e3fa17059591eb))
+

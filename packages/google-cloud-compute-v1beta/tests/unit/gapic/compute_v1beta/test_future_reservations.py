@@ -3825,6 +3825,7 @@ def test_get_rest_call_success(request_type):
         return_value = compute.FutureReservation(
             auto_created_reservations_delete_time="auto_created_reservations_delete_time_value",
             auto_delete_auto_created_reservations=True,
+            colocation_resource="colocation_resource_value",
             confidential_compute_type="confidential_compute_type_value",
             creation_timestamp="creation_timestamp_value",
             deployment_type="deployment_type_value",
@@ -3865,6 +3866,7 @@ def test_get_rest_call_success(request_type):
         == "auto_created_reservations_delete_time_value"
     )
     assert response.auto_delete_auto_created_reservations is True
+    assert response.colocation_resource == "colocation_resource_value"
     assert response.confidential_compute_type == "confidential_compute_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.deployment_type == "deployment_type_value"
@@ -4011,6 +4013,7 @@ def test_insert_rest_call_success(request_type):
         "auto_created_reservations_delete_time": "auto_created_reservations_delete_time_value",
         "auto_created_reservations_duration": {"nanos": 543, "seconds": 751},
         "auto_delete_auto_created_reservations": True,
+        "colocation_resource": "colocation_resource_value",
         "commitment_info": {
             "commitment_name": "commitment_name_value",
             "commitment_plan": "commitment_plan_value",
@@ -4527,6 +4530,7 @@ def test_update_rest_call_success(request_type):
         "auto_created_reservations_delete_time": "auto_created_reservations_delete_time_value",
         "auto_created_reservations_duration": {"nanos": 543, "seconds": 751},
         "auto_delete_auto_created_reservations": True,
+        "colocation_resource": "colocation_resource_value",
         "commitment_info": {
             "commitment_name": "commitment_name_value",
             "commitment_plan": "commitment_plan_value",

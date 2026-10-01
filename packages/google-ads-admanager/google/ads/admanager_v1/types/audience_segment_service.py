@@ -27,6 +27,9 @@ __protobuf__ = proto.module(
         "GetAudienceSegmentRequest",
         "ListAudienceSegmentsRequest",
         "ListAudienceSegmentsResponse",
+        "CreateAudienceSegmentRequest",
+        "BatchCreateAudienceSegmentsRequest",
+        "BatchCreateAudienceSegmentsResponse",
         "BatchActivateAudienceSegmentsRequest",
         "BatchActivateAudienceSegmentsResponse",
         "BatchDeactivateAudienceSegmentsRequest",
@@ -178,6 +181,71 @@ class ListAudienceSegmentsResponse(proto.Message):
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class CreateAudienceSegmentRequest(proto.Message):
+    r"""Request object for ``CreateAudienceSegment`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this ``AudienceSegment``
+            will be created. Format: ``networks/{network_code}``
+        audience_segment (google.ads.admanager_v1.types.AudienceSegment):
+            Required. The ``AudienceSegment`` to create. Only
+            first-party segments can be created.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience_segment: audience_segment_messages.AudienceSegment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=audience_segment_messages.AudienceSegment,
+    )
+
+
+class BatchCreateAudienceSegmentsRequest(proto.Message):
+    r"""Request object for ``BatchCreateAudienceSegments`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``AudienceSegments``
+            will be created. Format: ``networks/{network_code}`` The
+            parent field in the CreateAudienceSegmentRequest must match
+            this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateAudienceSegmentRequest]):
+            Required. The ``AudienceSegment`` objects to create. A
+            maximum of 100 objects can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateAudienceSegmentRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateAudienceSegmentRequest",
+    )
+
+
+class BatchCreateAudienceSegmentsResponse(proto.Message):
+    r"""Response object for ``BatchCreateAudienceSegments`` method.
+
+    Attributes:
+        audience_segments (MutableSequence[google.ads.admanager_v1.types.AudienceSegment]):
+            The ``AudienceSegment`` objects created.
+    """
+
+    audience_segments: MutableSequence[audience_segment_messages.AudienceSegment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=audience_segment_messages.AudienceSegment,
+        )
     )
 
 
