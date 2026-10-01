@@ -623,6 +623,8 @@ class GlobalFrontendSettingsServiceClient(
                 GlobalFrontendSettingsService.Get. See
                 the method description for details.
             project (str):
+                Required. Project ID for this
+                request.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -736,6 +738,8 @@ class GlobalFrontendSettingsServiceClient(
                 GlobalFrontendSettingsService.Patch. See
                 the method description for details.
             project (str):
+                Required. Project ID for this
+                request.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this

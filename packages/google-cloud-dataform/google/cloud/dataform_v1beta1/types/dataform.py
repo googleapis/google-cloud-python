@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "DirectoryContentsView",
         "DataEncryptionState",
         "Repository",
+        "OAuthConfig",
         "PrivateResourceMetadata",
         "ListRepositoriesRequest",
         "ListRepositoriesResponse",
@@ -302,6 +303,9 @@ class Repository(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        end_user_auth_config (google.cloud.dataform_v1beta1.types.Repository.EndUserAuthConfig):
+            Optional. Includes configuration options for
+            end user authentication.
     """
 
     class GitRemoteSettings(proto.Message):
@@ -452,6 +456,22 @@ class Repository(proto.Message):
             number=3,
         )
 
+    class EndUserAuthConfig(proto.Message):
+        r"""Includes configuration options for repository end user
+        authentication.
+
+        Attributes:
+            oauth_config (google.cloud.dataform_v1beta1.types.OAuthConfig):
+                Optional. OAuth configuration for repository
+                end user authentication.
+        """
+
+        oauth_config: "OAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="OAuthConfig",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -515,6 +535,27 @@ class Repository(proto.Message):
         proto.STRING,
         number=15,
         optional=True,
+    )
+    end_user_auth_config: EndUserAuthConfig = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=EndUserAuthConfig,
+    )
+
+
+class OAuthConfig(proto.Message):
+    r"""OAuth configuration for end user authentication.
+
+    Attributes:
+        additional_oauth_scopes (MutableSequence[str]):
+            Optional. Additional OAuth scopes to use for BigQuery
+            executions. Scopes always in use:
+            ``https://www.googleapis.com/auth/bigquery``
+    """
+
+    additional_oauth_scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -4455,6 +4496,10 @@ class InvocationConfig(proto.Message):
         service_account (str):
             Optional. The service account to run workflow
             invocations under.
+        end_user_auth_config (google.cloud.dataform_v1beta1.types.InvocationConfig.EndUserAuthenticationConfig):
+            Optional. Configuration for end user authentication. Note
+            that this should not be set when ``service_account`` is
+            used.
         query_priority (google.cloud.dataform_v1beta1.types.InvocationConfig.QueryPriority):
             Optional. Specifies the priority for query
             execution in BigQuery. More information can be
@@ -4485,6 +4530,28 @@ class InvocationConfig(proto.Message):
         INTERACTIVE = 1
         BATCH = 2
 
+    class EndUserAuthenticationConfig(proto.Message):
+        r"""Includes configuration options for end user authentication.
+
+        Attributes:
+            user_email (str):
+                Output only. Email address of the user to run
+                workflow invocations under.
+            oauth_config (google.cloud.dataform_v1beta1.types.OAuthConfig):
+                Optional. OAuth configuration for end user
+                authentication.
+        """
+
+        user_email: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        oauth_config: "OAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="OAuthConfig",
+        )
+
     included_targets: MutableSequence["Target"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -4509,6 +4576,11 @@ class InvocationConfig(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    end_user_auth_config: EndUserAuthenticationConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=EndUserAuthenticationConfig,
     )
     query_priority: QueryPriority = proto.Field(
         proto.ENUM,

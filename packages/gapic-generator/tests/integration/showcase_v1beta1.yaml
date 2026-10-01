@@ -18,7 +18,6 @@ name: showcase.googleapis.com
 title: Client Libraries Showcase API
 
 apis:
-- name: google.showcase.v1beta1.Compliance
 - name: google.showcase.v1beta1.Echo
 - name: google.showcase.v1beta1.Identity
 - name: google.showcase.v1beta1.Messaging

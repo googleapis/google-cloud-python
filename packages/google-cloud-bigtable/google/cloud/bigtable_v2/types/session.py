@@ -57,6 +57,8 @@ __protobuf__ = proto.module(
         "SessionReadRowResponse",
         "SessionMutateRowRequest",
         "SessionMutateRowResponse",
+        "SessionCheckAndMutateRowRequest",
+        "SessionCheckAndMutateRowResponse",
         "SessionParametersResponse",
         "HeartbeatResponse",
         "GoAwayResponse",
@@ -940,6 +942,9 @@ class TableRequest(proto.Message):
         mutate_row (google.cloud.bigtable_v2.types.SessionMutateRowRequest):
 
             This field is a member of `oneof`_ ``payload``.
+        check_and_mutate_row (google.cloud.bigtable_v2.types.SessionCheckAndMutateRowRequest):
+
+            This field is a member of `oneof`_ ``payload``.
     """
 
     read_row: "SessionReadRowRequest" = proto.Field(
@@ -953,6 +958,12 @@ class TableRequest(proto.Message):
         number=2,
         oneof="payload",
         message="SessionMutateRowRequest",
+    )
+    check_and_mutate_row: "SessionCheckAndMutateRowRequest" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="payload",
+        message="SessionCheckAndMutateRowRequest",
     )
 
 
@@ -973,6 +984,9 @@ class TableResponse(proto.Message):
         mutate_row (google.cloud.bigtable_v2.types.SessionMutateRowResponse):
 
             This field is a member of `oneof`_ ``payload``.
+        check_and_mutate_row (google.cloud.bigtable_v2.types.SessionCheckAndMutateRowResponse):
+
+            This field is a member of `oneof`_ ``payload``.
     """
 
     read_row: "SessionReadRowResponse" = proto.Field(
@@ -986,6 +1000,12 @@ class TableResponse(proto.Message):
         number=2,
         oneof="payload",
         message="SessionMutateRowResponse",
+    )
+    check_and_mutate_row: "SessionCheckAndMutateRowResponse" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="payload",
+        message="SessionCheckAndMutateRowResponse",
     )
 
 
@@ -1007,6 +1027,9 @@ class AuthorizedViewRequest(proto.Message):
         mutate_row (google.cloud.bigtable_v2.types.SessionMutateRowRequest):
 
             This field is a member of `oneof`_ ``payload``.
+        check_and_mutate_row (google.cloud.bigtable_v2.types.SessionCheckAndMutateRowRequest):
+
+            This field is a member of `oneof`_ ``payload``.
     """
 
     read_row: "SessionReadRowRequest" = proto.Field(
@@ -1020,6 +1043,12 @@ class AuthorizedViewRequest(proto.Message):
         number=2,
         oneof="payload",
         message="SessionMutateRowRequest",
+    )
+    check_and_mutate_row: "SessionCheckAndMutateRowRequest" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="payload",
+        message="SessionCheckAndMutateRowRequest",
     )
 
 
@@ -1041,6 +1070,9 @@ class AuthorizedViewResponse(proto.Message):
         mutate_row (google.cloud.bigtable_v2.types.SessionMutateRowResponse):
 
             This field is a member of `oneof`_ ``payload``.
+        check_and_mutate_row (google.cloud.bigtable_v2.types.SessionCheckAndMutateRowResponse):
+
+            This field is a member of `oneof`_ ``payload``.
     """
 
     read_row: "SessionReadRowResponse" = proto.Field(
@@ -1054,6 +1086,12 @@ class AuthorizedViewResponse(proto.Message):
         number=2,
         oneof="payload",
         message="SessionMutateRowResponse",
+    )
+    check_and_mutate_row: "SessionCheckAndMutateRowResponse" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="payload",
+        message="SessionCheckAndMutateRowResponse",
     )
 
 
@@ -1165,6 +1203,55 @@ class SessionMutateRowRequest(proto.Message):
 
 class SessionMutateRowResponse(proto.Message):
     r"""Internal usage only."""
+
+
+class SessionCheckAndMutateRowRequest(proto.Message):
+    r"""Internal usage only.
+
+    Attributes:
+        key (bytes):
+
+        predicate_filter (google.cloud.bigtable_v2.types.RowFilter):
+
+        true_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
+
+        false_mutations (MutableSequence[google.cloud.bigtable_v2.types.Mutation]):
+
+    """
+
+    key: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    predicate_filter: data.RowFilter = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=data.RowFilter,
+    )
+    true_mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=data.Mutation,
+    )
+    false_mutations: MutableSequence[data.Mutation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=data.Mutation,
+    )
+
+
+class SessionCheckAndMutateRowResponse(proto.Message):
+    r"""Internal usage only.
+
+    Attributes:
+        predicate_matched (bool):
+
+    """
+
+    predicate_matched: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class SessionParametersResponse(proto.Message):

@@ -547,10 +547,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
-
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'localhost:7469').
@@ -665,7 +661,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseAttemptSequence__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -765,7 +761,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseAttemptStreamingSequence__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -886,7 +882,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseCreateSequence__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1016,7 +1012,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseCreateStreamingSequence__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1142,7 +1138,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseGetSequenceReport__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1269,7 +1265,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                     "_BaseGetStreamingSequenceReport__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER

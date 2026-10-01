@@ -606,10 +606,6 @@ class TestingRestTransport(_BaseTestingRestTransport):
             ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
-
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'localhost:7469').
@@ -735,7 +731,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseCreateSession__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -855,7 +851,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseDeleteSession__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -945,7 +941,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseDeleteTest__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1047,7 +1043,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseGetSession__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1172,7 +1168,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseListSessions__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1298,7 +1294,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseListTests__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1425,7 +1421,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseReportSession__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
@@ -1549,7 +1545,7 @@ class TestingRestTransport(_BaseTestingRestTransport):
                     "_BaseVerifyTest__REQUIRED_FIELDS_DEFAULT_VALUES",
                     None,
                 ),
-                rest_numeric_enums=False,
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
