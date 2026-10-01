@@ -818,11 +818,10 @@ def check_parameters_for_unauthorized_response(cached_cert):
     Returns:
         bytes: The client callback cert bytes.
         bytes: The client callback key bytes.
-        Optional[Union[bytes, str]]: The passphrase for the key.
         str: The base64-encoded SHA256 cached fingerprint.
         str: The base64-encoded SHA256 current cert fingerprint.
     """
-    call_cert_bytes, call_key_bytes, passphrase = call_client_cert_callback()
+    call_cert_bytes, call_key_bytes = call_client_cert_callback()
     cert_obj = _agent_identity_utils.parse_certificate(call_cert_bytes)
     current_cert_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
         cert_obj
@@ -833,20 +832,25 @@ def check_parameters_for_unauthorized_response(cached_cert):
         )
     else:
         cached_fingerprint = current_cert_fingerprint
-    return (
-        call_cert_bytes,
-        call_key_bytes,
-        passphrase,
-        cached_fingerprint,
-        current_cert_fingerprint,
-    )
+    return call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint
 
 
 def call_client_cert_callback():
-    """Calls the client cert callback and returns the certificate, key, and passphrase."""
+    """Calls the client cert callback and returns the certificate and key.
+
+    If the cert provider returns a passphrase-protected private key, it is
+    decrypted before being returned, so callers always receive an unencrypted
+    PEM key that can be passed directly to TLS libraries (e.g. gRPC).
+
+    Returns:
+        Tuple[bytes, bytes]: The client certificate and (unencrypted) private
+            key bytes in PEM format.
+    """
     _, cert_bytes, key_bytes, passphrase = get_client_ssl_credentials(
         generate_encrypted_key=True
     )
+    if passphrase is not None:
+        key_bytes = decrypt_private_key(key_bytes, passphrase)
     return cert_bytes, key_bytes
 
 

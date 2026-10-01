@@ -48,10 +48,10 @@ class CertRotationInterceptor(
     def _should_retry(self, code, retry_count, attempt_cert):
         """Determines if the RPC should be retried due to a certificate rotation.
 
-        Returns a tuple: (should_retry, call_cert_bytes, call_key_bytes, passphrase).
+        Returns a tuple: (should_retry, call_cert_bytes, call_key_bytes).
         """
         if code != grpc.StatusCode.UNAUTHENTICATED or not self._wrapper:
-            return False, None, None, None
+            return False, None, None
 
         if retry_count >= self._max_retries:
             _LOGGER.debug(
@@ -59,22 +59,21 @@ class CertRotationInterceptor(
                 retry_count,
                 self._max_retries,
             )
-            return False, None, None, None
+            return False, None, None
 
         # If another thread already refreshed the channel with an updated cert, retry immediately
         if attempt_cert != self._wrapper._cached_cert:
-            return True, None, None, None
+            return True, None, None
 
         # Check if the certificate on disk or callback has changed since this request was attempted
         (
             call_cert_bytes,
             call_key_bytes,
-            passphrase,
             cached_fingerprint,
             current_cert_fingerprint,
         ) = _mtls_helper.check_parameters_for_unauthorized_response(attempt_cert)
         should_retry = cached_fingerprint != current_cert_fingerprint
-        return should_retry, call_cert_bytes, call_key_bytes, passphrase
+        return should_retry, call_cert_bytes, call_key_bytes
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
         return _RetryableUnaryResponseFuture(
@@ -118,20 +117,13 @@ class MTLSRefreshingChannel(grpc.Channel):
         self._lock = threading.Lock()
         self._subscribers = set()
 
-    def refresh_logic(
-        self, count, call_cert_bytes=None, call_key_bytes=None, passphrase=None
-    ):
+    def refresh_logic(self, count, call_cert_bytes=None, call_key_bytes=None):
         with self._lock:
             if not call_cert_bytes or self._cached_cert == call_cert_bytes:
                 return
 
             _LOGGER.debug("Wrapper: Refreshing mTLS channel. Retry count: %d", count)
             old_channel = self._channel
-
-            if passphrase is not None:
-                call_key_bytes = _mtls_helper.decrypt_private_key(
-                    call_key_bytes, passphrase
-                )
 
             # Call the partial, overriding only the cert-related arguments
             new_ssl_credentials = grpc.ssl_channel_credentials(
@@ -207,6 +199,9 @@ class _ReplayableIteratorReader(object):
     def __init__(self, parent):
         self._parent = parent
         self._read_index = 0
+
+    def __iter__(self):
+        return self
 
     def __next__(self):
         while True:
@@ -314,6 +309,9 @@ class _BaseCallWrapper(grpc.Future, grpc.Call):
     def time_remaining(self):
         return self._call.time_remaining()
 
+    def is_active(self):
+        return self._call.is_active()
+
     def add_callback(self, callback):
         self._call.add_callback(callback)
 
@@ -418,14 +416,14 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                     else (self._payload.can_replay() if self._is_client_stream else True)
                 )
 
-                should_retry, call_cert, call_key, pwd = self._interceptor._should_retry(
+                should_retry, call_cert, call_key = self._interceptor._should_retry(
                     status_code, self._retry_count, getattr(self, "_attempt_cert", None)
                 )
                 if can_replay and should_retry:
                     if getattr(self._interceptor, "_wrapper", None):
                         try:
                             self._interceptor._wrapper.refresh_logic(
-                                1, call_cert, call_key, pwd
+                                1, call_cert, call_key
                             )
                         except Exception as e:
                             with self._lock:
@@ -445,12 +443,11 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                     chk_should_retry,
                     chk_cert,
                     chk_key,
-                    chk_pwd,
                 ) = self._interceptor._should_retry(status_code, 0, self._attempt_cert)
                 if chk_should_retry:
                     try:
                         self._interceptor._wrapper.refresh_logic(
-                            1, chk_cert, chk_key, chk_pwd
+                            1, chk_cert, chk_key
                         )
                     except Exception:
                         pass
@@ -663,7 +660,6 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                         should_retry,
                         call_cert,
                         call_key,
-                        pwd,
                     ) = self._interceptor._should_retry(
                         status_code,
                         self._retry_count,
@@ -674,7 +670,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                         try:
                             if getattr(self._interceptor, "_wrapper", None):
                                 self._interceptor._wrapper.refresh_logic(
-                                    1, call_cert, call_key, pwd
+                                    1, call_cert, call_key
                                 )
 
                             with self._lock:
@@ -693,14 +689,13 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                                 chk_should_retry,
                                 chk_cert,
                                 chk_key,
-                                chk_pwd,
                             ) = self._interceptor._should_retry(
                                 status_code, 0, getattr(self, "_attempt_cert", None)
                             )
                             if chk_should_retry:
                                 try:
                                     self._interceptor._wrapper.refresh_logic(
-                                        1, chk_cert, chk_key, chk_pwd
+                                        1, chk_cert, chk_key
                                     )
                                 except Exception:
                                     pass  # Terminal anyway
