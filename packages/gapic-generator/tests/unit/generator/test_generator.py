@@ -264,12 +264,14 @@ def test_get_response_ignores_unwanted_transports_and_clients():
 
 
 def test_get_response_resumable_upload_generates_async_client_and_rest_asyncio():
-    # Verify that async_client.py and transports/rest_asyncio.py are generated
-    # when a service has a resumable upload method, even if rest_async_io_enabled
-    # is False and grpc transport is not requested.
+    # Verify that async_client.py and REST transport files (rest.py, rest_base.py,
+    # rest_asyncio.py) are generated when a service has a resumable upload method,
+    # even if rest_async_io_enabled is False or only grpc transport is requested.
     generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as list_templates:
         list_templates.return_value = [
+            "foo/%service/transports/grpc.py.j2",
+            "foo/%service/transports/grpc_asyncio.py.j2",
             "foo/%service/transports/rest.py.j2",
             "foo/%service/transports/rest_asyncio.py.j2",
             "foo/%service/transports/rest_base.py.j2",
@@ -310,6 +312,21 @@ def test_get_response_resumable_upload_generates_async_client_and_rest_asyncio()
                 api_schema=api_schema, opts=Options.build("transport=rest")
             )
             assert {i.name for i in cgr.file} == {
+                "foo/resumable_upload_service/transports/rest.py",
+                "foo/resumable_upload_service/transports/rest_asyncio.py",
+                "foo/resumable_upload_service/transports/rest_base.py",
+                "foo/resumable_upload_service/transports/__init__.py",
+                "foo/resumable_upload_service/transports/base.py",
+                "foo/resumable_upload_service/async_client.py",
+                "foo/resumable_upload_service/client.py",
+            }
+
+            cgr_grpc = generator_obj.get_response(
+                api_schema=api_schema, opts=Options.build("transport=grpc")
+            )
+            assert {i.name for i in cgr_grpc.file} == {
+                "foo/resumable_upload_service/transports/grpc.py",
+                "foo/resumable_upload_service/transports/grpc_asyncio.py",
                 "foo/resumable_upload_service/transports/rest.py",
                 "foo/resumable_upload_service/transports/rest_asyncio.py",
                 "foo/resumable_upload_service/transports/rest_base.py",
