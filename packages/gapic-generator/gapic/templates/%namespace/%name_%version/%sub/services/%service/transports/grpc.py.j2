@@ -194,6 +194,11 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         self._operations_client: Optional[operations_v1.OperationsClient] = None
         {% endif %}
         {% if service.has_resumable_upload_methods %}
+        # Resumable upload RPCs operate over HTTP/REST rather than gRPC.
+        # Since gRPC is the default transport for GAPIC clients and services
+        # mix standard gRPC RPCs with resumable upload RPCs on the same client,
+        # gRPC transports delegate resumable upload calls to an internal REST
+        # transport instance.
         self._rest_transport: Optional[{{ service.name }}RestTransport] = None
         {% endif %}
 
