@@ -644,7 +644,7 @@ del (
     PostCompileParamsTest
 )  # BQ adds backticks to bind parameters, causing failure of tests TODO: fix this?
 del QuotedNameArgumentTest  # Quotes aren't allowed in BigQuery table names.
-# Test expects BQ to return sorted results (renamed to _w_caching in SQLAlchemy 2.1+)
+# Test expects BQ to return sorted results, which it does not do. (renamed to _w_caching in SQLAlchemy 2.1+)
 for _test_name in ("test_window_rows_between", "test_window_rows_between_w_caching"):
     if hasattr(WindowFunctionTest, _test_name):
         delattr(WindowFunctionTest, _test_name)
