@@ -1688,6 +1688,82 @@ def test_unsupported_parameter_rest_asyncio():
 
 {% endmacro %}
 
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Fold these tests into the generic
+ # transport tests (e.g. `test_transport_adc`) when async rest is GA. #}
+{% macro async_rest_credentials_test(service) %}
+@pytest.mark.asyncio
+async def test_sync_credentials_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Synchronous credentials are accepted, consistent with every other transport.
+    creds = ga_credentials.AnonymousCredentials()
+    with mock.patch.object(transports.rest_asyncio, "AsyncAuthorizedSession", autospec=True) as session_class:
+        transport = {{ get_client(service, True) }}.get_transport_class("rest_asyncio")(credentials=creds)
+    # The provided credentials are preserved on the transport.
+    assert transport._credentials is creds
+    # The asynchronous session is created with an adapted version of the credentials.
+    async_creds = transport._async_credentials
+    assert isinstance(async_creds, ga_credentials_async.Credentials)
+    session_class.assert_called_once_with(async_creds)
+
+    # The adapted credentials delegate to the synchronous credentials using a
+    # synchronous transport, rather than the asynchronous transport of the session.
+    headers = {}
+    with mock.patch.object(creds, "before_request") as before_request:
+        await async_creds.before_request(mock.sentinel.async_request, "GET", "https://example.com", headers)
+    before_request.assert_called_once_with(mock.ANY, "GET", "https://example.com", headers)
+    assert isinstance(before_request.call_args[0][0], google.auth.transport.requests.Request)
+
+    with mock.patch.object(creds, "refresh") as refresh:
+        await async_creds.refresh(mock.sentinel.async_request)
+    refresh.assert_called_once_with(mock.ANY)
+    assert isinstance(refresh.call_args[0][0], google.auth.transport.requests.Request)
+
+    with mock.patch.object(creds, "apply") as apply:
+        await async_creds.apply(headers, token="token")
+    apply.assert_called_once_with(headers, token="token")
+
+
+def test_async_credentials_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Asynchronous credentials are used as is.
+    creds = ga_credentials_async.AnonymousCredentials()
+    transport = {{ get_client(service, True) }}.get_transport_class("rest_asyncio")(credentials=creds)
+    assert transport._credentials is creds
+    assert transport._async_credentials is creds
+
+
+def test_transport_adc_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Test default credentials are used if not provided.
+    creds = ga_credentials.AnonymousCredentials()
+    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
+        adc.return_value = (creds, None)
+        transport = {{ get_client(service, True) }}.get_transport_class("rest_asyncio")()
+        adc.assert_called_once()
+    assert transport._credentials is creds
+    assert isinstance(transport._async_credentials, ga_credentials_async.Credentials)
+
+{% if service.has_lro %}
+
+def test_{{ service.name|snake_case }}_rest_asyncio_lro_client_sync_credentials():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = {{ get_client(service, True) }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that the operations client uses the adapted credentials.
+    assert isinstance(transport.operations_client, operations_v1.AsyncOperationsRestClient)
+    assert transport.operations_client.transport._credentials is transport._async_credentials
+{% endif %}{# service.has_lro #}
+
+{% endmacro %}
+
 {# get_await_prefix sets an "await" keyword
  # to a method call if is_async=True.
 #}
