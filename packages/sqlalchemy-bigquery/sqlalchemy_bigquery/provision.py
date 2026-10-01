@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import contextlib
+import datetime
 import os
+import uuid
 
 import google.cloud.bigquery
-import test_utils.prefixer
 from sqlalchemy.engine import make_url
 from sqlalchemy.testing.provision import (
     create_db,
@@ -25,16 +26,25 @@ from sqlalchemy.testing.provision import (
     generate_driver_url,
 )
 
-prefixer = test_utils.prefixer.Prefixer(
-    "python-bigquery-sqlalchemy", "tests/compliance"
-)
+try:
+    import test_utils.prefixer  # pragma: NO COVER
+
+    prefixer = test_utils.prefixer.Prefixer(  # pragma: NO COVER
+        "python-bigquery-sqlalchemy", "tests/compliance"
+    )
+except ImportError:
+    prefixer = None
 
 
 def _dataset_id_from_ident(ident: str) -> str:
     """Derive a deterministic BigQuery dataset ID for an xdist follower ident."""
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     if not run_prefix:
-        run_prefix = prefixer.create_prefix()
+        if prefixer:
+            run_prefix = prefixer.create_prefix()
+        else:
+            now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S")
+            run_prefix = f"python_bigquery_sqlalchemy_tests_compliance_{now}_{uuid.uuid4().hex[:6]}"
         os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
     return f"{run_prefix}_{ident}"
 
