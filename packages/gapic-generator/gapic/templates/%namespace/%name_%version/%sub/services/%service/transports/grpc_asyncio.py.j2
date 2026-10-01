@@ -393,9 +393,13 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 class _AsyncRestStub:
                     def __call__(self, *args, **kwargs):
                         if transport._rest_transport is None:
+                            {# Note: Type for creds is ignored due to the type hint mismatch for credentials in the base transport.
+                             # TODO(https://github.com/googleapis/google-cloud-python/issues/16268): Remove `# type: ignore` once
+                             # the type hints for credentials are updated to include asynchronous credentials.
+                            #}
                             transport._rest_transport = Async{{ service.name }}RestTransport(
                                 host=transport._host,
-                                credentials=transport._credentials,
+                                credentials=transport._credentials,  # type: ignore
                                 client_info=transport._client_info,
                             )
                         return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
