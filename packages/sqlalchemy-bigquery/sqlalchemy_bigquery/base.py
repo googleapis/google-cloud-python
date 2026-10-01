@@ -600,7 +600,7 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_FLOAT(self, type_, **kw):
         return "FLOAT64"
 
-    visit_REAL = visit_FLOAT
+    visit_REAL = visit_DOUBLE = visit_DOUBLE_PRECISION = visit_FLOAT
 
     def visit_STRING(self, type_, **kw):
         if (type_.length is not None) and isinstance(
