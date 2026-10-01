@@ -374,6 +374,7 @@ intersphinx_mapping = {
 # failure or upstream outage on docs.python.org would otherwise treat the missing
 # inventory as a fatal error and fail the build.
 try:
+    import urllib.error
     import urllib.request
 
     with urllib.request.urlopen("https://docs.python.org/3/objects.inv", timeout=2):
@@ -381,7 +382,7 @@ try:
             "https://python.readthedocs.org/en/latest/",
             None,
         )
-except Exception:
+except (urllib.error.URLError, TimeoutError, OSError):
     pass
 
 
