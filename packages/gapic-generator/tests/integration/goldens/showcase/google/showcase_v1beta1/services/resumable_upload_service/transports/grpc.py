@@ -354,13 +354,17 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
                         )
                 self._stubs['upload_media'] = _ErrorStub()
             else:
-                if self._rest_transport is None:
-                    self._rest_transport = ResumableUploadServiceRestTransport(
-                        host=self._host,
-                        credentials=self._credentials,
-                        client_info=self._client_info,
-                    )
-                self._stubs['upload_media'] = self._rest_transport.upload_media
+                transport = self
+                class _RestStub:
+                    def __call__(self, *args, **kwargs):
+                        if transport._rest_transport is None:
+                            transport._rest_transport = ResumableUploadServiceRestTransport(
+                                host=transport._host,
+                                credentials=transport._credentials,
+                                client_info=transport._client_info,
+                            )
+                        return transport._rest_transport.upload_media(*args, **kwargs)
+                self._stubs['upload_media'] = _RestStub()
         return self._stubs['upload_media']
 
     def close(self):
