@@ -12896,9 +12896,27 @@ def test_config_service_v2_base_transport_wrap_method():
                 assert mock_wrap.call_args.kwargs.get("client_options") == options
                 assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
 
-            # Test older google-api-core without tracing support
+            # Generation 2: Intermediate google-api-core (supports kind, but not tracing)
             with mock.patch(
                 "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_KIND",
+                True,
+            ):
+                mock_wrap.reset_mock()
+                transport._wrap_method(func, client_options=options, method_name="foo", is_streaming=True)
+                assert "client_options" not in mock_wrap.call_args.kwargs
+                assert "method_name" not in mock_wrap.call_args.kwargs
+                assert "is_streaming" not in mock_wrap.call_args.kwargs
+                assert mock_wrap.call_args.kwargs.get("kind") == "grpc"
+
+            # Generation 3: Ancient google-api-core (supports neither kind nor tracing)
+            with mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_TRACING",
+                False,
+            ), mock.patch(
+                "google.cloud.logging_v2.services.config_service_v2.transports.base._WRAP_METHOD_SUPPORTS_KIND",
                 False,
             ):
                 mock_wrap.reset_mock()

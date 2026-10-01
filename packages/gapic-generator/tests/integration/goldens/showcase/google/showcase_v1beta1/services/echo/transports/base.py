@@ -45,6 +45,9 @@ DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 _WRAP_METHOD_SUPPORTS_TRACING = (
     "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
 )
+_WRAP_METHOD_SUPPORTS_KIND = (
+    "kind" in inspect.signature(gapic_v1.method.wrap_method).parameters
+)
 _ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
     "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
 )
@@ -165,10 +168,17 @@ class EchoTransport(abc.ABC):
                 kwargs["kind"] = self.kind
             return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
-        # The fallback below strips tracing-specific arguments when an older version
-        # of google-api-core is installed (which does not accept client_options, etc.).
-        for k in ["client_options", "method_name", "is_streaming", "kind"]:
+        # Fallback for older runtime versions of google-api-core:
+        # Strip tracing-only arguments (client_options, method_name, is_streaming).
+        # See _wrap_async_method for full historical generation details.
+        for k in ["client_options", "method_name", "is_streaming"]:
             kwargs.pop(k, None)
+
+        if _WRAP_METHOD_SUPPORTS_KIND and self.kind:
+            kwargs["kind"] = self.kind
+        else:
+            kwargs.pop("kind", None)
+
         return gapic_v1.method.wrap_method(func, *args, **kwargs)
 
     def _wrap_async_method(self, func, *args, **kwargs):
