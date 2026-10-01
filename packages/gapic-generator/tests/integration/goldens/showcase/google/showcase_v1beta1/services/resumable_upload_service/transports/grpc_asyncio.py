@@ -373,7 +373,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                         if transport._rest_transport is None:
                             transport._rest_transport = AsyncResumableUploadServiceRestTransport(
                                 host=transport._host,
-                                credentials=transport._credentials,
+                                credentials=transport._credentials,  # type: ignore
                                 client_info=transport._client_info,
                             )
                         return transport._rest_transport.upload_media(*args, **kwargs)
