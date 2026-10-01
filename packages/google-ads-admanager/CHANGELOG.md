@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-ads-admanager/#history
 
+## [0.10.6](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.10.5...google-ads-admanager-v0.10.6) (2026-10-01)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+
 ## [0.10.5](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.10.4...google-ads-admanager-v0.10.5) (2026-09-17)
 
 
