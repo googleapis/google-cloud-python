@@ -1241,10 +1241,10 @@ def test_upload_media_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         start_response = mock.MagicMock()
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
         start_response.ok = True
-        start_response.status_code = 200
         start_response.content = b""
         response_value.ok = True
         req.side_effect = [start_response, response_value]
@@ -1821,13 +1821,11 @@ async def test_upload_media_rest_asyncio_bad_request(request_type=resumable_uplo
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(AsyncAuthorizedSession, 'request', new_callable=mock.MagicMock) as req, pytest.raises(core_exceptions.BadRequest):
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.MagicMock()
         response_value.read = mock.AsyncMock(return_value=b'{}')
-        response_value.status = 400
-        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
-        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        response_value.close = mock.AsyncMock(return_value=None)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
@@ -1854,7 +1852,7 @@ async def test_upload_media_rest_asyncio_call_success(request_type):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request', new_callable=mock.MagicMock) as req:
+    with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = resumable_upload.UploadMediaResponse(
               name='name_value',
@@ -1870,15 +1868,12 @@ async def test_upload_media_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         start_response = mock.MagicMock()
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         response_value.headers = {"x-goog-upload-status": "final", "header-1": "value-1", "header-2": "value-2"}
-        start_response.status = 200
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_response.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_response.__aexit__ = mock.AsyncMock(return_value=None)
-        response_value.status = 200
-        response_value.__aenter__ = mock.AsyncMock(return_value=response_value)
-        response_value.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
+        response_value.close = mock.AsyncMock(return_value=None)
         req.side_effect = [start_response, response_value]
         response = await client.upload_media(request)
         assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
@@ -2414,14 +2409,12 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_bo
         credentials=async_anonymous_credentials(),
         transport="rest_asyncio",
     )
-    with mock.patch.object(type(client.transport._session), "request", new_callable=mock.MagicMock) as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         start_response = mock.MagicMock()
-        start_response.status = 200
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_ctx = mock.MagicMock()
-        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
 
         expected_result = resumable_upload.UploadMediaResponse(
             name='name_value',
@@ -2429,14 +2422,12 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_bo
         )
         json_return_value = resumable_upload.UploadMediaResponse.to_json(expected_result)
         upload_response = mock.MagicMock()
-        upload_response.status = 200
+        upload_response.status_code = 200
         upload_response.headers = {"x-goog-upload-status": "final"}
         upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
-        upload_ctx = mock.MagicMock()
-        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
-        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        upload_response.close = mock.AsyncMock(return_value=None)
 
-        req.side_effect = [start_ctx, upload_ctx]
+        req.side_effect = [start_response, upload_response]
         response = await client.upload_media(
             resumable_upload.UploadMediaRequest(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
@@ -2504,7 +2495,7 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_body_and_query
         transport="rest_asyncio",
     )
     with mock.patch.object(
-        type(client.transport._session), "request", new_callable=mock.MagicMock
+        type(client.transport._session), "request"
     ) as req, mock.patch.object(path_template, "transcode") as transcode:
         request = resumable_upload.UploadMediaRequest(
             name='name_value',
@@ -2518,24 +2509,20 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_body_and_query
         }
 
         start_response = mock.MagicMock()
-        start_response.status = 200
+        start_response.status_code = 200
         start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
         start_response.read = mock.AsyncMock(return_value=b"")
-        start_ctx = mock.MagicMock()
-        start_ctx.__aenter__ = mock.AsyncMock(return_value=start_response)
-        start_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        start_response.close = mock.AsyncMock(return_value=None)
 
         expected_result = resumable_upload.UploadMediaResponse()
         json_return_value = resumable_upload.UploadMediaResponse.to_json(expected_result)
         upload_response = mock.MagicMock()
-        upload_response.status = 200
+        upload_response.status_code = 200
         upload_response.headers = {"x-goog-upload-status": "final"}
         upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
-        upload_ctx = mock.MagicMock()
-        upload_ctx.__aenter__ = mock.AsyncMock(return_value=upload_response)
-        upload_ctx.__aexit__ = mock.AsyncMock(return_value=None)
+        upload_response.close = mock.AsyncMock(return_value=None)
 
-        req.side_effect = [start_ctx, upload_ctx]
+        req.side_effect = [start_response, upload_response]
         response = await client.upload_media(request)
         result = await response.upload(b"test data")
         assert result == expected_result
