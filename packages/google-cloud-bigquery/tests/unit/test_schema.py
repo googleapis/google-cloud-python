@@ -374,9 +374,9 @@ class TestSchemaField(unittest.TestCase):
     def test_timestamp_precision_property(self):
         TIMESTAMP_PRECISION = enums.TimestampPrecision.PICOSECOND
         schema_field = self._make_one("test", "TIMESTAMP")
-        schema_field._properties["timestampPrecision"] = (
-            enums.TimestampPrecision.PICOSECOND.value
-        )
+        schema_field._properties[
+            "timestampPrecision"
+        ] = enums.TimestampPrecision.PICOSECOND.value
         self.assertEqual(schema_field.timestamp_precision, TIMESTAMP_PRECISION)
 
     def test_to_standard_sql_simple_type(self):
@@ -731,7 +731,10 @@ class TestSchemaField(unittest.TestCase):
 
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
-        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), None, None, None, None)"
+        expected = (
+            "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), "
+            "None, None, None, None)"
+        )
         self.assertEqual(repr(field1), expected)
 
     def test___repr__evaluable_no_policy_tags(self):
