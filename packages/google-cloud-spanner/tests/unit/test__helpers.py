@@ -2011,6 +2011,381 @@ class Test_parse_interval(unittest.TestCase):
                     self.assertEqual(result.nanos, case["expected_nanos"])
 
 
+class TestBoundedStreamDrainer(unittest.TestCase):
+    def test_drain_stream_consumes_iterator(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drain_stream_inline_fallback_on_full_queue(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        items = [1, 2]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+
+        self.assertEqual(consumed, [1, 2])
+
+    def test_drain_stream_handles_none(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(None)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_handles_iterator_exception(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Stream broken")
+
+        iterator = FailingIterator()
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.drain(iterator)
+        drainer._queue.join()
+
+    def test_drain_stream_after_shutdown_drains_inline(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        iterator = MockIterator()
+        drainer.drain(iterator)
+        self.assertEqual(consumed, [1, 2, 3])
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drain_stream_inline_fallback_iterator_exception(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=1, worker_count=0)
+        drainer._queue.put_nowait(mock.Mock())
+
+        class FailingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                raise RuntimeError("Failed inline")
+
+        iterator = FailingIterator()
+        # Should catch and ignore the exception without raising
+        drainer.drain(iterator)
+
+    def test_drainer_fallback_on_ensure_started_error(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=1)
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    val = items.pop(0)
+                    consumed.append(val)
+                    return val
+                raise StopIteration
+
+        with mock.patch.object(
+            drainer, "_ensure_started", side_effect=RuntimeError("thread limit reached")
+        ):
+            drainer.drain(MockIterator())
+
+        self.assertEqual(consumed, [1, 2, 3])
+
+    def test_drainer_ensure_started_partial_failure_retains_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=3)
+        start_count = 0
+
+        def _mock_thread_start(thread_self):
+            nonlocal start_count
+            start_count += 1
+            if start_count > 1:
+                raise RuntimeError("thread limit reached")
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            _mock_thread_start,
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should remain True because 1 worker was successfully created
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 1)
+
+        # Subsequent call must not attempt to spawn additional threads
+        drainer._ensure_started()
+        self.assertEqual(len(drainer._workers), 1)
+
+    def test_drainer_ensure_started_total_failure_resets_started(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+
+        with mock.patch(
+            "google.cloud.spanner_v1._helpers.threading.Thread.start",
+            side_effect=RuntimeError("no threads"),
+        ):
+            with self.assertRaises(RuntimeError):
+                drainer._ensure_started()
+
+        # Started should be reset to False because 0 workers were created
+        self.assertFalse(drainer._started)
+        self.assertEqual(len(drainer._workers), 0)
+
+    def test_drainer_shutdown_with_full_queue(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        items_first = [1, 2]
+        items_second = [3, 4]
+        consumed = []
+
+        class MockIterator:
+            def __init__(self, items):
+                self._items = list(items)
+
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if self._items:
+                    val = self._items.pop(0)
+                    consumed.append(val)
+                    return val
+                raise StopIteration
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=2)
+        drainer._ensure_started()
+        drainer._queue.put_nowait(MockIterator(items_first))
+        drainer._queue.put_nowait(MockIterator(items_second))
+        self.assertTrue(drainer._queue.full())
+
+        # Calling shutdown when queue is already full must not raise queue.Full
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        # All workers must cleanly terminate despite the queue having been full
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+        self.assertEqual(sorted(consumed), [1, 2, 3, 4])
+
+    def test_drainer_shutdown_terminates_idle_workers(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+    def test_drainer_drain_during_shutdown_does_not_strand_iterator(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+
+        items = [1, 2, 3]
+        consumed = []
+
+        class MockIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                if items:
+                    item = items.pop(0)
+                    consumed.append(item)
+                    return item
+                raise StopIteration
+
+        # Shutdown the drainer, which terminates workers
+        drainer.shutdown()
+        self.assertTrue(drainer._stopped)
+
+        for worker in drainer._workers:
+            self.assertFalse(worker.is_alive())
+
+        # Calling drain() on a stopped drainer must drain inline and never strand tasks in the queue
+        drainer.drain(MockIterator())
+        self.assertEqual(consumed, [1, 2, 3])
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drainer_shutdown_respects_timeout_when_queue_unresponsive(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=0)
+        drainer._started = True
+        drainer._workers = [mock.Mock(), mock.Mock()]
+        drainer._queue.put_nowait(mock.Mock())
+        drainer._queue.put_nowait(mock.Mock())
+        self.assertTrue(drainer._queue.full())
+
+        # When the queue is full and workers cannot consume, shutdown must exit
+        # cleanly within the specified timeout without raising queue.Full
+        drainer.shutdown(timeout=0.05)
+        self.assertTrue(drainer._stopped)
+
+    def test_drainer_shutdown_respects_timeout_when_worker_is_busy(self):
+        import threading
+        import time
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=2, worker_count=1)
+        drainer._ensure_started()
+
+        unblock_event = threading.Event()
+
+        class BlockingIterator:
+            def __iter__(self):
+                return self
+
+            def __next__(self):
+                unblock_event.wait(timeout=1.0)
+                raise StopIteration
+
+        drainer._queue.put_nowait(BlockingIterator())
+
+        try:
+            # shutdown with a tiny timeout of 0.05s must return within ~0.05s
+            # rather than waiting indefinitely for the worker to finish
+            start_time = time.monotonic()
+            drainer.shutdown(timeout=0.05)
+            elapsed_time = time.monotonic() - start_time
+            self.assertTrue(drainer._stopped)
+            self.assertLess(elapsed_time, 0.5)
+        finally:
+            unblock_event.set()
+            for worker in drainer._workers:
+                worker.join(timeout=1.0)
+
+    def test_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=2)
+        drainer._ensure_started()
+        self.assertTrue(drainer._started)
+        self.assertEqual(len(drainer._workers), 2)
+
+        drainer._reset_after_fork()
+        self.assertFalse(drainer._started)
+        self.assertFalse(drainer._stopped)
+        self.assertEqual(len(drainer._workers), 0)
+        self.assertEqual(drainer._queue.qsize(), 0)
+
+    def test_drainer_garbage_collection(self):
+        import gc
+        import weakref
+
+        from google.cloud.spanner_v1._helpers import _BoundedStreamDrainer
+
+        drainer = _BoundedStreamDrainer(queue_size=4, worker_count=1)
+        ref = weakref.ref(drainer)
+        del drainer
+        gc.collect()
+
+        self.assertIsNone(ref())
+
+    def test_global_stream_drainer_reset_after_fork(self):
+        from google.cloud.spanner_v1 import _helpers
+
+        _helpers._GLOBAL_STREAM_DRAINER._ensure_started()
+        self.assertTrue(_helpers._GLOBAL_STREAM_DRAINER._started)
+
+        _helpers._GLOBAL_STREAM_DRAINER._reset_after_fork()
+        self.assertFalse(_helpers._GLOBAL_STREAM_DRAINER._started)
+        self.assertEqual(len(_helpers._GLOBAL_STREAM_DRAINER._workers), 0)
+        self.assertEqual(_helpers._GLOBAL_STREAM_DRAINER._queue.qsize(), 0)
+
+    def test_module_drain_stream(self):
+        from unittest import mock
+
+        from google.cloud.spanner_v1 import _helpers
+
+        with mock.patch.object(_helpers._GLOBAL_STREAM_DRAINER, "drain") as mock_drain:
+            iterator = mock.Mock()
+            _helpers._drain_stream(iterator)
+            mock_drain.assert_called_once_with(iterator)
+
+
 class Test_get_type_decoder(unittest.TestCase):
     def _callFUT(self, *args, **kwargs):
         from google.cloud.spanner_v1._helpers import _get_type_decoder
