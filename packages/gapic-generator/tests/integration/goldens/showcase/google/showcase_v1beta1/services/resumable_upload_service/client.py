@@ -28,6 +28,7 @@ from google.showcase_v1beta1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.api_core.resumable_transfer import ResumableUploadConfig
 from google.showcase_v1beta1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.showcase_v1beta1._compat import setup_request_id
 from google.api_core import retry as retries
@@ -51,6 +52,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+from google.api_core import resumable_transfer
 from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -60,6 +62,11 @@ from .transports.base import ResumableUploadServiceTransport, DEFAULT_CLIENT_INF
 from .transports.grpc import ResumableUploadServiceGrpcTransport
 from .transports.grpc_asyncio import ResumableUploadServiceGrpcAsyncIOTransport
 from .transports.rest import ResumableUploadServiceRestTransport
+try:
+    from .transports.rest_asyncio import AsyncResumableUploadServiceRestTransport
+    HAS_ASYNC_REST_DEPENDENCIES = True
+except ImportError: # pragma: NO COVER
+    HAS_ASYNC_REST_DEPENDENCIES = False
 
 
 class ResumableUploadServiceClientMeta(type):
@@ -73,6 +80,8 @@ class ResumableUploadServiceClientMeta(type):
     _transport_registry["grpc"] = ResumableUploadServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ResumableUploadServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ResumableUploadServiceRestTransport
+    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+        _transport_registry["rest_asyncio"] = AsyncResumableUploadServiceRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -87,6 +96,10 @@ class ResumableUploadServiceClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+            raise ImportError(
+                "`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-showcase[async_rest]`"
+            )
         if label:
             return cls._transport_registry[label]
 
@@ -454,16 +467,38 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             ))
 
         if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
-                credentials = google.auth._default.get_api_key_credentials(api_key_value)
-
             transport_init: Union[Type[ResumableUploadServiceTransport], Callable[..., ResumableUploadServiceTransport]] = (
                 ResumableUploadServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ResumableUploadServiceTransport], transport)
             )
+
+            if "rest_asyncio" in str(transport_init):
+                unsupported_params = {
+                    "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
+                    "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,
+                    "google.api_core.client_options.ClientOptions.quota_project_id": self._client_options.quota_project_id,
+                    "google.api_core.client_options.ClientOptions.client_cert_source": self._client_options.client_cert_source,
+                    "google.api_core.client_options.ClientOptions.api_audience": self._client_options.api_audience,
+
+                }
+                provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
+                if provided_unsupported_params:
+                    raise core_exceptions.AsyncRestUnsupportedParameterError(  # type: ignore
+                        f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
+                    )
+                self._transport = transport_init(
+                    credentials=credentials,
+                    host=self._api_endpoint,
+                    client_info=client_info,
+                )
+                return
+
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
@@ -495,10 +530,11 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
     def upload_media(self,
             request: Optional[Union[resumable_upload.UploadMediaRequest, dict]] = None,
             *,
+            config: Optional[ResumableUploadConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> resumable_upload.UploadMediaResponse:
+            ) -> resumable_transfer.ResumableUploadSession:
         r"""A method with media_upload annotation enabled.
 
         .. code-block:: python
@@ -529,6 +565,8 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
         Args:
             request (Union[google.showcase_v1beta1.types.UploadMediaRequest, dict]):
                 The request object.
+            config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
+                Optional configuration for the resumable upload session.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -538,7 +576,9 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.showcase_v1beta1.types.UploadMediaResponse:
+            google.api_core.resumable_transfer.ResumableUploadSession:
+                An object representing a resumable
+                upload session.
 
         """
         # Create or coerce a protobuf request object.
@@ -560,6 +600,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+            config=config,
         )
 
         # Done; return the response.

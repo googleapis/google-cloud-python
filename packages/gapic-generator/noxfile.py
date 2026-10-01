@@ -193,10 +193,6 @@ def fragment(session, use_ads_templates=False):
     )
     session.install("-e", ".")
 
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
-
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
     )
@@ -259,13 +255,6 @@ def showcase_library(
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
-    # Warnings emitted from google-api-core starting in 2.28
-    # appear to cause issues when running protoc.
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -343,18 +332,30 @@ def showcase_library(
                     "transport=grpc+rest",
                 )
             )
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+        # Add compliance.proto once this bug is fixed
+        # We should use `"google/showcase/v1beta1/*.proto",`
+        protos = (
+            "google/showcase/v1beta1/echo.proto",
+            "google/showcase/v1beta1/identity.proto",
+            "google/showcase/v1beta1/messaging.proto",
+            "google/showcase/v1beta1/rest_error.proto",
+            "google/showcase/v1beta1/sequence.proto",
+            "google/showcase/v1beta1/testing.proto",
+        )
+        if templates == "DEFAULT":
+            protos += ("google/showcase/v1beta1/resumable_upload.proto",)
         cmd_tup = (
             "python",
             "-m",
             "grpc_tools.protoc",
-            f"--experimental_allow_proto3_optional",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
             f"--python_gapic_out={tmp_dir}",
-            f"google/showcase/v1beta1/echo.proto",
-            f"google/showcase/v1beta1/identity.proto",
-            f"google/showcase/v1beta1/messaging.proto",
+            *protos,
         )
+
         session.run(
             *cmd_tup,
             external=True,
@@ -370,20 +371,19 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            extras = ""
-            if rest_async_io_enabled:
-                async_rest_constraints_path = str(
-                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+            async_rest_constraints_path = str(
+                f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
+            )
+            if os.path.exists(async_rest_constraints_path):
+                # use async-rest constraints if available
+                constraints_path = async_rest_constraints_path
+            else:
+                session.log(
+                    f"{async_rest_constraints_path} not found. Using base constraints file"
                 )
-                if os.path.exists(async_rest_constraints_path):
-                    # use async-rest constraints if available
-                    constraints_path = async_rest_constraints_path
-                else:
-                    session.log(
-                        f"{async_rest_constraints_path} not found. Using base constraints file"
-                    )
-                extras = "[async_rest]"
-
+            # Showcase protos include `resumable_media.proto`
+            # Include the `async_rest` extra.
+            extras = "[async_rest]"
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
