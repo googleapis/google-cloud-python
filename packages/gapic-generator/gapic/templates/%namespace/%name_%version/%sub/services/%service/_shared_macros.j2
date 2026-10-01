@@ -53,17 +53,6 @@ except ImportError:  # pragma: NO COVER
 {% endmacro %}
 
 {% macro create_metadata(method) %}
-    {% if method.is_resumable_upload %}
-        metadata = () if metadata is None else metadata
-        resumable_metadata = {
-            "x-goog-upload-protocol": "resumable",
-            "x-goog-upload-command": "start",
-        }
-        existing_keys = {k.lower() for k, _ in metadata}
-        metadata = tuple(metadata) + tuple(
-            (k, v) for k, v in resumable_metadata.items() if k not in existing_keys
-        )
-    {% endif %}
     {% if method.explicit_routing %}
         header_params: dict[str, str] = {}
         {% if not method.client_streaming %}
