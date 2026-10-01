@@ -27,6 +27,8 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+import functools
+import urllib.parse
 from google.api_core import resumable_transfer
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -236,7 +238,9 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
             )
 
             uri = transcoded_request["uri"]
-            upload_url = f"{self._host}{uri}"
+            params = rest_helpers.flatten_query_params(query_params, strict=True)
+            query_string = f"?{urllib.parse.urlencode(params)}" if params else ""
+            upload_url = f"{self._host}{uri}{query_string}"
             headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
             if config is None:
                 config = resumable_transfer.ResumableUploadConfig(headers=headers)
@@ -248,7 +252,7 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
                 if isinstance(timeout, (int, float))
                 else {}
             )
-            return resumable_transfer.AsyncResumableUploadSession(
+            session = resumable_transfer.AsyncResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
@@ -256,6 +260,8 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
                 start_retry=retry if isinstance(retry, retries.AsyncRetry) else None,
                 **session_kwargs,
             )
+            session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
+            return session
 
     @property
     def upload_media(self) -> Callable[

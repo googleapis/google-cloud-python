@@ -286,6 +286,7 @@ def _get_http_options():
 {% macro rest_resumable_upload_call_method_common(method, service, is_async=False, rest_numeric_enums=False) %}
 {% set service_name = service.name %}
 {% set method_name = method.name %}
+{% set body_spec = method.http_options[0].body %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set client_output_ident = method.client_output_async.ident if is_async else method.client_output.ident %}
 {% set retry_class = "retries.AsyncRetry" if is_async else "retries.Retry" %}
@@ -303,7 +304,9 @@ transcoded_request, body, query_params = transcode_request(
 )
 
 uri = transcoded_request["uri"]
-upload_url = f"{self._host}{uri}"
+params = rest_helpers.flatten_query_params(query_params, strict=True)
+query_string = f"?{urllib.parse.urlencode(params)}" if params else ""
+upload_url = f"{self._host}{uri}{query_string}"
 headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
 if config is None:
     config = resumable_transfer.ResumableUploadConfig(headers=headers)
@@ -315,7 +318,7 @@ session_kwargs: Dict[str, Any] = (
     if isinstance(timeout, (int, float))
     else {}
 )
-return {{ client_output_ident }}(
+session = {{ client_output_ident }}(
     upload_url=upload_url,
     config=config,
     transport=self._session,
@@ -323,6 +326,13 @@ return {{ client_output_ident }}(
     start_retry=retry if isinstance(retry, {{ retry_class }}) else None,
     **session_kwargs,
 )
+{% if body_spec %}
+session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
+{% if not is_async %}
+session.iter_upload = functools.partial(session.iter_upload, request_body=body or "")  # type: ignore[method-assign]
+{% endif %}
+{% endif %}
+return session
 {%- endmacro %}
 
 
