@@ -22,6 +22,7 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 {% if service.has_resumable_upload_methods %}
+import contextlib
 import functools
 import urllib.parse
 from google.api_core import resumable_transfer
@@ -92,9 +93,46 @@ DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 {{ shared_macros.create_interceptor_class(api, service, method, is_async=True) }}
 
+{% if service.has_resumable_upload_methods %}
+@dataclasses.dataclass
+class _AsyncResumableUploadSessionAdapter:
+    """Adapts AsyncAuthorizedSession to the aiohttp-like request context manager interface expected by AsyncResumableUploadSession."""
+
+    _session: AsyncAuthorizedSession
+
+    @contextlib.asynccontextmanager
+    async def request(
+        self,
+        method: str,
+        url: str,
+        *,
+        data: Optional[bytes] = None,
+        headers: Optional[Dict[str, str]] = None,
+        timeout: Any = None,
+        **kwargs,
+    ):
+        response = await self._session.request(
+            method,
+            url,
+            data=data,
+            headers=headers,
+            timeout=getattr(timeout, "total", timeout),
+            **kwargs,
+        )
+        response.status = response.status_code  # type: ignore[attr-defined]
+        try:
+            yield response
+        finally:
+            await response.close()
+{% endif %}
+
 @dataclasses.dataclass
 class Async{{service.name}}RestStub:
+    {% if service.has_resumable_upload_methods %}
+    _session: Union[AsyncAuthorizedSession, _AsyncResumableUploadSessionAdapter]
+    {% else %}
     _session: AsyncAuthorizedSession
+    {% endif %}
     _host: str
     _interceptor: Async{{service.name}}RestInterceptor
 
@@ -343,7 +381,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     def {{method.transport_safe_name|snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {% if method.is_resumable_upload %}{{method.client_output_async.ident}}{% else %}{{method.output.ident}}{% endif %}]:
-        return self._{{method.name}}(self._session, self._host, self._interceptor)  # type: ignore
+        return self._{{method.name}}({% if method.is_resumable_upload %}_AsyncResumableUploadSessionAdapter(self._session){% else %}self._session{% endif %}, self._host, self._interceptor)  # type: ignore
 
     {% endfor %}
     {% if rest_async_io_enabled %}
