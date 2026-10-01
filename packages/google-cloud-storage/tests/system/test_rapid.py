@@ -1,12 +1,12 @@
-"""System tests for Rapid Buckets (formerly Zonal Buckets) and RCU.
+"""System tests for Rapid Buckets and RCU.
 
 Usage:
 
-RUN_RCU_SYSTEM_TESTS=True RCU_BUCKET=<bucket_name> RUN_SYSTEM_TESTS_ON_PREPROD=True pytest packages/google-cloud-storage/tests/system/test_zonal.py
+RUN_RCU_SYSTEM_TESTS=True RCU_BUCKET=<bucket_name> RUN_SYSTEM_TESTS_ON_PREPROD=True pytest packages/google-cloud-storage/tests/system/test_rapid.py
 
-and for Rapid Bucket (formerly Zonal Buckets):
+and for Rapid Buckets:
 
-RUN_ZONAL_SYSTEM_TESTS=True ZONAL_BUCKET=<> CROSS_REGION_BUCKET=<> pytest packages/google-cloud-storage/tests/system/test_zonal.py
+RUN_RAPID_SYSTEM_TESTS=True RAPID_BUCKET=<> CROSS_REGION_BUCKET=<> pytest packages/google-cloud-storage/tests/system/test_rapid.py
 """
 
 # py standard imports
@@ -41,25 +41,25 @@ from google.cloud.storage.blob import (
 )
 
 PREPROD_GRPC_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
-# Run system test for either Rapid (formerly zonal) or RCU. But not both => XOR
+# Run system test for either Rapid or RCU. But not both => XOR
 pytestmark = pytest.mark.skipif(
     not (
-        (os.getenv("RUN_ZONAL_SYSTEM_TESTS") == "True")
+        (os.getenv("RUN_RAPID_SYSTEM_TESTS") == "True")
         ^ (os.getenv("RUN_RCU_SYSTEM_TESTS") == "True")
     ),
-    reason="Any one of Zonal or RCU system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
+    reason="Any one of Rapid or RCU system tests need to be explicitly enabled. This helps scheduling tests in Kokoro and Cloud Build.",
 )
 
 
-# TODO: replace this with a fixture once zonal bucket creation / deletion
+# TODO: replace this with a fixture once rapid bucket creation / deletion
 # is supported in grpc client or json client.
-_ZONAL_BUCKET = os.getenv("ZONAL_BUCKET")
+_RAPID_BUCKET = os.getenv("RAPID_BUCKET")
 _CROSS_REGION_BUCKET = os.getenv("CROSS_REGION_BUCKET")
 _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
 RCU_SYSTEM_TESTS = os.getenv("RUN_RCU_SYSTEM_TESTS") == "True"
 _RCU_BUCKET = os.getenv("RCU_BUCKET")
-_BUCKET_UNDER_TEST = _RCU_BUCKET if RCU_SYSTEM_TESTS else _ZONAL_BUCKET
+_BUCKET_UNDER_TEST = _RCU_BUCKET if RCU_SYSTEM_TESTS else _RAPID_BUCKET
 
 
 async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
@@ -73,13 +73,14 @@ async def create_async_grpc_client(attempt_direct_path=True, preprod=False):
 
 
 @pytest.fixture(scope="session")
-def zonal_kms_key(storage_client, kms_client):
-    """Provisions a KMS key in the same location as of the zonal bucket."""
-    # Get the zonal bucket and extract its location
+def rapid_kms_key(storage_client, kms_client):
+    """Provisions a KMS key in the same location as of the rapid bucket."""
+    # Get the rapid bucket and extract its location
     bucket = storage_client.get_bucket(_BUCKET_UNDER_TEST)
     location = bucket.location.lower()
 
     project = storage_client.project
+    # Keep legacy "zonal" naming to reuse existing KMS resources in the test project.
     keyring_name = "gcs-test-zonal-ring"
     key_name = "gcs-test-zonal-key"
 
@@ -459,7 +460,7 @@ def test_write_from_blob_with_kms_key(
     blobs_to_delete,
     event_loop,
     grpc_client,
-    zonal_kms_key,
+    rapid_kms_key,
 ):
     """Verifies AsyncAppendableObjectWriter.from_blob correctly applies KMS encryption."""
 
@@ -469,7 +470,7 @@ def test_write_from_blob_with_kms_key(
     async def _run():
         # Create a local Blob instance with the KMS key
         blob = storage_client.bucket(_BUCKET_UNDER_TEST).blob(
-            object_name, kms_key_name=zonal_kms_key
+            object_name, kms_key_name=rapid_kms_key
         )
 
         writer = AsyncAppendableObjectWriter.from_blob(grpc_client, blob)
@@ -487,7 +488,7 @@ def test_write_from_blob_with_kms_key(
 
         # Assert that the object was encrypted with the correct key
         # GCS appends a version suffix, so we use startswith()
-        assert obj.kms_key.startswith(zonal_kms_key)
+        assert obj.kms_key.startswith(rapid_kms_key)
 
         blobs_to_delete.append(blob)
 

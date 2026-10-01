@@ -16,10 +16,10 @@ pip install google-cloud-testutils google-cloud-kms
 pip install -e .
 
 echo '--- Setting up environment variables on VM ---'
-export ZONAL_BUCKET=${_ZONAL_BUCKET}
+export RAPID_BUCKET=${_RAPID_BUCKET}
 export CROSS_REGION_BUCKET=${CROSS_REGION_BUCKET:-}
-export RUN_ZONAL_SYSTEM_TESTS=True
+export RUN_RAPID_SYSTEM_TESTS=True
 export GCE_METADATA_MTLS_MODE=None
 CURRENT_ULIMIT=$(ulimit -n)
-echo '--- Running Zonal tests on VM with ulimit set to ---' $CURRENT_ULIMIT
-pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' tests/system/test_zonal.py
+echo '--- Running Rapid tests on VM with ulimit set to ---' $CURRENT_ULIMIT
+pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' tests/system/test_rapid.py
