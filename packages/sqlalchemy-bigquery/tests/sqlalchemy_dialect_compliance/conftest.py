@@ -74,6 +74,24 @@ def visit_delete(self, delete_stmt, *args, **kw):
 sqlalchemy_bigquery.base.BigQueryCompiler.visit_delete = visit_delete
 
 
+def _ensure_dataset(dataset_id: str) -> None:
+    """Ensure a compliance test dataset exists with a 1-hour expiration safety net."""
+    with contextlib.closing(google.cloud.bigquery.Client()) as client:
+        dataset_ref = google.cloud.bigquery.DatasetReference(client.project, dataset_id)
+        dataset = google.cloud.bigquery.Dataset(dataset_ref)
+        dataset.default_table_expiration_ms = 3600 * 1000
+        client.create_dataset(dataset, exists_ok=True)
+
+
+def _resolve_dataset_id(cfg) -> str:
+    """Resolve the dataset ID for the current runner process (worker or master)."""
+    run_prefix = os.environ["COMPLIANCE_RUN_PREFIX"]
+    if hasattr(cfg, "workerinput"):
+        ident = cfg.workerinput.get("follower_ident")
+        return f"{run_prefix}_{ident}" if ident else f"{run_prefix}_worker"
+    return f"{run_prefix}_master"
+
+
 def pytest_configure(config):
     if hasattr(config, "workerinput"):
         prefix = config.workerinput.get("compliance_run_prefix")
@@ -83,9 +101,8 @@ def pytest_configure(config):
         if "COMPLIANCE_RUN_PREFIX" not in os.environ:
             os.environ["COMPLIANCE_RUN_PREFIX"] = prefixer.create_prefix()
 
-    run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
-    master_dataset_id = f"{run_prefix}_master"
-    config.option.dburi = [f"bigquery:///{master_dataset_id}"]
+    dataset_id = _resolve_dataset_id(config)
+    config.option.dburi = [f"bigquery:///{dataset_id}"]
     _pytest_configure(config)
 
 
@@ -94,38 +111,9 @@ def pytest_configure_node(node):
 
 
 def pytest_sessionstart(session):
-    run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
-    if not run_prefix:
-        run_prefix = prefixer.create_prefix()
-        os.environ["COMPLIANCE_RUN_PREFIX"] = run_prefix
-
-    if hasattr(session.config, "workerinput"):
-        # In a pytest-xdist worker process:
-        # Each worker connects to its own partition ({run_prefix}_{follower_ident}).
-        # Ensure the worker's dataset exists and bind dburi to worker partition.
-        ident = session.config.workerinput.get("follower_ident")
-        worker_dataset_id = f"{run_prefix}_{ident}" if ident else f"{run_prefix}_worker"
-        session.config.option.dburi = [f"bigquery:///{worker_dataset_id}"]
-        with contextlib.closing(google.cloud.bigquery.Client()) as client:
-            dataset_ref = google.cloud.bigquery.DatasetReference(
-                client.project, worker_dataset_id
-            )
-            dataset = google.cloud.bigquery.Dataset(dataset_ref)
-            dataset.default_table_expiration_ms = 3600 * 1000
-            client.create_dataset(dataset, exists_ok=True)
-        _pytest_sessionstart(session)
-        return
-
-    # Master process (or single-process sequential run):
-    master_dataset_id = f"{run_prefix}_master"
-    session.config.option.dburi = [f"bigquery:///{master_dataset_id}"]
-    with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        dataset_ref = google.cloud.bigquery.DatasetReference(
-            client.project, master_dataset_id
-        )
-        dataset = google.cloud.bigquery.Dataset(dataset_ref)
-        dataset.default_table_expiration_ms = 3600 * 1000
-        client.create_dataset(dataset, exists_ok=True)
+    dataset_id = _resolve_dataset_id(session.config)
+    session.config.option.dburi = [f"bigquery:///{dataset_id}"]
+    _ensure_dataset(dataset_id)
     _pytest_sessionstart(session)
 
 
@@ -139,9 +127,11 @@ def pytest_sessionfinish(session):
     _pytest_sessionfinish(session)
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        if hasattr(config, "db") and config.db is not None:
-            dataset_id = config.db.dialect.dataset_id
-            client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+        db = getattr(session.config, "db", None) or getattr(config, "db", None)
+        if db is not None and hasattr(db.dialect, "dataset_id"):
+            client.delete_dataset(
+                db.dialect.dataset_id, delete_contents=True, not_found_ok=True
+            )
         elif run_prefix:
             client.delete_dataset(
                 f"{run_prefix}_master", delete_contents=True, not_found_ok=True
