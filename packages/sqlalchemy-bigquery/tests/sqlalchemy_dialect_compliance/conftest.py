@@ -37,6 +37,9 @@ from sqlalchemy.testing.plugin.pytestplugin import (
 )
 
 import sqlalchemy_bigquery.base
+
+# flake8: F401 is ignored because importing this module registers the BigQuery dialect
+# provisioning hooks (@create_db, @drop_db, etc.) with sqlalchemy.testing.provision.
 import sqlalchemy_bigquery.provision  # noqa: F401
 
 sqlalchemy_bigquery.BigQueryDialect.preexecute_autoincrement_sequences = True
@@ -74,21 +77,14 @@ def visit_delete(self, delete_stmt, *args, **kw):
 sqlalchemy_bigquery.base.BigQueryCompiler.visit_delete = visit_delete
 
 
-def _ensure_dataset(dataset_id: str) -> None:
-    """Ensure a compliance test dataset exists with a 1-hour expiration safety net."""
-    with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        dataset_ref = google.cloud.bigquery.DatasetReference(client.project, dataset_id)
-        dataset = google.cloud.bigquery.Dataset(dataset_ref)
-        dataset.default_table_expiration_ms = 3600 * 1000
-        client.create_dataset(dataset, exists_ok=True)
-
-
 def _resolve_dataset_id(cfg) -> str:
     """Resolve the dataset ID for the current runner process (worker or master)."""
     run_prefix = os.environ["COMPLIANCE_RUN_PREFIX"]
     if hasattr(cfg, "workerinput"):
         ident = cfg.workerinput.get("follower_ident")
-        return f"{run_prefix}_{ident}" if ident else f"{run_prefix}_worker"
+        if ident:
+            return sqlalchemy_bigquery.provision._dataset_id_from_ident(ident)
+        return f"{run_prefix}_worker"
     return f"{run_prefix}_master"
 
 
@@ -113,7 +109,7 @@ def pytest_configure_node(node):
 def pytest_sessionstart(session):
     dataset_id = _resolve_dataset_id(session.config)
     session.config.option.dburi = [f"bigquery:///{dataset_id}"]
-    _ensure_dataset(dataset_id)
+    sqlalchemy_bigquery.provision.ensure_dataset(dataset_id)
     _pytest_sessionstart(session)
 
 
@@ -126,17 +122,13 @@ def pytest_sessionfinish(session):
 
     _pytest_sessionfinish(session)
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
-    with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        db = getattr(session.config, "db", None) or getattr(config, "db", None)
-        if db is not None and hasattr(db.dialect, "dataset_id"):
-            client.delete_dataset(
-                db.dialect.dataset_id, delete_contents=True, not_found_ok=True
-            )
-        elif run_prefix:
-            client.delete_dataset(
-                f"{run_prefix}_master", delete_contents=True, not_found_ok=True
-            )
+    db = getattr(session.config, "db", None) or getattr(config, "db", None)
+    if db is not None and hasattr(db.dialect, "dataset_id"):
+        sqlalchemy_bigquery.provision.drop_dataset(db.dialect.dataset_id)
+    elif run_prefix:
+        sqlalchemy_bigquery.provision.drop_dataset(f"{run_prefix}_master")
 
+    with contextlib.closing(google.cloud.bigquery.Client()) as client:
         for dataset in client.list_datasets():
             if prefixer.should_cleanup(dataset.dataset_id):
                 client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)

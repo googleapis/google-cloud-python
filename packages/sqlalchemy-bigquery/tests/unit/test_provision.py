@@ -101,3 +101,28 @@ def test_drop_db(monkeypatch):
     mock_client.delete_dataset.assert_called_once_with(
         "run_789_gw4", delete_contents=True, not_found_ok=True
     )
+
+
+def test_ensure_dataset():
+    mock_client = mock.MagicMock()
+    mock_client.project = "test-project"
+
+    with mock.patch("google.cloud.bigquery.Client", return_value=mock_client):
+        provision.ensure_dataset("custom_dataset_123")
+
+    mock_client.create_dataset.assert_called_once()
+    created = mock_client.create_dataset.call_args[0][0]
+    assert created.dataset_id == "custom_dataset_123"
+    assert created.default_table_expiration_ms == 3600 * 1000
+    assert mock_client.create_dataset.call_args[1].get("exists_ok") is True
+
+
+def test_drop_dataset():
+    mock_client = mock.MagicMock()
+
+    with mock.patch("google.cloud.bigquery.Client", return_value=mock_client):
+        provision.drop_dataset("custom_dataset_456")
+
+    mock_client.delete_dataset.assert_called_once_with(
+        "custom_dataset_456", delete_contents=True, not_found_ok=True
+    )

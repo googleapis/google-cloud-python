@@ -68,19 +68,28 @@ def _bigquery_follower_url_from_main(url, ident):
     return url.set(database=dataset_id)
 
 
-@create_db.for_db("bigquery")
-def _bigquery_create_db(cfg, eng, ident):
-    dataset_id = _dataset_id_from_ident(ident)
+def ensure_dataset(dataset_id: str) -> None:
+    """Ensure a BigQuery dataset exists with a 1-hour expiration safety net."""
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
         dataset_ref = google.cloud.bigquery.DatasetReference(client.project, dataset_id)
         dataset = google.cloud.bigquery.Dataset(dataset_ref)
-        # Set 1-hour expiration as safety net in case of process termination
         dataset.default_table_expiration_ms = 3600 * 1000
         client.create_dataset(dataset, exists_ok=True)
+
+
+def drop_dataset(dataset_id: str) -> None:
+    """Drop a BigQuery dataset and its contents if it exists."""
+    with contextlib.closing(google.cloud.bigquery.Client()) as client:
+        client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+
+
+@create_db.for_db("bigquery")
+def _bigquery_create_db(cfg, eng, ident):
+    dataset_id = _dataset_id_from_ident(ident)
+    ensure_dataset(dataset_id)
 
 
 @drop_db.for_db("bigquery")
 def _bigquery_drop_db(cfg, eng, ident):
     dataset_id = _dataset_id_from_ident(ident)
-    with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+    drop_dataset(dataset_id)
