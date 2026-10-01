@@ -242,8 +242,30 @@ def showcase_library(
     include_service_yaml=True,
     retry_config=True,
     rest_async_io_enabled=False,
+    install_async_rest_extra=False,
 ):
-    """Install the generated library into the session for showcase tests."""
+    """Install the generated library into the session for showcase tests.
+
+    Args:
+        session: The nox session object.
+        templates (str): The template directory to use for code generation.
+            Defaults to "DEFAULT".
+        other_opts (typing.Iterable[str]): Additional options passed to
+            `--python_gapic_opt` during code generation.
+        include_service_yaml (bool): Whether to download and pass
+            `showcase_v1beta1.yaml` to the generator.
+        retry_config (bool): Whether to download and pass
+            `showcase_grpc_service_config.json` to the generator.
+        rest_async_io_enabled (bool): Whether to enable the experimental
+            `rest_async_io_enabled` setting in `showcase_v1beta1.yaml` so
+            `rest_asyncio` transports are generated for all services. When True,
+            the `[async_rest]` extra is also installed.
+        install_async_rest_extra (bool): Whether to install the generated
+            library with the `[async_rest]` extra and its corresponding
+            `constraints-{python}-async-rest.txt` file even when
+            `rest_async_io_enabled` is False in `showcase_v1beta1.yaml` (e.g.,
+            for services with resumable upload methods).
+    """
 
     session.log("-" * 70)
     session.log("Note: Showcase must be running for these tests to work.")
@@ -371,19 +393,19 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            async_rest_constraints_path = str(
-                f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
-            )
-            if os.path.exists(async_rest_constraints_path):
-                # use async-rest constraints if available
-                constraints_path = async_rest_constraints_path
-            else:
-                session.log(
-                    f"{async_rest_constraints_path} not found. Using base constraints file"
+            extras = ""
+            if rest_async_io_enabled or install_async_rest_extra:
+                async_rest_constraints_path = str(
+                    f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
                 )
-            # Showcase protos include `resumable_media.proto`
-            # Include the `async_rest` extra.
-            extras = "[async_rest]"
+                if os.path.exists(async_rest_constraints_path):
+                    # use async-rest constraints if available
+                    constraints_path = async_rest_constraints_path
+                    extras = "[async_rest]"
+                else:
+                    session.log(
+                        f"{async_rest_constraints_path} not found. Using base constraints file"
+                    )
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
@@ -395,8 +417,10 @@ def showcase_library(
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("install_async_rest_extra", [False, True])
 def showcase(
     session,
+    install_async_rest_extra=False,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
@@ -407,7 +431,12 @@ def showcase(
     (useful for local testing and canary validation).
     """
 
-    with showcase_library(session, templates=templates, other_opts=other_opts):
+    with showcase_library(
+        session,
+        templates=templates,
+        other_opts=other_opts,
+        install_async_rest_extra=install_async_rest_extra,
+    ):
         # When opt-in environment variable is set (e.g. in canary CI or local testing),
         # install the local google-api-core package from source.
         if os.getenv("INSTALL_LOCAL_CORE") == "true":
@@ -535,7 +564,26 @@ def showcase_pqc(
         )
 
 
-def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
+def run_showcase_unit_tests(
+    session,
+    fail_under=100,
+    rest_async_io_enabled=False,
+    install_async_rest_extra=False,
+):
+    """Run the generated Showcase unit test suite with coverage verification.
+
+    Args:
+        session: The nox session object.
+        fail_under (int): Minimum required test coverage percentage.
+            Defaults to 100.
+        rest_async_io_enabled (bool): Whether `rest_async_io_enabled` was enabled
+            in `showcase_v1beta1.yaml` during code generation.
+        install_async_rest_extra (bool): Whether the library was installed with
+            the `[async_rest]` extra. When both `rest_async_io_enabled` and
+            `install_async_rest_extra` are False, `**/rest_asyncio.py` is omitted
+            from coverage since optional `async_rest` dependencies are not
+            installed.
+    """
     session.install(
         "coverage",
         "pytest",
@@ -545,6 +593,20 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
+
+    if (
+        not rest_async_io_enabled
+        and not install_async_rest_extra
+        and path.exists(".coveragerc")
+    ):
+        with open(".coveragerc", "r") as f:
+            coveragerc = f.read()
+        if "**/rest_asyncio.py" not in coveragerc:
+            coveragerc = coveragerc.replace(
+                "omit =\n", "omit =\n    **/rest_asyncio.py\n"
+            )
+            with open(".coveragerc", "w") as f:
+                f.write(coveragerc)
 
     # Run the tests.
     session.run(
@@ -564,15 +626,24 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("install_async_rest_extra", [False, True])
 def showcase_unit(
     session,
+    install_async_rest_extra=False,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
-    with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
+    with showcase_library(
+        session,
+        templates=templates,
+        other_opts=other_opts,
+        install_async_rest_extra=install_async_rest_extra,
+    ) as lib:
         session.chdir(lib)
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(
+            session, install_async_rest_extra=install_async_rest_extra
+        )
 
 
 # TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
