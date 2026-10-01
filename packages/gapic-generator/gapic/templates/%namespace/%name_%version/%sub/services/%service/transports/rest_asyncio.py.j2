@@ -22,6 +22,8 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 {% if service.has_resumable_upload_methods %}
+import functools
+import urllib.parse
 from google.api_core import resumable_transfer
 {% endif %}
 {% if service.has_lro %}
