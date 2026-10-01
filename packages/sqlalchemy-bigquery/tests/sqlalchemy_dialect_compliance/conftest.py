@@ -25,22 +25,14 @@ import traceback
 import google.cloud.bigquery.dbapi.connection
 import test_utils.prefixer
 from sqlalchemy.testing import config
-from sqlalchemy.testing.plugin.pytestplugin import *  # noqa
-from sqlalchemy.testing.plugin.pytestplugin import (
-    pytest_configure as _pytest_configure,
-)
-from sqlalchemy.testing.plugin.pytestplugin import (
-    pytest_sessionfinish as _pytest_sessionfinish,
-)
-from sqlalchemy.testing.plugin.pytestplugin import (
-    pytest_sessionstart as _pytest_sessionstart,
-)
+from sqlalchemy.testing.plugin import pytestplugin
+
+# flake8: F401, F403 are ignored because SQLAlchemy requires importing its testing
+# plugin fixtures and hooks directly into the pytest conftest namespace.
+from sqlalchemy.testing.plugin.pytestplugin import *  # noqa: F401, F403
 
 import sqlalchemy_bigquery.base
-
-# flake8: F401 is ignored because importing this module registers the BigQuery dialect
-# provisioning hooks (@create_db, @drop_db, etc.) with sqlalchemy.testing.provision.
-import sqlalchemy_bigquery.provision  # noqa: F401
+import sqlalchemy_bigquery.provision
 
 sqlalchemy_bigquery.BigQueryDialect.preexecute_autoincrement_sequences = True
 
@@ -99,7 +91,7 @@ def pytest_configure(config):
 
     dataset_id = _resolve_dataset_id(config)
     config.option.dburi = [f"bigquery:///{dataset_id}"]
-    _pytest_configure(config)
+    pytestplugin.pytest_configure(config)
 
 
 def pytest_configure_node(node):
@@ -110,17 +102,17 @@ def pytest_sessionstart(session):
     dataset_id = _resolve_dataset_id(session.config)
     session.config.option.dburi = [f"bigquery:///{dataset_id}"]
     sqlalchemy_bigquery.provision.ensure_dataset(dataset_id)
-    _pytest_sessionstart(session)
+    pytestplugin.pytest_sessionstart(session)
 
 
 def pytest_sessionfinish(session):
     if hasattr(session.config, "workerinput"):
         # Worker dataset teardown is handled by provision.drop_follower_db
         # on the controller node.
-        _pytest_sessionfinish(session)
+        pytestplugin.pytest_sessionfinish(session)
         return
 
-    _pytest_sessionfinish(session)
+    pytestplugin.pytest_sessionfinish(session)
     run_prefix = os.environ.get("COMPLIANCE_RUN_PREFIX")
     db = getattr(session.config, "db", None) or getattr(config, "db", None)
     if db is not None and hasattr(db.dialect, "dataset_id"):
