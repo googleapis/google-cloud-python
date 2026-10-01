@@ -104,7 +104,7 @@ class MRDStreamConfig:
     target_bytes: int = 8 * 1024 * 1024
 
 
-class _ManagedStream:
+class _PooledStream:
     """Wraps an active stream and its multiplexer with local load counters."""
 
     def __init__(
@@ -146,11 +146,11 @@ class _ManagedStream:
 
 
 class _StreamPool:
-    """Manages a pool of _ManagedStream instances with dynamic scaling and least-loaded dispatch."""
+    """Manages a pool of _PooledStream instances with dynamic scaling and least-loaded dispatch."""
 
     def __init__(
         self,
-        stream_factory: Callable[[], Awaitable[_ManagedStream]],
+        stream_factory: Callable[[], Awaitable[_PooledStream]],
         min_connections: int = 1,
         max_connections: int = 8,
         target_io_depth: int = 8,
@@ -162,38 +162,38 @@ class _StreamPool:
         self.target_io_depth = target_io_depth
         self.target_bytes = target_bytes
 
-        self.workers: List[_ManagedStream] = []
+        self.streams: List[_PooledStream] = []
         self._lock = asyncio.Lock()
         self._pending_scale_ups: int = 0
         self._closed = False
         self._background_tasks: set[asyncio.Task] = set()
 
-    async def add_worker(self, worker: _ManagedStream) -> None:
+    async def add_stream(self, pooled_stream: _PooledStream) -> None:
         async with self._lock:
-            self.workers.append(worker)
+            self.streams.append(pooled_stream)
 
-    async def acquire_stream(self, range_count: int, req_bytes: int) -> _ManagedStream:
+    async def acquire_stream(self, range_count: int, req_bytes: int) -> _PooledStream:
         """Finds least loaded stream and triggers background scale-up proportional to load."""
         async with self._lock:
             if self._closed:
                 raise ValueError("Pool is closed")
-            if not self.workers:
-                raise ValueError("No workers available in stream pool")
+            if not self.streams:
+                raise ValueError("No streams available in stream pool")
             best = min(
-                self.workers,
-                key=lambda w: w.calculate_load(self.target_io_depth, self.target_bytes),
+                self.streams,
+                key=lambda s: s.calculate_load(self.target_io_depth, self.target_bytes),
             )
             best.record_request(range_count, req_bytes)
 
-            # Trigger background scale-ups proportional to total load across all workers
+            # Trigger background scale-ups proportional to total load across all streams
             total_load = sum(
-                w.calculate_load(self.target_io_depth, self.target_bytes)
-                for w in self.workers
+                s.calculate_load(self.target_io_depth, self.target_bytes)
+                for s in self.streams
             )
-            desired_workers = math.ceil(total_load)
-            planned_workers = len(self.workers) + self._pending_scale_ups
+            desired_streams = math.ceil(total_load)
+            planned_streams = len(self.streams) + self._pending_scale_ups
             needed_scale_ups = max(
-                0, min(desired_workers, self.max_connections) - planned_workers
+                0, min(desired_streams, self.max_connections) - planned_streams
             )
 
             for _ in range(needed_scale_ups):
@@ -206,12 +206,12 @@ class _StreamPool:
 
     async def _scale_up(self) -> None:
         try:
-            new_worker = await self._stream_factory()
+            new_stream = await self._stream_factory()
             async with self._lock:
                 if self._closed:
-                    await new_worker.close()
+                    await new_stream.close()
                     return
-                self.workers.append(new_worker)
+                self.streams.append(new_stream)
         except Exception as e:
             logger.warning(f"Failed to scale up MRD stream: {e}")
         finally:
@@ -219,20 +219,20 @@ class _StreamPool:
                 self._pending_scale_ups = max(0, self._pending_scale_ups - 1)
 
     def release_stream(
-        self, worker: _ManagedStream, range_count: int, req_bytes: int
+        self, pooled_stream: _PooledStream, range_count: int, req_bytes: int
     ) -> None:
-        worker.record_completion(range_count, req_bytes)
+        pooled_stream.record_completion(range_count, req_bytes)
 
     async def close(self) -> None:
         async with self._lock:
             self._closed = True
             self._pending_scale_ups = 0
-            workers = list(self.workers)
-            self.workers.clear()
+            streams = list(self.streams)
+            self.streams.clear()
             for task in list(self._background_tasks):
                 task.cancel()
-        for w in workers:
-            await w.close()
+        for s in streams:
+            await s.close()
 
 
 class AsyncMultiRangeDownloader:
@@ -388,7 +388,7 @@ class AsyncMultiRangeDownloader:
 
         self.stream_config = stream_config
         self._pool: Optional[_StreamPool] = None
-        self._primary_worker: Optional[_ManagedStream] = None
+        self._primary_stream: Optional[_PooledStream] = None
         self._metadata: Optional[List[Tuple[str, str]]] = None
 
     async def __aenter__(self):
@@ -493,26 +493,44 @@ class AsyncMultiRangeDownloader:
         self._metadata = list(metadata) if metadata else []
         await retry_policy(_do_open)()
         self._multiplexer = _StreamMultiplexer(self.read_obj_str)
-        self._primary_worker = _ManagedStream(self.read_obj_str, self._multiplexer)
+        self._primary_stream = _PooledStream(self.read_obj_str, self._multiplexer)
 
         if self.stream_config is not None and self.stream_config.max_connections > 1:
             self._pool = _StreamPool(
-                stream_factory=self._create_new_stream_worker,
+                stream_factory=self._create_pooled_stream,
                 min_connections=self.stream_config.min_connections,
                 max_connections=self.stream_config.max_connections,
                 target_io_depth=self.stream_config.target_io_depth,
                 target_bytes=self.stream_config.target_bytes,
             )
-            await self._pool.add_worker(self._primary_worker)
+            await self._pool.add_stream(self._primary_stream)
 
-            for _ in range(self.stream_config.min_connections - 1):
-                worker = await self._create_new_stream_worker()
-                await self._pool.add_worker(worker)
+            if self.stream_config.min_connections > 1:
+                extra_streams = await asyncio.gather(
+                    *(
+                        self._create_pooled_stream()
+                        for _ in range(self.stream_config.min_connections - 1)
+                    ),
+                    return_exceptions=True,
+                )
+                first_exc = next(
+                    (s for s in extra_streams if isinstance(s, Exception)), None
+                )
+                if first_exc is not None:
+                    for s in extra_streams:
+                        if not isinstance(s, Exception):
+                            await s.close()
+                    await self._pool.close()
+                    self._pool = None
+                    raise first_exc
+
+                for stream in extra_streams:
+                    await self._pool.add_stream(stream)
         else:
             self._pool = None
 
-    async def _create_new_stream_worker(self) -> _ManagedStream:
-        """Opens an additional stream worker using current routing and read_handle."""
+    async def _create_pooled_stream(self) -> _PooledStream:
+        """Opens an additional pooled stream using current routing and read_handle."""
         current_metadata = list(self._metadata) if self._metadata else []
         if self._routing_token:
             current_metadata.append(
@@ -534,11 +552,11 @@ class AsyncMultiRangeDownloader:
             self.read_handle = stream.read_handle
 
         mux = _StreamMultiplexer(stream)
-        return _ManagedStream(stream, mux)
+        return _PooledStream(stream, mux)
 
-    def _create_stream_factory(self, state, metadata, worker=None):
+    def _create_stream_factory(self, state, metadata, pooled_stream=None):
         """Create a factory that opens a new stream with current routing state."""
-        target_worker = worker or self._primary_worker
+        target_stream = pooled_stream or self._primary_stream
 
         async def factory():
             current_handle = state.get("read_handle") or self.read_handle
@@ -571,9 +589,9 @@ class AsyncMultiRangeDownloader:
             self.full_obj_server_crc32c = stream.full_obj_server_crc32c
 
             self.read_obj_str = stream
-            if target_worker is not None:
-                target_worker.stream = stream
-            if target_worker is None or target_worker == self._primary_worker:
+            if target_stream is not None:
+                target_stream.stream = stream
+            if target_stream is None or target_stream == self._primary_stream:
                 self.read_obj_str = stream
             self._is_stream_open = True
 
@@ -581,9 +599,9 @@ class AsyncMultiRangeDownloader:
 
         return factory
 
-    async def _download_ranges_on_worker(
+    async def _download_ranges_on_stream(
         self,
-        worker: _ManagedStream,
+        pooled_stream: _PooledStream,
         read_ranges: List[Tuple[int, int, BytesIO]],
         retry_policy: AsyncRetry,
         metadata: Optional[List[Tuple[str, str]]],
@@ -669,7 +687,7 @@ class AsyncMultiRangeDownloader:
         }
 
         read_ids = set(download_states.keys())
-        queue = worker.multiplexer.register(read_ids)
+        queue = pooled_stream.multiplexer.register(read_ids)
 
         try:
             attempt_count = 0
@@ -696,16 +714,16 @@ class AsyncMultiRangeDownloader:
                         broken_gen = (
                             last_broken_generation
                             if attempt_count > 1
-                            else worker.multiplexer.stream_generation
+                            else pooled_stream.multiplexer.stream_generation
                         )
                         stream_factory = self._create_stream_factory(
-                            state, metadata, worker=worker
+                            state, metadata, pooled_stream=pooled_stream
                         )
-                        await worker.multiplexer.reopen_stream(
+                        await pooled_stream.multiplexer.reopen_stream(
                             broken_gen, stream_factory
                         )
 
-                    stream_generation = worker.multiplexer.stream_generation
+                    stream_generation = pooled_stream.multiplexer.stream_generation
 
                     # Send Requests
                     pending_read_ids = {r.read_id for r in requests}
@@ -714,7 +732,7 @@ class AsyncMultiRangeDownloader:
                     ):
                         batch = requests[i : i + _MAX_READ_RANGES_PER_BIDI_READ_REQUEST]
                         try:
-                            await worker.multiplexer.send(
+                            await pooled_stream.multiplexer.send(
                                 _storage_v2.BidiReadObjectRequest(read_ranges=batch)
                             )
                         except Exception:
@@ -765,8 +783,8 @@ class AsyncMultiRangeDownloader:
             if initial_state.get("read_handle"):
                 self.read_handle = initial_state["read_handle"]
         finally:
-            if worker.multiplexer is not None:
-                worker.multiplexer.unregister(read_ids)
+            if pooled_stream.multiplexer is not None:
+                pooled_stream.multiplexer.unregister(read_ids)
 
     async def download_ranges(
         self,
@@ -826,22 +844,22 @@ class AsyncMultiRangeDownloader:
             retry_policy = AsyncRetry(predicate=_is_read_retryable)
 
         # Fallback for manually mocked tests that set mrd._multiplexer without calling open()
-        if self._primary_worker is None and self.read_obj_str and self._multiplexer:
-            self._primary_worker = _ManagedStream(self.read_obj_str, self._multiplexer)
+        if self._primary_stream is None and self.read_obj_str and self._multiplexer:
+            self._primary_stream = _PooledStream(self.read_obj_str, self._multiplexer)
 
         if self._pool is not None:
             total_bytes = sum(length for _, length, _ in read_ranges)
             total_ranges = len(read_ranges)
-            worker = await self._pool.acquire_stream(total_ranges, total_bytes)
+            pooled_stream = await self._pool.acquire_stream(total_ranges, total_bytes)
             try:
-                await self._download_ranges_on_worker(
-                    worker, read_ranges, retry_policy, metadata, enable_checksum
+                await self._download_ranges_on_stream(
+                    pooled_stream, read_ranges, retry_policy, metadata, enable_checksum
                 )
             finally:
-                self._pool.release_stream(worker, total_ranges, total_bytes)
+                self._pool.release_stream(pooled_stream, total_ranges, total_bytes)
         else:
-            await self._download_ranges_on_worker(
-                self._primary_worker,
+            await self._download_ranges_on_stream(
+                self._primary_stream,
                 read_ranges,
                 retry_policy,
                 metadata,
@@ -872,7 +890,7 @@ class AsyncMultiRangeDownloader:
             except (ValueError, asyncio.CancelledError, exceptions.GoogleAPICallError):
                 pass
         self.read_obj_str = None
-        self._primary_worker = None
+        self._primary_stream = None
         self._is_stream_open = False
 
     @property
