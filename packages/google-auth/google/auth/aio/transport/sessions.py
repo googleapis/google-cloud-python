@@ -127,7 +127,8 @@ class _SyncCredentialsAdapter(Credentials):
         self._sync_request: Optional[google.auth.transport.Request] = None
         # Synchronous credentials are not safe to refresh concurrently, which
         # concurrent requests would otherwise do from multiple worker threads.
-        self._refresh_lock = asyncio.Lock()
+        # Instead, at most one refresh is in flight and concurrent callers share it.
+        self._pending_refresh: Optional["asyncio.Future[None]"] = None
 
     def _get_sync_request(self) -> google.auth.transport.Request:
         """Returns the synchronous transport used to call the wrapped credentials.
@@ -143,25 +144,29 @@ class _SyncCredentialsAdapter(Credentials):
             self._sync_request = sync_requests.Request()
         return self._sync_request
 
+    async def _refresh_shared(self):
+        """Refreshes the wrapped credentials, joining a refresh already in flight.
+
+        The refresh is shielded from cancellation: a caller that is cancelled
+        while waiting (e.g. because of a timeout) stops waiting, but the refresh
+        completes so that the next caller joins it rather than starting a
+        second, concurrent refresh.
+        """
+        if self._pending_refresh is None or self._pending_refresh.done():
+            self._pending_refresh = asyncio.ensure_future(
+                asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
+            )
+        await asyncio.shield(self._pending_refresh)
+
     async def apply(self, headers, token=None):
         self._credentials.apply(headers, token=token)
 
     async def refresh(self, request):
-        async with self._refresh_lock:
-            await asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
+        await self._refresh_shared()
 
     async def before_request(self, request, method, url, headers):
         if not self._credentials.valid:
-            # Only one task refreshes the credentials; the others wait for it
-            # and then reuse the refreshed token. Requests with valid
-            # credentials never wait for the lock.
-            async with self._refresh_lock:
-                if not self._credentials.valid:
-                    await self._before_request_in_thread(method, url, headers)
-                    return
-        await self._before_request_in_thread(method, url, headers)
-
-    async def _before_request_in_thread(self, method, url, headers):
+            await self._refresh_shared()
         await asyncio.to_thread(
             self._credentials.before_request,
             self._get_sync_request(),
