@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apptopology-v0.1.0...google-cloud-apptopology-v0.1.1) (2026-10-02)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* update API sources and regenerate ([#18267](https://github.com/googleapis/google-cloud-python/issues/18267)) ([813a5c1](https://github.com/googleapis/google-cloud-python/commit/813a5c17cbe42b3a8386e7ad7475a3d7ada33842))
+
 ## 0.1.0 (2026-09-02)
 
 
