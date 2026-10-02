@@ -2424,14 +2424,22 @@ async def test_async_authorized_session_server_error_not_retried_internally() ->
 
 
 @pytest.mark.asyncio
-async def test_async_authorized_session_timeout_raises_transfer_stalled() -> None:
+@pytest.mark.parametrize("on_read", [False, True], ids=["request", "read"])
+async def test_async_authorized_session_timeout_raises_transfer_stalled(
+    on_read: bool,
+) -> None:
     """Verifies google.auth.exceptions.TimeoutError feeds stall control.
 
     It is not a subclass of asyncio.TimeoutError, so it is normalized to one
     (keeping the original as the cause) to surface as TransferStalledError.
     """
+    read_resp = _auth_response(200, {"X-Goog-Upload-Status": "final"})
+    read_resp.read.side_effect = auth_exceptions.TimeoutError("read timed out")
+    chunk_outcome: Any = (
+        read_resp if on_read else auth_exceptions.TimeoutError("timed out")
+    )
     transport, auth_request = _authorized_session(
-        _auth_response(200, START_HEADERS), auth_exceptions.TimeoutError("timed out")
+        _auth_response(200, START_HEADERS), chunk_outcome
     )
     session = AsyncResumableUploadSession(
         upload_url="https://api.example.com/start", transport=transport
@@ -2447,6 +2455,8 @@ async def test_async_authorized_session_timeout_raises_transfer_stalled() -> Non
     assert isinstance(cause, asyncio.TimeoutError)
     assert isinstance(cause.__cause__, auth_exceptions.TimeoutError)
     assert _adapter_commands(auth_request) == ["start", "upload, finalize"]
+    if on_read:
+        read_resp.close.assert_awaited_once()
 
 
 @pytest.mark.asyncio

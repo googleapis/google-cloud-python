@@ -356,17 +356,17 @@ class AsyncResumableUploadSession:
                     max_allowed_time=timeout,
                     **retry_kwargs,
                 )
+                try:
+                    status_code = response.status_code
+                    resp_headers: Mapping[str, str] = dict(response.headers)
+                    body = await response.read()
+                finally:
+                    await response.close()
             except auth_exceptions.TimeoutError as exc:
                 # google-auth raises its own TimeoutError (not an asyncio one, and
                 # not reliably chained to one); re-raise it as asyncio.TimeoutError
                 # so stall control sees the same type as with aiohttp.ClientSession.
                 raise asyncio.TimeoutError(str(exc)) from exc
-            try:
-                status_code = response.status_code
-                resp_headers: Mapping[str, str] = dict(response.headers)
-                body = await response.read()
-            finally:
-                await response.close()
         else:
             # mypy cannot narrow the negative of the guarded check above.
             session = cast("aiohttp.ClientSession", transport)
