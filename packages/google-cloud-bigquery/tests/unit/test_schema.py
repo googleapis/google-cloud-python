@@ -19,10 +19,9 @@ from unittest import mock
 import pytest
 
 from google.cloud import bigquery
-from google.cloud.bigquery import enums
-from google.cloud.bigquery.standard_sql import StandardSqlStructType
-from google.cloud.bigquery import schema
+from google.cloud.bigquery import enums, schema
 from google.cloud.bigquery.schema import PolicyTagList
+from google.cloud.bigquery.standard_sql import StandardSqlStructType
 
 
 class TestSchemaField(unittest.TestCase):
@@ -635,6 +634,44 @@ class TestSchemaField(unittest.TestCase):
         )
         self.assertEqual(field, other)  # Policy tags order does not matter.
 
+    def test___eq___range_element_type_mismatch(self):
+        field = self._make_one("R", "RANGE", range_element_type="DATE")
+        other = self._make_one("R", "RANGE", range_element_type="DATETIME")
+        self.assertNotEqual(field, other)
+
+    def test___eq___range_element_type_hit(self):
+        field = self._make_one("R", "RANGE", range_element_type="DATE")
+        other = self._make_one(
+            "R", "RANGE", range_element_type=schema.FieldElementType("DATE")
+        )
+        self.assertEqual(field, other)
+
+    def test___eq___rounding_mode_mismatch(self):
+        field = self._make_one(
+            "num", "NUMERIC", rounding_mode="ROUND_HALF_AWAY_FROM_ZERO"
+        )
+        other = self._make_one("num", "NUMERIC", rounding_mode="ROUND_HALF_EVEN")
+        self.assertNotEqual(field, other)
+
+    def test___eq___rounding_mode_hit(self):
+        field = self._make_one(
+            "num", "NUMERIC", rounding_mode=enums.RoundingMode.ROUND_HALF_AWAY_FROM_ZERO
+        )
+        other = self._make_one(
+            "num", "NUMERIC", rounding_mode="ROUND_HALF_AWAY_FROM_ZERO"
+        )
+        self.assertEqual(field, other)
+
+    def test___eq___foreign_type_definition_mismatch(self):
+        field = self._make_one("f", "FOREIGN", foreign_type_definition="type1")
+        other = self._make_one("f", "FOREIGN", foreign_type_definition="type2")
+        self.assertNotEqual(field, other)
+
+    def test___eq___foreign_type_definition_hit(self):
+        field = self._make_one("f", "FOREIGN", foreign_type_definition="type1")
+        other = self._make_one("f", "FOREIGN", foreign_type_definition="type1")
+        self.assertEqual(field, other)
+
     def test___ne___wrong_type(self):
         field = self._make_one("toast", "INTEGER")
         other = object()
@@ -695,7 +732,8 @@ class TestSchemaField(unittest.TestCase):
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
         expected = (
-            "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), None, None)"
+            "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), "
+            "None, None, None, None)"
         )
         self.assertEqual(repr(field1), expected)
 
@@ -757,6 +795,35 @@ class TestFieldElementType(unittest.TestCase):
 
     def test_from_api_repr_none(self):
         self.assertEqual(None, self._get_target_class().from_api_repr(None))
+
+    def test___eq___wrong_type(self):
+        element_type = self._make_one("DATE")
+        self.assertNotEqual(element_type, "DATE")
+        self.assertNotEqual(element_type, object())
+
+    def test___eq___hit(self):
+        element_type1 = self._make_one("DATE")
+        element_type2 = self._make_one("DATE")
+        self.assertEqual(element_type1, element_type2)
+
+    def test___eq___case_insensitive(self):
+        element_type1 = self._make_one("date")
+        element_type2 = self._make_one("DATE")
+        self.assertEqual(element_type1, element_type2)
+
+    def test___eq___mismatch(self):
+        element_type1 = self._make_one("DATE")
+        element_type2 = self._make_one("DATETIME")
+        self.assertNotEqual(element_type1, element_type2)
+
+    def test___hash__(self):
+        element_type1 = self._make_one("DATE")
+        element_type2 = self._make_one("DATE")
+        self.assertEqual(hash(element_type1), hash(element_type2))
+
+    def test___repr__(self):
+        element_type = self._make_one("DATE")
+        self.assertEqual(repr(element_type), "FieldElementType(element_type='DATE')")
 
 
 # TODO: dedup with the same class in test_table.py.
@@ -1187,6 +1254,21 @@ class TestPolicyTags(unittest.TestCase):
             dict(name="n", type="BYTES", maxLength=9),
             ("n", "BYTES", None, None, 9),
             ("n", "BYTES(9)"),
+        ),
+        (
+            dict(name="n", type="RANGE", rangeElementType=dict(type="DATE")),
+            ("n", "RANGE", None, None, None),
+            ("n", "RANGE<DATE>"),
+        ),
+        (
+            dict(name="n", type="RANGE", rangeElementType=dict(type="DATETIME")),
+            ("n", "RANGE", None, None, None),
+            ("n", "RANGE<DATETIME>"),
+        ),
+        (
+            dict(name="n", type="RANGE", rangeElementType=dict(type="TIMESTAMP")),
+            ("n", "RANGE", None, None, None),
+            ("n", "RANGE<TIMESTAMP>"),
         ),
     ],
 )
