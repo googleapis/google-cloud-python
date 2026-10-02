@@ -26,7 +26,7 @@ from typing import TYPE_CHECKING, Mapping, Optional, Union
 
 import google.auth.credentials
 import google.auth.transport._mtls_helper
-from google.auth import _exponential_backoff, exceptions
+from google.auth import _exponential_backoff, _helpers, exceptions
 from google.auth.aio import transport
 from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
@@ -125,7 +125,6 @@ class _SyncCredentialsAdapter(Credentials):
         # Imported here because `requests` is an optional dependency of
         # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
         from google.auth.transport import requests as sync_requests
-
         self._credentials = credentials
         # Synchronous credentials cannot use the asynchronous transport of the
         # session, so they are called with a synchronous transport instead.
@@ -134,6 +133,37 @@ class _SyncCredentialsAdapter(Credentials):
         # concurrent requests would otherwise do from multiple worker threads.
         # Instead, at most one refresh is in flight and concurrent callers share it.
         self._pending_refresh: Optional["asyncio.Task[None]"] = None
+
+
+    def close(self):
+        if (
+            self._sync_request_instance is not None
+            and hasattr(self._sync_request_instance, "session")
+            and self._sync_request_instance.session is not None
+        ):
+            self._sync_request_instance.session.close()
+
+    @property
+    def token(self):
+        """Optional[str]: The bearer token that can be used in HTTP headers to make
+        authenticated requests."""
+        return self._credentials.token
+
+    @property
+    def expiry(self):
+        """Optional[datetime]: When the token expires and is no longer valid.
+        If this is None, the token is assumed to never expire."""
+        return self._credentials.expiry
+
+    @property
+    @_helpers.copy_docstring(google.auth.credentials.Credentials)
+    def valid(self):
+        return self._credentials.valid
+
+    @property
+    @_helpers.copy_docstring(google.auth.credentials.Credentials)
+    def expired(self):
+        return self._credentials.expired
 
     async def _refresh_shared(self):
         """Refreshes the wrapped credentials, joining a refresh already in flight.
@@ -915,6 +945,8 @@ class AsyncAuthorizedSession:
                 if inspect.isawaitable(res):
                     await res
         finally:
+            if hasattr(self._credentials, "close"):
+                self._credentials.close()
             for old_request in self._old_auth_requests:
                 try:
                     if hasattr(old_request, "close"):
