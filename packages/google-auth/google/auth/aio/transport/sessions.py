@@ -133,7 +133,7 @@ class _SyncCredentialsAdapter(Credentials):
         # Synchronous credentials are not safe to refresh concurrently, which
         # concurrent requests would otherwise do from multiple worker threads.
         # Instead, at most one refresh is in flight and concurrent callers share it.
-        self._pending_refresh: Optional["asyncio.Future[None]"] = None
+        self._pending_refresh: Optional["asyncio.Task[None]"] = None
 
     async def _refresh_shared(self):
         """Refreshes the wrapped credentials, joining a refresh already in flight.
@@ -144,7 +144,7 @@ class _SyncCredentialsAdapter(Credentials):
         second, concurrent refresh.
         """
         if self._pending_refresh is None or self._pending_refresh.done():
-            self._pending_refresh = asyncio.ensure_future(
+            self._pending_refresh = asyncio.create_task(
                 asyncio.to_thread(self._credentials.refresh, self._sync_request)
             )
         await asyncio.shield(self._pending_refresh)
