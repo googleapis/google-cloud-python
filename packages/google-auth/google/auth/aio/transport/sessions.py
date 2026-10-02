@@ -180,10 +180,7 @@ class AsyncAuthorizedSession:
     Args:
         credentials (Union[google.auth.aio.credentials.Credentials, google.auth.credentials.Credentials]):
             The credentials to add to the request. Synchronous credentials
-            (e.g. application default credentials) are adapted to the
-            asynchronous credentials interface: they are invoked using a
-            synchronous transport in a worker thread so that the event loop
-            is not blocked.
+            (e.g. application default credentials) are also supported.
         auth_request (Optional[google.auth.aio.transport.Request]):
             An instance of a class that implements
             :class:`~google.auth.aio.transport.Request` used to make requests
