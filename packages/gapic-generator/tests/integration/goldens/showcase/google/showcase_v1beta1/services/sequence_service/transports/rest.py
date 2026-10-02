@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import contextlib
 import logging
 import json  # type: ignore
 
@@ -23,7 +24,7 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-from google.showcase_v1beta1._compat import transcode_request
+from google.showcase_v1beta1._compat import transcode_request, trace_http_request
 import google.protobuf
 
 from google.protobuf import json_format
@@ -43,6 +44,7 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 
+from google.api_core import client_options as client_options_lib
 from .rest_base import _BaseSequenceServiceRestTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
@@ -515,6 +517,7 @@ class SequenceServiceRestStub:
     _session: AuthorizedSession
     _host: str
     _interceptor: SequenceServiceRestInterceptor
+    _client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None
 
 
 class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
@@ -544,6 +547,8 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             url_scheme: str = 'https',
             interceptor: Optional[SequenceServiceRestInterceptor] = None,
             api_audience: Optional[str] = None,
+            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -583,6 +588,9 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client, containing options such as
+                custom OpenTelemetry tracer providers.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -594,7 +602,9 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
+            client_options=client_options,
+            **kwargs,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
@@ -615,20 +625,34 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: sequence.AttemptSequenceRequest, *,
@@ -688,7 +712,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._AttemptSequence._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._AttemptSequence._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -707,21 +740,35 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                stream=True,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
+                    stream=True,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: sequence.AttemptStreamingSequenceRequest, *,
@@ -788,7 +835,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._AttemptStreamingSequence._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._AttemptStreamingSequence._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -797,7 +853,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
             # Return the response
             resp = rest_streaming.ResponseIterator(response, sequence.AttemptStreamingSequenceResponse)
-
             resp = self._interceptor.post_attempt_streaming_sequence(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_attempt_streaming_sequence_with_metadata(resp, response_metadata)
@@ -829,20 +884,34 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: gs_sequence.CreateSequenceRequest, *,
@@ -909,7 +978,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._CreateSequence._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._CreateSequence._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -921,7 +999,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             pb_resp = gs_sequence.Sequence.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_create_sequence(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_sequence_with_metadata(resp, response_metadata)
@@ -958,20 +1035,34 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: sequence.CreateStreamingSequenceRequest, *,
@@ -1039,7 +1130,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._CreateStreamingSequence._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._CreateStreamingSequence._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1051,7 +1151,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             pb_resp = sequence.StreamingSequence.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_create_streaming_sequence(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_streaming_sequence_with_metadata(resp, response_metadata)
@@ -1088,19 +1187,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: sequence.GetSequenceReportRequest, *,
@@ -1165,7 +1278,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._GetSequenceReport._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._GetSequenceReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1177,7 +1298,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             pb_resp = sequence.SequenceReport.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_get_sequence_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_sequence_report_with_metadata(resp, response_metadata)
@@ -1214,19 +1334,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
                 request: sequence.GetStreamingSequenceReportRequest, *,
@@ -1292,7 +1426,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._GetStreamingSequenceReport._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._GetStreamingSequenceReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1304,7 +1446,6 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             pb_resp = sequence.StreamingSequenceReport.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
             resp = self._interceptor.post_get_streaming_sequence_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_streaming_sequence_report_with_metadata(resp, response_metadata)
@@ -1335,7 +1476,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AttemptSequence(self._session, self._host, self._interceptor) # type: ignore
+        return self._AttemptSequence(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def attempt_streaming_sequence(self) -> Callable[
@@ -1343,7 +1484,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             sequence.AttemptStreamingSequenceResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AttemptStreamingSequence(self._session, self._host, self._interceptor) # type: ignore
+        return self._AttemptStreamingSequence(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def create_sequence(self) -> Callable[
@@ -1351,7 +1492,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             gs_sequence.Sequence]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSequence(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateSequence(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def create_streaming_sequence(self) -> Callable[
@@ -1359,7 +1500,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             sequence.StreamingSequence]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateStreamingSequence(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateStreamingSequence(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def get_sequence_report(self) -> Callable[
@@ -1367,7 +1508,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             sequence.SequenceReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSequenceReport(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetSequenceReport(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def get_streaming_sequence_report(self) -> Callable[
@@ -1375,11 +1516,11 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             sequence.StreamingSequenceReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetStreamingSequenceReport(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetStreamingSequenceReport(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListLocations(_BaseSequenceServiceRestTransport._BaseListLocations, SequenceServiceRestStub):
         def __hash__(self):
@@ -1393,19 +1534,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.ListLocationsRequest, *,
@@ -1468,7 +1623,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1502,7 +1665,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetLocation(_BaseSequenceServiceRestTransport._BaseGetLocation, SequenceServiceRestStub):
         def __hash__(self):
@@ -1516,19 +1679,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: locations_pb2.GetLocationRequest, *,
@@ -1591,7 +1768,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1625,7 +1810,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _SetIamPolicy(_BaseSequenceServiceRestTransport._BaseSetIamPolicy, SequenceServiceRestStub):
         def __hash__(self):
@@ -1639,20 +1824,34 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.SetIamPolicyRequest, *,
@@ -1715,7 +1914,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._SetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1749,7 +1957,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetIamPolicy(_BaseSequenceServiceRestTransport._BaseGetIamPolicy, SequenceServiceRestStub):
         def __hash__(self):
@@ -1763,19 +1971,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.GetIamPolicyRequest, *,
@@ -1838,7 +2060,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1872,7 +2102,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _TestIamPermissions(_BaseSequenceServiceRestTransport._BaseTestIamPermissions, SequenceServiceRestStub):
         def __hash__(self):
@@ -1886,20 +2116,34 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
+                    data=body,
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: iam_policy_pb2.TestIamPermissionsRequest, *,
@@ -1962,7 +2206,16 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._TestIamPermissions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = SequenceServiceRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1996,7 +2249,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _ListOperations(_BaseSequenceServiceRestTransport._BaseListOperations, SequenceServiceRestStub):
         def __hash__(self):
@@ -2010,19 +2263,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.ListOperationsRequest, *,
@@ -2085,7 +2352,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2119,7 +2394,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _GetOperation(_BaseSequenceServiceRestTransport._BaseGetOperation, SequenceServiceRestStub):
         def __hash__(self):
@@ -2133,19 +2408,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
@@ -2208,7 +2497,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2242,7 +2539,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _DeleteOperation(_BaseSequenceServiceRestTransport._BaseDeleteOperation, SequenceServiceRestStub):
         def __hash__(self):
@@ -2256,19 +2553,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.DeleteOperationRequest, *,
@@ -2328,7 +2639,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2339,7 +2658,7 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor, getattr(self, "_client_options", None)) # type: ignore
 
     class _CancelOperation(_BaseSequenceServiceRestTransport._BaseCancelOperation, SequenceServiceRestStub):
         def __hash__(self):
@@ -2353,19 +2672,33 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
+            body=None,
+            client_options=None):
+            """Execute the HTTP request over the transport session with
+            OpenTelemetry tracing and metadata propagation."""
 
             uri = transcoded_request['uri']
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
+            url = "{host}{uri}".format(host=host, uri=uri)
+
+            with trace_http_request(
+                client_options=client_options,
+                method=method,
+                url=url,
+                url_template=uri,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                body=body,
+            ) as trace_ctx:
+                response = getattr(session, method)(
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
-            return response
+                trace_ctx.record_response(response)
+                return response
 
         def __call__(self,
             request: operations_pb2.CancelOperationRequest, *,
@@ -2425,7 +2758,15 @@ class SequenceServiceRestTransport(_BaseSequenceServiceRestTransport):
                 )
 
             # Send the request
-            response = SequenceServiceRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = SequenceServiceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                client_options=getattr(self, "_client_options", None),
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.

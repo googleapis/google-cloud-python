@@ -354,6 +354,7 @@ def showcase_library(
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",
+            f"google/showcase/v1beta1/sequence.proto",
         )
         session.run(
             *cmd_tup,
@@ -421,6 +422,11 @@ def showcase(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -467,6 +473,11 @@ def showcase_w_rest_async(
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
+        session.install(
+            "opentelemetry-api",
+            "opentelemetry-sdk",
+            "opentelemetry-instrumentation-grpc",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -542,6 +553,8 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest-cov",
         "pytest-xdist",
         "pytest-asyncio",
+        "opentelemetry-api",
+        "opentelemetry-sdk",
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
