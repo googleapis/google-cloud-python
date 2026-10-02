@@ -121,19 +121,24 @@ class _SyncCredentialsAdapter(Credentials):
     """
 
     def __init__(self, credentials: google.auth.credentials.Credentials):
-        super().__init__()
-        # Imported here because `requests` is an optional dependency of
-        # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
-        from google.auth.transport import requests as sync_requests
         self._credentials = credentials
         # Synchronous credentials cannot use the asynchronous transport of the
         # session, so they are called with a synchronous transport instead.
-        self._sync_request = sync_requests.Request()
+        self._sync_request_instance = None
         # Synchronous credentials are not safe to refresh concurrently, which
         # concurrent requests would otherwise do from multiple worker threads.
         # Instead, at most one refresh is in flight and concurrent callers share it.
         self._pending_refresh: Optional["asyncio.Task[None]"] = None
 
+    @property
+    def _sync_request(self):
+        if self._sync_request_instance is None:
+            # Imported here because `requests` is an optional dependency of
+            # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
+            from google.auth.transport import requests as sync_requests
+
+            self._sync_request_instance = sync_requests.Request()
+        return self._sync_request_instance
 
     def close(self):
         if (
