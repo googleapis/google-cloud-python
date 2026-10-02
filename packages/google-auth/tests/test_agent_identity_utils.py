@@ -16,6 +16,7 @@ import base64
 import hashlib
 import json
 import os
+import stat
 import urllib.parse
 from unittest import mock
 
@@ -23,6 +24,7 @@ import pytest
 from cryptography import x509
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
+from google.auth.transport import _mtls_helper
 
 # A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
 NON_AGENT_IDENTITY_CERT_BYTES = (
@@ -198,8 +200,6 @@ class TestAgentIdentityUtils:
     def test_get_agent_identity_certificate_path_gke_bundle_fallback(
         self, mock_exists, mock_get_config, mock_sleep, monkeypatch
     ):
-        from google.auth.transport import _mtls_helper
-
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
         )
@@ -302,8 +302,6 @@ class TestAgentIdentityUtils:
 
     @mock.patch("google.auth._agent_identity_utils.os.stat")
     def test_is_certificate_file_ready_not_a_file(self, mock_stat):
-        import stat
-
         mock_stat.return_value = mock.MagicMock(st_mode=stat.S_IFDIR, st_size=4096)
         result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
         assert result is False

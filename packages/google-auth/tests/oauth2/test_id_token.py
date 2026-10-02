@@ -285,27 +285,17 @@ def test_fetch_id_token_credentials_optional_request(monkeypatch):
             mock_request.assert_called()
 
 
-def test_fetch_id_token_credentials_from_metadata_server(monkeypatch):
-    monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
-
-    mock_req = mock.Mock()
-
-    with mock.patch("google.auth.compute_engine._metadata.ping", return_value=True):
-        with mock.patch(
-            "google.auth.compute_engine.IDTokenCredentials.__init__", return_value=None
-        ) as mock_init:
-            id_token.fetch_id_token_credentials(ID_TOKEN_AUDIENCE, request=mock_req)
-        mock_init.assert_called_once_with(
-            mock_req,
-            ID_TOKEN_AUDIENCE,
-            use_metadata_identity_endpoint=True,
-            bind_id_token=None,
-        )
-
-
-@pytest.mark.parametrize("bind_id_token", [True, False])
-def test_fetch_id_token_credentials_from_metadata_server_with_bind_id_token(
-    monkeypatch, bind_id_token
+@pytest.mark.parametrize(
+    "call_kwargs,expected_bind_id_token",
+    [
+        ({}, None),
+        ({"bind_id_token": None}, None),
+        ({"bind_id_token": True}, True),
+        ({"bind_id_token": False}, False),
+    ],
+)
+def test_fetch_id_token_credentials_from_metadata_server(
+    monkeypatch, call_kwargs, expected_bind_id_token
 ):
     monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
 
@@ -316,13 +306,13 @@ def test_fetch_id_token_credentials_from_metadata_server_with_bind_id_token(
             "google.auth.compute_engine.IDTokenCredentials.__init__", return_value=None
         ) as mock_init:
             id_token.fetch_id_token_credentials(
-                ID_TOKEN_AUDIENCE, request=mock_req, bind_id_token=bind_id_token
+                ID_TOKEN_AUDIENCE, request=mock_req, **call_kwargs
             )
         mock_init.assert_called_once_with(
             mock_req,
             ID_TOKEN_AUDIENCE,
             use_metadata_identity_endpoint=True,
-            bind_id_token=bind_id_token,
+            bind_id_token=expected_bind_id_token,
         )
 
 
@@ -409,7 +399,16 @@ def test_fetch_id_token_credentials_invalid_cred_path(monkeypatch):
     )
 
 
-def test_fetch_id_token(monkeypatch):
+@pytest.mark.parametrize(
+    "call_kwargs,expected_bind_id_token",
+    [
+        ({}, None),
+        ({"bind_id_token": None}, None),
+        ({"bind_id_token": True}, True),
+        ({"bind_id_token": False}, False),
+    ],
+)
+def test_fetch_id_token(call_kwargs, expected_bind_id_token):
     mock_cred = mock.MagicMock()
     mock_cred.token = "token"
 
@@ -418,29 +417,9 @@ def test_fetch_id_token(monkeypatch):
     with mock.patch(
         "google.oauth2.id_token.fetch_id_token_credentials", return_value=mock_cred
     ) as mock_fetch:
-        token = id_token.fetch_id_token(mock_req, ID_TOKEN_AUDIENCE)
+        token = id_token.fetch_id_token(mock_req, ID_TOKEN_AUDIENCE, **call_kwargs)
     mock_fetch.assert_called_once_with(
-        ID_TOKEN_AUDIENCE, request=mock_req, bind_id_token=None
-    )
-    mock_cred.refresh.assert_called_once_with(mock_req)
-    assert token == "token"
-
-
-@pytest.mark.parametrize("bind_id_token", [True, False])
-def test_fetch_id_token_with_bind_id_token(bind_id_token):
-    mock_cred = mock.MagicMock()
-    mock_cred.token = "token"
-
-    mock_req = mock.Mock()
-
-    with mock.patch(
-        "google.oauth2.id_token.fetch_id_token_credentials", return_value=mock_cred
-    ) as mock_fetch:
-        token = id_token.fetch_id_token(
-            mock_req, ID_TOKEN_AUDIENCE, bind_id_token=bind_id_token
-        )
-    mock_fetch.assert_called_once_with(
-        ID_TOKEN_AUDIENCE, request=mock_req, bind_id_token=bind_id_token
+        ID_TOKEN_AUDIENCE, request=mock_req, bind_id_token=expected_bind_id_token
     )
     mock_cred.refresh.assert_called_once_with(mock_req)
     assert token == "token"
