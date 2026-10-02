@@ -36,7 +36,6 @@ from typing import (
     Mapping,
     Optional,
     Tuple,
-    Type,
     TypeVar,
     Union,
     cast,
@@ -78,25 +77,11 @@ AsyncTransport = Union["aiohttp.ClientSession", "AsyncAuthorizedSession"]
 used by generated asynchronous REST clients.
 """
 
-# Timeouts and transport-level failures raised by the supported transports.
-# ``AsyncAuthorizedSession`` surfaces aiohttp errors as google.auth exceptions.
-_TIMEOUT_ERRORS: Tuple[Type[BaseException], ...] = (asyncio.TimeoutError,)
-_TRANSPORT_ERRORS: Tuple[Type[BaseException], ...] = ()
-# Extra keyword arguments for every ``AsyncAuthorizedSession.request()`` call.
-_AUTHORIZED_SESSION_REQUEST_KWARGS: Dict[str, Any] = {}
-if _HAS_AIOHTTP:  # pragma: no branch
-    _TIMEOUT_ERRORS += (aiohttp.ServerTimeoutError,)
-    _TRANSPORT_ERRORS += (aiohttp.ClientError,)
-if _HAS_GOOGLE_AUTH_AIO:  # pragma: no branch
-    _TIMEOUT_ERRORS += (auth_exceptions.TimeoutError,)
-    _TRANSPORT_ERRORS += (auth_exceptions.TransportError, auth_exceptions.ResponseError)
-    # google-auth >= 2.49.0 accepts ``total_attempts``; a single attempt disables
-    # its internal status-code retries so this module is the only retry layer.
-    _request_params = inspect.signature(AsyncAuthorizedSession.request).parameters
-    if "total_attempts" in _request_params:  # pragma: no branch
-        _AUTHORIZED_SESSION_REQUEST_KWARGS["total_attempts"] = 1
-# Errors that may carry a chunk timeout out of the streaming retry loop.
-_TIMEOUT_OR_RETRY_ERRORS = (exceptions.RetryError,) + _TIMEOUT_ERRORS
+# google-auth >= 2.49.0 accepts ``total_attempts`` to cap AsyncAuthorizedSession's
+# own status-code retries; older releases forward unknown kwargs to aiohttp.
+_HAS_TOTAL_ATTEMPTS = _HAS_GOOGLE_AUTH_AIO and (
+    "total_attempts" in inspect.signature(AsyncAuthorizedSession.request).parameters
+)
 
 
 def _get_buffer_size(stream: object) -> Optional[int]:
@@ -349,20 +334,33 @@ class AsyncResumableUploadSession:
 
         Raises:
             exceptions.GoogleAPICallError: If the status is not 200 or 201.
+            asyncio.TimeoutError: If the attempt times out, whichever transport
+                is used.
         """
         if _HAS_GOOGLE_AUTH_AIO and isinstance(transport, AsyncAuthorizedSession):
-            # ``request()`` is a coroutine returning a ``Response`` that must be
-            # closed explicitly. ``max_allowed_time`` keeps google-auth's
-            # wall-clock guard within the same per-attempt timeout.
-            response = await transport.request(
-                method,
-                url,
-                data=payload,
-                headers=headers,
-                timeout=timeout,
-                max_allowed_time=timeout,
-                **_AUTHORIZED_SESSION_REQUEST_KWARGS,
+            # google-auth applies its own overall deadline (``max_allowed_time``,
+            # 180s by default) on top of the per-request ``timeout``; use the
+            # caller's timeout for both. Where supported, a single attempt also
+            # disables google-auth's own status-code retries so that this module
+            # is the only retry layer.
+            retry_kwargs: Dict[str, Any] = (
+                {"total_attempts": 1} if _HAS_TOTAL_ATTEMPTS else {}
             )
+            try:
+                response = await transport.request(
+                    method,
+                    url,
+                    data=payload,
+                    headers=headers,
+                    timeout=timeout,
+                    max_allowed_time=timeout,
+                    **retry_kwargs,
+                )
+            except auth_exceptions.TimeoutError as exc:
+                # google-auth wraps timeouts in its own TimeoutError, which is
+                # unrelated to asyncio.TimeoutError; unwrap it so stall control
+                # sees the same timeout type as with aiohttp.ClientSession.
+                raise asyncio.TimeoutError(str(exc)) from exc
             try:
                 status_code = response.status_code
                 resp_headers: Mapping[str, str] = dict(response.headers)
@@ -480,8 +478,8 @@ class AsyncResumableUploadSession:
                 2. Protocol-recoverable errors during chunk transfer
                    (``RECOVERABLE_STATUS_CODES`` and ``MissingStatusHeaderError``)
                    and transport errors (``aiohttp.ClientError``,
-                   ``asyncio.TimeoutError``, and their ``google.auth.exceptions``
-                   counterparts) always return ``True`` so the session
+                   ``google.auth.exceptions.TransportError``, and
+                   ``asyncio.TimeoutError``) always return ``True`` so the session
                    can query server state and recover.
 
         Returns:
@@ -499,7 +497,13 @@ class AsyncResumableUploadSession:
                 )
             ):
                 return True
-            if isinstance(exc, _TIMEOUT_ERRORS + _TRANSPORT_ERRORS):
+            if isinstance(exc, asyncio.TimeoutError) or (
+                _HAS_AIOHTTP and isinstance(exc, aiohttp.ClientError)
+            ):
+                return True
+            if _HAS_GOOGLE_AUTH_AIO and isinstance(
+                exc, (auth_exceptions.TransportError, auth_exceptions.ResponseError)
+            ):
                 return True
             if (
                 custom_predicate is not None
@@ -682,7 +686,13 @@ class AsyncResumableUploadSession:
             t_elapsed = _monotonic_clock() - t_start
         except Exception as exc:
             self._enrich_exception(exc)
-            if isinstance(exc, _TIMEOUT_ERRORS):
+            if isinstance(
+                exc,
+                (
+                    asyncio.TimeoutError,
+                    aiohttp.ServerTimeoutError,
+                ),
+            ):
                 t_elapsed = _monotonic_clock() - t_start
                 self._get_deadline_remaining()
                 self._update_stall_control(0, t_elapsed)
@@ -940,11 +950,17 @@ class AsyncResumableUploadSession:
             stream_gen = await retryable_stream()
             async for item in stream_gen:
                 yield item
-        except _TIMEOUT_OR_RETRY_ERRORS as exc:
+        except (
+            asyncio.TimeoutError,
+            aiohttp.ServerTimeoutError,
+            exceptions.RetryError,
+        ) as exc:
             timeout_exc = (
                 exc.__cause__ if isinstance(exc, exceptions.RetryError) else exc
             )
-            if not isinstance(timeout_exc, _TIMEOUT_ERRORS):
+            if not isinstance(
+                timeout_exc, (asyncio.TimeoutError, aiohttp.ServerTimeoutError)
+            ):
                 raise
             self._enrich_exception(timeout_exc)
             self._get_deadline_remaining()

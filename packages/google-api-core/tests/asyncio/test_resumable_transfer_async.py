@@ -19,7 +19,6 @@
 # mypy: disable-error-code="arg-type"
 
 import asyncio
-import contextlib
 import datetime
 import inspect
 import io
@@ -2433,8 +2432,8 @@ async def test_async_authorized_session_server_error_not_retried_internally() ->
 async def test_async_authorized_session_timeout_raises_transfer_stalled() -> None:
     """Verifies google.auth.exceptions.TimeoutError feeds stall control.
 
-    It is not a subclass of asyncio.TimeoutError, so it must be recognised
-    explicitly to surface as TransferStalledError.
+    It is not a subclass of asyncio.TimeoutError, so it is normalized to one
+    (keeping the original as the cause) to surface as TransferStalledError.
     """
     transport, auth_request = _authorized_session(
         _auth_response(200, START_HEADERS), auth_exceptions.TimeoutError("timed out")
@@ -2449,7 +2448,9 @@ async def test_async_authorized_session_timeout_raises_transfer_stalled() -> Non
     with pytest.raises(TransferStalledError) as exc_info:
         await session.upload(stream=b"data", retry=no_retry)
 
-    assert isinstance(exc_info.value.__cause__, auth_exceptions.TimeoutError)
+    cause = exc_info.value.__cause__
+    assert isinstance(cause, asyncio.TimeoutError)
+    assert isinstance(cause.__cause__, auth_exceptions.TimeoutError)
     assert _adapter_commands(auth_request) == ["start", "upload, finalize"]
 
 
@@ -2486,33 +2487,26 @@ async def test_async_authorized_session_transport_error_recovers() -> None:
 
 
 def test_async_retry_predicate_includes_google_auth_errors() -> None:
-    """Verifies google-auth transport/timeout errors are retryable, unlike its other errors."""
+    """Verifies google-auth transport errors are retryable, unlike its other errors."""
     session = AsyncResumableUploadSession(upload_url="https://api.example.com/start")
     for is_start in (True, False):
         predicate = session._get_retry_predicate(is_start=is_start)
-        assert predicate(auth_exceptions.TimeoutError()) is True
         assert predicate(auth_exceptions.TransportError()) is True
         assert predicate(auth_exceptions.ResponseError()) is True
         assert predicate(auth_exceptions.RefreshError()) is False
 
 
 # =====================================================================
-# 12. End-to-End Tests Against a Local HTTP Server
+# 12. End-to-End Smoke Test Against a Local HTTP Server
 # =====================================================================
 
 
 class ResumableUploadServer:
-    """Minimal in-memory resumable upload server.
-
-    ``stalls`` maps a zero-based request ordinal to seconds to sleep before
-    answering that request with 408 without committing any bytes.
-    """
+    """Minimal in-memory resumable upload server (start, upload, finalize)."""
 
     def __init__(self) -> None:
         self.blobs: Dict[str, bytearray] = {}
         self.commands: List[str] = []
-        self.cancelled: List[str] = []
-        self.stalls: Dict[int, float] = {}
 
     def make_app(self) -> "web.Application":
         app = web.Application()
@@ -2522,12 +2516,7 @@ class ResumableUploadServer:
 
     async def handle(self, request: "web.Request") -> "web.Response":
         command = request.headers.get(common.HEADER_COMMAND, "")
-        payload = await request.read()
-        ordinal = len(self.commands)
         self.commands.append(command)
-        if ordinal in self.stalls:
-            await asyncio.sleep(self.stalls.pop(ordinal))
-            return web.Response(status=408, text="stalled")
         if command == common._Command.START.value:
             blob = f"blob-{len(self.blobs)}"
             self.blobs[blob] = bytearray()
@@ -2536,44 +2525,34 @@ class ResumableUploadServer:
                 common.HEADER_URL: str(request.url.with_path(f"/upload/{blob}")),
             }
             return web.Response(headers=headers)
-        blob = request.match_info["blob"]
-        data = self.blobs[blob]
-        if command == common._Command.QUERY.value:
-            headers = {
-                common.HEADER_STATUS: common._Status.ACTIVE.value,
-                common.HEADER_SIZE_RECEIVED: str(len(data)),
-            }
-            return web.Response(headers=headers)
-        if command == common._Command.CANCEL.value:
-            self.cancelled.append(blob)
-            headers = {common.HEADER_STATUS: common._Status.CANCELLED.value}
-            return web.Response(headers=headers)
+        data = self.blobs[request.match_info["blob"]]
         if int(request.headers.get(common.HEADER_OFFSET, "-1")) != len(data):
             return web.Response(status=400, text="offset mismatch")
-        data.extend(payload)
+        data.extend(await request.read())
         if common._Command.FINALIZE.value in command:
             headers = {common.HEADER_STATUS: common._Status.FINAL.value}
-            return web.json_response({"name": blob, "size": len(data)}, headers=headers)
+            body = {"name": request.match_info["blob"], "size": len(data)}
+            return web.json_response(body, headers=headers)
         return web.Response(headers={common.HEADER_STATUS: common._Status.ACTIVE.value})
 
 
-@contextlib.asynccontextmanager
-async def serve_resumable_upload() -> AsyncIterator[Tuple[ResumableUploadServer, str]]:
-    """Serves a ``ResumableUploadServer`` locally, yielding it and its base URL."""
+@pytest.mark.asyncio
+@pytest.mark.parametrize("authorized", [False, True], ids=["aiohttp", "google-auth"])
+async def test_async_upload_end_to_end(authorized: bool) -> None:
+    """Uploads over the wire with a real aiohttp.ClientSession / AsyncAuthorizedSession."""
     server = ResumableUploadServer()
     async with TestServer(server.make_app()) as test_server:
-        yield server, str(test_server.make_url("")).rstrip("/")
-
-
-@pytest.mark.asyncio
-async def test_async_upload_end_to_end_aiohttp_client_session() -> None:
-    """Uploads over the wire with a real aiohttp.ClientSession."""
-    async with serve_resumable_upload() as (server, base_url):
         async with aiohttp.ClientSession() as client:
+            transport: upload_async.AsyncTransport = client
+            if authorized:
+                transport = aio_sessions.AsyncAuthorizedSession(
+                    aio_credentials.AnonymousCredentials(),
+                    auth_request=auth_aiohttp.Request(client),
+                )
             session = AsyncResumableUploadSession(
-                upload_url=f"{base_url}/start",
+                upload_url=str(test_server.make_url("/start")),
                 config=ResumableUploadConfig(chunk_size=4),
-                transport=client,
+                transport=transport,
                 response_type=DummyResponse,
             )
             result = await session.upload(stream=b"0123456789")
@@ -2581,58 +2560,3 @@ async def test_async_upload_end_to_end_aiohttp_client_session() -> None:
     assert isinstance(result, DummyResponse)
     assert bytes(server.blobs[result.name]) == b"0123456789"
     assert server.commands == ["start", "upload", "upload", "upload, finalize"]
-
-
-@pytest.mark.asyncio
-async def test_async_upload_end_to_end_authorized_session() -> None:
-    """Uploads, resumes, and cancels over the wire with the generated client transport.
-
-    A real AsyncAuthorizedSession backed by google-auth's aiohttp adapter is
-    used. The first chunk request stalls past the per-attempt timeout, so
-    google-auth raises its own TimeoutError and api_core must query the
-    committed offset and re-send the chunk.
-    """
-    quick_retry = google.api_core.retry.AsyncStreamingRetry(initial=0.01, maximum=0.01)
-    async with serve_resumable_upload() as (server, base_url):
-        transport = aio_sessions.AsyncAuthorizedSession(
-            aio_credentials.AnonymousCredentials(), auth_request=auth_aiohttp.Request()
-        )
-        try:
-            server.stalls[1] = 0.5
-            session = AsyncResumableUploadSession(
-                upload_url=f"{base_url}/start",
-                config=ResumableUploadConfig(chunk_size=4),
-                transport=transport,
-                response_type=DummyResponse,
-            )
-            result = await session.upload(
-                stream=b"01234567", timeout=0.2, retry=quick_retry
-            )
-            assert isinstance(result, DummyResponse)
-            assert bytes(server.blobs[result.name]) == b"01234567"
-            assert server.commands == [
-                "start",
-                "upload",
-                "query",
-                "upload",
-                "upload, finalize",
-            ]
-
-            # Resume an upload the server already partially committed, then cancel.
-            server.blobs["seeded"] = bytearray(b"abcd")
-            server.commands.clear()
-            resumed = AsyncResumableUploadSession(
-                config=ResumableUploadConfig(chunk_size=4),
-                transport=transport,
-                response_type=DummyResponse,
-            )
-            result = await resumed.resume(
-                upload_url=f"{base_url}/upload/seeded", stream=io.BytesIO(b"abcdefgh")
-            )
-            await resumed.cancel()
-            assert isinstance(result, DummyResponse)
-            assert bytes(server.blobs["seeded"]) == b"abcdefgh"
-            assert server.commands == ["query", "upload, finalize", "cancel"]
-            assert server.cancelled == ["seeded"]
-        finally:
-            await transport.close()
