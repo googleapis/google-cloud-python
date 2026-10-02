@@ -184,12 +184,15 @@ class _SyncCredentialsAdapter(Credentials):
             )
         await asyncio.shield(self._pending_refresh)
 
+    @_helpers.copy_docstring(Credentials)
     async def apply(self, headers, token=None):
         self._credentials.apply(headers, token=token)
 
+    @_helpers.copy_docstring(Credentials)
     async def refresh(self, request):
         await self._refresh_shared()
 
+    @_helpers.copy_docstring(Credentials)
     async def before_request(self, request, method, url, headers):
         if not self._credentials.valid:
             await self._refresh_shared()
