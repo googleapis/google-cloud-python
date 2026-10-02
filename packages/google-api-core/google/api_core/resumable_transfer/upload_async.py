@@ -171,6 +171,7 @@ class AsyncResumableUploadSession:
         response_type: Optional[Any] = None,
         start_retry: Optional[google.api_core.retry.AsyncRetry] = None,
         start_timeout: float = DEFAULT_START_TIMEOUT,
+        request_body: Optional[Union[str, bytes]] = None,
     ) -> None:
         """Initializes an AsyncResumableUploadSession.
 
@@ -198,6 +199,9 @@ class AsyncResumableUploadSession:
                 retried.
             start_timeout: Timeout in seconds for the start request. Defaults to
                 ``60.0`` seconds.
+            request_body: Optional default metadata payload sent with the start request.
+                Used by ``upload()`` whenever it is called without an explicit
+                ``request_body``. When ``None``, an empty payload is sent.
         """
         self._config = config or ResumableUploadConfig()
         self._transport = transport
@@ -205,6 +209,9 @@ class AsyncResumableUploadSession:
         self._response_type = response_type
         self._start_retry = start_retry
         self._start_timeout = start_timeout
+        self._request_body: Union[str, bytes] = (
+            request_body if request_body is not None else ""
+        )
         self._response: Optional[Any] = None
         self._state = upload_state._ProtocolState(
             upload_url=upload_url,
@@ -885,7 +892,7 @@ class AsyncResumableUploadSession:
     def upload(
         self,
         stream: Union[AsyncIterable[bytes], BinaryIO, bytes, Iterable[bytes]],
-        request_body: Union[str, bytes] = "",
+        request_body: Optional[Union[str, bytes]] = None,
         size: Optional[int] = None,
         transport: Optional[Any] = None,
         content_type: Optional[str] = None,
@@ -897,6 +904,8 @@ class AsyncResumableUploadSession:
         Args:
             stream: Data payload to upload (async iterable, binary stream, bytes, or iterable).
             request_body: Initial metadata payload sent with the start request.
+                When ``None``, the ``request_body`` supplied to the session constructor
+                (if any) is used.
             size: Total stream size in bytes, if known.
             transport: Optional aiohttp client session.
             content_type: Optional MIME type of the stream payload.
@@ -925,6 +934,8 @@ class AsyncResumableUploadSession:
 
         if content_type is not None:
             self._content_type = content_type
+        if request_body is None:
+            request_body = self._request_body
 
         self._reset_transfer_state()
         progress_queue: List[UploadProgress] = []
