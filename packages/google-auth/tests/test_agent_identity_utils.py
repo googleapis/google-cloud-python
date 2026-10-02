@@ -16,6 +16,7 @@ import base64
 import hashlib
 import json
 import os
+import stat
 import urllib.parse
 from unittest import mock
 
@@ -23,6 +24,7 @@ import pytest
 from cryptography import x509
 
 from google.auth import _agent_identity_utils, environment_vars, exceptions
+from google.auth.transport import _mtls_helper
 
 # A mock PEM-encoded certificate without an Agent Identity SPIFFE ID.
 NON_AGENT_IDENTITY_CERT_BYTES = (
@@ -171,12 +173,74 @@ class TestAgentIdentityUtils:
         )
         assert _agent_identity_utils._is_in_well_known_dir(resolved_cert_path) is True
 
-    def test_get_agent_identity_certificate_path_empty_env(self, monkeypatch):
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=False)
+    def test_get_agent_identity_certificate_path_empty_env(
+        self, mock_exists, mock_get_config, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            raising=False,
+        )
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+
+    @mock.patch("google.auth._agent_identity_utils.time.sleep")
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    def test_get_agent_identity_certificate_path_gke_bundle_fallback(
+        self, mock_exists, mock_get_config, mock_sleep, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            raising=False,
+        )
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
+        mock_exists.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_sleep.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value="/home/user/.config/gcloud/certificate_config.json",
+    )
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    def test_get_agent_identity_certificate_path_no_gke_fallback_when_implicit_config_exists(
+        self, mock_exists, mock_get_config, monkeypatch
+    ):
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
         )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
+        mock_exists.assert_not_called()
+
+    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    def test_get_agent_identity_certificate_path_no_gke_fallback_when_context_aware_env_set(
+        self, mock_exists, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+        monkeypatch.setenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            "/missing/context_aware.json",
+        )
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_exists.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.os.path.commonpath")
     @mock.patch(
@@ -238,8 +302,6 @@ class TestAgentIdentityUtils:
 
     @mock.patch("google.auth._agent_identity_utils.os.stat")
     def test_is_certificate_file_ready_not_a_file(self, mock_stat):
-        import stat
-
         mock_stat.return_value = mock.MagicMock(st_mode=stat.S_IFDIR, st_size=4096)
         result = _agent_identity_utils._is_certificate_file_ready("/path/to/cert")
         assert result is False

@@ -194,7 +194,7 @@ async def verify_firebase_token(
     )
 
 
-async def fetch_id_token(request, audience):
+async def fetch_id_token(request, audience, bind_id_token=None):
     """Fetch the ID Token from the current environment.
 
     This function acquires ID token from the environment in the following order.
@@ -223,6 +223,16 @@ async def fetch_id_token(request, audience):
         request (google.auth.transport.aiohttp_requests.Request): A callable used to make
             HTTP requests.
         audience (str): The audience that this ID token is intended for.
+        bind_id_token (Optional[bool]): Controls whether to request a
+            certificate-bound ID token from the metadata server identity
+            endpoint. If ``True``, requests a bound token whenever a valid
+            workload certificate is available and token binding is not disabled
+            via ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
+            unbound token otherwise. If ``False``, always requests an unbound
+            token. If ``None`` (default), token binding is determined
+            automatically by the library. Set ``True`` or ``False`` explicitly
+            if your application requires a specific behavior. Has no effect
+            when credentials are loaded from ``GOOGLE_APPLICATION_CREDENTIALS``.
 
     Returns:
         str: The ID token.
@@ -273,7 +283,10 @@ async def fetch_id_token(request, audience):
         request_new = requests.Request()
         if _metadata.ping(request_new):
             credentials = compute_engine.IDTokenCredentials(
-                request_new, audience, use_metadata_identity_endpoint=True
+                request_new,
+                audience,
+                use_metadata_identity_endpoint=True,
+                bind_id_token=bind_id_token,
             )
             credentials.refresh(request_new)
             return credentials.token
