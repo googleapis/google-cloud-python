@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import IO, Any, Dict, List, Optional, Union
+from typing import IO, Any
 
 import google_crc32c
 
@@ -57,8 +57,8 @@ class _WriteState:
         self.bytes_sent: int = 0
         self.bytes_since_last_flush: int = 0
         self.flush_interval: int = flush_interval
-        self.write_handle: Union[bytes, storage_type.BidiWriteHandle, None] = None
-        self.routing_token: Optional[str] = None
+        self.write_handle: bytes | storage_type.BidiWriteHandle | None = None
+        self.routing_token: str | None = None
         self.is_finalized: bool = False
         self.enable_checksum: bool = enable_checksum
 
@@ -67,8 +67,8 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
     """The concrete resumption strategy for bidi writes."""
 
     def generate_requests(
-        self, state: Dict[str, Any]
-    ) -> List[storage_type.BidiWriteObjectRequest]:
+        self, state: dict[str, Any]
+    ) -> list[storage_type.BidiWriteObjectRequest]:
         """Generates BidiWriteObjectRequests to resume or continue the upload.
 
         This method is not applicable for `open` methods.
@@ -106,7 +106,7 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
         return requests
 
     def update_state_from_response(
-        self, response: storage_type.BidiWriteObjectResponse, state: Dict[str, Any]
+        self, response: storage_type.BidiWriteObjectResponse, state: dict[str, Any]
     ) -> None:
         """Processes a server response and updates the write state."""
         write_state: _WriteState = state["write_state"]
@@ -124,7 +124,7 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
                 write_state.is_finalized = True
 
     async def recover_state_on_failure(
-        self, error: Exception, state: Dict[str, Any]
+        self, error: Exception, state: dict[str, Any]
     ) -> None:
         """
         Handles errors, specifically BidiWriteObjectRedirectedError, and rewinds state.

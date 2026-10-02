@@ -338,7 +338,7 @@ class BlobWriter(io.BufferedIOBase):
         """
         if value is not None and value > 0 and value % CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError(
-                "Chunk size must be a multiple of %d." % CHUNK_SIZE_MULTIPLE
+                f"Chunk size must be a multiple of {CHUNK_SIZE_MULTIPLE:d}."
             )
         self.__chunk_size = value
 
@@ -449,7 +449,7 @@ class BlobWriter(io.BufferedIOBase):
         return False
 
 
-class SlidingBuffer(object):
+class SlidingBuffer:
     """A non-rewindable buffer that frees memory of chunks already consumed.
 
     This class is necessary because `google-resumable-media-python` expects
