@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.20.2](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.20.1...sqlalchemy-spanner-v1.20.2) (2026-10-02)
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [1.20.1](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.20.0...sqlalchemy-spanner-v1.20.1) (2026-09-03)
 
 
