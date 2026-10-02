@@ -407,6 +407,13 @@ def showcase_library(
                         f"{async_rest_constraints_path} not found. Using base constraints file"
                     )
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
+            session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
+            session.install(
+                str(CURRENT_DIRECTORY.parent / "google-api-core"),
+                str(CURRENT_DIRECTORY.parent / "google-auth"),
+                "--no-deps",
+                "--force-reinstall",
+            )
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
