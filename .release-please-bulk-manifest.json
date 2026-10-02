@@ -10,7 +10,7 @@
   "packages/google-ai-generativelanguage": "0.12.1",
   "packages/google-analytics-admin": "0.30.2",
   "packages/google-analytics-data": "0.23.3",
-  "packages/google-api-core": "2.40.0",
+  "packages/google-api-core": "2.41.0",
   "packages/google-apps-card": "0.7.1",
   "packages/google-apps-chat": "0.10.7",
   "packages/google-apps-events-subscriptions": "0.6.1",
