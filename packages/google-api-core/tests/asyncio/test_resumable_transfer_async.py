@@ -262,6 +262,82 @@ async def test_async_upload_direct_execution() -> None:
     assert session.upload_url == "https://upload.example.com/resumable-async"
 
 
+def _make_single_chunk_async_transport() -> DummyAsyncSession:
+    """Builds a DummyAsyncSession returning a start response and a final chunk response."""
+    start_resp = DummyAsyncResponse(
+        status=200,
+        headers={
+            "X-Goog-Upload-Status": "active",
+            "X-Goog-Upload-URL": "https://upload.example.com/resumable-async",
+        },
+        body=b"",
+    )
+    chunk_resp = DummyAsyncResponse(
+        status=200,
+        headers={"X-Goog-Upload-Status": "final"},
+        body=b"",
+    )
+    return DummyAsyncSession([start_resp, chunk_resp])
+
+
+@pytest.mark.asyncio
+async def test_async_upload_uses_session_request_body() -> None:
+    """Verifies the constructor request_body is sent with the start request by default."""
+    async_transport = _make_single_chunk_async_transport()
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+        request_body='{"name": "from-init"}',
+    )
+
+    await session.upload(stream=b"payload")
+
+    _, _, start_kwargs = async_transport.requests[0]
+    assert start_kwargs["data"] == b'{"name": "from-init"}'
+    assert start_kwargs["headers"]["X-Goog-Upload-Command"] == "start"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "override, expected",
+    [
+        ('{"name": "override"}', b'{"name": "override"}'),
+        (b'{"name": "override-bytes"}', b'{"name": "override-bytes"}'),
+        ("", b""),
+    ],
+)
+async def test_async_upload_request_body_argument_overrides_session_default(
+    override: Union[str, bytes], expected: bytes
+) -> None:
+    """Verifies an explicit per-call request_body (even empty) overrides the constructor default."""
+    async_transport = _make_single_chunk_async_transport()
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+        request_body='{"name": "from-init"}',
+    )
+
+    await session.upload(stream=b"payload", request_body=override)
+
+    _, _, start_kwargs = async_transport.requests[0]
+    assert start_kwargs["data"] == expected
+
+
+@pytest.mark.asyncio
+async def test_async_upload_request_body_defaults_to_empty() -> None:
+    """Verifies the start request carries an empty payload when no request_body is configured."""
+    async_transport = _make_single_chunk_async_transport()
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+    )
+
+    await session.upload(stream=b"payload")
+
+    _, _, start_kwargs = async_transport.requests[0]
+    assert start_kwargs["data"] == b""
+
+
 @pytest.mark.asyncio
 async def test_async_upload_multi_chunk_operation_handle() -> None:
     """Verifies multi-chunk upload dispatching and AsyncUploadOperation property handles."""
