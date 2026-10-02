@@ -61,7 +61,8 @@ dependencies = [
 extras = {
 {% if rest_async_io_enabled %}
     "async_rest": [
-        "google-auth[aiohttp] >= 2.35.0, <3.0.0"
+        "google-auth[aiohttp] >= 2.60.0, <3.0.0",
+        "google-api-core >= 2.41.0, <3.0.0",
     ],
 {% endif %}
 }
