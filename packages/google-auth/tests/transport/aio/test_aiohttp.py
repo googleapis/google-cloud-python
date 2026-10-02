@@ -472,3 +472,25 @@ class TestRequest:
         assert new_request._session._trust_env is True
         await request.close()
         await new_request.close()
+
+    async def test_request_with_ssl_context_subclass_without_session_attribute(self):
+        import ssl
+
+        from aiohttp import TCPConnector
+
+        class CustomRequest(auth_aiohttp.Request):
+            def __init__(self):
+                # Does not call Request.__init__, so there is no _session.
+                pass
+
+        ssl_context = ssl.create_default_context()
+        request = CustomRequest()
+
+        new_request = request._with_ssl_context(ssl_context)
+
+        assert isinstance(new_request, auth_aiohttp.Request)
+        assert new_request._session is not None
+        new_connector = new_request._session._connector
+        assert isinstance(new_connector, TCPConnector)
+        assert new_connector._ssl is ssl_context
+        await new_request.close()

@@ -287,8 +287,10 @@ class Request(transport.Request):
         """
         connector_kwargs: dict = {}
         session_kwargs: dict = {}
-        if self._session is not None:
-            orig_connector = getattr(self._session, "_connector", None)
+        # Subclasses may not call Request.__init__, so _session may be missing.
+        session = getattr(self, "_session", None)
+        if session is not None:
+            orig_connector = getattr(session, "_connector", None)
             if (
                 isinstance(orig_connector, aiohttp.TCPConnector)
                 and not orig_connector.closed
@@ -303,10 +305,10 @@ class Request(transport.Request):
                 ("_default_proxy", "proxy"),
                 ("_default_proxy_auth", "proxy_auth"),
             ]:
-                val = getattr(self._session, attr_name, None)
+                val = getattr(session, attr_name, None)
                 if val is not None:
                     session_kwargs[kwarg_name] = val
-            session_kwargs.update(_get_session_defaults(self._session))
+            session_kwargs.update(_get_session_defaults(session))
 
         connector = aiohttp.TCPConnector(ssl=ssl_context, **connector_kwargs)
         return Request(
