@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.60.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.1...google-auth-v2.60.0) (2026-10-02)
+
+
+### Features
+
+* **auth:** Support sync credentials in AsyncAuthorizedSession ([#18542](https://github.com/googleapis/google-cloud-python/issues/18542)) ([3799568](https://github.com/googleapis/google-cloud-python/commit/379956865248ebc40e5b851ede520056e65abcac))
+
 ## [2.59.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.59.0...google-auth-v2.59.1) (2026-09-30)
 
 
