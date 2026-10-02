@@ -128,12 +128,16 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         request = aiohttp_requests.Request(http)
         assert request.session == http
 
-    def test_timeout(self):
+    @pytest.mark.asyncio
+    async def test_timeout(self):
         http = mock.create_autospec(
             aiohttp.ClientSession, instance=True, auto_decompress=False
         )
+        mock_response = mock.AsyncMock()
+        http.request = mock.AsyncMock(return_value=mock_response)
         request = aiohttp_requests.Request(http)
-        request(url="http://example.com", method="GET", timeout=5)
+        await request(url="http://example.com", method="GET", timeout=5)
+        assert http.request.call_args[1]["timeout"] == 5
 
     @pytest.mark.asyncio
     async def test__clone(self):
