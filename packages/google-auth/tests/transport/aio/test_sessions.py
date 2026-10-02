@@ -470,12 +470,21 @@ class TestSyncCredentialsAdapter(object):
     @pytest.mark.asyncio
     async def test_delegates_to_sync_credentials(self):
         sync_credentials = Mock(spec=google.auth.credentials.Credentials)
+        sync_credentials.token = "sync-token"
+        sync_credentials.expiry = Mock()
+        sync_credentials.valid = True
+        sync_credentials.expired = False
         adapter = sessions._SyncCredentialsAdapter(sync_credentials)
         headers = {}
 
         await adapter.before_request(Mock(), "GET", self.TEST_URL, headers)
         await adapter.refresh(Mock())
         await adapter.apply(headers, token="token")
+
+        assert adapter.token == "sync-token"
+        assert adapter.expiry is sync_credentials.expiry
+        assert adapter.valid is True
+        assert adapter.expired is False
 
         # The same synchronous transport is used for every call.
         sync_request = sync_credentials.before_request.call_args.args[0]
