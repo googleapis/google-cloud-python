@@ -477,7 +477,7 @@ class TestSyncCredentialsAdapter(object):
         await adapter.refresh(Mock())
         await adapter.apply(headers, token="token")
 
-        # A synchronous transport is created lazily and reused for every call.
+        # The same synchronous transport is used for every call.
         sync_request = sync_credentials.before_request.call_args.args[0]
         assert isinstance(sync_request, google.auth.transport.requests.Request)
         sync_credentials.before_request.assert_called_once_with(

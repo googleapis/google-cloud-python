@@ -25,7 +25,6 @@ from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Mapping, Optional, Union
 
 import google.auth.credentials
-import google.auth.transport
 import google.auth.transport._mtls_helper
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
@@ -123,26 +122,18 @@ class _SyncCredentialsAdapter(Credentials):
 
     def __init__(self, credentials: google.auth.credentials.Credentials):
         super().__init__()
+        # Imported here because `requests` is an optional dependency of
+        # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
+        from google.auth.transport import requests as sync_requests
+
         self._credentials = credentials
-        self._sync_request: Optional[google.auth.transport.Request] = None
+        # Synchronous credentials cannot use the asynchronous transport of the
+        # session, so they are called with a synchronous transport instead.
+        self._sync_request = sync_requests.Request()
         # Synchronous credentials are not safe to refresh concurrently, which
         # concurrent requests would otherwise do from multiple worker threads.
         # Instead, at most one refresh is in flight and concurrent callers share it.
         self._pending_refresh: Optional["asyncio.Future[None]"] = None
-
-    def _get_sync_request(self) -> google.auth.transport.Request:
-        """Returns the synchronous transport used to call the wrapped credentials.
-
-        Synchronous credentials cannot use the asynchronous transport of the
-        session, so a synchronous transport is created on first use and reused.
-        """
-        if self._sync_request is None:
-            # Imported lazily because `requests` is an optional dependency of
-            # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
-            from google.auth.transport import requests as sync_requests
-
-            self._sync_request = sync_requests.Request()
-        return self._sync_request
 
     async def _refresh_shared(self):
         """Refreshes the wrapped credentials, joining a refresh already in flight.
@@ -154,7 +145,7 @@ class _SyncCredentialsAdapter(Credentials):
         """
         if self._pending_refresh is None or self._pending_refresh.done():
             self._pending_refresh = asyncio.ensure_future(
-                asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
+                asyncio.to_thread(self._credentials.refresh, self._sync_request)
             )
         await asyncio.shield(self._pending_refresh)
 
@@ -169,7 +160,7 @@ class _SyncCredentialsAdapter(Credentials):
             await self._refresh_shared()
         await asyncio.to_thread(
             self._credentials.before_request,
-            self._get_sync_request(),
+            self._sync_request,
             method,
             url,
             headers,
