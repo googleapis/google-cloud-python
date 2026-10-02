@@ -934,9 +934,8 @@ class AsyncResumableUploadSession:
 
         if content_type is not None:
             self._content_type = content_type
-        start_body: Union[str, bytes] = (
-            request_body if request_body is not None else self._request_body
-        )
+        if request_body is None:
+            request_body = self._request_body
 
         self._reset_transfer_state()
         progress_queue: List[UploadProgress] = []
@@ -946,7 +945,7 @@ class AsyncResumableUploadSession:
             try:
                 await self._initiate(
                     transport=sess,
-                    request_body=start_body,
+                    request_body=request_body,
                     size=computed_size,
                     progress_queue=progress_queue,
                 )
