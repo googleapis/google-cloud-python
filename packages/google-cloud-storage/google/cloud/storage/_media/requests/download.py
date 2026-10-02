@@ -14,13 +14,30 @@
 
 """Support for downloading media from Google APIs."""
 
-import http
+from __future__ import annotations
 
-import urllib3.response  # type: ignore
+import http.client
+from typing import TYPE_CHECKING, cast
+
+import urllib3.response
+from requests import Response, Session
 
 from google.cloud.storage._media import _download, _helpers
 from google.cloud.storage._media.requests import _request_helpers
 from google.cloud.storage.exceptions import DataCorruption
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from urllib3.response import ContentDecoder, HTTPResponse
+
+    from google.cloud.storage._types import (
+        Checksum,
+        SeekableReadable,
+        Timeout,
+        Writable,
+    )
+
 
 _CHECKSUM_MISMATCH = """\
 Checksum mismatch while downloading:
@@ -50,7 +67,7 @@ If the download was incomplete, please check the network connection and restart 
 """
 
 
-class Download(_request_helpers.RequestsMixin, _download.Download):
+class Download(_request_helpers.RequestsMixin, _download.Download[Session, Response]):
     """Helper to manage downloading a resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -93,7 +110,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         end (Optional[int]): The last byte in a range to be downloaded.
     """
 
-    def _write_to_stream(self, response):
+    def _write_to_stream(self, response: Response) -> None:
         """Write response body to a write-able stream.
 
         .. note:
@@ -124,7 +141,9 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             self._checksum_object = checksum_object
         else:
             expected_checksum = self._expected_checksum
-            checksum_object = self._checksum_object
+            checksum_object = cast(
+                "Checksum | _helpers._DoNothingHash", self._checksum_object
+            )
 
         with response:
             # NOTE: In order to handle compressed streams gracefully, we try
@@ -137,17 +156,17 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             # download the entire file in one go.
             if self.single_shot_download:
                 content = response.raw.read(decode_content=True)
-                self._stream.write(content)
+                cast("Writable", self._stream).write(content)
                 self._bytes_downloaded += len(content)
                 local_checksum_object.update(content)
-                response._content_consumed = True
+                response._content_consumed = True  # type: ignore[attr-defined]
             else:
                 body_iter = response.iter_content(
                     chunk_size=_request_helpers._SINGLE_GET_CHUNK_SIZE,
                     decode_unicode=False,
                 )
                 for chunk in body_iter:
-                    self._stream.write(chunk)
+                    cast("Writable", self._stream).write(chunk)
                     self._bytes_downloaded += len(chunk)
                     local_checksum_object.update(chunk)
 
@@ -156,7 +175,9 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             expected_checksum is not None
             and response.status_code != http.client.PARTIAL_CONTENT
         ):
-            actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
+            actual_checksum = _helpers.prepare_checksum_digest(
+                cast("Checksum", checksum_object).digest()
+            )
             if actual_checksum != expected_checksum:
                 headers = self._get_headers(response)
                 x_goog_encoding = headers.get("x-goog-stored-content-encoding")
@@ -178,19 +199,19 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
                         self.media_url,
                         expected_checksum,
                         actual_checksum,
-                        checksum_type=self.checksum.upper(),
+                        checksum_type=cast(str, self.checksum).upper(),
                     )
                     msg += content_length_msg
                     raise DataCorruption(response, msg)
 
     def consume(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Consume the resource to be downloaded.
 
         If a ``stream`` is attached to this download, then the downloaded
@@ -218,7 +239,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         """
         method, _, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        request_kwargs = {
+        request_kwargs: dict[str, Any] = {
             "data": payload,
             "headers": headers,
             "timeout": timeout,
@@ -231,7 +252,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             self._object_generation = _helpers._get_generation_from_url(self.media_url)
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             url = self.media_url
 
             # To restart an interrupted download, read from the offset of last byte
@@ -267,7 +288,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             if self._stream is not None:
                 if _helpers._is_decompressive_transcoding(result, self._get_headers):
                     try:
-                        self._stream.seek(0)
+                        cast("SeekableReadable", self._stream).seek(0)
                     except Exception as exc:
                         msg = _STREAM_SEEK_ERROR.format(url)
                         raise Exception(msg) from exc
@@ -280,7 +301,9 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
+class RawDownload(
+    _request_helpers.RawRequestsMixin, _download.Download[Session, Response]
+):
     """Helper to manage downloading a raw resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -323,7 +346,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
         end (Optional[int]): The last byte in a range to be downloaded.
     """
 
-    def _write_to_stream(self, response):
+    def _write_to_stream(self, response: Response) -> None:
         """Write response body to a write-able stream.
 
         .. note:
@@ -353,14 +376,16 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             self._checksum_object = checksum_object
         else:
             expected_checksum = self._expected_checksum
-            checksum_object = self._checksum_object
+            checksum_object = cast(
+                "Checksum | _helpers._DoNothingHash", self._checksum_object
+            )
 
         with response:
             # This is useful for smaller files, or when the user wants to
             # download the entire file in one go.
             if self.single_shot_download:
                 content = response.raw.read()
-                self._stream.write(content)
+                cast("Writable", self._stream).write(content)
                 self._bytes_downloaded += len(content)
                 checksum_object.update(content)
             else:
@@ -368,17 +393,19 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                     _request_helpers._SINGLE_GET_CHUNK_SIZE, decode_content=False
                 )
                 for chunk in body_iter:
-                    self._stream.write(chunk)
+                    cast("Writable", self._stream).write(chunk)
                     self._bytes_downloaded += len(chunk)
                     checksum_object.update(chunk)
-            response._content_consumed = True
+            response._content_consumed = True  # type: ignore[attr-defined]
 
         # Don't validate the checksum for partial responses.
         if (
             expected_checksum is not None
             and response.status_code != http.client.PARTIAL_CONTENT
         ):
-            actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
+            actual_checksum = _helpers.prepare_checksum_digest(
+                cast("Checksum", checksum_object).digest()
+            )
 
             if actual_checksum != expected_checksum:
                 headers = self._get_headers(response)
@@ -401,19 +428,19 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                         self.media_url,
                         expected_checksum,
                         actual_checksum,
-                        checksum_type=self.checksum.upper(),
+                        checksum_type=cast(str, self.checksum).upper(),
                     )
                     msg += content_length_msg
                     raise DataCorruption(response, msg)
 
     def consume(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Consume the resource to be downloaded.
 
         If a ``stream`` is attached to this download, then the downloaded
@@ -441,7 +468,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
         """
         method, _, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        request_kwargs = {
+        request_kwargs: dict[str, Any] = {
             "data": payload,
             "headers": headers,
             "timeout": timeout,
@@ -453,7 +480,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             self._object_generation = _helpers._get_generation_from_url(self.media_url)
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             url = self.media_url
 
             # To restart an interrupted download, read from the offset of last byte
@@ -489,7 +516,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             if self._stream is not None:
                 if _helpers._is_decompressive_transcoding(result, self._get_headers):
                     try:
-                        self._stream.seek(0)
+                        cast("SeekableReadable", self._stream).seek(0)
                     except Exception as exc:
                         msg = _STREAM_SEEK_ERROR.format(url)
                         raise Exception(msg) from exc
@@ -502,7 +529,9 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload):
+class ChunkedDownload(
+    _request_helpers.RequestsMixin, _download.ChunkedDownload[Session, Response]
+):
     """Download a resource in chunks from a Google API.
 
     Args:
@@ -540,12 +569,12 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
 
     def consume_next_chunk(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Consume the next chunk of the resource to be downloaded.
 
         Args:
@@ -568,7 +597,7 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
         method, url, payload, headers = self._prepare_request()
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             # NOTE: We assume "payload is None" but pass it along anyway.
             result = transport.request(
                 method,
@@ -583,7 +612,9 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDownload):
+class RawChunkedDownload(
+    _request_helpers.RawRequestsMixin, _download.ChunkedDownload[Session, Response]
+):
     """Download a raw resource in chunks from a Google API.
 
     Args:
@@ -621,12 +652,12 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
 
     def consume_next_chunk(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Consume the next chunk of the resource to be downloaded.
 
         Args:
@@ -649,7 +680,7 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
         method, url, payload, headers = self._prepare_request()
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             # NOTE: We assume "payload is None" but pass it along anyway.
             result = transport.request(
                 method,
@@ -665,7 +696,9 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-def _add_decoder(response_raw, checksum):
+def _add_decoder(
+    response_raw: HTTPResponse, checksum: Checksum | _helpers._DoNothingHash
+) -> Checksum | _helpers._DoNothingHash:
     """Patch the ``_decoder`` on a ``urllib3`` response.
 
     This is so that we can intercept the compressed bytes before they are
@@ -689,8 +722,8 @@ def _add_decoder(response_raw, checksum):
         response_raw._decoder = _GzipDecoder(checksum)
         return _helpers._DoNothingHash()
     # Only activate if brotli is installed
-    elif encoding == "br" and _BrotliDecoder:  # type: ignore
-        response_raw._decoder = _BrotliDecoder(checksum)
+    elif encoding == "br" and _BrotliDecoder:  # type: ignore[truthy-function]
+        response_raw._decoder = cast("ContentDecoder", _BrotliDecoder(checksum))
         return _helpers._DoNothingHash()
     else:
         return checksum
@@ -707,11 +740,11 @@ class _GzipDecoder(urllib3.response.GzipDecoder):
             A checksum which will be updated with compressed bytes.
     """
 
-    def __init__(self, checksum):
+    def __init__(self, checksum: Checksum | _helpers._DoNothingHash) -> None:
         super().__init__()
         self._checksum = checksum
 
-    def decompress(self, data, max_length=-1):
+    def decompress(self, data: bytes, max_length: int = -1) -> bytes:
         """Decompress the bytes.
 
         Args:
@@ -747,11 +780,11 @@ if hasattr(urllib3.response, "BrotliDecoder"):
                 A checksum which will be updated with compressed bytes.
         """
 
-        def __init__(self, checksum):
+        def __init__(self, checksum: Checksum | _helpers._DoNothingHash) -> None:
             self._decoder = urllib3.response.BrotliDecoder()
             self._checksum = checksum
 
-        def decompress(self, data, max_length=-1):
+        def decompress(self, data: bytes, max_length: int = -1) -> bytes:
             """Decompress the bytes.
 
             Args:
@@ -767,7 +800,7 @@ if hasattr(urllib3.response, "BrotliDecoder"):
                 # Fallback for urllib3 < 2.6.0 which lacks `max_length` support.
                 return self._decoder.decompress(data)
 
-        def flush(self):
+        def flush(self) -> bytes:
             return self._decoder.flush()
 
         @property
@@ -775,4 +808,4 @@ if hasattr(urllib3.response, "BrotliDecoder"):
             return self._decoder.has_unconsumed_tail
 
 else:  # pragma: NO COVER
-    _BrotliDecoder = None  # type: ignore # pragma: NO COVER
+    _BrotliDecoder = None  # type: ignore[misc, assignment] # pragma: NO COVER

@@ -265,16 +265,16 @@ def policy_document(client):
     )
 
     upload_form = (
-        '<form action="http://{bucket_name}.storage.googleapis.com"'
+        f'<form action="http://{bucket.name}.storage.googleapis.com"'
         '   method="post" enctype="multipart/form-data">'
         '<input type="text" name="key" value="my-test-key">'
-        '<input type="hidden" name="bucket" value="{bucket_name}">'
+        f'<input type="hidden" name="bucket" value="{bucket.name}">'
         '<input type="hidden" name="acl" value="public-read">'
         '<input name="file" type="file">'
         '<input type="submit" value="Upload">'
-        "{policy_fields}"
+        f"{policy_fields}"
         "</form>"
-    ).format(bucket_name=bucket.name, policy_fields=policy_fields)
+    )
 
     print(upload_form)
     # END policy_document
@@ -287,8 +287,7 @@ def _line_no(func):
 
 def _find_examples():
     funcs = [obj for obj in globals().values() if getattr(obj, "_snippet", False)]
-    for func in sorted(funcs, key=_line_no):
-        yield func
+    yield from sorted(funcs, key=_line_no)
 
 
 def _name_and_doc(func):

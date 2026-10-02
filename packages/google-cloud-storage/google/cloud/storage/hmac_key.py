@@ -17,6 +17,10 @@
 See [HMAC keys documentation](https://cloud.google.com/storage/docs/authentication/hmackeys)
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
 
@@ -24,8 +28,18 @@ from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY, DEFAULT_RETRY_IF_ETAG_IN_JSON
 
+if TYPE_CHECKING:
+    from datetime import datetime as Datetime
+    from typing import Any
 
-class HMACKeyMetadata(object):
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import Timeout
+    from google.cloud.storage.client import Client
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
+
+class HMACKeyMetadata:
     """Metadata about an HMAC service account key withn Cloud Storage.
 
     :type client: :class:`~google.cloud.stoage.client.Client`
@@ -54,9 +68,15 @@ class HMACKeyMetadata(object):
 
     _SETTABLE_STATES = (ACTIVE_STATE, INACTIVE_STATE)
 
-    def __init__(self, client, access_id=None, project_id=None, user_project=None):
+    def __init__(
+        self,
+        client: Client,
+        access_id: str | None = None,
+        project_id: str | None = None,
+        user_project: str | None = None,
+    ) -> None:
         self._client = client
-        self._properties = {}
+        self._properties: dict[str, Any] = {}
 
         if access_id is not None:
             self._properties["accessId"] = access_id
@@ -66,17 +86,17 @@ class HMACKeyMetadata(object):
 
         self._user_project = user_project
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, self.__class__):
             return NotImplemented
 
         return self._client == other._client and self.access_id == other.access_id
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self._client) + hash(self.access_id)
 
     @property
-    def access_id(self):
+    def access_id(self) -> str | None:
         """Access ID of the key.
 
         :rtype: str or None
@@ -85,7 +105,7 @@ class HMACKeyMetadata(object):
         return self._properties.get("accessId")
 
     @property
-    def etag(self):
+    def etag(self) -> str | None:
         """ETag identifying the version of the key metadata.
 
         :rtype: str or None
@@ -94,7 +114,7 @@ class HMACKeyMetadata(object):
         return self._properties.get("etag")
 
     @property
-    def id(self):
+    def id(self) -> str | None:
         """ID of the key, including the Project ID and the Access ID.
 
         :rtype: str or None
@@ -103,7 +123,7 @@ class HMACKeyMetadata(object):
         return self._properties.get("id")
 
     @property
-    def project(self):
+    def project(self) -> str | None:
         """Project ID associated with the key.
 
         :rtype: str or None
@@ -112,7 +132,7 @@ class HMACKeyMetadata(object):
         return self._properties.get("projectId")
 
     @property
-    def service_account_email(self):
+    def service_account_email(self) -> str | None:
         """Service account e-mail address associated with the key.
 
         :rtype: str or None
@@ -121,7 +141,7 @@ class HMACKeyMetadata(object):
         return self._properties.get("serviceAccountEmail")
 
     @property
-    def state(self):
+    def state(self) -> str | None:
         """Get / set key's state.
 
         One of:
@@ -135,11 +155,11 @@ class HMACKeyMetadata(object):
         return self._properties.get("state")
 
     @state.setter
-    def state(self, value):
+    def state(self, value: str | None) -> None:
         self._properties["state"] = value
 
     @property
-    def time_created(self):
+    def time_created(self) -> Datetime | None:
         """Retrieve the timestamp at which the HMAC key was created.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -150,9 +170,10 @@ class HMACKeyMetadata(object):
         value = self._properties.get("timeCreated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def updated(self):
+    def updated(self) -> Datetime | None:
         """Retrieve the timestamp at which the HMAC key was created.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -163,9 +184,10 @@ class HMACKeyMetadata(object):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Resource path for the metadata's key."""
 
         if self.access_id is None:
@@ -178,7 +200,7 @@ class HMACKeyMetadata(object):
         return f"/projects/{project}/hmacKeys/{self.access_id}"
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:
         """Project ID to be billed for API requests made via this bucket.
 
         This property is currently ignored by the server.
@@ -187,7 +209,11 @@ class HMACKeyMetadata(object):
         """
         return self._user_project
 
-    def exists(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def exists(
+        self,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> bool:
         """Determine whether or not the key for this metadata exists.
 
         :type timeout: float or tuple
@@ -220,7 +246,11 @@ class HMACKeyMetadata(object):
             else:
                 return True
 
-    def reload(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def reload(
+        self,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Reload properties from Cloud Storage.
 
         :type timeout: float or tuple
@@ -248,7 +278,11 @@ class HMACKeyMetadata(object):
                 retry=retry,
             )
 
-    def update(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY_IF_ETAG_IN_JSON):
+    def update(
+        self,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY_IF_ETAG_IN_JSON,
+    ) -> None:
         """Save writable properties to Cloud Storage.
 
         :type timeout: float or tuple
@@ -277,7 +311,11 @@ class HMACKeyMetadata(object):
                 retry=retry,
             )
 
-    def delete(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def delete(
+        self,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Delete the key from Cloud Storage.
 
         :type timeout: float or tuple

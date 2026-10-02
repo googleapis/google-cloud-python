@@ -1,5 +1,3 @@
-# coding=utf-8
-
 # Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +15,8 @@
 import io
 import string
 import unittest
+from unittest import mock
 
-import mock
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 
 from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
@@ -110,6 +108,20 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
             start=28, end=None, checksum=None, retry=DEFAULT_RETRY, **download_kwargs
         )
 
+        reader.close()
+
+    def test_read_none_with_buffered_data(self):
+        blob = mock.Mock()
+        blob.download_as_bytes.side_effect = (
+            lambda start=0, end=None, **_: TEST_BINARY_DATA[start:end]
+        )
+        reader = self._make_blob_reader(blob, chunk_size=8)
+
+        self.assertEqual(reader.read(1), TEST_BINARY_DATA[:1])
+        self.assertEqual(reader.read(None), TEST_BINARY_DATA[1:])
+        blob.download_as_bytes.assert_called_with(
+            start=8, end=None, checksum=None, retry=DEFAULT_RETRY
+        )
         reader.close()
 
     def test_read_with_raw_download(self):

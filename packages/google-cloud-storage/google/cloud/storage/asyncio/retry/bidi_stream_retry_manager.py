@@ -12,24 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 import logging
-from typing import Any, AsyncIterator, Callable
+from collections.abc import AsyncIterator, Awaitable, Callable
+from typing import Generic, cast
+
+from google.api_core.retry_async import AsyncRetry
 
 from google.cloud.storage.asyncio.retry.base_strategy import (
     _BaseResumptionStrategy,
+    _Request,
+    _Response,
+    _State,
 )
 
 logger = logging.getLogger(__name__)
 
 
-class _BidiStreamRetryManager:
+class _BidiStreamRetryManager(Generic[_State, _Request, _Response]):
     """Manages the generic retry loop for a bidi streaming operation."""
 
     def __init__(
         self,
-        strategy: _BaseResumptionStrategy,
-        send_and_recv: Callable[..., AsyncIterator[Any]],
-    ):
+        strategy: _BaseResumptionStrategy[_State, _Request, _Response],
+        send_and_recv: Callable[[list[_Request], _State], AsyncIterator[_Response]],
+    ) -> None:
         """Initializes the retry manager.
         Args:
             strategy: The strategy for managing the state of a specific
@@ -39,7 +48,7 @@ class _BidiStreamRetryManager:
         self._strategy = strategy
         self._send_and_recv = send_and_recv
 
-    async def execute(self, initial_state: Any, retry_policy):
+    async def execute(self, initial_state: _State, retry_policy: AsyncRetry) -> None:
         """
         Executes the bidi operation with the configured retry policy.
         Args:
@@ -49,7 +58,7 @@ class _BidiStreamRetryManager:
         """
         state = initial_state
 
-        async def attempt():
+        async def attempt() -> None:
             requests = self._strategy.generate_requests(state)
             stream = self._send_and_recv(requests, state)
             try:
@@ -64,6 +73,6 @@ class _BidiStreamRetryManager:
                     await self._strategy.recover_state_on_failure(e, state)
                 raise e
 
-        wrapped_attempt = retry_policy(attempt)
+        wrapped_attempt = cast(Callable[[], Awaitable[None]], retry_policy(attempt))
 
         await wrapped_attempt()

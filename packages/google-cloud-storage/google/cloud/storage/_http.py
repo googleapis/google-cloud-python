@@ -14,9 +14,12 @@
 
 """Create / interact with Google Cloud Storage connections."""
 
+from __future__ import annotations
+
 import functools
 import logging
 import re
+from typing import TYPE_CHECKING
 
 from google.api_core import exceptions as api_exceptions
 from google.cloud.exceptions import NotFound
@@ -29,6 +32,14 @@ from google.cloud.storage._opentelemetry_tracing import (
     create_trace_span,
     enable_otel_traces,
 )
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from google.api_core.client_info import ClientInfo
+
+    from google.cloud.storage.client import Client
+
 
 logger = logging.getLogger(__name__)
 
@@ -56,8 +67,13 @@ class Connection(_http.JSONConnection):
     DEFAULT_API_ENDPOINT = _helpers._get_default_storage_base_url()
     DEFAULT_API_MTLS_ENDPOINT = "https://storage.mtls.googleapis.com"
 
-    def __init__(self, client, client_info=None, api_endpoint=None):
-        super(Connection, self).__init__(client, client_info)
+    def __init__(
+        self,
+        client: Client,
+        client_info: ClientInfo | None = None,
+        api_endpoint: str | None = None,
+    ) -> None:
+        super().__init__(client, client_info)
         self.API_BASE_URL = api_endpoint or self.DEFAULT_API_ENDPOINT
         self.API_BASE_MTLS_URL = self.DEFAULT_API_MTLS_ENDPOINT
         self.ALLOW_AUTO_SWITCH_TO_MTLS_URL = api_endpoint is None
@@ -76,7 +92,7 @@ class Connection(_http.JSONConnection):
     API_URL_TEMPLATE = "{api_base_url}/storage/{api_version}{path}"
     """A template for the URL of a particular API call."""
 
-    def api_request(self, *args, **kwargs):
+    def api_request(self, *args: Any, **kwargs: Any) -> Any:
         retry = kwargs.pop("retry", None)
         invocation_id = _helpers._get_invocation_id()
         kwargs["extra_api_info"] = invocation_id
@@ -103,7 +119,7 @@ class Connection(_http.JSONConnection):
                 except Exception as e:
                     logger.debug(f"Failed cache.get_or_queue_fetch in api_request: {e}")
 
-        call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
+        call = functools.partial(super().api_request, *args, **kwargs)
         with create_trace_span(
             name="Storage.Connection.api_request",
             attributes=span_attributes,

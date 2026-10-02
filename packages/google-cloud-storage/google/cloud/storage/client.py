@@ -14,6 +14,8 @@
 
 """Client for interacting with the Google Cloud Storage API."""
 
+from __future__ import annotations
+
 import base64
 import binascii
 import collections
@@ -22,10 +24,15 @@ import functools
 import json
 import os
 import warnings
+from typing import TYPE_CHECKING, cast
 
 import google.api_core.client_options
-from google.api_core import exceptions as api_exceptions
-from google.api_core import page_iterator
+from google.api_core import (
+    exceptions as api_exceptions,
+)
+from google.api_core import (
+    page_iterator,
+)
 from google.auth.credentials import AnonymousCredentials
 from google.auth.transport import mtls
 from google.cloud._helpers import _LocalStack
@@ -63,10 +70,38 @@ from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 from google.cloud.storage.retry import DEFAULT_RETRY
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from datetime import datetime as Datetime
+    from datetime import timedelta as Timedelta
+    from types import TracebackType
+    from typing import Any
+
+    from google.api_core.client_info import ClientInfo
+    from google.api_core.client_options import ClientOptions
+    from google.api_core.retry import Retry
+    from google.auth.credentials import Credentials, Signing
+    from requests import Session
+
+    from google.cloud.storage._helpers import _PropertyMixin
+    from google.cloud.storage._types import (
+        _T,
+        Timeout,
+        Writable,
+        _StorageIterator,
+        _StoragePage,
+    )
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
+
 _marker = object()
 
 
-def _buckets_page_start(iterator, page, response):
+def _buckets_page_start(
+    iterator: _StorageIterator[Bucket],
+    page: _StoragePage[Bucket],
+    response: dict[str, Any],
+) -> None:
     """Grab unreachable buckets after a :class:`~google.cloud.iterator.Page` started."""
     unreachable = response.get("unreachable", [])
     if not isinstance(unreachable, list):
@@ -135,19 +170,22 @@ class Client(ClientWithProject):
     )
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
+    # Storage supports anonymous clients without a project.
+    project: str | None  # type: ignore[assignment]
+
     def __init__(
         self,
-        project=_marker,
-        credentials=None,
-        _http=None,
-        client_info=None,
-        client_options=None,
-        use_auth_w_custom_endpoint=True,
-        extra_headers={},
+        project: str | None = cast("str | None", _marker),
+        credentials: Credentials | None = None,
+        _http: Session | None = None,
+        client_info: ClientInfo | None = None,
+        client_options: ClientOptions | dict[str, Any] | None = None,
+        use_auth_w_custom_endpoint: bool = True,
+        extra_headers: dict[str, str] = {},
         *,
-        api_key=None,
-    ):
-        self._base_connection = None
+        api_key: str | None = None,
+    ) -> None:
+        self._base_connection: Connection | None = None
 
         if project is None:
             no_project = True
@@ -164,7 +202,7 @@ class Client(ClientWithProject):
         self._initial_client_options = client_options
         self._extra_headers = extra_headers
 
-        connection_kw_args = {"client_info": client_info}
+        connection_kw_args: dict[str, Any] = {"client_info": client_info}
 
         # api_key should set client_options.api_key. Set it here whether
         # client_options was specified as a dict, as a ClientOptions object, or
@@ -175,7 +213,7 @@ class Client(ClientWithProject):
             else:
                 if not client_options:
                     client_options = {}
-                client_options["api_key"] = api_key
+                cast("dict[str, Any]", client_options)["api_key"] = api_key
 
         if client_options:
             if isinstance(client_options, dict):
@@ -183,8 +221,10 @@ class Client(ClientWithProject):
                     client_options
                 )
 
+        client_options = cast("ClientOptions | None", client_options)
+
         if client_options and client_options.universe_domain:
-            self._universe_domain = client_options.universe_domain
+            self._universe_domain: str | None = client_options.universe_domain
         else:
             self._universe_domain = None
 
@@ -264,7 +304,7 @@ class Client(ClientWithProject):
                     no_project = True
                     project = "<none>"
 
-        super(Client, self).__init__(
+        super().__init__(
             project=project,
             credentials=credentials,
             client_options=client_options,
@@ -275,13 +315,10 @@ class Client(ClientWithProject):
         # universe domain of the client.
         if self._credentials.universe_domain != self.universe_domain:
             raise ValueError(
-                "The configured universe domain ({client_ud}) does not match "
-                "the universe domain found in the credentials ({cred_ud}). If "
+                f"The configured universe domain ({self.universe_domain}) does not match "
+                f"the universe domain found in the credentials ({self._credentials.universe_domain}). If "
                 "you haven't configured the universe domain explicitly, "
-                "`googleapis.com` is the default.".format(
-                    client_ud=self.universe_domain,
-                    cred_ud=self._credentials.universe_domain,
-                )
+                "`googleapis.com` is the default."
             )
 
         if no_project:
@@ -294,21 +331,26 @@ class Client(ClientWithProject):
         self._batch_stack = _LocalStack()
         self._bucket_metadata_cache = BucketMetadataCache(self)
 
-    def close(self):
+    def close(self) -> None:
         """Close the client and clear any cached metadata or active connections."""
         if hasattr(self, "_bucket_metadata_cache") and self._bucket_metadata_cache:
             self._bucket_metadata_cache.clear()
         if hasattr(self._http, "close"):
             self._http.close()
 
-    def __enter__(self):
+    def __enter__(self) -> Client:
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         self.close()
 
     @classmethod
-    def create_anonymous_client(cls):
+    def create_anonymous_client(cls) -> Client:
         """Factory: return client with anonymous credentials.
 
         .. note::
@@ -324,14 +366,14 @@ class Client(ClientWithProject):
         return client
 
     @property
-    def universe_domain(self):
+    def universe_domain(self) -> str:
         return self._universe_domain or _DEFAULT_UNIVERSE_DOMAIN
 
     @property
-    def api_endpoint(self):
-        return self._connection.API_BASE_URL
+    def api_endpoint(self) -> str:
+        return cast(str, self._connection.API_BASE_URL)
 
-    def update_user_agent(self, user_agent):
+    def update_user_agent(self, user_agent: str) -> None:
         """Update the user-agent string for this client.
 
         :type user_agent: str
@@ -344,7 +386,7 @@ class Client(ClientWithProject):
             self._connection.user_agent = f"{user_agent} {existing_user_agent}"
 
     @property
-    def _connection(self):
+    def _connection(self) -> Connection:
         """Get connection or batch on the client.
 
         :rtype: :class:`google.cloud.storage._http.Connection`
@@ -354,10 +396,10 @@ class Client(ClientWithProject):
         if self.current_batch is not None:
             return self.current_batch
         else:
-            return self._base_connection
+            return cast(Connection, self._base_connection)
 
     @_connection.setter
-    def _connection(self, value):
+    def _connection(self, value: Connection) -> None:
         """Set connection on the client.
 
         Intended to be used by constructor (since the base class calls)
@@ -373,7 +415,7 @@ class Client(ClientWithProject):
             raise ValueError("Connection already set on client")
         self._base_connection = value
 
-    def _push_batch(self, batch):
+    def _push_batch(self, batch: Batch) -> None:
         """Push a batch onto our stack.
 
         "Protected", intended for use by batch context mgrs.
@@ -383,7 +425,7 @@ class Client(ClientWithProject):
         """
         self._batch_stack.push(batch)
 
-    def _pop_batch(self):
+    def _pop_batch(self) -> Batch:
         """Pop a batch from our stack.
 
         "Protected", intended for use by batch context mgrs.
@@ -395,7 +437,7 @@ class Client(ClientWithProject):
         return self._batch_stack.pop()
 
     @property
-    def current_batch(self):
+    def current_batch(self) -> Batch | None:
         """Currently-active batch.
 
         :rtype: :class:`google.cloud.storage.batch.Batch` or ``NoneType`` (if
@@ -405,8 +447,11 @@ class Client(ClientWithProject):
         return self._batch_stack.top
 
     def get_service_account_email(
-        self, project=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
-    ):
+        self,
+        project: str | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> str:
         """Get the email address of the project's GCS service account
 
         :type project: str
@@ -433,7 +478,12 @@ class Client(ClientWithProject):
             api_response = self._get_resource(path, timeout=timeout, retry=retry)
             return api_response["email_address"]
 
-    def bucket(self, bucket_name, user_project=None, generation=None):
+    def bucket(
+        self,
+        bucket_name: str,
+        user_project: str | None = None,
+        generation: int | None = None,
+    ) -> Bucket:
         """Factory constructor for bucket object.
 
         .. note::
@@ -461,7 +511,7 @@ class Client(ClientWithProject):
             generation=generation,
         )
 
-    def batch(self, raise_exception=True):
+    def batch(self, raise_exception: bool = True) -> Batch:
         """Factory constructor for batch object.
 
         .. note::
@@ -482,13 +532,13 @@ class Client(ClientWithProject):
 
     def _get_resource(
         self,
-        path,
-        query_params=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        _target_object=None,
-    ):
+        path: str,
+        query_params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        _target_object: _PropertyMixin | None = None,
+    ) -> dict[str, Any]:
         """Helper for bucket / blob methods making API 'GET' calls.
 
         Args:
@@ -548,16 +598,18 @@ class Client(ClientWithProject):
 
     def _list_resource(
         self,
-        path,
-        item_to_value,
-        page_token=None,
-        max_results=None,
-        extra_params=None,
-        page_start=page_iterator._do_nothing_page_start,
-        page_size=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        path: str,
+        item_to_value: Callable[[_StorageIterator[_T], dict[str, Any]], _T],
+        page_token: str | None = None,
+        max_results: int | None = None,
+        extra_params: dict[str, Any] | None = None,
+        page_start: Callable[
+            [_StorageIterator[_T], _StoragePage[_T], dict[str, Any]], None
+        ] = page_iterator._do_nothing_page_start,
+        page_size: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> _StorageIterator[_T]:
         kwargs = {
             "method": "GET",
             "path": path,
@@ -572,28 +624,31 @@ class Client(ClientWithProject):
             api_request = functools.partial(
                 self._connection.api_request, timeout=timeout, retry=retry
             )
-        return page_iterator.HTTPIterator(
-            client=self,
-            api_request=api_request,
-            path=path,
-            item_to_value=item_to_value,
-            page_token=page_token,
-            max_results=max_results,
-            extra_params=extra_params,
-            page_start=page_start,
-            page_size=page_size,
+        return cast(
+            "_StorageIterator[_T]",
+            page_iterator.HTTPIterator(
+                client=self,
+                api_request=api_request,
+                path=path,
+                item_to_value=item_to_value,
+                page_token=page_token,
+                max_results=max_results,
+                extra_params=extra_params,
+                page_start=page_start,
+                page_size=page_size,
+            ),
         )
 
     def _patch_resource(
         self,
-        path,
-        data,
-        query_params=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=None,
-        _target_object=None,
-    ):
+        path: str,
+        data: dict[str, Any],
+        query_params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = None,
+        _target_object: _PropertyMixin | None = None,
+    ) -> dict[str, Any]:
         """Helper for bucket / blob methods making API 'PATCH' calls.
 
         Args:
@@ -657,14 +712,14 @@ class Client(ClientWithProject):
 
     def _put_resource(
         self,
-        path,
-        data,
-        query_params=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=None,
-        _target_object=None,
-    ):
+        path: str,
+        data: dict[str, Any],
+        query_params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = None,
+        _target_object: _PropertyMixin | None = None,
+    ) -> dict[str, Any]:
         """Helper for bucket / blob methods making API 'PUT' calls.
 
         Args:
@@ -728,14 +783,14 @@ class Client(ClientWithProject):
 
     def _post_resource(
         self,
-        path,
-        data,
-        query_params=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=None,
-        _target_object=None,
-    ):
+        path: str,
+        data: dict[str, Any] | None,
+        query_params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = None,
+        _target_object: _PropertyMixin | None = None,
+    ) -> dict[str, Any]:
         """Helper for bucket / blob methods making API 'POST' calls.
 
         Args:
@@ -800,13 +855,13 @@ class Client(ClientWithProject):
 
     def _delete_resource(
         self,
-        path,
-        query_params=None,
-        headers=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        _target_object=None,
-    ):
+        path: str,
+        query_params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        _target_object: _PropertyMixin | None = None,
+    ) -> dict[str, Any]:
         """Helper for bucket / blob methods making API 'DELETE' calls.
 
         Args:
@@ -864,7 +919,9 @@ class Client(ClientWithProject):
             _target_object=_target_object,
         )
 
-    def _bucket_arg_to_bucket(self, bucket_or_name, generation=None):
+    def _bucket_arg_to_bucket(
+        self, bucket_or_name: Bucket | str, generation: int | None = None
+    ) -> Bucket:
         """Helper to return given bucket or create new by name.
 
         Args:
@@ -898,15 +955,15 @@ class Client(ClientWithProject):
 
     def get_bucket(
         self,
-        bucket_or_name,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
+        bucket_or_name: Bucket | str,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
         *,
-        generation=None,
-        soft_deleted=None,
-    ):
+        generation: int | None = None,
+        soft_deleted: bool | None = None,
+    ) -> Bucket:
         """Retrieve a bucket via a GET request.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/get) and a [code sample](https://cloud.google.com/storage/docs/samples/storage-get-bucket-metadata#storage_get_bucket_metadata-python).
@@ -968,7 +1025,9 @@ class Client(ClientWithProject):
                 If the bucket is not found.
         """
         bucket_name = (
-            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+            bucket_or_name.name
+            if isinstance(bucket_or_name, Bucket)
+            else bucket_or_name
         )
         with create_trace_span_helper(
             self, bucket_name, name="Storage.Client.getBucket"
@@ -990,7 +1049,7 @@ class Client(ClientWithProject):
                 ):
                     try:
                         self._bucket_metadata_cache.update_cache(
-                            bucket_name,
+                            cast(str, bucket_name),
                             f"//storage.googleapis.com/projects/_/buckets/{bucket_name}",
                             "global",
                         )
@@ -1007,12 +1066,12 @@ class Client(ClientWithProject):
 
     def lookup_bucket(
         self,
-        bucket_name,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        bucket_name: str,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> Bucket | None:
         """Get a bucket by name, returning None if not found.
 
         You can use this if you would rather check for a None value
@@ -1080,18 +1139,18 @@ class Client(ClientWithProject):
 
     def create_bucket(
         self,
-        bucket_or_name,
-        requester_pays=None,
-        project=None,
-        user_project=None,
-        location=None,
-        data_locations=None,
-        predefined_acl=None,
-        predefined_default_object_acl=None,
-        enable_object_retention=False,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        bucket_or_name: Bucket | str,
+        requester_pays: bool | None = None,
+        project: str | None = None,
+        user_project: str | None = None,
+        location: str | None = None,
+        data_locations: list[str] | None = None,
+        predefined_acl: str | None = None,
+        predefined_default_object_acl: str | None = None,
+        enable_object_retention: bool = False,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> Bucket:
         """Create a new bucket via a POST request.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/insert) and a [code sample](https://cloud.google.com/storage/docs/samples/storage-create-bucket#storage_create_bucket-python).
@@ -1160,7 +1219,7 @@ class Client(ClientWithProject):
         """
         with create_trace_span(name="Storage.Client.createBucket"):
             bucket = self._bucket_arg_to_bucket(bucket_or_name)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if project is None:
                 project = self.project
@@ -1203,7 +1262,9 @@ class Client(ClientWithProject):
             if enable_object_retention:
                 query_params["enableObjectRetention"] = enable_object_retention
 
-            properties = {key: bucket._properties[key] for key in bucket._changes}
+            properties: dict[str, Any] = {
+                key: bucket._properties[key] for key in bucket._changes
+            }
             properties["name"] = bucket.name
 
             if location is not None:
@@ -1231,22 +1292,22 @@ class Client(ClientWithProject):
 
     def download_blob_to_file(
         self,
-        blob_or_uri,
-        file_obj,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        blob_or_uri: Blob | str,
+        file_obj: Writable,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> None:
         """Download the contents of a blob object or blob URI into a file-like object.
 
         See https://cloud.google.com/storage/docs/downloading-objects
@@ -1361,25 +1422,25 @@ class Client(ClientWithProject):
 
     def list_blobs(
         self,
-        bucket_or_name,
-        max_results=None,
-        page_token=None,
-        prefix=None,
-        delimiter=None,
-        start_offset=None,
-        end_offset=None,
-        include_trailing_delimiter=None,
-        versions=None,
-        projection="noAcl",
-        fields=None,
-        page_size=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        match_glob=None,
-        include_folders_as_prefixes=None,
-        soft_deleted=None,
-        filter_=None,
-    ):
+        bucket_or_name: Bucket | str,
+        max_results: int | None = None,
+        page_token: str | None = None,
+        prefix: str | None = None,
+        delimiter: str | None = None,
+        start_offset: str | None = None,
+        end_offset: str | None = None,
+        include_trailing_delimiter: bool | None = None,
+        versions: bool | None = None,
+        projection: str = "noAcl",
+        fields: str | None = None,
+        page_size: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        match_glob: str | None = None,
+        include_folders_as_prefixes: bool | None = None,
+        soft_deleted: bool | None = None,
+        filter_: str | None = None,
+    ) -> _StorageIterator[Blob]:
         """Return an iterator used to find blobs in the bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -1501,14 +1562,16 @@ class Client(ClientWithProject):
             up to and including the requested delimiter. Duplicate entries are omitted from this list.
         """
         bucket_name = (
-            bucket_or_name.name if hasattr(bucket_or_name, "name") else bucket_or_name
+            bucket_or_name.name
+            if isinstance(bucket_or_name, Bucket)
+            else bucket_or_name
         )
         with create_trace_span_helper(
             self, bucket_name, name="Storage.Client.listBlobs"
         ):
             bucket = self._bucket_arg_to_bucket(bucket_or_name)
 
-            extra_params = {"projection": projection}
+            extra_params: dict[str, Any] = {"projection": projection}
 
             if prefix is not None:
                 extra_params["prefix"] = prefix
@@ -1564,19 +1627,19 @@ class Client(ClientWithProject):
 
     def list_buckets(
         self,
-        max_results=None,
-        page_token=None,
-        prefix=None,
-        projection="noAcl",
-        fields=None,
-        project=None,
-        page_size=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
+        max_results: int | None = None,
+        page_token: str | None = None,
+        prefix: str | None = None,
+        projection: str = "noAcl",
+        fields: str | None = None,
+        project: str | None = None,
+        page_size: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
         *,
-        soft_deleted=None,
-        return_partial_success=None,
-    ):
+        soft_deleted: bool | None = None,
+        return_partial_success: bool | None = None,
+    ) -> _StorageIterator[Bucket]:
         """Get all buckets in the project associated to the client.
 
         This will not populate the list of blobs available in each
@@ -1648,7 +1711,7 @@ class Client(ClientWithProject):
                   belonging to this project.
         """
         with create_trace_span(name="Storage.Client.listBuckets"):
-            extra_params = {}
+            extra_params: dict[str, Any] = {}
 
             if project is None:
                 project = self.project
@@ -1694,14 +1757,14 @@ class Client(ClientWithProject):
 
     def restore_bucket(
         self,
-        bucket_name,
-        generation,
-        projection="noAcl",
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        bucket_name: str,
+        generation: int,
+        projection: str = "noAcl",
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> Bucket:
         """Restores a soft-deleted bucket.
 
         :type bucket_name: str
@@ -1738,7 +1801,10 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The restored Bucket.
         """
-        query_params = {"generation": generation, "projection": projection}
+        query_params: dict[str, Any] = {
+            "generation": generation,
+            "projection": projection,
+        }
 
         _add_generation_match_parameters(
             query_params,
@@ -1759,12 +1825,12 @@ class Client(ClientWithProject):
 
     def create_hmac_key(
         self,
-        service_account_email,
-        project_id=None,
-        user_project=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=None,
-    ):
+        service_account_email: str,
+        project_id: str | None = None,
+        user_project: str | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = None,
+    ) -> tuple[HMACKeyMetadata, str]:
         """Create an HMAC key for a service account.
 
         :type service_account_email: str
@@ -1824,14 +1890,14 @@ class Client(ClientWithProject):
 
     def list_hmac_keys(
         self,
-        max_results=None,
-        service_account_email=None,
-        show_deleted_keys=None,
-        project_id=None,
-        user_project=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        max_results: int | None = None,
+        service_account_email: str | None = None,
+        show_deleted_keys: bool | None = None,
+        project_id: str | None = None,
+        user_project: str | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> _StorageIterator[HMACKeyMetadata]:
         """List HMAC keys for a project.
 
         :type max_results: int
@@ -1872,7 +1938,7 @@ class Client(ClientWithProject):
                 project_id = self.project
 
             path = f"/projects/{project_id}/hmacKeys"
-            extra_params = {}
+            extra_params: dict[str, Any] = {}
 
             if service_account_email is not None:
                 extra_params["serviceAccountEmail"] = service_account_email
@@ -1893,8 +1959,12 @@ class Client(ClientWithProject):
             )
 
     def get_hmac_key_metadata(
-        self, access_id, project_id=None, user_project=None, timeout=_DEFAULT_TIMEOUT
-    ):
+        self,
+        access_id: str,
+        project_id: str | None = None,
+        user_project: str | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+    ) -> HMACKeyMetadata:
         """Return a metadata instance for the given HMAC key.
 
         :type access_id: str
@@ -1919,18 +1989,18 @@ class Client(ClientWithProject):
 
     def generate_signed_post_policy_v4(
         self,
-        bucket_name,
-        blob_name,
-        expiration,
-        conditions=None,
-        fields=None,
-        credentials=None,
-        virtual_hosted_style=False,
-        bucket_bound_hostname=None,
-        scheme="http",
-        service_account_email=None,
-        access_token=None,
-    ):
+        bucket_name: str,
+        blob_name: str,
+        expiration: int | Datetime | Timedelta,
+        conditions: list[Any] | None = None,
+        fields: dict[str, Any] | None = None,
+        credentials: Signing | None = None,
+        virtual_hosted_style: bool = False,
+        bucket_bound_hostname: str | None = None,
+        scheme: str = "http",
+        service_account_email: str | None = None,
+        access_token: str | None = None,
+    ) -> dict[str, Any]:
         """Generate a V4 signed policy object. Generated policy object allows user to upload objects with a POST request.
 
         .. note::
@@ -1996,8 +2066,7 @@ class Client(ClientWithProject):
         """
         if virtual_hosted_style and bucket_bound_hostname:
             raise ValueError(
-                "Only one of virtual_hosted_style and bucket_bound_hostname "
-                "can be specified."
+                "Only one of virtual_hosted_style and bucket_bound_hostname can be specified."
             )
 
         credentials = self._credentials if credentials is None else credentials
@@ -2009,9 +2078,7 @@ class Client(ClientWithProject):
         # prepare policy conditions and fields
         timestamp, datestamp = get_v4_now_dtstamps()
 
-        x_goog_credential = "{email}/{datestamp}/auto/storage/goog4_request".format(
-            email=client_email, datestamp=datestamp
-        )
+        x_goog_credential = f"{client_email}/{datestamp}/auto/storage/goog4_request"
         required_conditions = [
             {"bucket": bucket_name},
             {"key": blob_name},
@@ -2085,7 +2152,7 @@ class Client(ClientWithProject):
         return {"url": url, "fields": policy_fields}
 
 
-def _item_to_bucket(iterator, item):
+def _item_to_bucket(iterator: _StorageIterator[Bucket], item: dict[str, Any]) -> Bucket:
     """Convert a JSON bucket to the native object.
 
     :type iterator: :class:`~google.api_core.page_iterator.Iterator`
@@ -2103,7 +2170,9 @@ def _item_to_bucket(iterator, item):
     return bucket
 
 
-def _item_to_hmac_key_metadata(iterator, item):
+def _item_to_hmac_key_metadata(
+    iterator: _StorageIterator[HMACKeyMetadata], item: dict[str, Any]
+) -> HMACKeyMetadata:
     """Convert a JSON key metadata resource to the native object.
 
     :type iterator: :class:`~google.api_core.page_iterator.Iterator`

@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Awaitable, Callable, Dict, Optional, Set
+from collections.abc import Awaitable, Callable
+from typing import TYPE_CHECKING
 
 import grpc
 
@@ -24,6 +26,10 @@ from google.cloud import _storage_v2
 from google.cloud.storage.asyncio.async_read_object_stream import (
     _AsyncReadObjectStream,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +40,7 @@ _DEFAULT_PUT_TIMEOUT_SECONDS = 20.0
 class _StreamError:
     """Wraps an error with the stream generation that produced it."""
 
-    def __init__(self, exception: Exception, generation: int):
+    def __init__(self, exception: Exception, generation: int) -> None:
         self.exception = exception
         self.generation = generation
 
@@ -60,34 +66,53 @@ class _StreamMultiplexer:
         self,
         stream: _AsyncReadObjectStream,
         queue_max_size: int = _DEFAULT_QUEUE_MAX_SIZE,
-    ):
+    ) -> None:
         self._stream = stream
         self._stream_generation: int = 0
-        self._queues: Dict[int, asyncio.Queue] = {}
+        self._queues: dict[
+            int,
+            asyncio.Queue[
+                _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd
+            ],
+        ] = {}
         self._reopen_lock = asyncio.Lock()
-        self._recv_task: Optional[asyncio.Task] = None
+        self._recv_task: asyncio.Task[None] | None = None
         self._queue_max_size = queue_max_size
 
     @property
     def stream_generation(self) -> int:
         return self._stream_generation
 
-    def register(self, read_ids: Set[int]) -> asyncio.Queue:
+    def register(
+        self, read_ids: set[int]
+    ) -> asyncio.Queue[_storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd]:
         """Register read_ids for a task and return its response queue."""
-        queue = asyncio.Queue(maxsize=self._queue_max_size)
+        queue: asyncio.Queue[
+            _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd
+        ] = asyncio.Queue(maxsize=self._queue_max_size)
         for read_id in read_ids:
             self._queues[read_id] = queue
         return queue
 
-    def unregister(self, read_ids: Set[int]) -> None:
+    def unregister(self, read_ids: set[int]) -> None:
         """Remove read_ids from routing."""
         for read_id in read_ids:
             self._queues.pop(read_id, None)
 
-    def _get_unique_queues(self) -> Set[asyncio.Queue]:
+    def _get_unique_queues(
+        self,
+    ) -> set[
+        asyncio.Queue[_storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd]
+    ]:
         return set(self._queues.values())
 
-    async def _put_with_timeout(self, queue: asyncio.Queue, item) -> None:
+    async def _put_with_timeout(
+        self,
+        queue: asyncio.Queue[
+            _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd
+        ],
+        item: _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd,
+    ) -> None:
         """Slow-path put: wait up to _DEFAULT_PUT_TIMEOUT_SECONDS, else drop.
 
         Callers should attempt ``queue.put_nowait(item)`` first and only call
@@ -105,7 +130,15 @@ class _StreamMultiplexer:
                     "Queue full for too long. Dropping item to prevent multiplexer hang."
                 )
 
-    async def _put_to_queues(self, queues, item) -> None:
+    async def _put_to_queues(
+        self,
+        queues: Iterable[
+            asyncio.Queue[
+                _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd
+            ]
+        ],
+        item: _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd,
+    ) -> None:
         """Deliver ``item`` to each queue.
 
         Fast path: ``put_nowait`` for queues with capacity (no Task, no
@@ -139,7 +172,13 @@ class _StreamMultiplexer:
         if self._recv_task and not self._recv_task.done():
             self._recv_task.cancel()
 
-    def _put_error_nowait(self, queue: asyncio.Queue, error: _StreamError) -> None:
+    def _put_error_nowait(
+        self,
+        queue: asyncio.Queue[
+            _storage_v2.BidiReadObjectResponse | _StreamError | _StreamEnd
+        ],
+        error: _StreamError,
+    ) -> None:
         while True:
             try:
                 queue.put_nowait(error)
@@ -159,7 +198,13 @@ class _StreamMultiplexer:
                     return
 
                 if response.object_data_ranges:
-                    queues_to_notify: Set[asyncio.Queue] = set()
+                    queues_to_notify: set[
+                        asyncio.Queue[
+                            _storage_v2.BidiReadObjectResponse
+                            | _StreamError
+                            | _StreamEnd
+                        ]
+                    ] = set()
                     for data_range in response.object_data_ranges:
                         read_id = data_range.read_range.read_id
                         queue = self._queues.get(read_id)

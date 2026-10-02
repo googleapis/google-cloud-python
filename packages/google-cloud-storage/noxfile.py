@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,6 @@ import pathlib
 import re
 import shutil
 import warnings
-from typing import Dict, List
 
 import nox
 
@@ -70,29 +68,29 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-asyncio",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
-UNIT_TEST_DEPENDENCIES: List[str] = [
+UNIT_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_LOCAL_DEPENDENCIES: list[str] = []
+UNIT_TEST_DEPENDENCIES: list[str] = [
     "brotli",
     "grpcio",
     "grpc-google-iam-v1",
     "opentelemetry-api",
     "opentelemetry-sdk",
 ]
-UNIT_TEST_EXTRAS: List[str] = []
-UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+UNIT_TEST_EXTRAS: list[str] = []
+UNIT_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
+SYSTEM_TEST_PYTHON_VERSIONS: list[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
     "google-cloud-testutils",
 ]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = []
-SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_LOCAL_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_DEPENDENCIES: list[str] = []
+SYSTEM_TEST_EXTRAS: list[str] = []
+SYSTEM_TEST_EXTRAS_BY_PYTHON: dict[str, list[str]] = {}
 
 nox.options.sessions = [
     "unit",
@@ -112,22 +110,35 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
 
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
-    # Enable mypy once this repo has been updated for mypy evaluation.
-    session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
-
     session.install("-e", ".")
     session.install(
         "mypy",
         "types-setuptools",
         "types-protobuf",
         "types-requests",
+        "typing_extensions",
     )
     session.run(
         "mypy",
         f"--config-file={MYPY_CONFIG_FILE}",
+        "--follow-imports=silent",
         "-p",
-        "google",
+        "google.cloud.storage",
+        *session.posargs,
+    )
+
+    # Check every handwritten function, without imposing this requirement on
+    # generated GAPIC helpers imported by storage.
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "--follow-imports=silent",
+        "--check-untyped-defs",
+        "--disallow-untyped-defs",
+        "--disallow-any-generics",
+        "--warn-unused-ignores",
+        "google/cloud/storage",
+        "tests/typing",
         *session.posargs,
     )
 
@@ -173,14 +184,10 @@ def lint(session):
     """
     session.install("flake8", RUFF_VERSION)
 
-    # 1. Check imports
+    # 1. Check imports and Python modernization
     session.run(
         "ruff",
         "check",
-        "--select",
-        "I",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -189,8 +196,6 @@ def lint(session):
         "ruff",
         "format",
         "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -209,8 +214,6 @@ def blacken(session):
     session.run(
         "ruff",
         "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -218,22 +221,17 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run ruff to sort imports and format code.
+    Run ruff to sort imports, modernize Python syntax, and format code.
     """
     # 1. Install ruff (skipped automatically if you run with --no-venv)
     session.install(RUFF_VERSION)
 
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
+    # 2. Apply the import sorting and modernization rules in ruff.toml.
     # --fix: Applies the changes automatically
     session.run(
         "ruff",
         "check",
-        "--select",
-        "I",
         "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -241,8 +239,6 @@ def format(session):
     session.run(
         "ruff",
         "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
 
@@ -419,7 +415,7 @@ def system(session, test_type):
         "py.test",
         "--quiet",
         f"--junitxml=system_{session.python}_sponge_log.xml",
-        "--reruns={}".format(rerun_count),
+        f"--reruns={rerun_count}",
         os.path.join("tests", "system"),
         os.path.join("tests", "resumable_media", "system"),
         *session.posargs,

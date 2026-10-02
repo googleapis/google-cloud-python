@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import annotations
 
 import asyncio
 import logging
+from collections.abc import AsyncIterator, Awaitable, Callable
 from io import BytesIO
-from typing import Any, Dict, List, Optional, Tuple
+from types import TracebackType
+from typing import (
+    TYPE_CHECKING,
+    cast,
+)
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
@@ -42,10 +48,15 @@ from google.cloud.storage.asyncio.retry.bidi_stream_retry_manager import (
 from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
     _DownloadState,
     _ReadResumptionStrategy,
+    _ReadRetryState,
 )
 from google.cloud.storage.exceptions import DataCorruption
 
 from ._utils import raise_if_no_fast_crc32c
+
+if TYPE_CHECKING:
+    pass
+
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
 _COMMON_READ_RETRYABLE_EXCEPTIONS = (
@@ -58,7 +69,7 @@ _COMMON_READ_RETRYABLE_EXCEPTIONS = (
 logger = logging.getLogger(__name__)
 
 
-def _is_open_retryable(exc):
+def _is_open_retryable(exc: Exception) -> bool:
     """Determine whether opening a read stream should be retried."""
     if isinstance(exc, _COMMON_READ_RETRYABLE_EXCEPTIONS):
         return True
@@ -70,7 +81,7 @@ def _is_open_retryable(exc):
     return routing_token is not None or read_handle is not None
 
 
-def _is_read_retryable(exc):
+def _is_read_retryable(exc: Exception) -> bool:
     """Determine whether an active read stream should be retried."""
     return isinstance(
         exc,
@@ -116,11 +127,11 @@ class AsyncMultiRangeDownloader:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        generation: Optional[int] = None,
-        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
-        retry_policy: Optional[AsyncRetry] = None,
-        metadata: Optional[List[Tuple[str, str]]] = None,
-        **kwargs,
+        generation: int | None = None,
+        read_handle: _storage_v2.BidiReadHandle | None = None,
+        retry_policy: AsyncRetry | None = None,
+        metadata: list[tuple[str, str]] | None = None,
+        **kwargs: object,
     ) -> AsyncMultiRangeDownloader:
         """Initializes a MultiRangeDownloader and opens the underlying bidi-gRPC
         object for reading.
@@ -167,9 +178,9 @@ class AsyncMultiRangeDownloader:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        generation: Optional[int] = None,
-        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
-        **kwargs,
+        generation: int | None = None,
+        read_handle: _storage_v2.BidiReadHandle | None = None,
+        **kwargs: object,
     ) -> None:
         """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
          use it directly. Instead it's adviced to use the classmethod `create_mrd`.
@@ -193,40 +204,44 @@ class AsyncMultiRangeDownloader:
         if "generation_number" in kwargs:
             if generation is not None:
                 raise TypeError(
-                    "Cannot set both 'generation' and 'generation_number'. "
-                    "Use 'generation' for new code."
+                    "Cannot set both 'generation' and 'generation_number'. Use 'generation' for new code."
                 )
             logger.warning(
                 "'generation_number' is deprecated and will be removed in a future "
                 "major release. Please use 'generation' instead."
             )
-            generation = kwargs.pop("generation_number")
+            generation = cast(int | None, kwargs.pop("generation_number"))
 
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
         self.generation = generation
-        self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
-        self.read_obj_str: Optional[_AsyncReadObjectStream] = None
+        self.read_handle: _storage_v2.BidiReadHandle | None = read_handle
+        self.read_obj_str: _AsyncReadObjectStream | None = None
         self._is_stream_open: bool = False
-        self._routing_token: Optional[str] = None
-        self._multiplexer: Optional[_StreamMultiplexer] = None
-        self.persisted_size: Optional[int] = None  # updated after opening the stream
+        self._routing_token: str | None = None
+        self._multiplexer: _StreamMultiplexer | None = None
+        self.persisted_size: int | None = None  # updated after opening the stream
         self._open_retries: int = 0
         self.is_finalized: bool = False
-        self.full_obj_server_crc32c: Optional[int] = None
+        self.full_obj_server_crc32c: int | None = None
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> AsyncMultiRangeDownloader:
         """Opens the underlying bidi-gRPC connection to read from the object."""
         await self.open()
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         """Closes the underlying bidi-gRPC connection."""
         if self.is_stream_open:
             await self.close()
 
-    def _on_open_error(self, exc):
+    def _on_open_error(self, exc: Exception) -> None:
         """Extracts routing token and read handle on redirect error during open."""
         logger.warning(f"Error occurred while opening MRD: {exc}")
         routing_token, read_handle = _handle_redirect(exc)
@@ -237,8 +252,8 @@ class AsyncMultiRangeDownloader:
 
     async def open(
         self,
-        retry_policy: Optional[AsyncRetry] = None,
-        metadata: Optional[List[Tuple[str, str]]] = None,
+        retry_policy: AsyncRetry | None = None,
+        metadata: list[tuple[str, str]] | None = None,
     ) -> None:
         """Opens the bidi-gRPC connection to read from the object."""
         if self._is_stream_open:
@@ -246,7 +261,7 @@ class AsyncMultiRangeDownloader:
 
         if retry_policy is None:
 
-            def on_error_wrapper(exc):
+            def on_error_wrapper(exc: Exception) -> None:
                 self._open_retries += 1
                 self._on_open_error(exc)
 
@@ -256,7 +271,7 @@ class AsyncMultiRangeDownloader:
         else:
             original_on_error = retry_policy._on_error
 
-            def combined_on_error(exc):
+            def combined_on_error(exc: Exception) -> None:
                 self._open_retries += 1
                 self._on_open_error(exc)
                 if original_on_error:
@@ -271,7 +286,7 @@ class AsyncMultiRangeDownloader:
                 on_error=combined_on_error,
             )
 
-        async def _do_open():
+        async def _do_open() -> None:
             current_metadata = list(metadata) if metadata else []
 
             # Cleanup stream from previous failed attempt, if any.
@@ -315,13 +330,16 @@ class AsyncMultiRangeDownloader:
 
             self._is_stream_open = True
 
-        await retry_policy(_do_open)()
+        await cast(Callable[[], Awaitable[None]], retry_policy(_do_open))()
+        assert self.read_obj_str is not None
         self._multiplexer = _StreamMultiplexer(self.read_obj_str)
 
-    def _create_stream_factory(self, state, metadata):
+    def _create_stream_factory(
+        self, state: _ReadRetryState, metadata: list[tuple[str, str]] | None
+    ) -> Callable[[], Awaitable[_AsyncReadObjectStream]]:
         """Create a factory that opens a new stream with current routing state."""
 
-        async def factory():
+        async def factory() -> _AsyncReadObjectStream:
             current_handle = state.get("read_handle")
             current_token = state.get("routing_token")
 
@@ -360,10 +378,10 @@ class AsyncMultiRangeDownloader:
 
     async def download_ranges(
         self,
-        read_ranges: List[Tuple[int, int, BytesIO]],
-        lock: asyncio.Lock = None,
-        retry_policy: Optional[AsyncRetry] = None,
-        metadata: Optional[List[Tuple[str, str]]] = None,
+        read_ranges: list[tuple[int, int, BytesIO]],
+        lock: asyncio.Lock | None = None,
+        retry_policy: AsyncRetry | None = None,
+        metadata: list[tuple[str, str]] | None = None,
         enable_checksum: bool = True,
     ) -> None:
         """Downloads multiple byte ranges from the object into the buffers
@@ -437,7 +455,7 @@ class AsyncMultiRangeDownloader:
                 is_full_object_read=is_full_object_read,
             )
 
-        initial_state = {
+        initial_state: _ReadRetryState = {
             "download_states": download_states,
             "read_handle": self.read_handle,
             "routing_token": None,
@@ -446,17 +464,21 @@ class AsyncMultiRangeDownloader:
         }
 
         read_ids = set(download_states.keys())
-        queue = self._multiplexer.register(read_ids)
+        assert self._multiplexer is not None
+        multiplexer = self._multiplexer
+        queue = multiplexer.register(read_ids)
 
         try:
             attempt_count = 0
             last_broken_generation = None
 
             def send_and_recv_via_multiplexer(
-                requests: List[_storage_v2.ReadRange],
-                state: Dict[str, Any],
-            ):
-                async def generator():
+                requests: list[_storage_v2.ReadRange],
+                state: _ReadRetryState,
+            ) -> AsyncIterator[_storage_v2.BidiReadObjectResponse]:
+                async def generator() -> AsyncIterator[
+                    _storage_v2.BidiReadObjectResponse
+                ]:
                     nonlocal attempt_count, last_broken_generation
                     attempt_count += 1
 
@@ -473,14 +495,13 @@ class AsyncMultiRangeDownloader:
                         broken_gen = (
                             last_broken_generation
                             if attempt_count > 1
-                            else self._multiplexer.stream_generation
+                            else multiplexer.stream_generation
                         )
                         stream_factory = self._create_stream_factory(state, metadata)
-                        await self._multiplexer.reopen_stream(
-                            broken_gen, stream_factory
-                        )
+                        assert broken_gen is not None
+                        await multiplexer.reopen_stream(broken_gen, stream_factory)
 
-                    stream_generation = self._multiplexer.stream_generation
+                    stream_generation = multiplexer.stream_generation
 
                     # Send Requests
                     pending_read_ids = {r.read_id for r in requests}
@@ -489,7 +510,7 @@ class AsyncMultiRangeDownloader:
                     ):
                         batch = requests[i : i + _MAX_READ_RANGES_PER_BIDI_READ_REQUEST]
                         try:
-                            await self._multiplexer.send(
+                            await multiplexer.send(
                                 _storage_v2.BidiReadObjectRequest(read_ranges=batch)
                             )
                         except Exception:
@@ -543,7 +564,7 @@ class AsyncMultiRangeDownloader:
             if self._multiplexer is not None:
                 self._multiplexer.unregister(read_ids)
 
-    async def close(self):
+    async def close(self) -> None:
         """
         Closes the underlying bidi-gRPC connection.
         """
@@ -567,6 +588,6 @@ class AsyncMultiRangeDownloader:
         return self._is_stream_open
 
     @property
-    def object_metadata(self) -> Optional[_storage_v2.Object]:
+    def object_metadata(self) -> _storage_v2.Object | None:
         """The metadata of the object being downloaded."""
         return self.read_obj_str.object_metadata if self.read_obj_str else None

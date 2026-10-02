@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import annotations
 
 import logging
-from typing import Optional, Tuple
 
 from google.api_core import exceptions
 from google.rpc import status_pb2
 
 from google.cloud._storage_v2.types import (
+    BidiReadHandle,
     BidiReadObjectRedirectedError,
     BidiWriteObjectRedirectedError,
 )
@@ -36,14 +37,14 @@ logger = logging.getLogger(__name__)
 
 def _handle_redirect(
     exc: Exception,
-) -> Tuple[Optional[str], Optional[bytes]]:
+) -> tuple[str | None, BidiReadHandle | None]:
     """
     Extracts routing token and read handle from a gRPC error.
 
     :type exc: Exception
     :param exc: The exception to parse.
 
-    :rtype: Tuple[Optional[str], Optional[bytes]]
+    :rtype: Tuple[Optional[str], Optional[BidiReadHandle]]
     :returns: A tuple of (routing_token, read_handle).
     """
     routing_token = None
@@ -91,7 +92,9 @@ def _handle_redirect(
     return routing_token, read_handle
 
 
-def _extract_bidi_writes_redirect_proto(exc: Exception):
+def _extract_bidi_writes_redirect_proto(
+    exc: Exception,
+) -> BidiWriteObjectRedirectedError | None:
     grpc_error = None
     if isinstance(exc, exceptions.Aborted) and exc.errors:
         grpc_error = exc.errors[0]
@@ -103,7 +106,7 @@ def _extract_bidi_writes_redirect_proto(exc: Exception):
         if hasattr(grpc_error, "trailing_metadata"):
             trailers = grpc_error.trailing_metadata()
             if not trailers:
-                return
+                return None
 
             status_details_bin = None
             for key, value in trailers:
@@ -124,3 +127,4 @@ def _extract_bidi_writes_redirect_proto(exc: Exception):
                 except Exception:
                     logger.error("Error unpacking redirect details from gRPC error.")
                     pass
+    return None

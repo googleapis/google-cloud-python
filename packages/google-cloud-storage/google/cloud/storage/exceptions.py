@@ -14,6 +14,14 @@
 
 """Exceptions raised by the library."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Any
+
+
 # These exceptions were originally part of the google-resumable-media library
 # but were integrated into python-storage in version 3.0. For backwards
 # compatibility with applications which use except blocks with
@@ -26,11 +34,16 @@
 # update. Please update application code to use the new exception classes in
 # this module.
 try:
-    from google.resumable_media import DataCorruption as DataCorruptionDynamicParent
-    from google.resumable_media import InvalidResponse as InvalidResponseDynamicParent
+    from google.resumable_media import (
+        DataCorruption as DataCorruptionDynamicParent,
+    )
+    from google.resumable_media import (
+        InvalidResponse as InvalidResponseDynamicParent,
+    )
 except ImportError:
-    InvalidResponseDynamicParent = Exception
-    DataCorruptionDynamicParent = Exception
+    if not TYPE_CHECKING:
+        InvalidResponseDynamicParent = Exception
+        DataCorruptionDynamicParent = Exception
 
 
 class InvalidPathError(Exception):
@@ -48,7 +61,7 @@ class InvalidResponse(InvalidResponseDynamicParent):
             exception class.
     """
 
-    def __init__(self, response, *args):
+    def __init__(self, response: Any, *args: Any) -> None:
         if InvalidResponseDynamicParent is Exception:
             super().__init__(*args)
             self.response = response
@@ -66,7 +79,7 @@ class DataCorruption(DataCorruptionDynamicParent):
             exception class.
     """
 
-    def __init__(self, response, *args):
+    def __init__(self, response: object, *args: Any) -> None:
         if DataCorruptionDynamicParent is Exception:
             super().__init__(*args)
             self.response = response

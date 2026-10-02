@@ -12,10 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 import io
 import logging
+from collections.abc import AsyncIterator, Awaitable, Callable
 from io import BufferedReader
-from typing import Dict, List, Optional, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    cast,
+)
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
@@ -44,6 +51,10 @@ from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
 
 from . import _utils
 
+if TYPE_CHECKING:
+    from google.cloud.storage._types import Readable
+
+
 _MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
 _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
 _BIDI_WRITE_REDIRECTED_TYPE_URL = (
@@ -52,7 +63,7 @@ _BIDI_WRITE_REDIRECTED_TYPE_URL = (
 logger = logging.getLogger(__name__)
 
 
-def _is_write_retryable(exc):
+def _is_write_retryable(exc: Exception) -> bool:
     """Predicate to determine if a write operation should be retried."""
 
     if isinstance(
@@ -108,11 +119,11 @@ class AsyncAppendableObjectWriter:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        generation: Optional[int] = None,
-        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
-        writer_options: Optional[dict] = None,
-        storage_class: Optional[str] = None,
-    ):
+        generation: int | None = None,
+        write_handle: _storage_v2.BidiWriteHandle | None = None,
+        writer_options: dict[str, int] | None = None,
+        storage_class: str | None = None,
+    ) -> None:
         """
         Class for appending data to a GCS Appendable Object.
 
@@ -193,14 +204,14 @@ class AsyncAppendableObjectWriter:
         self.generation = generation
         self.storage_class = storage_class
 
-        self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
+        self.write_obj_stream: _AsyncWriteObjectStream | None = None
         self._is_stream_open: bool = False
         # `offset` is the latest size of the object without staleless.
-        self.offset: Optional[int] = None
+        self.offset: int | None = None
         # `persisted_size` is the total_bytes persisted in the GCS server.
         # Please note: `offset` and `persisted_size` are same when the stream is
         # opened.
-        self.persisted_size: Optional[int] = None
+        self.persisted_size: int | None = None
         if writer_options is None:
             writer_options = {}
         self.flush_interval = writer_options.get(
@@ -215,19 +226,19 @@ class AsyncAppendableObjectWriter:
                 f"flush_interval must be a multiple of {_MAX_CHUNK_SIZE_BYTES}, but provided {self.flush_interval}"
             )
         self.bytes_appended_since_last_flush = 0
-        self._routing_token: Optional[str] = None
-        self.object_resource: Optional[_storage_v2.Object] = None
+        self._routing_token: str | None = None
+        self.object_resource: _storage_v2.Object | None = None
         self._flush_count = 0
-        self.blob: Optional[Blob] = None
+        self.blob: Blob | None = None
 
     @classmethod
     def from_blob(
         cls,
         client: AsyncGrpcClient,
         blob: Blob,
-        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
-        writer_options: Optional[dict] = None,
-    ) -> "AsyncAppendableObjectWriter":
+        write_handle: _storage_v2.BidiWriteHandle | None = None,
+        writer_options: dict[str, int] | None = None,
+    ) -> AsyncAppendableObjectWriter:
         """Creates an AsyncAppendableObjectWriter from an existing Blob object.
 
         This factory method extracts the bucket and object names directly from
@@ -264,8 +275,8 @@ class AsyncAppendableObjectWriter:
         """
         instance = cls(
             client=client,
-            bucket_name=blob.bucket.name,
-            object_name=blob.name,
+            bucket_name=cast(str, blob.bucket.name),
+            object_name=cast(str, blob.name),
             generation=blob.generation,
             write_handle=write_handle,
             writer_options=writer_options,
@@ -286,16 +297,18 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before state_lookup().")
 
+        assert self.write_obj_stream is not None
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 state_lookup=True,
             )
         )
+        assert self.write_obj_stream is not None
         response = await self.write_obj_stream.recv()
         self.persisted_size = response.persisted_size
         return self.persisted_size
 
-    def _on_open_error(self, exc):
+    def _on_open_error(self, exc: Exception) -> None:
         """Extracts routing token and write handle on redirect error during open."""
         redirect_proto = _extract_bidi_writes_redirect_proto(exc)
         if redirect_proto:
@@ -306,9 +319,7 @@ class AsyncAppendableObjectWriter:
             if redirect_proto.generation:
                 self.generation = redirect_proto.generation
 
-    def _merge_retry_policy(
-        self, retry_policy: Optional[AsyncRetry] = None
-    ) -> AsyncRetry:
+    def _merge_retry_policy(self, retry_policy: AsyncRetry | None = None) -> AsyncRetry:
         if retry_policy is None:
             return AsyncRetry(
                 predicate=_is_write_retryable, on_error=self._on_open_error
@@ -316,7 +327,7 @@ class AsyncAppendableObjectWriter:
         else:
             original_on_error = retry_policy._on_error
 
-            def combined_on_error(exc):
+            def combined_on_error(exc: Exception) -> None:
                 self._on_open_error(exc)
                 if original_on_error:
                     original_on_error(exc)
@@ -332,8 +343,8 @@ class AsyncAppendableObjectWriter:
 
     async def open(
         self,
-        retry_policy: Optional[AsyncRetry] = None,
-        metadata: Optional[List[Tuple[str, str]]] = None,
+        retry_policy: AsyncRetry | None = None,
+        metadata: list[tuple[str, str]] | None = None,
     ) -> None:
         """Opens the underlying bidi-gRPC stream.
 
@@ -345,13 +356,14 @@ class AsyncAppendableObjectWriter:
 
         retry_policy = self._merge_retry_policy(retry_policy)
 
-        async def _do_open():
+        async def _do_open() -> None:
             current_metadata = list(metadata) if metadata else []
 
             # Cleanup stream from previous failed attempt, if any.
             if self.write_obj_stream:
                 if self.write_obj_stream.is_stream_open:
                     try:
+                        assert self.write_obj_stream is not None
                         await self.write_obj_stream.close()
                     except Exception as e:
                         logger.warning(
@@ -376,6 +388,7 @@ class AsyncAppendableObjectWriter:
                     ("x-goog-request-params", f"routing_token={self._routing_token}")
                 )
 
+            assert self.write_obj_stream is not None
             await self.write_obj_stream.open(
                 metadata=current_metadata if current_metadata else None
             )
@@ -392,13 +405,13 @@ class AsyncAppendableObjectWriter:
             self._is_stream_open = True
             self._routing_token = None
 
-        await retry_policy(_do_open)()
+        await cast(Callable[[], Awaitable[None]], retry_policy(_do_open))()
 
     async def append(
         self,
         data: bytes,
-        retry_policy: Optional[AsyncRetry] = None,
-        metadata: Optional[List[Tuple[str, str]]] = None,
+        retry_policy: AsyncRetry | None = None,
+        metadata: list[tuple[str, str]] | None = None,
         enable_checksum: bool = True,
     ) -> None:
         """Appends data to the Appendable object with automatic retries.
@@ -439,11 +452,13 @@ class AsyncAppendableObjectWriter:
         attempt_count = 0
 
         def send_and_recv_generator(
-            requests: List[BidiWriteObjectRequest],
-            state: Dict[str, _WriteState],
-            metadata: Optional[List[Tuple[str, str]]] = None,
-        ):
-            async def generator():
+            requests: list[BidiWriteObjectRequest],
+            state: dict[str, _WriteState],
+            metadata: list[tuple[str, str]] | None = None,
+        ) -> AsyncIterator[_storage_v2.BidiWriteObjectResponse | None]:
+            async def generator() -> AsyncIterator[
+                _storage_v2.BidiWriteObjectResponse | None
+            ]:
                 nonlocal attempt_count
                 nonlocal requests
                 attempt_count += 1
@@ -468,7 +483,7 @@ class AsyncAppendableObjectWriter:
                     self._is_stream_open = False
                     await self.open(metadata=current_metadata)
 
-                    write_state.persisted_size = self.persisted_size
+                    write_state.persisted_size = cast(int, self.persisted_size)
                     write_state.write_handle = self.write_handle
                     write_state.routing_token = None
 
@@ -480,6 +495,7 @@ class AsyncAppendableObjectWriter:
                     requests = strategy.generate_requests(state)
 
                 for chunk_req in requests:
+                    assert self.write_obj_stream is not None
                     await self.write_obj_stream.send(chunk_req)
                     if chunk_req.flush:
                         self._flush_count += 1
@@ -488,6 +504,7 @@ class AsyncAppendableObjectWriter:
                     if chunk_req.state_lookup:
                         # TODO: if there's error, it'll raise error
                         # and will be handled by `recover_state_on_failure`
+                        assert self.write_obj_stream is not None
                         resp = await self.write_obj_stream.recv()
 
                     if resp:
@@ -511,7 +528,7 @@ class AsyncAppendableObjectWriter:
             enable_checksum=enable_checksum,
         )
         write_state.write_handle = self.write_handle
-        write_state.persisted_size = self.persisted_size
+        write_state.persisted_size = cast(int, self.persisted_size)
         # offset is set during `open()` call.
         write_state.bytes_sent = self.offset or 0
         write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
@@ -538,6 +555,7 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before simple_flush().")
 
+        assert self.write_obj_stream is not None
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 flush=True,
@@ -557,12 +575,14 @@ class AsyncAppendableObjectWriter:
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before flush().")
 
+        assert self.write_obj_stream is not None
         await self.write_obj_stream.send(
             _storage_v2.BidiWriteObjectRequest(
                 flush=True,
                 state_lookup=True,
             )
         )
+        assert self.write_obj_stream is not None
         response = await self.write_obj_stream.recv()
         self.persisted_size = response.persisted_size
         self.offset = self.persisted_size
@@ -571,10 +591,10 @@ class AsyncAppendableObjectWriter:
 
     async def close(
         self,
-        finalize_on_close=False,
-        full_object_checksum: Optional[int] = None,
-        retry_policy: Optional[AsyncRetry] = None,
-    ) -> Union[int, _storage_v2.Object]:
+        finalize_on_close: bool = False,
+        full_object_checksum: int | None = None,
+        retry_policy: AsyncRetry | None = None,
+    ) -> int | _storage_v2.Object:
         """Closes the underlying bidi-gRPC stream.
 
         :type finalize_on_close: bool
@@ -631,7 +651,7 @@ class AsyncAppendableObjectWriter:
         attempt_count = 0
         expected_offset = self.offset
 
-        async def _do_close():
+        async def _do_close() -> int:
             nonlocal attempt_count
             attempt_count += 1
 
@@ -650,18 +670,19 @@ class AsyncAppendableObjectWriter:
                         f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
                     )
 
+            assert self.write_obj_stream is not None
             await self.write_obj_stream.close()
-            return self.persisted_size
+            return cast(int, self.persisted_size)
 
         try:
-            return await retry_policy(_do_close)()
+            return await cast(Callable[[], Awaitable[int]], retry_policy(_do_close))()
         finally:
             self._is_stream_open = False
 
     async def finalize(
         self,
-        full_object_checksum: Optional[int] = None,
-        retry_policy: Optional[AsyncRetry] = None,
+        full_object_checksum: int | None = None,
+        retry_policy: AsyncRetry | None = None,
     ) -> _storage_v2.Object:
         """Finalizes the Appendable Object.
 
@@ -723,7 +744,7 @@ class AsyncAppendableObjectWriter:
         attempt_count = 0
         expected_offset = self.offset
 
-        async def _do_finalize():
+        async def _do_finalize() -> _storage_v2.Object:
             nonlocal attempt_count
             attempt_count += 1
 
@@ -742,17 +763,22 @@ class AsyncAppendableObjectWriter:
                         f"Unrecoverable data loss during reconnect. Expected offset {expected_offset}, got {self.offset}"
                     )
 
+            assert self.write_obj_stream is not None
             await self.write_obj_stream.send(finalize_req)
+            assert self.write_obj_stream is not None
             response = await self.write_obj_stream.recv()
             self.object_resource = response.resource
             self.persisted_size = self.object_resource.size
             return self.object_resource
 
         try:
-            return await retry_policy(_do_finalize)()
+            return await cast(
+                Callable[[], Awaitable[_storage_v2.Object]], retry_policy(_do_finalize)
+            )()
         finally:
             if self.write_obj_stream:
                 try:
+                    assert self.write_obj_stream is not None
                     await self.write_obj_stream.close()
                 except Exception as e:
                     logger.debug(
@@ -766,7 +792,7 @@ class AsyncAppendableObjectWriter:
         return self._is_stream_open
 
     # helper methods.
-    async def append_from_string(self, data: str):
+    async def append_from_string(self, data: str) -> None:
         """
         str data will be encoded to bytes using utf-8 encoding calling
 
@@ -774,7 +800,7 @@ class AsyncAppendableObjectWriter:
         """
         raise NotImplementedError("append_from_string is not implemented yet.")
 
-    async def append_from_stream(self, stream_obj):
+    async def append_from_stream(self, stream_obj: Readable) -> None:
         """
         At a time read a chunk of data (16MiB) from `stream_obj`
         and call self.append(chunk)
@@ -783,7 +809,7 @@ class AsyncAppendableObjectWriter:
 
     async def append_from_file(
         self, file_obj: BufferedReader, block_size: int = _DEFAULT_FLUSH_INTERVAL_BYTES
-    ):
+    ) -> None:
         """
         Appends data to an Appendable Object using file_handle which is opened
         for reading in binary mode.

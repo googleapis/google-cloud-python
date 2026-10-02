@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import io
 import os
 import re
 
@@ -103,7 +101,7 @@ url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/goog
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
-with io.open(readme_filename, encoding="utf-8") as readme_file:
+with open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 packages = [

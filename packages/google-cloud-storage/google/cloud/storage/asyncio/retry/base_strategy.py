@@ -13,10 +13,14 @@
 # limitations under the License.
 
 import abc
-from typing import Any, Iterable
+from typing import Generic, TypeVar
+
+_State = TypeVar("_State")
+_Request = TypeVar("_Request")
+_Response = TypeVar("_Response")
 
 
-class _BaseResumptionStrategy(abc.ABC):
+class _BaseResumptionStrategy(abc.ABC, Generic[_State, _Request, _Response]):
     """Abstract base class defining the interface for a bidi stream resumption strategy.
 
     This class defines the skeleton for a pluggable strategy that contains
@@ -27,7 +31,7 @@ class _BaseResumptionStrategy(abc.ABC):
     """
 
     @abc.abstractmethod
-    def generate_requests(self, state: Any) -> Iterable[Any]:
+    def generate_requests(self, state: _State) -> list[_Request]:
         """Generates the next batch of requests based on the current state.
 
         This method is called at the beginning of each retry attempt. It should
@@ -38,7 +42,7 @@ class _BaseResumptionStrategy(abc.ABC):
         it will set the `write_offset` field to the persisted size received
         from the server in the next request.
 
-        :type state: Any
+        :type state: _State
         :param state: An object containing all the state needed for the
                       operation (e.g., requested ranges, user buffers,
                       bytes written).
@@ -46,24 +50,24 @@ class _BaseResumptionStrategy(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def update_state_from_response(self, response: Any, state: Any) -> None:
+    def update_state_from_response(self, response: _Response, state: _State) -> None:
         """Updates the state based on a successful server response.
 
         This method is called for every message received from the server. It is
         responsible for processing the response and updating the shared state
         object.
 
-        :type response: Any
+        :type response: _Response
         :param response: The response message received from the server.
 
-        :type state: Any
+        :type state: _State
         :param state: The shared state object for the operation, which will be
                       mutated by this method.
         """
         pass
 
     @abc.abstractmethod
-    async def recover_state_on_failure(self, error: Exception, state: Any) -> None:
+    async def recover_state_on_failure(self, error: Exception, state: _State) -> None:
         """Prepares the state for the next retry attempt after a failure.
 
         This method is called when a retriable gRPC error occurs. It is
@@ -77,7 +81,7 @@ class _BaseResumptionStrategy(abc.ABC):
         :type error: :class:`Exception`
         :param error: The exception that was caught by the retry engine.
 
-        :type state: Any
+        :type state: _State
         :param state: The shared state object for the operation.
         """
         pass

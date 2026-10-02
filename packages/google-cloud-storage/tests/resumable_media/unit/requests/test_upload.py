@@ -57,7 +57,7 @@ def filename():
         yield f.name
 
 
-class TestSimpleUpload(object):
+class TestSimpleUpload:
     def test_transmit(self):
         data = b"I have got a lovely bunch of coconuts."
         content_type = BASIC_CONTENT
@@ -97,7 +97,7 @@ class TestSimpleUpload(object):
         )
 
 
-class TestMultipartUpload(object):
+class TestMultipartUpload:
     @mock.patch(
         "google.cloud.storage._media._upload.get_boundary", return_value=b"==4=="
     )
@@ -177,7 +177,7 @@ class TestMultipartUpload(object):
         mock_get_boundary.assert_called_once_with()
 
 
-class TestResumableUpload(object):
+class TestResumableUpload:
     def test_initiate(self):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         data = b"Knock knock who is there"
@@ -210,7 +210,7 @@ class TestResumableUpload(object):
         expected_headers = {
             "content-type": JSON_TYPE,
             "x-upload-content-type": BASIC_CONTENT,
-            "x-upload-content-length": "{:d}".format(total_bytes),
+            "x-upload-content-length": f"{total_bytes:d}",
         }
         transport.request.assert_called_once_with(
             "POST",
@@ -246,7 +246,7 @@ class TestResumableUpload(object):
         expected_headers = {
             "content-type": JSON_TYPE,
             "x-upload-content-type": BASIC_CONTENT,
-            "x-upload-content-length": "{:d}".format(100),
+            "x-upload-content-length": f"{100:d}",
         }
         transport.request.assert_called_once_with(
             "POST",
@@ -281,7 +281,7 @@ class TestResumableUpload(object):
         assert chunk_size < len(data)
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
-        response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
+        response_headers = {"range": f"bytes=0-{chunk_size - 1:d}"}
         transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
         # Check the state before the request.
         assert upload._bytes_uploaded == 0
@@ -293,7 +293,7 @@ class TestResumableUpload(object):
         assert upload._bytes_uploaded == chunk_size
         # Make sure the mock was called as expected.
         payload = data[:chunk_size]
-        content_range = "bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
+        content_range = f"bytes 0-{chunk_size - 1:d}/{len(data):d}"
         expected_headers = {
             "content-range": content_range,
             "content-type": BASIC_CONTENT,
@@ -315,7 +315,7 @@ class TestResumableUpload(object):
         upload._chunk_size = chunk_size
 
         # Make a fake 308 response.
-        response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
+        response_headers = {"range": f"bytes=0-{chunk_size - 1:d}"}
         transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
 
         # Make request and check the return value (against the mock).
@@ -323,7 +323,7 @@ class TestResumableUpload(object):
 
         # Make sure timeout was passed to the transport
         payload = data[:chunk_size]
-        content_range = "bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
+        content_range = f"bytes 0-{chunk_size - 1:d}/{len(data):d}"
         expected_headers = {
             "content-range": content_range,
             "content-type": BASIC_CONTENT,
@@ -343,7 +343,7 @@ class TestResumableUpload(object):
         upload._resumable_url = "http://test.invalid?upload_id=big-deal"
 
         end = 55555
-        headers = {"range": "bytes=0-{:d}".format(end)}
+        headers = {"range": f"bytes=0-{end:d}"}
         transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, headers)
 
         ret_val = upload.recover(transport)

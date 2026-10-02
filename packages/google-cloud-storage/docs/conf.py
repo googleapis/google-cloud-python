@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +25,6 @@
 
 import logging
 import os
-import shlex
 import sys
 from typing import Any
 

@@ -12,11 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Protocol
+
 import google_crc32c
 from google.api_core import exceptions
 
+if TYPE_CHECKING:
+    from google.cloud._storage_v2 import BidiWriteHandle, BidiWriteObjectResponse
 
-def raise_if_no_fast_crc32c():
+
+def raise_if_no_fast_crc32c() -> None:
     """Check if the C-accelerated version of google-crc32c is available.
 
     If not, raise an error to prevent silent performance degradation.
@@ -34,7 +42,13 @@ def raise_if_no_fast_crc32c():
         )
 
 
-def update_write_handle_if_exists(obj, response):
+class _WriteHandleOwner(Protocol):
+    write_handle: BidiWriteHandle | None
+
+
+def update_write_handle_if_exists(
+    obj: _WriteHandleOwner, response: BidiWriteObjectResponse
+) -> None:
     """Update the write_handle attribute of an object if it exists in the response."""
     if hasattr(response, "write_handle") and response.write_handle is not None:
         obj.write_handle = response.write_handle

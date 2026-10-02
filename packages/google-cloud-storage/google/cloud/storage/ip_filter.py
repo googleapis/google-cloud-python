@@ -14,7 +14,9 @@
 
 """IP Filter configuration for Google Cloud Storage Buckets."""
 
-from typing import Any, Dict, List, Optional
+from __future__ import annotations
+
+from typing import Any
 
 _MODE = "mode"
 _PUBLIC_NETWORK_SOURCE = "publicNetworkSource"
@@ -34,10 +36,10 @@ class PublicNetworkSource:
                                    the bucket.
     """
 
-    def __init__(self, allowed_ip_cidr_ranges: Optional[List[str]] = None):
+    def __init__(self, allowed_ip_cidr_ranges: list[str] | None = None) -> None:
         self.allowed_ip_cidr_ranges = allowed_ip_cidr_ranges or []
 
-    def _to_api_resource(self) -> Dict[str, Any]:
+    def _to_api_resource(self) -> dict[str, Any]:
         """Serializes this object to a dictionary for API requests."""
         return {_ALLOWED_IP_CIDR_RANGES: self.allowed_ip_cidr_ranges}
 
@@ -55,12 +57,12 @@ class VpcNetworkSource:
     """
 
     def __init__(
-        self, network: str, allowed_ip_cidr_ranges: Optional[List[str]] = None
-    ):
+        self, network: str, allowed_ip_cidr_ranges: list[str] | None = None
+    ) -> None:
         self.network = network
         self.allowed_ip_cidr_ranges = allowed_ip_cidr_ranges or []
 
-    def _to_api_resource(self) -> Dict[str, Any]:
+    def _to_api_resource(self) -> dict[str, Any]:
         """Serializes this object to a dictionary for API requests."""
         return {
             _NETWORK: self.network,
@@ -88,15 +90,15 @@ class IPFilter:
             other organizations to be used in the configuration.
     """
 
-    def __init__(self):
-        self.mode: Optional[str] = None
-        self.public_network_source: Optional[PublicNetworkSource] = None
-        self.vpc_network_sources: List[VpcNetworkSource] = []
-        self.allow_all_service_agent_access: Optional[bool] = None
-        self.allow_cross_org_vpcs: Optional[bool] = None
+    def __init__(self) -> None:
+        self.mode: str | None = None
+        self.public_network_source: PublicNetworkSource | None = None
+        self.vpc_network_sources: list[VpcNetworkSource] = []
+        self.allow_all_service_agent_access: bool | None = None
+        self.allow_cross_org_vpcs: bool | None = None
 
     @classmethod
-    def _from_api_resource(cls, resource: Dict[str, Any]) -> "IPFilter":
+    def _from_api_resource(cls, resource: dict[str, Any]) -> IPFilter:
         """Factory: creates an IPFilter instance from a server response."""
         ip_filter = cls()
         ip_filter.mode = resource.get(_MODE)
@@ -123,9 +125,9 @@ class IPFilter:
         ip_filter.allow_cross_org_vpcs = resource.get(_ALLOW_CROSS_ORG_VPCS, None)
         return ip_filter
 
-    def _to_api_resource(self) -> Dict[str, Any]:
+    def _to_api_resource(self) -> dict[str, Any]:
         """Serializes this object to a dictionary for API requests."""
-        resource = {
+        resource: dict[str, Any] = {
             _MODE: self.mode,
             _ALLOW_ALL_SERVICE_AGENT_ACCESS: self.allow_all_service_agent_access,
         }

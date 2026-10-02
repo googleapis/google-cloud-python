@@ -14,9 +14,24 @@
 
 """A client for interacting with Google Cloud Storage using the gRPC API."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast
+
 from google.cloud.client import ClientWithProject
 
 from google.cloud import _storage_v2 as storage_v2
+from google.cloud._storage_v2.services.storage.transports.grpc import (
+    StorageGrpcTransport,
+)
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from google.api_core.client_options import ClientOptions
+    from google.api_core.gapic_v1.client_info import ClientInfo
+    from google.auth.credentials import Credentials
+
 
 _marker = object()
 
@@ -62,15 +77,15 @@ class GrpcClient(ClientWithProject):
 
     def __init__(
         self,
-        project=_marker,
-        credentials=None,
-        client_info=None,
-        client_options=None,
+        project: str | None = cast("str", _marker),
+        credentials: Credentials | None = None,
+        client_info: ClientInfo | None = None,
+        client_options: ClientOptions | dict[str, Any] | None = None,
         *,
-        api_key=None,
-        attempt_direct_path=True,
-    ):
-        super(GrpcClient, self).__init__(project=project, credentials=credentials)
+        api_key: str | None = None,
+        attempt_direct_path: bool = True,
+    ) -> None:
+        super().__init__(project=project, credentials=credentials)
 
         if isinstance(client_options, dict):
             if api_key:
@@ -89,13 +104,16 @@ class GrpcClient(ClientWithProject):
 
     def _create_gapic_client(
         self,
-        credentials=None,
-        client_info=None,
-        client_options=None,
-        attempt_direct_path=True,
-    ):
+        credentials: Credentials | None = None,
+        client_info: ClientInfo | None = None,
+        client_options: ClientOptions | dict[str, Any] | None = None,
+        attempt_direct_path: bool = True,
+    ) -> storage_v2.StorageClient:
         """Creates and configures the low-level GAPIC `storage_v2` client."""
-        transport_cls = storage_v2.StorageClient.get_transport_class("grpc")
+        transport_cls = cast(
+            type[StorageGrpcTransport],
+            storage_v2.StorageClient.get_transport_class("grpc"),
+        )
 
         channel = transport_cls.create_channel(attempt_direct_path=attempt_direct_path)
 
@@ -104,12 +122,13 @@ class GrpcClient(ClientWithProject):
         return storage_v2.StorageClient(
             credentials=credentials,
             transport=transport,
-            client_info=client_info,
+            # The GAPIC transport accepts None to choose its default client info.
+            client_info=cast("ClientInfo", client_info),
             client_options=client_options,
         )
 
     @property
-    def grpc_client(self):
+    def grpc_client(self) -> storage_v2.StorageClient:
         """The underlying gRPC client.
 
         This property gives users direct access to the `storage_v2.StorageClient`

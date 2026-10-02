@@ -27,7 +27,7 @@ EXAMPLE_URL = (
 )
 
 
-class TestDownloadBase(object):
+class TestDownloadBase:
     def test_constructor_defaults(self):
         download = _download.DownloadBase(EXAMPLE_URL)
         assert download.media_url == EXAMPLE_URL
@@ -89,7 +89,7 @@ class TestDownloadBase(object):
         exc_info.match("virtual")
 
 
-class TestDownload(object):
+class TestDownload:
     def test__prepare_request_already_finished(self):
         download = _download.Download(EXAMPLE_URL)
         download._finished = True
@@ -162,7 +162,7 @@ class TestDownload(object):
         exc_info.match("virtual")
 
 
-class TestChunkedDownload(object):
+class TestChunkedDownload:
     def test_constructor_defaults(self):
         chunk_size = 256
         stream = mock.sentinel.stream
@@ -244,13 +244,13 @@ class TestChunkedDownload(object):
 
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return "bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
+        return f"bytes {start_byte:d}-{end_byte:d}/{total_bytes:d}"
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(start_byte, end_byte, total_bytes)
         return {
-            "content-length": "{:d}".format(content_length),
+            "content-length": f"{content_length:d}",
             "content-range": resp_range,
         }
 
@@ -456,7 +456,7 @@ class TestChunkedDownload(object):
         # Actually call the method to update.
         data = b"stuff"
         headers = {
-            "content-length": "{:d}".format(len(data)),
+            "content-length": f"{len(data):d}",
             "content-range": "kites x-y/58",
         }
         response = mock.Mock(
@@ -601,7 +601,7 @@ class TestChunkedDownload(object):
         exc_info.match("virtual")
 
 
-class Test__add_bytes_range(object):
+class Test__add_bytes_range:
     def test_do_nothing(self):
         headers = {}
         ret_val = _download.add_bytes_range(None, None, headers)
@@ -633,7 +633,7 @@ class Test__add_bytes_range(object):
         assert headers == {"range": "bytes=-123454321"}
 
 
-class Test_get_range_info(object):
+class Test_get_range_info:
     @staticmethod
     def _make_response(content_range):
         headers = {"content-range": content_range}
@@ -695,7 +695,7 @@ class Test_get_range_info(object):
         callback.assert_called_once_with()
 
 
-class Test__check_for_zero_content_range(object):
+class Test__check_for_zero_content_range:
     @staticmethod
     def _make_response(content_range, status_code):
         headers = {"content-range": content_range}

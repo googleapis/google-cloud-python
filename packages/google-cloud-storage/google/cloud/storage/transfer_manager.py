@@ -14,6 +14,8 @@
 
 """Concurrent media operations."""
 
+from __future__ import annotations
+
 import base64
 import concurrent.futures
 import copyreg
@@ -25,6 +27,7 @@ import pickle
 import struct
 import warnings
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
 import google_crc32c
 from google.api_core import exceptions
@@ -35,6 +38,18 @@ from google.cloud.storage.blob import _get_host_name, _quote
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.exceptions import DataCorruption, InvalidPathError
 from google.cloud.storage.retry import DEFAULT_RETRY
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable, Sequence
+    from os import PathLike
+    from types import TracebackType
+    from typing import Any
+
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import _P, _T, SeekableReadable, Timeout, Writable
+    from google.cloud.storage.bucket import Bucket
+
 
 TM_DEFAULT_CHUNK_SIZE = 32 * 1024 * 1024
 DEFAULT_MAX_WORKERS = 8
@@ -67,12 +82,12 @@ but the actual crc32c checksum of the downloaded contents was:
 """
 
 
-_cached_clients = {}
+_cached_clients: dict[int, Client] = {}
 
 
-def _deprecate_threads_param(func):
+def _deprecate_threads_param(func: Callable[_P, _T]) -> Callable[_P, _T]:
     @functools.wraps(func)
-    def convert_threads_or_raise(*args, **kwargs):
+    def convert_threads_or_raise(*args: _P.args, **kwargs: _P.kwargs) -> _T:
         binding = inspect.signature(func).bind(*args, **kwargs)
         threads = binding.arguments.get("threads")
         if threads:
@@ -86,11 +101,10 @@ def _deprecate_threads_param(func):
             warnings.warn(
                 "The `threads` parameter is deprecated. Please use `worker_type` and `max_workers` parameters instead."
             )
-            args = binding.args
-            kwargs = binding.kwargs
-            kwargs["worker_type"] = THREAD
-            kwargs["max_workers"] = threads
-            return func(*args, **kwargs)
+            call_kwargs = binding.kwargs
+            call_kwargs["worker_type"] = THREAD
+            call_kwargs["max_workers"] = threads
+            return func(*binding.args, **call_kwargs)
         else:
             return func(*args, **kwargs)
 
@@ -99,15 +113,15 @@ def _deprecate_threads_param(func):
 
 @_deprecate_threads_param
 def upload_many(
-    file_blob_pairs,
-    skip_if_exists=False,
-    upload_kwargs=None,
-    threads=None,
-    deadline=None,
-    raise_exception=False,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
-):
+    file_blob_pairs: Sequence[tuple[SeekableReadable | str, Blob]],
+    skip_if_exists: bool = False,
+    upload_kwargs: dict[str, Any] | None = None,
+    threads: int | None = None,
+    deadline: float | None = None,
+    raise_exception: bool = False,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
+) -> list[BaseException | None]:
     """Upload many files concurrently via a worker pool.
 
     :type file_blob_pairs: List(Tuple(IOBase or str, 'google.cloud.storage.blob.Blob'))
@@ -240,7 +254,7 @@ def upload_many(
             futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
         )
 
-    results = []
+    results: list[BaseException | None] = []
     for future in futures:
         exp = future.exception()
 
@@ -257,30 +271,30 @@ def upload_many(
     return results
 
 
-def _resolve_path(target_dir, blob_path):
+def _resolve_path(target_dir: str | PathLike[str], blob_path: str) -> Path:
     if os.name == "nt" and ":" in blob_path:
         raise InvalidPathError(f"{blob_path} cannot be downloaded into {target_dir}")
     target_dir = Path(target_dir)
-    blob_path = Path(blob_path)
+    path = Path(blob_path)
     # blob_path.anchor will be '/' if `blob_path` is full path else it'll empty.
     # This is useful to concatnate target_dir = /local/target , and blob_path =
     # /usr/local/mybin into /local/target/usr/local/mybin
-    concatenated_path = target_dir / blob_path.relative_to(blob_path.anchor)
+    concatenated_path = target_dir / path.relative_to(path.anchor)
     return concatenated_path.resolve()
 
 
 @_deprecate_threads_param
 def download_many(
-    blob_file_pairs,
-    download_kwargs=None,
-    threads=None,
-    deadline=None,
-    raise_exception=False,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
+    blob_file_pairs: Sequence[tuple[Blob, Writable | str]],
+    download_kwargs: dict[str, Any] | None = None,
+    threads: int | None = None,
+    deadline: float | None = None,
+    raise_exception: bool = False,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
     *,
-    skip_if_exists=False,
-):
+    skip_if_exists: bool = False,
+) -> list[BaseException | None]:
     """Download many blobs concurrently via a worker pool.
 
     :type blob_file_pairs: List(Tuple('google.cloud.storage.blob.Blob', IOBase or str))
@@ -407,7 +421,7 @@ def download_many(
             futures, timeout=deadline, return_when=concurrent.futures.ALL_COMPLETED
         )
 
-    results = []
+    results: list[BaseException | None] = []
     for future in futures:
         # If raise_exception is False, don't call future.result()
         if not raise_exception:
@@ -422,21 +436,21 @@ def download_many(
 
 @_deprecate_threads_param
 def upload_many_from_filenames(
-    bucket,
-    filenames,
-    source_directory="",
-    blob_name_prefix="",
-    skip_if_exists=False,
-    blob_constructor_kwargs=None,
-    upload_kwargs=None,
-    threads=None,
-    deadline=None,
-    raise_exception=False,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
+    bucket: Bucket,
+    filenames: list[str],
+    source_directory: str = "",
+    blob_name_prefix: str = "",
+    skip_if_exists: bool = False,
+    blob_constructor_kwargs: dict[str, Any] | None = None,
+    upload_kwargs: dict[str, Any] | None = None,
+    threads: int | None = None,
+    deadline: float | None = None,
+    raise_exception: bool = False,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
     *,
-    additional_blob_attributes=None,
-):
+    additional_blob_attributes: dict[str, Any] | None = None,
+) -> list[BaseException | None]:
     """Upload many files concurrently by their filenames.
 
     The destination blobs are automatically created, with blob names based on
@@ -613,20 +627,20 @@ def upload_many_from_filenames(
 
 @_deprecate_threads_param
 def download_many_to_path(
-    bucket,
-    blob_names,
-    destination_directory="",
-    blob_name_prefix="",
-    download_kwargs=None,
-    threads=None,
-    deadline=None,
-    create_directories=True,
-    raise_exception=False,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
+    bucket: Bucket,
+    blob_names: list[str],
+    destination_directory: str = "",
+    blob_name_prefix: str = "",
+    download_kwargs: dict[str, Any] | None = None,
+    threads: int | None = None,
+    deadline: float | None = None,
+    create_directories: bool = True,
+    raise_exception: bool = False,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
     *,
-    skip_if_exists=False,
-):
+    skip_if_exists: bool = False,
+) -> list[BaseException | None]:
     """Download many files concurrently by their blob names.
 
     The destination files are automatically created, with paths based on the
@@ -809,7 +823,7 @@ def download_many_to_path(
         for that operation (as an Exception or UserWarning, respectively).
         Otherwise, the result will be None for a successful download.
     """
-    results = [None] * len(blob_names)
+    results: list[BaseException | None] = [None] * len(blob_names)
     blob_file_pairs = []
     indices_to_process = []
 
@@ -834,16 +848,16 @@ def download_many_to_path(
             results[i] = UserWarning(msg)
             continue
 
-        resolved_path = str(resolved_path)
-        if skip_if_exists and os.path.isfile(resolved_path):
+        filename = str(resolved_path)
+        if skip_if_exists and os.path.isfile(filename):
             msg = f"The blob {blob_name} is skipped because destination file already exists"
             results[i] = UserWarning(msg)
             continue
 
         if create_directories:
-            directory, _ = os.path.split(resolved_path)
+            directory, _ = os.path.split(filename)
             os.makedirs(directory, exist_ok=True)
-        blob_file_pairs.append((bucket.blob(full_blob_name), resolved_path))
+        blob_file_pairs.append((bucket.blob(full_blob_name), filename))
         indices_to_process.append(i)
 
     many_results = download_many(
@@ -863,16 +877,16 @@ def download_many_to_path(
 
 
 def download_chunks_concurrently(
-    blob,
-    filename,
-    chunk_size=TM_DEFAULT_CHUNK_SIZE,
-    download_kwargs=None,
-    deadline=None,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
+    blob: Blob,
+    filename: str,
+    chunk_size: int = TM_DEFAULT_CHUNK_SIZE,
+    download_kwargs: dict[str, Any] | None = None,
+    deadline: float | None = None,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
     *,
-    crc32c_checksum=True,
-):
+    crc32c_checksum: bool = True,
+) -> None:
     """Download a single file in chunks, concurrently.
 
     In some environments, using this feature with mutiple processes will result
@@ -961,7 +975,7 @@ def download_chunks_concurrently(
             consistency with other download methods despite the exception
             originating elsewhere.
     """
-    client = blob.client
+    client = cast(Client, blob.client)
 
     if download_kwargs is None:
         download_kwargs = {}
@@ -994,7 +1008,7 @@ def download_chunks_concurrently(
 
     with pool_class(max_workers=max_workers) as executor:
         cursor = 0
-        end = blob.size
+        end = cast(int, blob.size)
         while cursor < end:
             start = cursor
             cursor = min(cursor + chunk_size, end)
@@ -1046,18 +1060,18 @@ def download_chunks_concurrently(
 
 
 def upload_chunks_concurrently(
-    filename,
-    blob,
-    content_type=None,
-    chunk_size=TM_DEFAULT_CHUNK_SIZE,
-    deadline=None,
-    worker_type=PROCESS,
-    max_workers=DEFAULT_MAX_WORKERS,
+    filename: str,
+    blob: Blob,
+    content_type: str | None = None,
+    chunk_size: int = TM_DEFAULT_CHUNK_SIZE,
+    deadline: float | None = None,
+    worker_type: str = PROCESS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
     *,
-    checksum="auto",
-    timeout=_DEFAULT_TIMEOUT,
-    retry=DEFAULT_RETRY,
-):
+    checksum: str | None = "auto",
+    timeout: Timeout = _DEFAULT_TIMEOUT,
+    retry: Retry | None = DEFAULT_RETRY,
+) -> None:
     """Upload a single file in chunks, concurrently.
 
     This function uses the XML MPU API to initialize an upload and upload a
@@ -1172,13 +1186,11 @@ def upload_chunks_concurrently(
     """
 
     bucket = blob.bucket
-    client = blob.client
+    client = cast(Client, blob.client)
     transport = blob._get_transport(client)
 
     hostname = _get_host_name(client._connection)
-    url = "{hostname}/{bucket}/{blob}".format(
-        hostname=hostname, bucket=bucket.name, blob=_quote(blob.name)
-    )
+    url = f"{hostname}/{bucket.name}/{_quote(cast(str, blob.name))}"
 
     base_headers, object_metadata, content_type = blob._get_upload_arguments(
         client, content_type, filename=filename, command="tm.upload_sharded"
@@ -1199,7 +1211,7 @@ def upload_chunks_concurrently(
     container = XMLMPUContainer(url, filename, headers=headers, retry=retry)
 
     container.initiate(transport=transport, content_type=content_type)
-    upload_id = container.upload_id
+    upload_id = cast(str, container.upload_id)
 
     size = os.path.getsize(filename)
     num_of_parts = -(size // -chunk_size)  # Ceiling division
@@ -1248,17 +1260,17 @@ def upload_chunks_concurrently(
 
 
 def _upload_part(
-    maybe_pickled_client,
-    url,
-    upload_id,
-    filename,
-    start,
-    end,
-    part_number,
-    checksum,
-    headers,
-    retry,
-):
+    maybe_pickled_client: Client | bytes,
+    url: str,
+    upload_id: str,
+    filename: str | PathLike[str],
+    start: int,
+    end: int,
+    part_number: int,
+    checksum: str | None,
+    headers: dict[str, str],
+    retry: Retry | None,
+) -> tuple[int, str]:
     """Helper function that runs inside a thread or subprocess to upload a part.
 
     `maybe_pickled_client` is either a Client (for threads) or a specially
@@ -1281,10 +1293,10 @@ def _upload_part(
         retry=retry,
     )
     part.upload(client._http)
-    return (part_number, part.etag)
+    return (part_number, cast(str, part.etag))
 
 
-def _headers_from_metadata(metadata):
+def _headers_from_metadata(metadata: dict[str, Any]) -> dict[str, str]:
     """Helper function to translate object metadata into a header dictionary."""
 
     headers = {}
@@ -1300,8 +1312,13 @@ def _headers_from_metadata(metadata):
 
 
 def _download_and_write_chunk_in_place(
-    maybe_pickled_blob, filename, start, end, download_kwargs, crc32c_checksum
-):
+    maybe_pickled_blob: Blob | bytes,
+    filename: str | PathLike[str],
+    start: int,
+    end: int,
+    download_kwargs: dict[str, Any],
+    crc32c_checksum: bool,
+) -> tuple[int | None, int]:
     """Helper function that runs inside a thread or subprocess.
 
     `maybe_pickled_blob` is either a Blob (for threads) or a specially pickled
@@ -1328,35 +1345,42 @@ class _ChecksummingSparseFileWrapper:
     base classes.
     """
 
-    def __init__(self, filename, start_position, crc32c_enabled):
+    def __init__(
+        self, filename: str | PathLike[str], start_position: int, crc32c_enabled: bool
+    ) -> None:
         # Open in mixed read/write mode to avoid truncating or appending
         self.f = open(filename, "rb+")
         self.f.seek(start_position)
-        self._crc = None
+        self._crc: int | None = None
         self._crc32c_enabled = crc32c_enabled
 
-    def write(self, chunk):
+    def write(self, chunk: bytes) -> int:
         if self._crc32c_enabled:
             if self._crc is None:
                 self._crc = google_crc32c.value(chunk)
             else:
                 self._crc = google_crc32c.extend(self._crc, chunk)
-        self.f.write(chunk)
+        return self.f.write(chunk)
 
     @property
-    def crc(self):
+    def crc(self) -> int | None:
         return self._crc
 
-    def __enter__(self):
+    def __enter__(self) -> _ChecksummingSparseFileWrapper:
         return self
 
-    def __exit__(self, exc_type, exc_value, tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
         self.f.close()
 
 
 def _call_method_on_maybe_pickled_blob(
-    maybe_pickled_blob, method_name, *args, **kwargs
-):
+    maybe_pickled_blob: Blob | bytes, method_name: str, *args: Any, **kwargs: Any
+) -> Any:
     """Helper function that runs inside a thread or subprocess.
 
     `maybe_pickled_blob` is either a Blob (for threads) or a specially pickled
@@ -1370,7 +1394,7 @@ def _call_method_on_maybe_pickled_blob(
     return getattr(blob, method_name)(*args, **kwargs)
 
 
-def _reduce_client(cl):
+def _reduce_client(cl: Client) -> tuple[type[_LazyClient], tuple[object, ...]]:
     """Replicate a Client by constructing a new one with the same params.
 
     LazyClient performs transparent caching for when the same client is needed
@@ -1395,7 +1419,7 @@ def _reduce_client(cl):
     )
 
 
-def _pickle_client(obj):
+def _pickle_client(obj: Client | Blob) -> bytes:
     """Pickle a Client or an object that owns a Client (like a Blob)"""
 
     # We need a custom pickler to process Client objects, which are attached to
@@ -1412,7 +1436,13 @@ def _pickle_client(obj):
     return f.getvalue()
 
 
-def _get_pool_class_and_requirements(worker_type):
+def _get_pool_class_and_requirements(
+    worker_type: str,
+) -> tuple[
+    type[concurrent.futures.ProcessPoolExecutor]
+    | type[concurrent.futures.ThreadPoolExecutor],
+    bool,
+]:
     """Returns the pool class, and whether the pool requires pickled Blobs."""
 
     if worker_type == PROCESS:
@@ -1427,10 +1457,14 @@ def _get_pool_class_and_requirements(worker_type):
         )
 
 
-def _digest_ordered_checksum_and_size_pairs(checksum_and_size_pairs):
+def _digest_ordered_checksum_and_size_pairs(
+    checksum_and_size_pairs: Iterable[tuple[int | None, int]],
+) -> bytes:
     base_crc = None
     zeroes = bytes(MAX_CRC32C_ZERO_ARRAY_SIZE)
     for part_crc, size in checksum_and_size_pairs:
+        # This helper is called only after downloading with checksums enabled.
+        part_crc = cast(int, part_crc)
         if not base_crc:
             base_crc = part_crc
         else:
@@ -1456,7 +1490,8 @@ def _digest_ordered_checksum_and_size_pairs(checksum_and_size_pairs):
 class _LazyClient:
     """An object that will transform into either a cached or a new Client"""
 
-    def __new__(cls, id, *args, **kwargs):
+    # The factory deliberately returns a cached Client rather than _LazyClient.
+    def __new__(cls, id: int, *args: Any, **kwargs: Any) -> Client:  # type: ignore[misc]
         cached_client = _cached_clients.get(id)
         if cached_client:
             return cached_client

@@ -14,12 +14,25 @@
 
 """Virtual bases classes for downloading media from Google APIs."""
 
+from __future__ import annotations
+
 import http.client
 import re
+from typing import TYPE_CHECKING, Generic, cast
 
 from google.cloud.storage._media import _helpers
+from google.cloud.storage._types import _MediaResponseT, _MediaTransport
 from google.cloud.storage.exceptions import InvalidResponse
 from google.cloud.storage.retry import DEFAULT_RETRY
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+    from typing import Any
+
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import _T, Checksum, Timeout, Writable
+
 
 _CONTENT_RANGE_RE = re.compile(
     r"bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)",
@@ -30,7 +43,7 @@ _GET = "GET"
 _ZERO_CONTENT_RANGE_HEADER = "bytes */0"
 
 
-class DownloadBase(object):
+class DownloadBase(Generic[_MediaTransport, _MediaResponseT]):
     """Base class for download helpers.
 
     Defines core shared behavior across different download types.
@@ -60,13 +73,13 @@ class DownloadBase(object):
 
     def __init__(
         self,
-        media_url,
-        stream=None,
-        start=None,
-        end=None,
-        headers=None,
-        retry=DEFAULT_RETRY,
-    ):
+        media_url: str,
+        stream: Writable | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        headers: dict[str, str] | None = None,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         self.media_url = media_url
         self._stream = stream
         self.start = start
@@ -78,12 +91,12 @@ class DownloadBase(object):
         self._retry_strategy = retry
 
     @property
-    def finished(self):
+    def finished(self) -> bool:
         """bool: Flag indicating if the download has completed."""
         return self._finished
 
     @staticmethod
-    def _get_status_code(response):
+    def _get_status_code(response: _MediaResponseT) -> int:
         """Access the status code from an HTTP response.
 
         Args:
@@ -95,7 +108,7 @@ class DownloadBase(object):
         raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
-    def _get_headers(response):
+    def _get_headers(response: _MediaResponseT) -> Mapping[str, str]:
         """Access the headers from an HTTP response.
 
         Args:
@@ -107,7 +120,7 @@ class DownloadBase(object):
         raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
-    def _get_body(response):
+    def _get_body(response: _MediaResponseT) -> bytes:
         """Access the response body from an HTTP response.
 
         Args:
@@ -119,7 +132,7 @@ class DownloadBase(object):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class Download(DownloadBase):
+class Download(DownloadBase[_MediaTransport, _MediaResponseT]):
     """Helper to manage downloading a resource from a Google API.
 
     "Slices" of the resource can be retrieved by specifying a range
@@ -163,16 +176,16 @@ class Download(DownloadBase):
 
     def __init__(
         self,
-        media_url,
-        stream=None,
-        start=None,
-        end=None,
-        headers=None,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
-        super(Download, self).__init__(
+        media_url: str,
+        stream: Writable | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        headers: dict[str, str] | None = None,
+        checksum: str | None = "auto",
+        retry: Retry | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> None:
+        super().__init__(
             media_url, stream=stream, start=start, end=end, headers=headers, retry=retry
         )
         self.checksum = checksum
@@ -182,11 +195,11 @@ class Download(DownloadBase):
             )
         self.single_shot_download = single_shot_download
         self._bytes_downloaded = 0
-        self._expected_checksum = None
-        self._checksum_object = None
-        self._object_generation = None
+        self._expected_checksum: str | None = None
+        self._checksum_object: Checksum | _helpers._DoNothingHash | None = None
+        self._object_generation: int | None = None
 
-    def _prepare_request(self):
+    def _prepare_request(self) -> tuple[str, str, None, dict[str, str]]:
         """Prepare the contents of an HTTP request.
 
         This is everything that must be done before a request that doesn't
@@ -213,7 +226,7 @@ class Download(DownloadBase):
         add_bytes_range(self.start, self.end, self._headers)
         return _GET, self.media_url, None, self._headers
 
-    def _process_response(self, response):
+    def _process_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -231,7 +244,9 @@ class Download(DownloadBase):
             response, _ACCEPTABLE_STATUS_CODES, self._get_status_code
         )
 
-    def consume(self, transport, timeout=None):
+    def consume(
+        self, transport: _MediaTransport, timeout: Timeout | None = None
+    ) -> _MediaResponseT:
         """Consume the resource to be downloaded.
 
         If a ``stream`` is attached to this download, then the downloaded
@@ -254,7 +269,7 @@ class Download(DownloadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class ChunkedDownload(DownloadBase):
+class ChunkedDownload(DownloadBase[_MediaTransport, _MediaResponseT]):
     """Download a resource in chunks from a Google API.
 
     Args:
@@ -292,19 +307,19 @@ class ChunkedDownload(DownloadBase):
 
     def __init__(
         self,
-        media_url,
-        chunk_size,
-        stream,
-        start=0,
-        end=None,
-        headers=None,
-        retry=DEFAULT_RETRY,
-    ):
+        media_url: str,
+        chunk_size: int,
+        stream: Writable,
+        start: int = 0,
+        end: int | None = None,
+        headers: dict[str, str] | None = None,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         if start < 0:
             raise ValueError(
                 "On a chunked download the starting value cannot be negative."
             )
-        super(ChunkedDownload, self).__init__(
+        super().__init__(
             media_url,
             stream=stream,
             start=start,
@@ -314,35 +329,35 @@ class ChunkedDownload(DownloadBase):
         )
         self.chunk_size = chunk_size
         self._bytes_downloaded = 0
-        self._total_bytes = None
+        self._total_bytes: int | None = None
         self._invalid = False
 
     @property
-    def bytes_downloaded(self):
+    def bytes_downloaded(self) -> int:
         """int: Number of bytes that have been downloaded."""
         return self._bytes_downloaded
 
     @property
-    def total_bytes(self):
+    def total_bytes(self) -> int | None:
         """Optional[int]: The total number of bytes to be downloaded."""
         return self._total_bytes
 
     @property
-    def invalid(self):
+    def invalid(self) -> bool:
         """bool: Indicates if the download is in an invalid state.
 
         This will occur if a call to :meth:`consume_next_chunk` fails.
         """
         return self._invalid
 
-    def _get_byte_range(self):
+    def _get_byte_range(self) -> tuple[int, int]:
         """Determines the byte range for the next request.
 
         Returns:
             Tuple[int, int]: The pair of begin and end byte for the next
             chunked request.
         """
-        curr_start = self.start + self.bytes_downloaded
+        curr_start = cast(int, self.start) + self.bytes_downloaded
         curr_end = curr_start + self.chunk_size - 1
         # Make sure ``curr_end`` does not exceed ``end``.
         if self.end is not None:
@@ -352,7 +367,7 @@ class ChunkedDownload(DownloadBase):
             curr_end = min(curr_end, self.total_bytes - 1)
         return curr_start, curr_end
 
-    def _prepare_request(self):
+    def _prepare_request(self) -> tuple[str, str, None, dict[str, str]]:
         """Prepare the contents of an HTTP request.
 
         This is everything that must be done before a request that doesn't
@@ -388,7 +403,7 @@ class ChunkedDownload(DownloadBase):
         add_bytes_range(curr_start, curr_end, self._headers)
         return _GET, self.media_url, None, self._headers
 
-    def _make_invalid(self):
+    def _make_invalid(self) -> None:
         """Simple setter for ``invalid``.
 
         This is intended to be passed along as a callback to helpers that
@@ -397,7 +412,7 @@ class ChunkedDownload(DownloadBase):
         """
         self._invalid = True
 
-    def _process_response(self, response):
+    def _process_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -485,9 +500,11 @@ class ChunkedDownload(DownloadBase):
         if self.total_bytes is None:
             self._total_bytes = total_bytes
         # Write the response body to the stream.
-        self._stream.write(response_body)
+        cast("Writable", self._stream).write(response_body)
 
-    def consume_next_chunk(self, transport, timeout=None):
+    def consume_next_chunk(
+        self, transport: _MediaTransport, timeout: Timeout | None = None
+    ) -> _MediaResponseT:
         """Consume the next chunk of the resource to be downloaded.
 
         Args:
@@ -507,7 +524,9 @@ class ChunkedDownload(DownloadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-def add_bytes_range(start, end, headers):
+def add_bytes_range(
+    start: int | None, end: int | None, headers: dict[str, str]
+) -> None:
     """Add a bytes range to a header dictionary.
 
     Some possible inputs and the corresponding bytes ranges::
@@ -544,21 +563,25 @@ def add_bytes_range(start, end, headers):
             return
         else:
             # NOTE: This assumes ``end`` is non-negative.
-            bytes_range = "0-{:d}".format(end)
+            bytes_range = f"0-{end:d}"
     else:
         if end is None:
             if start < 0:
-                bytes_range = "{:d}".format(start)
+                bytes_range = f"{start:d}"
             else:
-                bytes_range = "{:d}-".format(start)
+                bytes_range = f"{start:d}-"
         else:
             # NOTE: This is invalid if ``start < 0``.
-            bytes_range = "{:d}-{:d}".format(start, end)
+            bytes_range = f"{start:d}-{end:d}"
 
     headers[_helpers.RANGE_HEADER] = "bytes=" + bytes_range
 
 
-def get_range_info(response, get_headers, callback=_helpers.do_nothing):
+def get_range_info(
+    response: _T,
+    get_headers: Callable[[_T], Mapping[str, str]],
+    callback: Callable[[], None] = _helpers.do_nothing,
+) -> tuple[int, int, int]:
     """Get the start, end and total bytes from a content range header.
 
     Args:
@@ -596,7 +619,11 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
     )
 
 
-def _check_for_zero_content_range(response, get_status_code, get_headers):
+def _check_for_zero_content_range(
+    response: _T,
+    get_status_code: Callable[[_T], int],
+    get_headers: Callable[[_T], Mapping[str, str]],
+) -> bool:
     """Validate if response status code is 416 and content range is zero.
 
     This is the special case for handling zero bytes files.

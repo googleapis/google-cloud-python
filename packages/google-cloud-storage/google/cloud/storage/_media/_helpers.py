@@ -14,15 +14,23 @@
 
 """Shared utilities used by both downloads and uploads."""
 
-from __future__ import absolute_import
+from __future__ import annotations
 
 import base64
 import hashlib
 import logging
+from typing import TYPE_CHECKING, overload
 from urllib.parse import parse_qs, urlencode, urlsplit, urlunsplit
 
 from google.cloud.storage import retry
 from google.cloud.storage.exceptions import InvalidResponse
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+    from typing import Any
+
+    from google.cloud.storage._types import _T, Checksum
+
 
 RANGE_HEADER = "range"
 CONTENT_RANGE_HEADER = "content-range"
@@ -44,11 +52,16 @@ checking is not being performed."""
 _LOGGER = logging.getLogger(__name__)
 
 
-def do_nothing():
+def do_nothing() -> None:
     """Simple default callback."""
 
 
-def header_required(response, name, get_headers, callback=do_nothing):
+def header_required(
+    response: _T,
+    name: str,
+    get_headers: Callable[[_T], Mapping[str, str]],
+    callback: Callable[[], None] = do_nothing,
+) -> str:
     """Checks that a specific header is in a headers dictionary.
 
     Args:
@@ -75,7 +88,12 @@ def header_required(response, name, get_headers, callback=do_nothing):
     return headers[name]
 
 
-def require_status_code(response, status_codes, get_status_code, callback=do_nothing):
+def require_status_code(
+    response: _T,
+    status_codes: tuple[int, ...],
+    get_status_code: Callable[[_T], int],
+    callback: Callable[[], None] = do_nothing,
+) -> int:
     """Require a response has a status code among a list.
 
     Args:
@@ -107,14 +125,14 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
     return status_code
 
 
-def _get_metadata_key(checksum_type):
+def _get_metadata_key(checksum_type: str) -> str:
     if checksum_type == "md5":
         return "md5Hash"
     else:
         return checksum_type
 
 
-def prepare_checksum_digest(digest_bytestring):
+def prepare_checksum_digest(digest_bytestring: bytes) -> str:
     """Convert a checksum object into a digest encoded for an HTTP header.
 
     Args:
@@ -128,7 +146,12 @@ def prepare_checksum_digest(digest_bytestring):
     return encoded_digest.decode("utf-8")
 
 
-def _get_expected_checksum(response, get_headers, media_url, checksum_type):
+def _get_expected_checksum(
+    response: _T,
+    get_headers: Callable[[_T], Mapping[str, str]],
+    media_url: str,
+    checksum_type: str | None,
+) -> tuple[str | None, Checksum | _DoNothingHash]:
     """Get the expected checksum and checksum object for the download response.
 
     Args:
@@ -146,7 +169,7 @@ def _get_expected_checksum(response, get_headers, media_url, checksum_type):
     """
     if checksum_type not in ["md5", "crc32c", None]:
         raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
-    elif checksum_type in ["md5", "crc32c"]:
+    elif checksum_type is not None:
         headers = get_headers(response)
         expected_checksum = _parse_checksum_header(
             headers.get(_HASH_HEADER), response, checksum_label=checksum_type
@@ -157,7 +180,7 @@ def _get_expected_checksum(response, get_headers, media_url, checksum_type):
                 media_url, checksum_type=checksum_type.upper()
             )
             _LOGGER.info(msg)
-            checksum_object = _DoNothingHash()
+            checksum_object: Checksum | _DoNothingHash = _DoNothingHash()
         else:
             checksum_object = _get_checksum_object(checksum_type)
     else:
@@ -167,7 +190,11 @@ def _get_expected_checksum(response, get_headers, media_url, checksum_type):
     return (expected_checksum, checksum_object)
 
 
-def _get_uploaded_checksum_from_headers(response, get_headers, checksum_type):
+def _get_uploaded_checksum_from_headers(
+    response: _T,
+    get_headers: Callable[[_T], Mapping[str, str]],
+    checksum_type: str | None,
+) -> str | None:
     """Get the computed checksum and checksum object from the response headers.
 
     Args:
@@ -184,7 +211,7 @@ def _get_uploaded_checksum_from_headers(response, get_headers, checksum_type):
     """
     if checksum_type not in ["md5", "crc32c", None]:
         raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
-    elif checksum_type in ["md5", "crc32c"]:
+    elif checksum_type is not None:
         headers = get_headers(response)
         remote_checksum = _parse_checksum_header(
             headers.get(_HASH_HEADER), response, checksum_label=checksum_type
@@ -195,7 +222,9 @@ def _get_uploaded_checksum_from_headers(response, get_headers, checksum_type):
     return remote_checksum
 
 
-def _parse_checksum_header(header_value, response, checksum_label):
+def _parse_checksum_header(
+    header_value: str | None, response: _T, checksum_label: str
+) -> str | None:
     """Parses the checksum header from an ``X-Goog-Hash`` value.
 
     .. _header reference: https://cloud.google.com/storage/docs/\
@@ -242,13 +271,23 @@ def _parse_checksum_header(header_value, response, checksum_label):
     else:
         raise InvalidResponse(
             response,
-            "X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
+            f"X-Goog-Hash header had multiple ``{checksum_label}`` values.",
             header_value,
             matches,
         )
 
 
-def _get_checksum_object(checksum_type):
+@overload
+def _get_checksum_object(checksum_type: str) -> Checksum:
+    pass
+
+
+@overload
+def _get_checksum_object(checksum_type: None) -> None:
+    pass
+
+
+def _get_checksum_object(checksum_type: str | None) -> Checksum | None:
     """Respond with a checksum object for a supported type, if not None.
 
     Raises ValueError if checksum_type is unsupported.
@@ -267,7 +306,7 @@ def _get_checksum_object(checksum_type):
         raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
 
 
-def _is_crc32c_available_and_fast():
+def _is_crc32c_available_and_fast() -> bool:
     """Return True if the google_crc32c C extension is installed.
 
     Return False if either the package is not installed, or if only the
@@ -283,7 +322,9 @@ def _is_crc32c_available_and_fast():
     return False
 
 
-def _parse_generation_header(response, get_headers):
+def _parse_generation_header(
+    response: _T, get_headers: Callable[[_T], Mapping[str, str]]
+) -> int | None:
     """Parses the generation header from an ``X-Goog-Generation`` value.
 
     Args:
@@ -303,7 +344,7 @@ def _parse_generation_header(response, get_headers):
         return int(object_generation)
 
 
-def _get_generation_from_url(media_url):
+def _get_generation_from_url(media_url: str) -> int | None:
     """Retrieve the object generation query param specified in the media url.
 
     Args:
@@ -323,7 +364,7 @@ def _get_generation_from_url(media_url):
         return int(object_generation[0])
 
 
-def add_query_parameters(media_url, query_params):
+def add_query_parameters(media_url: str, query_params: dict[str, Any]) -> str:
     """Add query parameters to a base url.
 
     Args:
@@ -344,7 +385,9 @@ def add_query_parameters(media_url, query_params):
     return urlunsplit((scheme, netloc, path, query, frag))
 
 
-def _is_decompressive_transcoding(response, get_headers):
+def _is_decompressive_transcoding(
+    response: _T, get_headers: Callable[[_T], Mapping[str, str]]
+) -> bool:
     """Returns True if the object was served decompressed. This happens when the
     "x-goog-stored-content-encoding" header is "gzip" and "content-encoding" header
     is not "gzip". See more at: https://cloud.google.com/storage/docs/transcoding#transcoding_and_gzip
@@ -361,14 +404,14 @@ def _is_decompressive_transcoding(response, get_headers):
     )
 
 
-class _DoNothingHash(object):
+class _DoNothingHash:
     """Do-nothing hash object.
 
     Intended as a stand-in for ``hashlib.md5`` or a crc32c checksum
     implementation in cases where it isn't necessary to compute the hash.
     """
 
-    def update(self, unused_chunk):
+    def update(self, unused_chunk: bytes) -> None:
         """Do-nothing ``update`` method.
 
         Intended to match the interface of ``hashlib.md5`` and other checksums.

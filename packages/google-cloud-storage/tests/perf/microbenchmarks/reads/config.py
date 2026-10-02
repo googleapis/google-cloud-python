@@ -13,7 +13,6 @@
 # limitations under the License.
 import itertools
 import os
-from typing import Dict, List
 
 import yaml
 
@@ -23,7 +22,7 @@ except ModuleNotFoundError:
     from reads.parameters import ReadParameters
 
 
-def _get_params() -> Dict[str, List[ReadParameters]]:
+def _get_params() -> dict[str, list[ReadParameters]]:
     """Generates a dictionary of benchmark parameters for read operations.
 
     This function reads configuration from a `config.yaml` file, which defines
@@ -42,9 +41,9 @@ def _get_params() -> Dict[str, List[ReadParameters]]:
         names (e.g., 'read_seq', 'read_rand_multi_coros') and values are lists
         of `ReadParameters` objects, each representing a unique benchmark scenario.
     """
-    params: Dict[str, List[ReadParameters]] = {}
+    params: dict[str, list[ReadParameters]] = {}
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
-    with open(config_path, "r") as f:
+    with open(config_path) as f:
         config = yaml.safe_load(f)
 
     common_params = config["common"]

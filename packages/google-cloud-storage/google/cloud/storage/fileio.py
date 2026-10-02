@@ -14,11 +14,27 @@
 
 """Module for file-like access of blobs, usually invoked via Blob.open()."""
 
+from __future__ import annotations
+
 import io
+from typing import TYPE_CHECKING, cast
 
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 
 from google.cloud.storage.retry import DEFAULT_RETRY, ConditionalRetryPolicy
+
+if TYPE_CHECKING:
+    from types import TracebackType
+    from typing import Any
+
+    from google.api_core.retry import Retry
+    from google.auth.transport.requests import AuthorizedSession
+    from typing_extensions import Buffer
+
+    from google.cloud.storage._media.requests.upload import ResumableUpload
+    from google.cloud.storage._types import SeekableReadable
+    from google.cloud.storage.blob import Blob
+
 
 # Resumable uploads require a chunk size of precisely a multiple of 256 KiB.
 CHUNK_SIZE_MULTIPLE = 256 * 1024  # 256 KiB
@@ -105,7 +121,13 @@ class BlobReader(io.BufferedIOBase):
         if a reload is needed during seek().
     """
 
-    def __init__(self, blob, chunk_size=None, retry=DEFAULT_RETRY, **download_kwargs):
+    def __init__(
+        self,
+        blob: Blob,
+        chunk_size: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        **download_kwargs: Any,
+    ) -> None:
         for kwarg in download_kwargs:
             if kwarg not in VALID_DOWNLOAD_KWARGS:
                 raise ValueError(
@@ -113,13 +135,15 @@ class BlobReader(io.BufferedIOBase):
                 )
 
         self._blob = blob
-        self._pos = 0
+        self._pos: int = 0
         self._buffer = io.BytesIO()
         self._chunk_size = chunk_size or blob.chunk_size or DEFAULT_CHUNK_SIZE
         self._retry = retry
         self._download_kwargs = download_kwargs
 
-    def read(self, size=-1):
+    def read(self, size: int | None = -1) -> bytes:
+        if size is None:
+            size = -1
         self._checkClosed()  # Raises ValueError if closed.
 
         result = self._buffer.read(size)
@@ -164,10 +188,10 @@ class BlobReader(io.BufferedIOBase):
             self._pos += len(result) - read_size
         return result
 
-    def read1(self, size=-1):
+    def read1(self, size: int = -1) -> bytes:
         return self.read(size)
 
-    def seek(self, pos, whence=0):
+    def seek(self, pos: int, whence: int = 0) -> int:
         """Seek within the blob.
 
         This implementation of seek() uses knowledge of the blob size to
@@ -184,6 +208,8 @@ class BlobReader(io.BufferedIOBase):
             }
             self._blob.reload(**reload_kwargs)
 
+        # Reload populates size before calculating a bounded seek.
+        blob_size = cast(int, self._blob.size)
         initial_offset = self._pos + self._buffer.tell()
 
         if whence == 0:
@@ -191,12 +217,12 @@ class BlobReader(io.BufferedIOBase):
         elif whence == 1:
             target_pos = initial_offset + pos
         elif whence == 2:
-            target_pos = self._blob.size + pos
+            target_pos = blob_size + pos
         if whence not in {0, 1, 2}:
             raise ValueError("invalid whence value")
 
-        if target_pos > self._blob.size:
-            target_pos = self._blob.size
+        if target_pos > blob_size:
+            target_pos = blob_size
 
         # Seek or invalidate buffer as needed.
         if target_pos < self._pos:
@@ -212,20 +238,20 @@ class BlobReader(io.BufferedIOBase):
             new_pos = self._pos + self._buffer.seek(difference, 1)
         return new_pos
 
-    def close(self):
+    def close(self) -> None:
         self._buffer.close()
 
     @property
-    def closed(self):
+    def closed(self) -> bool:
         return self._buffer.closed
 
-    def readable(self):
+    def readable(self) -> bool:
         return True
 
-    def writable(self):
+    def writable(self) -> bool:
         return False
 
-    def seekable(self):
+    def seekable(self) -> bool:
         return True
 
 
@@ -296,12 +322,12 @@ class BlobWriter(io.BufferedIOBase):
 
     def __init__(
         self,
-        blob,
-        chunk_size=None,
-        ignore_flush=False,
-        retry=DEFAULT_RETRY,
-        **upload_kwargs,
-    ):
+        blob: Blob,
+        chunk_size: int | None = None,
+        ignore_flush: bool = False,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        **upload_kwargs: Any,
+    ) -> None:
         for kwarg in upload_kwargs:
             if kwarg not in VALID_UPLOAD_KWARGS:
                 raise ValueError(
@@ -309,7 +335,9 @@ class BlobWriter(io.BufferedIOBase):
                 )
         self._blob = blob
         self._buffer = SlidingBuffer()
-        self._upload_and_transport = None
+        self._upload_and_transport: tuple[ResumableUpload, AuthorizedSession] | None = (
+            None
+        )
         # Resumable uploads require a chunk size of a multiple of 256KiB.
         # self._chunk_size must not be changed after the upload is initiated.
         self._chunk_size = chunk_size or blob.chunk_size or DEFAULT_CHUNK_SIZE
@@ -318,7 +346,7 @@ class BlobWriter(io.BufferedIOBase):
         self._upload_kwargs = upload_kwargs
 
     @property
-    def _chunk_size(self):
+    def _chunk_size(self) -> int:
         """Get the blob's default chunk size.
 
         :rtype: int or ``NoneType``
@@ -327,7 +355,7 @@ class BlobWriter(io.BufferedIOBase):
         return self.__chunk_size
 
     @_chunk_size.setter
-    def _chunk_size(self, value):
+    def _chunk_size(self, value: int) -> None:
         """Set the blob's default chunk size.
 
         :type value: int
@@ -338,11 +366,11 @@ class BlobWriter(io.BufferedIOBase):
         """
         if value is not None and value > 0 and value % CHUNK_SIZE_MULTIPLE != 0:
             raise ValueError(
-                "Chunk size must be a multiple of %d." % CHUNK_SIZE_MULTIPLE
+                f"Chunk size must be a multiple of {CHUNK_SIZE_MULTIPLE:d}."
             )
         self.__chunk_size = value
 
-    def write(self, b):
+    def write(self, b: Buffer) -> int:
         self._checkClosed()  # Raises ValueError if closed.
 
         pos = self._buffer.write(b)
@@ -354,7 +382,7 @@ class BlobWriter(io.BufferedIOBase):
 
         return pos
 
-    def _initiate_upload(self):
+    def _initiate_upload(self) -> None:
         retry = self._retry
         content_type = self._upload_kwargs.pop("content_type", None)
 
@@ -374,7 +402,8 @@ class BlobWriter(io.BufferedIOBase):
 
         self._upload_and_transport = self._blob._initiate_resumable_upload(
             self._blob.bucket.client,
-            self._buffer,
+            # Uploads with an unknown size only seek to absolute offsets.
+            cast("SeekableReadable", self._buffer),
             content_type,
             None,
             chunk_size=self._chunk_size,
@@ -382,13 +411,14 @@ class BlobWriter(io.BufferedIOBase):
             **self._upload_kwargs,
         )
 
-    def _upload_chunks_from_buffer(self, num_chunks):
+    def _upload_chunks_from_buffer(self, num_chunks: int) -> None:
         """Upload a specified number of chunks."""
 
         # Initialize the upload if necessary.
         if not self._upload_and_transport:
             self._initiate_upload()
 
+        assert self._upload_and_transport is not None
         upload, transport = self._upload_and_transport
 
         # Attach timeout if specified in the keyword arguments.
@@ -404,10 +434,10 @@ class BlobWriter(io.BufferedIOBase):
         # Wipe the buffer of chunks uploaded, preserving any remaining data.
         self._buffer.flush()
 
-    def tell(self):
+    def tell(self) -> int:
         return self._buffer.tell() + len(self._buffer)
 
-    def flush(self):
+    def flush(self) -> None:
         # flush() is not fully supported by the remote service, so raise an
         # error here, unless self._ignore_flush is set.
         if not self._ignore_flush:
@@ -417,39 +447,44 @@ class BlobWriter(io.BufferedIOBase):
                 "docstring)."
             )
 
-    def close(self):
+    def close(self) -> None:
         if not self._buffer.closed:
             self._upload_chunks_from_buffer(1)
         self._buffer.close()
 
-    def terminate(self):
+    def terminate(self) -> None:
         """Cancel the ResumableUpload."""
         if self._upload_and_transport:
             upload, transport = self._upload_and_transport
             transport.delete(upload.upload_url)
         self._buffer.close()
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         if exc_type is not None:
             self.terminate()
         else:
             self.close()
 
     @property
-    def closed(self):
+    def closed(self) -> bool:
         return self._buffer.closed
 
-    def readable(self):
+    def readable(self) -> bool:
         return False
 
-    def writable(self):
+    def writable(self) -> bool:
         return True
 
-    def seekable(self):
+    def seekable(self) -> bool:
         return False
 
 
-class SlidingBuffer(object):
+class SlidingBuffer:
     """A non-rewindable buffer that frees memory of chunks already consumed.
 
     This class is necessary because `google-resumable-media-python` expects
@@ -468,11 +503,11 @@ class SlidingBuffer(object):
     This class does not attempt to implement the entire Python I/O interface.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._buffer = io.BytesIO()
         self._cursor = 0
 
-    def write(self, b):
+    def write(self, b: Buffer) -> int:
         """Append to the end of the buffer without changing the position."""
         self._checkClosed()  # Raises ValueError if closed.
 
@@ -482,7 +517,7 @@ class SlidingBuffer(object):
         self._buffer.seek(bookmark)
         return pos
 
-    def read(self, size=-1):
+    def read(self, size: int = -1) -> bytes:
         """Read and move the cursor."""
         self._checkClosed()  # Raises ValueError if closed.
 
@@ -490,7 +525,7 @@ class SlidingBuffer(object):
         self._cursor += len(data)
         return data
 
-    def flush(self):
+    def flush(self) -> None:
         """Delete already-read data (all data to the left of the position)."""
         self._checkClosed()  # Raises ValueError if closed.
 
@@ -502,11 +537,11 @@ class SlidingBuffer(object):
         self._buffer.write(leftover)
         self._buffer.seek(0)
 
-    def tell(self):
+    def tell(self) -> int:
         """Report how many bytes have been read from the buffer in total."""
         return self._cursor
 
-    def seek(self, pos):
+    def seek(self, pos: int) -> int:
         """Seek to a position (backwards only) within the internal buffer.
 
         This implementation of seek() verifies that the seek destination is
@@ -532,19 +567,19 @@ class SlidingBuffer(object):
         self._cursor = pos
         return self._cursor
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Determine the size of the buffer by seeking to the end."""
         bookmark = self._buffer.tell()
         length = self._buffer.seek(0, io.SEEK_END)
         self._buffer.seek(bookmark)
         return length
 
-    def close(self):
+    def close(self) -> None:
         return self._buffer.close()
 
-    def _checkClosed(self):
+    def _checkClosed(self) -> None:
         return self._buffer._checkClosed()
 
     @property
-    def closed(self):
+    def closed(self) -> bool:
         return self._buffer.closed

@@ -14,13 +14,21 @@
 
 """In-memory LRU cache for bucket metadata supporting App-centric Observability (ACO)."""
 
+from __future__ import annotations
+
 import logging
 import threading
+from typing import TYPE_CHECKING
 
 from google.api_core import exceptions as api_exceptions
 from google.cloud.exceptions import NotFound
 
 from google.cloud.storage._lru_cache import LRUCache
+
+if TYPE_CHECKING:
+    from google.cloud.storage.bucket import Bucket
+    from google.cloud.storage.client import Client
+
 
 logger = logging.getLogger(__name__)
 
@@ -31,19 +39,19 @@ class BucketMetadataCache:
     Supports Singleflight asynchronous background fetching to prevent stampedes on cache misses.
     """
 
-    def __init__(self, client, max_size=10000):
+    def __init__(self, client: Client, max_size: int = 10000) -> None:
         self._client = client
-        self._cache = LRUCache(max_size)
+        self._cache: LRUCache[str, tuple[str, str]] = LRUCache(max_size)
         self._lock = threading.Lock()
-        self._inflight_fetches = set()
-        self._inflight_checks = set()
+        self._inflight_fetches: set[str] = set()
+        self._inflight_checks: set[str] = set()
 
-    def get(self, bucket_name):
+    def get(self, bucket_name: str) -> tuple[str, str] | None:
         """Thread-safely retrieve cached metadata without queueing fetch."""
         with self._lock:
             return self._cache.get(bucket_name)
 
-    def get_or_queue_fetch(self, bucket_name):
+    def get_or_queue_fetch(self, bucket_name: str) -> tuple[str, str] | None:
         """Retrieve bucket metadata or queue a background fetch on cache miss.
 
         Returns None immediately on cache miss so caller does not block.
@@ -65,7 +73,7 @@ class BucketMetadataCache:
                 ).start()
                 return None
 
-    def check_and_evict(self, bucket_name):
+    def check_and_evict(self, bucket_name: str) -> None:
         """Asynchronously verify if a bucket exists on 404 and evict if deleted."""
         with self._lock:
             if bucket_name not in self._cache:
@@ -79,7 +87,7 @@ class BucketMetadataCache:
                 daemon=True,
             ).start()
 
-    def _verify_existence_background(self, bucket_name):
+    def _verify_existence_background(self, bucket_name: str) -> None:
         try:
             bucket = self._client.bucket(bucket_name)
             if not bucket.exists():
@@ -92,7 +100,7 @@ class BucketMetadataCache:
             with self._lock:
                 self._inflight_checks.discard(bucket_name)
 
-    def _fetch_background(self, bucket_name):
+    def _fetch_background(self, bucket_name: str) -> None:
         """Asynchronously fetch bucket metadata and update the cache."""
         try:
             bucket = self._client.get_bucket(bucket_name, timeout=10.0)
@@ -114,7 +122,7 @@ class BucketMetadataCache:
             with self._lock:
                 self._inflight_fetches.discard(bucket_name)
 
-    def update_from_bucket(self, bucket):
+    def update_from_bucket(self, bucket: Bucket) -> None:
         """Update cache from a Bucket instance."""
         if not bucket or not bucket.name:
             return
@@ -137,17 +145,19 @@ class BucketMetadataCache:
 
         self.update_cache(bucket.name, destination_id, location)
 
-    def update_cache(self, bucket_name, destination_id, location):
+    def update_cache(
+        self, bucket_name: str, destination_id: str, location: str
+    ) -> None:
         """Thread-safely update or insert a cache entry with bounded size."""
         with self._lock:
             self._cache.put(bucket_name, (destination_id, location))
 
-    def evict(self, bucket_name):
+    def evict(self, bucket_name: str) -> None:
         """Remove a bucket from the cache (e.g., on 404)."""
         with self._lock:
             self._cache.delete(bucket_name)
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all cached metadata."""
         with self._lock:
             self._cache.clear()

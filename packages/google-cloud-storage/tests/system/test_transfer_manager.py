@@ -1,4 +1,3 @@
-# coding=utf-8
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -337,7 +336,7 @@ def test_download_many_to_path_mixed_results(shared_bucket, file_data, blobs_to_
         assert os.path.exists(os.path.join(tempdir, "success1.txt"))
         assert os.path.exists(os.path.join(tempdir, "success2.txt"))
 
-        with open(existing_file_path, "r") as f:
+        with open(existing_file_path) as f:
             assert f.read() == "already here"
 
 

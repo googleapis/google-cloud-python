@@ -17,6 +17,19 @@
 This utilities are explicitly catered to ``requests``-like transports.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+
+    from google.api_core.retry import Retry
+    from requests import Response
+
+    from google.cloud.storage._types import _T
+
+
 _SINGLE_GET_CHUNK_SIZE = 8192
 # The number of seconds to wait to establish a connection
 # (connect() call on socket). Avoid setting this to a multiple of 3 to not
@@ -26,7 +39,7 @@ _DEFAULT_CONNECT_TIMEOUT = 61
 _DEFAULT_READ_TIMEOUT = 60
 
 
-class RequestsMixin(object):
+class RequestsMixin:
     """Mix-in class implementing ``requests``-specific behavior.
 
     These are methods that are more general purpose, with implementations
@@ -34,7 +47,7 @@ class RequestsMixin(object):
     """
 
     @staticmethod
-    def _get_status_code(response):
+    def _get_status_code(response: Response) -> int:
         """Access the status code from an HTTP response.
 
         Args:
@@ -46,7 +59,7 @@ class RequestsMixin(object):
         return response.status_code
 
     @staticmethod
-    def _get_headers(response):
+    def _get_headers(response: Response) -> Mapping[str, str]:
         """Access the headers from an HTTP response.
 
         Args:
@@ -59,7 +72,7 @@ class RequestsMixin(object):
         return response.headers
 
     @staticmethod
-    def _get_body(response):
+    def _get_body(response: Response) -> bytes:
         """Access the response body from an HTTP response.
 
         Args:
@@ -73,7 +86,7 @@ class RequestsMixin(object):
 
 class RawRequestsMixin(RequestsMixin):
     @staticmethod
-    def _get_body(response):
+    def _get_body(response: Response) -> bytes:
         """Access the response body from an HTTP response.
 
         Args:
@@ -87,10 +100,10 @@ class RawRequestsMixin(RequestsMixin):
                 response.raw.stream(_SINGLE_GET_CHUNK_SIZE, decode_content=False)
             )
             response._content_consumed = True
-        return response._content
+        return cast(bytes, response._content)
 
 
-def wait_and_retry(func, retry_strategy):
+def wait_and_retry(func: Callable[[], _T], retry_strategy: Retry | None) -> _T:
     """Attempts to retry a call to ``func`` until success.
 
     Args:

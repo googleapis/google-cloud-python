@@ -13,10 +13,15 @@
 # limitations under the License.
 
 import abc
-from typing import Any, Optional
+from typing import Generic, TypeVar
+
+from google.cloud._storage_v2 import BidiReadHandle, BidiWriteHandle
+
+_Request = TypeVar("_Request")
+_Response = TypeVar("_Response")
 
 
-class _AsyncAbstractObjectStream(abc.ABC):
+class _AsyncAbstractObjectStream(abc.ABC, Generic[_Request, _Response]):
     """Abstract base class to represent gRPC bidi-stream for GCS ``Object``.
 
     Concrete implementation of this class could be ``_AsyncReadObjectStream``
@@ -32,7 +37,7 @@ class _AsyncAbstractObjectStream(abc.ABC):
     :param generation_number: (Optional) If present, selects a specific revision of
                               this object.
 
-    :type handle: Any
+    :type handle: BidiReadHandle or BidiWriteHandle
     :param handle: (Optional) The handle for the object, could be read_handle or
                    write_handle, based on how the stream is used.
     """
@@ -41,14 +46,14 @@ class _AsyncAbstractObjectStream(abc.ABC):
         self,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,
-        handle: Optional[Any] = None,
+        generation_number: int | None = None,
+        handle: BidiReadHandle | BidiWriteHandle | None = None,
     ) -> None:
         super().__init__()
         self.bucket_name: str = bucket_name
         self.object_name: str = object_name
-        self.generation_number: Optional[int] = generation_number
-        self.handle: Optional[Any] = handle
+        self.generation_number: int | None = generation_number
+        self.handle: BidiReadHandle | BidiWriteHandle | None = handle
 
     @abc.abstractmethod
     async def open(self) -> None:
@@ -59,9 +64,9 @@ class _AsyncAbstractObjectStream(abc.ABC):
         pass
 
     @abc.abstractmethod
-    async def send(self, protobuf: Any) -> None:
+    async def send(self, protobuf: _Request, /) -> None:
         pass
 
     @abc.abstractmethod
-    async def recv(self) -> Any:
+    async def recv(self) -> _Response:
         pass
