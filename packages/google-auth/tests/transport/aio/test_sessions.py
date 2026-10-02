@@ -226,7 +226,13 @@ class TestAsyncAuthorizedSession(object):
         assert isinstance(authed_session._credentials, Credentials)
         assert isinstance(authed_session._credentials, sessions._SyncCredentialsAdapter)
         assert authed_session._credentials._credentials is sync_credentials
-        await authed_session.close()
+        with patch.object(
+            authed_session._credentials,
+            "close",
+            wraps=authed_session._credentials.close,
+        ) as mock_close:
+            await authed_session.close()
+            mock_close.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_request_with_sync_credentials_success(self, mocked_content):
@@ -497,7 +503,6 @@ class TestSyncCredentialsAdapter(object):
         with patch.object(sync_request.session, "close") as mock_close:
             adapter.close()
             mock_close.assert_called_once()
-        
 
     @pytest.mark.asyncio
     async def test_blocking_calls_run_off_the_event_loop_thread(self):
@@ -528,8 +533,8 @@ class TestSyncCredentialsAdapter(object):
             for h in headers
         ]
         await asyncio.to_thread(sync_credentials.refresh_started.wait, 5)
-        # Give the remaining tasks the opportunity to start a refresh of their own.
-        await asyncio.sleep(0.1)
+        # Yield to the event loop so all tasks run until they await the refresh.
+        await asyncio.sleep(0)
         sync_credentials.release_refresh.set()
         await asyncio.gather(*tasks)
 
@@ -547,7 +552,8 @@ class TestSyncCredentialsAdapter(object):
         before_request_task = asyncio.create_task(
             adapter.before_request(Mock(), "GET", self.TEST_URL, headers)
         )
-        await asyncio.sleep(0.1)
+        # Yield to the event loop so before_request_task reaches the refresh.
+        await asyncio.sleep(0)
         sync_credentials.release_refresh.set()
         await asyncio.gather(refresh_task, before_request_task)
 
@@ -574,7 +580,7 @@ class TestSyncCredentialsAdapter(object):
         waiting_task = asyncio.create_task(
             adapter.before_request(Mock(), "GET", self.TEST_URL, headers)
         )
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0)
         assert not waiting_task.done()
         sync_credentials.release_refresh.set()
         await waiting_task
