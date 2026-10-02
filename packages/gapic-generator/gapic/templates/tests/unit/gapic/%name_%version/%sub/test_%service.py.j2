@@ -55,9 +55,6 @@ except ImportError: # pragma: NO COVER
 {% filter sort_lines %}
 import google.auth
 from google.auth import credentials as ga_credentials
-{% if rest_async_io_enabled %}
-import google.auth.transport.requests
-{% endif %}
 
 
 from google.auth.exceptions import MutualTLSChannelError
@@ -284,16 +281,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, "rest"),
-    {% if rest_async_io_enabled %}
-    ({{ service.async_client_name }}, "rest_asyncio"),
-    {% endif %}
     {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_from_service_account_info(client_class, transport_name):
-    {% if rest_async_io_enabled %}
-    if transport_name == "rest_asyncio" and not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    {% endif %}
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
@@ -342,16 +332,9 @@ def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(tra
     {% endif %}
     {% if 'rest' in opts.transport %}
     ({{ service.client_name }}, "rest"),
-    {% if rest_async_io_enabled %}
-    ({{ service.async_client_name }}, "rest_asyncio"),
-    {% endif %}
     {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class, transport_name):
-    {% if rest_async_io_enabled %}
-    if transport_name == "rest_asyncio" and not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    {% endif %}
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
@@ -1134,7 +1117,6 @@ def test_transport_adc(transport_class):
 {% if rest_async_io_enabled %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA and supports all required parameters. #}
 {{ test_macros.async_rest_unsupported_params_test(service) }}
-{{ test_macros.async_rest_credentials_test(service) }}
 {% endif %}
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():

@@ -69,7 +69,6 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-import google.auth.transport.requests
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
@@ -198,11 +197,8 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     (CloudRedisClient, "grpc"),
     (CloudRedisAsyncClient, "grpc_asyncio"),
     (CloudRedisClient, "rest"),
-    (CloudRedisAsyncClient, "rest_asyncio"),
 ])
 def test_cloud_redis_client_from_service_account_info(client_class, transport_name):
-    if transport_name == "rest_asyncio" and not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
@@ -240,11 +236,8 @@ def test_cloud_redis_client_service_account_always_use_jwt(transport_class, tran
     (CloudRedisClient, "grpc"),
     (CloudRedisAsyncClient, "grpc_asyncio"),
     (CloudRedisClient, "rest"),
-    (CloudRedisAsyncClient, "rest_asyncio"),
 ])
 def test_cloud_redis_client_from_service_account_file(client_class, transport_name):
-    if transport_name == "rest_asyncio" and not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
@@ -11263,76 +11256,6 @@ def test_unsupported_parameter_rest_asyncio():
             transport="rest_asyncio",
             client_options=options
     )
-
-
-@pytest.mark.asyncio
-async def test_sync_credentials_rest_asyncio():
-    if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    # Synchronous credentials are accepted, consistent with every other transport.
-    creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(transports.rest_asyncio, "AsyncAuthorizedSession", autospec=True) as session_class:
-        transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(credentials=creds)
-    # The provided credentials are preserved on the transport.
-    assert transport._credentials is creds
-    # The asynchronous session is created with an adapted version of the credentials.
-    async_creds = transport._async_credentials
-    assert isinstance(async_creds, ga_credentials_async.Credentials)
-    session_class.assert_called_once_with(async_creds)
-
-    # The adapted credentials delegate to the synchronous credentials using a
-    # synchronous transport, rather than the asynchronous transport of the session.
-    headers = {}
-    with mock.patch.object(creds, "before_request") as before_request:
-        await async_creds.before_request(mock.sentinel.async_request, "GET", "https://example.com", headers)
-    before_request.assert_called_once_with(mock.ANY, "GET", "https://example.com", headers)
-    assert isinstance(before_request.call_args[0][0], google.auth.transport.requests.Request)
-
-    with mock.patch.object(creds, "refresh") as refresh:
-        await async_creds.refresh(mock.sentinel.async_request)
-    refresh.assert_called_once_with(mock.ANY)
-    assert isinstance(refresh.call_args[0][0], google.auth.transport.requests.Request)
-
-    with mock.patch.object(creds, "apply") as apply:
-        await async_creds.apply(headers, token="token")
-    apply.assert_called_once_with(headers, token="token")
-
-
-def test_async_credentials_rest_asyncio():
-    if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    # Asynchronous credentials are used as is.
-    creds = ga_credentials_async.AnonymousCredentials()
-    transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(credentials=creds)
-    assert transport._credentials is creds
-    assert transport._async_credentials is creds
-
-
-def test_transport_adc_rest_asyncio():
-    if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    # Test default credentials are used if not provided.
-    creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (creds, None)
-        transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")()
-        adc.assert_called_once()
-    assert transport._credentials is creds
-    assert isinstance(transport._async_credentials, ga_credentials_async.Credentials)
-
-
-def test_cloud_redis_rest_asyncio_lro_client_sync_credentials():
-    if not HAS_ASYNC_REST_EXTRA:
-        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest_asyncio",
-    )
-    transport = client.transport
-
-    # Ensure that the operations client uses the adapted credentials.
-    assert isinstance(transport.operations_client, operations_v1.AsyncOperationsRestClient)
-    assert transport.operations_client.transport._credentials is transport._async_credentials
 
 
 def test_transport_grpc_default():

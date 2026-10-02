@@ -23,10 +23,7 @@ try:
 except ImportError as e:  # pragma: NO COVER
     raise ImportError("`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-cloud-redis[async_rest]`") from e
 
-import asyncio
-from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
-import google.auth.transport.requests  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -739,35 +736,6 @@ class AsyncCloudRedisRestStub:
     _host: str
     _interceptor: AsyncCloudRedisRestInterceptor
 
-
-class _SyncToAsyncCredentialsAdapter(ga_credentials_async.Credentials):
-    """Adapts synchronous credentials to the asynchronous credentials interface.
-
-    ``AsyncAuthorizedSession`` only accepts :class:`google.auth.aio.credentials.Credentials`.
-    This adapter allows synchronous :class:`google.auth.credentials.Credentials`
-    (e.g. application default credentials) to be used with the asynchronous
-    REST transport by delegating to the wrapped credentials. Blocking operations,
-    i.e. refreshing the access token, are executed in a worker thread so that the
-    event loop is not blocked.
-    """
-
-    def __init__(self, credentials: ga_credentials.Credentials):
-        super().__init__()
-        self._credentials = credentials
-        # Synchronous credentials require a synchronous transport to refresh the access token.
-        self._request = google.auth.transport.requests.Request()
-
-    async def apply(self, headers, token=None):
-        self._credentials.apply(headers, token=token)
-
-    async def refresh(self, request):
-        # `request` is an asynchronous transport which cannot be used by synchronous credentials.
-        await asyncio.to_thread(self._credentials.refresh, self._request)
-
-    async def before_request(self, request, method, url, headers):
-        await asyncio.to_thread(self._credentials.before_request, self._request, method, url, headers)
-
-
 class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     """Asynchronous REST backend transport for CloudRedis.
 
@@ -802,7 +770,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     def __init__(self,
             *,
             host: str = 'redis.googleapis.com',
-            credentials: Optional[Union[ga_credentials.Credentials, ga_credentials_async.Credentials]] = None,
+            credentials: Optional[ga_credentials_async.Credentials] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             url_scheme: str = 'https',
             interceptor: Optional[AsyncCloudRedisRestInterceptor] = None,
@@ -816,13 +784,11 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
         Args:
             host (Optional[str]):
                  The hostname to connect to (default: 'redis.googleapis.com').
-            credentials (Optional[Union[google.auth.credentials.Credentials, google.auth.aio.credentials.Credentials]]): The
+            credentials (Optional[google.auth.aio.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
-                credentials from the environment. Synchronous credentials are
-                adapted for use with the asynchronous transport; any blocking
-                token refresh is performed in a worker thread.
+                credentials from the environment.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
@@ -843,15 +809,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             url_scheme=url_scheme,
             api_audience=None
         )
-        # The credentials provided to (or resolved by) the base transport may be synchronous,
-        # e.g. when they are obtained from the environment. Adapt them for use with the
-        # asynchronous session while leaving `self._credentials` untouched.
-        self._async_credentials = (
-            _SyncToAsyncCredentialsAdapter(self._credentials)
-            if isinstance(self._credentials, ga_credentials.Credentials)
-            else self._credentials
-        )
-        self._session = AsyncAuthorizedSession(self._async_credentials)  # type: ignore
+        self._session = AsyncAuthorizedSession(self._credentials)  # type: ignore
         self._interceptor = interceptor or AsyncCloudRedisRestInterceptor()
         self._wrap_with_kind = True
         self._prep_wrapped_messages(client_info)
@@ -2454,8 +2412,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             rest_transport = operations_v1.AsyncOperationsRestTransport(  # type: ignore
                     host=self._host,
-                    # use the credentials which are saved, adapted for asynchronous use
-                    credentials=self._async_credentials,
+                    # use the credentials which are saved
+                    credentials=self._credentials,  # type: ignore
                     http_options=http_options,
                     path_prefix="v1"
             )
