@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.72.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.71.0...google-cloud-spanner-v3.72.0) (2026-10-02)
+
+
+### Features
+
+* declare Python3.15 support ([8775794](https://github.com/googleapis/google-cloud-python/commit/8775794508e17150023c8e7152543410014458bf))
+* **spanner:** auth login support for Spanner Omni endpoints ([#18273](https://github.com/googleapis/google-cloud-python/issues/18273)) ([9e0548d](https://github.com/googleapis/google-cloud-python/commit/9e0548de1f8292968e0b0047ea5ddda175830908))
+
+
+### Bug Fixes
+
+* **spanner:** release transaction lock if inline begin fails ([#18409](https://github.com/googleapis/google-cloud-python/issues/18409)) ([dd24029](https://github.com/googleapis/google-cloud-python/commit/dd2402999bdaae9b96380486c8bfd7d89c612b31))
+* **spanner:** stop deleting multiplexed sessions on rotation and close ([#18332](https://github.com/googleapis/google-cloud-python/issues/18332)) ([c38e960](https://github.com/googleapis/google-cloud-python/commit/c38e960ae0349f9856c012c668c07fac24f8f0dc))
+
+
+### Performance Improvements
+
+* **spanner:** add fast-path for multiplexed session acquisition ([#18317](https://github.com/googleapis/google-cloud-python/issues/18317)) ([9569b39](https://github.com/googleapis/google-cloud-python/commit/9569b3989e94de9808c9343039535c2492204a72))
+* **spanner:** optimize query option merging and prevent in-place mutation ([#18358](https://github.com/googleapis/google-cloud-python/issues/18358)) ([8cb3c6a](https://github.com/googleapis/google-cloud-python/commit/8cb3c6a6556ccac9cef008bf34aee51aa70d8ead))
+* **spanner:** optimize query result decoding and type resolution ([#18330](https://github.com/googleapis/google-cloud-python/issues/18330)) ([ce72986](https://github.com/googleapis/google-cloud-python/commit/ce72986884938bceeabd251bfd0212f1760f83ff))
+* **spanner:** optimize row popping in StreamedResultSet ([#18316](https://github.com/googleapis/google-cloud-python/issues/18316)) ([e66103d](https://github.com/googleapis/google-cloud-python/commit/e66103d450af97e8aa51319e1e814e075d3a89c7))
+* **spanner:** short-circuit trace_call when tracing is inactive ([#18356](https://github.com/googleapis/google-cloud-python/issues/18356)) ([58031be](https://github.com/googleapis/google-cloud-python/commit/58031bed73f1d759081dbf9ffbe84fb4955c9ff7))
+* **spanner:** support PartialResultSet.last with background stream draining ([#18320](https://github.com/googleapis/google-cloud-python/issues/18320)) ([80efd63](https://github.com/googleapis/google-cloud-python/commit/80efd633fde5480d83c6889f8a3bf2e98a73370c))
+
 ## [3.71.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.70.0...google-cloud-spanner-v3.71.0) (2026-09-03)
 
 
