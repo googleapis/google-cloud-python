@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-crc32c-v1.9.0...google-crc32c-v1.9.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* repair broken and stale repository URLs in package metadata ([#18498](https://github.com/googleapis/google-cloud-python/issues/18498)) ([54dbd12](https://github.com/googleapis/google-cloud-python/commit/54dbd12056abcfc007b5b76006751c3b11bea99f)), refs [#18497](https://github.com/googleapis/google-cloud-python/issues/18497)
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-crc32c-v1.9.0-rc0...google-crc32c-v1.9.0) (2026-09-24)
 
 
