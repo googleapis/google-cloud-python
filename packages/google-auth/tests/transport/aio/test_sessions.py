@@ -494,6 +494,10 @@ class TestSyncCredentialsAdapter(object):
         )
         sync_credentials.refresh.assert_called_once_with(sync_request)
         sync_credentials.apply.assert_called_once_with(headers, token="token")
+        with patch.object(sync_request.session, "close") as mock_close:
+            adapter.close()
+            mock_close.assert_called_once()
+        
 
     @pytest.mark.asyncio
     async def test_blocking_calls_run_off_the_event_loop_thread(self):
