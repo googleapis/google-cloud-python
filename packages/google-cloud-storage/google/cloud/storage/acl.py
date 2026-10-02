@@ -14,6 +14,10 @@
 
 """Manage access to objects and buckets."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, TypeVar, cast, overload
+
 from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
@@ -21,6 +25,21 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
+    from typing import Any
+
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import Timeout
+    from google.cloud.storage.blob import Blob
+    from google.cloud.storage.bucket import Bucket
+    from google.cloud.storage.client import Client
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
+
+_T = TypeVar("_T")
 
 
 class _ACLEntity:
@@ -41,29 +60,29 @@ class _ACLEntity:
     WRITER_ROLE = "WRITER"
     OWNER_ROLE = "OWNER"
 
-    def __init__(self, entity_type, identifier=None):
+    def __init__(self, entity_type: str, identifier: str | None = None) -> None:
         self.identifier = identifier
-        self.roles = set([])
+        self.roles: set[str] = set([])
         self.type = entity_type
 
-    def __str__(self):
+    def __str__(self) -> str:
         if not self.identifier:
             return str(self.type)
         else:
             return f"{self.type}-{self.identifier}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<ACL Entity: {self} ({', '.join(self.roles)})>"
 
-    def get_roles(self):
+    def get_roles(self) -> set[str]:
         """Get the list of roles permitted by this entity.
 
-        :rtype: list of strings
-        :returns: The list of roles associated with this entity.
+        :rtype: set of strings
+        :returns: The set of roles associated with this entity.
         """
         return self.roles
 
-    def grant(self, role):
+    def grant(self, role: str) -> None:
         """Add a role to the entity.
 
         :type role: str
@@ -71,7 +90,7 @@ class _ACLEntity:
         """
         self.roles.add(role)
 
-    def revoke(self, role):
+    def revoke(self, role: str) -> None:
         """Remove a role from the entity.
 
         :type role: str
@@ -80,27 +99,27 @@ class _ACLEntity:
         if role in self.roles:
             self.roles.remove(role)
 
-    def grant_read(self):
+    def grant_read(self) -> None:
         """Grant read access to the current entity."""
         self.grant(_ACLEntity.READER_ROLE)
 
-    def grant_write(self):
+    def grant_write(self) -> None:
         """Grant write access to the current entity."""
         self.grant(_ACLEntity.WRITER_ROLE)
 
-    def grant_owner(self):
+    def grant_owner(self) -> None:
         """Grant owner access to the current entity."""
         self.grant(_ACLEntity.OWNER_ROLE)
 
-    def revoke_read(self):
+    def revoke_read(self) -> None:
         """Revoke read access from the current entity."""
         self.revoke(_ACLEntity.READER_ROLE)
 
-    def revoke_write(self):
+    def revoke_write(self) -> None:
         """Revoke write access from the current entity."""
         self.revoke(_ACLEntity.WRITER_ROLE)
 
-    def revoke_owner(self):
+    def revoke_owner(self) -> None:
         """Revoke owner access from the current entity."""
         self.revoke(_ACLEntity.OWNER_ROLE)
 
@@ -144,10 +163,10 @@ class ACL:
     save_path = None
     user_project = None
 
-    def __init__(self):
-        self.entities = {}
+    def __init__(self) -> None:
+        self.entities: dict[str, _ACLEntity] = {}
 
-    def _ensure_loaded(self, timeout=_DEFAULT_TIMEOUT):
+    def _ensure_loaded(self, timeout: Timeout = _DEFAULT_TIMEOUT) -> None:
         """Load if not already loaded.
 
         :type timeout: float or tuple
@@ -158,8 +177,18 @@ class ACL:
         if not self.loaded:
             self.reload(timeout=timeout)
 
+    @overload
     @classmethod
-    def validate_predefined(cls, predefined):
+    def validate_predefined(cls, predefined: str) -> str:
+        pass
+
+    @overload
+    @classmethod
+    def validate_predefined(cls, predefined: None) -> None:
+        pass
+
+    @classmethod
+    def validate_predefined(cls, predefined: str | None) -> str | None:
         """Ensures predefined is in list of predefined json values
 
         :type predefined: str
@@ -170,17 +199,17 @@ class ACL:
 
         :raises: :exc: `ValueError`: If predefined is not a valid acl
         """
-        predefined = cls.PREDEFINED_XML_ACLS.get(predefined, predefined)
+        predefined = cls.PREDEFINED_XML_ACLS.get(cast(str, predefined), predefined)
         if predefined and predefined not in cls.PREDEFINED_JSON_ACLS:
             raise ValueError(f"Invalid predefined ACL: {predefined}")
         return predefined
 
-    def reset(self):
+    def reset(self) -> None:
         """Remove all entities from the ACL, and clear the ``loaded`` flag."""
         self.entities.clear()
         self.loaded = False
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[dict[str, str]]:
         self._ensure_loaded()
 
         for entity in self.entities.values():
@@ -188,7 +217,7 @@ class ACL:
                 if role:
                     yield {"entity": str(entity), "role": role}
 
-    def entity_from_dict(self, entity_dict):
+    def entity_from_dict(self, entity_dict: dict[str, Any]) -> _ACLEntity:
         """Build an _ACLEntity object from a dictionary of data.
 
         An entity is a mutable object that represents a list of roles
@@ -220,7 +249,7 @@ class ACL:
         entity.grant(role)
         return entity
 
-    def has_entity(self, entity):
+    def has_entity(self, entity: _ACLEntity) -> bool:
         """Returns whether or not this ACL has any entries for an entity.
 
         :type entity: :class:`_ACLEntity`
@@ -232,7 +261,19 @@ class ACL:
         self._ensure_loaded()
         return str(entity) in self.entities
 
-    def get_entity(self, entity, default=None):
+    @overload
+    def get_entity(
+        self, entity: _ACLEntity | str, default: None = None
+    ) -> _ACLEntity | None:
+        pass
+
+    @overload
+    def get_entity(self, entity: _ACLEntity | str, default: _T) -> _ACLEntity | _T:
+        pass
+
+    def get_entity(
+        self, entity: _ACLEntity | str, default: object = None
+    ) -> _ACLEntity | object:
         """Gets an entity object from the ACL.
 
         :type entity: :class:`_ACLEntity` or string
@@ -249,7 +290,7 @@ class ACL:
         self._ensure_loaded()
         return self.entities.get(str(entity), default)
 
-    def add_entity(self, entity):
+    def add_entity(self, entity: _ACLEntity) -> None:
         """Add an entity to the ACL.
 
         :type entity: :class:`_ACLEntity`
@@ -258,7 +299,7 @@ class ACL:
         self._ensure_loaded()
         self.entities[str(entity)] = entity
 
-    def entity(self, entity_type, identifier=None):
+    def entity(self, entity_type: str, identifier: str | None = None) -> _ACLEntity:
         """Factory method for creating an Entity.
 
         If an entity with the same type and identifier already exists,
@@ -279,12 +320,12 @@ class ACL:
         """
         entity = _ACLEntity(entity_type=entity_type, identifier=identifier)
         if self.has_entity(entity):
-            entity = self.get_entity(entity)
+            entity = cast(_ACLEntity, self.get_entity(entity))
         else:
             self.add_entity(entity)
         return entity
 
-    def user(self, identifier):
+    def user(self, identifier: str) -> _ACLEntity:
         """Factory method for a user Entity.
 
         :type identifier: str
@@ -295,7 +336,7 @@ class ACL:
         """
         return self.entity("user", identifier=identifier)
 
-    def group(self, identifier):
+    def group(self, identifier: str) -> _ACLEntity:
         """Factory method for a group Entity.
 
         :type identifier: str
@@ -306,7 +347,7 @@ class ACL:
         """
         return self.entity("group", identifier=identifier)
 
-    def domain(self, domain):
+    def domain(self, domain: str) -> _ACLEntity:
         """Factory method for a domain Entity.
 
         :type domain: str
@@ -317,7 +358,7 @@ class ACL:
         """
         return self.entity("domain", identifier=domain)
 
-    def all(self):
+    def all(self) -> _ACLEntity:
         """Factory method for an Entity representing all users.
 
         :rtype: :class:`_ACLEntity`
@@ -325,7 +366,7 @@ class ACL:
         """
         return self.entity("allUsers")
 
-    def all_authenticated(self):
+    def all_authenticated(self) -> _ACLEntity:
         """Factory method for an Entity representing all authenticated users.
 
         :rtype: :class:`_ACLEntity`
@@ -333,7 +374,7 @@ class ACL:
         """
         return self.entity("allAuthenticatedUsers")
 
-    def get_entities(self):
+    def get_entities(self) -> list[_ACLEntity]:
         """Get a list of all Entity objects.
 
         :rtype: list of :class:`_ACLEntity` objects
@@ -343,11 +384,11 @@ class ACL:
         return list(self.entities.values())
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """Abstract getter for the object client."""
         raise NotImplementedError
 
-    def _require_client(self, client):
+    def _require_client(self, client: Client | None) -> Client:
         """Check client or verify over-ride.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -360,9 +401,14 @@ class ACL:
         """
         if client is None:
             client = self.client
-        return client
+        return cast("Client", client)
 
-    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def reload(
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         """Reload the ACL data from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -383,7 +429,7 @@ class ACL:
         with create_trace_span(name="Storage.ACL.reload"):
             path = self.reload_path
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -391,7 +437,7 @@ class ACL:
             self.entities.clear()
 
             found = client._get_resource(
-                path,
+                cast(str, path),
                 query_params=query_params,
                 timeout=timeout,
                 retry=retry,
@@ -403,16 +449,18 @@ class ACL:
 
     def _save(
         self,
-        acl,
-        predefined,
-        client,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        acl: Iterable[dict[str, str]] | None,
+        predefined: str | None,
+        client: Client | None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Helper for :meth:`save` and :meth:`save_predefined`.
 
         :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.
@@ -474,8 +522,8 @@ class ACL:
         path = self.save_path
 
         result = client._patch_resource(
-            path,
-            {self._URL_PATH_ELEM: list(acl)},
+            cast(str, path),
+            {self._URL_PATH_ELEM: list(cast("Iterable[dict[str, str]]", acl))},
             query_params=query_params,
             timeout=timeout,
             retry=retry,
@@ -490,15 +538,17 @@ class ACL:
 
     def save(
         self,
-        acl=None,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        acl: Iterable[dict[str, str]] | None = None,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Save this ACL for the current bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -559,15 +609,17 @@ class ACL:
 
     def save_predefined(
         self,
-        predefined,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        predefined: str,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Save this ACL for the current bucket using a predefined ACL.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -625,14 +677,16 @@ class ACL:
 
     def clear(
         self,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Remove all ACL entries.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -692,27 +746,27 @@ class BucketACL(ACL):
     :param bucket: The bucket to which this ACL relates.
     """
 
-    def __init__(self, bucket):
+    def __init__(self, bucket: Bucket) -> None:
         super().__init__()
         self.bucket = bucket
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """The client bound to this ACL's bucket."""
         return self.bucket.client
 
     @property
-    def reload_path(self):
+    def reload_path(self) -> str:  # type: ignore[override]
         """Compute the path for GET API requests for this ACL."""
         return f"{self.bucket.path}/{self._URL_PATH_ELEM}"
 
     @property
-    def save_path(self):
+    def save_path(self) -> str:  # type: ignore[override]
         """Compute the path for PATCH API requests for this ACL."""
         return self.bucket.path
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:  # type: ignore[override]
         """Compute the user project charged for API requests for this ACL."""
         return self.bucket.user_project
 
@@ -731,41 +785,41 @@ class ObjectACL(ACL):
     :param blob: The blob that this ACL corresponds to.
     """
 
-    def __init__(self, blob):
+    def __init__(self, blob: Blob) -> None:
         super().__init__()
         self.blob = blob
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """The client bound to this ACL's blob."""
         return self.blob.client
 
     @property
-    def reload_path(self):
+    def reload_path(self) -> str:  # type: ignore[override]
         """Compute the path for GET API requests for this ACL."""
         return f"{self.blob.path}/acl"
 
     @property
-    def save_path(self):
+    def save_path(self) -> str:  # type: ignore[override]
         """Compute the path for PATCH API requests for this ACL."""
         return self.blob.path
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:  # type: ignore[override]
         """Compute the user project charged for API requests for this ACL."""
         return self.blob.user_project
 
     def save(
         self,
-        acl=None,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        acl: Iterable[dict[str, str]] | None = None,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Save this ACL for the current object.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -817,15 +871,15 @@ class ObjectACL(ACL):
 
     def save_predefined(
         self,
-        predefined,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        predefined: str,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Save this ACL for the current object using a predefined ACL.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -880,14 +934,14 @@ class ObjectACL(ACL):
 
     def clear(
         self,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Remove all ACL entries.
 
         If :attr:`user_project` is set, bills the API request to that project.

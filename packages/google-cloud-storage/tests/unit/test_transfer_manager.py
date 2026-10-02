@@ -1441,8 +1441,9 @@ def test__ChecksummingSparseFileWrapper():
     ) as open_mock:
         # test no checksumming
         wrapper = transfer_manager._ChecksummingSparseFileWrapper(FILENAME, 0, False)
-        wrapper.write(b"abcdefgh")
         handle = open_mock()
+        handle.write.return_value = 8
+        assert wrapper.write(b"abcdefgh") == 8
         handle.write.assert_called_with(b"abcdefgh")
         wrapper.write(b"ijklmnop")
         assert wrapper.crc is None
@@ -1452,8 +1453,9 @@ def test__ChecksummingSparseFileWrapper():
         "google.cloud.storage.transfer_manager.open", mock.mock_open()
     ) as open_mock:
         wrapper = transfer_manager._ChecksummingSparseFileWrapper(FILENAME, 0, True)
-        wrapper.write(b"abcdefgh")
         handle = open_mock()
+        handle.write.return_value = 8
+        assert wrapper.write(b"abcdefgh") == 8
         handle.write.assert_called_with(b"abcdefgh")
         wrapper.write(b"ijklmnop")
         assert wrapper.crc == google_crc32c.value(b"abcdefghijklmnop")

@@ -18,11 +18,24 @@ Also supported here are simple (media) uploads and multipart
 uploads that contain both metadata and a small file as payload.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from requests import Response, Session
+
 from google.cloud.storage._media import _helpers, _upload
 from google.cloud.storage._media.requests import _request_helpers
 
+if TYPE_CHECKING:
+    from typing import Any
 
-class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
+    from google.cloud.storage._types import SeekableReadable, Timeout
+
+
+class SimpleUpload(
+    _request_helpers.RequestsMixin, _upload.SimpleUpload[Session, Response]
+):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -39,14 +52,14 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
 
     def transmit(
         self,
-        transport,
-        data,
-        content_type,
-        timeout=(
+        transport: Session,
+        data: bytes,
+        content_type: str,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Transmit the resource to be uploaded.
 
         Args:
@@ -69,7 +82,7 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
         method, url, payload, headers = self._prepare_request(data, content_type)
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -81,7 +94,9 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
+class MultipartUpload(
+    _request_helpers.RequestsMixin, _upload.MultipartUpload[Session, Response]
+):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -113,15 +128,15 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
 
     def transmit(
         self,
-        transport,
-        data,
-        metadata,
-        content_type,
-        timeout=(
+        transport: Session,
+        data: bytes,
+        metadata: dict[str, Any],
+        content_type: str,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Transmit the resource to be uploaded.
 
         Args:
@@ -148,7 +163,7 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
         )
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -160,7 +175,9 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
+class ResumableUpload(
+    _request_helpers.RequestsMixin, _upload.ResumableUpload[Session, Response]
+):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata
@@ -361,17 +378,17 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
     def initiate(
         self,
-        transport,
-        stream,
-        metadata,
-        content_type,
-        total_bytes=None,
-        stream_final=True,
-        timeout=(
+        transport: Session,
+        stream: SeekableReadable,
+        metadata: dict[str, Any],
+        content_type: str,
+        total_bytes: int | None = None,
+        stream_final: bool = True,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Initiate a resumable upload.
 
         By default, this method assumes your ``stream`` is in a "final"
@@ -422,7 +439,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         )
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -435,12 +452,12 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
     def transmit_next_chunk(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Transmit the next chunk of the resource to be uploaded.
 
         If the current upload was initiated with ``stream_final=False``,
@@ -515,7 +532,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         method, url, payload, headers = self._prepare_request()
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -526,7 +543,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
-    def recover(self, transport):
+    def recover(self, transport: Session) -> Response:
         """Recover from a failure and check the status of the current upload.
 
         This will verify the progress with the server and make sure the
@@ -553,7 +570,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         # NOTE: We assume "payload is None" but pass it along anyway.
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -565,7 +582,9 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
+class XMLMPUContainer(
+    _request_helpers.RequestsMixin, _upload.XMLMPUContainer[Session, Response]
+):
     """Initiate and close an upload using the XML MPU API.
 
     An XML MPU sends an initial request and then receives an upload ID.
@@ -609,13 +628,13 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
     def initiate(
         self,
-        transport,
-        content_type,
-        timeout=(
+        transport: Session,
+        content_type: str,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Initiate an MPU and record the upload ID.
 
         Args:
@@ -640,7 +659,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
         )
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -653,12 +672,12 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
     def finalize(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Finalize an MPU request with all the parts.
 
         Args:
@@ -678,7 +697,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
         method, url, payload, headers = self._prepare_finalize_request()
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -691,12 +710,12 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
 
     def cancel(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Cancel an MPU request and permanently delete any uploaded parts.
 
         This cannot be undone.
@@ -718,7 +737,7 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
         method, url, payload, headers = self._prepare_cancel_request()
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )
@@ -730,15 +749,15 @@ class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
         return _request_helpers.wait_and_retry(retriable_request, self._retry_strategy)
 
 
-class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
+class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart[Session, Response]):
     def upload(
         self,
-        transport,
-        timeout=(
+        transport: Session,
+        timeout: Timeout = (
             _request_helpers._DEFAULT_CONNECT_TIMEOUT,
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
-    ):
+    ) -> Response:
         """Upload the part.
 
         Args:
@@ -766,7 +785,7 @@ class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
                 headers["X-Goog-Hash"] = f"md5={checksum_digest_in_base64}"
 
         # Wrap the request business logic in a function to be retried.
-        def retriable_request():
+        def retriable_request() -> Response:
             result = transport.request(
                 method, url, data=payload, headers=headers, timeout=timeout
             )

@@ -110,6 +110,20 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
 
         reader.close()
 
+    def test_read_none_with_buffered_data(self):
+        blob = mock.Mock()
+        blob.download_as_bytes.side_effect = (
+            lambda start=0, end=None, **_: TEST_BINARY_DATA[start:end]
+        )
+        reader = self._make_blob_reader(blob, chunk_size=8)
+
+        self.assertEqual(reader.read(1), TEST_BINARY_DATA[:1])
+        self.assertEqual(reader.read(None), TEST_BINARY_DATA[1:])
+        blob.download_as_bytes.assert_called_with(
+            start=8, end=None, checksum=None, retry=DEFAULT_RETRY
+        )
+        reader.close()
+
     def test_read_with_raw_download(self):
         blob = mock.Mock()
 

@@ -16,6 +16,8 @@
 
 """Create / interact with Google Cloud Storage blobs."""
 
+from __future__ import annotations
+
 import base64
 import copy
 import hashlib
@@ -26,6 +28,7 @@ import re
 import warnings
 from email.parser import HeaderParser
 from io import BytesIO, TextIOWrapper
+from typing import TYPE_CHECKING, Any, Literal, cast, overload
 from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 
 from google.api_core.iam import Policy
@@ -81,6 +84,24 @@ from google.cloud.storage.retry import (
     ConditionalRetryPolicy,
 )
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from datetime import datetime as Datetime
+    from datetime import timedelta as Timedelta
+    from os import PathLike
+    from typing import BinaryIO, NoReturn
+
+    from google.api_core.retry import Retry
+    from google.auth.credentials import Credentials
+    from google.auth.transport.requests import AuthorizedSession
+    from requests import Response, Session
+
+    from google.cloud.storage._http import Connection
+    from google.cloud.storage._types import SeekableReadable, Timeout, Writable
+    from google.cloud.storage.bucket import Bucket
+    from google.cloud.storage.client import Client
+
+
 _DEFAULT_CONTENT_TYPE = "application/octet-stream"
 _DOWNLOAD_URL_TEMPLATE = "{hostname}/download/storage/{api_version}{path}?alt=media"
 _BASE_UPLOAD_TEMPLATE = (
@@ -109,10 +130,7 @@ _WRITABLE_FIELDS = (
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
 )
-_CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE = (
-    "A checksum of type `{}` was requested, but checksumming is not available "
-    "for downloads when chunk_size is set."
-)
+_CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE = "A checksum of type `{}` was requested, but checksumming is not available for downloads when chunk_size is set."
 _COMPOSE_IF_GENERATION_LIST_DEPRECATED = (
     "'if_generation_match: type list' is deprecated and supported for "
     "backwards-compatability reasons only.  Use 'if_source_generation_match' "
@@ -132,14 +150,8 @@ _COMPOSE_IF_METAGENERATION_LIST_DEPRECATED = (
 _COMPOSE_IF_SOURCE_GENERATION_MISMATCH_ERROR = (
     "'if_source_generation_match' length must be the same as 'sources' length"
 )
-_DOWNLOAD_AS_STRING_DEPRECATED = (
-    "Blob.download_as_string() is deprecated and will be removed in future. "
-    "Use Blob.download_as_bytes() instead."
-)
-_FROM_STRING_DEPRECATED = (
-    "Blob.from_string() is deprecated and will be removed in future. "
-    "Use Blob.from_uri() instead."
-)
+_DOWNLOAD_AS_STRING_DEPRECATED = "Blob.download_as_string() is deprecated and will be removed in future. Use Blob.download_as_bytes() instead."
+_FROM_STRING_DEPRECATED = "Blob.from_string() is deprecated and will be removed in future. Use Blob.from_uri() instead."
 _GS_URL_REGEX_PATTERN = re.compile(
     r"(?P<scheme>gs)://(?P<bucket_name>[a-z0-9_.-]+)/(?P<object_name>.+)"
 )
@@ -210,13 +222,13 @@ class Blob(_PropertyMixin):
 
     def __init__(
         self,
-        name,
-        bucket,
-        chunk_size=None,
-        encryption_key=None,
-        kms_key_name=None,
-        generation=None,
-    ):
+        name: str | None,
+        bucket: Bucket,
+        chunk_size: int | None = None,
+        encryption_key: bytes | None = None,
+        kms_key_name: str | None = None,
+        generation: int | None = None,
+    ) -> None:
         """
         property :attr:`name`
             Get the blob's name.
@@ -240,7 +252,7 @@ class Blob(_PropertyMixin):
             self._properties["generation"] = generation
 
     @property
-    def bucket(self):
+    def bucket(self) -> Bucket:
         """Bucket which contains the object.
 
         :rtype: :class:`~google.cloud.storage.bucket.Bucket`
@@ -249,7 +261,7 @@ class Blob(_PropertyMixin):
         return self._bucket
 
     @property
-    def chunk_size(self):
+    def chunk_size(self) -> int | None:
         """Get the blob's default chunk size.
 
         :rtype: int or ``NoneType``
@@ -258,7 +270,7 @@ class Blob(_PropertyMixin):
         return self._chunk_size
 
     @chunk_size.setter
-    def chunk_size(self, value):
+    def chunk_size(self, value: int | None) -> None:
         """Set the blob's default chunk size.
 
         :type value: int
@@ -274,7 +286,7 @@ class Blob(_PropertyMixin):
         self._chunk_size = value
 
     @property
-    def encryption_key(self):
+    def encryption_key(self) -> bytes | None:
         """Retrieve the customer-supplied encryption key for the object.
 
         :rtype: bytes or ``NoneType``
@@ -285,7 +297,7 @@ class Blob(_PropertyMixin):
         return self._encryption_key
 
     @encryption_key.setter
-    def encryption_key(self, value):
+    def encryption_key(self, value: bytes) -> None:
         """Set the blob's encryption key.
 
         See https://cloud.google.com/storage/docs/encryption#customer-supplied
@@ -299,7 +311,7 @@ class Blob(_PropertyMixin):
         self._encryption_key = value
 
     @staticmethod
-    def path_helper(bucket_path, blob_name):
+    def path_helper(bucket_path: str, blob_name: str) -> str:
         """Relative URL path for a blob.
 
         :type bucket_path: str
@@ -314,11 +326,11 @@ class Blob(_PropertyMixin):
         return bucket_path + "/o/" + _quote(blob_name)
 
     @property
-    def acl(self):
+    def acl(self) -> ObjectACL:
         """Create our ACL on demand."""
         return self._acl
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if self.bucket:
             bucket_name = self.bucket.name
         else:
@@ -327,7 +339,7 @@ class Blob(_PropertyMixin):
         return f"<Blob: {bucket_name}, {self.name}, {self.generation}>"
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Getter property for the URL path to this Blob.
 
         :rtype: str
@@ -339,12 +351,12 @@ class Blob(_PropertyMixin):
         return self.path_helper(self.bucket.path, self.name)
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """The client bound to this blob."""
         return self.bucket.client
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:
         """Project ID billed for API requests made via this blob.
 
         Derived from bucket's value.
@@ -353,7 +365,7 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.user_project
 
-    def _encryption_headers(self):
+    def _encryption_headers(self) -> dict[str, str]:
         """Return any encryption headers needed to fetch the object.
 
         :rtype: List(Tuple(str, str))
@@ -362,9 +374,9 @@ class Blob(_PropertyMixin):
         return _get_encryption_headers(self._encryption_key)
 
     @property
-    def _query_params(self):
+    def _query_params(self) -> dict[str, Any]:
         """Default query parameters."""
-        params = {}
+        params: dict[str, Any] = {}
         if self.generation is not None:
             params["generation"] = self.generation
         if self.user_project is not None:
@@ -372,7 +384,7 @@ class Blob(_PropertyMixin):
         return params
 
     @property
-    def public_url(self):
+    def public_url(self) -> str:
         """The public URL for this blob.
 
         Use :meth:`make_public` to enable anonymous access via the returned
@@ -388,11 +400,11 @@ class Blob(_PropertyMixin):
         return "{storage_base_url}/{bucket_name}/{quoted_name}".format(
             storage_base_url=endpoint,
             bucket_name=self.bucket.name,
-            quoted_name=_quote(self.name, safe=b"/~"),
+            quoted_name=_quote(cast(str, self.name), safe=b"/~"),
         )
 
     @classmethod
-    def from_uri(cls, uri, client=None):
+    def from_uri(cls, uri: str, client: Client | None = None) -> Blob:
         """Get a constructor for blob object by URI.
 
         .. code-block:: python
@@ -423,7 +435,7 @@ class Blob(_PropertyMixin):
         return cls(match.group("object_name"), bucket)
 
     @classmethod
-    def from_string(cls, uri, client=None):
+    def from_string(cls, uri: str, client: Client | None = None) -> Blob:
         """(Deprecated) Get a constructor for blob object by URI.
 
         .. note::
@@ -453,25 +465,25 @@ class Blob(_PropertyMixin):
 
     def generate_signed_url(
         self,
-        expiration=None,
-        api_access_endpoint=None,
-        method="GET",
-        content_md5=None,
-        content_type=None,
-        response_disposition=None,
-        response_type=None,
-        generation=None,
-        headers=None,
-        query_parameters=None,
-        client=None,
-        credentials=None,
-        version=None,
-        service_account_email=None,
-        access_token=None,
-        virtual_hosted_style=False,
-        bucket_bound_hostname=None,
-        scheme="http",
-    ):
+        expiration: int | Datetime | Timedelta | None = None,
+        api_access_endpoint: str | None = None,
+        method: str = "GET",
+        content_md5: str | None = None,
+        content_type: str | None = None,
+        response_disposition: str | None = None,
+        response_type: str | None = None,
+        generation: str | None = None,
+        headers: dict[str, str] | None = None,
+        query_parameters: dict[str, Any] | None = None,
+        client: Client | None = None,
+        credentials: Credentials | None = None,
+        version: str | None = None,
+        service_account_email: str | None = None,
+        access_token: str | None = None,
+        virtual_hosted_style: bool = False,
+        bucket_bound_hostname: str | None = None,
+        scheme: str = "http",
+    ) -> str:
         """Generates a signed URL for this blob.
 
         .. note::
@@ -610,22 +622,21 @@ class Blob(_PropertyMixin):
             api_access_endpoint is not None or virtual_hosted_style
         ) and bucket_bound_hostname:
             raise ValueError(
-                "The bucket_bound_hostname argument is not compatible with "
-                "either api_access_endpoint or virtual_hosted_style."
+                "The bucket_bound_hostname argument is not compatible with either api_access_endpoint or virtual_hosted_style."
             )
 
         if api_access_endpoint is None:
             client = self._require_client(client)
             api_access_endpoint = client.api_endpoint
 
-        quoted_name = _quote(self.name, safe=b"/~")
+        quoted_name = _quote(cast(str, self.name), safe=b"/~")
 
         # If you are on Google Compute Engine, you can't generate a signed URL
         # using GCE service account.
         # See https://github.com/googleapis/google-auth-library-python/issues/50
         if virtual_hosted_style:
             api_access_endpoint = _virtual_hosted_style_base_url(
-                api_access_endpoint, self.bucket.name
+                api_access_endpoint, cast(str, self.bucket.name)
             )
             resource = f"/{quoted_name}"
         elif bucket_bound_hostname:
@@ -644,7 +655,7 @@ class Blob(_PropertyMixin):
         universe_domain = client.universe_domain
 
         if version == "v2":
-            helper = generate_signed_url_v2
+            helper: Callable[..., str] = generate_signed_url_v2
         else:
             helper = generate_signed_url_v4
 
@@ -679,17 +690,17 @@ class Blob(_PropertyMixin):
 
     def exists(
         self,
-        client=None,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        soft_deleted=None,
-    ):
+        client: Client | None = None,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        soft_deleted: bool | None = None,
+    ) -> bool:
         """Determines whether or not this blob exists.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -760,7 +771,7 @@ class Blob(_PropertyMixin):
                 if_metageneration_not_match=if_metageneration_not_match,
             )
 
-            headers = {}
+            headers: dict[str, str] = {}
             _add_etag_match_headers(
                 headers,
                 if_etag_match=if_etag_match,
@@ -787,14 +798,14 @@ class Blob(_PropertyMixin):
 
     def delete(
         self,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Deletes a blob from Cloud Storage.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -849,7 +860,7 @@ class Blob(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Blob.delete"):
             self.bucket.delete_blob(
-                self.name,
+                cast(str, self.name),
                 client=client,
                 generation=self.generation,
                 timeout=timeout,
@@ -860,7 +871,7 @@ class Blob(_PropertyMixin):
                 retry=retry,
             )
 
-    def _get_transport(self, client):
+    def _get_transport(self, client: Client | None) -> AuthorizedSession:
         """Return the client's transport.
 
         :type client: :class:`~google.cloud.storage.client.Client`
@@ -878,12 +889,12 @@ class Blob(_PropertyMixin):
 
     def _get_download_url(
         self,
-        client,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-    ):
+        client: Client,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+    ) -> str:
         """Get the download URL for the current blob.
 
         If the ``media_link`` has been loaded, it will be used, otherwise
@@ -912,7 +923,7 @@ class Blob(_PropertyMixin):
         :rtype: str
         :returns: The download URL for the current blob.
         """
-        name_value_pairs = []
+        name_value_pairs: list[tuple[str, Any]] = []
         if self.media_link is None:
             hostname = _get_host_name(client._connection)
             base_url = _DOWNLOAD_URL_TEMPLATE.format(
@@ -935,7 +946,7 @@ class Blob(_PropertyMixin):
         )
         return _add_query_parameters(base_url, name_value_pairs)
 
-    def _extract_headers_from_download(self, response):
+    def _extract_headers_from_download(self, response: Response) -> None:
         """Extract headers from a non-chunked request's http object.
 
         This avoids the need to make a second request for commonly used
@@ -979,18 +990,18 @@ class Blob(_PropertyMixin):
 
     def _do_download(
         self,
-        transport,
-        file_obj,
-        download_url,
-        headers,
-        start=None,
-        end=None,
-        raw_download=False,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        transport: Session,
+        file_obj: Writable,
+        download_url: str,
+        headers: dict[str, str],
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> None:
         """Perform a download without any error handling.
 
         This is intended to be called by :meth:`_prep_and_do_download` so it can
@@ -1065,9 +1076,10 @@ class Blob(_PropertyMixin):
         extra_attributes["download.single_shot_download"] = single_shot_download
         args = {"timeout": timeout}
 
+        download: Download | RawDownload | ChunkedDownload | RawChunkedDownload
         if self.chunk_size is None:
             if raw_download:
-                klass = RawDownload
+                klass: type[RawDownload] | type[Download] = RawDownload
                 download_class = "RawDownload"
             else:
                 klass = Download
@@ -1099,13 +1111,15 @@ class Blob(_PropertyMixin):
                 _logger.info(msg)
 
             if raw_download:
-                klass = RawChunkedDownload
+                chunked_class: type[RawChunkedDownload] | type[ChunkedDownload] = (
+                    RawChunkedDownload
+                )
                 download_class = "RawChunkedDownload"
             else:
-                klass = ChunkedDownload
+                chunked_class = ChunkedDownload
                 download_class = "ChunkedDownload"
 
-            download = klass(
+            download = chunked_class(
                 download_url,
                 self.chunk_size,
                 file_obj,
@@ -1142,27 +1156,27 @@ class Blob(_PropertyMixin):
                         "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
                         received_bytes - requested_length,
                         self.bucket.name,
-                        self.name,
+                        cast(str, self.name),
                     )
 
     def download_to_file(
         self,
-        file_obj,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        file_obj: Writable,
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> None:
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -1284,7 +1298,9 @@ class Blob(_PropertyMixin):
                 single_shot_download=single_shot_download,
             )
 
-    def _handle_filename_and_download(self, filename, *args, **kwargs):
+    def _handle_filename_and_download(
+        self, filename: str | PathLike[str], *args: Any, **kwargs: Any
+    ) -> None:
         """Download the contents of this blob into a named file.
 
         :type filename: str
@@ -1313,22 +1329,22 @@ class Blob(_PropertyMixin):
 
     def download_to_filename(
         self,
-        filename,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        filename: str | PathLike[str],
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> None:
         """Download the contents of this blob into a named file.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1442,21 +1458,21 @@ class Blob(_PropertyMixin):
 
     def download_as_bytes(
         self,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> bytes:
         """Download the contents of this blob as a bytes object.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1570,20 +1586,20 @@ class Blob(_PropertyMixin):
 
     def download_as_string(
         self,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> bytes:
         """(Deprecated) Download the contents of this blob as a bytes object.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1688,21 +1704,21 @@ class Blob(_PropertyMixin):
 
     def download_as_text(
         self,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        encoding=None,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-    ):
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        encoding: str | None = None,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+    ) -> str:
         """Download the contents of this blob as text (*not* bytes).
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -1805,13 +1821,15 @@ class Blob(_PropertyMixin):
 
             if self.content_type is not None:
                 msg = HeaderParser().parsestr("Content-Type: " + self.content_type)
-                params = dict(msg.get_params()[1:])
+                params = dict(cast("list[tuple[str, str]]", msg.get_params())[1:])
                 if "charset" in params:
                     return data.decode(params["charset"])
 
             return data.decode("utf-8")
 
-    def _get_content_type(self, content_type, filename=None):
+    def _get_content_type(
+        self, content_type: str | None, filename: str | PathLike[str] | None = None
+    ) -> str:
         """Determine the content type from the current object.
 
         The return value will be determined in order of precedence:
@@ -1841,7 +1859,7 @@ class Blob(_PropertyMixin):
 
         return content_type
 
-    def _get_writable_metadata(self):
+    def _get_writable_metadata(self) -> dict[str, Any]:
         """Get the object / blob metadata which is writable.
 
         This is intended to be used when creating a new object / blob.
@@ -1874,7 +1892,13 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, client, content_type, filename=None, command=None):
+    def _get_upload_arguments(
+        self,
+        client: Client,
+        content_type: str | None,
+        filename: str | PathLike[str] | None = None,
+        command: str | None = None,
+    ) -> tuple[dict[str, str], dict[str, Any], str]:
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -1901,7 +1925,7 @@ class Blob(_PropertyMixin):
         """
         content_type = self._get_content_type(content_type, filename=filename)
         # Add any client attached custom headers to the upload headers.
-        headers = {
+        headers: dict[str, str] = {
             **_get_default_headers(
                 client._connection.user_agent, content_type, command=command
             ),
@@ -1913,20 +1937,20 @@ class Blob(_PropertyMixin):
 
     def _do_multipart_upload(
         self,
-        client,
-        stream,
-        content_type,
-        size,
-        predefined_acl,
-        if_generation_match,
-        if_generation_not_match,
-        if_metageneration_match,
-        if_metageneration_not_match,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=None,
-        command=None,
-    ):
+        client: Client | None,
+        stream: SeekableReadable,
+        content_type: str | None,
+        size: int | None,
+        predefined_acl: str | None,
+        if_generation_match: int | None,
+        if_generation_not_match: int | None,
+        if_metageneration_match: int | None,
+        if_metageneration_not_match: int | None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | None = None,
+        command: str | None = None,
+    ) -> Response:
         """Perform a multipart upload.
 
         The content type of the upload will be determined in order
@@ -2033,7 +2057,7 @@ class Blob(_PropertyMixin):
             bucket_path=self.bucket.path,
             api_version=_API_VERSION,
         )
-        name_value_pairs = []
+        name_value_pairs: list[tuple[str, Any]] = []
 
         if self.user_project is not None:
             name_value_pairs.append(("userProject", self.user_project))
@@ -2088,23 +2112,23 @@ class Blob(_PropertyMixin):
 
     def _initiate_resumable_upload(
         self,
-        client,
-        stream,
-        content_type,
-        size,
-        predefined_acl=None,
-        extra_headers=None,
-        chunk_size=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=None,
-        command=None,
-        crc32c_checksum_value=None,
-    ):
+        client: Client | None,
+        stream: SeekableReadable,
+        content_type: str | None,
+        size: int | None,
+        predefined_acl: str | None = None,
+        extra_headers: dict[str, str] | None = None,
+        chunk_size: int | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | None = None,
+        command: str | None = None,
+        crc32c_checksum_value: str | None = None,
+    ) -> tuple[ResumableUpload, AuthorizedSession]:
         """Initiate a resumable upload.
 
         The content type of the upload will be determined in order
@@ -2262,7 +2286,7 @@ class Blob(_PropertyMixin):
             bucket_path=self.bucket.path,
             api_version=_API_VERSION,
         )
-        name_value_pairs = []
+        name_value_pairs: list[tuple[str, Any]] = []
 
         if self.user_project is not None:
             name_value_pairs.append(("userProject", self.user_project))
@@ -2318,21 +2342,21 @@ class Blob(_PropertyMixin):
 
     def _do_resumable_upload(
         self,
-        client,
-        stream,
-        content_type,
-        size,
-        predefined_acl,
-        if_generation_match,
-        if_generation_not_match,
-        if_metageneration_match,
-        if_metageneration_not_match,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=None,
-        command=None,
-        crc32c_checksum_value=None,
-    ):
+        client: Client | None,
+        stream: SeekableReadable,
+        content_type: str | None,
+        size: int | None,
+        predefined_acl: str | None,
+        if_generation_match: int | None,
+        if_generation_not_match: int | None,
+        if_metageneration_match: int | None,
+        if_metageneration_not_match: int | None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | None = None,
+        command: str | None = None,
+        crc32c_checksum_value: str | None = None,
+    ) -> Response:
         """Perform a resumable upload.
 
         Assumes ``chunk_size`` is not :data:`None` on the current blob.
@@ -2469,7 +2493,9 @@ class Blob(_PropertyMixin):
             command=command,
             crc32c_checksum_value=crc32c_checksum_value,
         )
-        extra_attributes = _get_opentelemetry_attributes_from_url(upload.resumable_url)
+        extra_attributes = _get_opentelemetry_attributes_from_url(
+            cast(str, upload.resumable_url)
+        )
         extra_attributes["upload.chunk_size"] = upload.chunk_size
         extra_attributes["upload.checksum"] = f"{checksum}"
 
@@ -2491,21 +2517,21 @@ class Blob(_PropertyMixin):
 
     def _do_upload(
         self,
-        client,
-        stream,
-        content_type,
-        size,
-        predefined_acl,
-        if_generation_match,
-        if_generation_not_match,
-        if_metageneration_match,
-        if_metageneration_not_match,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=None,
-        command=None,
-        crc32c_checksum_value=None,
-    ):
+        client: Client | None,
+        stream: SeekableReadable,
+        content_type: str | None,
+        size: int | None,
+        predefined_acl: str | None,
+        if_generation_match: int | None,
+        if_generation_not_match: int | None,
+        if_metageneration_match: int | None,
+        if_metageneration_not_match: int | None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = None,
+        command: str | None = None,
+        crc32c_checksum_value: str | None = None,
+    ) -> dict[str, Any]:
         """Determine an upload strategy and then perform the upload.
 
         If the size of the data to be uploaded exceeds 8 MB a resumable media
@@ -2642,7 +2668,7 @@ class Blob(_PropertyMixin):
             # arguments into query_params dictionaries. Media operations work
             # differently, so here we make a "fake" query_params to feed to the
             # ConditionalRetryPolicy.
-            query_params = {
+            query_params: dict[str, Any] = {
                 "ifGenerationMatch": if_generation_match,
                 "ifMetagenerationMatch": if_metageneration_match,
             }
@@ -2686,22 +2712,22 @@ class Blob(_PropertyMixin):
 
     def _prep_and_do_upload(
         self,
-        file_obj,
-        rewind=False,
-        size=None,
-        content_type=None,
-        client=None,
-        predefined_acl=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        command=None,
-        crc32c_checksum_value=None,
-    ):
+        file_obj: SeekableReadable,
+        rewind: bool = False,
+        size: int | None = None,
+        content_type: str | None = None,
+        client: Client | None = None,
+        predefined_acl: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        command: str | None = None,
+        crc32c_checksum_value: str | None = None,
+    ) -> None:
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will be determined in order
@@ -2876,21 +2902,21 @@ class Blob(_PropertyMixin):
 
     def upload_from_file(
         self,
-        file_obj,
-        rewind=False,
-        size=None,
-        content_type=None,
-        client=None,
-        predefined_acl=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        crc32c_checksum_value=None,
-    ):
+        file_obj: SeekableReadable,
+        rewind: bool = False,
+        size: int | None = None,
+        content_type: str | None = None,
+        client: Client | None = None,
+        predefined_acl: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        crc32c_checksum_value: str | None = None,
+    ) -> None:
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will be determined in order
@@ -3051,7 +3077,13 @@ class Blob(_PropertyMixin):
                 crc32c_checksum_value=crc32c_checksum_value,
             )
 
-    def _handle_filename_and_upload(self, filename, content_type=None, *args, **kwargs):
+    def _handle_filename_and_upload(
+        self,
+        filename: str | PathLike[str],
+        content_type: str | None = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         """Upload this blob's contents from the content of a named file.
 
         :type filename: str
@@ -3067,7 +3099,7 @@ class Blob(_PropertyMixin):
 
         with open(filename, "rb") as file_obj:
             total_bytes = os.fstat(file_obj.fileno()).st_size
-            self._prep_and_do_upload(
+            self._prep_and_do_upload(  # type: ignore[misc]
                 file_obj,
                 content_type=content_type,
                 size=total_bytes,
@@ -3077,19 +3109,19 @@ class Blob(_PropertyMixin):
 
     def upload_from_filename(
         self,
-        filename,
-        content_type=None,
-        client=None,
-        predefined_acl=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        crc32c_checksum_value=None,
-    ):
+        filename: str | PathLike[str],
+        content_type: str | None = None,
+        client: Client | None = None,
+        predefined_acl: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        crc32c_checksum_value: str | None = None,
+    ) -> None:
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will be determined in order
@@ -3234,19 +3266,19 @@ class Blob(_PropertyMixin):
 
     def upload_from_string(
         self,
-        data,
-        content_type="text/plain",
-        client=None,
-        predefined_acl=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        crc32c_checksum_value=None,
-    ):
+        data: bytes | str,
+        content_type: str = "text/plain",
+        client: Client | None = None,
+        predefined_acl: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        crc32c_checksum_value: str | None = None,
+    ) -> None:
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -3367,7 +3399,7 @@ class Blob(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Blob.uploadFromString"):
             data = _to_bytes(data, encoding="utf-8")
-            string_buffer = BytesIO(data)
+            string_buffer = BytesIO(cast(bytes, data))
             self.upload_from_file(
                 file_obj=string_buffer,
                 size=len(data),
@@ -3386,19 +3418,19 @@ class Blob(_PropertyMixin):
 
     def create_resumable_upload_session(
         self,
-        content_type=None,
-        size=None,
-        origin=None,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        predefined_acl=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        content_type: str | None = None,
+        size: int | None = None,
+        origin: str | None = None,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        predefined_acl: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> str:
         """Create a resumable upload session.
 
         Resumable upload sessions allow you to start an upload session from
@@ -3524,7 +3556,7 @@ class Blob(_PropertyMixin):
                 # arguments into query_params dictionaries. Media operations work
                 # differently, so here we make a "fake" query_params to feed to the
                 # ConditionalRetryPolicy.
-                query_params = {
+                query_params: dict[str, Any] = {
                     "ifGenerationMatch": if_generation_match,
                     "ifMetagenerationMatch": if_metageneration_match,
                 }
@@ -3560,17 +3592,17 @@ class Blob(_PropertyMixin):
                     retry=retry,
                 )
 
-                return upload.resumable_url
+                return cast(str, upload.resumable_url)
             except InvalidResponse as exc:
                 _raise_from_invalid_response(exc)
 
     def get_iam_policy(
         self,
-        client=None,
-        requested_policy_version=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        requested_policy_version: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> Policy:
         """Retrieve the IAM policy for the object.
 
         .. note::
@@ -3616,7 +3648,7 @@ class Blob(_PropertyMixin):
         with self._create_trace_span(name="Storage.Blob.getIamPolicy"):
             client = self._require_client(client)
 
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3635,11 +3667,11 @@ class Blob(_PropertyMixin):
 
     def set_iam_policy(
         self,
-        policy,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_ETAG_IN_JSON,
-    ):
+        policy: Policy,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY_IF_ETAG_IN_JSON,
+    ) -> Policy:
         """Update the IAM policy for the bucket.
 
         .. note::
@@ -3677,7 +3709,7 @@ class Blob(_PropertyMixin):
         with self._create_trace_span(name="Storage.Blob.setIamPolicy"):
             client = self._require_client(client)
 
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3697,11 +3729,11 @@ class Blob(_PropertyMixin):
 
     def test_iam_permissions(
         self,
-        permissions,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        permissions: list[str],
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> list[str]:
         """API call:  test permissions
 
         .. note::
@@ -3738,7 +3770,7 @@ class Blob(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Blob.testIamPermissions"):
             client = self._require_client(client)
-            query_params = {"permissions": permissions}
+            query_params: dict[str, Any] = {"permissions": permissions}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3756,14 +3788,14 @@ class Blob(_PropertyMixin):
 
     def make_public(
         self,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Update blob's ACL, granting read access to anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -3810,14 +3842,14 @@ class Blob(_PropertyMixin):
 
     def make_private(
         self,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Update blob's ACL, revoking read access for anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -3864,16 +3896,18 @@ class Blob(_PropertyMixin):
 
     def compose(
         self,
-        sources,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_generation_match=None,
-        if_metageneration_match=None,
-        if_source_generation_match=None,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-        destination_contexts=None,
-        delete_source_objects=None,
-    ):
+        sources: list[Blob],
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_generation_match: int | list[int] | None = None,
+        if_metageneration_match: int | list[int] | None = None,
+        if_source_generation_match: list[int | None] | None = None,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts: ObjectContexts | dict[str, Any] | None = None,
+        delete_source_objects: bool | None = None,
+    ) -> None:
         """Concatenate source blobs into this one.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -3946,7 +3980,7 @@ class Blob(_PropertyMixin):
         with self._create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if isinstance(if_generation_match, list):
                 warnings.warn(
@@ -3960,7 +3994,7 @@ class Blob(_PropertyMixin):
                         _COMPOSE_IF_GENERATION_LIST_AND_IF_SOURCE_GENERATION_ERROR
                     )
 
-                if_source_generation_match = if_generation_match
+                if_source_generation_match = list(if_generation_match)
                 if_generation_match = None
 
             if isinstance(if_metageneration_match, list):
@@ -3979,7 +4013,7 @@ class Blob(_PropertyMixin):
 
             source_objects = []
             for source, source_generation in zip(sources, if_source_generation_match):
-                source_object = {
+                source_object: dict[str, Any] = {
                     "name": source.name,
                     "generation": source.generation,
                 }
@@ -4001,7 +4035,7 @@ class Blob(_PropertyMixin):
                         "destination_contexts must be an ObjectContexts object"
                     )
 
-            request = {
+            request: dict[str, Any] = {
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
             }
@@ -4030,21 +4064,23 @@ class Blob(_PropertyMixin):
 
     def rewrite(
         self,
-        source,
-        token=None,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        if_source_generation_match=None,
-        if_source_generation_not_match=None,
-        if_source_metageneration_match=None,
-        if_source_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-        destination_contexts=None,
-    ):
+        source: Blob,
+        token: str | None = None,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        if_source_generation_match: int | None = None,
+        if_source_generation_not_match: int | None = None,
+        if_source_metageneration_match: int | None = None,
+        if_source_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts: ObjectContexts | dict[str, Any] | None = None,
+    ) -> tuple[str | None, int, int]:
         """Rewrite source blob into this one.
 
         If :attr:`user_project` is set on the bucket, bills the API request
@@ -4209,19 +4245,21 @@ class Blob(_PropertyMixin):
 
     def update_storage_class(
         self,
-        new_class,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        if_source_generation_match=None,
-        if_source_generation_not_match=None,
-        if_source_metageneration_match=None,
-        if_source_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-    ):
+        new_class: str,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        if_source_generation_match: int | None = None,
+        if_source_generation_not_match: int | None = None,
+        if_source_metageneration_match: int | None = None,
+        if_source_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ) -> None:
         """Update blob's storage class via a rewrite-in-place. This helper will
         wait for the rewrite to complete before returning, so it may take some
         time for large files.
@@ -4341,16 +4379,68 @@ class Blob(_PropertyMixin):
                     retry=retry,
                 )
 
+    @overload
     def open(
         self,
-        mode="r",
-        chunk_size=None,
-        ignore_flush=None,
-        encoding=None,
-        errors=None,
-        newline=None,
-        **kwargs,
-    ):
+        mode: Literal["rb"],
+        chunk_size: int | None = None,
+        ignore_flush: bool | None = None,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+        **kwargs: Any,
+    ) -> BlobReader:
+        pass
+
+    @overload
+    def open(
+        self,
+        mode: Literal["wb"],
+        chunk_size: int | None = None,
+        ignore_flush: bool | None = None,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+        **kwargs: Any,
+    ) -> BlobWriter:
+        pass
+
+    @overload
+    def open(
+        self,
+        mode: Literal["r", "rt", "w", "wt"] = "r",
+        chunk_size: int | None = None,
+        ignore_flush: bool | None = None,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+        **kwargs: Any,
+    ) -> TextIOWrapper[BinaryIO]:
+        pass
+
+    @overload
+    def open(
+        self,
+        mode: str,
+        chunk_size: int | None = None,
+        ignore_flush: bool | None = None,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+        **kwargs: Any,
+    ) -> BlobReader | BlobWriter | TextIOWrapper[BinaryIO]:
+        pass
+
+    def open(
+        self,
+        mode: str = "r",
+        chunk_size: int | None = None,
+        ignore_flush: bool | None = None,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+        **kwargs: Any,
+    ) -> BlobReader | BlobWriter | TextIOWrapper[BinaryIO]:
         r"""Create a file handler for file-like I/O to or from this blob.
 
         This method can be used as a context manager, just like Python's
@@ -4470,7 +4560,7 @@ class Blob(_PropertyMixin):
                 return BlobWriter(
                     self,
                     chunk_size=chunk_size,
-                    ignore_flush=ignore_flush,
+                    ignore_flush=bool(ignore_flush),
                     **kwargs,
                 )
             elif mode in ("r", "rt"):
@@ -4479,7 +4569,7 @@ class Blob(_PropertyMixin):
                         "ignore_flush argument is for non-text write mode only"
                     )
                 return TextIOWrapper(
-                    BlobReader(self, chunk_size=chunk_size, **kwargs),
+                    cast("BinaryIO", BlobReader(self, chunk_size=chunk_size, **kwargs)),
                     encoding=encoding,
                     errors=errors,
                     newline=newline,
@@ -4487,12 +4577,14 @@ class Blob(_PropertyMixin):
             elif mode in ("w", "wt"):
                 if ignore_flush is False:
                     raise ValueError(
-                        "ignore_flush is required for text mode writing and "
-                        "cannot be set to False"
+                        "ignore_flush is required for text mode writing and cannot be set to False"
                     )
                 return TextIOWrapper(
-                    BlobWriter(
-                        self, chunk_size=chunk_size, ignore_flush=True, **kwargs
+                    cast(
+                        "BinaryIO",
+                        BlobWriter(
+                            self, chunk_size=chunk_size, ignore_flush=True, **kwargs
+                        ),
                     ),
                     encoding=encoding,
                     errors=errors,
@@ -4503,7 +4595,7 @@ class Blob(_PropertyMixin):
                     "Supported modes strings are 'r', 'rb', 'rt', 'w', 'wb', and 'wt' only."
                 )
 
-    cache_control = _scalar_property("cacheControl")
+    cache_control: str | None = _scalar_property("cacheControl")
     """HTTP 'Cache-Control' header for this object.
 
     See [`RFC 7234`](https://tools.ietf.org/html/rfc7234#section-5.2)
@@ -4513,7 +4605,7 @@ class Blob(_PropertyMixin):
 
     """
 
-    content_disposition = _scalar_property("contentDisposition")
+    content_disposition: str | None = _scalar_property("contentDisposition")
     """HTTP 'Content-Disposition' header for this object.
 
     See [`RFC 6266`](https://tools.ietf.org/html/rfc7234#section-5.2) and
@@ -4522,7 +4614,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    content_encoding = _scalar_property("contentEncoding")
+    content_encoding: str | None = _scalar_property("contentEncoding")
     """HTTP 'Content-Encoding' header for this object.
 
     See [`RFC 7231`](https://tools.ietf.org/html/rfc7231#section-3.1.2.2) and
@@ -4531,7 +4623,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    content_language = _scalar_property("contentLanguage")
+    content_language: str | None = _scalar_property("contentLanguage")
     """HTTP 'Content-Language' header for this object.
 
     See [`BCP47`](https://tools.ietf.org/html/bcp47) and
@@ -4540,7 +4632,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    content_type = _scalar_property(_CONTENT_TYPE_FIELD)
+    content_type: str | None = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
     See [`RFC 2616`](https://tools.ietf.org/html/rfc2616#section-14.17) and
@@ -4549,7 +4641,7 @@ class Blob(_PropertyMixin):
     :rtype: str or ``NoneType``
     """
 
-    crc32c = _scalar_property("crc32c")
+    crc32c: str | None = _scalar_property("crc32c")
     """CRC32C checksum for this object.
 
     This returns the blob's CRC32C checksum. To retrieve the value, first use a
@@ -4565,23 +4657,23 @@ class Blob(_PropertyMixin):
 
     def _prep_and_do_download(
         self,
-        file_obj,
-        client=None,
-        start=None,
-        end=None,
-        raw_download=False,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-        single_shot_download=False,
-        command=None,
-    ):
+        file_obj: Writable,
+        client: Client | None = None,
+        start: int | None = None,
+        end: int | None = None,
+        raw_download: bool = False,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        checksum: str | None = "auto",
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        single_shot_download: bool = False,
+        command: str | None = None,
+    ) -> None:
         """Download the contents of a blob object into a file-like object.
 
         See https://cloud.google.com/storage/docs/downloading-objects
@@ -4683,7 +4775,7 @@ class Blob(_PropertyMixin):
             # arguments into query_params dictionaries. Media operations work
             # differently, so here we make a "fake" query_params to feed to the
             # ConditionalRetryPolicy.
-            query_params = {
+            query_params: dict[str, Any] = {
                 "ifGenerationMatch": if_generation_match,
                 "ifMetagenerationMatch": if_metageneration_match,
             }
@@ -4732,7 +4824,7 @@ class Blob(_PropertyMixin):
             _raise_from_invalid_response(exc)
 
     @property
-    def component_count(self):
+    def component_count(self) -> int | None:
         """Number of underlying components that make up this object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4746,9 +4838,10 @@ class Blob(_PropertyMixin):
         component_count = self._properties.get("componentCount")
         if component_count is not None:
             return int(component_count)
+        return None
 
     @property
-    def etag(self):
+    def etag(self) -> str | None:
         """Retrieve the ETag for the object.
 
         See [`RFC 2616 (etags)`](https://tools.ietf.org/html/rfc2616#section-3.11) and
@@ -4760,7 +4853,7 @@ class Blob(_PropertyMixin):
         """
         return self._properties.get("etag")
 
-    event_based_hold = _scalar_property("eventBasedHold")
+    event_based_hold: bool | None = _scalar_property("eventBasedHold")
     """Is an event-based hold active on the object?
 
     See [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
@@ -4771,7 +4864,7 @@ class Blob(_PropertyMixin):
     """
 
     @property
-    def generation(self):
+    def generation(self) -> int | None:
         """Retrieve the generation for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4783,9 +4876,10 @@ class Blob(_PropertyMixin):
         generation = self._properties.get("generation")
         if generation is not None:
             return int(generation)
+        return None
 
     @property
-    def id(self):
+    def id(self) -> str | None:
         """Retrieve the ID for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4798,7 +4892,7 @@ class Blob(_PropertyMixin):
         """
         return self._properties.get("id")
 
-    md5_hash = _scalar_property("md5Hash")
+    md5_hash: str | None = _scalar_property("md5Hash")
     """MD5 hash for this object.
 
     This returns the blob's MD5 hash. To retrieve the value, first use a
@@ -4813,7 +4907,7 @@ class Blob(_PropertyMixin):
     """
 
     @property
-    def media_link(self):
+    def media_link(self) -> str | None:
         """Retrieve the media download URI for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4825,7 +4919,7 @@ class Blob(_PropertyMixin):
         return self._properties.get("mediaLink")
 
     @property
-    def metadata(self):
+    def metadata(self) -> dict[str, str] | None:
         """Retrieve arbitrary/application specific metadata for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4842,7 +4936,7 @@ class Blob(_PropertyMixin):
         return copy.deepcopy(self._properties.get("metadata"))
 
     @metadata.setter
-    def metadata(self, value):
+    def metadata(self, value: dict[str, str]) -> None:
         """Update arbitrary/application specific metadata for the object.
 
         Values are stored to GCS as strings. To delete a key, set its value to
@@ -4858,7 +4952,7 @@ class Blob(_PropertyMixin):
         self._patch_property("metadata", value)
 
     @property
-    def metageneration(self):
+    def metageneration(self) -> int | None:
         """Retrieve the metageneration for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4870,9 +4964,10 @@ class Blob(_PropertyMixin):
         metageneration = self._properties.get("metageneration")
         if metageneration is not None:
             return int(metageneration)
+        return None
 
     @property
-    def owner(self):
+    def owner(self) -> dict[str, Any] | None:
         """Retrieve info about the owner of the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4884,7 +4979,7 @@ class Blob(_PropertyMixin):
         return copy.deepcopy(self._properties.get("owner"))
 
     @property
-    def retention_expiration_time(self):
+    def retention_expiration_time(self) -> Datetime | None:
         """Retrieve timestamp at which the object's retention period expires.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4896,9 +4991,10 @@ class Blob(_PropertyMixin):
         value = self._properties.get("retentionExpirationTime")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def self_link(self):
+    def self_link(self) -> str | None:
         """Retrieve the URI for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4910,7 +5006,7 @@ class Blob(_PropertyMixin):
         return self._properties.get("selfLink")
 
     @property
-    def size(self):
+    def size(self) -> int | None:
         """Size of the object, in bytes.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4922,9 +5018,10 @@ class Blob(_PropertyMixin):
         size = self._properties.get("size")
         if size is not None:
             return int(size)
+        return None
 
     @property
-    def kms_key_name(self):
+    def kms_key_name(self) -> str | None:
         """Resource name of Cloud KMS key used to encrypt the blob's contents.
 
         :rtype: str or ``NoneType``
@@ -4935,7 +5032,7 @@ class Blob(_PropertyMixin):
         return self._properties.get("kmsKeyName")
 
     @kms_key_name.setter
-    def kms_key_name(self, value):
+    def kms_key_name(self, value: str | None) -> None:
         """Set KMS encryption key for object.
 
         :type value: str or ``NoneType``
@@ -4943,7 +5040,7 @@ class Blob(_PropertyMixin):
         """
         self._patch_property("kmsKeyName", value)
 
-    storage_class = _scalar_property("storageClass")
+    storage_class: str | None = _scalar_property("storageClass")
     """Retrieve the storage class for the object.
 
     This can only be set at blob / object **creation** time. If you'd
@@ -4966,7 +5063,7 @@ class Blob(_PropertyMixin):
         else ``None``.
     """
 
-    temporary_hold = _scalar_property("temporaryHold")
+    temporary_hold: bool | None = _scalar_property("temporaryHold")
     """Is a temporary hold active on the object?
 
     See [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
@@ -4977,7 +5074,7 @@ class Blob(_PropertyMixin):
     """
 
     @property
-    def time_deleted(self):
+    def time_deleted(self) -> Datetime | None:
         """Retrieve the timestamp at which the object was deleted.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -4991,9 +5088,10 @@ class Blob(_PropertyMixin):
         value = self._properties.get("timeDeleted")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def time_created(self):
+    def time_created(self) -> Datetime | None:
         """Retrieve the timestamp at which the object was created.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -5006,9 +5104,10 @@ class Blob(_PropertyMixin):
         value = self._properties.get("timeCreated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def updated(self):
+    def updated(self) -> Datetime | None:
         """Retrieve the timestamp at which the object was updated.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -5021,9 +5120,10 @@ class Blob(_PropertyMixin):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def custom_time(self):
+    def custom_time(self) -> Datetime | None:
         """Retrieve the custom time for the object.
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
@@ -5036,9 +5136,10 @@ class Blob(_PropertyMixin):
         value = self._properties.get("customTime")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @custom_time.setter
-    def custom_time(self, value):
+    def custom_time(self, value: Datetime) -> None:
         """Set the custom time for the object.
 
         Once set on the server side object, this value can't be unset, but may
@@ -5058,7 +5159,7 @@ class Blob(_PropertyMixin):
         self._patch_property("customTime", value)
 
     @property
-    def retention(self):
+    def retention(self) -> Retention:
         """Retrieve the retention configuration for this object.
 
         :rtype: :class:`Retention`
@@ -5068,7 +5169,7 @@ class Blob(_PropertyMixin):
         return Retention.from_api_repr(info, self)
 
     @property
-    def contexts(self):
+    def contexts(self) -> ObjectContexts:
         """Retrieve the contexts for this object.
 
         :rtype: :class:`ObjectContexts`
@@ -5078,7 +5179,7 @@ class Blob(_PropertyMixin):
         return ObjectContexts.from_api_repr(info, self)
 
     @contexts.setter
-    def contexts(self, value):
+    def contexts(self, value: ObjectContexts | dict[str, Any] | None) -> None:
         """Update the contexts for this object.
 
         :type value: :class:`ObjectContexts` or dict or None
@@ -5091,7 +5192,7 @@ class Blob(_PropertyMixin):
         self._patch_property("contexts", value)
 
     @property
-    def soft_delete_time(self):
+    def soft_delete_time(self) -> Datetime | None:
         """If this object has been soft-deleted, returns the time at which it became soft-deleted.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -5102,9 +5203,10 @@ class Blob(_PropertyMixin):
         soft_delete_time = self._properties.get("softDeleteTime")
         if soft_delete_time is not None:
             return _rfc3339_nanos_to_datetime(soft_delete_time)
+        return None
 
     @property
-    def hard_delete_time(self):
+    def hard_delete_time(self) -> Datetime | None:
         """If this object has been soft-deleted, returns the time at which it will be permanently deleted.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -5115,9 +5217,10 @@ class Blob(_PropertyMixin):
         hard_delete_time = self._properties.get("hardDeleteTime")
         if hard_delete_time is not None:
             return _rfc3339_nanos_to_datetime(hard_delete_time)
+        return None
 
     @property
-    def finalized_time(self):
+    def finalized_time(self) -> Datetime | None:
         """If this object has been soft-deleted, returns the time at which it will be permanently deleted.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -5128,9 +5231,10 @@ class Blob(_PropertyMixin):
         finalize_time = self._properties.get("finalizedTime", None)
         if finalize_time is not None:
             return _rfc3339_nanos_to_datetime(finalize_time)
+        return None
 
 
-def _get_host_name(connection):
+def _get_host_name(connection: Connection) -> str:
     """Returns the host name from the given connection.
 
     :type connection: :class:`~google.cloud.storage._http.Connection`
@@ -5143,13 +5247,13 @@ def _get_host_name(connection):
     # to 1.6.0 in setup.py, we no longer need to check the attribute
     # existence. We can simply return connection.get_api_base_url_for_mtls().
     return (
-        connection.API_BASE_URL
+        cast(str, connection.API_BASE_URL)
         if not hasattr(connection, "get_api_base_url_for_mtls")
-        else connection.get_api_base_url_for_mtls()
+        else cast(str, connection.get_api_base_url_for_mtls())
     )
 
 
-def _get_encryption_headers(key, source=False):
+def _get_encryption_headers(key: bytes | None, source: bool = False) -> dict[str, str]:
     """Builds customer encryption key headers
 
     :type key: bytes
@@ -5182,7 +5286,7 @@ def _get_encryption_headers(key, source=False):
     }
 
 
-def _quote(value, safe=b"~"):
+def _quote(value: str | bytes, safe: bytes = b"~") -> str:
     """URL-quote a string.
 
     If the value is unicode, this method first UTF-8 encodes it as bytes and
@@ -5203,7 +5307,7 @@ def _quote(value, safe=b"~"):
     return quote(value, safe=safe)
 
 
-def _maybe_rewind(stream, rewind=False):
+def _maybe_rewind(stream: SeekableReadable, rewind: bool = False) -> None:
     """Rewind the stream if desired.
 
     :type stream: IO[bytes]
@@ -5216,7 +5320,7 @@ def _maybe_rewind(stream, rewind=False):
         stream.seek(0, os.SEEK_SET)
 
 
-def _raise_from_invalid_response(error):
+def _raise_from_invalid_response(error: InvalidResponse) -> NoReturn:
     """Re-wrap and raise an ``InvalidResponse`` exception.
 
     :type error: :exc:`google.cloud.storage.exceptions.InvalidResponse`
@@ -5240,7 +5344,9 @@ def _raise_from_invalid_response(error):
     raise exceptions.from_http_status(response.status_code, message, response=response)
 
 
-def _add_query_parameters(base_url, name_value_pairs):
+def _add_query_parameters(
+    base_url: str, name_value_pairs: list[tuple[str, Any]]
+) -> str:
     """Add one query parameter to a base URL.
 
     :type base_url: string
@@ -5256,12 +5362,12 @@ def _add_query_parameters(base_url, name_value_pairs):
         return base_url
 
     scheme, netloc, path, query, frag = urlsplit(base_url)
-    query = parse_qsl(query)
-    query.extend(name_value_pairs)
-    return urlunsplit((scheme, netloc, path, urlencode(query), frag))
+    query_pairs: list[tuple[str, Any]] = parse_qsl(query)
+    query_pairs.extend(name_value_pairs)
+    return urlunsplit((scheme, netloc, path, urlencode(query_pairs), frag))
 
 
-class Retention(dict):
+class Retention(dict[str, Any]):
     """Map an object's retention configuration.
 
     :type blob: :class:`Blob`
@@ -5286,12 +5392,12 @@ class Retention(dict):
 
     def __init__(
         self,
-        blob,
-        mode=None,
-        retain_until_time=None,
-        retention_expiration_time=None,
-    ):
-        data = {"mode": mode}
+        blob: Blob,
+        mode: str | None = None,
+        retain_until_time: Datetime | None = None,
+        retention_expiration_time: Datetime | None = None,
+    ) -> None:
+        data: dict[str, Any] = {"mode": mode}
         if retain_until_time is not None:
             retain_until_time = _datetime_to_rfc3339(retain_until_time)
         data["retainUntilTime"] = retain_until_time
@@ -5304,7 +5410,7 @@ class Retention(dict):
         self._blob = blob
 
     @classmethod
-    def from_api_repr(cls, resource, blob):
+    def from_api_repr(cls, resource: dict[str, Any], blob: Blob) -> Retention:
         """Factory:  construct instance from resource.
 
         :type blob: :class:`Blob`
@@ -5321,7 +5427,7 @@ class Retention(dict):
         return instance
 
     @property
-    def blob(self):
+    def blob(self) -> Blob:
         """Blob for which this retention configuration applies to.
 
         :rtype: :class:`Blob`
@@ -5330,7 +5436,7 @@ class Retention(dict):
         return self._blob
 
     @property
-    def mode(self):
+    def mode(self) -> str | None:
         """The mode of the retention configuration. Options are 'Unlocked' or 'Locked'.
 
         :rtype: string
@@ -5339,12 +5445,12 @@ class Retention(dict):
         return self.get("mode")
 
     @mode.setter
-    def mode(self, value):
+    def mode(self, value: str | None) -> None:
         self["mode"] = value
         self.blob._patch_property("retention", self)
 
     @property
-    def retain_until_time(self):
+    def retain_until_time(self) -> Datetime | None:
         """The earliest time that the object can be deleted or replaced, which is the
         retention configuration set for this object.
 
@@ -5356,9 +5462,10 @@ class Retention(dict):
         value = self.get("retainUntilTime")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @retain_until_time.setter
-    def retain_until_time(self, value):
+    def retain_until_time(self, value: Datetime | None) -> None:
         """Set the retain_until_time for the object retention configuration.
 
         :type value: :class:`datetime.datetime`
@@ -5370,7 +5477,7 @@ class Retention(dict):
         self.blob._patch_property("retention", self)
 
     @property
-    def retention_expiration_time(self):
+    def retention_expiration_time(self) -> Datetime | None:
         """The earliest time that the object can be deleted, which depends on any
         retention configuration set for the object and any retention policy set for
         the bucket that contains the object.
@@ -5382,22 +5489,23 @@ class Retention(dict):
         retention_expiration_time = self.get("retentionExpirationTime")
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
+        return None
 
 
-class ObjectCustomContextPayload(dict):
+class ObjectCustomContextPayload(dict[str, Any]):
     """Payload for a custom context.
 
     :type value: str or ``NoneType``
     :param value: (Optional) The value of the custom context.
     """
 
-    def __init__(self, value=None):
-        data = {"value": value}
+    def __init__(self, value: str | None = None) -> None:
+        data: dict[str, Any] = {"value": value}
         super().__init__(data)
-        self._contexts = None
+        self._contexts: ObjectContexts | None = None
 
     @property
-    def value(self):
+    def value(self) -> str | None:
         """The value of the custom context.
 
         :rtype: str or ``NoneType``
@@ -5406,13 +5514,13 @@ class ObjectCustomContextPayload(dict):
         return self.get("value")
 
     @value.setter
-    def value(self, value):
+    def value(self, value: str | None) -> None:
         self["value"] = value
         if hasattr(self, "_contexts") and self._contexts and self._contexts.blob:
             self._contexts.blob._patch_property("contexts", self._contexts)
 
     @property
-    def create_time(self):
+    def create_time(self) -> Datetime | None:
         """Creation time of the custom context.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -5421,9 +5529,10 @@ class ObjectCustomContextPayload(dict):
         create_time = self.get("createTime")
         if create_time is not None:
             return _rfc3339_nanos_to_datetime(create_time)
+        return None
 
     @property
-    def update_time(self):
+    def update_time(self) -> Datetime | None:
         """Last update time of the custom context.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -5432,9 +5541,10 @@ class ObjectCustomContextPayload(dict):
         update_time = self.get("updateTime")
         if update_time is not None:
             return _rfc3339_nanos_to_datetime(update_time)
+        return None
 
 
-class ObjectContexts(dict):
+class ObjectContexts(dict[str, Any]):
     """Container for an object's contexts.
 
     See: https://docs.cloud.google.com/storage/docs/object-contexts
@@ -5446,8 +5556,10 @@ class ObjectContexts(dict):
     :param custom: (Optional) Custom contexts mapping.
     """
 
-    def __init__(self, blob, custom=None):
-        data = {}
+    def __init__(
+        self, blob: Blob, custom: dict[str, ObjectCustomContextPayload] | None = None
+    ) -> None:
+        data: dict[str, Any] = {}
         if custom is not None:
             if not isinstance(custom, dict):
                 raise ValueError(
@@ -5464,7 +5576,7 @@ class ObjectContexts(dict):
         self._blob = blob
 
     @classmethod
-    def from_api_repr(cls, resource, blob):
+    def from_api_repr(cls, resource: dict[str, Any], blob: Blob) -> ObjectContexts:
         """Factory: construct instance from resource.
 
         :type resource: dict
@@ -5487,7 +5599,7 @@ class ObjectContexts(dict):
         return instance
 
     @property
-    def blob(self):
+    def blob(self) -> Blob:
         """Blob for which these contexts apply to.
 
         :rtype: :class:`Blob`
@@ -5496,7 +5608,7 @@ class ObjectContexts(dict):
         return self._blob
 
     @property
-    def custom(self):
+    def custom(self) -> dict[str, ObjectCustomContextPayload]:
         """Custom contexts mapping.
 
         :rtype: dict
@@ -5507,7 +5619,7 @@ class ObjectContexts(dict):
         return self["custom"]
 
     @custom.setter
-    def custom(self, value):
+    def custom(self, value: dict[str, ObjectCustomContextPayload] | None) -> None:
         if value is None:
             value = {}
         if not isinstance(value, dict):

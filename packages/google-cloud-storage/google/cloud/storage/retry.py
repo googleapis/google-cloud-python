@@ -17,16 +17,30 @@
 See [Retry Strategy for Google Cloud Storage](https://cloud.google.com/storage/docs/retry-strategy#client-libraries)
 """
 
-import http
+from __future__ import annotations
+
+import http.client
+from typing import TYPE_CHECKING
 
 import requests
 import requests.exceptions as requests_exceptions
 import urllib3
-from google.api_core import exceptions as api_exceptions
-from google.api_core import retry
+from google.api_core import (
+    exceptions as api_exceptions,
+)
+from google.api_core import (
+    retry,
+)
 from google.auth import exceptions as auth_exceptions
 
 from google.cloud.storage.exceptions import InvalidResponse
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping, Sequence
+    from typing import Any
+
+    from google.api_core.retry import Retry
+
 
 _RETRYABLE_TYPES = (
     api_exceptions.TooManyRequests,  # 429
@@ -58,7 +72,7 @@ _RETRYABLE_STATUS_CODES = (
 )
 
 
-def _should_retry(exc):
+def _should_retry(exc: Exception) -> bool:
     """Predicate for determining when to retry."""
     if isinstance(exc, _RETRYABLE_TYPES):
         return True
@@ -115,31 +129,36 @@ class ConditionalRetryPolicy:
         ``["query_params"]`` is commmonly used for preconditions in query_params.
     """
 
-    def __init__(self, retry_policy, conditional_predicate, required_kwargs):
+    def __init__(
+        self,
+        retry_policy: Retry,
+        conditional_predicate: Callable[..., bool],
+        required_kwargs: Sequence[str],
+    ) -> None:
         self.retry_policy = retry_policy
         self.conditional_predicate = conditional_predicate
         self.required_kwargs = required_kwargs
 
-    def get_retry_policy_if_conditions_met(self, **kwargs):
+    def get_retry_policy_if_conditions_met(self, **kwargs: Any) -> Retry | None:
         if self.conditional_predicate(*[kwargs[key] for key in self.required_kwargs]):
             return self.retry_policy
         return None
 
 
-def is_generation_specified(query_params):
+def is_generation_specified(query_params: Mapping[str, Any]) -> bool:
     """Return True if generation or if_generation_match is specified."""
     generation = query_params.get("generation") is not None
     if_generation_match = query_params.get("ifGenerationMatch") is not None
     return generation or if_generation_match
 
 
-def is_metageneration_specified(query_params):
+def is_metageneration_specified(query_params: Mapping[str, Any]) -> bool:
     """Return True if if_metageneration_match is specified."""
     if_metageneration_match = query_params.get("ifMetagenerationMatch") is not None
     return if_metageneration_match
 
 
-def is_etag_in_data(data):
+def is_etag_in_data(data: Mapping[str, Any] | None) -> bool:
     """Return True if an etag is contained in the request body.
 
     :type data: dict or None
@@ -148,7 +167,7 @@ def is_etag_in_data(data):
     return data is not None and "etag" in data
 
 
-def is_etag_in_json(data):
+def is_etag_in_json(data: Mapping[str, Any] | None) -> bool:
     """
     ``is_etag_in_json`` is supported for backwards-compatibility reasons only;
     please use ``is_etag_in_data`` instead.

@@ -13,26 +13,34 @@
 # limitations under the License.
 
 
+from __future__ import annotations
+
+from typing import cast
+
 import grpc
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
 from google.cloud.storage import Blob, _grpc_conversions
+from google.cloud.storage._types import _AsyncBidiRpc
 from google.cloud.storage.asyncio import _utils
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
-from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
 
-class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
+class _AsyncWriteObjectStream(
+    _AsyncAbstractObjectStream[
+        _storage_v2.BidiWriteObjectRequest, _storage_v2.BidiWriteObjectResponse
+    ]
+):
     """Class representing a gRPC bidi-stream for writing data from a GCS
       ``Appendable Object``.
 
     This class provides a unix socket-like interface to a GCS ``Object``, with
     methods like ``open``, ``close``, ``send``, and ``recv``.
 
-    :type client: :class:`~google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client`
+    :type client: :class:`~google.cloud.storage.asyncio.async_grpc_client._storage_v2.StorageAsyncClient`
     :param client: async grpc client to use for making API requests.
 
     :type bucket_name: str
@@ -64,7 +72,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
     def __init__(
         self,
-        client: AsyncGrpcClient.grpc_client,
+        client: _storage_v2.StorageAsyncClient,
         bucket_name: str,
         object_name: str,
         generation_number: int | None = None,  # None means new object
@@ -85,7 +93,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             object_name=object_name,
             generation_number=generation_number,
         )
-        self.client: AsyncGrpcClient.grpc_client = client
+        self.client: _storage_v2.StorageAsyncClient = client
         self.write_handle: _storage_v2.BidiWriteHandle | None = write_handle
         self.routing_token: str | None = routing_token
         self.blob: Blob | None = blob
@@ -97,10 +105,15 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         ]
 
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
-        self.socket_like_rpc: AsyncBidiRpc | None = None
+        self.socket_like_rpc: (
+            _AsyncBidiRpc[
+                _storage_v2.BidiWriteObjectRequest, _storage_v2.BidiWriteObjectResponse
+            ]
+            | None
+        ) = None
         self._is_stream_open: bool = False
-        self.first_bidi_write_req = None
-        self.persisted_size = 0
+        self.first_bidi_write_req: _storage_v2.BidiWriteObjectRequest | None = None
+        self.persisted_size: int = 0
         self.object_resource: _storage_v2.Object | None = None
 
     async def open(self, metadata: list[tuple[str, str]] | None = None) -> None:
@@ -161,13 +174,17 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
         final_metadata.append(("x-goog-request-params", "&".join(request_param_values)))
 
-        self.socket_like_rpc = AsyncBidiRpc(
-            self.rpc,
-            initial_request=self.first_bidi_write_req,
-            metadata=final_metadata,
+        self.socket_like_rpc = cast(
+            "_AsyncBidiRpc[_storage_v2.BidiWriteObjectRequest, _storage_v2.BidiWriteObjectResponse]",
+            AsyncBidiRpc(
+                self.rpc,
+                initial_request=self.first_bidi_write_req,
+                metadata=final_metadata,
+            ),
         )
 
         await self.socket_like_rpc.open()  # this is actually 1 send
+        assert self.socket_like_rpc is not None
         response = await self.socket_like_rpc.recv()
         self._is_stream_open = True
 
@@ -191,11 +208,13 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
         await self.requests_done()
+        assert self.socket_like_rpc is not None
         await self.socket_like_rpc.close()
         self._is_stream_open = False
 
-    async def requests_done(self):
+    async def requests_done(self) -> None:
         """Signals that all requests have been sent."""
+        assert self.socket_like_rpc is not None
         await self.socket_like_rpc.send(None)
 
         # The server may send a final "EOF" response immediately, or it may
@@ -223,6 +242,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
+        assert self.socket_like_rpc is not None
         await self.socket_like_rpc.send(bidi_write_object_request)
 
     async def recv(self) -> _storage_v2.BidiWriteObjectResponse:
@@ -237,6 +257,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
+        assert self.socket_like_rpc is not None
         response = await self.socket_like_rpc.recv()
         # Update write_handle if present in response
         if response:

@@ -12,9 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from google.protobuf import timestamp_pb2
 
 from google.cloud import _storage_v2
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from google.cloud.storage.blob import Blob
+
 
 # Map Python Blob attributes to GCS V2 Object proto field names.
 _BLOB_ATTR_TO_PROTO_FIELD = {
@@ -31,10 +42,10 @@ _BLOB_ATTR_TO_PROTO_FIELD = {
 }
 
 
-def blob_to_proto(blob):
+def blob_to_proto(blob: Blob) -> _storage_v2.Object:
     """Converts a Blob instance to a GCS V2 Object proto message."""
 
-    resource_params = {
+    resource_params: dict[str, Any] = {
         "name": blob.name,
     }
 

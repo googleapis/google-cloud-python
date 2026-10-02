@@ -17,6 +17,8 @@
 These are *not* part of the API.
 """
 
+from __future__ import annotations
+
 import base64
 import datetime
 import logging
@@ -24,6 +26,7 @@ import os
 import secrets
 from contextlib import contextmanager
 from hashlib import md5
+from typing import TYPE_CHECKING, cast
 from urllib.parse import urlsplit, urlunsplit
 from uuid import uuid4
 
@@ -42,6 +45,19 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Mapping
+    from typing import Any
+
+    from google.api_core.retry import Retry
+    from opentelemetry.trace import Span
+
+    from google.cloud.storage._types import AttributeValue, Checksum, Readable, Timeout
+    from google.cloud.storage.batch import _FutureDict
+    from google.cloud.storage.client import Client
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
 
 _logger = logging.getLogger(__name__)
 
@@ -64,7 +80,7 @@ _TRUE_DEFAULT_STORAGE_HOST = _STORAGE_HOST_TEMPLATE.format(
 
 _DEFAULT_SCHEME = "https://"
 
-_API_VERSION = os.getenv(_API_VERSION_OVERRIDE_ENV_VAR, "v1")
+_API_VERSION: str = os.getenv(_API_VERSION_OVERRIDE_ENV_VAR, "v1")
 """API version of the default storage host"""
 
 # etag match parameters in snake case and equivalent header
@@ -92,24 +108,26 @@ _NOW = datetime.datetime.now
 _UTC = datetime.timezone.utc
 
 
-def _get_storage_emulator_override():
+def _get_storage_emulator_override() -> str | None:
     return os.environ.get(STORAGE_EMULATOR_ENV_VAR, None)
 
 
-def _get_default_storage_base_url():
+def _get_default_storage_base_url() -> str:
     return os.getenv(
         _API_ENDPOINT_OVERRIDE_ENV_VAR, _DEFAULT_SCHEME + _TRUE_DEFAULT_STORAGE_HOST
     )
 
 
-def _get_api_endpoint_override():
+def _get_api_endpoint_override() -> str | None:
     """This is an experimental configuration variable. Use api_endpoint instead."""
     if _get_default_storage_base_url() != _DEFAULT_SCHEME + _TRUE_DEFAULT_STORAGE_HOST:
         return _get_default_storage_base_url()
     return None
 
 
-def _virtual_hosted_style_base_url(url, bucket, trailing_slash=False):
+def _virtual_hosted_style_base_url(
+    url: str, bucket: str, trailing_slash: bool = False
+) -> str:
     """Returns the scheme and netloc sections of the url, with the bucket
     prepended to the netloc.
 
@@ -123,14 +141,14 @@ def _virtual_hosted_style_base_url(url, bucket, trailing_slash=False):
     return base_url
 
 
-def _get_environ_project():
+def _get_environ_project() -> str | None:
     return os.getenv(
         environment_vars.PROJECT,
         os.getenv(environment_vars.LEGACY_PROJECT),
     )
 
 
-def _validate_name(name):
+def _validate_name(name: str | None) -> str | None:
     """Pre-flight ``Bucket`` name validation.
 
     :type name: str or :data:`NoneType`
@@ -140,7 +158,7 @@ def _validate_name(name):
     :returns: ``name`` if valid.
     """
     if name is None:
-        return
+        return None
 
     # The first and last characters must be alphanumeric.
     if not all([name[0].isalnum(), name[-1].isalnum()]):
@@ -149,7 +167,13 @@ def _validate_name(name):
 
 
 @contextmanager
-def create_trace_span_helper(client, bucket_name, name, attributes=None, **kwargs):
+def create_trace_span_helper(
+    client: Client | None,
+    bucket_name: str | None,
+    name: str,
+    attributes: Mapping[str, AttributeValue] | None = None,
+    **kwargs: Any,
+) -> Iterator[Span | None]:
     span_attrs = dict(attributes) if attributes else {}
 
     if (
@@ -218,27 +242,33 @@ class _PropertyMixin:
                  number or letter.
     """
 
-    def __init__(self, name=None):
+    if TYPE_CHECKING:
+
+        @property
+        def generation(self) -> int | None:
+            raise NotImplementedError
+
+    def __init__(self, name: str | None = None) -> None:
         self.name = name
-        self._properties = {}
-        self._changes = set()
+        self._properties: dict[str, Any] = {}
+        self._changes: set[str] = set()
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Abstract getter for the object path."""
         raise NotImplementedError
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """Abstract getter for the object client."""
         raise NotImplementedError
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:
         """Abstract getter for the object user_project."""
         raise NotImplementedError
 
-    def _require_client(self, client):
+    def _require_client(self, client: Client | None) -> Client:
         """Check client or verify over-ride.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -251,10 +281,15 @@ class _PropertyMixin:
         """
         if client is None:
             client = self.client
-        return client
+        return cast("Client", client)
 
     @contextmanager
-    def _create_trace_span(self, name, attributes=None, **kwargs):
+    def _create_trace_span(
+        self,
+        name: str,
+        attributes: Mapping[str, AttributeValue] | None = None,
+        **kwargs: Any,
+    ) -> Iterator[Span | None]:
         from google.cloud.storage.blob import Blob
         from google.cloud.storage.bucket import Bucket
 
@@ -285,11 +320,15 @@ class _PropertyMixin:
         active_client = client_override or client
 
         with create_trace_span_helper(
-            active_client, bucket_name, name, attributes=attributes, **kwargs
+            active_client,
+            cast("str | None", bucket_name),
+            name,
+            attributes=attributes,
+            **kwargs,
         ) as span:
             yield span
 
-    def _encryption_headers(self):
+    def _encryption_headers(self) -> dict[str, str]:
         """Return any encryption headers needed to fetch the object.
 
         .. note::
@@ -302,7 +341,7 @@ class _PropertyMixin:
         return {}
 
     @property
-    def _query_params(self):
+    def _query_params(self) -> dict[str, Any]:
         """Default query parameters."""
         params = {}
         if self.user_project is not None:
@@ -311,18 +350,18 @@ class _PropertyMixin:
 
     def reload(
         self,
-        client=None,
-        projection="noAcl",
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        soft_deleted=None,
-    ):
+        client: Client | None = None,
+        projection: str = "noAcl",
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        soft_deleted: bool | None = None,
+    ) -> None:
         """Reload properties from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -406,7 +445,7 @@ class _PropertyMixin:
         )
         self._set_properties(api_response)
 
-    def _patch_property(self, name, value):
+    def _patch_property(self, name: str, value: Any) -> None:
         """Update field of this object's properties.
 
         This method will only update the field provided and will not
@@ -424,27 +463,27 @@ class _PropertyMixin:
         self._changes.add(name)
         self._properties[name] = value
 
-    def _set_properties(self, value):
+    def _set_properties(self, value: dict[str, Any] | _FutureDict) -> None:
         """Set the properties for the current object.
 
         :type value: dict or :class:`google.cloud.storage.batch._FutureDict`
         :param value: The properties to be set.
         """
-        self._properties = value
+        self._properties = cast("dict[str, Any]", value)
         # If the values are reset, the changes must as well.
         self._changes = set()
 
     def patch(
         self,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        override_unlocked_retention=False,
-    ):
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        override_unlocked_retention: bool = False,
+    ) -> None:
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -517,15 +556,17 @@ class _PropertyMixin:
 
     def update(
         self,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-        override_unlocked_retention=False,
-    ):
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        override_unlocked_retention: bool = False,
+    ) -> None:
         """Sends all properties in a PUT request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -594,21 +635,24 @@ class _PropertyMixin:
         self._set_properties(api_response)
 
 
-def _scalar_property(fieldname):
+# A dynamic property factory cannot express each caller's annotated value type.
+def _scalar_property(fieldname: str) -> Any:
     """Create a property descriptor around the :class:`_PropertyMixin` helpers."""
 
-    def _getter(self):
+    def _getter(self: _PropertyMixin) -> Any:
         """Scalar property getter."""
         return self._properties.get(fieldname)
 
-    def _setter(self, value):
+    def _setter(self: _PropertyMixin, value: Any) -> None:
         """Scalar property setter."""
         self._patch_property(fieldname, value)
 
     return property(_getter, _setter)
 
 
-def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
+def _write_buffer_to_hash(
+    buffer_object: Readable, hash_obj: Checksum, digest_block_size: int = 8192
+) -> None:
     """Read blocks from a buffer and update a hash with them.
 
     :type buffer_object: bytes buffer
@@ -629,7 +673,7 @@ def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
         block = buffer_object.read(digest_block_size)
 
 
-def _base64_md5hash(buffer_object):
+def _base64_md5hash(buffer_object: Readable) -> bytes:
     """Get MD5 hash of bytes (as base64).
 
     :type buffer_object: bytes buffer
@@ -645,7 +689,9 @@ def _base64_md5hash(buffer_object):
     return base64.b64encode(digest_bytes)
 
 
-def _add_etag_match_headers(headers, **match_parameters):
+def _add_etag_match_headers(
+    headers: dict[str, str], **match_parameters: str | set[str] | None
+) -> None:
     """Add generation match parameters into the given parameters list.
 
     :type headers: dict
@@ -658,12 +704,14 @@ def _add_etag_match_headers(headers, **match_parameters):
         value = match_parameters.get(snakecase_name)
 
         if value is not None:
-            if isinstance(value, str):
-                value = [value]
-            headers[header_name] = ", ".join(value)
+            values = [value] if isinstance(value, str) else value
+            headers[header_name] = ", ".join(values)
 
 
-def _add_generation_match_parameters(parameters, **match_parameters):
+def _add_generation_match_parameters(
+    parameters: list[tuple[str, Any]] | dict[str, Any],
+    **match_parameters: int | list[int] | None,
+) -> None:
     """Add generation match parameters into the given parameters list.
 
     :type parameters: list or dict
@@ -691,7 +739,7 @@ def _add_generation_match_parameters(parameters, **match_parameters):
                 )
 
 
-def _raise_if_more_than_one_set(**kwargs):
+def _raise_if_more_than_one_set(**kwargs: object) -> None:
     """Raise ``ValueError`` exception if more than one parameter was set.
 
     :type error: :exc:`ValueError`
@@ -710,7 +758,7 @@ def _raise_if_more_than_one_set(**kwargs):
         raise ValueError(msg)
 
 
-def _bucket_bound_hostname_url(host, scheme=None):
+def _bucket_bound_hostname_url(host: str, scheme: str | None = None) -> str:
     """Helper to build bucket bound hostname URL.
 
     :type host: str
@@ -730,16 +778,16 @@ def _bucket_bound_hostname_url(host, scheme=None):
     return f"{scheme}://{host}"
 
 
-def _get_invocation_id():
+def _get_invocation_id() -> str:
     return "gccl-invocation-id/" + str(uuid4())
 
 
 def _get_default_headers(
-    user_agent,
-    content_type="application/json; charset=UTF-8",
-    x_upload_content_type=None,
-    command=None,
-):
+    user_agent: str,
+    content_type: str = "application/json; charset=UTF-8",
+    x_upload_content_type: str | None = None,
+    command: str | None = None,
+) -> dict[str, str]:
     """Get the headers for a request.
 
     :type user_agent: str
@@ -769,7 +817,7 @@ def _get_default_headers(
     }
 
 
-def generate_random_56_bit_integer():
+def generate_random_56_bit_integer() -> int:
     """Generates a secure 56 bit random integer.
 
 

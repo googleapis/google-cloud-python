@@ -14,6 +14,10 @@
 
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast
+
 import grpc
 from google.auth import credentials as auth_credentials
 
@@ -21,12 +25,24 @@ from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
+from google.cloud._storage_v2.services.storage.transports.grpc_asyncio import (
+    StorageGrpcAsyncIOTransport,
+)
 from google.cloud.storage import __version__
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from google.api_core.client_options import ClientOptions
+    from google.api_core.gapic_v1.client_info import ClientInfo
+    from google.api_core.retry_async import AsyncRetry
+    from google.auth.credentials import Credentials
+
 
 _DEFAULT_HOST = "storage.googleapis.com"
 
 
-def _validate_metadata(metadata):
+def _validate_metadata(metadata: Sequence[tuple[str, str]] | None) -> None:
     """Validates that metadata is a sequence of (key, value) pairs."""
     if metadata is None:
         return
@@ -67,12 +83,12 @@ class AsyncGrpcClient:
 
     def __init__(
         self,
-        credentials=None,
-        client_info=None,
-        client_options=None,
+        credentials: Credentials | None = None,
+        client_info: ClientInfo | None = None,
+        client_options: ClientOptions | None = None,
         *,
-        attempt_direct_path=True,
-    ):
+        attempt_direct_path: bool = True,
+    ) -> None:
         if isinstance(credentials, auth_credentials.AnonymousCredentials):
             if client_options is None or client_options.api_endpoint is None:
                 raise ValueError(
@@ -99,15 +115,19 @@ class AsyncGrpcClient:
             attempt_direct_path=attempt_direct_path,
         )
 
-    def _create_anonymous_client(self, client_options, credentials):
-        channel = grpc.aio.insecure_channel(client_options.api_endpoint)
-        transport = storage_v2.services.storage.transports.StorageGrpcAsyncIOTransport(
+    def _create_anonymous_client(
+        self, client_options: ClientOptions, credentials: Credentials | None
+    ) -> storage_v2.StorageAsyncClient:
+        channel = grpc.aio.insecure_channel(cast(str, client_options.api_endpoint))
+        transport = StorageGrpcAsyncIOTransport(
             channel=channel, credentials=credentials
         )
         return storage_v2.StorageAsyncClient(transport=transport)
 
     @classmethod
-    def _create_insecure_grpc_client(cls, client_options):
+    def _create_insecure_grpc_client(
+        cls, client_options: ClientOptions | None
+    ) -> AsyncGrpcClient:
         return cls(
             credentials=auth_credentials.AnonymousCredentials(),
             client_options=client_options,
@@ -116,15 +136,18 @@ class AsyncGrpcClient:
 
     def _create_async_grpc_client(
         self,
-        credentials=None,
-        client_info=None,
-        client_options=None,
-        attempt_direct_path=True,
-    ):
-        transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
-            "grpc_asyncio"
+        credentials: Credentials | None = None,
+        client_info: ClientInfo | None = None,
+        client_options: ClientOptions | None = None,
+        attempt_direct_path: bool = True,
+    ) -> storage_v2.StorageAsyncClient:
+        transport_cls = cast(
+            type[StorageGrpcAsyncIOTransport],
+            storage_v2.StorageAsyncClient.get_transport_class("grpc_asyncio"),
         )
 
+        if client_info is None:
+            client_info = DEFAULT_CLIENT_INFO
         primary_user_agent = client_info.to_user_agent()
 
         host = _DEFAULT_HOST
@@ -149,7 +172,7 @@ class AsyncGrpcClient:
         )
 
     @property
-    def grpc_client(self):
+    def grpc_client(self) -> storage_v2.StorageAsyncClient:
         """The underlying gRPC client.
 
         This property gives users direct access to the `_storage_v2.StorageAsyncClient`
@@ -163,18 +186,18 @@ class AsyncGrpcClient:
 
     async def delete_object(
         self,
-        bucket_name,
-        object_name,
-        generation=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        metadata=(),
-        timeout=None,
-        retry=None,
-        **kwargs,
-    ):
+        bucket_name: str,
+        object_name: str,
+        generation: int | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        metadata: Sequence[tuple[str, str]] = (),
+        timeout: float | None = None,
+        retry: AsyncRetry | None = None,
+        **kwargs: object,
+    ) -> None:
         """Deletes an object and its metadata.
 
         :type bucket_name: str
@@ -233,19 +256,19 @@ class AsyncGrpcClient:
 
     async def get_object(
         self,
-        bucket_name,
-        object_name,
-        generation=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        soft_deleted=None,
-        metadata=(),
-        timeout=None,
-        retry=None,
-        **kwargs,
-    ):
+        bucket_name: str,
+        object_name: str,
+        generation: int | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        soft_deleted: bool | None = None,
+        metadata: Sequence[tuple[str, str]] = (),
+        timeout: float | None = None,
+        retry: AsyncRetry | None = None,
+        **kwargs: object,
+    ) -> storage_v2.Object:
         """Retrieves an object's metadata.
 
         In the gRPC API, this is performed by the GetObject RPC, which

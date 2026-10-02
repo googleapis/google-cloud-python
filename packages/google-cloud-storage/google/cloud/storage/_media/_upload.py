@@ -21,6 +21,8 @@ Supported here are:
 * resumable uploads (with metadata as well)
 """
 
+from __future__ import annotations
+
 import http.client
 import json
 import os
@@ -28,11 +30,24 @@ import random
 import re
 import sys
 import urllib.parse
+from typing import TYPE_CHECKING, Generic, cast
 from xml.etree import ElementTree
 
 from google.cloud.storage._media import UPLOAD_CHUNK_SIZE, _helpers
+from google.cloud.storage._types import _MediaResponseT, _MediaTransport
 from google.cloud.storage.exceptions import DataCorruption, InvalidResponse
 from google.cloud.storage.retry import DEFAULT_RETRY
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+    from os import PathLike
+    from typing import Any
+    from xml.etree.ElementTree import Element
+
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import Checksum, SeekableReadable, Timeout
+
 
 _CONTENT_TYPE_HEADER = "content-type"
 _CONTENT_RANGE_TEMPLATE = "bytes {:d}-{:d}/{:d}"
@@ -56,10 +71,7 @@ _STREAM_READ_PAST_TEMPLATE = (
 _DELETE = "DELETE"
 _POST = "POST"
 _PUT = "PUT"
-_UPLOAD_CHECKSUM_MISMATCH_MESSAGE = (
-    "The computed ``{}`` checksum, ``{}``, and the checksum reported by the "
-    "remote host, ``{}``, did not match."
-)
+_UPLOAD_CHECKSUM_MISMATCH_MESSAGE = "The computed ``{}`` checksum, ``{}``, and the checksum reported by the remote host, ``{}``, did not match."
 _UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE = (
     "Response metadata had no ``{}`` value; checksum could not be validated."
 )
@@ -73,7 +85,7 @@ _UPLOAD_ID_NODE = "UploadId"
 _MPU_FINAL_QUERY_TEMPLATE = "?uploadId={upload_id}"
 
 
-class UploadBase:
+class UploadBase(Generic[_MediaTransport, _MediaResponseT]):
     """Base class for upload helpers.
 
     Defines core shared behavior across different upload types.
@@ -95,20 +107,25 @@ class UploadBase:
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def __init__(self, upload_url, headers=None, retry=DEFAULT_RETRY):
+    def __init__(
+        self,
+        upload_url: str,
+        headers: dict[str, str] | dict[str, str | bytes] | None = None,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         self.upload_url = upload_url
         if headers is None:
             headers = {}
-        self._headers = headers
+        self._headers = cast("dict[str, str | bytes]", headers)
         self._finished = False
         self._retry_strategy = retry
 
     @property
-    def finished(self):
+    def finished(self) -> bool:
         """bool: Flag indicating if the upload has completed."""
         return self._finished
 
-    def _process_response(self, response):
+    def _process_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -130,7 +147,7 @@ class UploadBase:
         _helpers.require_status_code(response, (http.client.OK,), self._get_status_code)
 
     @staticmethod
-    def _get_status_code(response):
+    def _get_status_code(response: _MediaResponseT) -> int:
         """Access the status code from an HTTP response.
 
         Args:
@@ -142,7 +159,7 @@ class UploadBase:
         raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
-    def _get_headers(response):
+    def _get_headers(response: _MediaResponseT) -> Mapping[str, str]:
         """Access the headers from an HTTP response.
 
         Args:
@@ -154,7 +171,7 @@ class UploadBase:
         raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
-    def _get_body(response):
+    def _get_body(response: _MediaResponseT) -> bytes:
         """Access the response body from an HTTP response.
 
         Args:
@@ -166,7 +183,7 @@ class UploadBase:
         raise NotImplementedError("This implementation is virtual.")
 
 
-class SimpleUpload(UploadBase):
+class SimpleUpload(UploadBase[_MediaTransport, _MediaResponseT]):
     """Upload a resource to a Google API.
 
     A **simple** media upload sends no metadata and completes the upload
@@ -189,7 +206,9 @@ class SimpleUpload(UploadBase):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def _prepare_request(self, data, content_type):
+    def _prepare_request(
+        self, data: bytes, content_type: str
+    ) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of an HTTP request.
 
         This is everything that must be done before a request that doesn't
@@ -227,7 +246,13 @@ class SimpleUpload(UploadBase):
         self._headers[_CONTENT_TYPE_HEADER] = content_type
         return _POST, self.upload_url, data, self._headers
 
-    def transmit(self, transport, data, content_type, timeout=None):
+    def transmit(
+        self,
+        transport: _MediaTransport,
+        data: bytes,
+        content_type: str,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Transmit the resource to be uploaded.
 
         Args:
@@ -250,7 +275,7 @@ class SimpleUpload(UploadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class MultipartUpload(UploadBase):
+class MultipartUpload(UploadBase[_MediaTransport, _MediaResponseT]):
     """Upload a resource with metadata to a Google API.
 
     A **multipart** upload sends both metadata and the resource in a single
@@ -280,7 +305,13 @@ class MultipartUpload(UploadBase):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def __init__(self, upload_url, headers=None, checksum="auto", retry=DEFAULT_RETRY):
+    def __init__(
+        self,
+        upload_url: str,
+        headers: dict[str, str] | dict[str, str | bytes] | None = None,
+        checksum: str | None = "auto",
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         super().__init__(upload_url, headers=headers, retry=retry)
         self._checksum_type = checksum
         if self._checksum_type == "auto":
@@ -288,7 +319,9 @@ class MultipartUpload(UploadBase):
                 "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
             )
 
-    def _prepare_request(self, data, metadata, content_type):
+    def _prepare_request(
+        self, data: bytes, metadata: dict[str, Any], content_type: str
+    ) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of an HTTP request.
 
         This is everything that must be done before a request that doesn't
@@ -331,7 +364,7 @@ class MultipartUpload(UploadBase):
         if checksum_object is not None:
             checksum_object.update(data)
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
-            metadata_key = _helpers._get_metadata_key(self._checksum_type)
+            metadata_key = _helpers._get_metadata_key(cast(str, self._checksum_type))
             metadata[metadata_key] = actual_checksum
 
         content, multipart_boundary = construct_multipart_request(
@@ -342,7 +375,14 @@ class MultipartUpload(UploadBase):
 
         return _POST, self.upload_url, content, self._headers
 
-    def transmit(self, transport, data, metadata, content_type, timeout=None):
+    def transmit(
+        self,
+        transport: _MediaTransport,
+        data: bytes,
+        metadata: dict[str, Any],
+        content_type: str,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Transmit the resource to be uploaded.
 
         Args:
@@ -367,7 +407,7 @@ class MultipartUpload(UploadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class ResumableUpload(UploadBase):
+class ResumableUpload(UploadBase[_MediaTransport, _MediaResponseT]):
     """Initiate and fulfill a resumable upload to a Google API.
 
     A **resumable** upload sends an initial request with the resource metadata
@@ -407,18 +447,18 @@ class ResumableUpload(UploadBase):
 
     def __init__(
         self,
-        upload_url,
-        chunk_size,
-        checksum="auto",
-        headers=None,
-        retry=DEFAULT_RETRY,
-    ):
+        upload_url: str,
+        chunk_size: int,
+        checksum: str | None = "auto",
+        headers: dict[str, str] | dict[str, str | bytes] | None = None,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         super().__init__(upload_url, headers=headers, retry=retry)
         if chunk_size % UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(f"{UPLOAD_CHUNK_SIZE / 1024} KB must divide chunk size")
         self._chunk_size = chunk_size
-        self._stream = None
-        self._content_type = None
+        self._stream: SeekableReadable | None = None
+        self._content_type: str | None = None
         self._bytes_uploaded = 0
         self._bytes_checksummed = 0
         self._checksum_type = checksum
@@ -426,13 +466,13 @@ class ResumableUpload(UploadBase):
             self._checksum_type = (
                 "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
             )
-        self._checksum_object = None
-        self._total_bytes = None
-        self._resumable_url = None
+        self._checksum_object: Checksum | None = None
+        self._total_bytes: int | None = None
+        self._resumable_url: str | None = None
         self._invalid = False
 
     @property
-    def invalid(self):
+    def invalid(self) -> bool:
         """bool: Indicates if the upload is in an invalid state.
 
         This will occur if a call to :meth:`transmit_next_chunk` fails.
@@ -441,22 +481,22 @@ class ResumableUpload(UploadBase):
         return self._invalid
 
     @property
-    def chunk_size(self):
+    def chunk_size(self) -> int:
         """int: The size of each chunk used to upload the resource."""
         return self._chunk_size
 
     @property
-    def resumable_url(self):
+    def resumable_url(self) -> str | None:
         """Optional[str]: The URL of the in-progress resumable upload."""
         return self._resumable_url
 
     @property
-    def bytes_uploaded(self):
+    def bytes_uploaded(self) -> int:
         """int: Number of bytes that have been uploaded."""
         return self._bytes_uploaded
 
     @property
-    def total_bytes(self):
+    def total_bytes(self) -> int | None:
         """Optional[int]: The total number of bytes to be uploaded.
 
         If this upload is initiated (via :meth:`initiate`) with
@@ -471,12 +511,12 @@ class ResumableUpload(UploadBase):
 
     def _prepare_initiate_request(
         self,
-        stream,
-        metadata,
-        content_type,
-        total_bytes=None,
-        stream_final=True,
-    ):
+        stream: SeekableReadable,
+        metadata: dict[str, Any],
+        content_type: str,
+        total_bytes: int | None = None,
+        stream_final: bool = True,
+    ) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of HTTP request to initiate upload.
 
         This is everything that must be done before a request that doesn't
@@ -547,7 +587,7 @@ class ResumableUpload(UploadBase):
         payload = json.dumps(metadata).encode("utf-8")
         return _POST, self.upload_url, payload, headers
 
-    def _process_initiate_response(self, response):
+    def _process_initiate_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request that initiated upload.
 
         This is everything that must be done after a request that doesn't
@@ -575,14 +615,14 @@ class ResumableUpload(UploadBase):
 
     def initiate(
         self,
-        transport,
-        stream,
-        metadata,
-        content_type,
-        total_bytes=None,
-        stream_final=True,
-        timeout=None,
-    ):
+        transport: _MediaTransport,
+        stream: SeekableReadable,
+        metadata: dict[str, Any],
+        content_type: str,
+        total_bytes: int | None = None,
+        stream_final: bool = True,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Initiate a resumable upload.
 
         By default, this method assumes your ``stream`` is in a "final"
@@ -626,7 +666,7 @@ class ResumableUpload(UploadBase):
         """
         raise NotImplementedError("This implementation is virtual.")
 
-    def _prepare_request(self):
+    def _prepare_request(self) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of HTTP request to upload a chunk.
 
         This is everything that must be done before a request that doesn't
@@ -663,12 +703,11 @@ class ResumableUpload(UploadBase):
             )
         if self.resumable_url is None:
             raise ValueError(
-                "This upload has not been initiated. Please call "
-                "initiate() before beginning to transmit chunks."
+                "This upload has not been initiated. Please call initiate() before beginning to transmit chunks."
             )
 
         start_byte, payload, content_range = get_next_chunk(
-            self._stream, self._chunk_size, self._total_bytes
+            cast("SeekableReadable", self._stream), self._chunk_size, self._total_bytes
         )
         if start_byte != self.bytes_uploaded:
             msg = _STREAM_ERROR_TEMPLATE.format(start_byte, self.bytes_uploaded)
@@ -683,7 +722,7 @@ class ResumableUpload(UploadBase):
 
         headers = {
             **self._headers,
-            _CONTENT_TYPE_HEADER: self._content_type,
+            _CONTENT_TYPE_HEADER: cast(str, self._content_type),
             _helpers.CONTENT_RANGE_HEADER: content_range,
         }
         if (start_byte + len(payload) == self._total_bytes) and (
@@ -695,7 +734,7 @@ class ResumableUpload(UploadBase):
             headers["x-goog-hash"] = f"{self._checksum_type}={local_checksum}"
         return _PUT, self.resumable_url, payload, headers
 
-    def _update_checksum(self, start_byte, payload):
+    def _update_checksum(self, start_byte: int, payload: bytes) -> None:
         """Update the checksum with the payload if not already updated.
 
         Because error recovery can result in bytes being transmitted more than
@@ -717,7 +756,7 @@ class ResumableUpload(UploadBase):
         self._checksum_object.update(data)
         self._bytes_checksummed += len(data)
 
-    def _make_invalid(self):
+    def _make_invalid(self) -> None:
         """Simple setter for ``invalid``.
 
         This is intended to be passed along as a callback to helpers that
@@ -726,7 +765,9 @@ class ResumableUpload(UploadBase):
         """
         self._invalid = True
 
-    def _process_resumable_response(self, response, bytes_sent):
+    def _process_resumable_response(
+        self, response: _MediaResponseT, bytes_sent: int
+    ) -> None:
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -785,7 +826,7 @@ class ResumableUpload(UploadBase):
                 )
             self._bytes_uploaded = int(match.group("end_byte")) + 1
 
-    def _validate_checksum(self, response):
+    def _validate_checksum(self, response: _MediaResponseT) -> None:
         """Check the computed checksum, if any, against the recieved metadata.
 
         Args:
@@ -808,7 +849,7 @@ class ResumableUpload(UploadBase):
                 self._get_headers(response),
             )
         local_checksum = _helpers.prepare_checksum_digest(
-            self._checksum_object.digest()
+            cast("Checksum", self._checksum_object).digest()
         )
         if local_checksum != remote_checksum:
             raise DataCorruption(
@@ -818,7 +859,9 @@ class ResumableUpload(UploadBase):
                 ),
             )
 
-    def transmit_next_chunk(self, transport, timeout=None):
+    def transmit_next_chunk(
+        self, transport: _MediaTransport, timeout: Timeout | None = None
+    ) -> _MediaResponseT:
         """Transmit the next chunk of the resource to be uploaded.
 
         If the current upload was initiated with ``stream_final=False``,
@@ -842,7 +885,7 @@ class ResumableUpload(UploadBase):
         """
         raise NotImplementedError("This implementation is virtual.")
 
-    def _prepare_recover_request(self):
+    def _prepare_recover_request(self) -> tuple[str, str, None, dict[str, str | bytes]]:
         """Prepare the contents of HTTP request to recover from failure.
 
         This is everything that must be done before a request that doesn't
@@ -864,10 +907,10 @@ class ResumableUpload(UploadBase):
 
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
-        headers = {_helpers.CONTENT_RANGE_HEADER: "bytes */*"}
-        return _PUT, self.resumable_url, None, headers
+        headers: dict[str, str | bytes] = {_helpers.CONTENT_RANGE_HEADER: "bytes */*"}
+        return _PUT, cast(str, self.resumable_url), None, headers
 
-    def _process_recover_response(self, response):
+    def _process_recover_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request to recover from failure.
 
         This is everything that must be done after a request that doesn't
@@ -905,10 +948,10 @@ class ResumableUpload(UploadBase):
             # In this case, the upload has not "begun".
             self._bytes_uploaded = 0
 
-        self._stream.seek(self._bytes_uploaded)
+        cast("SeekableReadable", self._stream).seek(self._bytes_uploaded)
         self._invalid = False
 
-    def recover(self, transport):
+    def recover(self, transport: _MediaTransport) -> _MediaResponseT:
         """Recover from a failure.
 
         This method should be used when a :class:`ResumableUpload` is in an
@@ -928,7 +971,7 @@ class ResumableUpload(UploadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class XMLMPUContainer(UploadBase):
+class XMLMPUContainer(UploadBase[_MediaTransport, _MediaResponseT]):
     """Initiate and close an upload using the XML MPU API.
 
     An XML MPU sends an initial request and then receives an upload ID.
@@ -971,22 +1014,22 @@ class XMLMPUContainer(UploadBase):
 
     def __init__(
         self,
-        upload_url,
-        filename,
-        headers=None,
-        upload_id=None,
-        retry=DEFAULT_RETRY,
-    ):
+        upload_url: str,
+        filename: str | PathLike[str],
+        headers: dict[str, str] | dict[str, str | bytes] | None = None,
+        upload_id: str | None = None,
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         super().__init__(upload_url, headers=headers, retry=retry)
         self._filename = filename
         self._upload_id = upload_id
-        self._parts = {}
+        self._parts: dict[int, str] = {}
 
     @property
-    def upload_id(self):
+    def upload_id(self) -> str | None:
         return self._upload_id
 
-    def register_part(self, part_number, etag):
+    def register_part(self, part_number: int, etag: str) -> None:
         """Register an uploaded part by part number and corresponding etag.
 
         XMLMPUPart objects represent individual parts, and their part number
@@ -1005,7 +1048,9 @@ class XMLMPUContainer(UploadBase):
         """
         self._parts[part_number] = etag
 
-    def _prepare_initiate_request(self, content_type):
+    def _prepare_initiate_request(
+        self, content_type: str
+    ) -> tuple[str, str, None, dict[str, str | bytes]]:
         """Prepare the contents of HTTP request to initiate upload.
 
         This is everything that must be done before a request that doesn't
@@ -1040,7 +1085,7 @@ class XMLMPUContainer(UploadBase):
         }
         return _POST, initiate_url, None, headers
 
-    def _process_initiate_response(self, response):
+    def _process_initiate_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request that initiated the upload.
 
         This is everything that must be done after a request that doesn't
@@ -1062,14 +1107,16 @@ class XMLMPUContainer(UploadBase):
         """
         _helpers.require_status_code(response, (http.client.OK,), self._get_status_code)
         root = ElementTree.fromstring(response.text)
-        self._upload_id = root.find(_S3_COMPAT_XML_NAMESPACE + _UPLOAD_ID_NODE).text
+        self._upload_id = cast(
+            "Element", root.find(_S3_COMPAT_XML_NAMESPACE + _UPLOAD_ID_NODE)
+        ).text
 
     def initiate(
         self,
-        transport,
-        content_type,
-        timeout=None,
-    ):
+        transport: _MediaTransport,
+        content_type: str,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Initiate an MPU and record the upload ID.
 
         Args:
@@ -1090,7 +1137,9 @@ class XMLMPUContainer(UploadBase):
         """
         raise NotImplementedError("This implementation is virtual.")
 
-    def _prepare_finalize_request(self):
+    def _prepare_finalize_request(
+        self,
+    ) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of an HTTP request to finalize the upload.
 
         All of the parts must be registered before calling this method.
@@ -1119,7 +1168,7 @@ class XMLMPUContainer(UploadBase):
         payload = ElementTree.tostring(final_xml_root)
         return _POST, finalize_url, payload, self._headers
 
-    def _process_finalize_response(self, response):
+    def _process_finalize_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request that finalized the upload.
 
         This is everything that must be done after a request that doesn't
@@ -1141,9 +1190,9 @@ class XMLMPUContainer(UploadBase):
 
     def finalize(
         self,
-        transport,
-        timeout=None,
-    ):
+        transport: _MediaTransport,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Finalize an MPU request with all the parts.
 
         Args:
@@ -1162,7 +1211,7 @@ class XMLMPUContainer(UploadBase):
         """
         raise NotImplementedError("This implementation is virtual.")
 
-    def _prepare_cancel_request(self):
+    def _prepare_cancel_request(self) -> tuple[str, str, None, dict[str, str | bytes]]:
         """Prepare the contents of an HTTP request to cancel the upload.
 
         Returns:
@@ -1183,7 +1232,7 @@ class XMLMPUContainer(UploadBase):
         cancel_url = self.upload_url + cancel_query
         return _DELETE, cancel_url, None, self._headers
 
-    def _process_cancel_response(self, response):
+    def _process_cancel_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request that canceled the upload.
 
         This is everything that must be done after a request that doesn't
@@ -1206,9 +1255,9 @@ class XMLMPUContainer(UploadBase):
 
     def cancel(
         self,
-        transport,
-        timeout=None,
-    ):
+        transport: _MediaTransport,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Cancel an MPU request and permanently delete any uploaded parts.
 
         This cannot be undone.
@@ -1230,7 +1279,7 @@ class XMLMPUContainer(UploadBase):
         raise NotImplementedError("This implementation is virtual.")
 
 
-class XMLMPUPart(UploadBase):
+class XMLMPUPart(UploadBase[_MediaTransport, _MediaResponseT]):
     """Upload a single part of an existing XML MPU container.
 
     An XML MPU sends an initial request and then receives an upload ID.
@@ -1286,55 +1335,55 @@ class XMLMPUPart(UploadBase):
 
     def __init__(
         self,
-        upload_url,
-        upload_id,
-        filename,
-        start,
-        end,
-        part_number,
-        headers=None,
-        checksum="auto",
-        retry=DEFAULT_RETRY,
-    ):
+        upload_url: str,
+        upload_id: str,
+        filename: str | PathLike[str],
+        start: int,
+        end: int,
+        part_number: int,
+        headers: dict[str, str] | dict[str, str | bytes] | None = None,
+        checksum: str | None = "auto",
+        retry: Retry | None = DEFAULT_RETRY,
+    ) -> None:
         super().__init__(upload_url, headers=headers, retry=retry)
         self._filename = filename
         self._start = start
         self._end = end
         self._upload_id = upload_id
         self._part_number = part_number
-        self._etag = None
+        self._etag: str | None = None
         self._checksum_type = checksum
         if self._checksum_type == "auto":
             self._checksum_type = (
                 "crc32c" if _helpers._is_crc32c_available_and_fast() else "md5"
             )
-        self._checksum_object = None
+        self._checksum_object: Checksum | None = None
 
     @property
-    def part_number(self):
+    def part_number(self) -> int:
         return self._part_number
 
     @property
-    def upload_id(self):
+    def upload_id(self) -> str:
         return self._upload_id
 
     @property
-    def filename(self):
+    def filename(self) -> str | PathLike[str]:
         return self._filename
 
     @property
-    def etag(self):
+    def etag(self) -> str | None:
         return self._etag
 
     @property
-    def start(self):
+    def start(self) -> int:
         return self._start
 
     @property
-    def end(self):
+    def end(self) -> int:
         return self._end
 
-    def _prepare_upload_request(self):
+    def _prepare_upload_request(self) -> tuple[str, str, bytes, dict[str, str | bytes]]:
         """Prepare the contents of HTTP request to upload a part.
 
         This is everything that must be done before a request that doesn't
@@ -1376,7 +1425,7 @@ class XMLMPUPart(UploadBase):
         upload_url = self.upload_url + part_query
         return _PUT, upload_url, payload, self._headers
 
-    def _process_upload_response(self, response):
+    def _process_upload_response(self, response: _MediaResponseT) -> None:
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't
@@ -1397,9 +1446,9 @@ class XMLMPUPart(UploadBase):
         # If the response is 400, we check for data corruption errors.
         if response.status_code == 400:
             root = ElementTree.fromstring(response.text)
-            error_code = root.find("Code").text
-            error_message = root.find("Message").text
-            error_details = root.find("Details").text
+            error_code = cast("Element", root.find("Code")).text
+            error_message = cast("Element", root.find("Message")).text
+            error_details = cast("Element", root.find("Details")).text
             if error_code in ["InvalidDigest", "BadDigest", "CrcMismatch"]:
                 raise DataCorruption(
                     response,
@@ -1425,9 +1474,9 @@ class XMLMPUPart(UploadBase):
 
     def upload(
         self,
-        transport,
-        timeout=None,
-    ):
+        transport: _MediaTransport,
+        timeout: Timeout | None = None,
+    ) -> _MediaResponseT:
         """Upload the part.
 
         Args:
@@ -1446,7 +1495,7 @@ class XMLMPUPart(UploadBase):
         """
         raise NotImplementedError("This implementation is virtual.")
 
-    def _validate_checksum(self, response):
+    def _validate_checksum(self, response: _MediaResponseT) -> None:
         """Check the computed checksum, if any, against the response headers.
 
         Args:
@@ -1472,7 +1521,7 @@ class XMLMPUPart(UploadBase):
                 self._get_headers(response),
             )
         local_checksum = _helpers.prepare_checksum_digest(
-            self._checksum_object.digest()
+            cast("Checksum", self._checksum_object).digest()
         )
         if local_checksum != remote_checksum:
             raise DataCorruption(
@@ -1483,7 +1532,7 @@ class XMLMPUPart(UploadBase):
             )
 
 
-def get_boundary():
+def get_boundary() -> bytes:
     """Get a random boundary for a multipart request.
 
     Returns:
@@ -1496,7 +1545,9 @@ def get_boundary():
     return boundary.encode("utf-8")
 
 
-def construct_multipart_request(data, metadata, content_type):
+def construct_multipart_request(
+    data: bytes, metadata: dict[str, Any], content_type: str
+) -> tuple[bytes, bytes]:
     """Construct a multipart request body.
 
     Args:
@@ -1513,7 +1564,7 @@ def construct_multipart_request(data, metadata, content_type):
     """
     multipart_boundary = get_boundary()
     json_bytes = json.dumps(metadata).encode("utf-8")
-    content_type = content_type.encode("utf-8")
+    content_type_bytes = content_type.encode("utf-8")
     # Combine the two parts into a multipart payload.
     # NOTE: We'd prefer a bytes template but are restricted by Python 3.4.
     boundary_sep = _MULTIPART_SEP + multipart_boundary
@@ -1525,7 +1576,7 @@ def construct_multipart_request(data, metadata, content_type):
         + boundary_sep
         + _CRLF
         + b"content-type: "
-        + content_type
+        + content_type_bytes
         + _CRLF
         + _CRLF
         + data  # Empty line between headers and body.
@@ -1537,7 +1588,7 @@ def construct_multipart_request(data, metadata, content_type):
     return content, multipart_boundary
 
 
-def get_total_bytes(stream):
+def get_total_bytes(stream: SeekableReadable) -> int:
     """Determine the total number of bytes in a stream.
 
     Args:
@@ -1557,7 +1608,9 @@ def get_total_bytes(stream):
     return end_position
 
 
-def get_next_chunk(stream, chunk_size, total_bytes):
+def get_next_chunk(
+    stream: SeekableReadable, chunk_size: int, total_bytes: int | None
+) -> tuple[int, bytes, str]:
     """Get a chunk from an I/O stream.
 
     The ``stream`` may have fewer bytes remaining than ``chunk_size``
@@ -1614,7 +1667,7 @@ def get_next_chunk(stream, chunk_size, total_bytes):
     return start_byte, payload, content_range
 
 
-def get_content_range(start_byte, end_byte, total_bytes):
+def get_content_range(start_byte: int, end_byte: int, total_bytes: int | None) -> str:
     """Convert start, end and total into content range header.
 
     If ``total_bytes`` is not known, uses "bytes {start}-{end}/*".

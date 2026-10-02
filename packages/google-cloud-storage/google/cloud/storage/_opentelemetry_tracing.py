@@ -14,16 +14,34 @@
 
 """Manages OpenTelemetry tracing span creation and handling. This is a PREVIEW FEATURE: Coverage and functionality may change."""
 
+from __future__ import annotations
+
 import logging
 import os
 from contextlib import contextmanager
+from typing import TYPE_CHECKING, cast
 from urllib.parse import urlparse
 
-from google.api_core import exceptions as api_exceptions
-from google.api_core import retry as api_retry
+from google.api_core import (
+    exceptions as api_exceptions,
+)
+from google.api_core import (
+    retry as api_retry,
+)
 
 from google.cloud.storage import __version__
 from google.cloud.storage.retry import ConditionalRetryPolicy
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator, Mapping
+    from typing import Any
+
+    from google.api_core.retry import Retry
+    from opentelemetry.trace import Span
+
+    from google.cloud.storage._types import AttributeValue
+    from google.cloud.storage.client import Client
+
 
 ENABLE_OTEL_TRACES_ENV_VAR = "ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"
 _DEFAULT_ENABLE_OTEL_TRACES_VALUE = False
@@ -62,7 +80,7 @@ except ImportError:
     )
     HAS_OPENTELEMETRY = False
 
-_default_attributes = {
+_default_attributes: dict[str, AttributeValue] = {
     "rpc.service": "CloudStorage",
     "rpc.system": "http",
     "user_agent.original": f"gcloud-python/{__version__}",
@@ -76,7 +94,13 @@ _cloud_trace_adoption_attrs = {
 
 
 @contextmanager
-def create_trace_span(name, attributes=None, client=None, api_request=None, retry=None):
+def create_trace_span(
+    name: str,
+    attributes: Mapping[str, AttributeValue] | None = None,
+    client: Client | None = None,
+    api_request: Mapping[str, Any] | None = None,
+    retry: Retry | ConditionalRetryPolicy | None = None,
+) -> Iterator[Span | None]:
     """Creates a context manager for a new span and set it as the current span
     in the configured tracer. If no configuration exists yields None."""
     if not HAS_OPENTELEMETRY or not enable_otel_traces:
@@ -97,8 +121,13 @@ def create_trace_span(name, attributes=None, client=None, api_request=None, retr
             raise
 
 
-def _get_final_attributes(attributes=None, client=None, api_request=None, retry=None):
-    collected_attr = _default_attributes.copy()
+def _get_final_attributes(
+    attributes: Mapping[str, AttributeValue] | None = None,
+    client: Client | None = None,
+    api_request: Mapping[str, Any] | None = None,
+    retry: Retry | ConditionalRetryPolicy | None = None,
+) -> dict[str, AttributeValue]:
+    collected_attr: dict[str, AttributeValue] = _default_attributes.copy()
     collected_attr.update(_cloud_trace_adoption_attrs)
     if api_request:
         collected_attr.update(_set_api_request_attr(api_request, client))
@@ -110,29 +139,37 @@ def _get_final_attributes(attributes=None, client=None, api_request=None, retry=
         )
     if attributes:
         collected_attr.update(attributes)
-    final_attributes = {k: v for k, v in collected_attr.items() if v is not None}
+    final_attributes: dict[str, AttributeValue] = {
+        k: v for k, v in collected_attr.items() if v is not None
+    }
     return final_attributes
 
 
-def _set_api_request_attr(request, client):
-    attr = {}
+def _set_api_request_attr(
+    request: Mapping[str, Any], client: Client | None
+) -> dict[str, AttributeValue]:
+    attr: dict[str, AttributeValue] = {}
     if request.get("method"):
         attr["http.request.method"] = request.get("method")
     if request.get("path"):
-        full_url = client._connection.build_api_url(request.get("path"))
+        full_url = cast("Client", client)._connection.build_api_url(request.get("path"))
         attr.update(_get_opentelemetry_attributes_from_url(full_url, strip_query=True))
     if "timeout" in request:
         attr["connect_timeout,read_timeout"] = str(request.get("timeout"))
     return attr
 
 
-def _set_retry_attr(retry, conditional_predicate=None):
+def _set_retry_attr(
+    retry: Retry, conditional_predicate: Callable[..., bool] | None = None
+) -> dict[str, str]:
     predicate = conditional_predicate if conditional_predicate else retry._predicate
     retry_info = f"multiplier{retry._multiplier}/deadline{retry._deadline}/max{retry._maximum}/initial{retry._initial}/predicate{predicate}"
     return {"retry": retry_info}
 
 
-def _get_opentelemetry_attributes_from_url(url, strip_query=True):
+def _get_opentelemetry_attributes_from_url(
+    url: str, strip_query: bool = True
+) -> dict[str, AttributeValue]:
     """Helper to assemble OpenTelemetry span attributes from a URL."""
     u = urlparse(url)
     netloc = u.netloc
@@ -143,7 +180,7 @@ def _get_opentelemetry_attributes_from_url(url, strip_query=True):
     if ":" in netloc and not netloc.endswith("]"):  # Handle IPv6 literal
         netloc = netloc.split(":", 1)[0]
 
-    attributes = {
+    attributes: dict[str, AttributeValue] = {
         "server.address": netloc,
         "server.port": u.port,
         "url.scheme": u.scheme,

@@ -30,19 +30,33 @@ Examples of situations when you might want to use the Batch module:
 ``bucket.update()``
 """
 
+from __future__ import annotations
+
 import io
 import json
 from email.encoders import encode_noop
 from email.generator import Generator
+from email.message import Message
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.parser import Parser
+from typing import TYPE_CHECKING
 
 import requests
 
 from google.cloud import _helpers, exceptions
 from google.cloud.storage._http import Connection
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from types import TracebackType
+    from typing import Any, NoReturn
+
+    from requests import Response
+
+    from google.cloud.storage._types import Timeout
+    from google.cloud.storage.client import Client
 
 
 class MIMEApplicationHTTP(MIMEApplication):
@@ -64,7 +78,13 @@ class MIMEApplicationHTTP(MIMEApplication):
 
     """
 
-    def __init__(self, method, uri, headers, body):
+    def __init__(
+        self,
+        method: str,
+        uri: str,
+        headers: dict[str, str | int],
+        body: str | dict[str, Any] | None,
+    ) -> None:
         if isinstance(body, dict):
             body = json.dumps(body)
             headers["Content-Type"] = "application/json"
@@ -86,7 +106,7 @@ class _FutureDict:
     """
 
     @staticmethod
-    def get(key, default=None):
+    def get(key: object, default: object = None) -> NoReturn:
         """Stand-in for dict.get.
 
         :type key: object
@@ -100,7 +120,7 @@ class _FutureDict:
         """
         raise KeyError(f"Cannot get({key!r}, default={default!r}) on a future")
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: object) -> NoReturn:
         """Stand-in for dict[key].
 
         :type key: object
@@ -111,7 +131,7 @@ class _FutureDict:
         """
         raise KeyError(f"Cannot get item {key!r} from a future")
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: object, value: object) -> NoReturn:
         """Stand-in for dict[key] = value.
 
         :type key: object
@@ -129,16 +149,17 @@ class _FutureDict:
 class _FutureResponse(requests.Response):
     """Reponse that returns a placeholder dictionary for a batched requests."""
 
-    def __init__(self, future_dict):
+    def __init__(self, future_dict: _FutureDict) -> None:
         super().__init__()
         self._future_dict = future_dict
         self.status_code = 204
 
-    def json(self):
+    def json(self, **kwargs: Any) -> _FutureDict:
         return self._future_dict
 
+    # Batching deliberately substitutes a deferred dictionary for Response bytes.
     @property
-    def content(self):
+    def content(self) -> _FutureDict:
         return self._future_dict
 
 
@@ -164,18 +185,24 @@ class Batch(Connection):
 
     _MAX_BATCH_SIZE = 1000
 
-    def __init__(self, client, raise_exception=True):
+    def __init__(self, client: Client, raise_exception: bool = True) -> None:
         api_endpoint = client._connection.API_BASE_URL
         client_info = client._connection._client_info
         super().__init__(client, client_info=client_info, api_endpoint=api_endpoint)
-        self._requests = []
-        self._target_objects = []
-        self._responses = []
+        self._requests: list[tuple[str, str, dict[str, Any], str | None, Timeout]] = []
+        self._target_objects: list[Any] = []
+        self._responses: list[Response] = []
         self._raise_exception = raise_exception
 
     def _do_request(
-        self, method, url, headers, data, target_object, timeout=_DEFAULT_TIMEOUT
-    ):
+        self,
+        method: str,
+        url: str,
+        headers: dict[str, str | int],
+        data: str | None,
+        target_object: Any,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+    ) -> _FutureResponse:
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -218,11 +245,11 @@ class Batch(Connection):
             target_object._properties = result
         return _FutureResponse(result)
 
-    def _prepare_batch_request(self):
+    def _prepare_batch_request(self) -> tuple[dict[str, str], str, Timeout]:
         """Prepares headers and body for a batch request.
 
-        :rtype: tuple (dict, str)
-        :returns: The pair of headers and body of the batch request to be sent.
+        :rtype: tuple (dict, str, float or tuple or None)
+        :returns: The headers, body, and timeout of the batch request to be sent.
         :raises: :class:`ValueError` if no requests have been deferred.
         """
         if len(self._requests) == 0:
@@ -231,7 +258,7 @@ class Batch(Connection):
         multi = MIMEMultipart()
 
         # Use timeout of last request, default to _DEFAULT_TIMEOUT
-        timeout = _DEFAULT_TIMEOUT
+        timeout: Timeout = _DEFAULT_TIMEOUT
         for method, uri, headers, body, _timeout in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)
@@ -244,14 +271,15 @@ class Batch(Connection):
 
         # Strip off redundant header text
         _, body = payload.split("\n\n", 1)
-        return dict(multi._headers), body, timeout
+        return dict(multi.items()), body, timeout
 
-    def _finish_futures(self, responses, raise_exception=True):
+    def _finish_futures(
+        self, responses: list[Response], raise_exception: bool = True
+    ) -> None:
         """Apply all the batch responses to the futures created.
 
-        :type responses: list of (headers, payload) tuples.
-        :param responses: List of headers and payloads from each response in
-                          the batch.
+        :type responses: list of requests.Response
+        :param responses: List of HTTP responses in the batch.
 
         :type raise_exception: bool
         :param raise_exception:
@@ -284,7 +312,7 @@ class Batch(Connection):
         if exception_args is not None:
             raise exceptions.from_http_response(exception_args)
 
-    def finish(self, raise_exception=True):
+    def finish(self, raise_exception: bool = True) -> list[Response]:
         """Submit a single `multipart/mixed` request with deferred requests.
 
         :type raise_exception: bool
@@ -294,8 +322,8 @@ class Batch(Connection):
             Note that exceptions are unwrapped after all operations are complete
             in success or failure, and only the last exception is raised.
 
-        :rtype: list of tuples
-        :returns: one ``(headers, payload)`` tuple per deferred request.
+        :rtype: list of requests.Response
+        :returns: one HTTP response per deferred request.
         """
         headers, body, timeout = self._prepare_batch_request()
 
@@ -317,15 +345,20 @@ class Batch(Connection):
         self._responses = responses
         return responses
 
-    def current(self):
+    def current(self) -> Batch | None:
         """Return the topmost batch, or None."""
         return self._client.current_batch
 
-    def __enter__(self):
+    def __enter__(self) -> Batch:
         self._client._push_batch(self)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         try:
             if exc_type is None:
                 self.finish(raise_exception=self._raise_exception)
@@ -333,7 +366,7 @@ class Batch(Connection):
             self._client._pop_batch()
 
 
-def _generate_faux_mime_message(parser, response):
+def _generate_faux_mime_message(parser: Parser, response: Response) -> Message:
     """Convert response, content -> (multipart) email.message.
 
     Helper for _unpack_batch_response.
@@ -350,7 +383,7 @@ def _generate_faux_mime_message(parser, response):
     return parser.parsestr(faux_message.decode("utf-8"))
 
 
-def _unpack_batch_response(response):
+def _unpack_batch_response(response: Response) -> Iterator[Response]:
     """Convert requests.Response -> [(headers, payload)].
 
     Creates a generator of tuples of emulating the responses to
@@ -362,15 +395,20 @@ def _unpack_batch_response(response):
     parser = Parser()
     message = _generate_faux_mime_message(parser, response)
 
-    if not isinstance(message._payload, list):  # pragma: NO COVER
+    parts = message.get_payload()
+    if not isinstance(parts, list):  # pragma: NO COVER
         raise ValueError("Bad response:  not multi-part")
 
-    for subrequest in message._payload:
-        status_line, rest = subrequest._payload.split("\n", 1)
+    for subrequest in parts:
+        assert isinstance(subrequest, Message)
+        subrequest_payload = subrequest.get_payload()
+        assert isinstance(subrequest_payload, str)
+        status_line, rest = subrequest_payload.split("\n", 1)
         _, status, _ = status_line.split(" ", 2)
         sub_message = parser.parsestr(rest)
-        payload = sub_message._payload
-        msg_headers = dict(sub_message._headers)
+        payload = sub_message.get_payload()
+        assert isinstance(payload, str)
+        msg_headers = dict(sub_message.items())
         content_id = msg_headers.get("Content-ID")
 
         subresponse = requests.Response()

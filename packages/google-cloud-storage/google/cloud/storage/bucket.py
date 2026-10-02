@@ -14,15 +14,23 @@
 
 """Create / interact with Google Cloud Storage buckets."""
 
+from __future__ import annotations
+
 import base64
 import copy
 import datetime
 import json
 import warnings
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any, cast
 from urllib.parse import urlsplit
 
-from google.api_core import datetime_helpers
-from google.api_core import exceptions as api_exceptions
+from google.api_core import (
+    datetime_helpers,
+)
+from google.api_core import (
+    exceptions as api_exceptions,
+)
 from google.api_core.iam import Policy
 from google.cloud._helpers import _datetime_to_rfc3339, _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
@@ -67,18 +75,27 @@ from google.cloud.storage.retry import (
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
 )
 
-_UBLA_BPO_ENABLED_MESSAGE = (
-    "Pass only one of 'uniform_bucket_level_access_enabled' / "
-    "'bucket_policy_only_enabled' to 'IAMConfiguration'."
-)
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterator
+    from datetime import date as Date
+    from datetime import datetime as Datetime
+    from datetime import timedelta as Timedelta
+
+    from google.api_core.retry import Retry
+    from google.auth.credentials import Credentials
+
+    from google.cloud.storage._types import Timeout, _StorageIterator, _StoragePage
+    from google.cloud.storage.batch import _FutureDict
+    from google.cloud.storage.client import Client
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
+
+_UBLA_BPO_ENABLED_MESSAGE = "Pass only one of 'uniform_bucket_level_access_enabled' / 'bucket_policy_only_enabled' to 'IAMConfiguration'."
 _BPO_ENABLED_MESSAGE = (
     "'IAMConfiguration.bucket_policy_only_enabled' is deprecated.  "
     "Instead, use 'IAMConfiguration.uniform_bucket_level_access_enabled'."
 )
-_UBLA_BPO_LOCK_TIME_MESSAGE = (
-    "Pass only one of 'uniform_bucket_level_access_lock_time' / "
-    "'bucket_policy_only_lock_time' to 'IAMConfiguration'."
-)
+_UBLA_BPO_LOCK_TIME_MESSAGE = "Pass only one of 'uniform_bucket_level_access_lock_time' / 'bucket_policy_only_lock_time' to 'IAMConfiguration'."
 _BPO_LOCK_TIME_MESSAGE = (
     "'IAMConfiguration.bucket_policy_only_lock_time' is deprecated.  "
     "Instead, use 'IAMConfiguration.uniform_bucket_level_access_lock_time'."
@@ -94,7 +111,9 @@ _FROM_STRING_MESSAGE = (
 _IP_FILTER_PROPERTY = "ipFilter"
 
 
-def _blobs_page_start(iterator, page, response):
+def _blobs_page_start(
+    iterator: _StorageIterator[Blob], page: _StoragePage[Blob], response: dict[str, Any]
+) -> None:
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
     :type iterator: :class:`~google.api_core.page_iterator.Iterator`
@@ -110,7 +129,7 @@ def _blobs_page_start(iterator, page, response):
     iterator.prefixes.update(page.prefixes)
 
 
-def _item_to_blob(iterator, item):
+def _item_to_blob(iterator: _StorageIterator[Blob], item: dict[str, Any]) -> Blob:
     """Convert a JSON blob to the native object.
 
     .. note::
@@ -133,7 +152,9 @@ def _item_to_blob(iterator, item):
     return blob
 
 
-def _item_to_notification(iterator, item):
+def _item_to_notification(
+    iterator: _StorageIterator[BucketNotification], item: dict[str, Any]
+) -> BucketNotification:
     """Convert a JSON blob to the native object.
 
     .. note::
@@ -153,7 +174,7 @@ def _item_to_notification(iterator, item):
     return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
 
 
-class LifecycleRuleConditions(dict):
+class LifecycleRuleConditions(dict[str, Any]):
     """Map a single lifecycle rule for a bucket.
 
     See: https://cloud.google.com/storage/docs/lifecycle
@@ -219,20 +240,20 @@ class LifecycleRuleConditions(dict):
 
     def __init__(
         self,
-        age=None,
-        created_before=None,
-        is_live=None,
-        matches_storage_class=None,
-        number_of_newer_versions=None,
-        days_since_custom_time=None,
-        custom_time_before=None,
-        days_since_noncurrent_time=None,
-        noncurrent_time_before=None,
-        matches_prefix=None,
-        matches_suffix=None,
-        _factory=False,
-    ):
-        conditions = {}
+        age: int | None = None,
+        created_before: Date | None = None,
+        is_live: bool | None = None,
+        matches_storage_class: list[str] | None = None,
+        number_of_newer_versions: int | None = None,
+        days_since_custom_time: int | None = None,
+        custom_time_before: Date | None = None,
+        days_since_noncurrent_time: int | None = None,
+        noncurrent_time_before: Date | None = None,
+        matches_prefix: list[str] | None = None,
+        matches_suffix: list[str] | None = None,
+        _factory: bool = False,
+    ) -> None:
+        conditions: dict[str, Any] = {}
 
         if age is not None:
             conditions["age"] = age
@@ -273,7 +294,7 @@ class LifecycleRuleConditions(dict):
         super().__init__(conditions)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict[str, Any]) -> LifecycleRuleConditions:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -287,81 +308,84 @@ class LifecycleRuleConditions(dict):
         return instance
 
     @property
-    def age(self):
+    def age(self) -> int | None:
         """Conditon's age value."""
         return self.get("age")
 
     @property
-    def created_before(self):
+    def created_before(self) -> str | None:
         """Conditon's created_before value."""
         before = self.get("createdBefore")
         if before is not None:
             return datetime_helpers.from_iso8601_date(before)
+        return None
 
     @property
-    def is_live(self):
+    def is_live(self) -> bool | None:
         """Conditon's 'is_live' value."""
         return self.get("isLive")
 
     @property
-    def matches_prefix(self):
+    def matches_prefix(self) -> list[str] | None:
         """Conditon's 'matches_prefix' value."""
         return self.get("matchesPrefix")
 
     @property
-    def matches_storage_class(self):
+    def matches_storage_class(self) -> list[str] | None:
         """Conditon's 'matches_storage_class' value."""
         return self.get("matchesStorageClass")
 
     @property
-    def matches_suffix(self):
+    def matches_suffix(self) -> list[str] | None:
         """Conditon's 'matches_suffix' value."""
         return self.get("matchesSuffix")
 
     @property
-    def number_of_newer_versions(self):
+    def number_of_newer_versions(self) -> int | None:
         """Conditon's 'number_of_newer_versions' value."""
         return self.get("numNewerVersions")
 
     @property
-    def days_since_custom_time(self):
+    def days_since_custom_time(self) -> int | None:
         """Conditon's 'days_since_custom_time' value."""
         return self.get("daysSinceCustomTime")
 
     @property
-    def custom_time_before(self):
+    def custom_time_before(self) -> str | None:
         """Conditon's 'custom_time_before' value."""
         before = self.get("customTimeBefore")
         if before is not None:
             return datetime_helpers.from_iso8601_date(before)
+        return None
 
     @property
-    def days_since_noncurrent_time(self):
+    def days_since_noncurrent_time(self) -> int | None:
         """Conditon's 'days_since_noncurrent_time' value."""
         return self.get("daysSinceNoncurrentTime")
 
     @property
-    def noncurrent_time_before(self):
+    def noncurrent_time_before(self) -> str | None:
         """Conditon's 'noncurrent_time_before' value."""
         before = self.get("noncurrentTimeBefore")
         if before is not None:
             return datetime_helpers.from_iso8601_date(before)
+        return None
 
 
-class LifecycleRuleDelete(dict):
+class LifecycleRuleDelete(dict[str, Any]):
     """Map a lifecycle rule deleting matching items.
 
     :type kw: dict
     :params kw: arguments passed to :class:`LifecycleRuleConditions`.
     """
 
-    def __init__(self, **kw):
+    def __init__(self, **kw: Any) -> None:
         conditions = LifecycleRuleConditions(**kw)
         rule = {"action": {"type": "Delete"}, "condition": dict(conditions)}
         super().__init__(rule)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict[str, Any]) -> LifecycleRuleDelete:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -375,7 +399,7 @@ class LifecycleRuleDelete(dict):
         return instance
 
 
-class LifecycleRuleSetStorageClass(dict):
+class LifecycleRuleSetStorageClass(dict[str, Any]):
     """Map a lifecycle rule updating storage class of matching items.
 
     :type storage_class: str, one of :attr:`Bucket.STORAGE_CLASSES`.
@@ -385,7 +409,7 @@ class LifecycleRuleSetStorageClass(dict):
     :params kw: arguments passed to :class:`LifecycleRuleConditions`.
     """
 
-    def __init__(self, storage_class, **kw):
+    def __init__(self, storage_class: str, **kw: Any) -> None:
         conditions = LifecycleRuleConditions(**kw)
         rule = {
             "action": {
@@ -397,7 +421,7 @@ class LifecycleRuleSetStorageClass(dict):
         super().__init__(rule)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict[str, Any]) -> LifecycleRuleSetStorageClass:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -412,7 +436,7 @@ class LifecycleRuleSetStorageClass(dict):
         return instance
 
 
-class LifecycleRuleAbortIncompleteMultipartUpload(dict):
+class LifecycleRuleAbortIncompleteMultipartUpload(dict[str, Any]):
     """Map a rule aborting incomplete multipart uploads of matching items.
 
     The "age" lifecycle condition is the only supported condition for this rule.
@@ -421,7 +445,7 @@ class LifecycleRuleAbortIncompleteMultipartUpload(dict):
     :params kw: arguments passed to :class:`LifecycleRuleConditions`.
     """
 
-    def __init__(self, **kw):
+    def __init__(self, **kw: Any) -> None:
         conditions = LifecycleRuleConditions(**kw)
         rule = {
             "action": {"type": "AbortIncompleteMultipartUpload"},
@@ -430,7 +454,9 @@ class LifecycleRuleAbortIncompleteMultipartUpload(dict):
         super().__init__(rule)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(
+        cls, resource: dict[str, Any]
+    ) -> LifecycleRuleAbortIncompleteMultipartUpload:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -447,7 +473,7 @@ class LifecycleRuleAbortIncompleteMultipartUpload(dict):
 _default = object()
 
 
-class IAMConfiguration(dict):
+class IAMConfiguration(dict[str, Any]):
     """Map a bucket's IAM configuration.
 
     :type bucket: :class:`Bucket`
@@ -478,13 +504,13 @@ class IAMConfiguration(dict):
 
     def __init__(
         self,
-        bucket,
-        public_access_prevention=_default,
-        uniform_bucket_level_access_enabled=_default,
-        uniform_bucket_level_access_locked_time=_default,
-        bucket_policy_only_enabled=_default,
-        bucket_policy_only_locked_time=_default,
-    ):
+        bucket: Bucket,
+        public_access_prevention: str = cast("str", _default),
+        uniform_bucket_level_access_enabled: bool = cast("bool", _default),
+        uniform_bucket_level_access_locked_time: Datetime = cast("Datetime", _default),
+        bucket_policy_only_enabled: bool = cast("bool", _default),
+        bucket_policy_only_locked_time: Datetime = cast("Datetime", _default),
+    ) -> None:
         if bucket_policy_only_enabled is not _default:
             if uniform_bucket_level_access_enabled is not _default:
                 raise ValueError(_UBLA_BPO_ENABLED_MESSAGE)
@@ -505,7 +531,7 @@ class IAMConfiguration(dict):
         if public_access_prevention is _default:
             public_access_prevention = PUBLIC_ACCESS_PREVENTION_INHERITED
 
-        data = {
+        data: dict[str, Any] = {
             "uniformBucketLevelAccess": {
                 "enabled": uniform_bucket_level_access_enabled
             },
@@ -518,8 +544,12 @@ class IAMConfiguration(dict):
         super().__init__(data)
         self._bucket = bucket
 
+    _bucket: Bucket
+
     @classmethod
-    def from_api_repr(cls, resource, bucket):
+    def from_api_repr(
+        cls, resource: dict[str, Any], bucket: Bucket
+    ) -> IAMConfiguration:
         """Factory:  construct instance from resource.
 
         :type bucket: :class:`Bucket`
@@ -536,7 +566,7 @@ class IAMConfiguration(dict):
         return instance
 
     @property
-    def bucket(self):
+    def bucket(self) -> Bucket:
         """Bucket for which this instance is the policy.
 
         :rtype: :class:`Bucket`
@@ -545,7 +575,7 @@ class IAMConfiguration(dict):
         return self._bucket
 
     @property
-    def public_access_prevention(self):
+    def public_access_prevention(self) -> str:
         """Setting for public access prevention policy. Options are 'inherited' (default) or 'enforced'.
 
             See: https://cloud.google.com/storage/docs/public-access-prevention
@@ -556,12 +586,12 @@ class IAMConfiguration(dict):
         return self["publicAccessPrevention"]
 
     @public_access_prevention.setter
-    def public_access_prevention(self, value):
+    def public_access_prevention(self, value: str) -> None:
         self["publicAccessPrevention"] = value
         self.bucket._patch_property("iamConfiguration", self)
 
     @property
-    def uniform_bucket_level_access_enabled(self):
+    def uniform_bucket_level_access_enabled(self) -> bool:
         """If set, access checks only use bucket-level IAM policies or above.
 
         :rtype: bool
@@ -571,13 +601,13 @@ class IAMConfiguration(dict):
         return ubla.get("enabled", False)
 
     @uniform_bucket_level_access_enabled.setter
-    def uniform_bucket_level_access_enabled(self, value):
+    def uniform_bucket_level_access_enabled(self, value: bool) -> None:
         ubla = self.setdefault("uniformBucketLevelAccess", {})
         ubla["enabled"] = bool(value)
         self.bucket._patch_property("iamConfiguration", self)
 
     @property
-    def uniform_bucket_level_access_locked_time(self):
+    def uniform_bucket_level_access_locked_time(self) -> Datetime | None:
         """Deadline for changing :attr:`uniform_bucket_level_access_enabled` from true to false.
 
         If the bucket's :attr:`uniform_bucket_level_access_enabled` is true, this property
@@ -597,7 +627,7 @@ class IAMConfiguration(dict):
         return stamp
 
     @property
-    def bucket_policy_only_enabled(self):
+    def bucket_policy_only_enabled(self) -> bool:
         """Deprecated alias for :attr:`uniform_bucket_level_access_enabled`.
 
         :rtype: bool
@@ -606,12 +636,12 @@ class IAMConfiguration(dict):
         return self.uniform_bucket_level_access_enabled
 
     @bucket_policy_only_enabled.setter
-    def bucket_policy_only_enabled(self, value):
+    def bucket_policy_only_enabled(self, value: bool) -> None:
         warnings.warn(_BPO_ENABLED_MESSAGE, DeprecationWarning, stacklevel=2)
         self.uniform_bucket_level_access_enabled = value
 
     @property
-    def bucket_policy_only_locked_time(self):
+    def bucket_policy_only_locked_time(self) -> Datetime | None:
         """Deprecated alias for :attr:`uniform_bucket_level_access_locked_time`.
 
         :rtype: Union[:class:`datetime.datetime`, None]
@@ -673,7 +703,13 @@ class Bucket(_PropertyMixin):
     )
     """Allowed values for :attr:`location_type`."""
 
-    def __init__(self, client, name=None, user_project=None, generation=None):
+    def __init__(
+        self,
+        client: Client | None,
+        name: str | None = None,
+        user_project: str | None = None,
+        generation: int | None = None,
+    ) -> None:
         """
         property :attr:`name`
             Get the bucket's name.
@@ -683,21 +719,21 @@ class Bucket(_PropertyMixin):
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
-        self._label_removals = set()
+        self._label_removals: set[str] = set()
         self._user_project = user_project
 
         if generation is not None:
             self._properties["generation"] = generation
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Bucket: {self.name}>"
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """The client bound to this bucket."""
         return self._client
 
-    def _set_properties(self, value):
+    def _set_properties(self, value: dict[str, Any] | _FutureDict) -> None:
         """Set the properties for the current object.
 
         :type value: dict or :class:`google.cloud.storage.batch._FutureDict`
@@ -707,7 +743,7 @@ class Bucket(_PropertyMixin):
         return super()._set_properties(value)
 
     @property
-    def rpo(self):
+    def rpo(self) -> str | None:
         """Get the RPO (Recovery Point Objective) of this bucket
 
         See: https://cloud.google.com/storage/docs/managing-turbo-replication
@@ -718,7 +754,7 @@ class Bucket(_PropertyMixin):
         return self._properties.get("rpo")
 
     @rpo.setter
-    def rpo(self, value):
+    def rpo(self, value: str) -> None:
         """
         Set the RPO (Recovery Point Objective) of this bucket.
 
@@ -730,7 +766,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("rpo", value)
 
     @property
-    def user_project(self):
+    def user_project(self) -> str | None:
         """Project ID to be billed for API requests made via this bucket.
 
         If unset, API requests are billed to the bucket owner.
@@ -744,7 +780,7 @@ class Bucket(_PropertyMixin):
         return self._user_project
 
     @property
-    def generation(self):
+    def generation(self) -> int | None:
         """Retrieve the generation for the bucket.
 
         :rtype: int or ``NoneType``
@@ -754,9 +790,10 @@ class Bucket(_PropertyMixin):
         generation = self._properties.get("generation")
         if generation is not None:
             return int(generation)
+        return None
 
     @property
-    def soft_delete_time(self):
+    def soft_delete_time(self) -> Datetime | None:
         """If this bucket has been soft-deleted, returns the time at which it became soft-deleted.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -767,9 +804,10 @@ class Bucket(_PropertyMixin):
         soft_delete_time = self._properties.get("softDeleteTime")
         if soft_delete_time is not None:
             return _rfc3339_nanos_to_datetime(soft_delete_time)
+        return None
 
     @property
-    def hard_delete_time(self):
+    def hard_delete_time(self) -> Datetime | None:
         """If this bucket has been soft-deleted, returns the time at which it will be permanently deleted.
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -780,15 +818,16 @@ class Bucket(_PropertyMixin):
         hard_delete_time = self._properties.get("hardDeleteTime")
         if hard_delete_time is not None:
             return _rfc3339_nanos_to_datetime(hard_delete_time)
+        return None
 
     @property
-    def _query_params(self):
+    def _query_params(self) -> dict[str, Any]:
         """Default query parameters."""
         params = super()._query_params
         return params
 
     @classmethod
-    def from_uri(cls, uri, client=None):
+    def from_uri(cls, uri: str, client: Client | None = None) -> Bucket:
         """Get a constructor for bucket object by URI.
 
         .. code-block:: python
@@ -817,7 +856,7 @@ class Bucket(_PropertyMixin):
         return cls(client, name=netloc)
 
     @classmethod
-    def from_string(cls, uri, client=None):
+    def from_string(cls, uri: str, client: Client | None = None) -> Bucket:
         """Get a constructor for bucket object by URI.
 
         .. note::
@@ -846,12 +885,12 @@ class Bucket(_PropertyMixin):
 
     def blob(
         self,
-        blob_name,
-        chunk_size=None,
-        encryption_key=None,
-        kms_key_name=None,
-        generation=None,
-    ):
+        blob_name: str,
+        chunk_size: int | None = None,
+        encryption_key: bytes | None = None,
+        kms_key_name: str | None = None,
+        generation: int | None = None,
+    ) -> Blob:
         """Factory constructor for blob object.
 
         .. note::
@@ -900,14 +939,14 @@ class Bucket(_PropertyMixin):
 
     def notification(
         self,
-        topic_name=None,
-        topic_project=None,
-        custom_attributes=None,
-        event_types=None,
-        blob_name_prefix=None,
-        payload_format=NONE_PAYLOAD_FORMAT,
-        notification_id=None,
-    ):
+        topic_name: str | None = None,
+        topic_project: str | None = None,
+        custom_attributes: dict[str, str] | None = None,
+        event_types: list[str] | None = None,
+        blob_name_prefix: str | None = None,
+        payload_format: str = NONE_PAYLOAD_FORMAT,
+        notification_id: str | None = None,
+    ) -> BucketNotification:
         """Factory:  create a notification resource for the bucket.
 
         See: :class:`.BucketNotification` for parameters.
@@ -927,14 +966,14 @@ class Bucket(_PropertyMixin):
 
     def exists(
         self,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> bool:
         """Determines whether or not this bucket exists.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -976,7 +1015,7 @@ class Bucket(_PropertyMixin):
             client = self._require_client(client)
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
-            query_params = {"fields": "name"}
+            query_params: dict[str, Any] = {"fields": "name"}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -987,7 +1026,7 @@ class Bucket(_PropertyMixin):
                 if_metageneration_not_match=if_metageneration_not_match,
             )
 
-            headers = {}
+            headers: dict[str, str] = {}
             _add_etag_match_headers(
                 headers,
                 if_etag_match=if_etag_match,
@@ -1014,15 +1053,15 @@ class Bucket(_PropertyMixin):
 
     def create(
         self,
-        client=None,
-        project=None,
-        location=None,
-        predefined_acl=None,
-        predefined_default_object_acl=None,
-        enable_object_retention=False,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        project: str | None = None,
+        location: str | None = None,
+        predefined_acl: str | None = None,
+        predefined_default_object_acl: str | None = None,
+        enable_object_retention: bool = False,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -1087,14 +1126,16 @@ class Bucket(_PropertyMixin):
                 retry=retry,
             )
 
-    def update(
+    def update(  # type: ignore[override]
         self,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Sends all properties in a PUT request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -1132,18 +1173,18 @@ class Bucket(_PropertyMixin):
                 retry=retry,
             )
 
-    def reload(
+    def reload(  # type: ignore[override]
         self,
-        client=None,
-        projection="noAcl",
-        timeout=_DEFAULT_TIMEOUT,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-        soft_deleted=None,
-    ):
+        client: Client | None = None,
+        projection: str = "noAcl",
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        soft_deleted: bool | None = None,
+    ) -> None:
         """Reload properties from Cloud Storage.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -1225,14 +1266,16 @@ class Bucket(_PropertyMixin):
                 except Exception:
                     pass
 
-    def patch(
+    def patch(  # type: ignore[override]
         self,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
@@ -1280,17 +1323,17 @@ class Bucket(_PropertyMixin):
             )
 
     @property
-    def acl(self):
+    def acl(self) -> BucketACL:
         """Create our ACL on demand."""
         return self._acl
 
     @property
-    def default_object_acl(self):
+    def default_object_acl(self) -> DefaultObjectACL:
         """Create our defaultObjectACL on demand."""
         return self._default_object_acl
 
     @staticmethod
-    def path_helper(bucket_name):
+    def path_helper(bucket_name: str) -> str:
         """Relative URL path for a bucket.
 
         :type bucket_name: str
@@ -1302,7 +1345,7 @@ class Bucket(_PropertyMixin):
         return "/b/" + bucket_name
 
     @property
-    def path(self):
+    def path(self) -> str:
         """The URL path to this bucket."""
         if not self.name:
             raise ValueError("Cannot determine path without bucket name.")
@@ -1311,21 +1354,21 @@ class Bucket(_PropertyMixin):
 
     def get_blob(
         self,
-        blob_name,
-        client=None,
-        encryption_key=None,
-        generation=None,
-        if_etag_match=None,
-        if_etag_not_match=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        soft_deleted=None,
-        **kwargs,
-    ):
+        blob_name: str,
+        client: Client | None = None,
+        encryption_key: bytes | None = None,
+        generation: int | None = None,
+        if_etag_match: str | set[str] | None = None,
+        if_etag_not_match: str | set[str] | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        soft_deleted: bool | None = None,
+        **kwargs: Any,
+    ) -> Blob | None:
         """Get a blob object by name.
 
         See a [code sample](https://cloud.google.com/storage/docs/samples/storage-get-metadata#storage_get_metadata-python)
@@ -1428,25 +1471,25 @@ class Bucket(_PropertyMixin):
 
     def list_blobs(
         self,
-        max_results=None,
-        page_token=None,
-        prefix=None,
-        delimiter=None,
-        start_offset=None,
-        end_offset=None,
-        include_trailing_delimiter=None,
-        versions=None,
-        projection="noAcl",
-        fields=None,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-        match_glob=None,
-        include_folders_as_prefixes=None,
-        soft_deleted=None,
-        page_size=None,
-        filter_=None,
-    ):
+        max_results: int | None = None,
+        page_token: str | None = None,
+        prefix: str | None = None,
+        delimiter: str | None = None,
+        start_offset: str | None = None,
+        end_offset: str | None = None,
+        include_trailing_delimiter: bool | None = None,
+        versions: bool | None = None,
+        projection: str = "noAcl",
+        fields: str | None = None,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+        match_glob: str | None = None,
+        include_folders_as_prefixes: bool | None = None,
+        soft_deleted: bool | None = None,
+        page_size: int | None = None,
+        filter_: str | None = None,
+    ) -> _StorageIterator[Blob]:
         """Return an iterator used to find blobs in the bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -1577,8 +1620,11 @@ class Bucket(_PropertyMixin):
             )
 
     def list_notifications(
-        self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
-    ):
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> _StorageIterator[BucketNotification]:
         """List Pub / Sub notifications for this bucket.
 
         See:
@@ -1616,11 +1662,11 @@ class Bucket(_PropertyMixin):
 
     def get_notification(
         self,
-        notification_id,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        notification_id: str,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> BucketNotification:
         """Get Pub / Sub notification for this bucket.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/notifications/get)
@@ -1654,13 +1700,13 @@ class Bucket(_PropertyMixin):
 
     def delete(
         self,
-        force=False,
-        client=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        force: bool = False,
+        client: Client | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Delete this bucket.
 
         The bucket **must** be empty in order to submit a delete request. If
@@ -1709,7 +1755,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.delete"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -1767,16 +1813,16 @@ class Bucket(_PropertyMixin):
 
     def delete_blob(
         self,
-        blob_name,
-        client=None,
-        generation=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        blob_name: str,
+        client: Client | None = None,
+        generation: int | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Deletes a blob from the current bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -1861,17 +1907,17 @@ class Bucket(_PropertyMixin):
 
     def delete_blobs(
         self,
-        blobs,
-        on_error=None,
-        client=None,
-        preserve_generation=False,
-        timeout=_DEFAULT_TIMEOUT,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY,
-    ):
+        blobs: Sequence[Blob | str],
+        on_error: Callable[[Blob | str], object] | None = None,
+        client: Client | None = None,
+        preserve_generation: bool = False,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_generation_match: list[int] | None = None,
+        if_generation_not_match: list[int] | None = None,
+        if_metageneration_match: list[int] | None = None,
+        if_metageneration_not_match: list[int] | None = None,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Deletes a list of blobs from the current bucket.
 
         Uses :meth:`delete_blob` to delete each individual blob.
@@ -1957,28 +2003,33 @@ class Bucket(_PropertyMixin):
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
             )
-            if_generation_match = iter(if_generation_match or [])
-            if_generation_not_match = iter(if_generation_not_match or [])
-            if_metageneration_match = iter(if_metageneration_match or [])
-            if_metageneration_not_match = iter(if_metageneration_not_match or [])
+            if_generation_match_iter = iter(if_generation_match or [])
+            if_generation_not_match_iter = iter(if_generation_not_match or [])
+            if_metageneration_match_iter = iter(if_metageneration_match or [])
+            if_metageneration_not_match_iter = iter(if_metageneration_not_match or [])
 
             for blob in blobs:
                 try:
-                    blob_name = blob
-                    generation = None
-                    if not isinstance(blob_name, str):
-                        blob_name = blob.name
-                        generation = blob.generation if preserve_generation else None
+                    blob_name = blob if isinstance(blob, str) else cast(str, blob.name)
+                    generation = (
+                        blob.generation
+                        if not isinstance(blob, str) and preserve_generation
+                        else None
+                    )
 
                     self.delete_blob(
                         blob_name,
                         client=client,
                         generation=generation,
-                        if_generation_match=next(if_generation_match, None),
-                        if_generation_not_match=next(if_generation_not_match, None),
-                        if_metageneration_match=next(if_metageneration_match, None),
+                        if_generation_match=next(if_generation_match_iter, None),
+                        if_generation_not_match=next(
+                            if_generation_not_match_iter, None
+                        ),
+                        if_metageneration_match=next(
+                            if_metageneration_match_iter, None
+                        ),
                         if_metageneration_not_match=next(
-                            if_metageneration_not_match, None
+                            if_metageneration_not_match_iter, None
                         ),
                         timeout=timeout,
                         retry=retry,
@@ -1991,24 +2042,26 @@ class Bucket(_PropertyMixin):
 
     def copy_blob(
         self,
-        blob,
-        destination_bucket,
-        new_name=None,
-        client=None,
-        preserve_acl=True,
-        source_generation=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        if_source_generation_match=None,
-        if_source_generation_not_match=None,
-        if_source_metageneration_match=None,
-        if_source_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-        destination_contexts=None,
-    ):
+        blob: Blob,
+        destination_bucket: Bucket,
+        new_name: str | None = None,
+        client: Client | None = None,
+        preserve_acl: bool = True,
+        source_generation: int | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        if_source_generation_match: int | None = None,
+        if_source_generation_not_match: int | None = None,
+        if_source_metageneration_match: int | None = None,
+        if_source_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts: ObjectContexts | dict[str, Any] | None = None,
+    ) -> Blob:
         """Copy the given blob to the given bucket, optionally with a new name.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -2110,7 +2163,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.copyBlob"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -2164,20 +2217,22 @@ class Bucket(_PropertyMixin):
 
     def rename_blob(
         self,
-        blob,
-        new_name,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        if_source_generation_match=None,
-        if_source_generation_not_match=None,
-        if_source_metageneration_match=None,
-        if_source_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-    ):
+        blob: Blob,
+        new_name: str,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        if_source_generation_match: int | None = None,
+        if_source_generation_not_match: int | None = None,
+        if_source_metageneration_match: int | None = None,
+        if_source_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ) -> Blob:
         """Rename the given blob using copy and delete operations.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -2308,20 +2363,22 @@ class Bucket(_PropertyMixin):
 
     def move_blob(
         self,
-        blob,
-        new_name,
-        client=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        if_source_generation_match=None,
-        if_source_generation_not_match=None,
-        if_source_metageneration_match=None,
-        if_source_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-    ):
+        blob: Blob,
+        new_name: str,
+        client: Client | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        if_source_generation_match: int | None = None,
+        if_source_generation_not_match: int | None = None,
+        if_source_metageneration_match: int | None = None,
+        if_source_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ) -> Blob:
         """Move a blob to a new name atomically.
 
         If :attr:`user_project` is set on the bucket, bills the API request to that project.
@@ -2396,7 +2453,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.moveBlob"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -2414,7 +2471,7 @@ class Bucket(_PropertyMixin):
             )
 
             new_blob = Blob(bucket=self, name=new_name)
-            api_path = f"{blob.path}/moveTo/o/{_quote(new_blob.name)}"
+            api_path = f"{blob.path}/moveTo/o/{_quote(cast(str, new_blob.name))}"
 
             move_result = client._post_resource(
                 api_path,
@@ -2430,18 +2487,20 @@ class Bucket(_PropertyMixin):
 
     def restore_blob(
         self,
-        blob_name,
-        client=None,
-        generation=None,
-        copy_source_acl=None,
-        projection=None,
-        if_generation_match=None,
-        if_generation_not_match=None,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
-    ):
+        blob_name: str,
+        client: Client | None = None,
+        generation: int | None = None,
+        copy_source_acl: bool | None = None,
+        projection: str | None = None,
+        if_generation_match: int | None = None,
+        if_generation_not_match: int | None = None,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ) -> Blob:
         """Restores a soft-deleted object.
 
         If :attr:`user_project` is set on the bucket, bills the API request to that project.
@@ -2503,7 +2562,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.restore_blob"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -2534,7 +2593,7 @@ class Bucket(_PropertyMixin):
             return blob
 
     @property
-    def cors(self):
+    def cors(self) -> list[dict[str, Any]]:
         """Retrieve or set CORS policies configured for this bucket.
 
         See http://www.w3.org/TR/cors/ and
@@ -2563,7 +2622,7 @@ class Bucket(_PropertyMixin):
         return [copy.deepcopy(policy) for policy in self._properties.get("cors", ())]
 
     @cors.setter
-    def cors(self, entries):
+    def cors(self, entries: list[dict[str, Any]]) -> None:
         """Set CORS policies configured for this bucket.
 
         See http://www.w3.org/TR/cors/ and
@@ -2574,7 +2633,7 @@ class Bucket(_PropertyMixin):
         """
         self._patch_property("cors", entries)
 
-    default_event_based_hold = _scalar_property("defaultEventBasedHold")
+    default_event_based_hold: bool | None = _scalar_property("defaultEventBasedHold")
     """Are uploaded objects automatically placed under an even-based hold?
 
     If True, uploaded objects will be placed under an event-based hold to
@@ -2590,7 +2649,7 @@ class Bucket(_PropertyMixin):
     """
 
     @property
-    def encryption(self):
+    def encryption(self) -> BucketEncryption:
         """Retrieve encryption configuration for this bucket.
 
         :rtype: :class:`BucketEncryption`
@@ -2600,7 +2659,7 @@ class Bucket(_PropertyMixin):
         return BucketEncryption.from_api_repr(info, self)
 
     @encryption.setter
-    def encryption(self, value):
+    def encryption(self, value: BucketEncryption | dict[str, Any]) -> None:
         """Set encryption configuration for this bucket.
 
         :type value: :class:`BucketEncryption` or dict
@@ -2609,7 +2668,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("encryption", value)
 
     @property
-    def default_kms_key_name(self):
+    def default_kms_key_name(self) -> str:
         """Retrieve / set default KMS encryption key for objects in the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2624,7 +2683,7 @@ class Bucket(_PropertyMixin):
         return encryption_config.get("defaultKmsKeyName")
 
     @default_kms_key_name.setter
-    def default_kms_key_name(self, value):
+    def default_kms_key_name(self, value: str | None) -> None:
         """Set default KMS encryption key for objects in the bucket.
 
         :type value: str or None
@@ -2635,7 +2694,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("encryption", encryption_config)
 
     @property
-    def labels(self):
+    def labels(self) -> dict[str, str]:
         """Retrieve or set labels assigned to this bucket.
 
         See
@@ -2665,7 +2724,7 @@ class Bucket(_PropertyMixin):
         return copy.deepcopy(labels)
 
     @labels.setter
-    def labels(self, mapping):
+    def labels(self, mapping: dict[str, str]) -> None:
         """Set labels assigned to this bucket.
 
         See
@@ -2685,7 +2744,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("labels", copy.deepcopy(mapping))
 
     @property
-    def etag(self):
+    def etag(self) -> str | None:
         """Retrieve the ETag for the bucket.
 
         See https://tools.ietf.org/html/rfc2616#section-3.11 and
@@ -2698,7 +2757,7 @@ class Bucket(_PropertyMixin):
         return self._properties.get("etag")
 
     @property
-    def id(self):
+    def id(self) -> str | None:
         """Retrieve the ID for the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2710,7 +2769,7 @@ class Bucket(_PropertyMixin):
         return self._properties.get("id")
 
     @property
-    def iam_configuration(self):
+    def iam_configuration(self) -> IAMConfiguration:
         """Retrieve IAM configuration for this bucket.
 
         :rtype: :class:`IAMConfiguration`
@@ -2720,7 +2779,7 @@ class Bucket(_PropertyMixin):
         return IAMConfiguration.from_api_repr(info, self)
 
     @property
-    def soft_delete_policy(self):
+    def soft_delete_policy(self) -> SoftDeletePolicy:
         """Retrieve the soft delete policy for this bucket.
 
         See https://cloud.google.com/storage/docs/soft-delete
@@ -2732,7 +2791,7 @@ class Bucket(_PropertyMixin):
         return SoftDeletePolicy.from_api_repr(policy, self)
 
     @property
-    def lifecycle_rules(self):
+    def lifecycle_rules(self) -> Iterator[dict[str, Any]]:
         """Retrieve or set lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
@@ -2775,7 +2834,7 @@ class Bucket(_PropertyMixin):
                 )
 
     @lifecycle_rules.setter
-    def lifecycle_rules(self, rules):
+    def lifecycle_rules(self, rules: list[dict[str, Any]]) -> None:
         """Set lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
@@ -2787,7 +2846,7 @@ class Bucket(_PropertyMixin):
         rules = [dict(rule) for rule in rules]  # Convert helpers if needed
         self._patch_property("lifecycle", {"rule": rules})
 
-    def clear_lifecycle_rules(self):
+    def clear_lifecycle_rules(self) -> None:
         """Clear lifecycle rules configured for this bucket.
 
         See https://cloud.google.com/storage/docs/lifecycle and
@@ -2795,11 +2854,11 @@ class Bucket(_PropertyMixin):
         """
         self.lifecycle_rules = []
 
-    def clear_lifecyle_rules(self):
+    def clear_lifecyle_rules(self) -> None:
         """Deprecated alias for clear_lifecycle_rules."""
         return self.clear_lifecycle_rules()
 
-    def add_lifecycle_delete_rule(self, **kw):
+    def add_lifecycle_delete_rule(self, **kw: Any) -> None:
         """Add a "delete" rule to lifecycle rules configured for this bucket.
 
         This defines a [lifecycle configuration](https://cloud.google.com/storage/docs/lifecycle),
@@ -2814,7 +2873,9 @@ class Bucket(_PropertyMixin):
         rules.append(LifecycleRuleDelete(**kw))
         self.lifecycle_rules = rules
 
-    def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
+    def add_lifecycle_set_storage_class_rule(
+        self, storage_class: str, **kw: Any
+    ) -> None:
         """Add a "set storage class" rule to lifecycle rules.
 
         This defines a [lifecycle configuration](https://cloud.google.com/storage/docs/lifecycle),
@@ -2831,7 +2892,7 @@ class Bucket(_PropertyMixin):
         rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
         self.lifecycle_rules = rules
 
-    def add_lifecycle_abort_incomplete_multipart_upload_rule(self, **kw):
+    def add_lifecycle_abort_incomplete_multipart_upload_rule(self, **kw: Any) -> None:
         """Add a "abort incomplete multipart upload" rule to lifecycle rules.
 
         .. note::
@@ -2849,10 +2910,10 @@ class Bucket(_PropertyMixin):
         rules.append(LifecycleRuleAbortIncompleteMultipartUpload(**kw))
         self.lifecycle_rules = rules
 
-    _location = _scalar_property("location")
+    _location: str | None = _scalar_property("location")
 
     @property
-    def location(self):
+    def location(self) -> str | None:
         """Retrieve location configured for this bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets and
@@ -2865,7 +2926,7 @@ class Bucket(_PropertyMixin):
         return self._location
 
     @location.setter
-    def location(self, value):
+    def location(self, value: str | None) -> None:
         """(Deprecated) Set `Bucket.location`
 
         This can only be set at bucket **creation** time.
@@ -2883,7 +2944,7 @@ class Bucket(_PropertyMixin):
         self._location = value
 
     @property
-    def data_locations(self):
+    def data_locations(self) -> list[str] | None:
         """Retrieve the list of regional locations for custom dual-region buckets.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets and
@@ -2898,7 +2959,7 @@ class Bucket(_PropertyMixin):
         return custom_placement_config.get("dataLocations")
 
     @property
-    def location_type(self):
+    def location_type(self) -> str | None:
         """Retrieve the location type for the bucket.
 
         See https://cloud.google.com/storage/docs/storage-classes
@@ -2915,7 +2976,7 @@ class Bucket(_PropertyMixin):
         """
         return self._properties.get("locationType")
 
-    def get_logging(self):
+    def get_logging(self) -> dict[str, Any] | None:
         """Return info about access logging for this bucket.
 
         See https://cloud.google.com/storage/docs/access-logs#status
@@ -2927,7 +2988,7 @@ class Bucket(_PropertyMixin):
         info = self._properties.get("logging")
         return copy.deepcopy(info)
 
-    def enable_logging(self, bucket_name, object_prefix=""):
+    def enable_logging(self, bucket_name: str, object_prefix: str = "") -> None:
         """Enable access logging for this bucket.
 
         See https://cloud.google.com/storage/docs/access-logs
@@ -2941,7 +3002,7 @@ class Bucket(_PropertyMixin):
         info = {"logBucket": bucket_name, "logObjectPrefix": object_prefix}
         self._patch_property("logging", info)
 
-    def disable_logging(self):
+    def disable_logging(self) -> None:
         """Disable access logging for this bucket.
 
         See https://cloud.google.com/storage/docs/access-logs#disabling
@@ -2949,7 +3010,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("logging", None)
 
     @property
-    def metageneration(self):
+    def metageneration(self) -> int | None:
         """Retrieve the metageneration for the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2961,9 +3022,10 @@ class Bucket(_PropertyMixin):
         metageneration = self._properties.get("metageneration")
         if metageneration is not None:
             return int(metageneration)
+        return None
 
     @property
-    def owner(self):
+    def owner(self) -> dict[str, Any] | None:
         """Retrieve info about the owner of the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2975,7 +3037,7 @@ class Bucket(_PropertyMixin):
         return copy.deepcopy(self._properties.get("owner"))
 
     @property
-    def project_number(self):
+    def project_number(self) -> int | None:
         """Retrieve the number of the project to which the bucket is assigned.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2987,9 +3049,10 @@ class Bucket(_PropertyMixin):
         project_number = self._properties.get("projectNumber")
         if project_number is not None:
             return int(project_number)
+        return None
 
     @property
-    def retention_policy_effective_time(self):
+    def retention_policy_effective_time(self) -> Datetime | None:
         """Retrieve the effective time of the bucket's retention policy.
 
         :rtype: datetime.datetime or ``NoneType``
@@ -3002,9 +3065,10 @@ class Bucket(_PropertyMixin):
             timestamp = policy.get("effectiveTime")
             if timestamp is not None:
                 return _rfc3339_nanos_to_datetime(timestamp)
+        return None
 
     @property
-    def retention_policy_locked(self):
+    def retention_policy_locked(self) -> bool | None:
         """Retrieve whthere the bucket's retention policy is locked.
 
         :rtype: bool
@@ -3015,9 +3079,10 @@ class Bucket(_PropertyMixin):
         policy = self._properties.get("retentionPolicy")
         if policy is not None:
             return policy.get("isLocked")
+        return None
 
     @property
-    def retention_period(self):
+    def retention_period(self) -> int | None:
         """Retrieve or set the retention period for items in the bucket.
 
         :rtype: int or ``NoneType``
@@ -3030,9 +3095,10 @@ class Bucket(_PropertyMixin):
             period = policy.get("retentionPeriod")
             if period is not None:
                 return int(period)
+        return None
 
     @retention_period.setter
-    def retention_period(self, value):
+    def retention_period(self, value: int) -> None:
         """Set the retention period for items in the bucket.
 
         :type value: int
@@ -3050,7 +3116,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("retentionPolicy", policy)
 
     @property
-    def self_link(self):
+    def self_link(self) -> str | None:
         """Retrieve the URI for the bucket.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -3062,7 +3128,7 @@ class Bucket(_PropertyMixin):
         return self._properties.get("selfLink")
 
     @property
-    def storage_class(self):
+    def storage_class(self) -> str | None:
         """Retrieve or set the storage class for the bucket.
 
         See https://cloud.google.com/storage/docs/storage-classes
@@ -3086,7 +3152,7 @@ class Bucket(_PropertyMixin):
         return self._properties.get("storageClass")
 
     @storage_class.setter
-    def storage_class(self, value):
+    def storage_class(self, value: str) -> None:
         """Set the storage class for the bucket.
 
         See https://cloud.google.com/storage/docs/storage-classes
@@ -3106,7 +3172,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("storageClass", value)
 
     @property
-    def time_created(self):
+    def time_created(self) -> Datetime | None:
         """Retrieve the timestamp at which the bucket was created.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -3119,9 +3185,10 @@ class Bucket(_PropertyMixin):
         value = self._properties.get("timeCreated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def updated(self):
+    def updated(self) -> Datetime | None:
         """Retrieve the timestamp at which the bucket was last updated.
 
         See https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -3134,9 +3201,10 @@ class Bucket(_PropertyMixin):
         value = self._properties.get("updated")
         if value is not None:
             return _rfc3339_nanos_to_datetime(value)
+        return None
 
     @property
-    def versioning_enabled(self):
+    def versioning_enabled(self) -> bool:
         """Is versioning enabled for this bucket?
 
         See  https://cloud.google.com/storage/docs/object-versioning for
@@ -3152,7 +3220,7 @@ class Bucket(_PropertyMixin):
         return versioning.get("enabled", False)
 
     @versioning_enabled.setter
-    def versioning_enabled(self, value):
+    def versioning_enabled(self, value: bool) -> None:
         """Enable versioning for this bucket.
 
         See  https://cloud.google.com/storage/docs/object-versioning for
@@ -3164,7 +3232,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("versioning", {"enabled": bool(value)})
 
     @property
-    def requester_pays(self):
+    def requester_pays(self) -> bool:
         """Does the requester pay for API requests for this bucket?
 
         See https://cloud.google.com/storage/docs/requester-pays for
@@ -3181,7 +3249,7 @@ class Bucket(_PropertyMixin):
         return versioning.get("requesterPays", False)
 
     @requester_pays.setter
-    def requester_pays(self, value):
+    def requester_pays(self, value: bool) -> None:
         """Update whether requester pays for API requests for this bucket.
 
         See https://cloud.google.com/storage/docs/using-requester-pays for
@@ -3193,7 +3261,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("billing", {"requesterPays": bool(value)})
 
     @property
-    def autoclass_enabled(self):
+    def autoclass_enabled(self) -> bool:
         """Whether Autoclass is enabled for this bucket.
 
         See https://cloud.google.com/storage/docs/using-autoclass for details.
@@ -3208,7 +3276,7 @@ class Bucket(_PropertyMixin):
         return autoclass.get("enabled", False)
 
     @autoclass_enabled.setter
-    def autoclass_enabled(self, value):
+    def autoclass_enabled(self, value: bool) -> None:
         """Enable or disable Autoclass at the bucket-level.
 
         See https://cloud.google.com/storage/docs/using-autoclass for details.
@@ -3222,7 +3290,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("autoclass", autoclass)
 
     @property
-    def autoclass_toggle_time(self):
+    def autoclass_toggle_time(self) -> Datetime | None:
         """Retrieve the toggle time when Autoclaass was last enabled or disabled for the bucket.
         :rtype: datetime.datetime or ``NoneType``
         :returns: point-in time at which the bucket's autoclass is toggled, or ``None`` if the property is not set locally.
@@ -3232,9 +3300,10 @@ class Bucket(_PropertyMixin):
             timestamp = autoclass.get("toggleTime")
             if timestamp is not None:
                 return _rfc3339_nanos_to_datetime(timestamp)
+        return None
 
     @property
-    def autoclass_terminal_storage_class(self):
+    def autoclass_terminal_storage_class(self) -> str:
         """The storage class that objects in an Autoclass bucket eventually transition to if
         they are not read for a certain length of time. Valid values are NEARLINE and ARCHIVE.
 
@@ -3250,7 +3319,7 @@ class Bucket(_PropertyMixin):
         return autoclass.get("terminalStorageClass", None)
 
     @autoclass_terminal_storage_class.setter
-    def autoclass_terminal_storage_class(self, value):
+    def autoclass_terminal_storage_class(self, value: str) -> None:
         """The storage class that objects in an Autoclass bucket eventually transition to if
         they are not read for a certain length of time. Valid values are NEARLINE and ARCHIVE.
 
@@ -3264,7 +3333,7 @@ class Bucket(_PropertyMixin):
         self._patch_property("autoclass", autoclass)
 
     @property
-    def autoclass_terminal_storage_class_update_time(self):
+    def autoclass_terminal_storage_class_update_time(self) -> Datetime | None:
         """The time at which the Autoclass terminal_storage_class field was last updated for this bucket
         :rtype: datetime.datetime or ``NoneType``
         :returns: point-in time at which the bucket's terminal_storage_class is last updated, or ``None`` if the property is not set locally.
@@ -3274,9 +3343,10 @@ class Bucket(_PropertyMixin):
             timestamp = autoclass.get("terminalStorageClassUpdateTime")
             if timestamp is not None:
                 return _rfc3339_nanos_to_datetime(timestamp)
+        return None
 
     @property
-    def object_retention_mode(self):
+    def object_retention_mode(self) -> str | None:
         """Retrieve the object retention mode set on the bucket.
 
         :rtype: str
@@ -3286,9 +3356,10 @@ class Bucket(_PropertyMixin):
         object_retention = self._properties.get("objectRetention")
         if object_retention is not None:
             return object_retention.get("mode")
+        return None
 
     @property
-    def hierarchical_namespace_enabled(self):
+    def hierarchical_namespace_enabled(self) -> bool:
         """Whether hierarchical namespace is enabled for this bucket.
 
         :setter: Update whether hierarchical namespace is enabled for this bucket.
@@ -3301,7 +3372,7 @@ class Bucket(_PropertyMixin):
         return hns.get("enabled")
 
     @hierarchical_namespace_enabled.setter
-    def hierarchical_namespace_enabled(self, value):
+    def hierarchical_namespace_enabled(self, value: bool) -> None:
         """Enable or disable hierarchical namespace at the bucket-level.
 
         :type value: convertible to boolean
@@ -3316,7 +3387,9 @@ class Bucket(_PropertyMixin):
         hns["enabled"] = bool(value)
         self._patch_property("hierarchicalNamespace", hns)
 
-    def configure_website(self, main_page_suffix=None, not_found_page=None):
+    def configure_website(
+        self, main_page_suffix: str | None = None, not_found_page: str | None = None
+    ) -> None:
         """Configure website-related properties.
 
         See https://cloud.google.com/storage/docs/static-website
@@ -3336,13 +3409,13 @@ class Bucket(_PropertyMixin):
         :type not_found_page: str
         :param not_found_page: The file to use when a page isn't found.
         """
-        data = {
+        data: dict[str, Any] = {
             "mainPageSuffix": main_page_suffix,
             "notFoundPage": not_found_page,
         }
         self._patch_property("website", data)
 
-    def disable_website(self):
+    def disable_website(self) -> None:
         """Disable the website configuration for this bucket.
 
         This is really just a shortcut for setting the website-related
@@ -3352,11 +3425,11 @@ class Bucket(_PropertyMixin):
 
     def get_iam_policy(
         self,
-        client=None,
-        requested_policy_version=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        client: Client | None = None,
+        requested_policy_version: int | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> Policy:
         """Retrieve the IAM policy for the bucket.
 
         See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy)
@@ -3396,7 +3469,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.getIamPolicy"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3415,11 +3488,11 @@ class Bucket(_PropertyMixin):
 
     def set_iam_policy(
         self,
-        policy,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_ETAG_IN_JSON,
-    ):
+        policy: Policy,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY_IF_ETAG_IN_JSON,
+    ) -> Policy:
         """Update the IAM policy for the bucket.
 
         See
@@ -3450,7 +3523,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.setIamPolicy"):
             client = self._require_client(client)
-            query_params = {}
+            query_params: dict[str, Any] = {}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3472,11 +3545,11 @@ class Bucket(_PropertyMixin):
 
     def test_iam_permissions(
         self,
-        permissions,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
-    ):
+        permissions: list[str],
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> list[str]:
         """API call:  test permissions
 
         See
@@ -3507,7 +3580,7 @@ class Bucket(_PropertyMixin):
         """
         with self._create_trace_span(name="Storage.Bucket.testIamPermissions"):
             client = self._require_client(client)
-            query_params = {"permissions": permissions}
+            query_params: dict[str, Any] = {"permissions": permissions}
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3524,14 +3597,16 @@ class Bucket(_PropertyMixin):
 
     def make_public(
         self,
-        recursive=False,
-        future=False,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        recursive: bool = False,
+        future: bool = False,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Update bucket's ACL, granting read access to anonymous users.
 
         :type recursive: bool
@@ -3622,14 +3697,16 @@ class Bucket(_PropertyMixin):
 
     def make_private(
         self,
-        recursive=False,
-        future=False,
-        client=None,
-        timeout=_DEFAULT_TIMEOUT,
-        if_metageneration_match=None,
-        if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-    ):
+        recursive: bool = False,
+        future: bool = False,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        if_metageneration_match: int | None = None,
+        if_metageneration_not_match: int | None = None,
+        retry: Retry
+        | ConditionalRetryPolicy
+        | None = DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ) -> None:
         """Update bucket's ACL, revoking read access for anonymous users.
 
         :type recursive: bool
@@ -3714,7 +3791,12 @@ class Bucket(_PropertyMixin):
                     blob.acl.all().revoke_read()
                     blob.acl.save(client=client, timeout=timeout)
 
-    def generate_upload_policy(self, conditions, expiration=None, client=None):
+    def generate_upload_policy(
+        self,
+        conditions: list[Any],
+        expiration: Datetime | None = None,
+        client: Client | None = None,
+    ) -> dict[str, Any]:
         """Create a signed upload policy for uploading objects.
 
         This method generates and signs a policy document. You can use
@@ -3769,8 +3851,11 @@ class Bucket(_PropertyMixin):
         return fields
 
     def lock_retention_policy(
-        self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
-    ):
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Lock the bucket's retention policy.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -3810,7 +3895,9 @@ class Bucket(_PropertyMixin):
 
             client = self._require_client(client)
 
-            query_params = {"ifMetagenerationMatch": self.metageneration}
+            query_params: dict[str, Any] = {
+                "ifMetagenerationMatch": self.metageneration
+            }
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3828,18 +3915,18 @@ class Bucket(_PropertyMixin):
 
     def generate_signed_url(
         self,
-        expiration=None,
-        api_access_endpoint=None,
-        method="GET",
-        headers=None,
-        query_parameters=None,
-        client=None,
-        credentials=None,
-        version=None,
-        virtual_hosted_style=False,
-        bucket_bound_hostname=None,
-        scheme="http",
-    ):
+        expiration: int | Datetime | Timedelta | None = None,
+        api_access_endpoint: str | None = None,
+        method: str = "GET",
+        headers: dict[str, Any] | None = None,
+        query_parameters: dict[str, Any] | None = None,
+        client: Client | None = None,
+        credentials: Credentials | None = None,
+        version: str | None = None,
+        virtual_hosted_style: bool = False,
+        bucket_bound_hostname: str | None = None,
+        scheme: str = "http",
+    ) -> str:
         """Generates a signed URL for this bucket.
 
         .. note::
@@ -3936,8 +4023,7 @@ class Bucket(_PropertyMixin):
             api_access_endpoint is not None or virtual_hosted_style
         ) and bucket_bound_hostname:
             raise ValueError(
-                "The bucket_bound_hostname argument is not compatible with "
-                "either api_access_endpoint or virtual_hosted_style."
+                "The bucket_bound_hostname argument is not compatible with either api_access_endpoint or virtual_hosted_style."
             )
 
         if api_access_endpoint is None:
@@ -3949,7 +4035,7 @@ class Bucket(_PropertyMixin):
         # See https://github.com/googleapis/google-auth-library-python/issues/50
         if virtual_hosted_style:
             api_access_endpoint = _virtual_hosted_style_base_url(
-                api_access_endpoint, self.name
+                api_access_endpoint, cast(str, self.name)
             )
             resource = "/"
         elif bucket_bound_hostname:
@@ -3965,7 +4051,7 @@ class Bucket(_PropertyMixin):
             credentials = client._credentials
 
         if version == "v2":
-            helper = generate_signed_url_v2
+            helper: Callable[..., str] = generate_signed_url_v2
         else:
             helper = generate_signed_url_v4
 
@@ -3980,7 +4066,7 @@ class Bucket(_PropertyMixin):
         )
 
     @property
-    def ip_filter(self):
+    def ip_filter(self) -> IPFilter | None:
         """Retrieve or set the IP Filter configuration for this bucket.
 
         See https://cloud.google.com/storage/docs/ip-filtering-overview and
@@ -4024,7 +4110,7 @@ class Bucket(_PropertyMixin):
         return None
 
     @ip_filter.setter
-    def ip_filter(self, value):
+    def ip_filter(self, value: IPFilter | None) -> None:
         if value is None:
             self._patch_property(_IP_FILTER_PROPERTY, None)
         elif isinstance(value, IPFilter):
@@ -4033,7 +4119,7 @@ class Bucket(_PropertyMixin):
             self._patch_property(_IP_FILTER_PROPERTY, value)
 
 
-class EncryptionEnforcementConfig(dict):
+class EncryptionEnforcementConfig(dict[str, Any]):
     """Map a bucket's encryption enforcement configuration.
 
     :type restriction_mode: str
@@ -4047,8 +4133,8 @@ class EncryptionEnforcementConfig(dict):
         (Output only) The time when the encryption enforcement configuration became effective.
     """
 
-    def __init__(self, restriction_mode=None):
-        data = {}
+    def __init__(self, restriction_mode: str | None = None) -> None:
+        data: dict[str, Any] = {}
         if restriction_mode is not None:
             # Validate input against allowed constants
             allowed = (
@@ -4057,15 +4143,14 @@ class EncryptionEnforcementConfig(dict):
             )
             if restriction_mode not in allowed:
                 raise ValueError(
-                    f"Invalid restriction_mode: {restriction_mode}. "
-                    f"Must be one of {allowed}"
+                    f"Invalid restriction_mode: {restriction_mode}. Must be one of {allowed}"
                 )
             data["restrictionMode"] = restriction_mode
 
         super().__init__(data)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict[str, Any]) -> EncryptionEnforcementConfig:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -4079,7 +4164,7 @@ class EncryptionEnforcementConfig(dict):
         return instance
 
     @property
-    def restriction_mode(self):
+    def restriction_mode(self) -> str | None:
         """Get the restriction mode.
 
         :rtype: str or ``NoneType``
@@ -4088,7 +4173,7 @@ class EncryptionEnforcementConfig(dict):
         return self.get("restrictionMode")
 
     @restriction_mode.setter
-    def restriction_mode(self, value):
+    def restriction_mode(self, value: str) -> None:
         """Set the restriction mode.
 
         :type value: str
@@ -4097,7 +4182,7 @@ class EncryptionEnforcementConfig(dict):
         self["restrictionMode"] = value
 
     @property
-    def effective_time(self):
+    def effective_time(self) -> Datetime | None:
         """Get the effective time.
 
         :rtype: datetime.datetime or ``NoneType``
@@ -4107,9 +4192,10 @@ class EncryptionEnforcementConfig(dict):
         timestamp = self.get("effectiveTime")
         if timestamp is not None:
             return _rfc3339_nanos_to_datetime(timestamp)
+        return None
 
 
-class BucketEncryption(dict):
+class BucketEncryption(dict[str, Any]):
     """Map a bucket's encryption configuration.
 
     :type bucket: :class:`Bucket`
@@ -4134,13 +4220,16 @@ class BucketEncryption(dict):
 
     def __init__(
         self,
-        bucket,
-        default_kms_key_name=None,
-        google_managed_encryption_enforcement_config=None,
-        customer_managed_encryption_enforcement_config=None,
-        customer_supplied_encryption_enforcement_config=None,
-    ):
-        data = {}
+        bucket: Bucket,
+        default_kms_key_name: str | None = None,
+        google_managed_encryption_enforcement_config: EncryptionEnforcementConfig
+        | None = None,
+        customer_managed_encryption_enforcement_config: EncryptionEnforcementConfig
+        | None = None,
+        customer_supplied_encryption_enforcement_config: EncryptionEnforcementConfig
+        | None = None,
+    ) -> None:
+        data: dict[str, Any] = {}
         if default_kms_key_name is not None:
             data["defaultKmsKeyName"] = default_kms_key_name
 
@@ -4163,7 +4252,9 @@ class BucketEncryption(dict):
         self._bucket = bucket
 
     @classmethod
-    def from_api_repr(cls, resource, bucket):
+    def from_api_repr(
+        cls, resource: dict[str, Any], bucket: Bucket
+    ) -> BucketEncryption:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -4180,7 +4271,7 @@ class BucketEncryption(dict):
         return instance
 
     @property
-    def bucket(self):
+    def bucket(self) -> Bucket:
         """Bucket for which this instance is the policy.
 
         :rtype: :class:`Bucket`
@@ -4189,7 +4280,7 @@ class BucketEncryption(dict):
         return self._bucket
 
     @property
-    def default_kms_key_name(self):
+    def default_kms_key_name(self) -> str | None:
         """Retrieve default KMS encryption key for objects in the bucket.
 
         :rtype: str or ``NoneType``
@@ -4198,7 +4289,7 @@ class BucketEncryption(dict):
         return self.get("defaultKmsKeyName")
 
     @default_kms_key_name.setter
-    def default_kms_key_name(self, value):
+    def default_kms_key_name(self, value: str | None) -> None:
         """Set default KMS encryption key for objects in the bucket.
 
         :type value: str or None
@@ -4208,7 +4299,9 @@ class BucketEncryption(dict):
         self.bucket._patch_property("encryption", self)
 
     @property
-    def google_managed_encryption_enforcement_config(self):
+    def google_managed_encryption_enforcement_config(
+        self,
+    ) -> EncryptionEnforcementConfig | None:
         """Retrieve the encryption enforcement configuration for Google managed encryption.
 
         :rtype: :class:`EncryptionEnforcementConfig`
@@ -4220,7 +4313,9 @@ class BucketEncryption(dict):
         return None
 
     @google_managed_encryption_enforcement_config.setter
-    def google_managed_encryption_enforcement_config(self, value):
+    def google_managed_encryption_enforcement_config(
+        self, value: EncryptionEnforcementConfig | dict[str, Any]
+    ) -> None:
         """Set the encryption enforcement configuration for Google managed encryption.
 
         :type value: :class:`EncryptionEnforcementConfig` or dict
@@ -4230,7 +4325,9 @@ class BucketEncryption(dict):
         self.bucket._patch_property("encryption", self)
 
     @property
-    def customer_managed_encryption_enforcement_config(self):
+    def customer_managed_encryption_enforcement_config(
+        self,
+    ) -> EncryptionEnforcementConfig | None:
         """Retrieve the encryption enforcement configuration for Customer managed encryption.
 
         :rtype: :class:`EncryptionEnforcementConfig`
@@ -4242,7 +4339,9 @@ class BucketEncryption(dict):
         return None
 
     @customer_managed_encryption_enforcement_config.setter
-    def customer_managed_encryption_enforcement_config(self, value):
+    def customer_managed_encryption_enforcement_config(
+        self, value: EncryptionEnforcementConfig | dict[str, Any]
+    ) -> None:
         """Set the encryption enforcement configuration for Customer managed encryption.
 
         :type value: :class:`EncryptionEnforcementConfig` or dict
@@ -4252,7 +4351,9 @@ class BucketEncryption(dict):
         self.bucket._patch_property("encryption", self)
 
     @property
-    def customer_supplied_encryption_enforcement_config(self):
+    def customer_supplied_encryption_enforcement_config(
+        self,
+    ) -> EncryptionEnforcementConfig | None:
         """Retrieve the encryption enforcement configuration for Customer supplied encryption.
 
         :rtype: :class:`EncryptionEnforcementConfig`
@@ -4264,7 +4365,9 @@ class BucketEncryption(dict):
         return None
 
     @customer_supplied_encryption_enforcement_config.setter
-    def customer_supplied_encryption_enforcement_config(self, value):
+    def customer_supplied_encryption_enforcement_config(
+        self, value: EncryptionEnforcementConfig | dict[str, Any]
+    ) -> None:
         """Set the encryption enforcement configuration for Customer supplied encryption.
 
         :type value: :class:`EncryptionEnforcementConfig` or dict
@@ -4274,7 +4377,7 @@ class BucketEncryption(dict):
         self.bucket._patch_property("encryption", self)
 
 
-class SoftDeletePolicy(dict):
+class SoftDeletePolicy(dict[str, Any]):
     """Map a bucket's soft delete policy.
 
     See https://cloud.google.com/storage/docs/soft-delete
@@ -4293,8 +4396,8 @@ class SoftDeletePolicy(dict):
         This value should normally only be set by the back-end API.
     """
 
-    def __init__(self, bucket, **kw):
-        data = {}
+    def __init__(self, bucket: Bucket, **kw: Any) -> None:
+        data: dict[str, Any] = {}
         retention_duration_seconds = kw.get("retention_duration_seconds")
         data["retentionDurationSeconds"] = retention_duration_seconds
 
@@ -4307,7 +4410,9 @@ class SoftDeletePolicy(dict):
         self._bucket = bucket
 
     @classmethod
-    def from_api_repr(cls, resource, bucket):
+    def from_api_repr(
+        cls, resource: dict[str, Any], bucket: Bucket
+    ) -> SoftDeletePolicy:
         """Factory:  construct instance from resource.
 
         :type resource: dict
@@ -4324,7 +4429,7 @@ class SoftDeletePolicy(dict):
         return instance
 
     @property
-    def bucket(self):
+    def bucket(self) -> Bucket:
         """Bucket for which this instance is the policy.
 
         :rtype: :class:`Bucket`
@@ -4333,7 +4438,7 @@ class SoftDeletePolicy(dict):
         return self._bucket
 
     @property
-    def retention_duration_seconds(self):
+    def retention_duration_seconds(self) -> int | None:
         """Get the retention duration of the bucket's soft delete policy.
 
         :rtype: int or ``NoneType``
@@ -4344,9 +4449,10 @@ class SoftDeletePolicy(dict):
         duration = self.get("retentionDurationSeconds")
         if duration is not None:
             return int(duration)
+        return None
 
     @retention_duration_seconds.setter
-    def retention_duration_seconds(self, value):
+    def retention_duration_seconds(self, value: int) -> None:
         """Set the retention duration of the bucket's soft delete policy.
 
         :type value: int
@@ -4358,7 +4464,7 @@ class SoftDeletePolicy(dict):
         self.bucket._patch_property("softDeletePolicy", self)
 
     @property
-    def effective_time(self):
+    def effective_time(self) -> Datetime | None:
         """Get the effective time of the bucket's soft delete policy.
 
         :rtype: datetime.datetime or ``NoneType``
@@ -4368,9 +4474,12 @@ class SoftDeletePolicy(dict):
         timestamp = self.get("effectiveTime")
         if timestamp is not None:
             return _rfc3339_nanos_to_datetime(timestamp)
+        return None
 
 
-def _raise_if_len_differs(expected_len, **generation_match_args):
+def _raise_if_len_differs(
+    expected_len: int, **generation_match_args: Sequence[int] | None
+) -> None:
     """
     Raise an error if any generation match argument
     is set and its len differs from the given value.

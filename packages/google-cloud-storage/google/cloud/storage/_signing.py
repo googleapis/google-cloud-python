@@ -13,14 +13,17 @@
 # limitations under the License.
 
 
+from __future__ import annotations
+
 import base64
 import binascii
 import collections
 import datetime
 import hashlib
-import http
+import http.client
 import json
-import urllib
+import urllib.parse
+from typing import TYPE_CHECKING, NamedTuple, cast
 
 import google.auth.credentials
 from google.auth import exceptions
@@ -30,17 +33,27 @@ from google.cloud import _helpers
 from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN, _NOW, _UTC
 from google.cloud.storage.retry import DEFAULT_RETRY
 
+if TYPE_CHECKING:
+    from datetime import (
+        datetime as Datetime,
+    )
+    from datetime import (
+        timedelta as Timedelta,
+    )
+    from typing import Any
+
+    from google.auth.credentials import Credentials, Signing
+    from google.auth.transport import Response as AuthResponse
+
+
 # `google.cloud.storage._signing.NOW` is deprecated.
 # Use `_NOW(_UTC)` instead.
 NOW = datetime.datetime.utcnow
 
-SERVICE_ACCOUNT_URL = (
-    "https://googleapis.dev/python/google-api-core/latest/"
-    "auth.html#setting-up-a-service-account"
-)
+SERVICE_ACCOUNT_URL = "https://googleapis.dev/python/google-api-core/latest/auth.html#setting-up-a-service-account"
 
 
-def ensure_signed_credentials(credentials):
+def ensure_signed_credentials(credentials: Credentials | Signing) -> None:
     """Raise AttributeError if the credentials are unsigned.
 
     :type credentials: :class:`google.auth.credentials.Signing`
@@ -59,7 +72,9 @@ def ensure_signed_credentials(credentials):
         )
 
 
-def get_signed_query_params_v2(credentials, expiration, string_to_sign):
+def get_signed_query_params_v2(
+    credentials: Credentials | Signing, expiration: int, string_to_sign: str
+) -> dict[str, str | int | bytes]:
     """Gets query parameters for creating a signed URL.
 
     :type credentials: :class:`google.auth.credentials.Signing`
@@ -80,9 +95,11 @@ def get_signed_query_params_v2(credentials, expiration, string_to_sign):
               signed payload.
     """
     ensure_signed_credentials(credentials)
-    signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
+    signature_bytes = cast("Signing", credentials).sign_bytes(
+        string_to_sign.encode("ascii")
+    )
     signature = base64.b64encode(signature_bytes)
-    service_account_name = credentials.signer_email
+    service_account_name = cast("Signing", credentials).signer_email
     return {
         "GoogleAccessId": service_account_name,
         "Expires": expiration,
@@ -90,7 +107,7 @@ def get_signed_query_params_v2(credentials, expiration, string_to_sign):
     }
 
 
-def get_expiration_seconds_v2(expiration):
+def get_expiration_seconds_v2(expiration: int | Datetime | Timedelta | None) -> int:
     """Convert 'expiration' to a number of seconds in the future.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
@@ -115,8 +132,7 @@ def get_expiration_seconds_v2(expiration):
 
     if not isinstance(expiration, int):
         raise TypeError(
-            "Expected an integer timestamp, datetime, or "
-            f"timedelta. Got {type(expiration)}"
+            f"Expected an integer timestamp, datetime, or timedelta. Got {type(expiration)}"
         )
     return expiration
 
@@ -124,7 +140,7 @@ def get_expiration_seconds_v2(expiration):
 _EXPIRATION_TYPES = (int, datetime.datetime, datetime.timedelta)
 
 
-def get_expiration_seconds_v4(expiration):
+def get_expiration_seconds_v4(expiration: int | Datetime | Timedelta | None) -> int:
     """Convert 'expiration' to a number of seconds offset from the current time.
 
     :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
@@ -139,8 +155,7 @@ def get_expiration_seconds_v4(expiration):
     """
     if not isinstance(expiration, _EXPIRATION_TYPES):
         raise TypeError(
-            "Expected an integer timestamp, datetime, or "
-            f"timedelta. Got {type(expiration)}"
+            f"Expected an integer timestamp, datetime, or timedelta. Got {type(expiration)}"
         )
 
     now = _NOW(_UTC)
@@ -162,7 +177,9 @@ def get_expiration_seconds_v4(expiration):
     return seconds
 
 
-def get_canonical_headers(headers):
+def get_canonical_headers(
+    headers: dict[str, str] | list[tuple[str, str]] | None,
+) -> tuple[list[str], list[tuple[str, str]]]:
     """Canonicalize headers for signing.
 
     See:
@@ -176,8 +193,8 @@ def get_canonical_headers(headers):
         Requests using the signed URL *must* pass the specified header
         (name and value) with each request for the URL.
 
-    :rtype: str
-    :returns: List of headers, normalized / sortted per the URL refernced above.
+    :rtype: tuple[list[str], list[tuple[str, str]]]
+    :returns: Canonical header lines and sorted header name / value pairs.
     """
     if headers is None:
         headers = []
@@ -199,12 +216,19 @@ def get_canonical_headers(headers):
     return canonical_headers, ordered_headers
 
 
-_Canonical = collections.namedtuple(
-    "_Canonical", ["method", "resource", "query_parameters", "headers"]
-)
+class _Canonical(NamedTuple):
+    method: str
+    resource: str
+    query_parameters: list[tuple[str, str]]
+    headers: list[str]
 
 
-def canonicalize_v2(method, resource, query_parameters, headers):
+def canonicalize_v2(
+    method: str,
+    resource: str,
+    query_parameters: dict[str, Any] | None,
+    headers: dict[str, str] | list[tuple[str, str]] | None,
+) -> _Canonical:
     """Canonicalize method, resource per the V2 spec.
 
     :type method: str
@@ -236,14 +260,14 @@ def canonicalize_v2(method, resource, query_parameters, headers):
     :rtype: :class:_Canonical
     :returns: Canonical method, resource, query_parameters, and headers.
     """
-    headers, _ = get_canonical_headers(headers)
+    canonical_headers, _ = get_canonical_headers(headers)
 
     if method == "RESUMABLE":
         method = "POST"
-        headers.append("x-goog-resumable:start")
+        canonical_headers.append("x-goog-resumable:start")
 
     if query_parameters is None:
-        return _Canonical(method, resource, [], headers)
+        return _Canonical(method, resource, [], canonical_headers)
 
     normalized_qp = sorted(
         (key.lower(), value and value.strip() or "")
@@ -251,26 +275,26 @@ def canonicalize_v2(method, resource, query_parameters, headers):
     )
     encoded_qp = urllib.parse.urlencode(normalized_qp)
     canonical_resource = f"{resource}?{encoded_qp}"
-    return _Canonical(method, canonical_resource, normalized_qp, headers)
+    return _Canonical(method, canonical_resource, normalized_qp, canonical_headers)
 
 
 def generate_signed_url_v2(
-    credentials,
-    resource,
-    expiration,
-    api_access_endpoint="",
-    method="GET",
-    content_md5=None,
-    content_type=None,
-    response_type=None,
-    response_disposition=None,
-    generation=None,
-    headers=None,
-    query_parameters=None,
-    service_account_email=None,
-    access_token=None,
-    universe_domain=None,
-):
+    credentials: Credentials | Signing,
+    resource: str,
+    expiration: int | Datetime | Timedelta | None,
+    api_access_endpoint: str = "",
+    method: str = "GET",
+    content_md5: str | None = None,
+    content_type: str | None = None,
+    response_type: str | None = None,
+    response_disposition: str | None = None,
+    generation: str | None = None,
+    headers: dict[str, str] | list[tuple[str, str]] | None = None,
+    query_parameters: dict[str, Any] | None = None,
+    service_account_email: str | None = None,
+    access_token: str | None = None,
+    universe_domain: str | None = None,
+) -> str:
     """Generate a V2 signed URL to provide query-string auth'n to a resource.
 
     .. note::
@@ -382,6 +406,7 @@ def generate_signed_url_v2(
     # If you are on Google Compute Engine, you can't generate a signed URL.
     # See https://github.com/googleapis/google-cloud-python/issues/922
     # Set the right query parameters.
+    signed_query_params: dict[str, str | int | bytes]
     if access_token and service_account_email:
         signature = _sign_message(
             string_to_sign, access_token, service_account_email, universe_domain
@@ -415,23 +440,23 @@ DEFAULT_ENDPOINT = "https://storage.googleapis.com"
 
 
 def generate_signed_url_v4(
-    credentials,
-    resource,
-    expiration,
-    api_access_endpoint=DEFAULT_ENDPOINT,
-    method="GET",
-    content_md5=None,
-    content_type=None,
-    response_type=None,
-    response_disposition=None,
-    generation=None,
-    headers=None,
-    query_parameters=None,
-    service_account_email=None,
-    access_token=None,
-    universe_domain=None,
-    _request_timestamp=None,  # for testing only
-):
+    credentials: Credentials | Signing,
+    resource: str,
+    expiration: int | Datetime | Timedelta | None,
+    api_access_endpoint: str = DEFAULT_ENDPOINT,
+    method: str = "GET",
+    content_md5: str | None = None,
+    content_type: str | None = None,
+    response_type: str | None = None,
+    response_disposition: str | None = None,
+    generation: str | None = None,
+    headers: dict[str, str] | None = None,
+    query_parameters: dict[str, Any] | None = None,
+    service_account_email: str | None = None,
+    access_token: str | None = None,
+    universe_domain: str | None = None,
+    _request_timestamp: str | None = None,  # for testing only
+) -> str:
     """Generate a V4 signed URL to provide query-string auth'n to a resource.
 
     .. note::
@@ -541,7 +566,7 @@ def generate_signed_url_v4(
     client_email = service_account_email
     if not access_token or not service_account_email:
         ensure_signed_credentials(credentials)
-        client_email = credentials.signer_email
+        client_email = cast("Signing", credentials).signer_email
 
     credential_scope = f"{datestamp}/auto/storage/goog4_request"
     credential = f"{client_email}/{credential_scope}"
@@ -627,13 +652,15 @@ def generate_signed_url_v4(
         signature_bytes = base64.b64decode(signature)
         signature = binascii.hexlify(signature_bytes).decode("ascii")
     else:
-        signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
+        signature_bytes = cast("Signing", credentials).sign_bytes(
+            string_to_sign.encode("ascii")
+        )
         signature = binascii.hexlify(signature_bytes).decode("ascii")
 
     return f"{api_access_endpoint}{resource}?{canonical_query_string}&X-Goog-Signature={signature}"
 
 
-def get_v4_now_dtstamps():
+def get_v4_now_dtstamps() -> tuple[str, str]:
     """Get current timestamp and datestamp in V4 valid format.
 
     :rtype: str, str
@@ -646,11 +673,11 @@ def get_v4_now_dtstamps():
 
 
 def _sign_message(
-    message,
-    access_token,
-    service_account_email,
-    universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
-):
+    message: str | bytes,
+    access_token: str,
+    service_account_email: str,
+    universe_domain: str | None = _DEFAULT_UNIVERSE_DOMAIN,
+) -> str:
     """Signs a message.
 
     :type message: str
@@ -669,7 +696,7 @@ def _sign_message(
     :returns: The signature of the message.
 
     """
-    message = _helpers._to_bytes(message)
+    message_bytes = _helpers._to_bytes(message)
 
     method = "POST"
     url = f"https://iamcredentials.{universe_domain}/v1/projects/-/serviceAccounts/{service_account_email}:signBlob?alt=json"
@@ -677,10 +704,10 @@ def _sign_message(
         "Authorization": "Bearer " + access_token,
         "Content-type": "application/json",
     }
-    body = json.dumps({"payload": base64.b64encode(message).decode("utf-8")})
+    body = json.dumps({"payload": base64.b64encode(message_bytes).decode("utf-8")})
     request = requests.Request()
 
-    def retriable_request():
+    def retriable_request() -> AuthResponse:
         response = request(url=url, method=method, body=body, headers=headers)
         return response
 
@@ -698,7 +725,7 @@ def _sign_message(
     return data["signedBlob"]
 
 
-def _url_encode(query_params):
+def _url_encode(query_params: dict[str, Any]) -> str:
     """Encode query params into URL.
 
     :type query_params: dict
@@ -715,7 +742,7 @@ def _url_encode(query_params):
     return "&".join(sorted(params))
 
 
-def _quote_param(param):
+def _quote_param(param: object) -> str:
     """Quote query param.
 
     :type param: Any

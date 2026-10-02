@@ -17,13 +17,27 @@
 See [Cloud Pub/Sub Notifications for Google Cloud Storage](https://cloud.google.com/storage/docs/pubsub-notifications)
 """
 
+from __future__ import annotations
+
 import re
+from typing import TYPE_CHECKING, cast
 
 from google.api_core.exceptions import NotFound
 
 from google.cloud.storage._opentelemetry_tracing import create_trace_span
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from google.api_core.retry import Retry
+
+    from google.cloud.storage._types import Timeout
+    from google.cloud.storage.bucket import Bucket
+    from google.cloud.storage.client import Client
+    from google.cloud.storage.retry import ConditionalRetryPolicy
+
 
 OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
 OBJECT_METADATA_UPDATE_EVENT_TYPE = "OBJECT_METADATA_UPDATE"
@@ -38,11 +52,7 @@ _PROJECT_PATTERN = r"(?P<project>[a-z][a-z0-9-]{4,28}[a-z0-9])"
 _TOPIC_NAME_PATTERN = r"(?P<name>[A-Za-z](\w|[-_.~+%])+)"
 _TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(_PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
 _TOPIC_REF_RE = re.compile(_TOPIC_REF_PATTERN)
-_BAD_TOPIC = (
-    "Resource has invalid topic: {}; see "
-    "https://cloud.google.com/storage/docs/json_api/v1/"
-    "notifications/insert#topic"
-)
+_BAD_TOPIC = "Resource has invalid topic: {}; see https://cloud.google.com/storage/docs/json_api/v1/notifications/insert#topic"
 
 
 class BucketNotification:
@@ -86,27 +96,27 @@ class BucketNotification:
 
     def __init__(
         self,
-        bucket,
-        topic_name=None,
-        topic_project=None,
-        custom_attributes=None,
-        event_types=None,
-        blob_name_prefix=None,
-        payload_format=NONE_PAYLOAD_FORMAT,
-        notification_id=None,
-    ):
+        bucket: Bucket,
+        topic_name: str | None = None,
+        topic_project: str | None = None,
+        custom_attributes: dict[str, str] | None = None,
+        event_types: list[str] | None = None,
+        blob_name_prefix: str | None = None,
+        payload_format: str = NONE_PAYLOAD_FORMAT,
+        notification_id: str | None = None,
+    ) -> None:
         self._bucket = bucket
         self._topic_name = topic_name
 
         if topic_project is None:
-            topic_project = bucket.client.project
+            topic_project = cast("Client", bucket.client).project
 
         if topic_project is None:
             raise ValueError("Client project not set:  pass an explicit topic_project.")
 
         self._topic_project = topic_project
 
-        self._properties = {}
+        self._properties: dict[str, Any] = {}
 
         if custom_attributes is not None:
             self._properties["custom_attributes"] = custom_attributes
@@ -123,7 +133,9 @@ class BucketNotification:
         self._properties["payload_format"] = payload_format
 
     @classmethod
-    def from_api_repr(cls, resource, bucket):
+    def from_api_repr(
+        cls, resource: dict[str, Any], bucket: Bucket
+    ) -> BucketNotification:
         """Construct an instance from the JSON repr returned by the server.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/notifications
@@ -148,66 +160,66 @@ class BucketNotification:
         return instance
 
     @property
-    def bucket(self):
+    def bucket(self) -> Bucket:
         """Bucket to which the notification is bound."""
         return self._bucket
 
     @property
-    def topic_name(self):
+    def topic_name(self) -> str | None:
         """Topic name to which notifications are published."""
         return self._topic_name
 
     @property
-    def topic_project(self):
+    def topic_project(self) -> str:
         """Project ID of topic to which notifications are published."""
         return self._topic_project
 
     @property
-    def custom_attributes(self):
+    def custom_attributes(self) -> dict[str, str] | None:
         """Custom attributes passed with notification events."""
         return self._properties.get("custom_attributes")
 
     @property
-    def event_types(self):
+    def event_types(self) -> list[str] | None:
         """Event types for which notification events are published."""
         return self._properties.get("event_types")
 
     @property
-    def blob_name_prefix(self):
+    def blob_name_prefix(self) -> str | None:
         """Prefix of blob names for which notification events are published."""
         return self._properties.get("object_name_prefix")
 
     @property
-    def payload_format(self):
+    def payload_format(self) -> str | None:
         """Format of payload of notification events."""
         return self._properties.get("payload_format")
 
     @property
-    def notification_id(self):
+    def notification_id(self) -> str | None:
         """Server-set ID of notification resource."""
         return self._properties.get("id")
 
     @property
-    def etag(self):
+    def etag(self) -> str | None:
         """Server-set ETag of notification resource."""
         return self._properties.get("etag")
 
     @property
-    def self_link(self):
+    def self_link(self) -> str | None:
         """Server-set ETag of notification resource."""
         return self._properties.get("selfLink")
 
     @property
-    def client(self):
+    def client(self) -> Client | None:
         """The client bound to this notfication."""
         return self.bucket.client
 
     @property
-    def path(self):
+    def path(self) -> str:
         """The URL path for this notification."""
         return f"/b/{self.bucket.name}/notificationConfigs/{self.notification_id}"
 
-    def _require_client(self, client):
+    def _require_client(self, client: Client | None) -> Client:
         """Check client or verify over-ride.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -219,9 +231,9 @@ class BucketNotification:
         """
         if client is None:
             client = self.client
-        return client
+        return cast("Client", client)
 
-    def _set_properties(self, response):
+    def _set_properties(self, response: dict[str, Any]) -> None:
         """Helper for :meth:`reload`.
 
         :type response: dict
@@ -230,7 +242,12 @@ class BucketNotification:
         self._properties.clear()
         self._properties.update(response)
 
-    def create(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=None):
+    def create(
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = None,
+    ) -> None:
         """API wrapper: create the notification.
 
         See:
@@ -283,7 +300,12 @@ class BucketNotification:
                 retry=retry,
             )
 
-    def exists(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def exists(
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> bool:
         """Test whether this notification exists.
 
         See:
@@ -333,7 +355,12 @@ class BucketNotification:
             else:
                 return True
 
-    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def reload(
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Update this notification from the server configuration.
 
         See:
@@ -378,7 +405,12 @@ class BucketNotification:
             )
             self._set_properties(response)
 
-    def delete(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
+    def delete(
+        self,
+        client: Client | None = None,
+        timeout: Timeout = _DEFAULT_TIMEOUT,
+        retry: Retry | ConditionalRetryPolicy | None = DEFAULT_RETRY,
+    ) -> None:
         """Delete this notification.
 
         See:
@@ -424,7 +456,7 @@ class BucketNotification:
             )
 
 
-def _parse_topic_path(topic_path):
+def _parse_topic_path(topic_path: str) -> tuple[str, str]:
     """Verify that a topic path is in the correct format.
 
     Expected to be of the form:

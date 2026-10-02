@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import IO, Any
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import IO, cast
 
 import google_crc32c
 
@@ -45,7 +49,7 @@ class _WriteState:
         user_buffer: IO[bytes],
         flush_interval: int,
         enable_checksum: bool = True,
-    ):
+    ) -> None:
         self.chunk_size = chunk_size
         self.user_buffer = user_buffer
         self.persisted_size: int = 0
@@ -63,11 +67,17 @@ class _WriteState:
         self.enable_checksum: bool = enable_checksum
 
 
-class _WriteResumptionStrategy(_BaseResumptionStrategy):
+class _WriteResumptionStrategy(
+    _BaseResumptionStrategy[
+        dict[str, _WriteState],
+        storage_type.BidiWriteObjectRequest,
+        storage_type.BidiWriteObjectResponse | None,
+    ]
+):
     """The concrete resumption strategy for bidi writes."""
 
     def generate_requests(
-        self, state: dict[str, Any]
+        self, state: dict[str, _WriteState]
     ) -> list[storage_type.BidiWriteObjectRequest]:
         """Generates BidiWriteObjectRequests to resume or continue the upload.
 
@@ -106,7 +116,9 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
         return requests
 
     def update_state_from_response(
-        self, response: storage_type.BidiWriteObjectResponse, state: dict[str, Any]
+        self,
+        response: storage_type.BidiWriteObjectResponse | None,
+        state: dict[str, _WriteState],
     ) -> None:
         """Processes a server response and updates the write state."""
         write_state: _WriteState = state["write_state"]
@@ -120,11 +132,12 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
 
         if response.resource:
             write_state.persisted_size = response.resource.size
-            if response.resource.finalize_time:
+            # proto-plus exposes Timestamp fields as optional datetimes.
+            if cast(datetime | None, response.resource.finalize_time):
                 write_state.is_finalized = True
 
     async def recover_state_on_failure(
-        self, error: Exception, state: dict[str, Any]
+        self, error: Exception, state: dict[str, _WriteState]
     ) -> None:
         """
         Handles errors, specifically BidiWriteObjectRedirectedError, and rewinds state.

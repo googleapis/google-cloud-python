@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 import logging
-from typing import IO, Any
+from typing import IO, TypedDict
 
 import google_crc32c
 
@@ -42,7 +45,7 @@ class _DownloadState:
         user_buffer: IO[bytes],
         is_full_object_read: bool = False,
         enable_checksum: bool = True,
-    ):
+    ) -> None:
         self.initial_offset = initial_offset
         self.initial_length = initial_length
         self.user_buffer = user_buffer
@@ -57,10 +60,22 @@ class _DownloadState:
         )
 
 
-class _ReadResumptionStrategy(_BaseResumptionStrategy):
+class _ReadRetryState(TypedDict):
+    download_states: dict[int, _DownloadState]
+    read_handle: storage_v2.BidiReadHandle | None
+    routing_token: str | None
+    enable_checksum: bool
+    full_obj_server_crc32c: int | None
+
+
+class _ReadResumptionStrategy(
+    _BaseResumptionStrategy[
+        _ReadRetryState, storage_v2.ReadRange, storage_v2.BidiReadObjectResponse
+    ]
+):
     """The concrete resumption strategy for bidi reads."""
 
-    def generate_requests(self, state: dict[str, Any]) -> list[storage_v2.ReadRange]:
+    def generate_requests(self, state: _ReadRetryState) -> list[storage_v2.ReadRange]:
         """Generates new ReadRange requests for all incomplete downloads.
 
         :type state: dict
@@ -89,10 +104,10 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
         return pending_requests
 
     def update_state_from_response(
-        self, response: storage_v2.BidiReadObjectResponse, state: dict[str, Any]
+        self, response: storage_v2.BidiReadObjectResponse, state: _ReadRetryState
     ) -> None:
         """Processes a server response, performs integrity checks, and updates state."""
-        proto = getattr(response, "_pb", response)
+        proto = storage_v2.BidiReadObjectResponse.pb(response)
 
         # Capture read_handle if provided.
         if proto.HasField("read_handle"):
@@ -129,8 +144,7 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
             if chunk_offset != read_state.next_expected_offset:
                 raise DataCorruption(
                     response,
-                    f"Offset mismatch for read_id {read_id}. "
-                    f"Expected {read_state.next_expected_offset}, got {chunk_offset}",
+                    f"Offset mismatch for read_id {read_id}. Expected {read_state.next_expected_offset}, got {chunk_offset}",
                 )
 
             # Checksum Verification
@@ -190,7 +204,9 @@ class _ReadResumptionStrategy(_BaseResumptionStrategy):
                                 f"Server authoritative crc32c: {full_obj_server_crc32c}, client calculated rolling: {client_checksum}.",
                             )
 
-    async def recover_state_on_failure(self, error: Exception, state: Any) -> None:
+    async def recover_state_on_failure(
+        self, error: Exception, state: _ReadRetryState
+    ) -> None:
         """Handles BidiReadObjectRedirectedError for reads."""
         routing_token, read_handle = _handle_redirect(error)
         if routing_token:

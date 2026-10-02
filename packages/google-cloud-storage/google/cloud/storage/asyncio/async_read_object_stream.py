@@ -12,27 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from __future__ import annotations
+
 import asyncio
 import logging
+from datetime import datetime
+from typing import cast
 
 from google.api_core.bidi_async import AsyncBidiRpc
 
 from google.cloud import _storage_v2
+from google.cloud.storage._types import _AsyncBidiRpc
 from google.cloud.storage.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
 )
-from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 
 logger = logging.getLogger(__name__)
 
 
-class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
+class _AsyncReadObjectStream(
+    _AsyncAbstractObjectStream[
+        _storage_v2.BidiReadObjectRequest, _storage_v2.BidiReadObjectResponse
+    ]
+):
     """Class representing a gRPC bidi-stream for reading data from a GCS ``Object``.
 
     This class provides a unix socket-like interface to a GCS ``Object``, with
     methods like ``open``, ``close``, ``send``, and ``recv``.
 
-    :type client: :class:`~google.cloud.storage.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client`
+    :type client: :class:`~google.cloud.storage.asyncio.async_grpc_client._storage_v2.StorageAsyncClient`
     :param client: async grpc client to use for making API requests.
 
     :type bucket_name: str
@@ -52,7 +61,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
 
     def __init__(
         self,
-        client: AsyncGrpcClient.grpc_client,
+        client: _storage_v2.StorageAsyncClient,
         bucket_name: str,
         object_name: str,
         generation_number: int | None = None,
@@ -70,7 +79,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             object_name=object_name,
             generation_number=generation_number,
         )
-        self.client: AsyncGrpcClient.grpc_client = client
+        self.client: _storage_v2.StorageAsyncClient = client
         self.read_handle: _storage_v2.BidiReadHandle | None = read_handle
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
@@ -79,7 +88,12 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             self.client._client._transport.bidi_read_object
         ]
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
-        self.socket_like_rpc: AsyncBidiRpc | None = None
+        self.socket_like_rpc: (
+            _AsyncBidiRpc[
+                _storage_v2.BidiReadObjectRequest, _storage_v2.BidiReadObjectResponse
+            ]
+            | None
+        ) = None
         self._is_stream_open: bool = False
         self.persisted_size: int | None = None
         self.is_finalized: bool = False
@@ -124,10 +138,13 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         current_metadata = other_metadata
         current_metadata.append(("x-goog-request-params", "&".join(request_params)))
 
-        self.socket_like_rpc = AsyncBidiRpc(
-            self.rpc,
-            initial_request=self.first_bidi_read_req,
-            metadata=current_metadata,
+        self.socket_like_rpc = cast(
+            "_AsyncBidiRpc[_storage_v2.BidiReadObjectRequest, _storage_v2.BidiReadObjectResponse]",
+            AsyncBidiRpc(
+                self.rpc,
+                initial_request=self.first_bidi_read_req,
+                metadata=current_metadata,
+            ),
         )
         try:
             await self.socket_like_rpc.open()  # this is actually 1 send
@@ -140,11 +157,9 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
                 # update persisted size
                 self.persisted_size = response.metadata.size
                 self.object_metadata = response.metadata
-                if (
-                    hasattr(response.metadata, "finalize_time")
-                    and response.metadata.finalize_time
-                    and response.metadata.finalize_time.second > 0
-                ):
+                # proto-plus exposes Timestamp fields as optional datetimes.
+                finalize_time = cast(datetime | None, response.metadata.finalize_time)
+                if finalize_time and finalize_time.second > 0:
                     self.is_finalized = True
                     if (
                         hasattr(response.metadata, "checksums")
@@ -162,7 +177,8 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
 
     async def _close_socket_like_rpc(self) -> None:
         try:
-            await self.socket_like_rpc.close()
+            if self.socket_like_rpc is not None:
+                await self.socket_like_rpc.close()
         except Exception as exc:
             logger.debug("Error while closing the read bidi-gRPC stream: %s", exc)
 
@@ -171,15 +187,17 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
         try:
+            assert self.socket_like_rpc is not None
             if self.socket_like_rpc.is_active:
                 await self.requests_done()
         finally:
             self._is_stream_open = False
             await self._close_socket_like_rpc()
 
-    async def requests_done(self):
+    async def requests_done(self) -> None:
         """Signals that all requests have been sent."""
 
+        assert self.socket_like_rpc is not None
         await self.socket_like_rpc.send(None)
         await self.socket_like_rpc.recv()
 
@@ -195,6 +213,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
+        assert self.socket_like_rpc is not None
         await self.socket_like_rpc.send(bidi_read_object_request)
 
     async def recv(self) -> _storage_v2.BidiReadObjectResponse:
@@ -209,6 +228,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
+        assert self.socket_like_rpc is not None
         response = await self.socket_like_rpc.recv()
         # Update read_handle if present in response
         if response and response.read_handle:
