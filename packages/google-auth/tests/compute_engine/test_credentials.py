@@ -880,6 +880,7 @@ class TestIDTokenCredentials(object):
 
         assert self.credentials.token is not None
 
+    @pytest.mark.parametrize("bind_id_token", [None, True])
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -893,6 +894,7 @@ class TestIDTokenCredentials(object):
         mock_metadata_get,
         mock_should_request,
         mock_get_cert_and_bytes,
+        bind_id_token,
     ):
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
@@ -913,6 +915,7 @@ class TestIDTokenCredentials(object):
             request=request,
             target_audience="https://audience.com",
             use_metadata_identity_endpoint=True,
+            bind_id_token=bind_id_token,
         )
 
         self.credentials.refresh(None)
@@ -935,6 +938,48 @@ class TestIDTokenCredentials(object):
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_refresh_with_agent_identity_bind_id_token_false(
+        self,
+        mock_metadata_get,
+        mock_get_cert_and_bytes,
+    ):
+        id_token = "{}.{}.{}".format(
+            base64.b64encode(b'{"some":"some"}').decode("utf-8"),
+            base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
+            base64.b64encode(b"token").decode("utf-8"),
+        )
+        mock_metadata_get.side_effect = [
+            {"email": "service-account@example.com", "scopes": ["one", "two"]},
+            id_token,
+        ]
+
+        request = mock.create_autospec(transport.Request, instance=True)
+        self.credentials = credentials.IDTokenCredentials(
+            request=request,
+            target_audience="https://audience.com",
+            use_metadata_identity_endpoint=True,
+            bind_id_token=False,
+        )
+
+        self.credentials.refresh(None)
+
+        assert self.credentials.token == id_token
+        mock_get_cert_and_bytes.assert_not_called()
+
+        kwargs = mock_metadata_get.call_args[1]
+        assert kwargs["method"] == "GET"
+        assert kwargs["body"] is None
+        assert "Content-Type" not in kwargs["headers"]
+        assert (
+            kwargs["headers"][metrics.API_CLIENT_HEADER]
+            == metrics.token_request_id_token_mds()
+        )
+
+    @pytest.mark.parametrize("bind_id_token", [None, True])
+    @mock.patch(
+        "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+    )
     @mock.patch(
         "google.auth._agent_identity_utils.should_request_bound_token",
         return_value=False,
@@ -945,6 +990,7 @@ class TestIDTokenCredentials(object):
         mock_metadata_get,
         mock_should_request,
         mock_get_cert_and_bytes,
+        bind_id_token,
     ):
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
@@ -965,6 +1011,7 @@ class TestIDTokenCredentials(object):
             request=request,
             target_audience="https://audience.com",
             use_metadata_identity_endpoint=True,
+            bind_id_token=bind_id_token,
         )
 
         self.credentials.refresh(None)
@@ -982,6 +1029,7 @@ class TestIDTokenCredentials(object):
             == metrics.token_request_id_token_mds()
         )
 
+    @pytest.mark.parametrize("bind_id_token", [None, True])
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -990,6 +1038,7 @@ class TestIDTokenCredentials(object):
         self,
         mock_metadata_get,
         mock_get_cert_and_bytes,
+        bind_id_token,
     ):
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
@@ -1008,6 +1057,7 @@ class TestIDTokenCredentials(object):
             request=request,
             target_audience="https://audience.com",
             use_metadata_identity_endpoint=True,
+            bind_id_token=bind_id_token,
         )
 
         self.credentials.refresh(None)
@@ -1389,6 +1439,7 @@ class TestIDTokenCredentials(object):
         assert cred.token == SAMPLE_ID_TOKEN
         assert cred.expiry == _helpers.utcfromtimestamp(SAMPLE_ID_TOKEN_EXP)
         assert cred._use_metadata_identity_endpoint
+        assert cred._bind_id_token is None
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
@@ -1396,40 +1447,52 @@ class TestIDTokenCredentials(object):
         with pytest.raises(ValueError):
             cred.sign_bytes(b"bytes")
 
+    @pytest.mark.parametrize("bind_id_token", [None, True, False])
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
-    def test_with_target_audience_for_metadata(self, get_service_account_info):
+    def test_with_target_audience_for_metadata(
+        self, get_service_account_info, bind_id_token
+    ):
         get_service_account_info.return_value = {
             "email": "foo@project.iam.gserviceaccount.com"
         }
 
         cred = credentials.IDTokenCredentials(
-            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+            mock.Mock(),
+            "audience",
+            use_metadata_identity_endpoint=True,
+            bind_id_token=bind_id_token,
         )
         cred = cred.with_target_audience("new_audience")
 
         assert cred._target_audience == "new_audience"
         assert cred._use_metadata_identity_endpoint
+        assert cred._bind_id_token is bind_id_token
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
 
+    @pytest.mark.parametrize("bind_id_token", [None, True, False])
     @mock.patch(
         "google.auth.compute_engine._metadata.get_service_account_info", autospec=True
     )
-    def test_id_token_with_quota_project(self, get_service_account_info):
+    def test_id_token_with_quota_project(self, get_service_account_info, bind_id_token):
         get_service_account_info.return_value = {
             "email": "foo@project.iam.gserviceaccount.com"
         }
 
         cred = credentials.IDTokenCredentials(
-            mock.Mock(), "audience", use_metadata_identity_endpoint=True
+            mock.Mock(),
+            "audience",
+            use_metadata_identity_endpoint=True,
+            bind_id_token=bind_id_token,
         )
         cred = cred.with_quota_project("project-foo")
 
         assert cred._quota_project_id == "project-foo"
         assert cred._use_metadata_identity_endpoint
+        assert cred._bind_id_token is bind_id_token
         assert cred._signer is None
         assert cred._token_uri is None
         assert cred._service_account_email == "foo@project.iam.gserviceaccount.com"
@@ -1498,3 +1561,14 @@ class TestIDTokenCredentials(object):
                 use_metadata_identity_endpoint=True,
                 service_account_email="foo@project.iam.gserviceaccount.com",
             )
+        for bind_id_token in (True, False):
+            with pytest.raises(
+                ValueError,
+                match="If use_metadata_identity_endpoint is False, bind_id_token must not be set",
+            ):
+                credentials.IDTokenCredentials(
+                    mock.Mock(),
+                    "audience",
+                    use_metadata_identity_endpoint=False,
+                    bind_id_token=bind_id_token,
+                )

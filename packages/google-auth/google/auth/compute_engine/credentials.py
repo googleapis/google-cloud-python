@@ -340,6 +340,7 @@ class IDTokenCredentials(
         signer=None,
         use_metadata_identity_endpoint=False,
         quota_project_id=None,
+        bind_id_token=None,
     ):
         """
         Args:
@@ -364,18 +365,32 @@ class IDTokenCredentials(
                 otherwise ValueError will be raised.
             quota_project_id (Optional[str]): The project ID used for quota and
                 billing.
+            bind_id_token (Optional[bool]): Controls whether to request a
+                certificate-bound ID token. Can only be set when
+                ``use_metadata_identity_endpoint`` is ``True``.
+                If ``True``, requests a bound token whenever a valid workload
+                certificate is available and token binding is not disabled via
+                ``GOOGLE_API_ENABLE_RUNTIME_BOUND_TOKEN``, falling back to an
+                unbound token otherwise. If ``False``, always requests an
+                unbound token. If ``None`` (default), token binding is
+                determined automatically by the library. Set ``True`` or
+                ``False`` explicitly if your application requires a specific
+                behavior.
 
         Raises:
             ValueError:
                 If ``use_metadata_identity_endpoint`` is set to True, and one of
                 ``token_uri``, ``additional_claims``, ``service_account_email``,
-                 ``signer`` arguments is set.
+                ``signer`` arguments is set, or if
+                ``use_metadata_identity_endpoint`` is False and
+                ``bind_id_token`` is not None.
         """
         super(IDTokenCredentials, self).__init__()
 
         self._quota_project_id = quota_project_id
         self._use_metadata_identity_endpoint = use_metadata_identity_endpoint
         self._target_audience = target_audience
+        self._bind_id_token = bind_id_token
 
         if use_metadata_identity_endpoint:
             if token_uri or additional_claims or service_account_email or signer:
@@ -387,6 +402,11 @@ class IDTokenCredentials(
             self._token_uri = None
             self._additional_claims = None
             self._signer = None
+        elif bind_id_token is not None:
+            raise ValueError(
+                "If use_metadata_identity_endpoint is False, bind_id_token "
+                "must not be set"
+            )
 
         if service_account_email is None:
             sa_info = _metadata.get_service_account_info(request)
@@ -427,6 +447,7 @@ class IDTokenCredentials(
                 target_audience=target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=self._quota_project_id,
+                bind_id_token=self._bind_id_token,
             )
         else:
             return self.__class__(
@@ -450,6 +471,7 @@ class IDTokenCredentials(
                 target_audience=self._target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=quota_project_id,
+                bind_id_token=self._bind_id_token,
             )
         else:
             return self.__class__(
@@ -531,7 +553,8 @@ class IDTokenCredentials(
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
             method, body, headers = _metadata._build_token_request_options(
-                metrics.token_request_id_token_mds()
+                metrics.token_request_id_token_mds(),
+                bind_id_token=self._bind_id_token,
             )
 
             id_token = _metadata.get(

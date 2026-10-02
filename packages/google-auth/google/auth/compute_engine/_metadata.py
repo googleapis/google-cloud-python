@@ -481,22 +481,30 @@ def get_service_account_info(request, service_account="default"):
     return get(request, path, params={"recursive": "true"})
 
 
-def _build_token_request_options(metrics_header_value):
+def _build_token_request_options(metrics_header_value, bind_id_token=None):
     """Returns (method, body, headers) for a metadata server token request.
 
     Defaults to a standard GET request with the x-goog-api-client metrics header.
-    Upgrades to a POST request with a JSON certificate_chain body and
-    Content-Type header if an Agent Identity certificate is present and bound
-    tokens are enabled.
+    Unless ``bind_id_token`` is ``False``, upgrades to a POST request with a JSON
+    certificate_chain body and Content-Type header if an Agent Identity
+    certificate is present and bound tokens are enabled.
 
     Args:
         metrics_header_value (str): Value for the x-goog-api-client header.
+        bind_id_token (Optional[bool]): Whether to bind the ID token to the
+            workload certificate. If ``False``, returns a ``GET`` request
+            without reading the certificate. If ``None`` (default) or ``True``,
+            requests a bound token via ``POST`` when a valid workload
+            certificate is present and token binding is enabled.
 
     Returns:
         Tuple[str, Optional[bytes], Mapping[str, str]]: A tuple of
             (HTTP method, request body bytes, request headers).
     """
     headers = {metrics.API_CLIENT_HEADER: metrics_header_value}
+    if bind_id_token is False:
+        return "GET", None, headers
+
     cert, cert_bytes = _agent_identity_utils.get_agent_identity_certificate_and_bytes()
     if cert and _agent_identity_utils.should_request_bound_token(cert):
         headers["Content-Type"] = "application/json"

@@ -870,6 +870,20 @@ def test_get_service_account_token_should_not_bind(
     assert "Content-Type" not in kwargs["headers"]
 
 
+@mock.patch(
+    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
+)
+def test__build_token_request_options_bind_id_token_false(mock_get_cert_and_bytes):
+    method, body, headers = _metadata._build_token_request_options(
+        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_id_token=False
+    )
+
+    mock_get_cert_and_bytes.assert_not_called()
+    assert method == "GET"
+    assert body is None
+    assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
+
+
 def test_get_service_account_info():
     key, value = "foo", "bar"
     request = make_request(
