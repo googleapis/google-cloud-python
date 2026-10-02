@@ -34,11 +34,15 @@ class _ConcreteTarget(_DataApiTargetAsync):
         return {}
 
 
-def _bare_target(start, emulator=None):
+def _bare_target(start, emulator=None, blocked_reason=None):
     """A target that skips __init__, wired with a fake client and a fake
     ``_start_accelerator`` so we can observe the enablement decision."""
     t = object.__new__(_ConcreteTarget)
-    t.client = SimpleNamespace(_emulator_host=emulator, project="p")
+    t.client = SimpleNamespace(
+        _emulator_host=emulator,
+        _accelerator_blocked_reason=blocked_reason,
+        project="p",
+    )
     t.instance_id = "i"
     t.app_profile_id = None
     t._accelerator_daemon = "SENTINEL"
@@ -69,6 +73,17 @@ class TestMaybeStartAccelerator:
         t = _bare_target(emulator="localhost:8086", start=lambda: None)
         with pytest.raises(RuntimeError, match="use_accelerator=True is not supported"):
             t._maybe_start_accelerator(explicit=True)
+
+    def test_blocked_reason_disables_with_warning(self):
+        """A non-reproducible in-memory secret keeps us on the native client."""
+        called = []
+        t = _bare_target(
+            start=lambda: called.append(1),
+            blocked_reason="in-memory credentials cannot be forwarded",
+        )
+        with pytest.warns(RuntimeWarning, match="Accelerator disabled"):
+            t._maybe_start_accelerator(explicit=False)
+        assert called == []
 
     def test_start_failure_falls_back_to_native(self):
         """A default (non-explicit) daemon start failure (e.g. binary missing)

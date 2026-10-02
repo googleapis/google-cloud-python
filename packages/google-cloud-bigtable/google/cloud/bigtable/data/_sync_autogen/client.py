@@ -181,6 +181,7 @@ class BigtableDataClient(ClientWithProject):
         client_options = cast(
             Optional[client_options_lib.ClientOptions], client_options
         )
+        self._init_accelerator_config(credentials is not None, client_options)
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
         if self._emulator_host is not None:
             warnings.warn(
@@ -255,6 +256,59 @@ class BigtableDataClient(ClientWithProject):
                     f"{self.__class__.__name__} should be started in an asyncio event loop. Channel refresh will not be started",
                     RuntimeWarning,
                     stacklevel=2,
+                )
+
+    def _init_accelerator_config(
+        self,
+        explicit_credentials: bool,
+        client_options: "client_options_lib.ClientOptions | None",
+    ) -> None:
+        """Compute the accelerator eligibility and forward-config from the
+        caller's auth/identity configuration.
+
+        Sets three attributes read later by ``_DataApiTarget``:
+
+        * ``_accelerator_blocked_reason``: non-None means an in-memory secret
+          was supplied that the daemon cannot reproduce (``credentials=``,
+          ``api_key``, ``client_cert_source``) -> fall back to the native
+          client with a warning.
+        * ``_accelerator_flags``: extra daemon CLI flags for the non-secret,
+          reproducible knobs (scopes, quota project, endpoint, universe).
+        * ``_accelerator_env``: extra subprocess env; ``credentials_file`` is
+          forwarded here as ``GOOGLE_APPLICATION_CREDENTIALS`` so only the path
+          crosses, never the key bytes."""
+        self._accelerator_blocked_reason: str | None = None
+        self._accelerator_flags: list[str] = []
+        self._accelerator_env: dict[str, str] = {}
+        if explicit_credentials:
+            self._accelerator_blocked_reason = "an explicit credentials= object cannot be forwarded to the accelerator daemon"
+        elif client_options is not None and getattr(client_options, "api_key", None):
+            self._accelerator_blocked_reason = (
+                "api_key cannot be forwarded to the accelerator daemon"
+            )
+        elif client_options is not None and getattr(
+            client_options, "client_cert_source", None
+        ):
+            self._accelerator_blocked_reason = "client_cert_source (mTLS) cannot be forwarded to the accelerator daemon"
+        scopes = getattr(client_options, "scopes", None) if client_options else None
+        effective_scopes = list(scopes) if scopes else list(TransportType.AUTH_SCOPES)
+        if effective_scopes:
+            self._accelerator_flags += ["--scopes", ",".join(effective_scopes)]
+        if client_options is not None:
+            quota_project_id = getattr(client_options, "quota_project_id", None)
+            if quota_project_id:
+                self._accelerator_flags += ["--quota-project", quota_project_id]
+            api_endpoint = getattr(client_options, "api_endpoint", None)
+            if api_endpoint:
+                normalized = api_endpoint.split("://", 1)[-1]
+                self._accelerator_flags += ["--data-endpoint", normalized]
+            universe_domain = getattr(client_options, "universe_domain", None)
+            if universe_domain and universe_domain != "googleapis.com":
+                self._accelerator_flags += ["--universe-domain", universe_domain]
+            credentials_file = getattr(client_options, "credentials_file", None)
+            if credentials_file:
+                self._accelerator_env["GOOGLE_APPLICATION_CREDENTIALS"] = (
+                    credentials_file
                 )
 
     def _build_grpc_channel(self, *args, **kwargs) -> SwappableChannelType:
@@ -970,6 +1024,13 @@ class _DataApiTarget(abc.ABC):
                 stacklevel=2,
             )
             return
+        if self.client._accelerator_blocked_reason is not None:
+            warnings.warn(
+                f"Accelerator disabled: {self.client._accelerator_blocked_reason}; using the native client instead.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            return
         try:
             self._start_accelerator()
         except Exception as exc:
@@ -994,7 +1055,10 @@ class _DataApiTarget(abc.ABC):
         ]
         if self.app_profile_id:
             flags.extend(["--app-profile", self.app_profile_id])
-        server = AcceleratorDaemon(cli_flags=flags)
+        flags.extend(self.client._accelerator_flags)
+        server = AcceleratorDaemon(
+            cli_flags=flags, extra_env=self.client._accelerator_env
+        )
         try:
             server.start()
             self._accelerator_client = AcceleratorClientType(server.uds_path)
