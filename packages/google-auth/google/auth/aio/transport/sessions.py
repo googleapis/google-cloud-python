@@ -24,6 +24,8 @@ import warnings
 from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Mapping, Optional, Union
 
+import google.auth.credentials
+import google.auth.transport
 import google.auth.transport._mtls_helper
 from google.auth import _exponential_backoff, exceptions
 from google.auth.aio import transport
@@ -104,6 +106,56 @@ async def timeout_guard(timeout):
         _remaining_time()
 
 
+class _SyncCredentialsAdapter(Credentials):
+    """Adapts synchronous credentials to the asynchronous credentials interface.
+
+    :class:`AsyncAuthorizedSession` wraps :class:`google.auth.credentials.Credentials`
+    (e.g. application default credentials) with this adapter so that they can be
+    used with an asynchronous transport. Calls are delegated to the wrapped
+    credentials using a synchronous transport, and blocking calls such as
+    refreshing the access token run in a worker thread so that the event loop
+    is not blocked.
+
+    Args:
+        credentials (google.auth.credentials.Credentials): The synchronous
+            credentials to adapt.
+    """
+
+    def __init__(self, credentials: google.auth.credentials.Credentials):
+        super().__init__()
+        self._credentials = credentials
+        self._sync_request: Optional[google.auth.transport.Request] = None
+
+    def _get_sync_request(self) -> google.auth.transport.Request:
+        """Returns the synchronous transport used to call the wrapped credentials.
+
+        Synchronous credentials cannot use the asynchronous transport of the
+        session, so a synchronous transport is created on first use and reused.
+        """
+        if self._sync_request is None:
+            # Imported lazily because `requests` is an optional dependency of
+            # google-auth. It is installed alongside `aiohttp` by the `aiohttp` extra.
+            from google.auth.transport import requests as sync_requests
+
+            self._sync_request = sync_requests.Request()
+        return self._sync_request
+
+    async def apply(self, headers, token=None):
+        self._credentials.apply(headers, token=token)
+
+    async def refresh(self, request):
+        await asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
+
+    async def before_request(self, request, method, url, headers):
+        await asyncio.to_thread(
+            self._credentials.before_request,
+            self._get_sync_request(),
+            method,
+            url,
+            headers,
+        )
+
+
 class AsyncAuthorizedSession:
     """This is an asynchronous implementation of :class:`google.auth.requests.AuthorizedSession` class.
     We utilize an instance of a class that implements :class:`google.auth.aio.transport.Request` configured
@@ -126,8 +178,12 @@ class AsyncAuthorizedSession:
     credentials' headers to the request and refreshing credentials as needed.
 
     Args:
-        credentials (google.auth.aio.credentials.Credentials):
-            The credentials to add to the request.
+        credentials (Union[google.auth.aio.credentials.Credentials, google.auth.credentials.Credentials]):
+            The credentials to add to the request. Synchronous credentials
+            (e.g. application default credentials) are adapted to the
+            asynchronous credentials interface: they are invoked using a
+            synchronous transport in a worker thread so that the event loop
+            is not blocked.
         auth_request (Optional[google.auth.aio.transport.Request]):
             An instance of a class that implements
             :class:`~google.auth.aio.transport.Request` used to make requests
@@ -139,17 +195,22 @@ class AsyncAuthorizedSession:
         - google.auth.exceptions.TransportError: If `auth_request` is `None`
             and the external package `aiohttp` is not installed.
         - google.auth.exceptions.InvalidType: If the provided credentials are
-            not of type `google.auth.aio.credentials.Credentials`.
+            not of type `google.auth.aio.credentials.Credentials` or
+            `google.auth.credentials.Credentials`.
     """
 
     def __init__(
-        self, credentials: Credentials, auth_request: Optional[transport.Request] = None
+        self,
+        credentials: Union[Credentials, google.auth.credentials.Credentials],
+        auth_request: Optional[transport.Request] = None,
     ):
-        if not isinstance(credentials, Credentials):
+        if isinstance(credentials, google.auth.credentials.Credentials):
+            credentials = _SyncCredentialsAdapter(credentials)
+        elif not isinstance(credentials, Credentials):
             raise exceptions.InvalidType(
-                f"The configured credentials of type {type(credentials)} are invalid and must be of type `google.auth.aio.credentials.Credentials`"
+                f"The configured credentials of type {type(credentials)} are invalid and must be of type `google.auth.aio.credentials.Credentials` or `google.auth.credentials.Credentials`"
             )
-        self._credentials = credentials
+        self._credentials: Credentials = credentials
         _auth_request = auth_request
         if not _auth_request and AIOHTTP_INSTALLED:
             _auth_request = AiohttpRequest()
