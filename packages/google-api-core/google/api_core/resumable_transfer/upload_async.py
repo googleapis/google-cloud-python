@@ -478,7 +478,8 @@ class AsyncResumableUploadSession:
                 2. Protocol-recoverable errors during chunk transfer
                    (``RECOVERABLE_STATUS_CODES`` and ``MissingStatusHeaderError``)
                    and transport errors (``aiohttp.ClientError``,
-                   ``google.auth.exceptions.TransportError``, and
+                   ``google.auth.exceptions.TransportError``,
+                   ``google.auth.exceptions.ResponseError``, and
                    ``asyncio.TimeoutError``) always return ``True`` so the session
                    can query server state and recover.
 
