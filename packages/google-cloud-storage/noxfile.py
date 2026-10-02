@@ -110,22 +110,35 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
 
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
-    # Enable mypy once this repo has been updated for mypy evaluation.
-    session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
-
     session.install("-e", ".")
     session.install(
         "mypy",
         "types-setuptools",
         "types-protobuf",
         "types-requests",
+        "typing_extensions",
     )
     session.run(
         "mypy",
         f"--config-file={MYPY_CONFIG_FILE}",
+        "--follow-imports=silent",
         "-p",
-        "google",
+        "google.cloud.storage",
+        *session.posargs,
+    )
+
+    # Check every handwritten function, without imposing this requirement on
+    # generated GAPIC helpers imported by storage.
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "--follow-imports=silent",
+        "--check-untyped-defs",
+        "--disallow-untyped-defs",
+        "--disallow-any-generics",
+        "--warn-unused-ignores",
+        "google/cloud/storage",
+        "tests/typing",
         *session.posargs,
     )
 
