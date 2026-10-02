@@ -14,10 +14,6 @@
 
 """Asynchronous tests for Resumable Upload protocol implementation."""
 
-# The transport doubles below only implement the parts of aiohttp.ClientSession
-# that the session uses, so they do not satisfy the nominal AsyncTransport union.
-# mypy: disable-error-code="arg-type"
-
 import asyncio
 import datetime
 import inspect
