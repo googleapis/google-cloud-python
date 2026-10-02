@@ -1235,11 +1235,21 @@ def test_operations_base_transport_with_adc():
         adc.assert_called_once()
 
 
-def test_operations_auth_adc():
+@pytest.mark.parametrize(
+    "client_class",
+    PYPARAM_CLIENT,
+)
+def test_operations_auth_adc(client_class):
     # If no credentials are provided, we should use ADC credentials.
+    is_async = "async" in str(client_class).lower()
+    if is_async and parse_version_to_tuple(auth_version) < (2, 60, 0):
+        # Older versions of google-auth do not accept the synchronous credentials
+        # returned by ADC in `AsyncAuthorizedSession`.
+        pytest.skip("ADC with the async REST transport requires google-auth >= 2.60.0")
+
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        AbstractOperationsClient()
+        client_class()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(),
