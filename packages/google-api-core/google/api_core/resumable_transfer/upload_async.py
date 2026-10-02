@@ -357,9 +357,9 @@ class AsyncResumableUploadSession:
                     **retry_kwargs,
                 )
             except auth_exceptions.TimeoutError as exc:
-                # google-auth wraps timeouts in its own TimeoutError, which is
-                # unrelated to asyncio.TimeoutError; unwrap it so stall control
-                # sees the same timeout type as with aiohttp.ClientSession.
+                # google-auth raises its own TimeoutError (not an asyncio one, and
+                # not reliably chained to one); re-raise it as asyncio.TimeoutError
+                # so stall control sees the same type as with aiohttp.ClientSession.
                 raise asyncio.TimeoutError(str(exc)) from exc
             try:
                 status_code = response.status_code
