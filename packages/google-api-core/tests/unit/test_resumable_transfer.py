@@ -444,6 +444,22 @@ def test_sync_upload_request_body_argument_overrides_session_default(
     assert start_call.kwargs["data"] == expected
 
 
+def test_sync_upload_request_body_positional_override():
+    # request_body stays the second positional parameter, so callers that
+    # pass it positionally are not broken by the constructor default.
+    session_transport = _make_single_chunk_sync_transport()
+    session = ResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=session_transport,
+        request_body='{"name": "from-init"}',
+    )
+
+    session.upload(b"payload", '{"name": "positional"}')
+
+    start_call = session_transport.request.call_args_list[0]
+    assert start_call.kwargs["data"] == b'{"name": "positional"}'
+
+
 def test_sync_upload_request_body_defaults_to_empty():
     # Without a request_body on the constructor or the call, the start
     # request carries an empty payload.

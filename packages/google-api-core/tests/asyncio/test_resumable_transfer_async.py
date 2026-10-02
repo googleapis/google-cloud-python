@@ -324,6 +324,22 @@ async def test_async_upload_request_body_argument_overrides_session_default(
 
 
 @pytest.mark.asyncio
+async def test_async_upload_request_body_positional_override() -> None:
+    """Verifies request_body remains the second positional parameter of upload()."""
+    async_transport = _make_single_chunk_async_transport()
+    session = AsyncResumableUploadSession(
+        upload_url="https://api.example.com/start",
+        transport=async_transport,
+        request_body='{"name": "from-init"}',
+    )
+
+    await session.upload(b"payload", '{"name": "positional"}')
+
+    _, _, start_kwargs = async_transport.requests[0]
+    assert start_kwargs["data"] == b'{"name": "positional"}'
+
+
+@pytest.mark.asyncio
 async def test_async_upload_request_body_defaults_to_empty() -> None:
     """Verifies the start request carries an empty payload when no request_body is configured."""
     async_transport = _make_single_chunk_async_transport()
