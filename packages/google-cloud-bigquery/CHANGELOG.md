@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.46.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.46.0...google-cloud-bigquery-v3.46.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* **bigquery:** account for range element type, rounding mode, and foreign type in SchemaField equality ([#18540](https://github.com/googleapis/google-cloud-python/issues/18540)) ([053dbc9](https://github.com/googleapis/google-cloud-python/commit/053dbc9872ad3f26e10c311ff801b1a85faf1c32))
+
 ## [3.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.45.2...google-cloud-bigquery-v3.46.0) (2026-10-01)
 
 

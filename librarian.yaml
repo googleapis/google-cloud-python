@@ -570,7 +570,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.46.0
+    version: 3.46.1
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -2672,7 +2672,7 @@ libraries:
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
-    version: 1.17.2
+    version: 1.17.3
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
