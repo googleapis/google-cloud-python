@@ -23,6 +23,7 @@ import concurrent.futures
 import logging
 import os
 import random
+import sys
 import time
 import warnings
 from functools import partial
@@ -948,6 +949,13 @@ class _DataApiTarget(abc.ABC):
 
     def _maybe_start_accelerator(self, *, explicit: bool) -> None:
         """Start the accelerator daemon unless the environment prevents it."""
+        if sys.platform == "win32":
+            if explicit:
+                raise RuntimeError(
+                    "use_accelerator=True is not supported on Windows; pass "
+                    "use_accelerator=False to use the native client."
+                )
+            return
         if self.client._emulator_host is not None:
             if explicit:
                 raise RuntimeError(
@@ -1134,6 +1142,10 @@ class _DataApiTarget(abc.ABC):
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised.
         """
+        client = self._accelerator_client
+        if client is None:
+            raise _AcceleratorFallback()
+        daemon = self._accelerator_daemon
         row_merger = CrossSync._Sync_Impl._ReadRowsOperation(
             query,
             self,
@@ -1143,7 +1155,7 @@ class _DataApiTarget(abc.ABC):
             retryable_exceptions=(),
         )
         try:
-            stream = self._accelerator_client.read_rows(
+            stream = client.read_rows(
                 row_merger.request, timeout=operation_timeout
             )
             chunked_stream = row_merger.chunk_stream(stream)
@@ -1151,7 +1163,7 @@ class _DataApiTarget(abc.ABC):
         except Exception as exc:
             handle_accelerator_error(
                 exc,
-                daemon=self._accelerator_daemon,
+                daemon=daemon,
                 breaker=self._accelerator_breaker,
             )
             raise  # unreachable: handle_accelerator_error always raises
@@ -1483,14 +1495,16 @@ class _DataApiTarget(abc.ABC):
         client; other gRPC errors are translated to ``google.api_core``
         exceptions and raised.
         """
+        client = self._accelerator_client
+        if client is None:
+            raise _AcceleratorFallback()
+        daemon = self._accelerator_daemon
         try:
-            return self._accelerator_client.mutate_row(
-                request, timeout=operation_timeout
-            )
+            return client.mutate_row(request, timeout=operation_timeout)
         except Exception as exc:
             handle_accelerator_error(
                 exc,
-                daemon=self._accelerator_daemon,
+                daemon=daemon,
                 breaker=self._accelerator_breaker,
             )
             raise  # unreachable: handle_accelerator_error always raises

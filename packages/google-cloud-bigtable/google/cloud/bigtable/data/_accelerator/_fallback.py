@@ -67,17 +67,15 @@ class AcceleratorBreaker:
     """
 
     def __init__(self):
-        self._tripped = False
-        self._lock = threading.Lock()
+        self._tripped = threading.Event()
 
     def bypass(self) -> bool:
         """Whether the accelerator should be skipped entirely from now on."""
-        return self._tripped
+        return self._tripped.is_set()
 
     def trip(self) -> None:
         """Permanently bypass the accelerator (e.g. the daemon process died)."""
-        with self._lock:
-            self._tripped = True
+        self._tripped.set()
 
 
 def _grpc_code(exc: BaseException) -> StatusCode | None:
