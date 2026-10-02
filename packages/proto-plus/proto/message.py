@@ -17,7 +17,7 @@ import collections.abc
 import copy
 import re
 import warnings
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Mapping, Optional, Type, TypeVar, Union
 
 import google.protobuf
 from google.protobuf import descriptor_pb2, message
@@ -35,6 +35,8 @@ PROTOBUF_VERSION = google.protobuf.__version__
 _PROTOBUF_MAJOR_VERSION = PROTOBUF_VERSION.partition(".")[0]
 
 _upb = has_upb()  # Important to cache result here.
+
+_MessageT = TypeVar("_MessageT", bound="Message")
 
 
 class MessageMeta(type):
@@ -347,7 +349,9 @@ class MessageMeta(type):
         super(cls, instance).__setattr__("_pb", pb)
         return instance
 
-    def serialize(cls, instance) -> bytes:
+    def serialize(
+        cls, instance: Union["Message", message.Message, Mapping[str, Any]]
+    ) -> bytes:
         """Return the serialized proto.
 
         Args:
@@ -359,7 +363,7 @@ class MessageMeta(type):
         """
         return cls.pb(instance, coerce=True).SerializeToString()
 
-    def deserialize(cls, payload: bytes) -> "Message":
+    def deserialize(cls: Type[_MessageT], payload: bytes) -> _MessageT:
         """Given a serialized proto, deserialize it into a Message instance.
 
         Args:
