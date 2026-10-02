@@ -125,6 +125,9 @@ class _SyncCredentialsAdapter(Credentials):
         super().__init__()
         self._credentials = credentials
         self._sync_request: Optional[google.auth.transport.Request] = None
+        # Synchronous credentials are not safe to refresh concurrently, which
+        # concurrent requests would otherwise do from multiple worker threads.
+        self._refresh_lock = asyncio.Lock()
 
     def _get_sync_request(self) -> google.auth.transport.Request:
         """Returns the synchronous transport used to call the wrapped credentials.
@@ -144,9 +147,21 @@ class _SyncCredentialsAdapter(Credentials):
         self._credentials.apply(headers, token=token)
 
     async def refresh(self, request):
-        await asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
+        async with self._refresh_lock:
+            await asyncio.to_thread(self._credentials.refresh, self._get_sync_request())
 
     async def before_request(self, request, method, url, headers):
+        if not self._credentials.valid:
+            # Only one task refreshes the credentials; the others wait for it
+            # and then reuse the refreshed token. Requests with valid
+            # credentials never wait for the lock.
+            async with self._refresh_lock:
+                if not self._credentials.valid:
+                    await self._before_request_in_thread(method, url, headers)
+                    return
+        await self._before_request_in_thread(method, url, headers)
+
+    async def _before_request_in_thread(self, method, url, headers):
         await asyncio.to_thread(
             self._credentials.before_request,
             self._get_sync_request(),

@@ -436,6 +436,29 @@ def test_mock_request_clone():
     assert cloned is request
 
 
+class BlockingRefreshCredentials(google.auth.credentials.Credentials):
+    """Synchronous credentials whose refresh blocks until released by the test."""
+
+    def __init__(self):
+        super().__init__()
+        self.refresh_calls = 0
+        self.in_flight_refreshes = 0
+        self.max_in_flight_refreshes = 0
+        self.refresh_started = threading.Event()
+        self.release_refresh = threading.Event()
+
+    def refresh(self, request):
+        self.refresh_calls += 1
+        self.in_flight_refreshes += 1
+        self.max_in_flight_refreshes = max(
+            self.max_in_flight_refreshes, self.in_flight_refreshes
+        )
+        self.refresh_started.set()
+        self.release_refresh.wait(timeout=5)
+        self.in_flight_refreshes -= 1
+        self.token = "token"
+
+
 class TestSyncCredentialsAdapter(object):
     TEST_URL = "http://example.com/"
 
@@ -475,3 +498,62 @@ class TestSyncCredentialsAdapter(object):
 
         assert len(thread_ids) == 2
         assert threading.get_ident() not in thread_ids
+
+    @pytest.mark.asyncio
+    async def test_concurrent_before_request_refreshes_once(self):
+        sync_credentials = BlockingRefreshCredentials()
+        adapter = sessions._SyncCredentialsAdapter(sync_credentials)
+        headers = [{} for _ in range(5)]
+
+        tasks = [
+            asyncio.create_task(adapter.before_request(Mock(), "GET", self.TEST_URL, h))
+            for h in headers
+        ]
+        await asyncio.to_thread(sync_credentials.refresh_started.wait, 5)
+        # Give the remaining tasks the opportunity to start a refresh of their own.
+        await asyncio.sleep(0.1)
+        sync_credentials.release_refresh.set()
+        await asyncio.gather(*tasks)
+
+        assert sync_credentials.refresh_calls == 1
+        assert all(h["authorization"] == "Bearer token" for h in headers)
+
+    @pytest.mark.asyncio
+    async def test_refresh_is_serialized_with_before_request(self):
+        sync_credentials = BlockingRefreshCredentials()
+        adapter = sessions._SyncCredentialsAdapter(sync_credentials)
+        headers = {}
+
+        refresh_task = asyncio.create_task(adapter.refresh(Mock()))
+        await asyncio.to_thread(sync_credentials.refresh_started.wait, 5)
+        before_request_task = asyncio.create_task(
+            adapter.before_request(Mock(), "GET", self.TEST_URL, headers)
+        )
+        await asyncio.sleep(0.1)
+        sync_credentials.release_refresh.set()
+        await asyncio.gather(refresh_task, before_request_task)
+
+        assert sync_credentials.max_in_flight_refreshes == 1
+        assert sync_credentials.refresh_calls == 1
+        assert headers["authorization"] == "Bearer token"
+
+    @pytest.mark.asyncio
+    async def test_before_request_with_valid_credentials_does_not_wait_for_refresh(
+        self,
+    ):
+        sync_credentials = BlockingRefreshCredentials()
+        sync_credentials.token = "token"
+        adapter = sessions._SyncCredentialsAdapter(sync_credentials)
+        headers = {}
+
+        refresh_task = asyncio.create_task(adapter.refresh(Mock()))
+        await asyncio.to_thread(sync_credentials.refresh_started.wait, 5)
+        # Requests that already have a valid token must not wait for the refresh.
+        await asyncio.wait_for(
+            adapter.before_request(Mock(), "GET", self.TEST_URL, headers), timeout=5
+        )
+        assert headers["authorization"] == "Bearer token"
+
+        sync_credentials.release_refresh.set()
+        await refresh_task
+        assert sync_credentials.refresh_calls == 1
