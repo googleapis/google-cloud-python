@@ -51,6 +51,14 @@ FAKE_DEFAULT_SCOPES = ["scope3", "scope4"]
 FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
 
 
+@pytest.fixture(autouse=True)
+def clean_cert_config_env(monkeypatch):
+    monkeypatch.delenv(
+        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
+        raising=False,
+    )
+
+
 class TestCredentials(object):
     credentials = None
     credentials_with_all_fields = None
@@ -880,7 +888,10 @@ class TestIDTokenCredentials(object):
 
         assert self.credentials.token is not None
 
-    @pytest.mark.parametrize("bind_id_token", [None, True])
+    @pytest.mark.parametrize(
+        "cert_config_env,bind_id_token",
+        [(None, None), (None, True), ("/path/to/config.json", True)],
+    )
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
@@ -894,8 +905,14 @@ class TestIDTokenCredentials(object):
         mock_metadata_get,
         mock_should_request,
         mock_get_cert_and_bytes,
+        cert_config_env,
         bind_id_token,
+        monkeypatch,
     ):
+        if cert_config_env:
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
+            )
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
             base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
@@ -935,15 +952,30 @@ class TestIDTokenCredentials(object):
             == metrics.token_request_id_token_mds()
         )
 
+    @pytest.mark.parametrize(
+        "cert_config_env,bind_id_token",
+        [
+            (None, False),
+            ("/path/to/config.json", False),
+            ("/path/to/config.json", None),
+        ],
+    )
     @mock.patch(
         "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
-    def test_refresh_with_agent_identity_bind_id_token_false(
+    def test_refresh_with_agent_identity_unbound(
         self,
         mock_metadata_get,
         mock_get_cert_and_bytes,
+        cert_config_env,
+        bind_id_token,
+        monkeypatch,
     ):
+        if cert_config_env:
+            monkeypatch.setenv(
+                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
+            )
         id_token = "{}.{}.{}".format(
             base64.b64encode(b'{"some":"some"}').decode("utf-8"),
             base64.b64encode(b'{"exp": 3210}').decode("utf-8"),
@@ -959,7 +991,7 @@ class TestIDTokenCredentials(object):
             request=request,
             target_audience="https://audience.com",
             use_metadata_identity_endpoint=True,
-            bind_id_token=False,
+            bind_id_token=bind_id_token,
         )
 
         self.credentials.refresh(None)
