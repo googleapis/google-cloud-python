@@ -1952,3 +1952,20 @@ class TestIsMtlsEndpoint(object):
     )
     def test_is_mtls_endpoint_false(self, url):
         assert _mtls_helper.is_mtls_endpoint(url) is False
+
+
+@pytest.mark.parametrize(
+    "callback_result", [(None, None), (b"", b""), (b"cert", None), (None, b"key")]
+)
+@pytest.mark.parametrize(
+    "default_result",
+    [(True, b"default-cert", b"default-key", None), (False, None, None, None)],
+)
+def test_empty_client_cert_callback_uses_default(callback_result, default_result):
+    callback = mock.Mock(return_value=callback_result)
+    with mock.patch.object(
+        _mtls_helper, "get_client_ssl_credentials", return_value=default_result
+    ) as get_default:
+        assert _mtls_helper.get_client_cert_and_key(callback) == default_result[:3]
+    callback.assert_called_once_with()
+    get_default.assert_called_once_with(generate_encrypted_key=False)
