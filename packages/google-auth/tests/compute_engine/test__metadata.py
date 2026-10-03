@@ -70,14 +70,6 @@ MDS_PING_REQUEST_HEADER = {
 }
 
 
-@pytest.fixture(autouse=True)
-def clean_cert_config_env(monkeypatch):
-    monkeypatch.delenv(
-        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-        raising=False,
-    )
-
-
 def make_request(data, status=http_client.OK, headers=None, retry=False):
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = status
@@ -799,7 +791,6 @@ def test_get_service_account_token_with_scopes_string(
     assert expiry == utcnow() + datetime.timedelta(seconds=ttl)
 
 
-@pytest.mark.parametrize("cert_config_env", [None, "/path/to/config.json"])
 @mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
 @mock.patch(
     "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
@@ -814,15 +805,9 @@ def test_get_service_account_token_with_bound_token(
     mock_metrics_header_value,
     mock_get_cert_and_bytes,
     mock_should_request,
-    cert_config_env,
-    monkeypatch,
 ):
     # Test the successful path where a certificate is found and a bound token
     # is requested.
-    if cert_config_env:
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
-        )
     mock_cert = mock.sentinel.cert
     mock_cert_bytes = b"fake_cert_bytes"
     mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
@@ -885,69 +870,18 @@ def test_get_service_account_token_should_not_bind(
     assert "Content-Type" not in kwargs["headers"]
 
 
-@pytest.mark.parametrize(
-    "cert_config_env,bind_id_token",
-    [(None, False), ("/path/to/config.json", False), ("/path/to/config.json", None)],
-)
 @mock.patch(
     "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
 )
-def test__build_token_request_options_unbound(
-    mock_get_cert_and_bytes, cert_config_env, bind_id_token, monkeypatch
-):
-    if cert_config_env:
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
-        )
-
+def test__build_token_request_options_unbound(mock_get_cert_and_bytes):
     method, body, headers = _metadata._build_token_request_options(
-        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_id_token=bind_id_token
+        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_token=False
     )
 
     mock_get_cert_and_bytes.assert_not_called()
     assert method == "GET"
     assert body is None
     assert headers == {"x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE}
-
-
-@pytest.mark.parametrize(
-    "cert_config_env,bind_id_token",
-    [(None, None), (None, True), ("/path/to/config.json", True)],
-)
-@mock.patch("google.auth._agent_identity_utils.should_request_bound_token")
-@mock.patch(
-    "google.auth._agent_identity_utils.get_agent_identity_certificate_and_bytes"
-)
-def test__build_token_request_options_bound(
-    mock_get_cert_and_bytes,
-    mock_should_request,
-    cert_config_env,
-    bind_id_token,
-    monkeypatch,
-):
-    if cert_config_env:
-        monkeypatch.setenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, cert_config_env
-        )
-    mock_cert = mock.sentinel.cert
-    mock_cert_bytes = b"fake_cert_bytes"
-    mock_get_cert_and_bytes.return_value = (mock_cert, mock_cert_bytes)
-    mock_should_request.return_value = True
-
-    method, body, headers = _metadata._build_token_request_options(
-        ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE, bind_id_token=bind_id_token
-    )
-
-    mock_get_cert_and_bytes.assert_called_once()
-    mock_should_request.assert_called_once_with(mock_cert)
-    assert method == "POST"
-    assert body == json.dumps(
-        {"certificate_chain": mock_cert_bytes.decode("utf-8")}
-    ).encode("utf-8")
-    assert headers == {
-        "x-goog-api-client": ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
-        "Content-Type": "application/json",
-    }
 
 
 def test_get_service_account_info():

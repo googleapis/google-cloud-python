@@ -21,12 +21,14 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 import logging
+import os
 from typing import TYPE_CHECKING, Optional
 
 from google.auth import (
     _helpers,
     _regional_access_boundary_utils,
     credentials,
+    environment_vars,
     exceptions,
     iam,
     jwt,
@@ -552,9 +554,17 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
+            if self._bind_id_token is not None:
+                bind_token = self._bind_id_token
+            else:
+                # Temporary gate: keep default ID tokens unbound when
+                # GOOGLE_API_CERTIFICATE_CONFIG is set (Cloud Run).
+                bind_token = not os.environ.get(
+                    environment_vars.GOOGLE_API_CERTIFICATE_CONFIG
+                )
             method, body, headers = _metadata._build_token_request_options(
                 metrics.token_request_id_token_mds(),
-                bind_id_token=self._bind_id_token,
+                bind_token=bind_token,
             )
 
             id_token = _metadata.get(
