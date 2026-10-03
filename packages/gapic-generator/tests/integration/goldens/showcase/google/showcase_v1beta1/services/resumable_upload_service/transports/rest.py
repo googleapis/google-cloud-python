@@ -23,7 +23,6 @@ from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
-import functools
 import urllib.parse
 from google.api_core import resumable_transfer
 from google.showcase_v1beta1._compat import transcode_request
@@ -443,17 +442,15 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                 if isinstance(timeout, (int, float))
                 else {}
             )
-            session = resumable_transfer.ResumableUploadSession(
+            return resumable_transfer.ResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
                 response_type=resumable_upload.UploadMediaResponse,
                 start_retry=retry if isinstance(retry, retries.Retry) else None,
+                request_body=body,
                 **session_kwargs,
             )
-            session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
-            session.iter_upload = functools.partial(session.iter_upload, request_body=body or "")  # type: ignore[method-assign]
-            return session
 
     @property
     def upload_media(self) -> Callable[

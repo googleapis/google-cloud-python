@@ -307,21 +307,17 @@ session_kwargs: Dict[str, Any] = (
     if isinstance(timeout, (int, float))
     else {}
 )
-session = {{ client_output_ident }}(
+return {{ client_output_ident }}(
     upload_url=upload_url,
     config=config,
     transport=self._session,
     response_type={{ method.output.ident }},
     start_retry=retry if isinstance(retry, {{ retry_class }}) else None,
+    {% if body_spec %}
+    request_body=body,
+    {% endif %}
     **session_kwargs,
 )
-{% if body_spec %}
-session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
-{% if not is_async %}
-session.iter_upload = functools.partial(session.iter_upload, request_body=body or "")  # type: ignore[method-assign]
-{% endif %}
-{% endif %}
-return session
 {%- endmacro %}
 
 

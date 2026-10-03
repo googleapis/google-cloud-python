@@ -14,7 +14,6 @@ from google.api_core import rest_helpers
 from google.api_core import rest_streaming
 from google.api_core import gapic_v1
 {% if service.has_resumable_upload_methods %}
-import functools
 import urllib.parse
 from google.api_core import resumable_transfer
 {% endif %}
