@@ -2697,12 +2697,14 @@ class RowIterator(HTTPIterator):
             return pyarrow.Table.from_batches(record_batches)
 
         else:
-            # No records (not record_batches), use schema based on BigQuery schema
-            # **or**
-            # we used the REST API (bqstorage_client is None),
-            # which doesn't add arrow extension metadata, so we let
-            # `bq_to_arrow_schema` do it.
-            arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+            # No records (not record_batches), use schema from REST arrowSchema header if available,
+            # or fall back to bq_to_arrow_schema based on BigQuery schema.
+            arrow_schema = None
+            first_page = getattr(self, "_raw_first_page_response", None) or getattr(self, "_first_page_response", None)
+            if isinstance(first_page, dict) and "arrowSchema" in first_page:
+                arrow_schema = self._parse_arrow_schema_from_json(first_page.get("arrowSchema"))
+            if arrow_schema is None:
+                arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
             return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
     def to_dataframe_iterable(

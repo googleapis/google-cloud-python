@@ -3743,6 +3743,31 @@ class TestRowIterator(unittest.TestCase):
             timeout=None,
         )
 
+    def test_to_arrow_zero_rows_uses_rest_arrow_schema(self):
+        mock_client = mock.Mock()
+        mock_client.project = "test-project"
+        first_page = {
+            "jobComplete": True,
+            "totalRows": "0",
+            "arrowSchema": {"serializedSchema": "b64_schema"},
+        }
+        row_iterator = self._make_one(client=mock_client, api_request=mock.Mock(), path="/foo", schema=[])
+        row_iterator._first_page_response = first_page
+        row_iterator._raw_first_page_response = first_page
+        row_iterator._query_results_format = "ARROW"
+        row_iterator._job_id = "test-job-id"
+        row_iterator._total_rows = 0
+
+        mock_schema = mock.Mock()
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow, \
+             mock.patch("base64.b64decode", side_effect=lambda x: x.encode("utf-8")):
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = mock_schema
+
+            table = row_iterator.to_arrow(create_bqstorage_client=False)
+
+        mock_pyarrow.Table.from_batches.assert_called_once_with([], schema=mock_schema)
+
     def test_to_arrow_w_bqstorage_no_streams(self):
         pytest.importorskip("numpy")
         pyarrow = pytest.importorskip("pyarrow")
