@@ -170,6 +170,7 @@
             metadata=metadata,
             {% if method.is_resumable_upload %}
             config=config,
+            start_retry=retry,
             {% endif %}
         )
         {% if method.lro %}

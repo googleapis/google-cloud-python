@@ -227,8 +227,10 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 request: {{method.input.ident}}, *,
                 {% if method.is_resumable_upload %}
                 config: Optional[resumable_transfer.ResumableUploadConfig]=None,
-                {% endif %}
+                start_retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                {% else %}
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                {% endif %}
                 timeout: Optional[float]=None,
                 {{ shared_macros.client_method_metadata_argument()|indent(8) }}={{ shared_macros.client_method_metadata_default_value() }},
                 ){% if not method.void %} -> {% if method.is_resumable_upload %}{{method.client_output.ident}}{% elif not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
@@ -245,9 +247,12 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 {% if method.is_resumable_upload %}
                 config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
                     Optional configuration for the resumable upload session.
-                {% endif %}
+                start_retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried when initiating the resumable upload session.
+                {% else %}
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
+                {% endif %}
                 timeout (float): The timeout for this request.
                 {{ shared_macros.client_method_metadata_argument_doc()|indent(8) }}
             {% if not method.void %}

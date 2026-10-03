@@ -334,6 +334,7 @@ class ResumableUploadServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
             config=config,
+            start_retry=retry,
         )
 
         # Done; return the response.
