@@ -68,3 +68,71 @@ class TestParquetOptions:
             "enableListInference": False,
             "mapTargetType": "ARRAY_OF_STRUCT",
         }
+
+
+class TestQueryResultsFormat:
+    def test_values(self):
+        from google.cloud.bigquery.format_options import QueryResultsFormat
+
+        assert QueryResultsFormat.STRUCT_ENCODING == "STRUCT_ENCODING"
+        assert QueryResultsFormat.ARROW == "ARROW"
+
+
+class TestArrowSerializationOptions:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.format_options import ArrowSerializationOptions
+
+        return ArrowSerializationOptions
+
+    def test_ctor_and_properties(self):
+        opts = self._get_target_class()(buffer_byte_limit=1048576, use_int64_timestamp=True)
+        assert opts.buffer_byte_limit == 1048576
+        assert opts.use_int64_timestamp is True
+
+    def test_setters(self):
+        opts = self._get_target_class()()
+        opts.buffer_byte_limit = 2048576
+        opts.use_int64_timestamp = False
+        assert opts.buffer_byte_limit == 2048576
+        assert opts.use_int64_timestamp is False
+
+    def test_from_api_repr(self):
+        opts = self._get_target_class().from_api_repr(
+            {"bufferByteLimit": "1048576", "useInt64Timestamp": True}
+        )
+        assert opts.buffer_byte_limit == 1048576
+        assert opts.use_int64_timestamp is True
+
+    def test_to_api_repr(self):
+        opts = self._get_target_class()(buffer_byte_limit=1048576, use_int64_timestamp=True)
+        assert opts.to_api_repr() == {
+            "bufferByteLimit": "1048576",
+            "useInt64Timestamp": True,
+        }
+
+
+class TestArrowQueryResult:
+    def test_properties(self):
+        from google.cloud.bigquery.table import ArrowQueryResult
+        import unittest.mock
+
+        mock_table = unittest.mock.MagicMock()
+        mock_table.__len__.return_value = 100
+
+        result = ArrowQueryResult(
+            table=mock_table,
+            query_id="query_123",
+            job_id="job_abc",
+            job_creation_reason="JOB_CREATION_OPTIONAL",
+            total_rows=100,
+        )
+
+        assert result.table == mock_table
+        assert result.query_id == "query_123"
+        assert result.job_id == "job_abc"
+        assert result.job_creation_reason == "JOB_CREATION_OPTIONAL"
+        assert result.total_rows == 100
+        assert len(result) == 100
+
+

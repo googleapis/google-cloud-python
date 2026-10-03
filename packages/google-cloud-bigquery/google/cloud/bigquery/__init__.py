@@ -57,6 +57,7 @@ from google.cloud.bigquery.external_config import CSVOptions
 from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.external_config import HivePartitioningOptions
+from google.cloud.bigquery.format_options import ArrowSerializationOptions
 from google.cloud.bigquery.format_options import AvroOptions
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.enums import QueryResultsCompressionCodec
@@ -111,6 +112,7 @@ from google.cloud.bigquery.standard_sql import StandardSqlDataType
 from google.cloud.bigquery.standard_sql import StandardSqlField
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
 from google.cloud.bigquery.standard_sql import StandardSqlTableType
+from google.cloud.bigquery.table import ArrowQueryResult
 from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
@@ -160,6 +162,7 @@ __all__ = [
     "DatasetReference",
     "AccessEntry",
     # Tables
+    "ArrowQueryResult",
     "Table",
     "TableReference",
     "PartitionRange",
@@ -193,6 +196,7 @@ __all__ = [
     "PolicyTagList",
     "UDFResource",
     "ExternalConfig",
+    "ArrowSerializationOptions",
     "AvroOptions",
     "BigtableOptions",
     "BigtableColumnFamily",

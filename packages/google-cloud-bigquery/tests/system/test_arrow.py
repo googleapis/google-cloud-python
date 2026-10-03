@@ -274,3 +274,67 @@ def test_query_and_wait_arrow_format_to_dataframe_iterable(bigquery_client):
     concat_df = pandas.concat(dfs, ignore_index=True)
     assert concat_df.columns.tolist() == ["num", "text"]
     assert concat_df.to_dict(orient="records") == [{"num": 200, "text": "python"}]
+
+
+def test_query_rest_arrow_format_config(bigquery_client):
+    """System test for setting QueryResultsFormat.ARROW on QueryJobConfig via REST client.query()."""
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_results_format = enums.QueryResultsFormat.ARROW
+
+    assert job_config.query_results_format == enums.QueryResultsFormat.ARROW
+
+    # Execute query using the REST client
+    query_job = bigquery_client.query("SELECT 42 AS val, 'hello' AS msg", job_config=job_config)
+    results = query_job.result()
+
+    assert results.total_rows == 1
+    df = results.to_dataframe()
+    assert df.to_dict(orient="records") == [{"val": 42, "msg": "hello"}]
+
+
+def test_query_arrow_veneer_method(bigquery_client):
+    """System test for client.query_arrow() veneer method returning ArrowQueryResult container."""
+    result = bigquery_client.query_arrow("SELECT 999 AS id, 'zero_copy' AS mode")
+
+    assert isinstance(result, bigquery.ArrowQueryResult)
+    assert result.total_rows == 1
+    table = result.table
+    assert isinstance(table, pyarrow.Table)
+    assert table.column_names == ["id", "mode"]
+    assert table.to_pydict() == {"id": [999], "mode": ["zero_copy"]}
+
+
+def test_query_arrow_serialization_options(bigquery_client):
+    """System test for configuring ArrowSerializationOptions in QueryJobConfig."""
+    from google.cloud.bigquery.format_options import ArrowSerializationOptions
+
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_results_format = enums.QueryResultsFormat.ARROW
+    job_config.arrow_serialization_options = ArrowSerializationOptions(
+        buffer_byte_limit=1048576,
+        use_int64_timestamp=True,
+    )
+
+    query_job = bigquery_client.query("SELECT CURRENT_TIMESTAMP() AS now", job_config=job_config)
+    results = query_job.result()
+    table = results.to_arrow()
+
+    assert isinstance(table, pyarrow.Table)
+    assert table.column_names == ["now"]
+
+
+def test_query_arrow_multi_page(bigquery_client):
+    """System test for multi-page query results streamed via Arrow format."""
+    job_config = bigquery.QueryJobConfig()
+    job_config.query_results_format = enums.QueryResultsFormat.ARROW
+
+    # Generate 5,000 rows and fetch in pages of 1,000
+    query_str = "SELECT num FROM UNNEST(GENERATE_ARRAY(1, 5000)) AS num"
+    query_job = bigquery_client.query(query_str, job_config=job_config)
+    results = query_job.result(page_size=1000)
+
+    table = results.to_arrow()
+    assert isinstance(table, pyarrow.Table)
+    assert len(table) == 5000
+    assert table.column_names == ["num"]
+

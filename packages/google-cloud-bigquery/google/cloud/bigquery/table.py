@@ -1866,6 +1866,72 @@ class _NoopProgressBarQueue(object):
         """Don't actually do anything with the item."""
 
 
+class ArrowQueryResult:
+    """Query result container providing zero-copy access to Apache Arrow vector batches and query metadata.
+
+    Args:
+        table (pyarrow.Table): The Arrow Table holding the query result data.
+        query_id (Optional[str]): Unique query execution identifier for fast-path queries.
+        job_id (Optional[str]): Job ID associated with query execution.
+        job_creation_reason (Optional[str]): Reason a job was created when optional job creation was requested.
+        total_rows (Optional[int]): Total number of rows across all batches.
+    """
+
+    def __init__(
+        self,
+        table: "pyarrow.Table",
+        query_id: Optional[str] = None,
+        job_id: Optional[str] = None,
+        job_creation_reason: Optional[str] = None,
+        total_rows: Optional[int] = None,
+    ):
+        self._table = table
+        self._query_id = query_id
+        self._job_id = job_id
+        self._job_creation_reason = job_creation_reason
+        self._total_rows = total_rows if total_rows is not None else (len(table) if table is not None else 0)
+
+    @property
+    def table(self) -> "pyarrow.Table":
+        """pyarrow.Table: Underlying Apache Arrow table."""
+        return self._table
+
+    @property
+    def query_id(self) -> Optional[str]:
+        """Optional[str]: Unique query execution identifier from fast-path execution."""
+        return self._query_id
+
+    @property
+    def job_id(self) -> Optional[str]:
+        """Optional[str]: Job ID associated with query execution."""
+        return self._job_id
+
+    @property
+    def job_creation_reason(self) -> Optional[str]:
+        """Optional[str]: Reason a job was created when optional job creation was requested."""
+        return self._job_creation_reason
+
+    @property
+    def total_rows(self) -> Optional[int]:
+        """Optional[int]: Total number of rows across all batches."""
+        return self._total_rows
+
+    def to_dataframe(self, *args: Any, **kwargs: Any) -> "pandas.DataFrame":
+        """Convert underlying Arrow Table directly to a pandas DataFrame."""
+        return self._table.to_pandas(*args, **kwargs)
+
+    def to_pandas(self, *args: Any, **kwargs: Any) -> "pandas.DataFrame":
+        """Convert underlying Arrow Table directly to a pandas DataFrame."""
+        return self._table.to_pandas(*args, **kwargs)
+
+    def __len__(self) -> int:
+
+        return len(self._table) if self._table is not None else 0
+
+    def __repr__(self) -> str:
+        return f"ArrowQueryResult(rows={self._total_rows}, query_id={self._query_id}, job_id={self._job_id})"
+
+
 class RowIterator(HTTPIterator):
     """A class for iterating through HTTP/JSON API row list responses.
 
@@ -1966,10 +2032,14 @@ class RowIterator(HTTPIterator):
         self._table = table
         self._total_rows = total_rows
         self._first_page_response = first_page_response
+        # Preserve unconsumed first page raw HTTP response to enable REST Arrow zero-copy
+        # fast-path decoding in to_arrow() even when RowIterator.result() is initialized separately.
+        self._raw_first_page_response = first_page_response
         self._location = location
         self._job_id = job_id
         self._query_id = query_id
         self._project = project
+
         self._num_dml_affected_rows = num_dml_affected_rows
         self._query = query
         self._total_bytes_processed = total_bytes_processed
@@ -2272,7 +2342,12 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 2.31.0
         """
-        if self._query_results_format == QueryResultsFormat.ARROW.value:
+        raw_first = getattr(self, "_raw_first_page_response", None)
+        has_arrow_raw = isinstance(raw_first, dict) and ("arrowRecordBatch" in raw_first or "arrowSchema" in raw_first)
+        if (
+            self._query_results_format == QueryResultsFormat.ARROW.value
+            or has_arrow_raw
+        ):
             return self._download_arrow_from_job_id(
                 bqstorage_client=bqstorage_client,
                 timeout=timeout,
@@ -2281,6 +2356,7 @@ class RowIterator(HTTPIterator):
         self._maybe_warn_max_results(bqstorage_client)
 
         bqstorage_download = functools.partial(
+
             _pandas_helpers.download_arrow_bqstorage,
             self._billing_project,
             self._table,
@@ -2327,15 +2403,9 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        # Step 1: Ensure BigQuery Read API client is available upfront.
-        if bqstorage_client is None:
-            if self.client is None:
-                raise ValueError("RowIterator client is None.")
+        # Step 1: Attempt to initialize BigQuery Read API client if available.
+        if bqstorage_client is None and self.client is not None:
             bqstorage_client = self.client._ensure_bqstorage_client()
-            if bqstorage_client is None:
-                raise ValueError(
-                    "The google-cloud-bigquery-storage library is required to read Arrow results."
-                )
 
         offset = 0
         pa_schema = None
@@ -2343,8 +2413,8 @@ class RowIterator(HTTPIterator):
         job_complete = False
 
         # Step 2: Process initial inline Arrow response from jobs.query if available.
-        if self._first_page_response:
-            first_page = self._first_page_response
+        first_page = getattr(self, "_first_page_response", None) or getattr(self, "_raw_first_page_response", None)
+        if first_page:
             self._first_page_response = None
 
             job_complete = bool(first_page.get("jobComplete", False))
@@ -2376,7 +2446,16 @@ class RowIterator(HTTPIterator):
         if job_complete and offset >= total_rows:
             return
 
+        # Step 4: Ensure BigQuery Read API client is available for remaining streamed batches.
+        if bqstorage_client is None:
+            if self.client is None:
+                raise ValueError("RowIterator client is None.")
+            raise ValueError(
+                "The google-cloud-bigquery-storage library is required to read remaining Arrow results."
+            )
+
         # Step 4: Stream remaining Arrow record batches from the job default stream.
+
         project = self._project or (self.client.project if self.client else None)
         location = self._location or (self.client.location if self.client else None)
         stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
@@ -2518,8 +2597,10 @@ class RowIterator(HTTPIterator):
         if record_batches and (
             bqstorage_client is not None
             or self._query_results_format == QueryResultsFormat.ARROW.value
+            or getattr(self, "_raw_first_page_response", None) is not None
         ):
             return pyarrow.Table.from_batches(record_batches)
+
         else:
             # No records (not record_batches), use schema based on BigQuery schema
             # **or**
