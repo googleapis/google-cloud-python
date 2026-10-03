@@ -200,6 +200,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # gRPC transports delegate resumable upload calls to an internal REST
         # transport instance.
         self._rest_transport: Optional[{{ service.name }}RestTransport] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
         {% endif %}
 
         if api_mtls_endpoint:
@@ -389,6 +390,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
+                                client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
                             )
                         return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _RestStub()

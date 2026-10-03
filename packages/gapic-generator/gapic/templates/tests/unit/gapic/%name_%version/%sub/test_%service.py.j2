@@ -1558,6 +1558,35 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_rest_st
         mock_rest_close.assert_called_once()
 
 
+def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_rest_stub_mtls():
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transport = transports.{{ service.name }}GrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_cert_source_for_mtls=client_cert_source_callback,
+        )
+        mock_configure_mtls_channel.assert_not_called()
+        stub = transport.{{ method.transport_safe_name|snake_case }}
+        stub({{ method.input.ident }}())
+        mock_configure_mtls_channel.assert_called_once_with(
+            client_cert_source_callback
+        )
+        transport.close()
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_mtls_error():
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_cert_source_for_mtls=client_cert_source_callback,
+    )
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError) as exc_info:
+        await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
+    assert "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods." in str(exc_info.value)
+    await transport.close()
+
+
 @pytest.mark.asyncio
 async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_channel_without_credentials_error():
     channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())

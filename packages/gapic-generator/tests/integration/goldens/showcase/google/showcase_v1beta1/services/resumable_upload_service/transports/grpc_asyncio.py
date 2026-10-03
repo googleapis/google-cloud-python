@@ -254,6 +254,7 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
         # gRPC transports delegate resumable upload calls to an internal REST
         # transport instance.
         self._rest_transport: Optional[Any] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -364,6 +365,15 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                             )
                         return _error()
                 self._stubs['upload_media'] = _ErrorStub()
+            elif self._client_cert_source_for_mtls:
+                class _MtlsErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _mtls_error():
+                            raise core_exceptions.AsyncRestUnsupportedParameterError(
+                                "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods."
+                            )
+                        return _mtls_error()
+                self._stubs['upload_media'] = _MtlsErrorStub()
             elif HAS_ASYNC_REST:
                 transport = self
                 class _AsyncRestStub:
