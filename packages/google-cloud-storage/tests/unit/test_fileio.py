@@ -159,6 +159,27 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
         reader = self._make_blob_reader(blob)
         self.assertEqual(reader.read(), b"")
 
+    def test_read_doubly_gzipped_eof(self):
+        blob = mock.Mock()
+        fake_data = b"x" * 100  # 100 bytes of test data
+
+        def download_side_effect(start=0, end=None, **_):
+            # For doubly-gzipped blobs (Content-Encoding: gzip), out-of-bounds
+            # range requests return HTTP 200 with the full transcoded body
+            # rather than HTTP 416. Simulate this GCS server behavior.
+            return fake_data
+
+        blob.download_as_bytes = mock.Mock(side_effect=download_side_effect)
+        reader = self._make_blob_reader(blob, chunk_size=1024)
+
+        # First read fetches 100 bytes (< 1024 chunk_size), setting client-side EOF
+        data1 = reader.read(1024)
+        self.assertEqual(data1, fake_data)
+
+        # Second read must return empty bytes without making additional HTTP requests
+        data2 = reader.read(1024)
+        self.assertEqual(data2, b"")
+
     def test_readline(self):
         blob = mock.Mock()
 
@@ -185,15 +206,15 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
         blob.size = len(TEST_BINARY_DATA)
         reader.seek(0)
 
-        # Read all lines. The readlines algorithm will attempt to read past the end of the last line once to verify there is no more to read.
+        # Read all lines. With client-side EOF detection on short reads (chunk 6 returned 4 bytes < 10 requested), no extra call past EOF is made.
         self.assertEqual(b"".join(reader.readlines()), TEST_BINARY_DATA)
         blob.download_as_bytes.assert_called_with(
-            start=len(TEST_BINARY_DATA),
-            end=len(TEST_BINARY_DATA) + 10,
+            start=50,
+            end=60,
             checksum=None,
             retry=DEFAULT_RETRY,
         )
-        self.assertEqual(blob.download_as_bytes.call_count, 13)
+        self.assertEqual(blob.download_as_bytes.call_count, 12)
 
         reader.close()
 
