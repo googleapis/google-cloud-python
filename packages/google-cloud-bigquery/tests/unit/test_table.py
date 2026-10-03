@@ -3692,6 +3692,57 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 2)
 
+    def test_download_arrow_rest_page_token_fallback(self):
+        mock_client = mock.Mock()
+        mock_client.project = "test-project"
+        mock_client._ensure_bqstorage_client.return_value = None
+
+        first_page = {
+            "jobComplete": True,
+            "totalRows": "6",
+            "pageToken": "token_page2",
+            "arrowSchema": {"serializedSchema": "b64_schema"},
+            "arrowRecordBatch": {"serializedRecordBatch": "b64_batch_1"},
+        }
+
+        page2_response = {
+            "pageToken": None,
+            "arrowRecordBatch": {"serializedRecordBatch": "b64_batch_2"},
+        }
+        mock_client._connection.api_request.return_value = page2_response
+
+        row_iterator = self._make_one(client=mock_client, api_request=mock.Mock(), path="/foo", schema=[])
+        row_iterator._first_page_response = first_page
+        row_iterator._job_id = "test-job-id"
+        row_iterator._project = "test-project"
+        row_iterator._total_rows = 6
+
+        batch_1 = mock.Mock()
+        batch_1.num_rows = 3
+        batch_2 = mock.Mock()
+        batch_2.num_rows = 3
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow, \
+             mock.patch("base64.b64decode", side_effect=lambda x: x.encode("utf-8")):
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = "mock_schema"
+            mock_pyarrow.ipc.read_record_batch.side_effect = [batch_1, batch_2]
+
+            with pytest.warns(UserWarning, match="google-cloud-bigquery-storage library is not installed"):
+                batches = list(row_iterator._download_arrow_from_job_id())
+
+        self.assertEqual(batches, [batch_1, batch_2])
+        mock_client._connection.api_request.assert_called_once_with(
+            method="GET",
+            path="/projects/test-project/queries/test-job-id",
+            query_params={
+                "pageToken": "token_page2",
+                "formatOptions.useInt64Timestamp": True,
+                "queryResultsFormat": "ARROW",
+            },
+            timeout=None,
+        )
+
     def test_to_arrow_w_bqstorage_no_streams(self):
         pytest.importorskip("numpy")
         pyarrow = pytest.importorskip("pyarrow")

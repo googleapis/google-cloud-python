@@ -429,7 +429,7 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
 
             batches = list(iterator._download_arrow_from_job_id(timeout=5.0))
             self.assertEqual(batches, [mock_first_batch])
-            mock_client._ensure_bqstorage_client.assert_called_once()
+            mock_client._ensure_bqstorage_client.assert_not_called()
 
     def test_download_arrow_from_job_id_calls_read_rows_when_job_not_complete(self):
         mock_client = mock.MagicMock()
