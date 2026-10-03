@@ -219,6 +219,7 @@ def create_channel(
     default_host=None,
     compression=None,
     attempt_direct_path: Optional[bool] = False,
+    attempt_direct_path_xds_over_interconnect: Optional[bool] = False,
     **kwargs,
 ):
     """Create an AsyncIO secure channel with credentials.
@@ -270,6 +271,9 @@ def create_channel(
               `False` as the Service may not support Direct Path.
             - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
               result in `ValueError` as this combination  is not yet supported.
+        attempt_direct_path_xds_over_interconnect (Optional[bool]): If set,
+            DirectPath over Cloud Interconnect will be attempted using standard
+            TLS credentials and ``?force-xds`` C2P target resolution.
 
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
@@ -277,31 +281,30 @@ def create_channel(
         aio.Channel: The created channel.
 
     Raises:
-        google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
-        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is set to `True`.
+        google.api_core.DuplicateCredentialArgs: If both a credentials object
+            and credentials_file are passed.
+        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is
+            set to `True` without `attempt_direct_path_xds_over_interconnect`.
     """
 
     if credentials_file is not None:
         warnings.warn(general_helpers._CREDENTIALS_FILE_WARNING, DeprecationWarning)
 
-    # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
-    # raise ValueError as this is not yet supported.
-    # See https://github.com/googleapis/python-api-core/issues/590
-    if ssl_credentials and attempt_direct_path:
-        raise ValueError("Using ssl_credentials with Direct Path is not supported")
-
-    composite_credentials = grpc_helpers._create_composite_credentials(
-        credentials=credentials,
-        credentials_file=credentials_file,
-        scopes=scopes,
-        default_scopes=default_scopes,
-        ssl_credentials=ssl_credentials,
-        quota_project_id=quota_project_id,
-        default_host=default_host,
+    target, composite_credentials, kwargs = (
+        grpc_helpers._setup_direct_path_and_credentials(
+            target=target,
+            credentials=credentials,
+            scopes=scopes,
+            ssl_credentials=ssl_credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=default_scopes,
+            default_host=default_host,
+            attempt_direct_path=attempt_direct_path,
+            attempt_direct_path_xds_over_interconnect=attempt_direct_path_xds_over_interconnect,
+            **kwargs,
+        )
     )
-
-    if attempt_direct_path:
-        target = grpc_helpers._modify_target_for_direct_path(target)
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
