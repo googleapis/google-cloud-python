@@ -2137,6 +2137,35 @@ def test_resumable_upload_service_upload_media_grpc_rest_stub():
         mock_rest_close.assert_called_once()
 
 
+def test_resumable_upload_service_upload_media_grpc_rest_stub_mtls():
+    with mock.patch(
+        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+    ) as mock_configure_mtls_channel:
+        transport = transports.ResumableUploadServiceGrpcTransport(
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_cert_source_for_mtls=client_cert_source_callback,
+        )
+        mock_configure_mtls_channel.assert_not_called()
+        stub = transport.upload_media
+        stub(resumable_upload.UploadMediaRequest())
+        mock_configure_mtls_channel.assert_called_once_with(
+            client_cert_source_callback
+        )
+        transport.close()
+
+
+@pytest.mark.asyncio
+async def test_resumable_upload_service_upload_media_grpc_asyncio_mtls_error():
+    transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        client_cert_source_for_mtls=client_cert_source_callback,
+    )
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError) as exc_info:
+        await transport.upload_media(resumable_upload.UploadMediaRequest())
+    assert "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods." in str(exc_info.value)
+    await transport.close()
+
+
 @pytest.mark.asyncio
 async def test_resumable_upload_service_upload_media_grpc_asyncio_channel_without_credentials_error():
     channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())

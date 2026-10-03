@@ -203,6 +203,7 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
         # gRPC transports delegate resumable upload calls to an internal REST
         # transport instance.
         self._rest_transport: Optional[ResumableUploadServiceRestTransport] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -362,6 +363,7 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
                                 host=transport._host,
                                 credentials=transport._credentials,
                                 client_info=transport._client_info,
+                                client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
                             )
                         return transport._rest_transport.upload_media(*args, **kwargs)
                 self._stubs['upload_media'] = _RestStub()
