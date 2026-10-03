@@ -62,11 +62,6 @@ from .transports.base import ResumableUploadServiceTransport, DEFAULT_CLIENT_INF
 from .transports.grpc import ResumableUploadServiceGrpcTransport
 from .transports.grpc_asyncio import ResumableUploadServiceGrpcAsyncIOTransport
 from .transports.rest import ResumableUploadServiceRestTransport
-try:
-    from .transports.rest_asyncio import AsyncResumableUploadServiceRestTransport
-    HAS_ASYNC_REST_DEPENDENCIES = True  # pragma: NO COVER
-except ImportError: # pragma: NO COVER
-    HAS_ASYNC_REST_DEPENDENCIES = False
 
 
 class ResumableUploadServiceClientMeta(type):
@@ -80,8 +75,6 @@ class ResumableUploadServiceClientMeta(type):
     _transport_registry["grpc"] = ResumableUploadServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ResumableUploadServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ResumableUploadServiceRestTransport
-    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
-        _transport_registry["rest_asyncio"] = AsyncResumableUploadServiceRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -96,10 +89,6 @@ class ResumableUploadServiceClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
-        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
-            raise ImportError(
-                "`rest_asyncio` transport requires the library to be installed with the `async_rest` extra. Install the library with the `async_rest` extra using `pip install google-showcase[async_rest]`"
-            )
         if label:
             return cls._transport_registry[label]
 
@@ -467,38 +456,16 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             ))
 
         if not transport_provided:
-            transport_init: Union[Type[ResumableUploadServiceTransport], Callable[..., ResumableUploadServiceTransport]] = (
-                ResumableUploadServiceClient.get_transport_class(transport)
-                if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ResumableUploadServiceTransport], transport)
-            )
-
-            if "rest_asyncio" in str(transport_init):  # pragma: NO COVER
-                unsupported_params = {
-                    "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
-                    "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,
-                    "google.api_core.client_options.ClientOptions.quota_project_id": self._client_options.quota_project_id,
-                    "google.api_core.client_options.ClientOptions.client_cert_source": self._client_options.client_cert_source,
-                    "google.api_core.client_options.ClientOptions.api_audience": self._client_options.api_audience,
-
-                }
-                provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
-                if provided_unsupported_params:
-                    raise core_exceptions.AsyncRestUnsupportedParameterError(  # type: ignore
-                        f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
-                    )
-                self._transport = transport_init(
-                    credentials=credentials,
-                    host=self._api_endpoint,
-                    client_info=client_info,
-                )
-                return
-
             import google.auth._default  # type: ignore
 
             if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
                 credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
+            transport_init: Union[Type[ResumableUploadServiceTransport], Callable[..., ResumableUploadServiceTransport]] = (
+                ResumableUploadServiceClient.get_transport_class(transport)
+                if isinstance(transport, str) or transport is None
+                else cast(Callable[..., ResumableUploadServiceTransport], transport)
+            )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
