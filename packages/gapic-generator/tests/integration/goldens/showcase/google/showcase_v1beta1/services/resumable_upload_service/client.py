@@ -601,6 +601,7 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             timeout=timeout,
             metadata=metadata,
             config=config,
+            start_retry=retry,
         )
 
         # Done; return the response.

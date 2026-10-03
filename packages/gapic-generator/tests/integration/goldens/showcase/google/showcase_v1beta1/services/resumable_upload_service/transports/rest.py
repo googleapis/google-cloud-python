@@ -389,7 +389,7 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
         def __call__(self,
                 request: resumable_upload.UploadMediaRequest, *,
                 config: Optional[resumable_transfer.ResumableUploadConfig]=None,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                start_retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> resumable_transfer.ResumableUploadSession:
@@ -400,8 +400,8 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                     The request object.
                 config (Optional[google.api_core.resumable_transfer.ResumableUploadConfig]):
                     Optional configuration for the resumable upload session.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
+                start_retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried when initiating the resumable upload session.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
@@ -442,12 +442,15 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
                 if isinstance(timeout, (int, float))
                 else {}
             )
+            # ``start_retry`` is used instead of ``retry`` because ``_GapicCallable``
+            # consumes the ``retry`` argument before invoking the transport callable
+            # and only forwards extra keyword arguments such as ``start_retry``.
             return resumable_transfer.ResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
                 response_type=resumable_upload.UploadMediaResponse,
-                start_retry=retry if isinstance(retry, retries.Retry) else None,
+                start_retry=start_retry if isinstance(start_retry, retries.Retry) else None,
                 request_body=body,
                 **session_kwargs,
             )

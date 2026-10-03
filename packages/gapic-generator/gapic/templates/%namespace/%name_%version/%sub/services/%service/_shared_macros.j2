@@ -307,12 +307,15 @@ session_kwargs: Dict[str, Any] = (
     if isinstance(timeout, (int, float))
     else {}
 )
+# ``start_retry`` is used instead of ``retry`` because ``_GapicCallable``
+# consumes the ``retry`` argument before invoking the transport callable
+# and only forwards extra keyword arguments such as ``start_retry``.
 return {{ client_output_ident }}(
     upload_url=upload_url,
     config=config,
     transport=self._session,
     response_type={{ method.output.ident }},
-    start_retry=retry if isinstance(retry, {{ retry_class }}) else None,
+    start_retry=start_retry if isinstance(start_retry, {{ retry_class }}) else None,
     {% if body_spec %}
     request_body=body,
     {% endif %}
