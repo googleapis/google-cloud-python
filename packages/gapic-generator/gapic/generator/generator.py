@@ -354,14 +354,16 @@ class Generator:
                         and not api_schema.all_library_settings[
                             api_schema.naming.proto_package
                         ].python_settings.experimental_features.rest_async_io_enabled
-                        and not service.has_resumable_upload_methods
                     )
                     or (
                         "rest_asyncio" in template_name
                         and not api_schema.all_library_settings[
                             api_schema.naming.proto_package
                         ].python_settings.experimental_features.rest_async_io_enabled
-                        and not service.has_resumable_upload_methods
+                        and not (
+                            "grpc" in opts.transport
+                            and service.has_resumable_upload_methods
+                        )
                     )
                     or (
                         "rest_base" in template_name

@@ -1,7 +1,7 @@
 {% extends "_base.py.j2" %}
 {% block content %}
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
-{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled or service.has_resumable_upload_methods %}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
 {% import "tests/unit/gapic/%name_%version/%sub/test_macros.j2" as test_macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
@@ -16,7 +16,7 @@ from unittest.mock import AsyncMock
 
 import grpc
 from grpc.experimental import aio
-{% if "rest" in opts.transport %}
+{% if "rest" in opts.transport or service.has_resumable_upload_methods %}
 from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 {% endif %}
@@ -27,8 +27,7 @@ from collections.abc import Sequence, Mapping
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
-{% if 'rest' in opts.transport %}
-{% if rest_async_io_enabled %}
+{% if ('rest' in opts.transport and rest_async_io_enabled) or ('grpc' in opts.transport and service.has_resumable_upload_methods) %}
 try:
     import aiohttp  # type: ignore
     from google.auth.aio.transport.sessions import AsyncAuthorizedSession
@@ -37,7 +36,8 @@ try:
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
 except ImportError: # pragma: NO COVER
     HAS_ASYNC_REST_EXTRA = False
-{% endif %}{# if rest_async_io_enabled #}
+{% endif %}
+{% if 'rest' in opts.transport %}
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
@@ -1607,7 +1607,6 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         mock_rest_transport.close.assert_called_once()
 
 
-{% if rest_async_io_enabled %}
 @pytest.mark.asyncio
 async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_rest_stub_sync_credentials():
     if not HAS_ASYNC_REST_EXTRA:
@@ -1633,7 +1632,120 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
     ) as mock_rest_close:
         await transport.close()
         mock_rest_close.assert_called_once()
-{% endif %}
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_start_empty_body():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    with mock.patch.object(AsyncAuthorizedSession, "request") as req:
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        retry = retries.AsyncRetry()
+        response = await client.{{ method.client_method_name|snake_case }}(
+            {{ method.input.ident }}(),
+            config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
+            timeout=10.0,
+        )
+        assert isinstance(response, {{ method.client_output_async.ident }})
+        assert response._start_retry is retry
+        result = await response.upload(b"test data")
+        assert isinstance(result, {{ method.output.ident }})
+        assert result == expected_result
+
+
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_body_and_query_params():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    client = {{ service.async_client_name }}(
+        credentials=async_anonymous_credentials(),
+    )
+    with mock.patch.object(
+        AsyncAuthorizedSession, "request"
+    ) as req, mock.patch.object(path_template, "transcode") as transcode:
+        request = {{ method.input.ident }}(
+            {% for field in method.input.fields.values() | rejectattr('message') %}
+            {% if not field.oneof or field.proto3_optional %}
+            {{ field.name }}={{ field.mock_value }},
+            {% endif %}
+            {% endfor %}
+        )
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_request = {{ method.input.ident }}.pb(request)
+        {% else %}
+        pb_request = request
+        {% endif %}
+        transcode.return_value = {
+            "uri": "v1/sample_method",
+            "method": "{{ method.http_options[0].method }}",
+            "body": pb_request,
+            "query_params": pb_request,
+        }
+
+        start_response = mock.MagicMock()
+        start_response.status_code = 200
+        start_response.headers = {"x-goog-upload-status": "active", "x-goog-upload-url": "http://localhost/upload"}
+        start_response.read = mock.AsyncMock(return_value=b"")
+        start_response.close = mock.AsyncMock(return_value=None)
+
+        expected_result = {{ method.output.ident }}()
+        {% if method.output.ident.is_proto_plus_type %}
+        json_return_value = {{ method.output.ident }}.to_json(expected_result)
+        {% else %}
+        json_return_value = json_format.MessageToJson(expected_result)
+        {% endif %}
+        upload_response = mock.MagicMock()
+        upload_response.status_code = 200
+        upload_response.headers = {"x-goog-upload-status": "final"}
+        upload_response.read = mock.AsyncMock(return_value=json_return_value.encode("UTF-8"))
+        upload_response.close = mock.AsyncMock(return_value=None)
+
+        req.side_effect = [start_response, upload_response]
+        response = await client.{{ method.client_method_name|snake_case }}(request)
+        result = await response.upload(b"test data")
+        assert result == expected_result
+
+        start_call = req.call_args_list[0]
+        {% for field in method.input.fields.values() | rejectattr('message') %}
+        {% if not field.oneof or field.proto3_optional %}
+        assert "{{ field.name | camel_case }}=" in start_call.args[1]
+        {% endif %}
+        {% endfor %}
+        {% if method.http_options[0].body %}
+        expected_body = json_format.MessageToJson(
+            pb_request,
+            use_integers_for_enums={{ opts.rest_numeric_enums }},
+        )
+        assert start_call.kwargs["data"] == expected_body.encode("UTF-8")
+        {% endif %}
 
 
 @pytest.mark.asyncio
