@@ -15,6 +15,7 @@
 import datetime
 import io
 import json
+import os
 import time
 import uuid
 import pytest
@@ -26,7 +27,7 @@ from google.api_core.resumable_transfer import (
     ResumableUploadConfig,
     ResumableUploadSession,
 )
-from google.showcase import UploadMediaResponse
+from google.showcase import UploadMediaRequest, UploadMediaResponse
 
 from conftest import make_resumable_upload
 
@@ -721,3 +722,92 @@ def test_non_fatal_error_on_query_recovery(intercepted_resumable_upload_rest):
     assert ProgressState.OFFSET_RECEIVED in phases
     assert phases[-1] == ProgressState.FINALIZED
 
+
+def test_client_upload_media_passes_start_retry(intercepted_resumable_upload_rest):
+    """Verify that `retry` passed to `client.upload_media` is forwarded as `start_retry`."""
+    client, _ = intercepted_resumable_upload_rest
+    payload = b"s" * 100
+    stream = io.BytesIO(payload)
+
+    # Injects a single 409 Conflict on start, which is not retried by the default
+    # start retry policy unless the custom `retry` passed to `client.upload_media`
+    # reaches `ResumableUploadSession(start_retry=...)`.
+    scenario_headers = [
+        ("X-Goog-Test-Scenario", "non_fatal_error_on_start"),
+        (
+            "X-Goog-Test-Scenario-Config",
+            json.dumps(
+                {"client_uuid": str(uuid.uuid4()), "error_code": 409, "failure_count": 1}
+            ),
+        ),
+    ]
+    retried_errors = []
+    custom_retry = retries.Retry(
+        predicate=retries.if_exception_type(core_exceptions.Conflict),
+        initial=0.05,
+        maximum=0.2,
+        multiplier=1.5,
+        timeout=5.0,
+        on_error=retried_errors.append,
+    )
+
+    session = client.upload_media(
+        request=UploadMediaRequest(name="client_start_retry.bin"),
+        config=ResumableUploadConfig(headers=scenario_headers),
+        retry=custom_retry,
+    )
+    response = session.upload(stream=stream, size=len(payload))
+
+    assert len(retried_errors) == 1
+    assert isinstance(retried_errors[0], core_exceptions.Conflict)
+    assert isinstance(response, UploadMediaResponse)
+    assert response.name == "client_start_retry.bin"
+    assert response.size == len(payload)
+
+
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
+
+    @pytest.mark.asyncio
+    async def test_async_client_upload_media_passes_start_retry(
+        intercepted_resumable_upload_rest_async,
+    ):
+        """Verify that `retry` passed to `async_client.upload_media` is forwarded as `start_retry`."""
+        client, _ = intercepted_resumable_upload_rest_async
+        payload = b"s" * 100
+        stream = io.BytesIO(payload)
+
+        scenario_headers = [
+            ("X-Goog-Test-Scenario", "non_fatal_error_on_start"),
+            (
+                "X-Goog-Test-Scenario-Config",
+                json.dumps(
+                    {
+                        "client_uuid": str(uuid.uuid4()),
+                        "error_code": 409,
+                        "failure_count": 1,
+                    }
+                ),
+            ),
+        ]
+        retried_errors = []
+        custom_retry = retries.AsyncRetry(
+            predicate=retries.if_exception_type(core_exceptions.Conflict),
+            initial=0.05,
+            maximum=0.2,
+            multiplier=1.5,
+            timeout=5.0,
+            on_error=retried_errors.append,
+        )
+
+        session = await client.upload_media(
+            request=UploadMediaRequest(name="async_client_start_retry.bin"),
+            config=ResumableUploadConfig(headers=scenario_headers),
+            retry=custom_retry,
+        )
+        response = await session.upload(stream=stream, size=len(payload))
+
+        assert len(retried_errors) == 1
+        assert isinstance(retried_errors[0], core_exceptions.Conflict)
+        assert isinstance(response, UploadMediaResponse)
+        assert response.name == "async_client_start_retry.bin"
+        assert response.size == len(payload)
