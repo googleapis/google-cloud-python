@@ -292,17 +292,6 @@ def test_query_rest_arrow_format_config(bigquery_client):
     assert df.to_dict(orient="records") == [{"val": 42, "msg": "hello"}]
 
 
-def test_query_arrow_veneer_method(bigquery_client):
-    """System test for client.query_arrow() veneer method returning ArrowQueryResult container."""
-    result = bigquery_client.query_arrow("SELECT 999 AS id, 'zero_copy' AS mode")
-
-    assert isinstance(result, bigquery.ArrowQueryResult)
-    assert result.total_rows == 1
-    table = result.table
-    assert isinstance(table, pyarrow.Table)
-    assert table.column_names == ["id", "mode"]
-    assert table.to_pydict() == {"id": [999], "mode": ["zero_copy"]}
-
 
 def test_query_arrow_serialization_options(bigquery_client):
     """System test for configuring ArrowSerializationOptions in QueryJobConfig."""

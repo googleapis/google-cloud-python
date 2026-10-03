@@ -122,7 +122,6 @@ from google.cloud.bigquery.retry import (
 from google.cloud.bigquery.routine import Routine, RoutineReference
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import (
-    ArrowQueryResult,
     RowIterator,
     Table,
     TableListItem,
@@ -3663,62 +3662,6 @@ class Client(ClientWithProject):
             )
         else:
             raise ValueError(f"Got unexpected value for api_method: {repr(api_method)}")
-
-    def query_arrow(
-        self,
-        query: str,
-        job_config: Optional[QueryJobConfig] = None,
-        location: Optional[str] = None,
-        project: Optional[str] = None,
-        retry: retries.Retry = DEFAULT_RETRY,
-        timeout: TimeoutType = DEFAULT_TIMEOUT,
-    ) -> ArrowQueryResult:
-        """Run a query and return results wrapped in an ArrowQueryResult container.
-
-        This method configures the query to fetch results using the Arrow fast-path REST endpoint.
-
-        Args:
-            query (str): SQL query string.
-            job_config (Optional[google.cloud.bigquery.job.QueryJobConfig]): Extra job configuration options.
-            location (Optional[str]): Location where the query job should be executed.
-            project (Optional[str]): Project ID to execute the query job.
-            retry (Optional[google.api_core.retry.Retry]): How to retry the request.
-            timeout (Optional[float]): The amount of time, in seconds, to wait for the request to complete.
-
-        Returns:
-            google.cloud.bigquery.table.ArrowQueryResult: Container holding the Arrow Table and execution metadata.
-        """
-        try:
-            import pyarrow
-        except ImportError:
-            raise ValueError(
-                "pyarrow is required to use query_arrow(). Install google-cloud-bigquery[pandas] or pyarrow."
-            )
-
-        if job_config is None:
-            job_config = QueryJobConfig()
-        else:
-            job_config = copy.deepcopy(job_config)
-
-        query_job = self.query(
-            query,
-            job_config=job_config,
-            location=location,
-            project=project,
-            retry=retry,
-            timeout=timeout,
-            api_method=enums.QueryApiMethod.QUERY,
-        )
-        iterator = query_job.result()
-        table = iterator.to_arrow()
-
-        return ArrowQueryResult(
-            table=table,
-            query_id=getattr(query_job, "query_id", None),
-            job_id=getattr(query_job, "job_id", None),
-            job_creation_reason=getattr(query_job, "job_creation_reason", None),
-            total_rows=getattr(iterator, "total_rows", len(table) if table is not None else 0),
-        )
 
     def query_and_wait(
         self,

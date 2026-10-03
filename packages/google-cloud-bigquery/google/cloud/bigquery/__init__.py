@@ -112,7 +112,6 @@ from google.cloud.bigquery.standard_sql import StandardSqlDataType
 from google.cloud.bigquery.standard_sql import StandardSqlField
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
 from google.cloud.bigquery.standard_sql import StandardSqlTableType
-from google.cloud.bigquery.table import ArrowQueryResult
 from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
@@ -162,7 +161,6 @@ __all__ = [
     "DatasetReference",
     "AccessEntry",
     # Tables
-    "ArrowQueryResult",
     "Table",
     "TableReference",
     "PartitionRange",

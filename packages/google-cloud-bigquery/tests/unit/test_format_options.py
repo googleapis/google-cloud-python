@@ -112,27 +112,3 @@ class TestArrowSerializationOptions:
         }
 
 
-class TestArrowQueryResult:
-    def test_properties(self):
-        from google.cloud.bigquery.table import ArrowQueryResult
-        import unittest.mock
-
-        mock_table = unittest.mock.MagicMock()
-        mock_table.__len__.return_value = 100
-
-        result = ArrowQueryResult(
-            table=mock_table,
-            query_id="query_123",
-            job_id="job_abc",
-            job_creation_reason="JOB_CREATION_OPTIONAL",
-            total_rows=100,
-        )
-
-        assert result.table == mock_table
-        assert result.query_id == "query_123"
-        assert result.job_id == "job_abc"
-        assert result.job_creation_reason == "JOB_CREATION_OPTIONAL"
-        assert result.total_rows == 100
-        assert len(result) == 100
-
-

@@ -138,14 +138,16 @@ def compare_json_vs_arrow_performance():
     )
 
     # -------------------------------------------------------------------
-    # CASE 3: REST ARROW FAST-PATH (query_arrow)
+    # CASE 3: REST ARROW FAST-PATH
     # -------------------------------------------------------------------
     print("-" * 80)
     print("3. EXECUTING CASE 3: REST ARROW FAST-PATH QUERY...")
     print("-" * 80)
+    job_config_arrow = bigquery.QueryJobConfig()
+    job_config_arrow.query_results_format = bigquery.enums.QueryResultsFormat.ARROW
     with MeasurePerformance() as arrow_fast_perf:
-        arrow_result = client.query_arrow(synthetic_dataset_sql)
-        df_arrow_fast = arrow_result.table.to_pandas()
+        arrow_row_iterator = client.query_and_wait(synthetic_dataset_sql, job_config=job_config_arrow)
+        df_arrow_fast = arrow_row_iterator.to_arrow().to_pandas()
     print(f"   -> Memory used by Arrow Table    : {arrow_fast_perf.memory_mb:.2f} MB\n")
 
     # -------------------------------------------------------------------
