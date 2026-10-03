@@ -2417,12 +2417,15 @@ def test_resumable_upload_service_upload_media_rest_start_empty_body():
         upload_response.content = json_return_value.encode("UTF-8")
 
         req.side_effect = [start_response, upload_response]
+        retry = retries.Retry()
         response = client.upload_media(
             resumable_upload.UploadMediaRequest(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
             timeout=10.0,
         )
         assert isinstance(response, resumable_transfer.ResumableUploadSession)
+        assert response._start_retry is retry
         result = response.upload(b"test data")
         assert isinstance(result, resumable_upload.UploadMediaResponse)
         assert result == expected_result
@@ -2455,12 +2458,15 @@ async def test_resumable_upload_service_upload_media_rest_asyncio_start_empty_bo
         upload_response.close = mock.AsyncMock(return_value=None)
 
         req.side_effect = [start_response, upload_response]
+        retry = retries.AsyncRetry()
         response = await client.upload_media(
             resumable_upload.UploadMediaRequest(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
             timeout=10.0,
         )
         assert isinstance(response, resumable_transfer.AsyncResumableUploadSession)
+        assert response._start_retry is retry
         result = await response.upload(b"test data")
         assert isinstance(result, resumable_upload.UploadMediaResponse)
         assert result == expected_result

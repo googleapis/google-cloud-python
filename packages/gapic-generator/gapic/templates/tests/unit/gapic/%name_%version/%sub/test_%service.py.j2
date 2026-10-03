@@ -1681,12 +1681,15 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_e
         upload_response.content = json_return_value.encode("UTF-8")
 
         req.side_effect = [start_response, upload_response]
+        retry = retries.Retry()
         response = client.{{ method.client_method_name|snake_case }}(
             {{ method.input.ident }}(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
             timeout=10.0,
         )
         assert isinstance(response, {{ method.client_output.ident }})
+        assert response._start_retry is retry
         result = response.upload(b"test data")
         assert isinstance(result, {{ method.output.ident }})
         assert result == expected_result
@@ -1727,12 +1730,15 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         upload_response.close = mock.AsyncMock(return_value=None)
 
         req.side_effect = [start_response, upload_response]
+        retry = retries.AsyncRetry()
         response = await client.{{ method.client_method_name|snake_case }}(
             {{ method.input.ident }}(),
             config=resumable_transfer.ResumableUploadConfig(headers={"x-custom": "val"}),
+            retry=retry,
             timeout=10.0,
         )
         assert isinstance(response, {{ method.client_output_async.ident }})
+        assert response._start_retry is retry
         result = await response.upload(b"test data")
         assert isinstance(result, {{ method.output.ident }})
         assert result == expected_result
