@@ -2403,10 +2403,6 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        # Step 1: Attempt to initialize BigQuery Read API client if available.
-        if bqstorage_client is None and self.client is not None:
-            bqstorage_client = self.client._ensure_bqstorage_client()
-
         offset = 0
         pa_schema = None
         total_rows = self.total_rows
@@ -2447,6 +2443,9 @@ class RowIterator(HTTPIterator):
             return
 
         # Step 4: Ensure BigQuery Read API client is available for remaining streamed batches.
+        if bqstorage_client is None and self.client is not None:
+            bqstorage_client = self.client._ensure_bqstorage_client()
+
         if bqstorage_client is None:
             if self.client is None:
                 raise ValueError("RowIterator client is None.")
