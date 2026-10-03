@@ -611,14 +611,12 @@ frozenlist==1.8.0 \
     # via
     #   aiohttp
     #   aiosignal
-google-api-core==2.40.0 \
-    --hash=sha256:4b9e0a80024c269ae173136d5439f4ed284651d6e5e2773ba5c694f481f9c0f4 \
-    --hash=sha256:ebee7d1b138b5362beecec260e6e8988ac97346562c7382ccb6f0ad8435c599f
+google-api-core @ git+https://github.com/googleapis/google-cloud-python.git@9b96af76254c33b9c3e0ceb390bbaeab2e33bbea#subdirectory=packages/google-api-core
     # via -r requirements.in
-google-auth==2.59.0 \
-    --hash=sha256:43e47b1d3067fb90d77bd9ba21f139bb0577b3f2b9f3e2516fc00f37435efcad \
-    --hash=sha256:eb32f44f89f6b577947ebee5887c1db46e6b1a278889ba369a88179643f32240
-    # via google-api-core
+google-auth @ git+https://github.com/googleapis/google-cloud-python.git@9b96af76254c33b9c3e0ceb390bbaeab2e33bbea#subdirectory=packages/google-auth
+    # via
+    #   -r requirements.in
+    #   google-api-core
 googleapis-common-protos==1.75.5 \
     --hash=sha256:c7a866fc34ed29a3b10af627a4b9b1dc2433313ca6e959f0ae4feb132047ed72 \
     --hash=sha256:d7285525c23039db98f2463e6d5a4f9b958b94d497f03a844ece3259c4e72d5d

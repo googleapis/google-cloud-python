@@ -10,7 +10,7 @@ import json
 import pickle
 import logging as std_logging
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import {% if service.has_resumable_upload_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
@@ -18,6 +18,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 {% if service.has_lro %}
 from google.api_core import operations_v1
+{% endif %}
+{% if service.has_resumable_upload_methods %}
+from google.api_core import resumable_transfer
 {% endif %}
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -54,6 +57,13 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport
+{% if service.has_resumable_upload_methods %}
+try:
+    from .rest_asyncio import Async{{ service.name }}RestTransport
+    HAS_ASYNC_REST = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_ASYNC_REST = False
+{% endif %}
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -235,6 +245,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
+        {% if service.has_resumable_upload_methods %}
+        # Resumable upload RPCs operate over HTTP/REST rather than gRPC.
+        # Since gRPC is the default transport for GAPIC clients and services
+        # mix standard gRPC RPCs with resumable upload RPCs on the same client,
+        # gRPC transports delegate resumable upload calls to an internal REST
+        # transport instance.
+        self._rest_transport: Optional[Any] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
+        {% endif %}
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -339,7 +358,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     @property
     def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
-            Awaitable[{{ method.output.ident }}]]:
+            Awaitable[{% if method.is_resumable_upload %}{{ method.client_output_async.ident }}{% else %}{{ method.output.ident }}{% endif %}]]:
         r"""Return a callable for the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
@@ -349,7 +368,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    Awaitable[~.{{ method.output.name }}]]:
+                    Awaitable[~.{% if method.is_resumable_upload %}{{ method.client_output_async.name }}{% else %}{{ method.output.name }}{% endif %}]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -358,11 +377,55 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
+            {% if method.is_resumable_upload %}
+            if not self._credentials:
+                class _ErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _error():
+                            raise core_exceptions.GoogleAPICallError(
+                                "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                            )
+                        return _error()
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
+            elif self._client_cert_source_for_mtls:
+                class _MtlsErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _mtls_error():
+                            raise core_exceptions.AsyncRestUnsupportedParameterError(
+                                "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods."
+                            )
+                        return _mtls_error()
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _MtlsErrorStub()
+            elif HAS_ASYNC_REST:
+                transport = self
+                class _AsyncRestStub:
+                    def __call__(self, *args, **kwargs):
+                        if transport._rest_transport is None:
+                            {# Note: Type for creds is ignored due to the type hint mismatch for credentials in the base transport.
+                             # TODO(https://github.com/googleapis/google-cloud-python/issues/16268): Remove `# type: ignore` once
+                             # the type hints for credentials are updated to include asynchronous credentials.
+                            #}
+                            transport._rest_transport = Async{{ service.name }}RestTransport(
+                                host=transport._host,
+                                credentials=transport._credentials,  # type: ignore
+                                client_info=transport._client_info,
+                            )
+                        return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()
+            else:
+                class _UnsupportedStub:
+                    def __call__(self, *args, **kwargs):
+                        async def _unsupported():
+                            raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                        return _unsupported()
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _UnsupportedStub()
+            {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
+            {% endif %}
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
@@ -453,8 +516,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     {{ shared_macros.wrap_async_method_macro()|indent(4) }}
 
+    {% if service.has_resumable_upload_methods %}
+    async def close(self):
+        await self._logged_channel.close()
+        if self._rest_transport is not None:
+            await self._rest_transport.close()
+    {% else %}
     def close(self):
         return self._logged_channel.close()
+    {% endif %}
     
     @property
     def kind(self) -> str:

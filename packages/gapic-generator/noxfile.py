@@ -82,7 +82,15 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.run(
         "py.test",
         *(
@@ -98,6 +106,9 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        # `test_utils` is not part of the installed package (only `gapic` is
+        # included in setup.py), but it is needed for running tests.
+        env={"PYTHONPATH": "."},
     )
 
 
@@ -150,7 +161,7 @@ class FragTester:
 
             # Install the generated fragment library.
             if self.use_ads_templates:
-                self.session.install(tmp_dir, "-e", ".", "-qqq")
+                self.session.install(tmp_dir, ".", "-qqq")
             else:
                 # Use the constraints file for the specific python runtime version.
                 # We do this to make sure that we're testing against the lowest
@@ -161,7 +172,7 @@ class FragTester:
                 constraints_path = str(
                     f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
                 )
-                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+                self.session.install(tmp_dir, ".", "-qqq", "-r", constraints_path)
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
@@ -191,11 +202,15 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
-    session.install("-e", ".")
-
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
@@ -246,8 +261,30 @@ def showcase_library(
     include_service_yaml=True,
     retry_config=True,
     rest_async_io_enabled=False,
+    install_async_rest_extra=False,
 ):
-    """Install the generated library into the session for showcase tests."""
+    """Install the generated library into the session for showcase tests.
+
+    Args:
+        session: The nox session object.
+        templates (str): The template directory to use for code generation.
+            Defaults to "DEFAULT".
+        other_opts (typing.Iterable[str]): Additional options passed to
+            `--python_gapic_opt` during code generation.
+        include_service_yaml (bool): Whether to download and pass
+            `showcase_v1beta1.yaml` to the generator.
+        retry_config (bool): Whether to download and pass
+            `showcase_grpc_service_config.json` to the generator.
+        rest_async_io_enabled (bool): Whether to enable the experimental
+            `rest_async_io_enabled` setting in `showcase_v1beta1.yaml` so
+            `rest_asyncio` transports are generated for all services. When True,
+            the `[async_rest]` extra is also installed.
+        install_async_rest_extra (bool): Whether to install the generated
+            library with the `[async_rest]` extra and its corresponding
+            `constraints-{python}-async-rest.txt` file even when
+            `rest_async_io_enabled` is False in `showcase_v1beta1.yaml` (e.g.,
+            for services with resumable upload methods).
+    """
 
     session.log("-" * 70)
     session.log("Note: Showcase must be running for these tests to work.")
@@ -255,17 +292,18 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
-    # Warnings emitted from google-api-core starting in 2.28
-    # appear to cause issues when running protoc.
-    # The specific failure is `Plugin output is unparseable`
-    if session.python == "3.10":
-        session.install("google-api-core<2.28")
 
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -343,18 +381,30 @@ def showcase_library(
                     "transport=grpc+rest",
                 )
             )
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/16312):
+        # Add compliance.proto once this bug is fixed
+        # We should use `"google/showcase/v1beta1/*.proto",`
+        protos = (
+            "google/showcase/v1beta1/echo.proto",
+            "google/showcase/v1beta1/identity.proto",
+            "google/showcase/v1beta1/messaging.proto",
+            "google/showcase/v1beta1/rest_error.proto",
+            "google/showcase/v1beta1/sequence.proto",
+            "google/showcase/v1beta1/testing.proto",
+        )
+        if templates == "DEFAULT":
+            protos += ("google/showcase/v1beta1/resumable_upload.proto",)
         cmd_tup = (
             "python",
             "-m",
             "grpc_tools.protoc",
-            f"--experimental_allow_proto3_optional",
+            "--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
             f"--python_gapic_out={tmp_dir}",
-            f"google/showcase/v1beta1/echo.proto",
-            f"google/showcase/v1beta1/identity.proto",
-            f"google/showcase/v1beta1/messaging.proto",
+            *protos,
         )
+
         session.run(
             *cmd_tup,
             external=True,
@@ -371,7 +421,8 @@ def showcase_library(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             extras = ""
-            if rest_async_io_enabled:
+            if rest_async_io_enabled or install_async_rest_extra:
+                extras = "[async_rest]"
                 async_rest_constraints_path = str(
                     f"{tmp_dir}/testing/constraints-{session.python}-async-rest.txt"
                 )
@@ -382,8 +433,6 @@ def showcase_library(
                     session.log(
                         f"{async_rest_constraints_path} not found. Using base constraints file"
                     )
-                extras = "[async_rest]"
-
             session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
@@ -395,8 +444,10 @@ def showcase_library(
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("install_async_rest_extra", [False, True])
 def showcase(
     session,
+    install_async_rest_extra=False,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
@@ -407,7 +458,12 @@ def showcase(
     (useful for local testing and canary validation).
     """
 
-    with showcase_library(session, templates=templates, other_opts=other_opts):
+    with showcase_library(
+        session,
+        templates=templates,
+        other_opts=other_opts,
+        install_async_rest_extra=install_async_rest_extra,
+    ):
         # When opt-in environment variable is set (e.g. in canary CI or local testing),
         # install the local google-api-core package from source.
         if os.getenv("INSTALL_LOCAL_CORE") == "true":
@@ -416,7 +472,7 @@ def showcase(
                 session.error(
                     f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
                 )
-            session.install("-e", str(local_core))
+            session.install(str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -462,7 +518,7 @@ def showcase_w_rest_async(
                 session.error(
                     f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
                 )
-            session.install("-e", str(local_core))
+            session.install(str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -535,7 +591,26 @@ def showcase_pqc(
         )
 
 
-def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
+def run_showcase_unit_tests(
+    session,
+    fail_under=100,
+    rest_async_io_enabled=False,
+    install_async_rest_extra=False,
+):
+    """Run the generated Showcase unit test suite with coverage verification.
+
+    Args:
+        session: The nox session object.
+        fail_under (int): Minimum required test coverage percentage.
+            Defaults to 100.
+        rest_async_io_enabled (bool): Whether `rest_async_io_enabled` was enabled
+            in `showcase_v1beta1.yaml` during code generation.
+        install_async_rest_extra (bool): Whether the library was installed with
+            the `[async_rest]` extra. When both `rest_async_io_enabled` and
+            `install_async_rest_extra` are False, `**/rest_asyncio.py` is omitted
+            from coverage since optional `async_rest` dependencies are not
+            installed.
+    """
     session.install(
         "coverage",
         "pytest",
@@ -545,6 +620,20 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
     )
     # Freeze and print python environment package versions
     session.run("python", "-m", "pip", "freeze")
+
+    if (
+        not rest_async_io_enabled
+        and not install_async_rest_extra
+        and path.exists(".coveragerc")
+    ):
+        with open(".coveragerc", "r") as f:
+            coveragerc = f.read()
+        if "**/rest_asyncio.py" not in coveragerc:
+            coveragerc = coveragerc.replace(
+                "omit =\n", "omit =\n    **/rest_asyncio.py\n"
+            )
+            with open(".coveragerc", "w") as f:
+                f.write(coveragerc)
 
     # Run the tests.
     session.run(
@@ -564,15 +653,24 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
 
 
 @nox.session(python=ALL_PYTHON)
+@nox.parametrize("install_async_rest_extra", [False, True])
 def showcase_unit(
     session,
+    install_async_rest_extra=False,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
-    with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
+    with showcase_library(
+        session,
+        templates=templates,
+        other_opts=other_opts,
+        install_async_rest_extra=install_async_rest_extra,
+    ) as lib:
         session.chdir(lib)
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(
+            session, install_async_rest_extra=install_async_rest_extra
+        )
 
 
 # TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
@@ -672,7 +770,15 @@ def snippetgen(session):
         )
 
     # Install gapic-generator-python
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     session.install("grpcio-tools", "pytest", "pytest-asyncio")
 
@@ -683,8 +789,15 @@ def snippetgen(session):
 def docs(session):
     """Build the docs for this generator."""
 
-    session.install("-e", ".")
-
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -719,7 +832,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -772,7 +885,14 @@ def mypy(session):
         "types-dataclasses",
         "click==8.1.3",
     )
-    session.install(".")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
 
 

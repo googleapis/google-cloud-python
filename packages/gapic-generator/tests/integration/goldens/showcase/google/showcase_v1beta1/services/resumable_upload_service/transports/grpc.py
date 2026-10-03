@@ -19,6 +19,8 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import exceptions as core_exceptions
+from google.api_core import resumable_transfer
 from google.api_core import grpc_helpers
 from google.api_core import gapic_v1
 import google.auth                         # type: ignore
@@ -36,6 +38,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from google.showcase_v1beta1.types import resumable_upload
 from .base import ResumableUploadServiceTransport, DEFAULT_CLIENT_INFO
+from .rest import ResumableUploadServiceRestTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -194,6 +197,13 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        # Resumable upload RPCs operate over HTTP/REST rather than gRPC.
+        # Since gRPC is the default transport for GAPIC clients and services
+        # mix standard gRPC RPCs with resumable upload RPCs on the same client,
+        # gRPC transports delegate resumable upload calls to an internal REST
+        # transport instance.
+        self._rest_transport: Optional[ResumableUploadServiceRestTransport] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -321,14 +331,14 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
     @property
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
-            resumable_upload.UploadMediaResponse]:
+            resumable_transfer.ResumableUploadSession]:
         r"""Return a callable for the upload media method over gRPC.
 
         A method with media_upload annotation enabled.
 
         Returns:
             Callable[[~.UploadMediaRequest],
-                    ~.UploadMediaResponse]:
+                    ~.ResumableUploadSession]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -337,15 +347,32 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'upload_media' not in self._stubs:
-            self._stubs['upload_media'] = self._logged_channel.unary_unary(
-                '/google.showcase.v1beta1.ResumableUploadService/UploadMedia',
-                request_serializer=resumable_upload.UploadMediaRequest.serialize,
-                response_deserializer=resumable_upload.UploadMediaResponse.deserialize,
-            )
+            if not self._credentials:
+                class _ErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        raise core_exceptions.GoogleAPICallError(
+                            "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                        )
+                self._stubs['upload_media'] = _ErrorStub()
+            else:
+                transport = self
+                class _RestStub:
+                    def __call__(self, *args, **kwargs):
+                        if transport._rest_transport is None:
+                            transport._rest_transport = ResumableUploadServiceRestTransport(
+                                host=transport._host,
+                                credentials=transport._credentials,
+                                client_info=transport._client_info,
+                                client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
+                            )
+                        return transport._rest_transport.upload_media(*args, **kwargs)
+                self._stubs['upload_media'] = _RestStub()
         return self._stubs['upload_media']
 
     def close(self):
         self._logged_channel.close()
+        if self._rest_transport is not None:
+            self._rest_transport.close()
 
     @property
     def delete_operation(

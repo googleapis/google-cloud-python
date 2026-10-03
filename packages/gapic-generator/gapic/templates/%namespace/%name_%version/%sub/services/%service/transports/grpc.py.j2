@@ -10,6 +10,10 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+{% if service.has_resumable_upload_methods %}
+from google.api_core import exceptions as core_exceptions
+from google.api_core import resumable_transfer
+{% endif %}
 from google.api_core import grpc_helpers
 {% if service.has_lro %}
 from google.api_core import operations_v1
@@ -49,6 +53,9 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+{% if service.has_resumable_upload_methods %}
+from .rest import {{ service.name }}RestTransport
+{% endif %}
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -185,6 +192,15 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         self._stubs: Dict[str, Callable] = {}
         {% if service.has_lro %}
         self._operations_client: Optional[operations_v1.OperationsClient] = None
+        {% endif %}
+        {% if service.has_resumable_upload_methods %}
+        # Resumable upload RPCs operate over HTTP/REST rather than gRPC.
+        # Since gRPC is the default transport for GAPIC clients and services
+        # mix standard gRPC RPCs with resumable upload RPCs on the same client,
+        # gRPC transports delegate resumable upload calls to an internal REST
+        # transport instance.
+        self._rest_transport: Optional[{{ service.name }}RestTransport] = None
+        self._client_cert_source_for_mtls = client_cert_source_for_mtls
         {% endif %}
 
         if api_mtls_endpoint:
@@ -334,7 +350,11 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     @property
     def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
+            {% if method.is_resumable_upload %}
+            {{ method.client_output.ident }}]:
+            {% else %}
             {{ method.output.ident }}]:
+            {% endif %}
         r"""Return a callable for the{{ ' ' }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
@@ -344,7 +364,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         Returns:
             Callable[[~.{{ method.input.name }}],
-                    ~.{{ method.output.name }}]:
+                    ~.{% if method.is_resumable_upload %}{{ method.client_output.name }}{% else %}{{ method.output.name }}{% endif %}]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -353,11 +373,34 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
+            {% if method.is_resumable_upload %}
+            if not self._credentials:
+                class _ErrorStub:
+                    def __call__(self, *args, **kwargs):
+                        raise core_exceptions.GoogleAPICallError(
+                            "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                        )
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub()
+            else:
+                transport = self
+                class _RestStub:
+                    def __call__(self, *args, **kwargs):
+                        if transport._rest_transport is None:
+                            transport._rest_transport = {{ service.name }}RestTransport(
+                                host=transport._host,
+                                credentials=transport._credentials,
+                                client_info=transport._client_info,
+                                client_cert_source_for_mtls=transport._client_cert_source_for_mtls,
+                            )
+                        return transport._rest_transport.{{ method.transport_safe_name|snake_case }}(*args, **kwargs)
+                self._stubs['{{ method.transport_safe_name|snake_case }}'] = _RestStub()
+            {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
+            {% endif %}
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
@@ -445,6 +488,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
     def close(self):
         self._logged_channel.close()
+        {% if service.has_resumable_upload_methods %}
+        if self._rest_transport is not None:
+            self._rest_transport.close()
+        {% endif %}
 
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
