@@ -4681,7 +4681,7 @@ class TestClient(unittest.TestCase):
 
         conn.api_request.assert_called_once_with(
             method="POST",
-            path=f"/projects/{self.PROJECT}/queries",
+            path=f"/projects/{self.PROJECT}/jobs",
             data=mock.ANY,
             timeout=None,
         )

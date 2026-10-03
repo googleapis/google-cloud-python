@@ -3633,17 +3633,6 @@ class Client(ClientWithProject):
             job_config, self._default_query_job_config
         )
 
-        # Automatically promote to QUERY Fast-Path when Arrow format is requested with default INSERT.
-        req_fmt = getattr(job_config, "query_results_format", None)
-        if (
-            api_method == enums.QueryApiMethod.INSERT
-            and getattr(req_fmt, "value", req_fmt) == "ARROW"
-            and not job_id_given
-            and not getattr(job_config, "destination", None)
-            and not getattr(job_config, "dry_run", False)
-        ):
-            api_method = enums.QueryApiMethod.QUERY
-
         # Note that we haven't modified the original job_config (or
 
         # _default_query_job_config) up to this point.
