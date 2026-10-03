@@ -82,7 +82,15 @@ def unit(session):
         "grpcio-status",
         "proto-plus",
     )
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.run(
         "py.test",
         *(
@@ -98,6 +106,9 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
+        # `test_utils` is not part of the installed package (only `gapic` is
+        # included in setup.py), but it is needed for running tests.
+        env={"PYTHONPATH": "."},
     )
 
 
@@ -150,7 +161,7 @@ class FragTester:
 
             # Install the generated fragment library.
             if self.use_ads_templates:
-                self.session.install(tmp_dir, "-e", ".", "-qqq")
+                self.session.install(tmp_dir, ".", "-qqq")
             else:
                 # Use the constraints file for the specific python runtime version.
                 # We do this to make sure that we're testing against the lowest
@@ -161,7 +172,7 @@ class FragTester:
                 constraints_path = str(
                     f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
                 )
-                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+                self.session.install(tmp_dir, ".", "-qqq", "-r", constraints_path)
 
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
@@ -191,7 +202,15 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
@@ -273,7 +292,15 @@ def showcase_library(
     session.log("-" * 70)
 
     # Install gapic-generator-python
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -445,7 +472,7 @@ def showcase(
                 session.error(
                     f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
                 )
-            session.install("-e", str(local_core))
+            session.install(str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -491,7 +518,7 @@ def showcase_w_rest_async(
                 session.error(
                     f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
                 )
-            session.install("-e", str(local_core))
+            session.install(str(local_core))
 
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
@@ -743,7 +770,15 @@ def snippetgen(session):
         )
 
     # Install gapic-generator-python
-    session.install("-e", ".")
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
 
     session.install("grpcio-tools", "pytest", "pytest-asyncio")
 
@@ -754,8 +789,15 @@ def snippetgen(session):
 def docs(session):
     """Build the docs for this generator."""
 
-    session.install("-e", ".")
-
+    session.install("setuptools<70.0.0", "wheel")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -790,7 +832,7 @@ def docs(session):
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
+    session.install(".")
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
         # which still support sphinx 4.x.
@@ -843,7 +885,14 @@ def mypy(session):
         "types-dataclasses",
         "click==8.1.3",
     )
-    session.install(".")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-api-core")
+    session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
+    session.run(
+        "uv", "pip", "install", 
+        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+    )
+    session.run("uv", "pip", "install", ".")
     session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
 
 

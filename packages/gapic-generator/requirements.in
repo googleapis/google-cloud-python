@@ -1,5 +1,10 @@
 click
-google-api-core
+# TODO Revert this change once https://github.com/googleapis/google-cloud-python/pull/18551 is merged
+google-api-core @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core
+# TODO uncomment the line below
+# google-api-core
+# TODO Revert this change once https://github.com/googleapis/google-cloud-python/pull/18552 is merged
+google-auth @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-auth
 googleapis-common-protos
 jinja2
 MarkupSafe
