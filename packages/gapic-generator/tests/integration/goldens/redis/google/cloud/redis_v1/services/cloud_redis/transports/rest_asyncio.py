@@ -2426,67 +2426,67 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_instance(self) -> Callable[
             [cloud_redis.ExportInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._ExportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
             [cloud_redis.FailoverInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
-cloud_redis.Instance]:
+            cloud_redis.Instance]:
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
             [cloud_redis.GetInstanceAuthStringRequest],
-cloud_redis.InstanceAuthString]:
+            cloud_redis.InstanceAuthString]:
         return self._GetInstanceAuthString(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._ImportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
             [cloud_redis.ListInstancesRequest],
-cloud_redis.ListInstancesResponse]:
+            cloud_redis.ListInstancesResponse]:
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
             [cloud_redis.RescheduleMaintenanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
             [cloud_redis.UpgradeInstanceRequest],
-operations_pb2.Operation]:
+            operations_pb2.Operation]:
         return self._UpgradeInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property

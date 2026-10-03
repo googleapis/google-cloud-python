@@ -365,19 +365,6 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                         return _error()
                 self._stubs['upload_media'] = _ErrorStub()
             elif HAS_ASYNC_REST:
-                # TODO(https://github.com/googleapis/google-cloud-python/issues/16268):
-                # Resolve the credential type mismatch between ResumableUploadServiceGrpcAsyncIOTransport
-                # (where grpc_helpers_async.create_channel and the base transport's
-                # google.auth.default() path use synchronous google.auth.credentials.Credentials)
-                # and AsyncResumableUploadServiceRestTransport (where AsyncAuthorizedSession
-                # requires asynchronous google.auth.aio.credentials.Credentials).
-                # Defer instantiating AsyncResumableUploadServiceRestTransport until the
-                # resumable upload RPC is called so that initializing
-                # ResumableUploadServiceGrpcAsyncIOTransport with synchronous
-                # google.auth.credentials.Credentials (e.g. via ADC or service
-                # account helpers) for standard gRPC calls does not fail in
-                # __init__ (_prep_wrapped_messages) when AsyncAuthorizedSession
-                # validates for async credentials.
                 transport = self
                 class _AsyncRestStub:
                     def __call__(self, *args, **kwargs):

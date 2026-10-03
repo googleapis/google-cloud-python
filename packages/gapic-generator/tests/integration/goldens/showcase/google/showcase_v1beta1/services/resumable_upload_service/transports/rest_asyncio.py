@@ -27,8 +27,6 @@ from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-import contextlib
-import functools
 import urllib.parse
 from google.api_core import resumable_transfer
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -118,39 +116,8 @@ class AsyncResumableUploadServiceRestInterceptor:
 
 
 @dataclasses.dataclass
-class _AsyncResumableUploadSessionAdapter:
-    """Adapts AsyncAuthorizedSession to the aiohttp-like request context manager interface expected by AsyncResumableUploadSession."""
-
-    _session: AsyncAuthorizedSession
-
-    @contextlib.asynccontextmanager
-    async def request(
-        self,
-        method: str,
-        url: str,
-        *,
-        data: Optional[bytes] = None,
-        headers: Optional[Dict[str, str]] = None,
-        timeout: Any = None,
-        **kwargs,
-    ):
-        response = await self._session.request(
-            method,
-            url,
-            data=data,
-            headers=headers,
-            timeout=getattr(timeout, "total", timeout),
-            **kwargs,
-        )
-        response.status = response.status_code  # type: ignore[attr-defined]
-        try:
-            yield response
-        finally:
-            await response.close()
-
-@dataclasses.dataclass
 class AsyncResumableUploadServiceRestStub:
-    _session: Union[AsyncAuthorizedSession, _AsyncResumableUploadSessionAdapter]
+    _session: AsyncAuthorizedSession
     _host: str
     _interceptor: AsyncResumableUploadServiceRestInterceptor
 
@@ -284,22 +251,21 @@ class AsyncResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTr
                 if isinstance(timeout, (int, float))
                 else {}
             )
-            session = resumable_transfer.AsyncResumableUploadSession(
+            return resumable_transfer.AsyncResumableUploadSession(
                 upload_url=upload_url,
                 config=config,
                 transport=self._session,
                 response_type=resumable_upload.UploadMediaResponse,
                 start_retry=retry if isinstance(retry, retries.AsyncRetry) else None,
+                request_body=body,
                 **session_kwargs,
             )
-            session.upload = functools.partial(session.upload, request_body=body or "")  # type: ignore[method-assign]
-            return session
 
     @property
     def upload_media(self) -> Callable[
             [resumable_upload.UploadMediaRequest],
-resumable_transfer.AsyncResumableUploadSession]:
-        return self._UploadMedia(_AsyncResumableUploadSessionAdapter(self._session), self._host, self._interceptor)  # type: ignore
+            resumable_transfer.AsyncResumableUploadSession]:
+        return self._UploadMedia(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

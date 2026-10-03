@@ -1587,7 +1587,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         mock_rest_transport_cls.return_value = mock_rest_transport
 
         transport = transports.{{ service.name }}GrpcAsyncIOTransport(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
         mock_rest_transport_cls.assert_not_called()
 
@@ -1607,11 +1607,40 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         mock_rest_transport.close.assert_called_once()
 
 
+{% if rest_async_io_enabled %}
+@pytest.mark.asyncio
+async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_rest_stub_sync_credentials():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    transport = transports.{{ service.name }}GrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport._rest_transport is None
+    stub = transport.{{ method.transport_safe_name|snake_case }}
+    assert transport._rest_transport is None
+
+    result1 = await stub({{ method.input.ident }}())
+    rest_transport = transport._rest_transport
+    assert rest_transport is not None
+    assert isinstance(result1, {{ method.client_output_async.ident }})
+
+    result2 = await stub({{ method.input.ident }}())
+    assert isinstance(result2, {{ method.client_output_async.ident }})
+    assert transport._rest_transport is rest_transport
+
+    with mock.patch.object(
+        rest_transport, "close", wraps=rest_transport.close
+    ) as mock_rest_close:
+        await transport.close()
+        mock_rest_close.assert_called_once()
+{% endif %}
+
+
 @pytest.mark.asyncio
 async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_asyncio_without_async_rest_error():
     with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", False):
         transport = transports.{{ service.name }}GrpcAsyncIOTransport(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
         with pytest.raises(NotImplementedError) as exc_info:
             await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())

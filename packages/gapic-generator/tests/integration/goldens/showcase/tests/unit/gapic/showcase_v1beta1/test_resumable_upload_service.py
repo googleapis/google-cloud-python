@@ -2336,7 +2336,7 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub():
         mock_rest_transport_cls.return_value = mock_rest_transport
 
         transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
         mock_rest_transport_cls.assert_not_called()
 
@@ -2357,10 +2357,37 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub():
 
 
 @pytest.mark.asyncio
+async def test_resumable_upload_service_upload_media_grpc_asyncio_rest_stub_sync_credentials():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip()
+    transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport._rest_transport is None
+    stub = transport.upload_media
+    assert transport._rest_transport is None
+
+    result1 = await stub(resumable_upload.UploadMediaRequest())
+    rest_transport = transport._rest_transport
+    assert rest_transport is not None
+    assert isinstance(result1, resumable_transfer.AsyncResumableUploadSession)
+
+    result2 = await stub(resumable_upload.UploadMediaRequest())
+    assert isinstance(result2, resumable_transfer.AsyncResumableUploadSession)
+    assert transport._rest_transport is rest_transport
+
+    with mock.patch.object(
+        rest_transport, "close", wraps=rest_transport.close
+    ) as mock_rest_close:
+        await transport.close()
+        mock_rest_close.assert_called_once()
+
+
+@pytest.mark.asyncio
 async def test_resumable_upload_service_upload_media_grpc_asyncio_without_async_rest_error():
     with mock.patch.object(transports.grpc_asyncio, "HAS_ASYNC_REST", False):
         transport = transports.ResumableUploadServiceGrpcAsyncIOTransport(
-            credentials=async_anonymous_credentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
         with pytest.raises(NotImplementedError) as exc_info:
             await transport.upload_media(resumable_upload.UploadMediaRequest())
