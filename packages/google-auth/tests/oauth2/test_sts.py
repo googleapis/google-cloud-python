@@ -548,6 +548,20 @@ class TestStsClient(object):
 
         assert response == {}
 
+    @pytest.mark.parametrize("status,retryable", [(400, False), (503, True)])
+    @mock.patch("time.sleep", return_value=None)
+    def test_missing_response_body(self, sleep, status, retryable):
+        request = self.make_mock_request("", status, use_json=False)
+        request.return_value.data = None
+
+        with pytest.raises(exceptions.OAuthError) as caught:
+            self.make_client()._make_request(request, {}, {})
+
+        assert caught.value.args[1] == ""
+        assert caught.value.retryable is retryable
+        assert request.call_count == (3 if retryable else 1)
+        assert sleep.call_count == (2 if retryable else 0)
+
     @pytest.mark.parametrize(
         "status,data,use_json",
         [

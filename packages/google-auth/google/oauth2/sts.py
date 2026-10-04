@@ -83,7 +83,7 @@ class Client(utils.OAuthClientAuthHandler):
             response_body = (
                 response.data.decode("utf-8")
                 if hasattr(response.data, "decode")
-                else response.data
+                else (response.data or "")
             )
 
             if response.status == http_client.OK:
