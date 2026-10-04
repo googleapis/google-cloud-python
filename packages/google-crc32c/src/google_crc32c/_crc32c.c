@@ -67,19 +67,30 @@ static PyMethodDef Crc32cMethods[] = {
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
-
-static struct PyModuleDef crc32cmodule = {
-    PyModuleDef_HEAD_INIT,
-    "_crc32c",   /* name of module */
-    NULL, /* module documentation, may be NULL */
-    -1,       /* size of per-interpreter state of the module,
-                 or -1 if the module keeps state in global variables. */
-    Crc32cMethods
+static PyModuleDef_Slot Crc32cSlots[] = {
+#ifdef Py_mod_multiple_interpreters
+    {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
+#endif
+#ifdef Py_mod_gil
+    {Py_mod_gil, Py_MOD_GIL_NOT_USED},
+#endif
+    {0, NULL}
 };
 
+static struct PyModuleDef crc32cmodule = {
+    PyModuleDef_HEAD_INIT, /* m_base */
+    "_crc32c",             /* m_name: name of module */
+    NULL,                  /* m_doc: module documentation, may be NULL */
+    0,                     /* m_size: size of per-interpreter state of the module */
+    Crc32cMethods,         /* m_methods */
+    Crc32cSlots,           /* m_slots */
+    NULL,                  /* m_traverse */
+    NULL,                  /* m_clear */
+    NULL,                  /* m_free */
+};
 
 PyMODINIT_FUNC
 PyInit__crc32c(void)
 {
-    return PyModule_Create(&crc32cmodule);
+    return PyModuleDef_Init(&crc32cmodule);
 }
