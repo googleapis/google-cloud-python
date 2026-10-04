@@ -67,6 +67,34 @@ static PyMethodDef Crc32cMethods[] = {
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
+#if PY_VERSION_HEX >= 0x030f0000
+PyABIInfo_VAR(abi_info);
+static PySlot Crc32cSlots[] = {
+    PySlot_STATIC_DATA(Py_mod_abi, &abi_info),
+    PySlot_STATIC_DATA(Py_mod_name, "_crc32c"),
+    PySlot_STATIC_DATA(Py_mod_methods, Crc32cMethods),
+    PySlot_SIZE(Py_mod_state_size, 0),
+    PySlot_UINT64(Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED),
+    PySlot_UINT64(Py_mod_gil, Py_MOD_GIL_NOT_USED),
+    PySlot_END
+};
+
+PyMODEXPORT_FUNC
+PyModExport__crc32c()
+{
+    return Crc32cSlots;
+}
+
+PyMODINIT_FUNC
+PyInit__crc32c(void)
+{
+    /* workaround for setuptools on Python 3.15+ */
+    /* https://github.com/pypa/distutils/issues/387 */
+    return NULL;
+}
+
+#else
+
 static PyModuleDef_Slot Crc32cSlots[] = {
 #ifdef Py_mod_multiple_interpreters
     {Py_mod_multiple_interpreters, Py_MOD_PER_INTERPRETER_GIL_SUPPORTED},
@@ -94,3 +122,4 @@ PyInit__crc32c(void)
 {
     return PyModuleDef_Init(&crc32cmodule);
 }
+#endif
