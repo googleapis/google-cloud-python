@@ -15,6 +15,7 @@
 """DB-API Connection for the Google Cloud Spanner."""
 
 import warnings
+from typing import Optional
 
 from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import Aborted
@@ -101,6 +102,10 @@ class Connection:
         for queries executed via this connection. When True, queries on read-only
         or autocommit connections are automatically partitioned and executed in parallel.
         Defaults to False.
+
+    :type timeout: Optional[float]
+    :param timeout: (Optional) The amount of time, in seconds, to wait
+                    for requests to complete.
 
     **kwargs: Initial value for connection variables.
     """
@@ -603,7 +608,7 @@ class Connection:
         self,
         statement: Statement,
         request_options: RequestOptions = None,
-        timeout: float = None,
+        timeout: Optional[float] = None,
     ):
         """Run single SQL statement in begun transaction.
 
@@ -621,9 +626,12 @@ class Connection:
         :type request_options: :class:`RequestOptions`
         :param request_options: Request options to use for this statement.
 
-        :type timeout: float
+        :type timeout: Optional[float]
         :param timeout: (Optional) The amount of time, in seconds, to wait
-                        for the request to complete.
+                        for the request to complete. Defaults to the
+                        connection's timeout if None; when the connection's
+                        timeout is set, passing None will use the connection's
+                        timeout rather than the underlying RPC default timeout.
 
         :rtype: :class:`google.cloud.spanner_v1.streamed.StreamedResultSet`,
                 :class:`google.cloud.spanner_dbapi.checksum.ResultsChecksum`

@@ -94,7 +94,7 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
         res = connection.database.run_in_transaction(
             _do_batch_update_autocommit,
             statements_tuple,
-            timeout=connection.timeout,
+            timeout=cursor.timeout,
         )
         many_result_set.add_iter(res)
         cursor._row_count = sum([max(val, 0) for val in res])
@@ -104,8 +104,8 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
             try:
                 transaction = connection.transaction_checkout()
                 kwargs = {}
-                if connection.timeout is not None:
-                    kwargs["timeout"] = connection.timeout
+                if cursor.timeout is not None:
+                    kwargs["timeout"] = cursor.timeout
                 status, res = transaction.batch_update(statements_tuple, **kwargs)
                 if status.code == ABORTED:
                     connection._transaction = None

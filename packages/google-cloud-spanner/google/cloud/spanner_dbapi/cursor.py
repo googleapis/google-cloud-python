@@ -103,6 +103,31 @@ class Cursor(object):
         self._in_retry_mode = False
         self._batch_dml_rows_count = None
         self._request_tag = None
+        self._timeout = None
+
+    @property
+    def timeout(self):
+        """The timeout (in seconds) that will be applied to statements on this
+        cursor. Defaults to the connection's timeout if not set on the cursor.
+
+        Returns:
+            Optional[float]: The timeout (in seconds) for statements on this
+                 cursor.
+        """
+        return (
+            self._timeout
+            if self._timeout is not None
+            else getattr(self.connection, "timeout", None)
+        )
+
+    @timeout.setter
+    def timeout(self, value):
+        """Sets the timeout (in seconds) for statements on this cursor.
+
+        Args:
+            value (Optional[float]): The timeout (in seconds) for statements.
+        """
+        self._timeout = value
 
     @property
     def request_tag(self):
@@ -237,8 +262,8 @@ class Cursor(object):
             "param_types": get_param_types(params),
             "last_statement": True,
         }
-        if self.connection.timeout is not None:
-            kwargs["timeout"] = self.connection.timeout
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
         self._result_set = transaction.execute_sql(
             sql,
             **kwargs,
@@ -374,7 +399,7 @@ class Cursor(object):
             while True:
                 try:
                     self._result_set = self.connection.run_statement(
-                        statement, self.request_options
+                        statement, self.request_options, self.timeout
                     )
                     self._itr = PeekIterator(self._result_set)
                     return
@@ -557,8 +582,8 @@ class Cursor(object):
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
         kwargs = {"request_options": self.request_options}
-        if self.connection.timeout is not None:
-            kwargs["timeout"] = self.connection.timeout
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
         self._result_set = snapshot.execute_sql(
             sql,
             params,
@@ -653,8 +678,8 @@ class Cursor(object):
         self.connection.run_prior_DDL_statements()
 
         kwargs = {}
-        if self.connection.timeout is not None:
-            kwargs["timeout"] = self.connection.timeout
+        if self.timeout is not None:
+            kwargs["timeout"] = self.timeout
 
         with self.connection.database.snapshot() as snapshot:
             return list(snapshot.execute_sql(sql, params, param_types, **kwargs))
