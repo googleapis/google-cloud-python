@@ -19,7 +19,6 @@ from sqlalchemy.testing.plugin.plugin_base import fixtures
 
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
-    _UNSET,
     SpannerDialect,
     SpannerExecutionContext,
     reset_connection,
@@ -27,29 +26,32 @@ from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
 
 
 class SqlAlchemyTimeoutTest(fixtures.TestBase):
-    def test_reset_connection_clears_timeout(self):
+    def test_reset_connection_preserves_default_timeout(self):
         dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
         dbapi_conn.timeout = 30.0
         dbapi_conn.inside_transaction = False
 
         reset_connection(dbapi_conn, None)
 
-        eq_(dbapi_conn.timeout, None)
+        eq_(dbapi_conn.timeout, 30.0)
 
-    def test_pre_exec_sets_timeout(self):
+    def test_pre_exec_sets_cursor_timeout(self):
         context = SpannerExecutionContext()
         context.execution_options = {"timeout": 45.0}
+        context.cursor = mock.MagicMock()
+        context.cursor.timeout = None
 
         dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
-        dbapi_conn.timeout = None
+        dbapi_conn.timeout = 25.0
         context._dbapi_connection = mock.MagicMock()
         context._dbapi_connection.connection = dbapi_conn
 
         context.pre_exec()
 
-        eq_(dbapi_conn.timeout, 45.0)
+        eq_(context.cursor.timeout, 45.0)
+        eq_(dbapi_conn.timeout, 25.0)
 
-    def test_query_without_timeout_does_not_alter_connection_timeout(self):
+    def test_query_without_timeout_does_not_alter_cursor_or_connection_timeout(self):
         dialect = SpannerDialect()
         dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
         dbapi_conn.timeout = 25.0
@@ -57,85 +59,12 @@ class SqlAlchemyTimeoutTest(fixtures.TestBase):
         context = SpannerExecutionContext()
         context.dialect = dialect
         context.execution_options = {}
+        context.cursor = mock.MagicMock()
+        context.cursor.timeout = None
         context._dbapi_connection = mock.MagicMock()
         context._dbapi_connection.connection = dbapi_conn
 
         context.pre_exec()
+
+        eq_(context.cursor.timeout, None)
         eq_(dbapi_conn.timeout, 25.0)
-
-        context.post_exec()
-        eq_(dbapi_conn.timeout, 25.0)
-
-    def test_statement_level_timeout_restores_previous_timeout_in_post_exec(self):
-        dialect = SpannerDialect()
-        dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
-        dbapi_conn.timeout = 25.0
-
-        context = SpannerExecutionContext()
-        context.dialect = dialect
-        context.execution_options = {"timeout": 5.0}
-        context._dbapi_connection = mock.MagicMock()
-        context._dbapi_connection.connection = dbapi_conn
-
-        context.pre_exec()
-        eq_(dbapi_conn.timeout, 5.0)
-
-        context.post_exec()
-        eq_(dbapi_conn.timeout, 25.0)
-
-    def test_statement_level_timeout_restores_previous_timeout_on_dbapi_exception(self):
-        dialect = SpannerDialect()
-        dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
-        dbapi_conn.timeout = 25.0
-
-        context = SpannerExecutionContext()
-        context.dialect = dialect
-        context.execution_options = {"timeout": 5.0}
-        context._dbapi_connection = mock.MagicMock()
-        context._dbapi_connection.connection = dbapi_conn
-
-        context.pre_exec()
-        eq_(dbapi_conn.timeout, 5.0)
-
-        context.handle_dbapi_exception(Exception("Statement timeout/error"))
-        eq_(dbapi_conn.timeout, 25.0)
-
-    def test_statement_level_timeout_none_overrides_and_restores(self):
-        dialect = SpannerDialect()
-        dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
-        dbapi_conn.timeout = 25.0
-
-        context = SpannerExecutionContext()
-        context.dialect = dialect
-        context.execution_options = {"timeout": None}
-        context._dbapi_connection = mock.MagicMock()
-        context._dbapi_connection.connection = dbapi_conn
-
-        context.pre_exec()
-        eq_(dbapi_conn.timeout, None)
-
-        context.post_exec()
-        eq_(dbapi_conn.timeout, 25.0)
-
-    def test_statement_level_timeout_swallows_exception_on_broken_conn(self):
-        dialect = SpannerDialect()
-        dbapi_conn = mock.MagicMock(spec=spanner_dbapi.Connection)
-        dbapi_conn.timeout = 25.0
-
-        context = SpannerExecutionContext()
-        context.dialect = dialect
-        context.execution_options = {"timeout": 5.0}
-        context._dbapi_connection = mock.MagicMock()
-        context._dbapi_connection.connection = dbapi_conn
-
-        context.pre_exec()
-        eq_(dbapi_conn.timeout, 5.0)
-
-        # Simulate broken connection raising on timeout assignment
-        type(dbapi_conn).timeout = mock.PropertyMock(
-            side_effect=Exception("Connection broken")
-        )
-
-        # Should not raise exception
-        context.handle_dbapi_exception(Exception("Original DBAPI error"))
-        eq_(context._previous_timeout, _UNSET)
