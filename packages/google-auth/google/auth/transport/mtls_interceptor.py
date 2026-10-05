@@ -492,7 +492,6 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                 fn(self)
             except Exception as e:
                 _LOGGER.warning("Callback failed: %s", e)
-                pass
 
     def result(self, timeout=None):
         if not self._completion_event.wait(timeout):
@@ -632,7 +631,6 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                 fn(self)
             except Exception as e:
                 _LOGGER.warning("Callback failed: %s", e)
-                pass
 
     def _on_inner_call_done(self, inner_call):
         with self._lock:
@@ -739,4 +737,3 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                 fn(self)
             except Exception as e:
                 _LOGGER.warning("Callback failed: %s", e)
-                pass
