@@ -3721,7 +3721,6 @@ class TestRowIterator(unittest.TestCase):
             mock_pyarrow.ipc.read_record_batch.return_value = batch_1
 
             gen = row_iterator._download_arrow_from_job_id()
-            self.assertEqual(next(gen), batch_1)
             with self.assertRaises(ValueError) as ctx:
                 next(gen)
             self.assertIn(

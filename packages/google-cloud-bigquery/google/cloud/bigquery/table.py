@@ -2429,13 +2429,8 @@ class RowIterator(HTTPIterator):
             self._parse_inline_arrow_first_page(first_page)
         )
 
-        if initial_batch:
-            yield initial_batch
-
-        if job_complete and offset >= total_rows:
-            return
-
-        if bqstorage_client is None:
+        more_pages_needed = not job_complete or offset < total_rows
+        if more_pages_needed and bqstorage_client is None:
             if self.client is None:
                 raise ValueError("RowIterator client is None.")
             bqstorage_client = self.client._ensure_bqstorage_client()
@@ -2443,6 +2438,12 @@ class RowIterator(HTTPIterator):
                 raise ValueError(
                     "The google-cloud-bigquery-storage library is required to read Arrow results."
                 )
+
+        if initial_batch:
+            yield initial_batch
+
+        if not more_pages_needed:
+            return
 
         project = self._project or (self.client.project if self.client else None)
         yield from self._stream_arrow_via_bqstorage(
