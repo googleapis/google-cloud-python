@@ -254,9 +254,7 @@ client.{{ render_method_name(sample)|trim }}({{ render_request_params_unary(samp
 {% set fn_name = sample.rpc|snake_case|trim %}
 {% set fn_params = print_input_params(sample.request)|trim %}
 {% set method_call_with_config = render_method_call(sample, calling_form, calling_form_enum, sample.transport, include_config=True)|trim %}
-{% set method_call_no_config = render_method_call(sample, calling_form, calling_form_enum, sample.transport, include_config=False)|trim %}
 {{ async_prefix }}def sample_{{ fn_name }}({{ fn_params }}):
-    # Option 1: Upload a stream directly from start to completion.
     {{ render_client_setup(sample.module_name, sample.client_name)|indent }}
     {{ render_request_setup(sample.request, sample.request_module_name, sample.request_type, calling_form, calling_form_enum)|indent }}
     # Configure optional transfer settings such as chunk size and stall detection
@@ -266,106 +264,37 @@ client.{{ render_method_name(sample)|trim }}({{ render_request_params_unary(samp
         stall_timeout=120,
     )
 
-    # Create an upload session for the request
+    # Make the request
     upload_session = {{ method_call_with_config }}
 
-    # Upload the entire stream directly and {% if is_async %}await{% else %}return{% endif %} the final response
+    # Option 1: Upload the entire stream directly and {% if is_async %}await{% else %}return{% endif %} the final response
     stream = io.BytesIO(b"Example upload data")
     {{ "response = " if sample.response else "" }}{{ await_prefix }}upload_session.upload(stream)
-    {% if sample.response %}
 
-    # Handle the response
-    {% for statement in sample.response %}
-    {{ dispatch_statement(statement)|trim }}
-    {% endfor %}
-    {% endif %}
-
-
-{{ async_prefix }}def sample_{{ fn_name }}_with_progress({{ fn_params }}):
-    # Option 2: Upload a stream while receiving progress updates per chunk.
-    {{ render_client_setup(sample.module_name, sample.client_name)|indent }}
-    {{ render_request_setup(sample.request, sample.request_module_name, sample.request_type, calling_form, calling_form_enum)|indent }}
-    # Configure optional transfer settings such as chunk size and stall detection
-    config = ResumableUploadConfig(
-        chunk_size=8 * 1024 * 1024,  # 8 MB
-        stall_minimum_rate=64 * 1024,
-        stall_timeout=120,
-    )
-
-    # Create an upload session for the request
-    upload_session = {{ method_call_with_config }}
-
-    # Iterate over the upload to receive progress updates as each chunk is transmitted
-    stream = io.BytesIO(b"Example upload data")
-    progress: UploadProgress
+    # Option 2: Alternatively, iterate over the upload to receive progress updates per chunk
     {% if is_async %}
-    async for progress in upload_session.upload(stream):
+    # async for progress in upload_session.upload(stream):
     {% else %}
-    for progress in upload_session.iter_upload(stream):
+    # for progress in upload_session.iter_upload(stream):
     {% endif %}
-        print(
-            f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}"
-        )
-        print(f"Session URL: {progress.upload_url}")
-
-    # After iteration completes, the final response is available on the session
-    {{ "response = " if sample.response else "" }}upload_session.response
+    #     print(f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}")
+    #     print(f"Session URL: {progress.upload_url}")
     {% if sample.response %}
-
-    # Handle the response
-    {% for statement in sample.response %}
-    {{ dispatch_statement(statement)|trim }}
-    {% endfor %}
+    # response = upload_session.response
     {% endif %}
 
+    # Option 3: Alternatively, resume an interrupted upload from a saved session URL
+    # {{ "response = " if sample.response else "" }}{{ await_prefix }}upload_session.resume(upload_url, stream, chunk_size=config.chunk_size)
 
-{{ async_prefix }}def sample_{{ fn_name }}_resume({{ fn_params }}):
-    # Option 3: Resume an interrupted upload using a previously saved session URL.
-    {{ render_client_setup(sample.module_name, sample.client_name)|indent }}
-    {{ render_request_setup(sample.request, sample.request_module_name, sample.request_type, calling_form, calling_form_enum)|indent }}
-    # Create an upload session for the request
-    upload_session = {{ method_call_no_config }}
-
-    # Resume the interrupted upload from the saved session URL and chunk size
-    stream = io.BytesIO(b"Example upload data")
-    upload_url = "https://..."
-    chunk_size = 8 * 1024 * 1024
-    {{ "response = " if sample.response else "" }}{{ await_prefix }}upload_session.resume(upload_url, stream, chunk_size=chunk_size)
-    {% if sample.response %}
-
-    # Handle the response
-    {% for statement in sample.response %}
-    {{ dispatch_statement(statement)|trim }}
-    {% endfor %}
-    {% endif %}
-
-
-{{ async_prefix }}def sample_{{ fn_name }}_resume_with_progress({{ fn_params }}):
-    # Option 4: Resume an interrupted upload while receiving progress updates.
-    {{ render_client_setup(sample.module_name, sample.client_name)|indent }}
-    {{ render_request_setup(sample.request, sample.request_module_name, sample.request_type, calling_form, calling_form_enum)|indent }}
-    # Create an upload session for the request
-    upload_session = {{ method_call_no_config }}
-
-    # Resume the interrupted upload while iterating over progress updates
-    stream = io.BytesIO(b"Example upload data")
-    upload_url = "https://..."
-    chunk_size = 8 * 1024 * 1024
-    progress: UploadProgress
+    # Option 4: Alternatively, resume an interrupted upload while receiving progress updates
     {% if is_async %}
-    async for progress in upload_session.resume(upload_url, stream, chunk_size=chunk_size):
+    # async for progress in upload_session.resume(upload_url, stream, chunk_size=config.chunk_size):
     {% else %}
-    for progress in upload_session.iter_resume(upload_url, stream, chunk_size=chunk_size):
+    # for progress in upload_session.iter_resume(upload_url, stream, chunk_size=config.chunk_size):
     {% endif %}
-        print(
-            f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}"
-        )
-        print(f"Session URL: {progress.upload_url}")
-        print(f"Chunk size: {progress.chunk_size}")
-
-    # After iteration completes, the final response is available on the session
-    {{ "response = " if sample.response else "" }}upload_session.response
+    #     print(f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}")
     {% if sample.response %}
+    # response = upload_session.response
 
     # Handle the response
     {% for statement in sample.response %}

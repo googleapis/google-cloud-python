@@ -1192,7 +1192,7 @@ def _get_sample_imports(sample: Dict, rpc: wrappers.Method) -> List[str]:
 
     if rpc.is_resumable_upload:
         imports.append(
-            "from google.api_core.resumable_transfer import ResumableUploadConfig, UploadProgress"
+            "from google.api_core.resumable_transfer import ResumableUploadConfig"
         )
         imports.append("import io")
 

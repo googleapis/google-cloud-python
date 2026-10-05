@@ -514,11 +514,10 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google import showcase_v1beta1
-            from google.api_core.resumable_transfer import ResumableUploadConfig, UploadProgress
+            from google.api_core.resumable_transfer import ResumableUploadConfig
             import io
 
             def sample_upload_media():
-                # Option 1: Upload a stream directly from start to completion.
                 # Create a client
                 client = showcase_v1beta1.ResumableUploadServiceClient()
 
@@ -533,97 +532,26 @@ class ResumableUploadServiceClient(metaclass=ResumableUploadServiceClientMeta):
                     stall_timeout=120,
                 )
 
-                # Create an upload session for the request
+                # Make the request
                 upload_session = client.upload_media(request=request, config=config)
 
-                # Upload the entire stream directly and return the final response
+                # Option 1: Upload the entire stream directly and return the final response
                 stream = io.BytesIO(b"Example upload data")
                 response = upload_session.upload(stream)
 
-                # Handle the response
-                print(response)
+                # Option 2: Alternatively, iterate over the upload to receive progress updates per chunk
+                # for progress in upload_session.iter_upload(stream):
+                #     print(f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}")
+                #     print(f"Session URL: {progress.upload_url}")
+                # response = upload_session.response
 
-            def sample_upload_media_with_progress():
-                # Option 2: Upload a stream while receiving progress updates per chunk.
-                # Create a client
-                client = showcase_v1beta1.ResumableUploadServiceClient()
+                # Option 3: Alternatively, resume an interrupted upload from a saved session URL
+                # response = upload_session.resume(upload_url, stream, chunk_size=config.chunk_size)
 
-                # Initialize request argument(s)
-                request = showcase_v1beta1.UploadMediaRequest(
-                )
-
-                # Configure optional transfer settings such as chunk size and stall detection
-                config = ResumableUploadConfig(
-                    chunk_size=8 * 1024 * 1024,  # 8 MB
-                    stall_minimum_rate=64 * 1024,
-                    stall_timeout=120,
-                )
-
-                # Create an upload session for the request
-                upload_session = client.upload_media(request=request, config=config)
-
-                # Iterate over the upload to receive progress updates as each chunk is transmitted
-                stream = io.BytesIO(b"Example upload data")
-                progress: UploadProgress
-                for progress in upload_session.iter_upload(stream):
-                    print(
-                        f"Uploaded {progress.bytes_uploaded} bytes | State: {progress.state.name}"
-                    )
-                    print(f"Session URL: {progress.upload_url}")
-
-                # After iteration completes, the final response is available on the session
-                response = upload_session.response
-
-                # Handle the response
-                print(response)
-
-            def sample_upload_media_resume():
-                # Option 3: Resume an interrupted upload using a previously saved session URL.
-                # Create a client
-                client = showcase_v1beta1.ResumableUploadServiceClient()
-
-                # Initialize request argument(s)
-                request = showcase_v1beta1.UploadMediaRequest(
-                )
-
-                # Create an upload session for the request
-                upload_session = client.upload_media(request=request)
-
-                # Resume the interrupted upload from the saved session URL and chunk size
-                stream = io.BytesIO(b"Example upload data")
-                upload_url = "https://..."
-                chunk_size = 8 * 1024 * 1024
-                response = upload_session.resume(upload_url, stream, chunk_size=chunk_size)
-
-                # Handle the response
-                print(response)
-
-            def sample_upload_media_resume_with_progress():
-                # Option 4: Resume an interrupted upload while receiving progress updates.
-                # Create a client
-                client = showcase_v1beta1.ResumableUploadServiceClient()
-
-                # Initialize request argument(s)
-                request = showcase_v1beta1.UploadMediaRequest(
-                )
-
-                # Create an upload session for the request
-                upload_session = client.upload_media(request=request)
-
-                # Resume the interrupted upload while iterating over progress updates
-                stream = io.BytesIO(b"Example upload data")
-                upload_url = "https://..."
-                chunk_size = 8 * 1024 * 1024
-                progress: UploadProgress
-                for progress in upload_session.iter_resume(upload_url, stream, chunk_size=chunk_size):
-                    print(
-                        f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}"
-                    )
-                    print(f"Session URL: {progress.upload_url}")
-                    print(f"Chunk size: {progress.chunk_size}")
-
-                # After iteration completes, the final response is available on the session
-                response = upload_session.response
+                # Option 4: Alternatively, resume an interrupted upload while receiving progress updates
+                # for progress in upload_session.iter_resume(upload_url, stream, chunk_size=config.chunk_size):
+                #     print(f"Resumed {progress.bytes_uploaded} bytes | State: {progress.state.name}")
+                # response = upload_session.response
 
                 # Handle the response
                 print(response)
