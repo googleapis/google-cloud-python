@@ -5,13 +5,6 @@
 /* The minimum buffer size in bytes (1MB) required to justify the overhead of releasing the GIL. */
 static const Py_ssize_t gil_threshold = 1024 * 1024;
 
-static int
-_should_release_gil(Py_ssize_t length, PyObject *chunk_obj)
-{
-    /* Checks if the chunk is immutable (bytes) to prevent concurrent modification,
-     * and large enough to benefit from releasing the GIL. */
-    return (length >= gil_threshold && PyBytes_Check(chunk_obj));
-}
 
 static PyObject *
 _crc32c_extend(PyObject *self, PyObject *args)
@@ -24,7 +17,7 @@ _crc32c_extend(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "ky*", &crc_input, &buffer))
         return NULL;
 
-    if (_should_release_gil(buffer.len, buffer.obj)) {
+    if (buffer.len >= gil_threshold) {
         save = PyEval_SaveThread();
     }
 
@@ -50,7 +43,7 @@ _crc32c_value(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "y*", &buffer))
         return NULL;
 
-    if (_should_release_gil(buffer.len, buffer.obj)) {
+    if (buffer.len >= gil_threshold) {
         save = PyEval_SaveThread();
     }
 
