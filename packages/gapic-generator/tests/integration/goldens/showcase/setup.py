@@ -42,14 +42,10 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18551 is merged
-    "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core",
-    # TODO: Uncomment the line below
-    # "google-api-core[grpc] >= 2.41.0, <3.0.0",
-    # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18552 is merged
-    "google-auth[aiohttp] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-auth",
-    # TODO: Uncomment the line below
-    # "google-auth[aiohttp] >= 2.60.0, <3.0.0",
+    "google-api-core[grpc] >= 2.41.0, <3.0.0",
+    # Exclude incompatible versions of `google-auth`
+    # See https://github.com/googleapis/google-cloud-python/issues/12364
+    "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "grpcio >= 1.59.0, < 2.0.0",
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.26.1, <2.0.0",
@@ -58,14 +54,8 @@ dependencies = [
 ]
 extras = {
     "async_rest": [
-        # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18552 is merged
-        "google-auth[aiohttp] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-auth",
-        # TODO: Uncomment the line below
-        # "google-auth[aiohttp] >= 2.60.0, <3.0.0",
-        # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18551 is merged
-        "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core",
-        # TODO: Uncomment the line below
-        # "google-api-core >= 2.41.0, <3.0.0",
+        "google-auth[aiohttp] >= 2.60.0, <3.0.0",
+        "google-api-core >= 2.41.0, <3.0.0",
     ],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-showcase"

@@ -131,10 +131,7 @@ jobs:
         cache-dependency-glob: 'packages/**/testing/constraints*.txt'
     - name: Install nox and nox-uv
       run: |
-        # Workaround: Pin setuptools < 70 to avoid a directory cleanup race condition
-        # where setuptools deletes the temporary '/bdist' directory mid-build during 
-        # highly parallelized 'uv pip install -e .' editable installations.  
-        uv pip install --system nox nox-uv "setuptools<70.0.0"
+        uv pip install --system nox nox-uv
     # TODO(https://github.com/googleapis/google-cloud-python/issues/18532):
     # Remove UV_PRERELEASE once Python 3.15 is officially released and upstream binary wheels are available.
     - name: Enable prereleases for Python 3.15
@@ -242,10 +239,7 @@ jobs:
     - name: Install coverage
       if: ${{ needs.initialize.outputs.packages != '' }}
       run: |
-        # Workaround: Pin setuptools < 70 to avoid a directory cleanup race condition
-        # where setuptools deletes the temporary '/bdist' directory mid-build during 
-        # highly parallelized 'uv pip install -e .' editable installations.      
-        python -m pip install --upgrade "setuptools<70" pip wheel
+        python -m pip install --upgrade setuptools pip wheel
         python -m pip install coverage
     - name: Download coverage results
       if: ${{ needs.initialize.outputs.packages != '' }}

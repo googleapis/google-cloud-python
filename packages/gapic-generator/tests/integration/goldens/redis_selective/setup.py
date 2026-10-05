@@ -53,14 +53,8 @@ dependencies = [
 ]
 extras = {
     "async_rest": [
-        # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18552 is merged
-        "google-auth[aiohttp] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-auth",
-        # TODO: Uncomment the line below
-        # "google-auth[aiohttp] >= 2.60.0, <3.0.0",
-        # TODO: For prototyping purposes only, revert once https://github.com/googleapis/google-cloud-python/pull/18551 is merged
-        "google-api-core[grpc] @ git+https://github.com/googleapis/google-cloud-python.git#subdirectory=packages/google-api-core",
-        # TODO: Uncomment the line below
-        # "google-api-core >= 2.41.0, <3.0.0",
+        "google-auth[aiohttp] >= 2.60.0, <3.0.0",
+        "google-api-core >= 2.41.0, <3.0.0",
     ],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-redis"

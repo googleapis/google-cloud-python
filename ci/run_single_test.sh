@@ -26,13 +26,6 @@
 
 set -e
 
-# 1. Force UV to pin setuptools inside Nox environments, resolving the /bdist race condition.
-# 2. Redirect TMPDIR to a unique path so parallel workers never cross-contaminate.
-export UV_CONSTRAINT="/tmp/constraints.txt"
-export TMPDIR=$(mktemp -d)
-echo "setuptools<70.0.0" > "${UV_CONSTRAINT}"
-export UV_CACHE_DIR="${TMPDIR}/uv_cache"
-
 if [ -z "${TEST_TYPE}" ]; then
     echo "missing TEST_TYPE env var"
     exit 1
