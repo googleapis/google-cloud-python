@@ -356,24 +356,27 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'upload_media' not in self._stubs:
+            class _ErrorStub:
+                def __init__(self, error: Exception):
+                    self._error = error
+
+                def __call__(self, *args, **kwargs):
+                    async def _raise():
+                        raise self._error
+                    return _raise()
+
             if not self._credentials:
-                class _ErrorStub:
-                    def __call__(self, *args, **kwargs):
-                        async def _error():
-                            raise core_exceptions.GoogleAPICallError(
-                                "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
-                            )
-                        return _error()
-                self._stubs['upload_media'] = _ErrorStub()
+                self._stubs['upload_media'] = _ErrorStub(
+                    core_exceptions.GoogleAPICallError(
+                        "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                    )
+                )
             elif self._client_cert_source_for_mtls:
-                class _MtlsErrorStub:
-                    def __call__(self, *args, **kwargs):
-                        async def _mtls_error():
-                            raise core_exceptions.AsyncRestUnsupportedParameterError(
-                                "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods."
-                            )
-                        return _mtls_error()
-                self._stubs['upload_media'] = _MtlsErrorStub()
+                self._stubs['upload_media'] = _ErrorStub(
+                    core_exceptions.AsyncRestUnsupportedParameterError(
+                        "Mutual TLS (client_cert_source_for_mtls) is not currently supported for async resumable upload methods."
+                    )
+                )
             elif HAS_ASYNC_REST:
                 transport = self
                 class _AsyncRestStub:
@@ -387,12 +390,9 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                         return transport._rest_transport.upload_media(*args, **kwargs)
                 self._stubs['upload_media'] = _AsyncRestStub()
             else:
-                class _UnsupportedStub:
-                    def __call__(self, *args, **kwargs):
-                        async def _unsupported():
-                            raise NotImplementedError("Async REST transport is required for async resumable upload methods.")
-                        return _unsupported()
-                self._stubs['upload_media'] = _UnsupportedStub()
+                self._stubs['upload_media'] = _ErrorStub(
+                    NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                )
         return self._stubs['upload_media']
 
     def _prep_wrapped_messages(self, client_info):

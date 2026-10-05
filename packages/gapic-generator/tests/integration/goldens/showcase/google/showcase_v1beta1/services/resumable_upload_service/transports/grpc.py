@@ -349,11 +349,17 @@ class ResumableUploadServiceGrpcTransport(ResumableUploadServiceTransport):
         if 'upload_media' not in self._stubs:
             if not self._credentials:
                 class _ErrorStub:
+                    def __init__(self, error: Exception):
+                        self._error = error
+
                     def __call__(self, *args, **kwargs):
-                        raise core_exceptions.GoogleAPICallError(
-                            "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
-                        )
-                self._stubs['upload_media'] = _ErrorStub()
+                        raise self._error
+
+                self._stubs['upload_media'] = _ErrorStub(
+                    core_exceptions.GoogleAPICallError(
+                        "Resumable upload methods operate over REST and cannot be invoked when the transport is initialized with a pre-constructed gRPC channel. Please supply credentials directly instead of a gRPC channel to use resumable upload functionality."
+                    )
+                )
             else:
                 transport = self
                 class _RestStub:
