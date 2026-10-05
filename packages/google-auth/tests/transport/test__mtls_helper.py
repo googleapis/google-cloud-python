@@ -766,6 +766,34 @@ class TestGetWorkloadCertAndKey(object):
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._get_workload_cert_and_key("")
 
+    @pytest.mark.parametrize(
+        "workload",
+        [
+            {"cert_path": None, "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": None},
+            {"cert_path": None, "key_path": None},
+            {"cert_path": "", "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": ""},
+            {"cert_path": 123, "key_path": "path/to/key"},
+            {"cert_path": "path/to/cert", "key_path": 123},
+        ],
+    )
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
+    )
+    def test_invalid_cert_or_key_path_value(
+        self,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+        workload,
+    ):
+        mock_get_cert_config_path.return_value = "/path/to/cert"
+        mock_load_json_file.return_value = {"cert_configs": {"workload": workload}}
+
+        with pytest.raises(exceptions.ClientCertError):
+            _mtls_helper._get_workload_cert_and_key("")
+
 
 class TestReadCertAndKeyFile(object):
     def test_success(self):
@@ -2141,17 +2169,12 @@ class TestGkeCredentialBundleDiscovery(object):
         )
 
     @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path",
-        return_value=None,
-        autospec=True,
-    )
-    @mock.patch(
         "google.auth.transport._mtls_helper.path.exists",
-        return_value=True,
+        side_effect=lambda p: p == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH,
         autospec=True,
     )
     def test_get_workload_cert_and_key_no_gke_fallback_when_explicit_env_set(
-        self, mock_exists, mock_get_config_path, monkeypatch
+        self, mock_exists, monkeypatch
     ):
         monkeypatch.setenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, "/missing/config.json"
@@ -2159,32 +2182,27 @@ class TestGkeCredentialBundleDiscovery(object):
         cert, key = _mtls_helper._get_workload_cert_and_key()
         assert cert is None
         assert key is None
-        mock_exists.assert_not_called()
+        mock_exists.assert_called_once_with("/missing/config.json")
 
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path",
-        return_value=None,
-        autospec=True,
-    )
+    @pytest.mark.parametrize("include_context_aware", [True, False])
     @mock.patch(
         "google.auth.transport._mtls_helper.path.exists",
-        return_value=True,
+        side_effect=lambda p: p == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH,
         autospec=True,
     )
     def test_get_workload_cert_and_key_no_gke_fallback_when_context_aware_env_set(
-        self, mock_exists, mock_get_config_path, monkeypatch
+        self, mock_exists, include_context_aware, monkeypatch
     ):
-        monkeypatch.delenv(
-            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
-        )
         monkeypatch.setenv(
             environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
             "/missing/context_aware_config.json",
         )
-        cert, key = _mtls_helper._get_workload_cert_and_key(include_context_aware=True)
+        cert, key = _mtls_helper._get_workload_cert_and_key(
+            include_context_aware=include_context_aware
+        )
         assert cert is None
         assert key is None
-        mock_exists.assert_not_called()
+        assert mock_exists.call_count == 1
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",

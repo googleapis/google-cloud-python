@@ -81,10 +81,6 @@ AGENT_IDENTITY_CERT_BYTES = (
 @pytest.fixture(autouse=True)
 def clean_env(monkeypatch):
     monkeypatch.delenv(
-        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-        raising=False,
-    )
-    monkeypatch.delenv(
         environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE,
         raising=False,
     )
@@ -177,9 +173,12 @@ class TestAgentIdentityUtils:
         "google.auth.transport._mtls_helper._get_cert_config_path",
         return_value=None,
     )
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=False)
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=False,
+    )
     def test_get_agent_identity_certificate_path_empty_env(
-        self, mock_exists, mock_get_config, monkeypatch
+        self, mock_is_ready, mock_get_config, monkeypatch
     ):
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
@@ -190,15 +189,19 @@ class TestAgentIdentityUtils:
         )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
 
     @mock.patch("google.auth._agent_identity_utils.time.sleep")
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         return_value=None,
     )
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
     def test_get_agent_identity_certificate_path_gke_bundle_fallback(
-        self, mock_exists, mock_get_config, mock_sleep, monkeypatch
+        self, mock_is_ready, mock_get_config, mock_sleep, monkeypatch
     ):
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
@@ -209,27 +212,60 @@ class TestAgentIdentityUtils:
         )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result == _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
-        mock_exists.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
         mock_sleep.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        return_value=None,
+    )
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        side_effect=PermissionError("Access denied"),
+    )
+    def test_get_agent_identity_certificate_path_gke_bundle_permission_error(
+        self, mock_is_ready, mock_get_config, monkeypatch
+    ):
+        monkeypatch.delenv(
+            environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
+        )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            raising=False,
+        )
+        result = _agent_identity_utils.get_agent_identity_certificate_path()
+        assert result is None
+        mock_is_ready.assert_called_once_with(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH)
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         return_value="/home/user/.config/gcloud/certificate_config.json",
     )
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
     def test_get_agent_identity_certificate_path_no_gke_fallback_when_implicit_config_exists(
-        self, mock_exists, mock_get_config, monkeypatch
+        self, mock_is_ready, mock_get_config, monkeypatch
     ):
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
         )
+        monkeypatch.delenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+            raising=False,
+        )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
-        mock_exists.assert_not_called()
+        mock_get_config.assert_called_once()
+        mock_is_ready.assert_not_called()
 
-    @mock.patch("google.auth._agent_identity_utils.os.path.exists", return_value=True)
+    @mock.patch(
+        "google.auth._agent_identity_utils._is_certificate_file_ready",
+        return_value=True,
+    )
     def test_get_agent_identity_certificate_path_no_gke_fallback_when_context_aware_env_set(
-        self, mock_exists, monkeypatch
+        self, mock_is_ready, monkeypatch
     ):
         monkeypatch.delenv(
             environment_vars.GOOGLE_API_CERTIFICATE_CONFIG, raising=False
@@ -240,7 +276,7 @@ class TestAgentIdentityUtils:
         )
         result = _agent_identity_utils.get_agent_identity_certificate_path()
         assert result is None
-        mock_exists.assert_not_called()
+        mock_is_ready.assert_not_called()
 
     @mock.patch("google.auth._agent_identity_utils.os.path.commonpath")
     @mock.patch(

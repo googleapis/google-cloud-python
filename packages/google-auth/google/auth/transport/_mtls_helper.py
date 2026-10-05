@@ -368,25 +368,21 @@ def _load_json_file(path):
     return json_data
 
 
-def _has_explicit_cert_config_env(include_context_aware=True):
+def _has_explicit_cert_config_env():
     """Returns True if an explicit certificate config environment variable is set."""
-    env_path = environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
-    if env_path is not None and env_path != "":
-        return True
-    if include_context_aware:
-        ca_env_path = environ.get(
+    return bool(
+        environ.get(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
+        or environ.get(
             environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
         )
-        if ca_env_path is not None and ca_env_path != "":
-            return True
-    return False
+    )
 
 
-def _has_gke_credential_bundle(config_file_path=None, include_context_aware=True):
+def _has_gke_credential_bundle(config_file_path=None):
     """Returns True if GKE workload credential bundle should be used as fallback."""
     return (
         config_file_path is None
-        and not _has_explicit_cert_config_env(include_context_aware)
+        and not _has_explicit_cert_config_env()
         and path.exists(_GKE_CREDENTIAL_BUNDLE_PATH)
     )
 
@@ -422,7 +418,7 @@ def _get_workload_cert_and_key(
 
     if cert_path is None and key_path is None:
         if certificate_config_path is None and _has_gke_credential_bundle(
-            config_file_path, include_context_aware
+            config_file_path
         ):
             return _read_credential_bundle_file(_GKE_CREDENTIAL_BUNDLE_PATH)
         return None, None
@@ -539,8 +535,10 @@ def _resolve_workload_cert_and_key_paths(config_path=None, include_context_aware
 
     if (
         not isinstance(workload, dict)
-        or "cert_path" not in workload
-        or "key_path" not in workload
+        or not isinstance(workload.get("cert_path"), str)
+        or not workload.get("cert_path")
+        or not isinstance(workload.get("key_path"), str)
+        or not workload.get("key_path")
     ):
         raise exceptions.ClientCertError(
             'Workload certificate configuration is missing "cert_path" or "key_path" in {}'.format(
@@ -562,11 +560,19 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
 
 def _read_credential_bundle_file(bundle_path):
     """Reads a combined PEM credential bundle containing certificate(s) and a private key."""
+    # Read the bundle once so a certificate rotation on disk cannot pair an
+    # old certificate chain with a new private key.
     try:
-        return _read_cert_and_key_files(bundle_path, bundle_path)
+        with open(bundle_path, "rb") as bundle_file:
+            bundle_data = bundle_file.read()
     except OSError as caught_exc:
         new_exc = exceptions.ClientCertError(caught_exc)
         raise new_exc from caught_exc
+
+    return (
+        _extract_cert_chain(bundle_data, bundle_path),
+        _extract_private_key(bundle_data, bundle_path),
+    )
 
 
 def _read_cert_and_key_files(cert_path, key_path):
@@ -590,10 +596,7 @@ def _has_unmatched_pem_markers(pem_bytes, cert_blocks):
     ) != pem_bytes.count(b"-----END CERTIFICATE-----")
 
 
-def _read_cert_file(cert_path):
-    with open(cert_path, "rb") as cert_file:
-        cert_data = cert_file.read()
-
+def _extract_cert_chain(cert_data, cert_path):
     cert_match = re.findall(_CERT_REGEX, cert_data)
     if not cert_match or _has_unmatched_pem_markers(cert_data, cert_match):
         raise exceptions.ClientCertError(
@@ -604,10 +607,7 @@ def _read_cert_file(cert_path):
     return _join_cert_chain(cert_match)
 
 
-def _read_key_file(key_path):
-    with open(key_path, "rb") as key_file:
-        key_data = key_file.read()
-
+def _extract_private_key(key_data, key_path):
     key_match = re.findall(_KEY_REGEX, key_data)
     if len(key_match) != 1:
         raise exceptions.ClientCertError(
@@ -617,6 +617,20 @@ def _read_key_file(key_path):
         )
 
     return key_match[0]
+
+
+def _read_cert_file(cert_path):
+    with open(cert_path, "rb") as cert_file:
+        cert_data = cert_file.read()
+
+    return _extract_cert_chain(cert_data, cert_path)
+
+
+def _read_key_file(key_path):
+    with open(key_path, "rb") as key_file:
+        key_data = key_file.read()
+
+    return _extract_private_key(key_data, key_path)
 
 
 def _run_cert_provider_command(command, expect_encrypted_key=False):
@@ -872,7 +886,7 @@ def check_use_client_cert():
         )
         return False
 
-    return _has_gke_credential_bundle(cert_path, include_context_aware=True)
+    return _has_gke_credential_bundle(cert_path)
 
 
 def check_parameters_for_unauthorized_response(cached_cert):

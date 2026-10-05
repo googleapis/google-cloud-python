@@ -572,9 +572,15 @@ def test_has_default_client_cert_source_config_without_workload_no_gke_fallback(
     )
 
 
+@pytest.mark.parametrize(
+    "side_effect,expected",
+    [
+        (exceptions.ClientCertError("Invalid JSON"), True),
+        (OSError("Permission denied"), False),
+    ],
+)
 @mock.patch(
     "google.auth.transport._mtls_helper._load_json_file",
-    side_effect=exceptions.ClientCertError("Invalid JSON"),
     autospec=True,
 )
 @mock.patch(
@@ -588,7 +594,7 @@ def test_has_default_client_cert_source_config_without_workload_no_gke_fallback(
     autospec=True,
 )
 def test_has_default_client_cert_source_malformed_config_no_gke_fallback(
-    mock_exists, mock_get_cert, mock_load_json, monkeypatch
+    mock_exists, mock_get_cert, mock_load_json, side_effect, expected, monkeypatch
 ):
     monkeypatch.delenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", raising=False)
     monkeypatch.delenv("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", raising=False)
@@ -596,6 +602,7 @@ def test_has_default_client_cert_source_malformed_config_no_gke_fallback(
     monkeypatch.delenv(
         "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH", raising=False
     )
+    mock_load_json.side_effect = side_effect
 
-    assert mtls.has_default_client_cert_source(include_context_aware=False) is False
+    assert mtls.has_default_client_cert_source(include_context_aware=False) is expected
     mock_exists.assert_not_called()

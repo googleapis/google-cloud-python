@@ -96,9 +96,10 @@ def get_agent_identity_certificate_path():
     GOOGLE_API_CERTIFICATE_CONFIG environment variable. This function
     can optionally trigger polling to handle cases where the environment
     variable is set before the files are available on the filesystem.
-    When GOOGLE_API_CERTIFICATE_CONFIG is unset and no implicit
-    certificate_config.json is present, it falls back to checking the
-    GKE workload credential bundle path without polling.
+    When GOOGLE_API_CERTIFICATE_CONFIG and
+    CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH are unset and no
+    implicit certificate_config.json is present, it falls back to checking
+    the GKE workload credential bundle path without polling.
 
     Returns:
         Optional[str]: The path to the agent's certificate file, or None if unavailable.
@@ -113,12 +114,15 @@ def get_agent_identity_certificate_path():
         from google.auth.transport import _mtls_helper
 
         if (
-            _mtls_helper._has_explicit_cert_config_env(include_context_aware=True)
+            _mtls_helper._has_explicit_cert_config_env()
             or _mtls_helper._get_cert_config_path() is not None
         ):
             return None
-        if os.path.exists(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH):
-            return _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
+        try:
+            if _is_certificate_file_ready(_mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH):
+                return _mtls_helper._GKE_CREDENTIAL_BUNDLE_PATH
+        except PermissionError:
+            return None
         return None
 
     # We trigger polling only if the config path points to the well-known directory.

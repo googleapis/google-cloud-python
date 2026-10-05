@@ -58,14 +58,6 @@ FAKE_DEFAULT_SCOPES = ["scope3", "scope4"]
 FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
 
 
-@pytest.fixture(autouse=True)
-def clean_cert_config_env(monkeypatch):
-    monkeypatch.delenv(
-        environment_vars.GOOGLE_API_CERTIFICATE_CONFIG,
-        raising=False,
-    )
-
-
 class TestCredentials(object):
     credentials = None
     credentials_with_all_fields = None

@@ -449,7 +449,7 @@ class IDTokenCredentials(
                 target_audience=target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=self._quota_project_id,
-                bind_id_token=self._bind_id_token,
+                bind_id_token=getattr(self, "_bind_id_token", None),
             )
         else:
             return self.__class__(
@@ -473,7 +473,7 @@ class IDTokenCredentials(
                 target_audience=self._target_audience,
                 use_metadata_identity_endpoint=True,
                 quota_project_id=quota_project_id,
-                bind_id_token=self._bind_id_token,
+                bind_id_token=getattr(self, "_bind_id_token", None),
             )
         else:
             return self.__class__(
@@ -554,8 +554,9 @@ class IDTokenCredentials(
         try:
             path = "instance/service-accounts/default/identity"
             params = {"audience": self._target_audience, "format": "full"}
-            if self._bind_id_token is not None:
-                bind_token = self._bind_id_token
+            bind_id_token = getattr(self, "_bind_id_token", None)
+            if bind_id_token is not None:
+                bind_token = bind_id_token
             else:
                 # Temporary gate: keep default ID tokens unbound when
                 # GOOGLE_API_CERTIFICATE_CONFIG is set (Cloud Run).

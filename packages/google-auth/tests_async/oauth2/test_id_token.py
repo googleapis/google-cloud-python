@@ -224,7 +224,7 @@ async def test_fetch_id_token_from_metadata_server(
     monkeypatch.delenv(environment_vars.CREDENTIALS, raising=False)
 
     def mock_init(
-        self, request, audience, use_metadata_identity_endpoint, bind_id_token=None
+        self, request, audience, use_metadata_identity_endpoint, bind_id_token
     ):
         assert use_metadata_identity_endpoint
         assert bind_id_token is expected_bind_id_token
