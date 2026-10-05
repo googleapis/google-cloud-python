@@ -574,7 +574,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
     def _start_call(self):
         self._attempt_cert = (
             self._interceptor._wrapper._cached_cert
-            if getattr(self._interceptor, "_wrapper", None)
+            if self._interceptor._wrapper
             else None
         )
         with self._lock:
