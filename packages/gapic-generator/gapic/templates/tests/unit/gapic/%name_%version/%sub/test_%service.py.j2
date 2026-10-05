@@ -1789,7 +1789,11 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         )
         with pytest.raises(NotImplementedError) as exc_info:
             await transport.{{ method.transport_safe_name|snake_case }}({{ method.input.ident }}())
-        assert "Async REST transport is required for async resumable upload methods." in str(exc_info.value)
+        assert (
+            "Async REST transport is required for async resumable upload methods. "
+            "Install the library with the `async_rest` extra using "
+            "`pip install {{ api.naming.warehouse_package_name }}[async_rest]`."
+        ) in str(exc_info.value)
 {% endfor %}
 {% endif %}
 

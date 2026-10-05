@@ -2343,7 +2343,11 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_without_async_
         )
         with pytest.raises(NotImplementedError) as exc_info:
             await transport.upload_media(resumable_upload.UploadMediaRequest())
-        assert "Async REST transport is required for async resumable upload methods." in str(exc_info.value)
+        assert (
+            "Async REST transport is required for async resumable upload methods. "
+            "Install the library with the `async_rest` extra using "
+            "`pip install google-showcase[async_rest]`."
+        ) in str(exc_info.value)
 
 def test_resumable_upload_service_upload_media_rest_start_empty_body():
     client = ResumableUploadServiceClient(

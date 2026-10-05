@@ -391,7 +391,11 @@ class ResumableUploadServiceGrpcAsyncIOTransport(ResumableUploadServiceTransport
                 self._stubs['upload_media'] = _AsyncRestStub()
             else:
                 self._stubs['upload_media'] = _ErrorStub(
-                    NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                    NotImplementedError(
+                        "Async REST transport is required for async resumable upload methods. "
+                        "Install the library with the `async_rest` extra using "
+                        "`pip install google-showcase[async_rest]`."
+                    )
                 )
         return self._stubs['upload_media']
 

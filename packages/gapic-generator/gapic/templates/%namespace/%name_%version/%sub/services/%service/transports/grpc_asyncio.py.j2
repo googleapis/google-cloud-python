@@ -413,7 +413,11 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _AsyncRestStub()
             else:
                 self._stubs['{{ method.transport_safe_name|snake_case }}'] = _ErrorStub(
-                    NotImplementedError("Async REST transport is required for async resumable upload methods.")
+                    NotImplementedError(
+                        "Async REST transport is required for async resumable upload methods. "
+                        "Install the library with the `async_rest` extra using "
+                        "`pip install {{ api.naming.warehouse_package_name }}[async_rest]`."
+                    )
                 )
             {% else %}
             self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
