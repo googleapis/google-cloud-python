@@ -729,6 +729,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                             [
                                 types.Integer,
                                 types.Numeric,
+                                types.Float,
                                 types.DateTime,
                                 types.Date,
                                 types.Time,
@@ -2922,6 +2923,10 @@ class HasTableTest(_HasTableTest):
 
     @pytest.mark.skip("Not supported by Cloud Spanner")
     def test_has_table_schema(self):
+        pass
+
+    @pytest.mark.skip("Not supported by Cloud Spanner")
+    def test_has_multi_table_schema(self):
         pass
 
     @pytest.mark.skip("Not supported by Cloud Spanner")
