@@ -711,7 +711,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
 
     def add_done_callback(self, fn):
         with self._lock:
-            if getattr(self, "_is_completed", False):
+            if self._is_completed:
                 fire_now = True
             else:
                 self._done_callbacks.append(fn)
