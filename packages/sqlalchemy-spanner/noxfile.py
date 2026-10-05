@@ -120,6 +120,7 @@ MIGRATION_TEST_DEPENDENCIES = [
 
 SQLALCHEMY_14_DEPENDENCIES = [
     "sqlalchemy>=1.4,<2.0",
+    "alembic<1.20.0",
 ]
 
 SQLALCHEMY_20_DEPENDENCIES = [
@@ -206,13 +207,7 @@ def compliance_test_14(session):
 
     try:
         session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
-        session.install(".[tracing]")
-        session.run(
-            "pip",
-            "install",
-            *SQLALCHEMY_14_DEPENDENCIES,
-            "--force-reinstall",
-        )
+        session.install(".[tracing]", *SQLALCHEMY_14_DEPENDENCIES)
         session.run(
             "python",
             "create_test_database.py",
@@ -338,17 +333,11 @@ def mockserver(session):
 @nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def migration_test(session):
     """Test migrations with SQLAlchemy v1.4 and Alembic"""
-    session.run(
-        "pip",
-        "install",
-        *SQLALCHEMY_14_DEPENDENCIES,
-        "--force-reinstall",
-    )
-    _migration_test(session)
+    _migration_test(session, extra_dependencies=SQLALCHEMY_14_DEPENDENCIES)
 
 
 @nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[-1])
-def _migration_test(session):
+def _migration_test(session, extra_dependencies=()):
     """Migrate with SQLAlchemy and Alembic and check the result."""
     import glob
     import os
@@ -356,8 +345,7 @@ def _migration_test(session):
 
     config_file = f"test_migration_{session.python}_{uuid.uuid4().hex[:6]}.cfg"
 
-    session.install(*MIGRATION_TEST_DEPENDENCIES)
-    session.install(".")
+    session.install(*MIGRATION_TEST_DEPENDENCIES, *extra_dependencies, ".")
 
     try:
         session.run(

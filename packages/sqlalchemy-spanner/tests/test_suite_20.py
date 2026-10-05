@@ -78,7 +78,6 @@ from sqlalchemy.testing.suite.test_ddl import (
     LongNameBlowoutTest as _LongNameBlowoutTest,
 )
 from sqlalchemy.testing.suite.test_ddl import TableDDLTest as _TableDDLTest
-from sqlalchemy.testing.suite.test_deprecations import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import (
     DifficultParametersTest as _DifficultParametersTest,
@@ -224,6 +223,15 @@ from tests._helpers import (
     get_db_url,
     get_project,
 )
+
+try:
+    # SQLAlchemy 2.1+ removed test_deprecations from sqlalchemy.testing.suite.
+    # Guard this import so the test suite remains compatible with both 2.0.x and 2.1+.
+    # Tell flake8 to ignore F401 (unused import) and F403 (wildcard import) since
+    # pytest discovers the imported SQLAlchemy compliance test classes at module scope.
+    from sqlalchemy.testing.suite.test_deprecations import *  # noqa: F401, F403
+except ModuleNotFoundError:
+    pass
 
 config.test_schema = ""
 

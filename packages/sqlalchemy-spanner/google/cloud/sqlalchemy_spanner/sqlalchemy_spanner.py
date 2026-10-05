@@ -15,14 +15,6 @@ import base64
 import re
 
 import sqlalchemy
-from alembic.ddl.base import (
-    ColumnNullable,
-    ColumnType,
-    alter_column,
-    alter_table,
-    format_server_default,
-    format_type,
-)
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client, TransactionOptions
@@ -50,6 +42,26 @@ from sqlalchemy.sql.operators import json_getitem_op
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
+
+# Guard the Alembic import so customers who only use SQLAlchemy Core/ORM (without
+# running Alembic migrations) can still import the Spanner dialect even if Alembic
+# is not installed or if an environment has a version mismatch (e.g., Alembic 1.20+
+# requires SQLAlchemy>=2.0, while older environments may pin SQLAlchemy 1.4.x).
+try:
+    from alembic.ddl.base import (
+        ColumnNullable,
+        ColumnType,
+        alter_column,
+        alter_table,
+        format_server_default,
+        format_type,
+    )
+
+    HAS_ALEMBIC_INSTALLED = True
+# Disable coverage checks for the fallback branch when running suites with
+# Alembic installed.
+except ImportError:  # pragma: NO COVER
+    HAS_ALEMBIC_INSTALLED = False
 
 USING_SQLACLCHEMY_20 = False
 if sqlalchemy.__version__.split(".")[0] == "2":
@@ -1882,55 +1894,60 @@ LIMIT 1
             cursor.execute(statement)
 
 
-# Alembic ALTER operation override
-@compiles(ColumnNullable, "spanner+spanner")
-def visit_column_nullable(
-    element: "ColumnNullable", compiler: "SpannerDDLCompiler", **kw
-) -> str:
-    return _format_alter_column(
-        compiler,
-        element.table_name,
-        element.schema,
-        element.column_name,
-        element.existing_type,
-        element.nullable,
-        element.existing_server_default,
-    )
+# Cloud Spanner requires ALTER TABLE ... ALTER COLUMN statements to specify the
+# complete column definition (type, nullability, and default expression), whereas
+# Alembic's default DDL compiler emits partial clauses (e.g., only SET NOT NULL
+# or TYPE). Because the @compiles decorators reference Alembic's ColumnNullable
+# and ColumnType classes at module import time, we only register these overrides
+# when Alembic is available in the environment.
+if HAS_ALEMBIC_INSTALLED:
+    # Alembic ALTER operation override
+    @compiles(ColumnNullable, "spanner+spanner")
+    def visit_column_nullable(
+        element: "ColumnNullable", compiler: "SpannerDDLCompiler", **kw
+    ) -> str:
+        return _format_alter_column(
+            compiler,
+            element.table_name,
+            element.schema,
+            element.column_name,
+            element.existing_type,
+            element.nullable,
+            element.existing_server_default,
+        )
 
+    # Alembic ALTER operation override
+    @compiles(ColumnType, "spanner+spanner")
+    def visit_column_type(
+        element: "ColumnType", compiler: "SpannerDDLCompiler", **kw
+    ) -> str:
+        return _format_alter_column(
+            compiler,
+            element.table_name,
+            element.schema,
+            element.column_name,
+            element.type_,
+            element.existing_nullable,
+            element.existing_server_default,
+        )
 
-# Alembic ALTER operation override
-@compiles(ColumnType, "spanner+spanner")
-def visit_column_type(
-    element: "ColumnType", compiler: "SpannerDDLCompiler", **kw
-) -> str:
-    return _format_alter_column(
-        compiler,
-        element.table_name,
-        element.schema,
-        element.column_name,
-        element.type_,
-        element.existing_nullable,
-        element.existing_server_default,
-    )
-
-
-def _format_alter_column(
-    compiler, table_name, schema, column_name, type_, nullable, server_default
-):
-    # Older versions of SQLAlchemy pass in a boolean to indicate whether there
-    # is an existing DEFAULT constraint, instead of the actual DEFAULT constraint
-    # expression. In those cases, we do not want to explicitly include the DEFAULT
-    # constraint in the expression that is generated here.
-    if isinstance(server_default, bool):
-        server_default = None
-    return "%s %s %s%s%s" % (
-        alter_table(compiler, table_name, schema),
-        alter_column(compiler, column_name),
-        format_type(compiler, type_),
-        "" if nullable else " NOT NULL",
-        (
-            ""
-            if server_default is None
-            else f" DEFAULT {format_server_default(compiler, server_default)}"
-        ),
-    )
+    def _format_alter_column(
+        compiler, table_name, schema, column_name, type_, nullable, server_default
+    ):
+        # Older versions of SQLAlchemy pass in a boolean to indicate whether there
+        # is an existing DEFAULT constraint, instead of the actual DEFAULT constraint
+        # expression. In those cases, we do not want to explicitly include the DEFAULT
+        # constraint in the expression that is generated here.
+        if isinstance(server_default, bool):
+            server_default = None
+        return "%s %s %s%s%s" % (
+            alter_table(compiler, table_name, schema),
+            alter_column(compiler, column_name),
+            format_type(compiler, type_),
+            "" if nullable else " NOT NULL",
+            (
+                ""
+                if server_default is None
+                else f" DEFAULT {format_server_default(compiler, server_default)}"
+            ),
+        )
