@@ -88,6 +88,23 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
             api_audience=api_audience,
         )
 
+    class _BaseBatchUpdateMembers:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2beta/{parent=spaces/*}/members:batchUpdate",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseConnectActiveConference:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -214,6 +231,23 @@ class _BaseSpacesServiceRestTransport(SpacesServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v2beta/{parent=spaces/*}/members",
+                },
+            ]
+            return http_options
+
+    class _BaseUpdateMember:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2beta/{member.name=spaces/*/members/*}",
+                    "body": "member",
                 },
             ]
             return http_options

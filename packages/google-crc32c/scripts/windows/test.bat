@@ -29,4 +29,4 @@ py -%PYTHON_VERSION%-64 ./scripts/check_crc32c_extension.py
 @rem available, but the installed version is too old to work.
 py -%PYTHON_VERSION%-64 -m pip uninstall -y pyreadline
 py -%PYTHON_VERSION%-64 -m pip install pytest
-py -%PYTHON_VERSION%-64 -m pytest tests
+py -%PYTHON_VERSION%-64 -m pytest tests --junitxml=%PYTHON_VERSION%_sponge_log.xml

@@ -169,6 +169,11 @@ class Table(proto.Message):
             disabled.
 
             This field is a member of `oneof`_ ``automated_backup_config``.
+        effective_automated_backup_policy (google.cloud.bigtable_admin_v2.types.Table.AutomatedBackupPolicy):
+            Output only. The effective automated backup policy applied
+            to the table. This represents the policy actually in effect,
+            which may be a system-default policy if the user has not
+            explicitly configured one. Views: ``SCHEMA_VIEW``, ``FULL``.
         tiered_storage_config (google.cloud.bigtable_admin_v2.types.TieredStorageConfig):
             Rules to specify what data is stored in each
             storage tier. Different tiers store data
@@ -374,6 +379,20 @@ class Table(proto.Message):
                 Locations are in the format
                 ``projects/{project}/locations/{zone}``. This field can only
                 set for tables in Enterprise Plus instances.
+            keep_hot_duration (google.protobuf.duration_pb2.Duration):
+                Optional. The amount of time that the automated backups
+                remain hot. If specified, the backups created by this policy
+                are ``HOT`` backups. If not specified, the backups are
+                ``STANDARD`` backups.
+
+                The value must be at least 24 hours and at most 10 days, and
+                can't exceed the policy's ``retention_period``.
+
+                Only SSD instances support ``HOT`` automated backups.
+            disabled (bool):
+                Optional. If ``true``, automated backups are explicitly
+                disabled on this table. This allows users to opt out of
+                default enablement.
         """
 
         retention_period: duration_pb2.Duration = proto.Field(
@@ -389,6 +408,15 @@ class Table(proto.Message):
         locations: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=3,
+        )
+        keep_hot_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
+        )
+        disabled: bool = proto.Field(
+            proto.BOOL,
+            number=5,
         )
 
     name: str = proto.Field(
@@ -430,6 +458,11 @@ class Table(proto.Message):
         proto.MESSAGE,
         number=13,
         oneof="automated_backup_config",
+        message=AutomatedBackupPolicy,
+    )
+    effective_automated_backup_policy: AutomatedBackupPolicy = proto.Field(
+        proto.MESSAGE,
+        number=19,
         message=AutomatedBackupPolicy,
     )
     tiered_storage_config: "TieredStorageConfig" = proto.Field(

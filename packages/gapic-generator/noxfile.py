@@ -18,23 +18,23 @@
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
-from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
+
 import os
+import shutil
 import sys
 import tempfile
 import typing
-import nox  # type: ignore
-
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from os import path
-import shutil
+from pathlib import Path
 
+import nox  # type: ignore
 
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.44.2")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 CURRENT_DIRECTORY = Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -401,9 +401,23 @@ def showcase(
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
 ):
-    """Run the Showcase test suite."""
+    """Run the Showcase test suite.
+
+    Set INSTALL_LOCAL_CORE=true to install packages/google-api-core from source
+    (useful for local testing and canary validation).
+    """
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
+        # When opt-in environment variable is set (e.g. in canary CI or local testing),
+        # install the local google-api-core package from source.
+        if os.getenv("INSTALL_LOCAL_CORE") == "true":
+            local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+            if not local_core.is_dir():
+                session.error(
+                    f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
+                )
+            session.install("-e", str(local_core))
+
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
@@ -431,11 +445,25 @@ def showcase_w_rest_async(
     other_opts: typing.Iterable[str] = (),
     env: typing.Optional[typing.Dict[str, str]] = {},
 ):
-    """Run the Showcase test suite."""
+    """Run the Showcase test suite with async rest transport.
+
+    Set INSTALL_LOCAL_CORE=true to install packages/google-api-core from source
+    (useful for local testing and canary validation).
+    """
 
     with showcase_library(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
     ):
+        # When opt-in environment variable is set (e.g. in canary CI or local testing),
+        # install the local google-api-core package from source.
+        if os.getenv("INSTALL_LOCAL_CORE") == "true":
+            local_core = Path(__file__).resolve().parent.parent / "google-api-core"
+            if not local_core.is_dir():
+                session.error(
+                    f"INSTALL_LOCAL_CORE is set to 'true' but {local_core} does not exist."
+                )
+            session.install("-e", str(local_core))
+
         # Use pytest-asyncio<1.0.0 while we investigate the recent failure described in
         # https://github.com/googleapis/gapic-generator-python/issues/2399
         session.install("pytest", "pytest-asyncio<1.0.0")
@@ -498,7 +526,13 @@ def showcase_pqc(
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
         session.install("--upgrade", "grpcio>=1.83.0", "grpcio-status>=1.83.0")
-        session.run("py.test", "--quiet", "--tls", *(session.posargs or ["tests/system/test_pqc.py"]), env=env)
+        session.run(
+            "py.test",
+            "--quiet",
+            "--tls",
+            *(session.posargs or ["tests/system/test_pqc.py"]),
+            env=env,
+        )
 
 
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):

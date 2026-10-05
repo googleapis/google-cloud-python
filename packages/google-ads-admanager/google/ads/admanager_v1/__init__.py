@@ -34,6 +34,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.application_service",
     "google.ads.admanager_v1.services.audience_segment_service",
     "google.ads.admanager_v1.services.bandwidth_group_service",
+    "google.ads.admanager_v1.services.break_template_service",
     "google.ads.admanager_v1.services.browser_language_service",
     "google.ads.admanager_v1.services.browser_service",
     "google.ads.admanager_v1.services.cdn_config_service",
@@ -53,6 +54,7 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.custom_targeting_value_service",
     "google.ads.admanager_v1.services.dai_authentication_key_service",
     "google.ads.admanager_v1.services.dai_encoding_profile_service",
+    "google.ads.admanager_v1.services.dai_session_service",
     "google.ads.admanager_v1.services.device_capability_service",
     "google.ads.admanager_v1.services.device_category_service",
     "google.ads.admanager_v1.services.device_manufacturer_service",
@@ -89,16 +91,19 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.services.user_service",
     "google.ads.admanager_v1.services.viewability_provider_service",
     "google.ads.admanager_v1.types.ad_break_messages",
+    "google.ads.admanager_v1.types.ad_break_optimization_type_enum",
     "google.ads.admanager_v1.types.ad_break_service",
     "google.ads.admanager_v1.types.ad_review_center_ad_enums",
     "google.ads.admanager_v1.types.ad_review_center_ad_messages",
     "google.ads.admanager_v1.types.ad_review_center_ad_service",
     "google.ads.admanager_v1.types.ad_rule_enums",
+    "google.ads.admanager_v1.types.ad_rule_fill_order_direction_enum",
     "google.ads.admanager_v1.types.ad_rule_messages",
     "google.ads.admanager_v1.types.ad_rule_service",
     "google.ads.admanager_v1.types.ad_rule_slot_behavior_enum",
     "google.ads.admanager_v1.types.ad_rule_slot_bumper_enum",
     "google.ads.admanager_v1.types.ad_rule_slot_midroll_frequency_type_enum",
+    "google.ads.admanager_v1.types.ad_spot_fill_type_enum",
     "google.ads.admanager_v1.types.ad_spot_messages",
     "google.ads.admanager_v1.types.ad_spot_service",
     "google.ads.admanager_v1.types.ad_spot_targeting_type_enum",
@@ -116,6 +121,8 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.bandwidth_group_messages",
     "google.ads.admanager_v1.types.bandwidth_group_service",
     "google.ads.admanager_v1.types.brand_lift_partner_enum",
+    "google.ads.admanager_v1.types.break_template_messages",
+    "google.ads.admanager_v1.types.break_template_service",
     "google.ads.admanager_v1.types.browser_language_messages",
     "google.ads.admanager_v1.types.browser_language_service",
     "google.ads.admanager_v1.types.browser_messages",
@@ -180,6 +187,9 @@ __lazy_modules__ = {
     "google.ads.admanager_v1.types.dai_encoding_profile_enums",
     "google.ads.admanager_v1.types.dai_encoding_profile_messages",
     "google.ads.admanager_v1.types.dai_encoding_profile_service",
+    "google.ads.admanager_v1.types.dai_session_enums",
+    "google.ads.admanager_v1.types.dai_session_messages",
+    "google.ads.admanager_v1.types.dai_session_service",
     "google.ads.admanager_v1.types.deal_buyer_permission_type_enum",
     "google.ads.admanager_v1.types.deal_priority_tier_enum",
     "google.ads.admanager_v1.types.delivery_enums",
@@ -322,6 +332,7 @@ from .services.ad_unit_service import AdUnitServiceClient
 from .services.application_service import ApplicationServiceClient
 from .services.audience_segment_service import AudienceSegmentServiceClient
 from .services.bandwidth_group_service import BandwidthGroupServiceClient
+from .services.break_template_service import BreakTemplateServiceClient
 from .services.browser_language_service import BrowserLanguageServiceClient
 from .services.browser_service import BrowserServiceClient
 from .services.cdn_config_service import CdnConfigServiceClient
@@ -341,6 +352,7 @@ from .services.custom_targeting_key_service import CustomTargetingKeyServiceClie
 from .services.custom_targeting_value_service import CustomTargetingValueServiceClient
 from .services.dai_authentication_key_service import DaiAuthenticationKeyServiceClient
 from .services.dai_encoding_profile_service import DaiEncodingProfileServiceClient
+from .services.dai_session_service import DaiSessionServiceClient
 from .services.device_capability_service import DeviceCapabilityServiceClient
 from .services.device_category_service import DeviceCategoryServiceClient
 from .services.device_manufacturer_service import DeviceManufacturerServiceClient
@@ -379,6 +391,7 @@ from .services.third_party_company_service import ThirdPartyCompanyServiceClient
 from .services.user_service import UserServiceClient
 from .services.viewability_provider_service import ViewabilityProviderServiceClient
 from .types.ad_break_messages import AdBreak
+from .types.ad_break_optimization_type_enum import AdBreakOptimizationTypeEnum
 from .types.ad_break_service import (
     CreateAdBreakRequest,
     DeleteAdBreakRequest,
@@ -402,6 +415,7 @@ from .types.ad_review_center_ad_service import (
     SearchAdReviewCenterAdsResponse,
 )
 from .types.ad_rule_enums import AdRuleFrequencyCapBehaviorEnum, AdRuleStatusEnum
+from .types.ad_rule_fill_order_direction_enum import AdRuleFillOrderDirectionEnum
 from .types.ad_rule_messages import AdRule, AdRuleSlot
 from .types.ad_rule_service import (
     BatchActivateAdRulesRequest,
@@ -424,6 +438,7 @@ from .types.ad_rule_slot_bumper_enum import AdRuleSlotBumperEnum
 from .types.ad_rule_slot_midroll_frequency_type_enum import (
     AdRuleSlotMidrollFrequencyTypeEnum,
 )
+from .types.ad_spot_fill_type_enum import AdSpotFillTypeEnum
 from .types.ad_spot_messages import AdSpot
 from .types.ad_spot_service import (
     BatchCreateAdSpotsRequest,
@@ -499,12 +514,15 @@ from .types.audience_segment_service import (
     BatchActivateAudienceSegmentsResponse,
     BatchApproveAudienceSegmentsRequest,
     BatchApproveAudienceSegmentsResponse,
+    BatchCreateAudienceSegmentsRequest,
+    BatchCreateAudienceSegmentsResponse,
     BatchDeactivateAudienceSegmentsRequest,
     BatchDeactivateAudienceSegmentsResponse,
     BatchPopulateAudienceSegmentsRequest,
     BatchPopulateAudienceSegmentsResponse,
     BatchRejectAudienceSegmentsRequest,
     BatchRejectAudienceSegmentsResponse,
+    CreateAudienceSegmentRequest,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
@@ -516,6 +534,18 @@ from .types.bandwidth_group_service import (
     ListBandwidthGroupsResponse,
 )
 from .types.brand_lift_partner_enum import BrandLiftPartnerEnum
+from .types.break_template_messages import BreakTemplate, BreakTemplateMember
+from .types.break_template_service import (
+    BatchCreateBreakTemplatesRequest,
+    BatchCreateBreakTemplatesResponse,
+    BatchUpdateBreakTemplatesRequest,
+    BatchUpdateBreakTemplatesResponse,
+    CreateBreakTemplateRequest,
+    GetBreakTemplateRequest,
+    ListBreakTemplatesRequest,
+    ListBreakTemplatesResponse,
+    UpdateBreakTemplateRequest,
+)
 from .types.browser_language_messages import BrowserLanguage
 from .types.browser_language_service import (
     GetBrowserLanguageRequest,
@@ -819,6 +849,23 @@ from .types.dai_encoding_profile_service import (
     ListDaiEncodingProfilesResponse,
     UpdateDaiEncodingProfileRequest,
 )
+from .types.dai_session_enums import (
+    AdBreakFindingTypeEnum,
+    AdRequestFindingTypeEnum,
+    AdResponseTypeEnum,
+    BreakTypeEnum,
+    CreativeFindingTypeEnum,
+    CreativeIdTypeEnum,
+    PodFindingTypeEnum,
+    PrefetchStageTypeEnum,
+    ReportingTypeEnum,
+    SessionFindingSeverityEnum,
+    SlateFindingTypeEnum,
+    StitchingTypeEnum,
+    TrackingPingFindingTypeEnum,
+)
+from .types.dai_session_messages import DaiSession
+from .types.dai_session_service import GetDaiSessionRequest
 from .types.deal_buyer_permission_type_enum import DealBuyerPermissionTypeEnum
 from .types.deal_priority_tier_enum import DealPriorityTierEnum
 from .types.delivery_enums import (
@@ -1318,15 +1365,20 @@ __all__ = (
     "ActivateDaiEncodingProfileRequest",
     "AdBreak",
     "AdBreakFillTypeEnum",
+    "AdBreakFindingTypeEnum",
     "AdBreakMarkupTypeEnum",
+    "AdBreakOptimizationTypeEnum",
     "AdBreakServiceClient",
     "AdBreakStateEnum",
     "AdManagerError",
     "AdMediaDeliveryConfig",
+    "AdRequestFindingTypeEnum",
+    "AdResponseTypeEnum",
     "AdReviewCenterAd",
     "AdReviewCenterAdServiceClient",
     "AdReviewCenterAdStatusEnum",
     "AdRule",
+    "AdRuleFillOrderDirectionEnum",
     "AdRuleFrequencyCapBehaviorEnum",
     "AdRuleServiceClient",
     "AdRuleSlot",
@@ -1335,6 +1387,7 @@ __all__ = (
     "AdRuleSlotMidrollFrequencyTypeEnum",
     "AdRuleStatusEnum",
     "AdSpot",
+    "AdSpotFillTypeEnum",
     "AdSpotServiceClient",
     "AdSpotTargetingTypeEnum",
     "AdUnit",
@@ -1439,6 +1492,10 @@ __all__ = (
     "BatchCreateAdUnitsResponse",
     "BatchCreateApplicationsRequest",
     "BatchCreateApplicationsResponse",
+    "BatchCreateAudienceSegmentsRequest",
+    "BatchCreateAudienceSegmentsResponse",
+    "BatchCreateBreakTemplatesRequest",
+    "BatchCreateBreakTemplatesResponse",
     "BatchCreateCdnConfigsRequest",
     "BatchCreateCdnConfigsResponse",
     "BatchCreateChildPublishersRequest",
@@ -1570,6 +1627,8 @@ __all__ = (
     "BatchUpdateAdUnitsResponse",
     "BatchUpdateApplicationsRequest",
     "BatchUpdateApplicationsResponse",
+    "BatchUpdateBreakTemplatesRequest",
+    "BatchUpdateBreakTemplatesResponse",
     "BatchUpdateCdnConfigsRequest",
     "BatchUpdateCdnConfigsResponse",
     "BatchUpdateChildPublishersRequest",
@@ -1617,6 +1676,10 @@ __all__ = (
     "BatchWithdrawChildPublishersRequest",
     "BatchWithdrawChildPublishersResponse",
     "BrandLiftPartnerEnum",
+    "BreakTemplate",
+    "BreakTemplateMember",
+    "BreakTemplateServiceClient",
+    "BreakTypeEnum",
     "Browser",
     "BrowserLanguage",
     "BrowserLanguageServiceClient",
@@ -1669,6 +1732,8 @@ __all__ = (
     "CreateAdSpotRequest",
     "CreateAdUnitRequest",
     "CreateApplicationRequest",
+    "CreateAudienceSegmentRequest",
+    "CreateBreakTemplateRequest",
     "CreateCdnConfigRequest",
     "CreateChildPublisherRequest",
     "CreateCompanyRequest",
@@ -1695,6 +1760,8 @@ __all__ = (
     "CreateTeamRequest",
     "CreateViewabilityProviderRequest",
     "Creative",
+    "CreativeFindingTypeEnum",
+    "CreativeIdTypeEnum",
     "CreativePlaceholder",
     "CreativePlaceholderCompanion",
     "CreativeRotationTypeEnum",
@@ -1746,6 +1813,8 @@ __all__ = (
     "DaiIngestError",
     "DaiIngestErrorReasonEnum",
     "DaiIngestStatusEnum",
+    "DaiSession",
+    "DaiSessionServiceClient",
     "DashBridge",
     "DataSegmentTargeting",
     "DeactivateCustomTargetingValueRequest",
@@ -1793,6 +1862,7 @@ __all__ = (
     "GetApplicationRequest",
     "GetAudienceSegmentRequest",
     "GetBandwidthGroupRequest",
+    "GetBreakTemplateRequest",
     "GetBrowserLanguageRequest",
     "GetBrowserRequest",
     "GetCdnConfigRequest",
@@ -1812,6 +1882,7 @@ __all__ = (
     "GetCustomTargetingValueRequest",
     "GetDaiAuthenticationKeyRequest",
     "GetDaiEncodingProfileRequest",
+    "GetDaiSessionRequest",
     "GetDefaultThirdPartyDataDeclarationRequest",
     "GetDeviceCapabilityRequest",
     "GetDeviceCategoryRequest",
@@ -1891,6 +1962,8 @@ __all__ = (
     "ListAudienceSegmentsResponse",
     "ListBandwidthGroupsRequest",
     "ListBandwidthGroupsResponse",
+    "ListBreakTemplatesRequest",
+    "ListBreakTemplatesResponse",
     "ListBrowserLanguagesRequest",
     "ListBrowserLanguagesResponse",
     "ListBrowsersRequest",
@@ -2037,7 +2110,9 @@ __all__ = (
     "Placement",
     "PlacementServiceClient",
     "PlacementStatusEnum",
+    "PodFindingTypeEnum",
     "PrefetchSettings",
+    "PrefetchStageTypeEnum",
     "PrerollSettings",
     "PrivateAuction",
     "PrivateAuctionDeal",
@@ -2056,6 +2131,7 @@ __all__ = (
     "ReportServiceClient",
     "ReportValue",
     "ReportVisibilityEnum",
+    "ReportingTypeEnum",
     "RequestFormatTargeting",
     "RequestPlatformEnum",
     "RequestPlatformTargeting",
@@ -2072,6 +2148,7 @@ __all__ = (
     "ScheduleOptions",
     "SearchAdReviewCenterAdsRequest",
     "SearchAdReviewCenterAdsResponse",
+    "SessionFindingSeverityEnum",
     "Site",
     "SiteApprovalStatusEnum",
     "SiteDisapprovalReasonEnum",
@@ -2080,10 +2157,12 @@ __all__ = (
     "SizeTypeEnum",
     "SkippableAdTypeEnum",
     "Slate",
+    "SlateFindingTypeEnum",
     "SlateServiceClient",
     "SlateStatusEnum",
     "SmartSizeModeEnum",
     "SourceContentConfig",
+    "StitchingTypeEnum",
     "SuggestedAdUnit",
     "SuggestedAdUnitServiceClient",
     "TargetPlatformEnum",
@@ -2109,12 +2188,14 @@ __all__ = (
     "ThirdPartyDataDeclarationTypeEnum",
     "ThirdPartyMeasurementSettings",
     "TimeUnitEnum",
+    "TrackingPingFindingTypeEnum",
     "UnitTypeEnum",
     "UpdateAdBreakRequest",
     "UpdateAdRuleRequest",
     "UpdateAdSpotRequest",
     "UpdateAdUnitRequest",
     "UpdateApplicationRequest",
+    "UpdateBreakTemplateRequest",
     "UpdateCdnConfigRequest",
     "UpdateChildPublisherRequest",
     "UpdateCompanyRequest",

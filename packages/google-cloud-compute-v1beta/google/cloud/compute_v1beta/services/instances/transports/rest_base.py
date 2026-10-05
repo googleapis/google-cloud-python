@@ -407,6 +407,22 @@ class _BaseInstancesRestTransport(InstancesTransport):
             ]
             return http_options
 
+    class _BaseGetVmExtensionState:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/instances/{instance}/vmExtensionStates/{extension_name}",
+                },
+            ]
+            return http_options
+
     class _BaseInsert:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -452,6 +468,22 @@ class _BaseInstancesRestTransport(InstancesTransport):
                 {
                     "method": "get",
                     "uri": "/compute/beta/projects/{project}/zones/{zone}/instances/{instance}/referrers",
+                },
+            ]
+            return http_options
+
+    class _BaseListVmExtensionStates:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/compute/beta/projects/{project}/zones/{zone}/instances/{instance}/vmExtensionStates",
                 },
             ]
             return http_options

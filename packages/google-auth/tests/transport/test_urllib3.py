@@ -19,12 +19,11 @@ from unittest import mock
 import pytest  # type: ignore
 import urllib3  # type: ignore
 
-from google.auth import environment_vars
-from google.auth import exceptions
 import google.auth.credentials
 from tests.transport import compliance
 import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
+from google.auth import environment_vars, exceptions
 from google.oauth2 import service_account
 
 CERT_MOCK_VAL = (

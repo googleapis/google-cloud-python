@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/googleapis-common-protos/#history
 
+## [1.75.5](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.4...googleapis-common-protos-v1.75.5) (2026-09-29)
+
+
+### Bug Fixes
+
+* resolve error where google/longrunning/operations.proto is missing ([#18477](https://github.com/googleapis/google-cloud-python/issues/18477)) ([e1d306a](https://github.com/googleapis/google-cloud-python/commit/e1d306a5e0213f99e2c9d740a25622f006e3bb46)), refs [#18478](https://github.com/googleapis/google-cloud-python/issues/18478)
+
+## [1.75.4](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.3...googleapis-common-protos-v1.75.4) (2026-09-24)
+
+
+### Bug Fixes
+
+* regenerate gencode with protobuf 6.33.5 ([#18461](https://github.com/googleapis/google-cloud-python/issues/18461)) ([9cb21d0](https://github.com/googleapis/google-cloud-python/commit/9cb21d0053a21366b564a7cf3858a3baa03c6659))
+
 ## [1.75.3](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.75.2...googleapis-common-protos-v1.75.3) (2026-09-03)
 
 

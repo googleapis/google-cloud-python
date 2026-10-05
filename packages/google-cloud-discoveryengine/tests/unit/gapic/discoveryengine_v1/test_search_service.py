@@ -1048,7 +1048,12 @@ def test_search_service_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=None,
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -1085,6 +1090,7 @@ def test_search(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            applied_controls=["applied_controls_value"],
             semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search(request)
@@ -1102,6 +1108,7 @@ def test_search(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -1130,6 +1137,7 @@ def test_search_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1152,6 +1160,7 @@ def test_search_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
         assert args[0] == request_msg
 
@@ -1259,6 +1268,7 @@ async def test_search_async(request_type, transport: str = "grpc_asyncio"):
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                applied_controls=["applied_controls_value"],
                 semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
@@ -1277,6 +1287,7 @@ async def test_search_async(request_type, transport: str = "grpc_asyncio"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -1568,6 +1579,7 @@ def test_search_lite(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            applied_controls=["applied_controls_value"],
             semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search_lite(request)
@@ -1585,6 +1597,7 @@ def test_search_lite(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -1613,6 +1626,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         user_pseudo_id="user_pseudo_id_value",
         ranking_expression="ranking_expression_value",
         session="session_value",
+        entity="entity_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1635,6 +1649,7 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
             user_pseudo_id="user_pseudo_id_value",
             ranking_expression="ranking_expression_value",
             session="session_value",
+            entity="entity_value",
         )
         assert args[0] == request_msg
 
@@ -1744,6 +1759,7 @@ async def test_search_lite_async(request_type, transport: str = "grpc_asyncio"):
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                applied_controls=["applied_controls_value"],
                 semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
@@ -1762,6 +1778,7 @@ async def test_search_lite_async(request_type, transport: str = "grpc_asyncio"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -2562,6 +2579,7 @@ async def test_search_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                applied_controls=["applied_controls_value"],
                 semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
@@ -2593,6 +2611,7 @@ async def test_search_lite_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                applied_controls=["applied_controls_value"],
                 semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
@@ -2665,6 +2684,7 @@ def test_search_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            applied_controls=["applied_controls_value"],
             semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
@@ -2687,6 +2707,7 @@ def test_search_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -2807,6 +2828,7 @@ def test_search_lite_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            applied_controls=["applied_controls_value"],
             semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
@@ -2829,6 +2851,7 @@ def test_search_lite_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert response.applied_controls == ["applied_controls_value"]
     assert (
         response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
     )
@@ -3204,7 +3227,12 @@ def test_search_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3230,7 +3258,12 @@ def test_search_service_auth_adc():
         SearchServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id=None,
         )
 
@@ -3250,7 +3283,12 @@ def test_search_service_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3303,7 +3341,12 @@ def test_search_service_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/discoveryengine.assist.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.readwrite",
+                "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+            ),
             scopes=["1", "2"],
             default_host="discoveryengine.googleapis.com",
             ssl_credentials=None,
@@ -3632,10 +3675,39 @@ def test_parse_chunk_path():
     assert expected == actual
 
 
-def test_data_store_path():
+def test_control_path():
     project = "winkle"
     location = "nautilus"
     data_store = "scallop"
+    control = "abalone"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/controls/{control}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        control=control,
+    )
+    actual = SearchServiceClient.control_path(project, location, data_store, control)
+    assert expected == actual
+
+
+def test_parse_control_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "data_store": "whelk",
+        "control": "octopus",
+    }
+    path = SearchServiceClient.control_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_control_path(path)
+    assert expected == actual
+
+
+def test_data_store_path():
+    project = "oyster"
+    location = "nudibranch"
+    data_store = "cuttlefish"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
         project=project,
         location=location,
@@ -3647,9 +3719,9 @@ def test_data_store_path():
 
 def test_parse_data_store_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "data_store": "clam",
+        "project": "mussel",
+        "location": "winkle",
+        "data_store": "nautilus",
     }
     path = SearchServiceClient.data_store_path(**expected)
 
@@ -3659,11 +3731,11 @@ def test_parse_data_store_path():
 
 
 def test_document_path():
-    project = "whelk"
-    location = "octopus"
-    data_store = "oyster"
-    branch = "nudibranch"
-    document = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    branch = "clam"
+    document = "whelk"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}".format(
         project=project,
         location=location,
@@ -3679,11 +3751,11 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "data_store": "nautilus",
-        "branch": "scallop",
-        "document": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "data_store": "nudibranch",
+        "branch": "cuttlefish",
+        "document": "mussel",
     }
     path = SearchServiceClient.document_path(**expected)
 
@@ -3693,10 +3765,10 @@ def test_parse_document_path():
 
 
 def test_serving_config_path():
-    project = "squid"
-    location = "clam"
-    data_store = "whelk"
-    serving_config = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    data_store = "scallop"
+    serving_config = "abalone"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
         project=project,
         location=location,
@@ -3711,10 +3783,10 @@ def test_serving_config_path():
 
 def test_parse_serving_config_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "data_store": "cuttlefish",
-        "serving_config": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "data_store": "whelk",
+        "serving_config": "octopus",
     }
     path = SearchServiceClient.serving_config_path(**expected)
 
@@ -3724,10 +3796,10 @@ def test_parse_serving_config_path():
 
 
 def test_session_path():
-    project = "winkle"
-    location = "nautilus"
-    data_store = "scallop"
-    session = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    data_store = "cuttlefish"
+    session = "mussel"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/sessions/{session}".format(
         project=project,
         location=location,
@@ -3740,10 +3812,10 @@ def test_session_path():
 
 def test_parse_session_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "data_store": "whelk",
-        "session": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "data_store": "scallop",
+        "session": "abalone",
     }
     path = SearchServiceClient.session_path(**expected)
 
@@ -3753,7 +3825,7 @@ def test_parse_session_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3763,7 +3835,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = SearchServiceClient.common_billing_account_path(**expected)
 
@@ -3773,7 +3845,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3783,7 +3855,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = SearchServiceClient.common_folder_path(**expected)
 
@@ -3793,7 +3865,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3803,7 +3875,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = SearchServiceClient.common_organization_path(**expected)
 
@@ -3813,7 +3885,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3823,7 +3895,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = SearchServiceClient.common_project_path(**expected)
 
@@ -3833,8 +3905,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3845,8 +3917,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = SearchServiceClient.common_location_path(**expected)
 

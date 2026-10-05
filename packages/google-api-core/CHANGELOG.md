@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.40.0...google-api-core-v2.41.0) (2026-10-02)
+
+
+### Features
+
+* **api_core:** resumable upload supports request_body in constructor ([#18543](https://github.com/googleapis/google-cloud-python/issues/18543)) ([97bc619](https://github.com/googleapis/google-cloud-python/commit/97bc619323b524f8e686bb27c43bd7275f41c239))
+* **api-core:** support AsyncAuthorizedSession transport for resumable uploads ([#18544](https://github.com/googleapis/google-cloud-python/issues/18544)) ([9b96af7](https://github.com/googleapis/google-cloud-python/commit/9b96af76254c33b9c3e0ceb390bbaeab2e33bbea))
+* **auth:** Support sync credentials in AsyncAuthorizedSession ([#18542](https://github.com/googleapis/google-cloud-python/issues/18542)) ([3799568](https://github.com/googleapis/google-cloud-python/commit/379956865248ebc40e5b851ede520056e65abcac))
+
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.39.0...google-api-core-v2.40.0) (2026-09-29)
+
+
+### Features
+
+* declare Python3.15 support ([05b0c34](https://github.com/googleapis/google-cloud-python/commit/05b0c342683b2b0e1b8dccd201ec86ec89612edc))
+
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.38.0...google-api-core-v2.39.0) (2026-09-24)
+
+
+### Features
+
+* **google-api-core:** add support for resumable uploads ([#18352](https://github.com/googleapis/google-cloud-python/issues/18352)) ([17d6c53](https://github.com/googleapis/google-cloud-python/commit/17d6c53698fa430d59fe43b81001e36459d24ef1))
+
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.37.0...google-api-core-v2.38.0) (2026-09-17)
+
+
+### Features
+
+* **core:** add request hook to enrich T4 network spans with GCP resource attributes (E) ([#18272](https://github.com/googleapis/google-cloud-python/issues/18272)) ([1ca95e9](https://github.com/googleapis/google-cloud-python/commit/1ca95e90199cf0a40077437a4c00f8039599dd5e))
+
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.36.0...google-api-core-v2.37.0) (2026-09-14)
+
+
+### Features
+
+* **gapic:** add OpenTelemetry T3 client method span wrapping in gapic_v1.method (D) ([#18274](https://github.com/googleapis/google-cloud-python/issues/18274)) ([156e319](https://github.com/googleapis/google-cloud-python/commit/156e31941b4bf6257a4d719b9630c388435660e8))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.35.0...google-api-core-v2.36.0) (2026-09-03)
 
 

@@ -3659,6 +3659,11 @@ def test_insert_rest_call_success(request_type):
                     ],
                     "alias_ip_ranges": [
                         {
+                            "candidate_subnetwork_range_names": [
+                                "candidate_subnetwork_range_names_value1",
+                                "candidate_subnetwork_range_names_value2",
+                            ],
+                            "effective_subnetwork_range_name": "effective_subnetwork_range_name_value",
                             "ip_cidr_range": "ip_cidr_range_value",
                             "subnetwork_range_name": "subnetwork_range_name_value",
                         }
@@ -3705,6 +3710,7 @@ def test_insert_rest_call_success(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "availability_domain": 2002,
+                "expose_host_topology": True,
                 "graceful_shutdown": {
                     "enabled": True,
                     "max_duration": {"nanos": 543, "seconds": 751},

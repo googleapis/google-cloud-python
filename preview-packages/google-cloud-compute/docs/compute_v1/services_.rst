@@ -3,6 +3,8 @@ Services for Google Cloud Compute v1 API
 .. toctree::
     :maxdepth: 2
 
+    accelerator_interconnect_member_instances
+    accelerator_interconnects
     accelerator_types
     addresses
     advice
@@ -19,15 +21,18 @@ Services for Google Cloud Compute v1 API
     future_reservations
     global_addresses
     global_forwarding_rules
+    global_frontend_settings_service
     global_network_endpoint_groups
     global_operations
     global_organization_operations
     global_public_delegated_prefixes
     global_vm_extension_policies
+    ha_controllers
     health_checks
     hosts
     image_family_views
     images
+    image_views
     instance_group_manager_resize_requests
     instance_group_managers
     instance_groups
@@ -46,6 +51,7 @@ Services for Google Cloud Compute v1 API
     licenses
     machine_images
     machine_types
+    managed_rulesets
     network_attachments
     network_edge_security_services
     network_endpoint_groups
@@ -59,6 +65,7 @@ Services for Google Cloud Compute v1 API
     packet_mirrorings
     preview_features
     projects
+    project_views
     public_advertised_prefixes
     public_delegated_prefixes
     region_autoscalers

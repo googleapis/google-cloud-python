@@ -64,8 +64,8 @@ class AdReviewCenterAd(proto.Message):
         preview_url (str):
             Output only. The preview URL that can be
             embedded or accessed directly which will present
-            the rendered contents of the ad. (This URL
-            expires 72 hours after being retrieved.).
+            the rendered contents of the ad. This URL
+            expires 72 hours after being retrieved.
 
             This field is a member of `oneof`_ ``_preview_url``.
     """

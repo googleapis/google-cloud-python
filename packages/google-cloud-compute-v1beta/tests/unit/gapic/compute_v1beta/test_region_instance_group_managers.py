@@ -4082,7 +4082,7 @@ def test_insert_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4128,7 +4128,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4279,7 +4279,7 @@ def test_insert_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -4325,7 +4325,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5562,7 +5562,7 @@ def test_patch_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5609,7 +5609,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5769,7 +5769,7 @@ def test_patch_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -5816,7 +5816,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -10668,7 +10668,7 @@ def test_update_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -10715,7 +10715,7 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -10875,7 +10875,7 @@ def test_update_unary_rest_flattened():
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -10922,7 +10922,7 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             instance_group_manager_resource=compute.InstanceGroupManager(
                 all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
                     properties=compute.InstancePropertiesPatch(
-                        labels={"key_value": "value_value"}
+                        expose_host_topology=True
                     )
                 )
             ),
@@ -13481,7 +13481,9 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -13507,12 +13509,18 @@ def test_insert_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -13631,7 +13639,7 @@ def test_insert_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",
@@ -14493,7 +14501,9 @@ def test_patch_rest_call_success(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -14519,12 +14529,18 @@ def test_patch_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -14643,7 +14659,7 @@ def test_patch_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",
@@ -18014,7 +18030,9 @@ def test_update_rest_call_success(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
-        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
+        "all_instances_config": {
+            "properties": {"expose_host_topology": True, "labels": {}, "metadata": {}}
+        },
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -18040,12 +18058,18 @@ def test_update_rest_call_success(request_type):
         "description": "description_value",
         "distribution_policy": {
             "target_shape": "target_shape_value",
-            "zones": [{"zone": "zone_value"}],
+            "zones": [
+                {
+                    "max_size": {"calculated": 1042, "fixed": 528, "percent": 753},
+                    "zone": "zone_value",
+                }
+            ],
         },
         "failover_action": "failover_action_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "instance_flexibility_policy": {
+            "constraints": {"single_machine_type": True},
             "instance_selections": {},
             "provisioning_model_mix": {
                 "standard_capacity_base": 2296,
@@ -18164,7 +18188,7 @@ def test_update_rest_call_success(request_type):
         "update_policy": {
             "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
-            "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
+            "max_surge": {},
             "max_unavailable": {},
             "min_ready_sec": 1362,
             "minimal_action": "minimal_action_value",
