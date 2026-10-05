@@ -98,7 +98,7 @@ from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
 from google.cloud.bigquery.dataset import Dataset, DatasetListItem, DatasetReference
 from google.cloud.bigquery.enums import AutoRowIDs, DatasetView, UpdateMode
-from google.cloud.bigquery.format_options import ParquetOptions, QueryResultsFormat
+from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.job import (
     CopyJob,
     CopyJobConfig,
@@ -3633,7 +3633,6 @@ class Client(ClientWithProject):
         )
 
         # Note that we haven't modified the original job_config (or
-
         # _default_query_job_config) up to this point.
         if api_method == enums.QueryApiMethod.QUERY:
             return _job_helpers.query_jobs_query(

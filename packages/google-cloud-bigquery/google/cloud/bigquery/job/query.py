@@ -31,7 +31,6 @@ from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.enums import KeyResultStatementKind, DefaultPandasDTypes
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.format_options import ArrowSerializationOptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import (
     _query_param_from_api_repr,
@@ -858,24 +857,6 @@ class QueryJobConfig(_JobConfig):
     @query_results_format.setter
     def query_results_format(self, value: Optional[str]):
         self._set_sub_prop("queryResultsFormat", value)
-
-    @property
-    def arrow_serialization_options(self) -> Optional[ArrowSerializationOptions]:
-        """ArrowSerializationOptions: Options for Arrow payload serialization."""
-        prop = self._get_sub_prop("formatOptions")
-        if prop is not None and "arrowSerializationOptions" in prop:
-            return ArrowSerializationOptions.from_api_repr(prop["arrowSerializationOptions"])
-        return None
-
-    @arrow_serialization_options.setter
-    def arrow_serialization_options(self, value: Optional[ArrowSerializationOptions]):
-        format_opts = self._get_sub_prop("formatOptions") or {}
-        if value is not None:
-            format_opts["arrowSerializationOptions"] = value.to_api_repr()
-        else:
-            format_opts.pop("arrowSerializationOptions", None)
-        self._set_sub_prop("formatOptions", format_opts)
-
 
     def to_api_repr(self) -> dict:
         """Build an API representation of the query job config.

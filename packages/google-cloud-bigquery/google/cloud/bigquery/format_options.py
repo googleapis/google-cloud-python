@@ -13,10 +13,7 @@
 # limitations under the License.
 
 import copy
-from typing import Any, Dict, Optional, Union
-
-from google.cloud.bigquery.enums import QueryResultsFormat
-
+from typing import Dict, Optional, Union
 
 
 class AvroOptions:
@@ -148,67 +145,3 @@ class ParquetOptions:
                 A dictionary in the format used by the BigQuery API.
         """
         return copy.deepcopy(self._properties)
-
-
-class ArrowSerializationOptions:
-    """Options for Arrow payload serialization in query result jobs.
-
-    Args:
-
-        buffer_byte_limit (Optional[int]): Target byte limit for returned Arrow IPC record batches.
-        use_int64_timestamp (Optional[bool]): Use Int64 timestamp representation in Arrow schema.
-    """
-
-    def __init__(
-        self,
-        buffer_byte_limit: Optional[int] = None,
-        use_int64_timestamp: Optional[bool] = None,
-    ):
-        self._properties: Dict[str, Any] = {}
-        if buffer_byte_limit is not None:
-            self.buffer_byte_limit = buffer_byte_limit
-        if use_int64_timestamp is not None:
-            self.use_int64_timestamp = use_int64_timestamp
-
-    @property
-    def buffer_byte_limit(self) -> Optional[int]:
-        """Target maximum byte size for returned Arrow IPC record batch buffers."""
-        val = self._properties.get("bufferByteLimit")
-        return int(val) if val is not None else None
-
-    @buffer_byte_limit.setter
-    def buffer_byte_limit(self, value: Optional[int]) -> None:
-        if value is not None and value <= 0:
-            raise ValueError("buffer_byte_limit must be a positive integer.")
-        self._properties["bufferByteLimit"] = str(value) if value is not None else None
-
-    @property
-    def use_int64_timestamp(self) -> Optional[bool]:
-        """Whether timestamp columns are encoded as 64-bit microsecond integers."""
-        return self._properties.get("useInt64Timestamp")
-
-    @use_int64_timestamp.setter
-    def use_int64_timestamp(self, value: Optional[bool]) -> None:
-        self._properties["useInt64Timestamp"] = value
-
-    @classmethod
-    def from_api_repr(cls, resource: Dict[str, Any]) -> "ArrowSerializationOptions":
-        """Factory: construct an instance from a resource dict."""
-        opts = cls()
-        opts._properties = copy.deepcopy(resource)
-        return opts
-
-    def to_api_repr(self) -> Dict[str, Any]:
-        """Build an API representation of this object."""
-        return copy.deepcopy(self._properties)
-
-    def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, ArrowSerializationOptions):
-            return False
-        return self._properties == other._properties
-
-    def __repr__(self) -> str:
-        return f"ArrowSerializationOptions({self._properties})"
-
-
-

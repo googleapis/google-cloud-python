@@ -483,9 +483,39 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
             QueryResultsCompressionCodec,
         )
 
+        self.assertEqual(QueryResultsFormat.STRUCT_ENCODING, "STRUCT_ENCODING")
         self.assertEqual(QueryResultsFormat.ARROW, "ARROW")
         self.assertEqual(QueryResultsCompressionCodec.LZ4_FRAME, "LZ4_FRAME")
         self.assertEqual(QueryResultsCompressionCodec.ZSTD, "ZSTD")
+
+    def test_job_helpers_query_and_wait_reads_job_config_query_results_format(self):
+        from google.cloud.bigquery.enums import QueryResultsFormat
+        from google.cloud.bigquery.job import QueryJobConfig
+
+        client = mock.MagicMock(spec=Client)
+        client._call_api.return_value = {
+            "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+            "jobComplete": True,
+            "rows": [],
+            "schema": {"fields": []},
+        }
+
+        job_config = QueryJobConfig()
+        job_config.query_results_format = QueryResultsFormat.ARROW
+        self.assertEqual(job_config.query_results_format, "ARROW")
+
+        row_iterator = _job_helpers.query_and_wait(
+            client=client,
+            query="SELECT 1",
+            project="p",
+            location="us",
+            job_config=job_config,
+            retry=None,
+            job_retry=None,
+        )
+        self.assertEqual(row_iterator._query_results_format, "ARROW")
+        call_args = client._call_api.call_args
+        self.assertEqual(call_args.kwargs["data"]["queryResultsFormat"], "ARROW")
 
     def test_job_helpers_query_and_wait_accepts_enums(self):
         from google.cloud.bigquery.enums import (

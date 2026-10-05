@@ -2372,7 +2372,8 @@ class RowIterator(HTTPIterator):
         timeout: Optional[float],
     ) -> Iterator["pyarrow.RecordBatch"]:
         """Stream remaining Arrow record batches using BigQuery Storage Read API gRPC."""
-        stream_name = f"projects/{project}/locations/{self._location}/jobs/{self._job_id}/streams/_default"
+        location = self._location or (self.client.location if self.client else None)
+        stream_name = f"projects/{project}/locations/{location}/jobs/{self._job_id}/streams/_default"
         reader = bqstorage_client.read_rows(stream_name, offset=offset, timeout=timeout)
         for response in reader:
             if (
@@ -2396,61 +2397,6 @@ class RowIterator(HTTPIterator):
                 )
                 yield batch
 
-    def _fetch_arrow_page_rest(
-        self,
-        project: Optional[str],
-        page_token: str,
-        timeout: Optional[float],
-    ) -> Dict[str, Any]:
-        """Fetch a single page of Arrow results over HTTP REST getQueryResults."""
-        page_params = {
-            "pageToken": page_token,
-            "formatOptions.useInt64Timestamp": True,
-            "queryResultsFormat": "ARROW",
-        }
-        if self._location:
-            page_params["location"] = self._location
-
-        path = f"/projects/{project}/queries/{self._job_id}"
-        return self.client._connection.api_request(
-            method="GET",
-            path=path,
-            query_params=page_params,
-            timeout=timeout,
-        )
-
-    def _stream_arrow_via_rest_page_token(
-        self,
-        first_page: Optional[Dict[str, Any]],
-        project: Optional[str],
-        offset: int,
-        total_rows: int,
-        pa_schema: Optional["pyarrow.Schema"],
-        timeout: Optional[float],
-    ) -> Iterator["pyarrow.RecordBatch"]:
-        """Stream remaining Arrow record batches using HTTP REST pageToken fallback."""
-        warnings.warn(
-            "The google-cloud-bigquery-storage library is not installed or gRPC transport is unavailable. "
-            "Fetching remaining Arrow results over HTTP REST pageToken fallback.",
-            UserWarning,
-            stacklevel=2,
-        )
-
-        next_page_token = first_page.get("pageToken") if first_page else None
-        while (total_rows is None or offset < total_rows) and next_page_token and self.client is not None:
-            page_response = self._fetch_arrow_page_rest(project, next_page_token, timeout)
-            next_page_token = page_response.get("pageToken")
-
-            if pa_schema is None:
-                pa_schema = self._parse_arrow_schema_from_json(page_response.get("arrowSchema"))
-
-            batch = self._parse_arrow_record_batch_from_json(
-                page_response.get("arrowRecordBatch"), pa_schema
-            )
-            if batch:
-                offset += batch.num_rows
-                yield batch
-
     def _download_arrow_from_job_id(
         self,
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
@@ -2460,7 +2406,8 @@ class RowIterator(HTTPIterator):
 
         First processes inline Arrow data in the initial page response (if present),
         updating row offset and total row counts. If more rows remain, streams
-        remaining batches using BigQuery Storage Read API or REST HTTP pageToken fallback.
+        remaining batches using the BigQuery Read API default job stream
+        (``projects/.../locations/.../jobs/.../streams/_default``).
 
         Args:
             bqstorage_client (Optional[bigquery_storage.BigQueryReadClient]):
@@ -2488,27 +2435,18 @@ class RowIterator(HTTPIterator):
         if job_complete and offset >= total_rows:
             return
 
-        project = self._project or (self.client.project if self.client else None)
-
-        if bqstorage_client is None and self.client is not None:
+        if bqstorage_client is None:
+            if self.client is None:
+                raise ValueError("RowIterator client is None.")
             bqstorage_client = self.client._ensure_bqstorage_client()
+            if bqstorage_client is None:
+                raise ValueError(
+                    "The google-cloud-bigquery-storage library is required to read Arrow results."
+                )
 
-        if bqstorage_client is not None:
-            yield from self._stream_arrow_via_bqstorage(
-                bqstorage_client, project, offset, pa_schema, timeout
-            )
-            return
-
-        # If google-cloud-bigquery-storage is unavailable, fallback to REST
-        # pagination using the pageToken returned in jobs.getQueryResults response.
-        next_page_token = first_page.get("pageToken") if isinstance(first_page, dict) else None
-        if not next_page_token:
-            raise ValueError(
-                "The google-cloud-bigquery-storage library is required to stream remaining Arrow results."
-            )
-
-        yield from self._stream_arrow_via_rest_page_token(
-            first_page, project, offset, total_rows, pa_schema, timeout
+        project = self._project or (self.client.project if self.client else None)
+        yield from self._stream_arrow_via_bqstorage(
+            bqstorage_client, project, offset, pa_schema, timeout
         )
 
 

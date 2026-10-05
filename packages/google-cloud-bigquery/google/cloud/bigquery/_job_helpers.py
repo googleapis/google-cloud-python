@@ -507,6 +507,8 @@ def query_and_wait(
     )
     if query_results_format is not None:
         request_body["queryResultsFormat"] = query_results_format
+    else:
+        query_results_format = request_body.get("queryResultsFormat")
     if compression_codec is not None:
         request_body.setdefault("formatOptions", {})
         request_body["formatOptions"]["arrowSerializationOptions"] = {

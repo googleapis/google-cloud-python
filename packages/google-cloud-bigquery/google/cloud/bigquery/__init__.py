@@ -57,7 +57,6 @@ from google.cloud.bigquery.external_config import CSVOptions
 from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.external_config import HivePartitioningOptions
-from google.cloud.bigquery.format_options import ArrowSerializationOptions
 from google.cloud.bigquery.format_options import AvroOptions
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.enums import QueryResultsCompressionCodec
@@ -194,7 +193,6 @@ __all__ = [
     "PolicyTagList",
     "UDFResource",
     "ExternalConfig",
-    "ArrowSerializationOptions",
     "AvroOptions",
     "BigtableOptions",
     "BigtableColumnFamily",

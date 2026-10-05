@@ -20,7 +20,7 @@ import pandas as pd
 import pyarrow as pa
 
 from google.cloud import bigquery
-from google.cloud.bigquery.format_options import QueryResultsFormat
+from google.cloud.bigquery.enums import QueryResultsFormat
 
 
 class MeasurePerformance:
@@ -91,7 +91,7 @@ def compare_json_vs_arrow_performance():
     synthetic_dataset_sql = build_synthetic_dataset_query(row_count=200000)
 
     print("=" * 80)
-    print("  SYMMETRICAL REST BENCHMARK: REST JSON VS. REST ARROW FAST-PATH")
+    print("  SYMMETRICAL REST BENCHMARK: REST JSON VS. REST ARROW + BQSTORAGE GRPC")
     print("=" * 80)
     print(f"Target GCP Project : {project_id}")
     print(f"Dataset Size       : 200,000 rows x 5 columns (1,000,000 cells)\n")
@@ -100,99 +100,75 @@ def compare_json_vs_arrow_performance():
     # CASE 1: STANDARD REST JSON (QueryResultsFormat.STRUCT_ENCODING)
     # -------------------------------------------------------------------
     print("-" * 80)
-    print("1. EXECUTING CASE 1: STANDARD REST JSON QUERY...")
+    print("1. EXECUTING CASE 1: STANDARD REST JSON QUERY (200,000 ROWS)...")
     print("-" * 80)
     json_config = bigquery.QueryJobConfig()
     json_config.query_results_format = QueryResultsFormat.STRUCT_ENCODING
 
     with MeasurePerformance() as json_paged_perf:
-        json_iterator = client.query(
+        json_iterator = client.query_and_wait(
             synthetic_dataset_sql, job_config=json_config
-        ).result()
+        )
         df_json = json_iterator.to_dataframe(create_bqstorage_client=False)
     print(f"   -> JSON query execution time    : {json_paged_perf.elapsed:.3f} seconds")
     print(f"   -> Total JSON rows received     : {len(df_json):,}")
     print(f"   -> Memory used by JSON rows     : {json_paged_perf.memory_mb:.2f} MB\n")
 
     # -------------------------------------------------------------------
-    # CASE 2: REST ARROW PAGED ITERATOR (QueryResultsFormat.ARROW)
+    # CASE 2: REST ARROW FAST-PATH (Single-Page Inline REST Arrow)
     # -------------------------------------------------------------------
     print("-" * 80)
-    print("2. EXECUTING CASE 2: REST ARROW PAGED QUERY...")
+    print("2. EXECUTING CASE 2: REST ARROW SINGLE-PAGE FAST-PATH (200,000 ROWS)...")
     print("-" * 80)
-    arrow_config = bigquery.QueryJobConfig()
-    arrow_config.query_results_format = QueryResultsFormat.ARROW
-
-    with MeasurePerformance() as arrow_paged_perf:
-        arrow_iterator = client.query(
-            synthetic_dataset_sql, job_config=arrow_config
-        ).result()
-        arrow_table_paged = arrow_iterator.to_arrow(create_bqstorage_client=False)
-        df_arrow_paged = arrow_table_paged.to_pandas()
-    print(
-        f"   -> Arrow Paged query execution time : {arrow_paged_perf.elapsed:.3f} seconds"
-    )
-    print(f"   -> Total Arrow Paged rows received   : {arrow_table_paged.num_rows:,}")
-    print(
-        f"   -> Memory used by Arrow Paged        : {arrow_paged_perf.memory_mb:.2f} MB\n"
-    )
-
-    # -------------------------------------------------------------------
-    # CASE 3: REST ARROW FAST-PATH
-    # -------------------------------------------------------------------
-    print("-" * 80)
-    print("3. EXECUTING CASE 3: REST ARROW FAST-PATH QUERY...")
-    print("-" * 80)
-    job_config_arrow = bigquery.QueryJobConfig()
-    job_config_arrow.query_results_format = bigquery.enums.QueryResultsFormat.ARROW
     with MeasurePerformance() as arrow_fast_perf:
-        arrow_row_iterator = client.query_and_wait(synthetic_dataset_sql, job_config=job_config_arrow)
-        df_arrow_fast = arrow_row_iterator.to_arrow().to_pandas()
+        arrow_row_iterator = client.query_and_wait(
+            synthetic_dataset_sql,
+            query_results_format=QueryResultsFormat.ARROW,
+        )
+        arrow_table_fast = arrow_row_iterator.to_arrow()
+        df_arrow_fast = arrow_table_fast.to_pandas()
+    print(
+        f"   -> Arrow Fast-Path execution time: {arrow_fast_perf.elapsed:.3f} seconds"
+    )
+    print(f"   -> Total Arrow Fast-Path rows    : {arrow_table_fast.num_rows:,}")
     print(f"   -> Memory used by Arrow Table    : {arrow_fast_perf.memory_mb:.2f} MB\n")
 
     # -------------------------------------------------------------------
-    # CASE 4: MULTI-PAGE DATASET STREAMING (> 200,000 ROWS)
+    # CASE 3: MULTI-PAGE HYBRID (Page 1 REST Arrow + Page 2+ BQStorage gRPC)
     # -------------------------------------------------------------------
     print("-" * 80)
-    print("4. EXECUTING CASE 4: MULTI-PAGE DATASET QUERY (50,000 ROWS)...")
+    print("3. EXECUTING CASE 3: MULTI-PAGE HYBRID (50,000 ROWS, PAGE_SIZE=1,000)...")
     print("-" * 80)
 
     multi_page_sql = build_synthetic_dataset_query(row_count=50000)
 
     # Measure JSON 50,000 rows baseline for comparison
     with MeasurePerformance() as multi_page_json_perf:
-        json_50k_iterator = client.query(
-            multi_page_sql, job_config=json_config
-        ).result()
+        json_50k_iterator = client.query_and_wait(
+            multi_page_sql, job_config=json_config, page_size=1000
+        )
         _ = json_50k_iterator.to_dataframe(create_bqstorage_client=False)
     print(
         f"   -> REST JSON (50,000 rows) execution time: {multi_page_json_perf.elapsed:.3f} seconds"
     )
 
-    multi_page_status = "Failed (Expected missing google-cloud-bigquery-storage)"
-    speedup_multi_str = "Failed"
-    try:
-        with MeasurePerformance() as multi_page_perf:
-            arrow_config = bigquery.QueryJobConfig()
-            arrow_config.query_results_format = (
-                bigquery.format_options.QueryResultsFormat.ARROW
-            )
-            multi_page_job = client.query(multi_page_sql, job_config=arrow_config)
-            multi_page_iterator = multi_page_job.result(page_size=1000)
-            multi_page_table = multi_page_iterator.to_arrow()
-            multi_page_status = f"{multi_page_table.num_rows:,} rows streamed over gRPC"
+    with MeasurePerformance() as multi_page_perf:
+        multi_page_iterator = client.query_and_wait(
+            multi_page_sql,
+            query_results_format=QueryResultsFormat.ARROW,
+            page_size=1000,
+        )
+        multi_page_table = multi_page_iterator.to_arrow()
 
-        speedup_multi = (
-            multi_page_json_perf.elapsed / multi_page_perf.elapsed
-            if multi_page_perf.elapsed > 0
-            else 0
-        )
-        speedup_multi_str = f"{speedup_multi:.2f}x faster (vs JSON 50k)"
-        print(
-            f"   -> Arrow gRPC Streaming execution time : {multi_page_perf.elapsed:.3f} seconds ({speedup_multi_str})"
-        )
-    except Exception as exc:
-        print(f"   [✓] Verified Multi-Page Error Contract: {exc}")
+    speedup_multi = (
+        multi_page_json_perf.elapsed / multi_page_perf.elapsed
+        if multi_page_perf.elapsed > 0
+        else 0
+    )
+    speedup_multi_str = f"{speedup_multi:.2f}x faster (vs JSON 50k)"
+    print(
+        f"   -> Hybrid Arrow (Page 1 REST + Page 2+ gRPC): {multi_page_perf.elapsed:.3f} seconds ({speedup_multi_str})\n"
+    )
 
     # -------------------------------------------------------------------
     # DATA INTEGRITY VERIFICATION
@@ -202,11 +178,6 @@ def compare_json_vs_arrow_performance():
     # -------------------------------------------------------------------
     # BENCHMARK REPORT
     # -------------------------------------------------------------------
-    speedup_paged = (
-        json_paged_perf.elapsed / arrow_paged_perf.elapsed
-        if arrow_paged_perf.elapsed > 0
-        else 0
-    )
     speedup_fast = (
         json_paged_perf.elapsed / arrow_fast_perf.elapsed
         if arrow_fast_perf.elapsed > 0
@@ -214,29 +185,27 @@ def compare_json_vs_arrow_performance():
     )
 
     print("=" * 80)
-    print("  4-WAY REST BENCHMARK RESULTS & PARITY SUMMARY (PYTHON)")
+    print("  REST ARROW BENCHMARK RESULTS & PARITY SUMMARY (PYTHON)")
     print("=" * 80)
     print(
-        f"  Pathway                       Total Time      Client RAM      Speedup vs JSON"
+        f"  Pathway                                Total Time      Client RAM      Speedup vs JSON"
     )
     print(
-        f"  ----------------------------  --------------  --------------  --------------------"
+        f"  -------------------------------------  --------------  --------------  --------------------"
     )
     print(
-        f"  Case 1: JSON Paged Iterator   {json_paged_perf.elapsed:.3f}s         {json_paged_perf.memory_mb:.2f} MB        1.00x (Baseline)"
+        f"  Case 1: JSON Paged Iterator (200k)     {json_paged_perf.elapsed:.3f}s         {json_paged_perf.memory_mb:.2f} MB        1.00x (Baseline)"
     )
     print(
-        f"  Case 2: Arrow Paged Iterator  {arrow_paged_perf.elapsed:.3f}s         {arrow_paged_perf.memory_mb:.2f} MB        {speedup_paged:.2f}x faster"
+        f"  Case 2: Arrow Single-Page REST (200k)  {arrow_fast_perf.elapsed:.3f}s          {arrow_fast_perf.memory_mb:.2f} MB         {speedup_fast:.2f}x faster"
     )
     print(
-        f"  Case 3: Arrow Fast-Path       {arrow_fast_perf.elapsed:.3f}s          {arrow_fast_perf.memory_mb:.2f} MB         {speedup_fast:.2f}x faster"
-    )
-    print(
-        f"  Case 4: Multi-Page Streaming  {multi_page_perf.elapsed:.3f}s          {multi_page_perf.memory_mb:.2f} MB         {speedup_multi_str}"
+        f"  Case 3: Arrow Hybrid REST+gRPC (50k)   {multi_page_perf.elapsed:.3f}s          {multi_page_perf.memory_mb:.2f} MB         {speedup_multi_str}"
     )
     print("=" * 80)
-    print("\n[SUCCESS] Python 4-way REST benchmark verification complete!\n")
+    print("\n[SUCCESS] Python REST Arrow benchmark verification complete!\n")
 
 
 if __name__ == "__main__":
     compare_json_vs_arrow_performance()
+
