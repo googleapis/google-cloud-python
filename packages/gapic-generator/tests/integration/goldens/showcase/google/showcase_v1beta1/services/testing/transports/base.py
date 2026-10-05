@@ -14,10 +14,15 @@
 # limitations under the License.
 #
 import abc
-import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.showcase_v1beta1 import gapic_version as package_version
+from google.showcase_v1beta1._compat import (
+    ASYNC_WRAP_METHOD_SUPPORTS_KIND as _ASYNC_WRAP_METHOD_SUPPORTS_KIND,
+    WRAP_METHOD_SUPPORTS_TRACING as _WRAP_METHOD_SUPPORTS_TRACING,
+)
+_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = _WRAP_METHOD_SUPPORTS_TRACING
+_WRAP_METHOD_SUPPORTS_KIND = _WRAP_METHOD_SUPPORTS_TRACING
 
 import google.auth  # type: ignore
 import google.api_core
@@ -38,22 +43,6 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
-
-# Check once at module load time whether google-api-core's wrap_methods support
-# OpenTelemetry tracing arguments (client_options, method_name, is_streaming, kind)
-# or transport kind arguments, to avoid recurring inspect.signature latency during client instantiation.
-_WRAP_METHOD_SUPPORTS_TRACING = (
-    "client_options" in inspect.signature(gapic_v1.method.wrap_method).parameters
-)
-_WRAP_METHOD_SUPPORTS_KIND = (
-    "kind" in inspect.signature(gapic_v1.method.wrap_method).parameters
-)
-_ASYNC_WRAP_METHOD_SUPPORTS_TRACING = (
-    "client_options" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-)
-_ASYNC_WRAP_METHOD_SUPPORTS_KIND = (
-    "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-)
 
 
 class TestingTransport(abc.ABC):

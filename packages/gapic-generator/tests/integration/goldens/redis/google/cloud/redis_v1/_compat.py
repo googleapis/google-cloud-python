@@ -20,6 +20,7 @@ import json
 
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from google.api_core import gapic_v1
 from google.api_core import path_template
 from google.api_core.universe import EmptyUniverseError
 from google.auth.exceptions import MutualTLSChannelError
@@ -27,7 +28,8 @@ from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
 
-# The _observability module was introduced in google-api-core 2.36.0+.
+# The _observability module and OpenTelemetry tracing in wrap_method were introduced
+# together in google-api-core 2.36.0+.
 # On older versions of google-api-core or when type-checking against them,
 # mypy may flag attr-defined or assignment errors when fallback to None occurs.
 try:
@@ -35,9 +37,18 @@ try:
 except ImportError:  # pragma: NO COVER
     _observability = None  # type: ignore[assignment]
 
+# OpenTelemetry method tracing arguments (client_options, method_name, is_streaming, kind)
+# were introduced to gapic_v1.method.wrap_method and gapic_v1.method_async.wrap_method
+# in google-api-core 2.36.0+ alongside the _observability module.
+# Once the repository's minimum constraint for google-api-core is bumped to >= 2.36.0,
+# WRAP_METHOD_SUPPORTS_TRACING, the fallback _FallbackTraceContext, and base transport fallbacks
+# can be safely removed.
 if _observability is not None and hasattr(_observability, "trace_http_request"):
     trace_http_request = _observability.trace_http_request
+    WRAP_METHOD_SUPPORTS_TRACING = True
 else:  # pragma: NO COVER
+    WRAP_METHOD_SUPPORTS_TRACING = False
+
     # Fallback for older versions of google-api-core without HTTP tracing.
     class _FallbackTraceContext:
         def __enter__(self) -> "_FallbackTraceContext":
@@ -58,6 +69,17 @@ else:  # pragma: NO COVER
 
     def trace_http_request(*args: Any, **kwargs: Any) -> _FallbackTraceContext:
         return _FallbackTraceContext()
+
+# The `kind` parameter in gapic_v1.method_async.wrap_method was introduced in
+# google-api-core 2.29.0 (PR #688) alongside _DEFAULT_ASYNC_TRANSPORT_KIND to prevent
+# async REST callables from being wrapped with gRPC error handlers.
+# In environments running older google-api-core (< 2.29.0) where tracing is also absent,
+# passing `kind` will trigger a TypeError unless stripped.
+# Once the minimum constraint for google-api-core is bumped to
+# >= 2.29.0, this check and the corresponding fallback in base transports can be safely removed.
+ASYNC_WRAP_METHOD_SUPPORTS_KIND = WRAP_METHOD_SUPPORTS_TRACING or hasattr(
+    gapic_v1.method_async, "_DEFAULT_ASYNC_TRANSPORT_KIND"
+)
 
 try:
     from google.api_core import grpc_helpers_async
