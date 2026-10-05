@@ -449,6 +449,10 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                             with self._lock:
                                 self._terminal_exception = e
                                 self._completion_event.set()
+                                callbacks_to_fire = list(self._done_callbacks)
+                                self._done_callbacks.clear()
+                            for callback in callbacks_to_fire:
+                                callback(self)
                             return
                     with self._lock:
                         self._retry_count += 1
