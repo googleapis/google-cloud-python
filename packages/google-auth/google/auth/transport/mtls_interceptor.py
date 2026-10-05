@@ -281,6 +281,11 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
     def is_active(self):
         return False
 
+    def cancel(self):
+        return False
+
+    def add_callback(self, callback):
+        return False
 
 class _BaseCallWrapper(grpc.Future, grpc.Call):
     """A generic wrapper that delegates standard grpc.Call and grpc.Future
