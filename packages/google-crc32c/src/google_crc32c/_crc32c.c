@@ -18,22 +18,23 @@ _crc32c_extend(PyObject *self, PyObject *args)
 {
     unsigned long crc_input;
     uint32_t crc;
-    const char *chunk;
-    Py_ssize_t length;
     PyThreadState *save = NULL;
+    Py_buffer buffer;
 
-    if (!PyArg_ParseTuple(args, "ky#", &crc_input, &chunk, &length))
+    if (!PyArg_ParseTuple(args, "ky*", &crc_input, &buffer))
         return NULL;
 
-    if (_should_release_gil(length, PyTuple_GET_ITEM(args, 1))) {
+    if (_should_release_gil(buffer.len, buffer.obj)) {
         save = PyEval_SaveThread();
     }
 
-    crc = crc32c_extend((uint32_t)crc_input, (const uint8_t*)chunk, length);
+    crc = crc32c_extend((uint32_t)crc_input, (const uint8_t*)buffer.buf, buffer.len);
 
     if (save) {
         PyEval_RestoreThread(save);
     }
+
+    PyBuffer_Release(&buffer);
 
     return PyLong_FromUnsignedLong(crc);
 }
@@ -43,22 +44,23 @@ static PyObject *
 _crc32c_value(PyObject *self, PyObject *args)
 {
     uint32_t crc;
-    const char *chunk;
-    Py_ssize_t length;
+    Py_buffer buffer;
     PyThreadState *save = NULL;
 
-    if (!PyArg_ParseTuple(args, "y#", &chunk, &length))
+    if (!PyArg_ParseTuple(args, "y*", &buffer))
         return NULL;
 
-    if (_should_release_gil(length, PyTuple_GET_ITEM(args, 0))) {
+    if (_should_release_gil(buffer.len, buffer.obj)) {
         save = PyEval_SaveThread();
     }
 
-    crc = crc32c_value((const uint8_t*)chunk, length);
+    crc = crc32c_value((const uint8_t*)buffer.buf, buffer.len);
 
     if (save) {
         PyEval_RestoreThread(save);
     }
+
+    PyBuffer_Release(&buffer);
 
     return PyLong_FromUnsignedLong(crc);
 }
