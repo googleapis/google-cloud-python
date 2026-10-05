@@ -233,7 +233,7 @@ request=request
 {% macro render_method_call(sample, calling_form, calling_form_enum, transport, include_config=False) %}
 {# Note: this doesn't deal with enums or unions #}
 {# LROs return operation objects and paged requests return pager objects #}
-{% if transport == "grpc-async" and not sample.get("is_resumable_upload") and calling_form not in
+{% if transport == "grpc-async" and calling_form not in
 [calling_form_enum.RequestPaged, calling_form_enum.RequestPagedAll] %}
 await{{ " "}}
 {%- endif -%}

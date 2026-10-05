@@ -983,7 +983,7 @@ def test_generate_sample_resumable_upload_async():
     )
     assert "import io" in sample_str
     assert "python3 -m pip install molluscs-v1-molluscclient[async_rest]" in sample_str
-    assert "upload_session = client.classify(request=request, config=config)" in sample_str
+    assert "upload_session = await client.classify(request=request, config=config)" in sample_str
     assert 'stream = io.BytesIO(b"Example upload data")' in sample_str
     assert "response = await upload_session.upload(stream)" in sample_str
     assert "progress: UploadProgress" in sample_str
