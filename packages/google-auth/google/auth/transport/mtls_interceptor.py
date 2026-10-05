@@ -422,7 +422,7 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
                 )
 
                 should_retry, call_cert, call_key = self._interceptor._should_retry(
-                    status_code, self._retry_count, getattr(self, "_attempt_cert", None)
+                    status_code, self._retry_count, self._attempt_cert
                 )
                 if can_replay and should_retry:
                     if getattr(self._interceptor, "_wrapper", None):
