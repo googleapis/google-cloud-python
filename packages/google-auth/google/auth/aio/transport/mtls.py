@@ -173,7 +173,8 @@ async def get_client_cert_and_key(client_cert_callback=None):
             cert, key = await result
         else:
             cert, key = result
-        if cert and key:
+        # key may be None when the private key is stored in the certificate file.
+        if cert:
             return True, cert, key
 
     has_cert, cert, key, _ = await get_client_ssl_credentials()

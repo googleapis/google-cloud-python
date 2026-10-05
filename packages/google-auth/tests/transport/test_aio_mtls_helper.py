@@ -210,7 +210,9 @@ class TestMTLS:
 
     @pytest.mark.asyncio
     @mock.patch("google.auth.aio.transport.mtls.get_client_ssl_credentials")
-    async def test_get_client_cert_and_key_callback_empty_no_default(self, mock_get_ssl):
+    async def test_get_client_cert_and_key_callback_empty_no_default(
+        self, mock_get_ssl
+    ):
         """An empty callback plus no default credentials means no mTLS."""
         callback = mock.AsyncMock(return_value=(b"", b""))
         mock_get_ssl.return_value = (False, None, None, None)
@@ -220,6 +222,21 @@ class TestMTLS:
         mock_get_ssl.assert_called_once_with()
         assert success is False
         assert cert is None
+        assert key is None
+
+    @pytest.mark.asyncio
+    @mock.patch("google.auth.aio.transport.mtls.get_client_ssl_credentials")
+    async def test_get_client_cert_and_key_callback_cert_only_is_used(
+        self, mock_get_ssl
+    ):
+        """A cert without a separate key is valid; the key may live in the cert file."""
+        callback = mock.AsyncMock(return_value=(CERT_DATA, None))
+
+        success, cert, key = await mtls.get_client_cert_and_key(callback)
+
+        mock_get_ssl.assert_not_called()
+        assert success is True
+        assert cert == CERT_DATA
         assert key is None
 
     @pytest.mark.asyncio
