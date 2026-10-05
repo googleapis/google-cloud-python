@@ -1708,6 +1708,9 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         result = await response.upload(b"test data")
         assert isinstance(result, {{ method.output.ident }})
         assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
 
 
 @pytest.mark.asyncio
@@ -1763,6 +1766,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
         assert result == expected_result
 
         start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
         {% for field in method.input.fields.values() | rejectattr('message') %}
         {% if not field.oneof or field.proto3_optional %}
         assert "{{ field.name | camel_case }}=" in start_call.args[1]
@@ -1834,6 +1838,9 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_start_e
         result = response.upload(b"test data")
         assert isinstance(result, {{ method.output.ident }})
         assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
 
 
 {% if rest_async_io_enabled %}
@@ -1883,6 +1890,9 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         result = await response.upload(b"test data")
         assert isinstance(result, {{ method.output.ident }})
         assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
 {% endif %}
 
 
@@ -1937,6 +1947,7 @@ def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_body_an
         assert result == expected_result
 
         start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
         {% for field in method.input.fields.values() | rejectattr('message') %}
         {% if not field.oneof or field.proto3_optional %}
         assert "{{ field.name | camel_case }}=" in start_call.args[1]
@@ -2006,6 +2017,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_rest_a
         assert result == expected_result
 
         start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
         {% for field in method.input.fields.values() | rejectattr('message') %}
         {% if not field.oneof or field.proto3_optional %}
         assert "{{ field.name | camel_case }}=" in start_call.args[1]

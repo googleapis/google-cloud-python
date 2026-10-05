@@ -2280,6 +2280,9 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_start_empty_bo
         result = await response.upload(b"test data")
         assert isinstance(result, resumable_upload.UploadMediaResponse)
         assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
 
 
 @pytest.mark.asyncio
@@ -2323,6 +2326,7 @@ async def test_resumable_upload_service_upload_media_grpc_asyncio_body_and_query
         assert result == expected_result
 
         start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
         assert "name=" in start_call.args[1]
         expected_body = json_format.MessageToJson(
             pb_request,
@@ -2377,6 +2381,9 @@ def test_resumable_upload_service_upload_media_rest_start_empty_body():
         result = response.upload(b"test data")
         assert isinstance(result, resumable_upload.UploadMediaResponse)
         assert result == expected_result
+        start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
+        assert start_call.kwargs["headers"]["x-custom"] == "val"
 
 
 def test_resumable_upload_service_upload_media_rest_body_and_query_params():
@@ -2418,6 +2425,7 @@ def test_resumable_upload_service_upload_media_rest_body_and_query_params():
         assert result == expected_result
 
         start_call = req.call_args_list[0]
+        assert start_call.kwargs["headers"]["Content-Type"] == "application/json"
         assert "name=" in start_call.args[1]
         expected_body = json_format.MessageToJson(
             pb_request,

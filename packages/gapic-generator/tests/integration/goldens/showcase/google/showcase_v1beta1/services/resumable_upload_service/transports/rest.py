@@ -432,6 +432,7 @@ class ResumableUploadServiceRestTransport(_BaseResumableUploadServiceRestTranspo
             query_string = f"?{urllib.parse.urlencode(params)}" if params else ""
             upload_url = f"{self._host}{uri}{query_string}"
             headers: Dict[str, Any] = {**dict(metadata), **dict((config.headers or {}) if config else {})}
+            headers["Content-Type"] = "application/json"
             if config is None:
                 config = resumable_transfer.ResumableUploadConfig(headers=headers)
             else:
