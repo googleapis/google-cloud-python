@@ -266,6 +266,18 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
     def details(self):
         return self._details
 
+    def initial_metadata(self):
+        return None
+
+    def trailing_metadata(self):
+        return None
+
+    def time_remaining(self):
+        return 0.0
+
+    def is_active(self):
+        return False
+
 
 class _BaseCallWrapper(grpc.Future, grpc.Call):
     """A generic wrapper that delegates standard grpc.Call and grpc.Future
@@ -475,7 +487,8 @@ class _RetryableUnaryResponseFuture(_BaseCallWrapper):
         if fire_now:
             try:
                 fn(self)
-            except Exception:
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
                 pass
 
     def result(self, timeout=None):
@@ -614,7 +627,8 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
         for fn in callbacks:
             try:
                 fn(self)
-            except Exception:
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
                 pass
 
     def _on_inner_call_done(self, inner_call):
@@ -720,5 +734,6 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
         if fire_now:
             try:
                 fn(self)
-            except Exception:
+            except Exception as e:
+                _LOGGER.warning("Callback failed: %s", e)
                 pass
