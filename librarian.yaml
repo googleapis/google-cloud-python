@@ -152,7 +152,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.40.0
+    version: 2.41.0
     python:
       library_type: CORE
   - name: google-apps-card
