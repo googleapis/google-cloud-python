@@ -669,7 +669,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                     ) = self._interceptor._should_retry(
                         status_code,
                         self._retry_count,
-                        getattr(self, "_attempt_cert", None),
+                        self._attempt_cert,
                     )
 
                     if not self._yielded_any_response and can_replay and should_retry:
