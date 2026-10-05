@@ -189,7 +189,7 @@ class TestDatabase(_BaseTest):
 
         manager._multiplexed_session_terminate_event.set.assert_called_once()
         manager._multiplexed_session_thread.cancel.assert_called_once()
-        mock_session.delete.assert_called_once()
+        mock_session.delete.assert_not_called()
         self.assertIsNone(manager._multiplexed_session)
 
     @CrossSync.pytest

@@ -56,6 +56,13 @@ from google.cloud.compute_v1._compat import (
 )
 
 try:
+    from google.api_core import version_header
+
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_API_CORE_VERSION_HEADER = False
+
+try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
@@ -112,7 +119,7 @@ class FirewallPoliciesClientMeta(type):
 
 
 class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
-    """The FirewallPolicies API."""
+    """The FirewallPolicies API.    This class implements API version 2026-09-01."""
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "compute.googleapis.com"
@@ -685,6 +692,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -810,6 +822,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -953,6 +970,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1071,6 +1093,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1206,6 +1233,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1316,6 +1348,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1451,6 +1488,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1561,6 +1603,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1694,6 +1741,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1804,6 +1856,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1945,6 +2002,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2058,6 +2120,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2076,7 +2143,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         self,
         request: Optional[Union[compute.InsertFirewallPolicyRequest, dict]] = None,
         *,
-        parent_id: Optional[str] = None,
         firewall_policy_resource: Optional[compute.FirewallPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2102,7 +2168,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
                 # Initialize request argument(s)
                 request = compute_v1.InsertFirewallPolicyRequest(
-                    parent_id="parent_id_value",
                 )
 
                 # Make the request
@@ -2116,15 +2181,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 The request object. A request message for
                 FirewallPolicies.Insert. See the method
                 description for details.
-            parent_id (str):
-                Parent ID for this request. The ID can be either be
-                "folders/[FOLDER_ID]" if the parent is a folder or
-                "organizations/[ORGANIZATION_ID]" if the parent is an
-                organization.
-
-                This corresponds to the ``parent_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
                 The body resource for this request
                 This corresponds to the ``firewall_policy_resource`` field
@@ -2147,7 +2203,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent_id, firewall_policy_resource]
+        flattened_params = [firewall_policy_resource]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2163,14 +2219,17 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             request = compute.InsertFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if parent_id is not None:
-                request.parent_id = parent_id
             if firewall_policy_resource is not None:
                 request.firewall_policy_resource = firewall_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2190,7 +2249,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         self,
         request: Optional[Union[compute.InsertFirewallPolicyRequest, dict]] = None,
         *,
-        parent_id: Optional[str] = None,
         firewall_policy_resource: Optional[compute.FirewallPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2216,7 +2274,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
 
                 # Initialize request argument(s)
                 request = compute_v1.InsertFirewallPolicyRequest(
-                    parent_id="parent_id_value",
                 )
 
                 # Make the request
@@ -2230,15 +2287,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 The request object. A request message for
                 FirewallPolicies.Insert. See the method
                 description for details.
-            parent_id (str):
-                Parent ID for this request. The ID can be either be
-                "folders/[FOLDER_ID]" if the parent is a folder or
-                "organizations/[ORGANIZATION_ID]" if the parent is an
-                organization.
-
-                This corresponds to the ``parent_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
                 The body resource for this request
                 This corresponds to the ``firewall_policy_resource`` field
@@ -2261,7 +2309,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent_id, firewall_policy_resource]
+        flattened_params = [firewall_policy_resource]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2277,14 +2325,17 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             request = compute.InsertFirewallPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if parent_id is not None:
-                request.parent_id = parent_id
             if firewall_policy_resource is not None:
                 request.firewall_policy_resource = firewall_policy_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2391,6 +2442,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list]
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2481,6 +2537,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_associations]
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2500,7 +2561,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         request: Optional[Union[compute.MoveFirewallPolicyRequest, dict]] = None,
         *,
         firewall_policy: Optional[str] = None,
-        parent_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2525,7 +2585,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 # Initialize request argument(s)
                 request = compute_v1.MoveFirewallPolicyRequest(
                     firewall_policy="firewall_policy_value",
-                    parent_id="parent_id_value",
                 )
 
                 # Make the request
@@ -2546,15 +2605,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 This corresponds to the ``firewall_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parent_id (str):
-                The new parent of the firewall policy. The ID can be
-                either be "folders/[FOLDER_ID]" if the parent is a
-                folder or "organizations/[ORGANIZATION_ID]" if the
-                parent is an organization.
-
-                This corresponds to the ``parent_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2572,7 +2622,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [firewall_policy, parent_id]
+        flattened_params = [firewall_policy]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2590,8 +2640,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             # request, apply these.
             if firewall_policy is not None:
                 request.firewall_policy = firewall_policy
-            if parent_id is not None:
-                request.parent_id = parent_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2604,6 +2652,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2624,7 +2677,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         request: Optional[Union[compute.MoveFirewallPolicyRequest, dict]] = None,
         *,
         firewall_policy: Optional[str] = None,
-        parent_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2649,7 +2701,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 # Initialize request argument(s)
                 request = compute_v1.MoveFirewallPolicyRequest(
                     firewall_policy="firewall_policy_value",
-                    parent_id="parent_id_value",
                 )
 
                 # Make the request
@@ -2670,15 +2721,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 This corresponds to the ``firewall_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parent_id (str):
-                The new parent of the firewall policy. The ID can be
-                either be "folders/[FOLDER_ID]" if the parent is a
-                folder or "organizations/[ORGANIZATION_ID]" if the
-                parent is an organization.
-
-                This corresponds to the ``parent_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2696,7 +2738,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [firewall_policy, parent_id]
+        flattened_params = [firewall_policy]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -2714,8 +2756,6 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             # request, apply these.
             if firewall_policy is not None:
                 request.firewall_policy = firewall_policy
-            if parent_id is not None:
-                request.parent_id = parent_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2728,6 +2768,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2873,6 +2918,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -2992,6 +3042,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3135,6 +3190,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -3253,6 +3313,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3391,6 +3456,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -3504,6 +3574,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3639,6 +3714,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             ),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -3749,6 +3829,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 (("firewall_policy", request.firewall_policy),)
             ),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3925,6 +4010,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -4046,6 +4136,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
+
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+            metadata = tuple(metadata) + (
+                version_header.to_api_version_header("2026-09-01"),
+            )
 
         # Validate the universe domain.
         self._validate_universe_domain()

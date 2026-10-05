@@ -224,6 +224,41 @@ class _BaseDataAgentServiceRestTransport(DataAgentServiceTransport):
             ]
             return http_options
 
+    class _BaseRetrieveAgentOpsObservability:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "dataSourceType": "",
+        }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{parent=projects/*/locations/*}:retrieveAgentOpsObservability",
+                },
+            ]
+            return http_options
+
+    class _BaseSetAgentOpsObservability:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*}/observabilitySettings:setAgentOpsObservability",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
     class _BaseSetIamPolicy:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

@@ -1992,7 +1992,7 @@ def test_invalidate_cache_rest_flattened():
             region="region_value",
             url_map="url_map_value",
             cache_invalidation_rule_resource=compute.CacheInvalidationRule(
-                cache_tags=["cache_tags_value"]
+                backend_service="backend_service_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2035,7 +2035,7 @@ def test_invalidate_cache_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             url_map="url_map_value",
             cache_invalidation_rule_resource=compute.CacheInvalidationRule(
-                cache_tags=["cache_tags_value"]
+                backend_service="backend_service_value"
             ),
         )
 
@@ -2193,7 +2193,7 @@ def test_invalidate_cache_unary_rest_flattened():
             region="region_value",
             url_map="url_map_value",
             cache_invalidation_rule_resource=compute.CacheInvalidationRule(
-                cache_tags=["cache_tags_value"]
+                backend_service="backend_service_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2236,7 +2236,7 @@ def test_invalidate_cache_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             url_map="url_map_value",
             cache_invalidation_rule_resource=compute.CacheInvalidationRule(
-                cache_tags=["cache_tags_value"]
+                backend_service="backend_service_value"
             ),
         )
 
@@ -4574,8 +4574,11 @@ def test_invalidate_cache_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "url_map": "sample3"}
     request_init["cache_invalidation_rule_resource"] = {
+        "backend_service": "backend_service_value",
         "cache_tags": ["cache_tags_value1", "cache_tags_value2"],
+        "content_type": "content_type_value",
         "host": "host_value",
+        "http_status": 1219,
         "path": "path_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

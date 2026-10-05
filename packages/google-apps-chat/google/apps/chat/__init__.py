@@ -35,6 +35,7 @@ from google.apps.chat_v1.types.annotation import (
     SlashCommandMetadata,
     UserMentionMetadata,
 )
+from google.apps.chat_v1.types.app_command_metadata import AppCommandMetadata
 from google.apps.chat_v1.types.attachment import (
     Attachment,
     AttachmentDataRef,
@@ -111,6 +112,13 @@ from google.apps.chat_v1.types.message import (
     SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
+)
+from google.apps.chat_v1.types.message_pin import (
+    CreateMessagePinRequest,
+    DeleteMessagePinRequest,
+    ListMessagePinsRequest,
+    ListMessagePinsResponse,
+    MessagePin,
 )
 from google.apps.chat_v1.types.reaction import (
     CreateCustomEmojiRequest,
@@ -198,6 +206,7 @@ __all__ = (
     "SlashCommandMetadata",
     "UserMentionMetadata",
     "AnnotationType",
+    "AppCommandMetadata",
     "Attachment",
     "AttachmentDataRef",
     "DriveDataRef",
@@ -265,6 +274,11 @@ __all__ = (
     "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
+    "CreateMessagePinRequest",
+    "DeleteMessagePinRequest",
+    "ListMessagePinsRequest",
+    "ListMessagePinsResponse",
+    "MessagePin",
     "CreateCustomEmojiRequest",
     "CreateReactionRequest",
     "CustomEmoji",

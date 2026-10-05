@@ -79,7 +79,7 @@ setuptools.setup(
     extras_require=extras,
     name=name,
     packages=packages,
-    url="https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/sqlalchemy-spanner",
     version=version,
     include_package_data=True,
     zip_safe=False,
