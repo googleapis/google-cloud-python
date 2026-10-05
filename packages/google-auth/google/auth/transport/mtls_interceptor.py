@@ -143,7 +143,10 @@ class MTLSRefreshingChannel(grpc.Channel):
                     old_channel.unsubscribe(callback)
                 except Exception:
                     pass
-                self._channel.subscribe(callback)
+                try:
+                    self._channel.subscribe(callback)
+                except Exception:
+                    pass
 
     def unary_unary(self, method, *args, **kwargs):
         # Always return a callable from the CURRENT channel
@@ -637,7 +640,7 @@ class _RetryableStreamResponseIterator(_BaseCallWrapper):
                 return
             # Intercept and suppress premature callbacks for UNAUTHENTICATED.
             # __next__ inherently handles this error and manages triggering callbacks
-            # later if retriies are exhausted.
+            # later if retries are exhausted.
             if (
                 callable(getattr(inner_call, "code", None))
                 and inner_call.code() == grpc.StatusCode.UNAUTHENTICATED
