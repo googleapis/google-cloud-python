@@ -16,7 +16,7 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, AsyncIterable, Awaitable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, AsyncIterable, Awaitable, AsyncIterator, Sequence, Tuple, Type, Union, TYPE_CHECKING
 import uuid
 
 from google.showcase_v1beta1 import gapic_version as package_version
@@ -26,7 +26,6 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.showcase_v1beta1._compat import setup_request_id
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
@@ -54,6 +53,10 @@ try:
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
+
+if TYPE_CHECKING:
+  import google.auth.aio.credentials.Credentials
+  import google.auth.credentials.Credentials
 
 _LOGGER = std_logging.getLogger(__name__)
 
@@ -194,16 +197,16 @@ class MessagingAsyncClient:
     get_transport_class = MessagingClient.get_transport_class
 
     def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[Union[google.auth.aio.credentials.Credentials, google.auth.credentials.Credentials]] = None,
             transport: Optional[Union[str, MessagingTransport, Callable[..., MessagingTransport]]] = "grpc_asyncio",
             client_options: Optional[ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    ) -> None:
         """Instantiates the messaging async client.
 
         Args:
-            credentials (Optional[google.auth.credentials.Credentials]): The
-                authorization credentials to attach to requests. These
+            credentials (Optional[Union[google.auth.aio.credentials.Credentials, google.auth.credentials.Credentials]]): 
+                The authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
