@@ -87,8 +87,8 @@ def unit(session):
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
     session.run(
@@ -207,8 +207,8 @@ def fragment(session, use_ads_templates=False):
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
 
@@ -297,8 +297,8 @@ def showcase_library(
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
 
@@ -775,8 +775,8 @@ def snippetgen(session):
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
 
@@ -794,8 +794,8 @@ def docs(session):
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
     session.install(
@@ -889,8 +889,8 @@ def mypy(session):
     session.run("uv", "build", "--wheel", "--out-dir", "/tmp/wheels", "../google-auth")
     session.run(
         "uv", "pip", "install", 
-        "/tmp/wheels/google_api_core-2.40.0-py3-none-any.whl",
-        "/tmp/wheels/google_auth-2.59.1-py3-none-any.whl"
+        "/tmp/wheels/google_api_core-2.41.0-py3-none-any.whl",
+        "/tmp/wheels/google_auth-2.60.0-py3-none-any.whl"
     )
     session.run("uv", "pip", "install", ".")
     session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "-p", "gapic")
