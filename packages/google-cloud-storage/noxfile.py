@@ -99,7 +99,7 @@ nox.options.sessions = [
     "system",
     "cover",
     "lint",
-    "lint_setup_py",
+    "package",
     "blacken",
     "docs",
 ]
@@ -134,7 +134,7 @@ def mypy(session):
 
 @nox.session
 def update_lower_bounds(session):
-    """Update lower bounds in constraints.txt to match setup.py"""
+    """Update lower bounds in constraints.txt to match project metadata"""
     session.install("google-cloud-testutils")
     session.install(".")
 
@@ -150,7 +150,7 @@ def update_lower_bounds(session):
 
 @nox.session
 def check_lower_bounds(session):
-    """Check lower bounds in setup.py are reflected in constraints file"""
+    """Check lower bounds in project metadata are reflected in constraints file"""
     session.install("google-cloud-testutils")
     session.install(".")
 
@@ -247,11 +247,25 @@ def format(session):
     )
 
 
+def check_package(session):
+    """Build distributions and validate their metadata and README."""
+    session.install("build", "twine")
+    # A fresh output directory prevents stale distributions from passing checks.
+    dist_dir = pathlib.Path(session.create_tmp()) / "dist"
+    session.run("python", "-m", "build", "--outdir", str(dist_dir), ".")
+    session.run("twine", "check", "--strict", *map(str, sorted(dist_dir.iterdir())))
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def package(session):
+    """Build and validate the sdist and wheel."""
+    check_package(session)
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
-    """Verify that setup.py is valid (including RST check)."""
-    session.install("setuptools", "docutils", "pygments")
-    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+    """Compatibility entry point for the repository's packaging checks."""
+    check_package(session)
 
 
 def install_unittest_dependencies(session, *constraints):
