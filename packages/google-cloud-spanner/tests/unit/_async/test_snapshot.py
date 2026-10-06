@@ -1367,9 +1367,14 @@ class Test_snapshot_coverage(unittest.IsolatedAsyncioTestCase):
             TransactionPB(id=TXN_ID),
         ]
 
-        tid = await snapshot._begin_transaction()
+        with mock.patch(
+            "google.cloud.spanner_v1._async._helpers.asyncio.sleep"
+        ) as sleep_mock:
+            tid = await snapshot._begin_transaction()
+
         self.assertEqual(tid, TXN_ID)
         self.assertEqual(api.begin_transaction.call_count, 2)
+        sleep_mock.assert_called_once_with(2)
 
     async def test_update_for_transaction_pb_w_precommit_token(self):
         from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken

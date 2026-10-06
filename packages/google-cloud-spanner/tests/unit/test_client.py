@@ -59,6 +59,17 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @staticmethod
+    def _make_instance_admin_api():
+        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.base import (
+            InstanceAdminTransport,
+        )
+
+        mock_transport = mock.create_autospec(InstanceAdminTransport, instance=True)
+        mock_transport._wrapped_methods = {}
+        return InstanceAdminClient(transport=mock_transport)
+
     def _constructor_test_helper(
         self,
         expected_scopes,
@@ -627,15 +638,12 @@ class TestClient(unittest.TestCase):
 
     def test_list_instance_configs(self):
         from google.cloud.spanner_admin_instance_v1 import (
-            InstanceAdminClient,
+            InstanceConfig as InstanceConfigPB,
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
-        from google.cloud.spanner_admin_instance_v1 import (
-            InstanceConfig as InstanceConfigPB,
-        )
 
-        api = InstanceAdminClient(credentials=AnonymousCredentials())
+        api = self._make_instance_admin_api()
         credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -676,16 +684,13 @@ class TestClient(unittest.TestCase):
 
     def test_list_instance_configs_w_options(self):
         from google.cloud.spanner_admin_instance_v1 import (
-            InstanceAdminClient,
+            InstanceConfig as InstanceConfigPB,
             ListInstanceConfigsRequest,
             ListInstanceConfigsResponse,
         )
-        from google.cloud.spanner_admin_instance_v1 import (
-            InstanceConfig as InstanceConfigPB,
-        )
 
         credentials = build_scoped_credentials()
-        api = InstanceAdminClient(credentials=credentials)
+        api = self._make_instance_admin_api()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
@@ -754,15 +759,14 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_list_instances(self):
-        from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
         from google.cloud.spanner_admin_instance_v1 import (
-            InstanceAdminClient,
+            Instance as InstancePB,
             ListInstancesRequest,
             ListInstancesResponse,
         )
 
+        api = self._make_instance_admin_api()
         credentials = build_scoped_credentials()
-        api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
@@ -806,13 +810,12 @@ class TestClient(unittest.TestCase):
 
     def test_list_instances_w_options(self):
         from google.cloud.spanner_admin_instance_v1 import (
-            InstanceAdminClient,
             ListInstancesRequest,
             ListInstancesResponse,
         )
 
+        api = self._make_instance_admin_api()
         credentials = build_scoped_credentials()
-        api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
