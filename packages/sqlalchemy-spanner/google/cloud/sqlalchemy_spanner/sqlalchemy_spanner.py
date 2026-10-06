@@ -43,10 +43,12 @@ from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 
-# Guard the Alembic import so customers who only use SQLAlchemy Core/ORM (without
-# running Alembic migrations) can still import the Spanner dialect even if Alembic
-# is not installed or if an environment has a version mismatch (e.g., Alembic 1.20+
-# requires SQLAlchemy>=2.0, while older environments may pin SQLAlchemy 1.4.x).
+# Defensively decouple the Alembic import so the Spanner dialect does not
+# hard-depend on Alembic at runtime. A database dialect does not inherently
+# require a schema migration tool, and consumers using only SQLAlchemy Core
+# or ORM (or managing DDL outside of Alembic) can still import and use the
+# dialect even if Alembic is omitted or unavailable in the environment
+# (see #18584).
 try:
     from alembic.ddl.base import (
         ColumnNullable,
