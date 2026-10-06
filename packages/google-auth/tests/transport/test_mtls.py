@@ -509,31 +509,6 @@ def test_has_default_client_cert_source_gke_bundle(mock_is_ready, mock_get_cert)
 
 
 @mock.patch(
-    "google.auth.transport._mtls_helper._get_cert_config_path",
-    return_value="/path/to/cert.json",
-    autospec=True,
-)
-@mock.patch(
-    "google.auth.transport._mtls_helper._check_config_path",
-    return_value="/path/to/context_aware_metadata.json",
-    autospec=True,
-)
-@mock.patch(
-    "google.auth._agent_identity_utils._is_certificate_file_ready",
-    return_value=True,
-    autospec=True,
-)
-def test_has_default_client_cert_source_disabled_by_env(
-    mock_is_ready, mock_check_config, mock_get_cert, monkeypatch
-):
-    monkeypatch.setenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-    assert mtls.has_default_client_cert_source(include_context_aware=True) is False
-    mock_get_cert.assert_not_called()
-    mock_is_ready.assert_not_called()
-    mock_check_config.assert_not_called()
-
-
-@mock.patch(
     "google.auth.transport._mtls_helper._load_json_file",
     return_value={"cert_configs": {}},
     autospec=True,
