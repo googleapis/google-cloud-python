@@ -411,6 +411,68 @@ google.cloud.pubsub_v1.message.Message
         result = extension.is_valid_python_code(invalid_syntax)
         self.assertFalse(result)
 
+    def test_optimize_sphinx_pipeline(self):
+        class DummyHandler:
+            pass
+
+        viewcode_handler = DummyHandler()
+        viewcode_handler.__module__ = "sphinx.ext.viewcode"
+        other_handler = DummyHandler()
+        other_handler.__module__ = "docfx_yaml.extension"
+
+        class DummyListener:
+            def __init__(self, handler):
+                self.handler = handler
+
+        class DummyEvents:
+            def __init__(self):
+                self.listeners = {
+                    "doctree-read": [
+                        DummyListener(viewcode_handler),
+                        DummyListener(other_handler),
+                    ]
+                }
+
+        class DummyConfig:
+            def __init__(self):
+                self.intersphinx_mapping = {"python": ("https://example.com", None)}
+
+        class DummyBuilder:
+            name = "html"
+
+            def write(self, *args, **kwargs):
+                return "wrote"
+
+            def finish(self, *args, **kwargs):
+                return "finished"
+
+        class DummyApp:
+            def __init__(self):
+                self.config = DummyConfig()
+                self.events = DummyEvents()
+                self.builder = DummyBuilder()
+
+        app = DummyApp()
+        extension._optimize_sphinx_pipeline(app)
+
+        self.assertEqual(app.config.intersphinx_mapping, {})
+        self.assertEqual(len(app.events.listeners["doctree-read"]), 1)
+        self.assertIs(
+            app.events.listeners["doctree-read"][0].handler,
+            other_handler,
+        )
+        self.assertIsNone(app.builder.write())
+        self.assertIsNone(app.builder.finish())
+
+    def test_missing_reference_skips_markdown_builder(self):
+        class DummyBuilder:
+            name = "markdown"
+
+        class DummyApp:
+            builder = DummyBuilder()
+
+        self.assertIsNone(extension.missing_reference(DummyApp(), None, None, None))
+
 
 if __name__ == "__main__":
     unittest.main()

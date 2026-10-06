@@ -357,6 +357,8 @@ def move_markdown_pages(
     }
 
     base_markdown_dir = Path(app.builder.outdir).parent / "markdown"
+    if not cwd and not base_markdown_dir.exists():
+        _generate_markdown_pages(app)
 
     markdown_dir = base_markdown_dir.joinpath(*cwd) if cwd else base_markdown_dir
 
@@ -509,27 +511,54 @@ def remove_unused_pages(
             print(f"Could not delete {page}.")
 
 
+def _generate_markdown_pages(app: sphinx.application) -> None:
+    """Renders non-API prose documents to Markdown in-process using the already-read Sphinx environment."""
+    cwd = os.getcwd()
+    if "docs" in cwd:
+        return
+    if not getattr(app, "env", None) or not getattr(app.env, "found_docs", None):
+        return
+
+    from sphinx.util.osutil import ensuredir
+    from sphinx_markdown_builder.markdown_builder import MarkdownBuilder
+
+    markdown_outdir = str(Path(app.builder.outdir).parent / "markdown")
+    ensuredir(markdown_outdir)
+
+    known_short_uids = {
+        uid.split(".")[-1] for uid in getattr(app.env, "docfx_uid_names", ())
+    }
+    docnames = [
+        docname
+        for docname in sorted(app.env.found_docs)
+        if "/" not in docname
+        or docname.split("/")[-1].lower() not in known_short_uids
+        or docname.split("/")[-1].lower() == "index"
+    ]
+
+    orig_builder = app.builder
+    md_builder = MarkdownBuilder(app)
+    md_builder.outdir = markdown_outdir
+    md_builder.set_environment(app.env)
+    md_builder.init()
+    md_builder.prepare_writing(docnames)
+    app.builder = md_builder
+    try:
+        for docname in docnames:
+            doctree = app.env.get_and_resolve_doctree(docname, md_builder)
+            md_builder.write_doc_serialized(docname, doctree)
+            md_builder.write_doc(docname, doctree)
+    finally:
+        app.builder = orig_builder
+
+
 def run_sphinx_markdown(app: sphinx.application) -> None:
     """Runs sphinx-build with Markdown builder in the plugin.
 
     Args:
         app (sphinx.application): The sphinx application.
     """
-    cwd = os.getcwd()
-    relative_srcdir = app.srcdir.removeprefix(f"{cwd}/")
-    relative_outdir = app.outdir.removeprefix(f"{cwd}/").removesuffix("/html")
-    # Skip running sphinx-build for Markdown for some unit tests.
-    # Not required other than to output DocFX YAML.
-    if "docs" in cwd:
-        return
-
-    return shell.run(
-        [
-            "sphinx-build",
-            "-M",
-            "markdown",
-            relative_srcdir,
-            relative_outdir,
-        ],
-        hide_output=False,
-    )
+    # Markdown pages are now rendered in-process during build_finished
+    # (inside move_markdown_pages) reusing the already-read Sphinx environment
+    # instead of spawning a second sphinx-build subprocess.
+    return None

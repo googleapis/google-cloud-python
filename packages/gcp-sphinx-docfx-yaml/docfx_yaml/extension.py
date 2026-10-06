@@ -29,7 +29,7 @@ import re
 import shutil
 from collections import defaultdict
 from collections.abc import Mapping, MutableSet, Sequence
-from functools import partial
+from functools import lru_cache, partial
 from itertools import zip_longest
 from pathlib import Path
 from typing import Any, Iterable
@@ -160,6 +160,9 @@ _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE = {
     summary_type: [[], []]  # entry name then entry content
     for summary_type in set(_SUMMARY_TYPE_BY_ITEM_TYPE.values())
 }
+_SUMMARY_SEEN_ITEMS: dict[str, set[str]] = {
+    summary_type: set() for summary_type in set(_SUMMARY_TYPE_BY_ITEM_TYPE.values())
+}
 # Mapping for each summary page entry's file name and entry name.
 _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
     CLASS: ("summary_class.yml", "Classes"),
@@ -191,12 +194,43 @@ def _grab_repo_metadata() -> Mapping[str, str] | None:
         return None
 
 
+def _optimize_sphinx_pipeline(app: sphinx.application.Sphinx) -> None:
+    """Disables unused Sphinx work (intersphinx HTTP fetches, viewcode, and HTML rendering)."""
+    # DocFX YAML generation does not use intersphinx inventories; clearing the
+    # mapping before intersphinx's builder-inited handler runs avoids external
+    # HTTP fetches and timeouts on every package build.
+    if hasattr(app.config, "intersphinx_mapping"):
+        app.config.intersphinx_mapping = {}
+
+    # Remove sphinx.ext.viewcode listeners so Sphinx does not tokenize and
+    # highlight all Python source modules into throwaway _modules/*.html pages.
+    if hasattr(app, "events") and hasattr(app.events, "listeners"):
+        for event_listeners in app.events.listeners.values():
+            event_listeners[:] = [
+                listener
+                for listener in event_listeners
+                if getattr(listener.handler, "__module__", "") != "sphinx.ext.viewcode"
+            ]
+
+    # When running with the html builder, DocFX YAML collects all metadata
+    # during the read phase and writes YAML in build-finished; skip rendering
+    # throwaway Jinja2 HTML pages and search indices.
+    if getattr(app.builder, "name", None) == "html":
+        app.builder.write = lambda *args, **kwargs: None
+        app.builder.finish = lambda *args, **kwargs: None
+
+
 def build_init(app: sphinx.application.Sphinx) -> None:
     """Initializes the build.
 
     Args:
         app (sphinx.application.Sphinx): The sphinx application.
     """
+    for summary_type in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE:
+        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0].clear()
+        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].clear()
+        _SUMMARY_SEEN_ITEMS[summary_type].clear()
+
     print("Retrieving repository metadata.")
     if not (repo_metadata := _grab_repo_metadata()):
         print("Failed to retrieve repository metadata.")
@@ -1534,6 +1568,7 @@ def _reformat_pattern(code: str, pattern: str) -> str:
     return code
 
 
+@lru_cache(maxsize=4096)
 def format_code(code: str) -> str:
     """Reformats code using black.format_str().
 
@@ -1882,10 +1917,9 @@ def _find_and_add_summary_details(
     uid = yaml_data.get("uid", "")
     item_to_add = uid if summary_type == CLASS else f"{uid}-summary"
 
-    if (
-        item_to_add
-        not in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0]
-    ):
+    seen_items = _SUMMARY_SEEN_ITEMS[summary_type]
+    if item_to_add not in seen_items:
+        seen_items.add(item_to_add)
         _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0].append(
             item_to_add
         )
@@ -2529,9 +2563,10 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
 
                 if "references" in obj:
                     # Ensure that references have no duplicate ref
-                    ref_uids = [r["uid"] for r in references]
+                    ref_uids = {r["uid"] for r in references}
                     for ref_obj in obj["references"]:
                         if ref_obj["uid"] not in ref_uids:
+                            ref_uids.add(ref_obj["uid"])
                             references.append(ref_obj)
                     obj.pop("references")
 
@@ -2770,6 +2805,8 @@ def missing_reference(
     Returns:
         Any: The new node.
     """
+    if getattr(app.builder, "name", None) == "markdown":
+        return None
     reftarget = ""
     refdoc = ""
     reftype = ""
@@ -2813,6 +2850,7 @@ def setup(app: sphinx.application.Sphinx) -> None:
     app.add_directive("remarks", RemarksDirective)
     app.add_directive("todo", TodoDirective)
 
+    app.connect("builder-inited", _optimize_sphinx_pipeline, priority=100)
     app.connect("builder-inited", build_init)
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("autodoc-process-signature", process_signature)
