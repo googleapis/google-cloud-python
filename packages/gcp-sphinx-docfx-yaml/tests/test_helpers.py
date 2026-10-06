@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import unittest.mock
 
 from parameterized import parameterized
 from yaml import Loader, load
@@ -412,57 +413,25 @@ google.cloud.pubsub_v1.message.Message
         self.assertFalse(result)
 
     def test_configure_docfx_and_builder(self):
-        class DummyHandler:
-            pass
+        app = unittest.mock.MagicMock()
+        app.config.intersphinx_mapping = {"python": ("https://example.com", None)}
+        viewcode_listener = unittest.mock.MagicMock(id=1)
+        viewcode_listener.handler.__module__ = "sphinx.ext.viewcode"
+        other_listener = unittest.mock.MagicMock(id=2)
+        other_listener.handler.__module__ = "docfx_yaml.extension"
+        app.events.listeners = {"doctree-read": [viewcode_listener, other_listener]}
 
-        viewcode_handler = DummyHandler()
-        viewcode_handler.__module__ = "sphinx.ext.viewcode"
-        other_handler = DummyHandler()
-        other_handler.__module__ = "docfx_yaml.extension"
-
-        class DummyListener:
-            def __init__(self, listener_id, handler):
-                self.id = listener_id
-                self.handler = handler
-
-        class DummyEvents:
-            def __init__(self):
-                self.listeners = {
-                    "doctree-read": [
-                        DummyListener(1, viewcode_handler),
-                        DummyListener(2, other_handler),
-                    ]
-                }
-
-        class DummyConfig:
-            def __init__(self):
-                self.intersphinx_mapping = {"python": ("https://example.com", None)}
-
-        class DummyApp:
-            def __init__(self):
-                self.config = DummyConfig()
-                self.events = DummyEvents()
-                self.disconnected = []
-
-            def disconnect(self, listener_id):
-                self.disconnected.append(listener_id)
-
-        app = DummyApp()
         extension._configure_docfx(app, app.config)
 
         self.assertEqual(app.config.intersphinx_mapping, {})
-        self.assertEqual(app.disconnected, [1])
+        app.disconnect.assert_called_once_with(1)
         self.assertIsNone(extension.DocFXHTMLBuilder.write(None))
         self.assertIsNone(extension.DocFXHTMLBuilder.finish(None))
 
     def test_missing_reference_skips_markdown_builder(self):
-        class DummyBuilder:
-            name = "markdown"
-
-        class DummyApp:
-            builder = DummyBuilder()
-
-        self.assertIsNone(extension.missing_reference(DummyApp(), None, None, None))
+        app = unittest.mock.MagicMock()
+        app.builder.name = "markdown"
+        self.assertIsNone(extension.missing_reference(app, None, None, None))
 
 
 if __name__ == "__main__":

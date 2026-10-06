@@ -161,9 +161,6 @@ _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE = {
     summary_type: [[], []]  # entry name then entry content
     for summary_type in set(_SUMMARY_TYPE_BY_ITEM_TYPE.values())
 }
-_SUMMARY_SEEN_ITEMS: dict[str, set[str]] = {
-    summary_type: set() for summary_type in set(_SUMMARY_TYPE_BY_ITEM_TYPE.values())
-}
 # Mapping for each summary page entry's file name and entry name.
 _FILE_NAME_AND_ENTRY_NAME_BY_SUMMARY_TYPE = {
     CLASS: ("summary_class.yml", "Classes"),
@@ -208,12 +205,10 @@ class DocFXHTMLBuilder(StandaloneHTMLBuilder):
 def _configure_docfx(app: sphinx.application.Sphinx, config: Any) -> None:
     """Configures Sphinx settings and disconnects unused extensions before the build starts."""
     config.intersphinx_mapping = {}
-
-    if hasattr(app, "events") and hasattr(app.events, "listeners"):
-        for event_listeners in app.events.listeners.values():
-            for listener in list(event_listeners):
-                if getattr(listener.handler, "__module__", "") == "sphinx.ext.viewcode":
-                    app.disconnect(listener.id)
+    for listeners in getattr(getattr(app, "events", None), "listeners", {}).values():
+        for listener in list(listeners):
+            if getattr(listener.handler, "__module__", "") == "sphinx.ext.viewcode":
+                app.disconnect(listener.id)
 
 
 def build_init(app: sphinx.application.Sphinx) -> None:
@@ -222,11 +217,6 @@ def build_init(app: sphinx.application.Sphinx) -> None:
     Args:
         app (sphinx.application.Sphinx): The sphinx application.
     """
-    for summary_type in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE:
-        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0].clear()
-        _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][1].clear()
-        _SUMMARY_SEEN_ITEMS[summary_type].clear()
-
     print("Retrieving repository metadata.")
     if not (repo_metadata := _grab_repo_metadata()):
         print("Failed to retrieve repository metadata.")
@@ -234,9 +224,6 @@ def build_init(app: sphinx.application.Sphinx) -> None:
     else:
         print("Successfully retrieved repository metadata.")
         app.env.library_shortname = repo_metadata["name"]
-    print("Running sphinx-build with Markdown first...")
-    markdown_utils.run_sphinx_markdown(app)
-    print("Completed running sphinx-build with Markdown files.")
 
     """
     Set up environment data
@@ -1062,56 +1049,33 @@ def _extract_type_name(annotation: Any) -> str:
     return type_name
 
 
-class _AllClassesVisitor(ast.NodeVisitor):
-    """AST visitor that records starting line numbers for all classes in a file."""
+@lru_cache(maxsize=512)
+def _get_class_lines(full_path: str) -> dict[str, int]:
+    """Parses a file once and maps class qualnames to their starting line numbers."""
+    lines: dict[str, int] = {}
 
-    def __init__(self) -> None:
-        self.stack: list[str] = []
-        self.class_lines: dict[str, int] = {}
+    def _visit(node: ast.AST, prefix: str = "") -> None:
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, ast.ClassDef):
+                qual = f"{prefix}{child.name}"
+                lines.setdefault(
+                    qual,
+                    child.decorator_list[0].lineno
+                    if child.decorator_list
+                    else child.lineno,
+                )
+                _visit(child, f"{qual}.")
+            elif isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                _visit(child, f"{prefix}{child.name}.<locals>.")
+            else:
+                _visit(child, prefix)
 
-    def visit_FunctionDef(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
-        self.stack.append(node.name)
-        self.stack.append("<locals>")
-        self.generic_visit(node)
-        self.stack.pop()
-        self.stack.pop()
-
-    visit_AsyncFunctionDef = visit_FunctionDef  # type: ignore[assignment]
-
-    def visit_ClassDef(self, node: ast.ClassDef) -> None:
-        self.stack.append(node.name)
-        qualname = ".".join(self.stack)
-        if qualname not in self.class_lines:
-            line_number = (
-                node.decorator_list[0].lineno if node.decorator_list else node.lineno
-            )
-            self.class_lines[qualname] = line_number
-        self.generic_visit(node)
-        self.stack.pop()
-
-
-_CLASS_LINES_CACHE: dict[str, dict[str, int]] = {}
-
-
-def _get_start_line(obj: Any, full_path: str) -> int:
-    """Returns the starting line number of an object, caching AST parses per file."""
-    unwrapped = inspect.unwrap(obj)
-    if inspect.isclass(unwrapped) and full_path:
-        class_lines = _CLASS_LINES_CACHE.get(full_path)
-        if class_lines is None:
-            try:
-                with open(full_path, "rb") as f:
-                    tree = ast.parse(f.read())
-                visitor = _AllClassesVisitor()
-                visitor.visit(tree)
-                class_lines = visitor.class_lines
-            except Exception:
-                class_lines = {}
-            _CLASS_LINES_CACHE[full_path] = class_lines
-        qualname = getattr(unwrapped, "__qualname__", None)
-        if qualname and qualname in class_lines:
-            return class_lines[qualname]
-    return inspect.getsourcelines(obj)[1]
+    try:
+        with open(full_path, "rb") as f:
+            _visit(ast.parse(f.read()))
+    except Exception:
+        pass
+    return lines
 
 
 def _create_datam(
@@ -1269,7 +1233,12 @@ def _create_datam(
 
         # Make relative
         path = path.replace(os.sep, "", 1)
-        start_line = _get_start_line(obj, full_path)
+        unwrapped = inspect.unwrap(obj)
+        start_line = (
+            _get_class_lines(full_path).get(getattr(unwrapped, "__qualname__", ""), 0)
+            if inspect.isclass(unwrapped)
+            else 0
+        ) or inspect.getsourcelines(obj)[1]
 
         path = _update_friendly_package_name(path)
 
@@ -1913,9 +1882,10 @@ def _find_and_add_summary_details(
     uid = yaml_data.get("uid", "")
     item_to_add = uid if summary_type == CLASS else f"{uid}-summary"
 
-    seen_items = _SUMMARY_SEEN_ITEMS[summary_type]
-    if item_to_add not in seen_items:
-        seen_items.add(item_to_add)
+    if (
+        item_to_add
+        not in _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0]
+    ):
         _ENTRY_NAME_AND_ENTRY_CONTENT_BY_SUMMARY_TYPE[summary_type][0].append(
             item_to_add
         )
@@ -2002,43 +1972,6 @@ def _render_summary_content(
     return summary_content
 
 
-_UID_INDEX_CACHE: dict[Any, tuple[tuple[str, ...], dict[Any, Any]]] = {}
-
-
-def _get_uid_index(known_uids: list[str]) -> tuple[tuple[str, ...], dict[Any, Any]]:
-    """Builds and caches a prefix tuple and character Trie for fast UID substring matching."""
-    if not known_uids:
-        return ((), {})
-    if len(known_uids) < 100:
-        cache_key: Any = tuple(known_uids)
-    else:
-        cache_key = (id(known_uids), len(known_uids), known_uids[0], known_uids[-1])
-    cached = _UID_INDEX_CACHE.get(cache_key)
-    if cached is not None:
-        return cached
-
-    root_prefixes = tuple({u.split(".")[0] for u in known_uids if u})
-    trie: dict[Any, Any] = {}
-    for rank, uid in enumerate(known_uids):
-        if not uid:
-            continue
-        node = trie
-        for ch in uid:
-            nxt = node.get(ch)
-            if nxt is None:
-                nxt = {}
-                node[ch] = nxt
-            node = nxt
-        if None not in node:
-            node[None] = (rank, uid)
-
-    result = (root_prefixes, trie)
-    if len(_UID_INDEX_CACHE) > 16:
-        _UID_INDEX_CACHE.clear()
-    _UID_INDEX_CACHE[cache_key] = result
-    return result
-
-
 def find_uid_to_convert(
     current_word: str,
     words: list[str],
@@ -2063,31 +1996,9 @@ def find_uid_to_convert(
         None if current word does not contain any reference `uid`, or the `uid`
           that should be converted.
     """
-    root_prefixes, trie = _get_uid_index(known_uids)
-    if not any(p in current_word for p in root_prefixes):
+    if "." not in current_word:
         return None
-
-    matches = []
-    n = len(current_word)
-    for i in range(n):
-        node = trie.get(current_word[i])
-        if node is None:
-            continue
-        if None in node:
-            matches.append(node[None])
-        for j in range(i + 1, n):
-            node = node.get(current_word[j])
-            if node is None:
-                break
-            if None in node:
-                matches.append(node[None])
-
-    if not matches:
-        return None
-    if len(matches) > 1:
-        matches.sort(key=lambda item: item[0])
-
-    for _, uid in matches:
+    for uid in known_uids:
         # Do not convert references to itself or containing partial
         # references. This could result in `storage.types.ReadSession` being
         # prematurely converted to
@@ -2097,23 +2008,24 @@ def find_uid_to_convert(
         if uid in current_object_name:
             continue
 
-        # If the cross reference has been processed already, "<xref" or
-        # "<a" will appear as the previous word.
-        # For hard coded references, we use "<a href" style.
-        if "<xref" not in words[index - 1] and "<a" not in words[index - 1]:
-            # Check to see if the reference has been converted already.
-            if not (
-                processed_words
-                and (
-                    f'<xref uid="{uid}' in processed_words[-1]
-                    or (
-                        hard_coded_references
-                        and f'<a href="{hard_coded_references.get(uid)}'
-                        in processed_words[-1]
+        if uid in current_word:
+            # If the cross reference has been processed already, "<xref" or
+            # "<a" will appear as the previous word.
+            # For hard coded references, we use "<a href" style.
+            if "<xref" not in words[index - 1] and "<a" not in words[index - 1]:
+                # Check to see if the reference has been converted already.
+                if not (
+                    processed_words
+                    and (
+                        f'<xref uid="{uid}' in processed_words[-1]
+                        or (
+                            hard_coded_references
+                            and f'<a href="{hard_coded_references.get(uid)}'
+                            in processed_words[-1]
+                        )
                     )
-                )
-            ):
-                return uid
+                ):
+                    return uid
 
     return None
 
@@ -2143,6 +2055,13 @@ def convert_cross_references(
     Returns:
         content that has been modified with proper cross references if found.
     """
+    example_text = "Examples:"
+    words = content.split(" ")
+
+    # Contains a list of words that is not a valid reference or converted
+    # references.
+    processed_words = []
+
     # TODO(https://github.com/googleapis/sphinx-docfx-yaml/issues/208):
     # remove this in the future.
     iam_policy_link = "http://github.com/googleapis/python-grpc-google-iam-v1/blob/8e73b45993f030f521c0169b380d0fbafe66630b/google/iam/v1/iam_policy_pb2_grpc.py"
@@ -2156,21 +2075,11 @@ def convert_cross_references(
         "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse": iam_policy_link
         + "#L120-L131",
     }
-    tail = known_uids[-10:]
     for ref_key in hard_coded_references:
-        if ref_key not in tail:
+        if ref_key not in known_uids[-4:]:
             known_uids.append(ref_key)
-
-    root_prefixes, _ = _get_uid_index(known_uids)
-    if not any(p in content for p in root_prefixes):
+    if "google." not in content and len(known_uids) > 50:
         return content
-
-    example_text = "Examples:"
-    words = content.split(" ")
-
-    # Contains a list of words that is not a valid reference or converted
-    # references.
-    processed_words = []
 
     # Used to keep track of current position to avoid converting if needed.
     example_index = len(content)
@@ -2423,6 +2332,7 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
     ensuredir(normalized_outdir)
 
     # Add markdown pages to the configured output directory.
+    markdown_utils.run_sphinx_markdown(app)
     markdown_utils.move_markdown_pages(app, normalized_outdir)
 
     pkg_toc_yaml = []
@@ -2559,10 +2469,9 @@ def build_finished(app: sphinx.application.Sphinx, exception: Exception) -> None
 
                 if "references" in obj:
                     # Ensure that references have no duplicate ref
-                    ref_uids = {r["uid"] for r in references}
+                    ref_uids = [r["uid"] for r in references]
                     for ref_obj in obj["references"]:
                         if ref_obj["uid"] not in ref_uids:
-                            ref_uids.add(ref_obj["uid"])
                             references.append(ref_obj)
                     obj.pop("references")
 
