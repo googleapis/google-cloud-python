@@ -58,9 +58,7 @@ try:
     )
 
     HAS_ALEMBIC_INSTALLED = True
-# Disable coverage checks for the fallback branch when running suites with
-# Alembic installed.
-except ImportError:  # pragma: NO COVER
+except ImportError:
     HAS_ALEMBIC_INSTALLED = False
 
 USING_SQLACLCHEMY_20 = False
