@@ -105,6 +105,7 @@ from google.cloud.bigtable_v2.services.bigtable import BigtableClient as GapicCl
 from google.cloud.bigtable_v2.services.bigtable.transports import (
     BigtableGrpcTransport as TransportType,
 )
+from google.cloud.bigtable_v2._compat import DEFAULT_UNIVERSE as _DEFAULT_UNIVERSE
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
@@ -290,6 +291,8 @@ class BigtableDataClient(ClientWithProject):
             client_options, "client_cert_source", None
         ):
             self._accelerator_blocked_reason = "client_cert_source (mTLS) cannot be forwarded to the accelerator daemon"
+        if self._accelerator_blocked_reason:
+            return
         scopes = getattr(client_options, "scopes", None) if client_options else None
         effective_scopes = list(scopes) if scopes else list(TransportType.AUTH_SCOPES)
         if effective_scopes:
@@ -303,7 +306,7 @@ class BigtableDataClient(ClientWithProject):
                 normalized = api_endpoint.split("://", 1)[-1]
                 self._accelerator_flags += ["--data-endpoint", normalized]
             universe_domain = getattr(client_options, "universe_domain", None)
-            if universe_domain and universe_domain != "googleapis.com":
+            if universe_domain and universe_domain != _DEFAULT_UNIVERSE:
                 self._accelerator_flags += ["--universe-domain", universe_domain]
             credentials_file = getattr(client_options, "credentials_file", None)
             if credentials_file:

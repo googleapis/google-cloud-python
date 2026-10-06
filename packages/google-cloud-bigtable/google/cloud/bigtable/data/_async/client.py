@@ -51,16 +51,6 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel
 
-
-from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
-from google.cloud.bigtable.data._accelerator._fallback import (
-    AcceleratorBreaker,
-    _AcceleratorFallback,
-    handle_accelerator_error,
-)
-from google.cloud.bigtable.data._accelerator._routing import is_supported
-
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
@@ -110,6 +100,7 @@ from google.cloud.bigtable.data.row_filters import (
     RowFilterChain,
     StripValueTransformerFilter,
 )
+from google.cloud.bigtable_v2._compat import DEFAULT_UNIVERSE as _DEFAULT_UNIVERSE
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
@@ -120,7 +111,7 @@ from google.cloud.bigtable_v2.types.bigtable import (
     ReadModifyWriteRowRequest,
     SampleRowKeysRequest,
 )
-
+from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
 from google.cloud.bigtable.data._accelerator._fallback import (
     AcceleratorBreaker,
     _AcceleratorFallback,
@@ -395,6 +386,8 @@ class BigtableDataClientAsync(ClientWithProject):
                 "client_cert_source (mTLS) cannot be forwarded to the "
                 "accelerator daemon"
             )
+        if self._accelerator_blocked_reason:
+            return
 
         # Non-secret / path-style knobs the daemon can reproduce.
         scopes = getattr(client_options, "scopes", None) if client_options else None
@@ -417,7 +410,7 @@ class BigtableDataClientAsync(ClientWithProject):
                 self._accelerator_flags += ["--data-endpoint", normalized]
 
             universe_domain = getattr(client_options, "universe_domain", None)
-            if universe_domain and universe_domain != "googleapis.com":
+            if universe_domain and universe_domain != _DEFAULT_UNIVERSE:
                 self._accelerator_flags += ["--universe-domain", universe_domain]
 
             credentials_file = getattr(client_options, "credentials_file", None)
