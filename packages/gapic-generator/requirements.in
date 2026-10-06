@@ -2,8 +2,7 @@ click
 google-api-core
 # TODO uncomment the line below
 # googleapis-common-protos
-# TODO Revert this change once https://github.com/googleapis/google-cloud-python/pull/18552 is merged
-googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python.git@b5dcbf2fcc656066b82bd52da0ae8823d3ebeed0#subdirectory=packages/googleapis-common-protos
+googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python.git@e09c935482716dbb011f66aa81201ba5e791cdb0#subdirectory=packages/googleapis-common-protos
 jinja2
 MarkupSafe
 protobuf>=6.33.5 # for CVE-2026-0994. See https://github.com/advisories/GHSA-7gcm-g887-7qv7 and https://protobuf.dev/support/version-support/#python

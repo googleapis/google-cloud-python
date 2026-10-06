@@ -4331,7 +4331,7 @@ def test_read_method_settings_from_service_yaml():
             selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid", "mollusc"],
             long_running=client_pb2.MethodSettings.LongRunning(),
-            resumable_upload=client_pb2.MethodSettings.ResumableUpload(),
+            media_upload=client_pb2.MethodSettings.MediaUpload(),
         )
     }
 
