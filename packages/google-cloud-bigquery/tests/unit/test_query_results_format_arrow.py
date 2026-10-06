@@ -598,6 +598,69 @@ class TestQueryResultsFormatOption1(unittest.TestCase):
                 df = iterator.to_dataframe()
                 self.assertEqual(df, "full_df")
 
+    def test_download_arrow_from_job_id_zero_rows_avoids_read_rows(self):
+        mock_client = mock.MagicMock()
+        raw_schema_bytes = b"schema_bytes_zero"
+        b64_schema = base64.b64encode(raw_schema_bytes).decode("ascii")
+
+        first_page_response = {
+            "jobComplete": True,
+            "totalRows": "0",
+            "arrowSchema": {"serializedSchema": b64_schema},
+            "arrowRecordBatch": {},
+        }
+
+        iterator = RowIterator(
+            client=mock_client,
+            api_request=mock.MagicMock(),
+            path=None,
+            schema=(),
+            project="test-proj",
+            location="US",
+            job_id="test-job-zero",
+            query_results_format="ARROW",
+            first_page_response=first_page_response,
+        )
+
+        with mock.patch("google.cloud.bigquery.table.pyarrow") as mock_pyarrow:
+            mock_pyarrow.py_buffer = lambda x: x
+            mock_pyarrow.ipc.read_schema.return_value = "deserialized_schema"
+
+            batches = list(iterator.to_arrow_iterable(timeout=5.0))
+            self.assertEqual(batches, [])
+            mock_client._ensure_bqstorage_client.assert_not_called()
+
+    def test_query_job_result_preserves_first_page_response_with_arrow_record_batch(
+        self,
+    ):
+        from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.query import _QueryResults
+
+        client = mock.MagicMock(spec=Client)
+        client.project = "p"
+        first_page_response = {
+            "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+            "jobComplete": True,
+            "totalRows": "5000",
+            "pageToken": "next_page_tok",
+            "arrowSchema": {"serializedSchema": "b64_schema"},
+            "arrowRecordBatch": {"serializedRecordBatch": "b64_batch"},
+        }
+        job = QueryJob.from_api_repr(
+            {
+                "jobReference": {"projectId": "p", "jobId": "j", "location": "us"},
+                "configuration": {"query": {"query": "SELECT 1"}},
+                "status": {"state": "DONE"},
+            },
+            client=client,
+        )
+        job._query_results = _QueryResults(first_page_response)
+
+        job.result(page_size=1000)
+
+        call_kwargs = client._list_rows_from_query_results.call_args.kwargs
+        self.assertEqual(call_kwargs["first_page_response"], first_page_response)
+
 
 if __name__ == "__main__":
     unittest.main()

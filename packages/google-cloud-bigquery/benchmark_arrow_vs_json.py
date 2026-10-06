@@ -99,8 +99,10 @@ def compare_json_vs_arrow_performance():
     # -------------------------------------------------------------------
     # CASE 1: STANDARD REST JSON (QueryResultsFormat.STRUCT_ENCODING)
     # -------------------------------------------------------------------
+    # Default page size allows ~100k rows per HTTP page (~2 HTTP round-trips for 200k rows),
+    # followed by client-side JSON string parsing and Python object conversion.
     print("-" * 80)
-    print("1. EXECUTING CASE 1: STANDARD REST JSON QUERY (200,000 ROWS)...")
+    print("1. EXECUTING CASE 1: STANDARD REST JSON QUERY (200,000 ROWS, DEFAULT PAGE SIZE)...")
     print("-" * 80)
     json_config = bigquery.QueryJobConfig()
     json_config.query_results_format = QueryResultsFormat.STRUCT_ENCODING
@@ -117,6 +119,9 @@ def compare_json_vs_arrow_performance():
     # -------------------------------------------------------------------
     # CASE 2: REST ARROW FAST-PATH (Single-Page Inline REST Arrow)
     # -------------------------------------------------------------------
+    # All 200,000 rows fit in the first jobs.query HTTP response (< 10 MB compressed).
+    # Zero gRPC BigQuery Storage Read API calls are made; RecordBatch is decoded
+    # directly from the inline base64 Arrow IPC buffer via to_arrow_iterable().
     print("-" * 80)
     print("2. EXECUTING CASE 2: REST ARROW SINGLE-PAGE FAST-PATH (200,000 ROWS)...")
     print("-" * 80)
@@ -125,7 +130,9 @@ def compare_json_vs_arrow_performance():
             synthetic_dataset_sql,
             query_results_format=QueryResultsFormat.ARROW,
         )
-        arrow_table_fast = arrow_row_iterator.to_arrow()
+        arrow_table_fast = pa.Table.from_batches(
+            arrow_row_iterator.to_arrow_iterable()
+        )
         df_arrow_fast = arrow_table_fast.to_pandas()
     print(
         f"   -> Arrow Fast-Path execution time: {arrow_fast_perf.elapsed:.3f} seconds"
@@ -136,38 +143,49 @@ def compare_json_vs_arrow_performance():
     # -------------------------------------------------------------------
     # CASE 3: MULTI-PAGE HYBRID (Page 1 REST Arrow + Page 2+ BQStorage gRPC)
     # -------------------------------------------------------------------
+    # Setting page_size=1000 (maxResults=1000) caps the first jobs.query HTTP response
+    # at 1,000 rows out of 50,000 total rows:
+    #   - REST JSON Baseline: Must execute 50 sequential HTTP jobs.getQueryResults
+    #     round-trips (50 pages x 1,000 rows/page) over REST.
+    #   - Hybrid Arrow: Decodes Page 1 (1,000 rows) inline from the jobs.query HTTP
+    #     response, then streams the remaining 49,000 rows (starting at offset=1000)
+    #     over a single continuous gRPC BigQueryReadClient.read_rows() stream.
     print("-" * 80)
     print("3. EXECUTING CASE 3: MULTI-PAGE HYBRID (50,000 ROWS, PAGE_SIZE=1,000)...")
     print("-" * 80)
 
     multi_page_sql = build_synthetic_dataset_query(row_count=50000)
 
-    # Measure JSON 50,000 rows baseline for comparison
+    # 3a. Measure REST JSON 50,000 rows baseline (50 sequential HTTP pages of 1,000 rows)
     with MeasurePerformance() as multi_page_json_perf:
         json_50k_iterator = client.query_and_wait(
             multi_page_sql, job_config=json_config, page_size=1000
         )
         _ = json_50k_iterator.to_dataframe(create_bqstorage_client=False)
     print(
-        f"   -> REST JSON (50,000 rows) execution time: {multi_page_json_perf.elapsed:.3f} seconds"
+        f"   -> REST JSON (50k rows, 50 HTTP pages)     : {multi_page_json_perf.elapsed:.3f} seconds"
     )
 
+    # 3b. Measure Hybrid Arrow 50,000 rows (Page 1 REST [1k rows] + 1 gRPC stream [49k rows])
     with MeasurePerformance() as multi_page_perf:
         multi_page_iterator = client.query_and_wait(
             multi_page_sql,
             query_results_format=QueryResultsFormat.ARROW,
             page_size=1000,
         )
-        multi_page_table = multi_page_iterator.to_arrow()
+        multi_page_table = pa.Table.from_batches(
+            multi_page_iterator.to_arrow_iterable()
+        )
+    assert multi_page_table.num_rows == 50000
 
     speedup_multi = (
         multi_page_json_perf.elapsed / multi_page_perf.elapsed
         if multi_page_perf.elapsed > 0
         else 0
     )
-    speedup_multi_str = f"{speedup_multi:.2f}x faster (vs JSON 50k)"
+    speedup_multi_str = f"{speedup_multi:.2f}x faster (vs 50-page JSON)"
     print(
-        f"   -> Hybrid Arrow (Page 1 REST + Page 2+ gRPC): {multi_page_perf.elapsed:.3f} seconds ({speedup_multi_str})\n"
+        f"   -> Hybrid Arrow (1 REST + 1 gRPC stream)   : {multi_page_perf.elapsed:.3f} seconds ({speedup_multi_str})\n"
     )
 
     # -------------------------------------------------------------------
@@ -184,28 +202,30 @@ def compare_json_vs_arrow_performance():
         else 0
     )
 
-    print("=" * 80)
+    print("=" * 88)
     print("  REST ARROW BENCHMARK RESULTS & PARITY SUMMARY (PYTHON)")
-    print("=" * 80)
+    print("=" * 88)
     print(
-        f"  Pathway                                Total Time      Client RAM      Speedup vs JSON"
+        f"  Pathway                                        Total Time   Client RAM   Speedup vs JSON"
     )
     print(
-        f"  -------------------------------------  --------------  --------------  --------------------"
+        f"  ---------------------------------------------  -----------  -----------  -------------------------"
     )
     print(
-        f"  Case 1: JSON Paged Iterator (200k)     {json_paged_perf.elapsed:.3f}s         {json_paged_perf.memory_mb:.2f} MB        1.00x (Baseline)"
+        f"  Case 1: REST JSON Default Page (200k, ~2 HTTP) {json_paged_perf.elapsed:>8.3f}s    {json_paged_perf.memory_mb:>6.2f} MB    1.00x (200k Baseline)"
     )
     print(
-        f"  Case 2: Arrow Single-Page REST (200k)  {arrow_fast_perf.elapsed:.3f}s          {arrow_fast_perf.memory_mb:.2f} MB         {speedup_fast:.2f}x faster"
+        f"  Case 2: REST Arrow Single-Page (200k, 1 HTTP)  {arrow_fast_perf.elapsed:>8.3f}s    {arrow_fast_perf.memory_mb:>6.2f} MB    {speedup_fast:.2f}x faster (vs Case 1)"
     )
     print(
-        f"  Case 3: Arrow Hybrid REST+gRPC (50k)   {multi_page_perf.elapsed:.3f}s          {multi_page_perf.memory_mb:.2f} MB         {speedup_multi_str}"
+        f"  Case 3a: REST JSON Paged (50k, 50 HTTP pages)  {multi_page_json_perf.elapsed:>8.3f}s    {multi_page_json_perf.memory_mb:>6.2f} MB    1.00x (50k Paged Baseline)"
     )
-    print("=" * 80)
+    print(
+        f"  Case 3b: Hybrid Arrow (50k, 1 REST + 1 gRPC)   {multi_page_perf.elapsed:>8.3f}s    {multi_page_perf.memory_mb:>6.2f} MB    {speedup_multi_str}"
+    )
+    print("=" * 88)
     print("\n[SUCCESS] Python REST Arrow benchmark verification complete!\n")
 
 
 if __name__ == "__main__":
     compare_json_vs_arrow_performance()
-

@@ -1967,9 +1967,6 @@ class RowIterator(HTTPIterator):
         self._table = table
         self._total_rows = total_rows
         self._first_page_response = first_page_response
-        # Preserve unconsumed first page raw HTTP response to enable REST Arrow zero-copy
-        # fast-path decoding in to_arrow() even when RowIterator.result() is initialized separately.
-        self._raw_first_page_response = first_page_response
         self._location = location
         self._job_id = job_id
         self._query_id = query_id
@@ -2277,12 +2274,7 @@ class RowIterator(HTTPIterator):
 
         .. versionadded:: 2.31.0
         """
-        raw_first = getattr(self, "_raw_first_page_response", None)
-        has_arrow_raw = isinstance(raw_first, dict) and ("arrowRecordBatch" in raw_first or "arrowSchema" in raw_first)
-        if (
-            self._query_results_format == QueryResultsFormat.ARROW.value
-            or has_arrow_raw
-        ):
+        if self._query_results_format == QueryResultsFormat.ARROW.value:
             return self._download_arrow_from_job_id(
                 bqstorage_client=bqstorage_client,
                 timeout=timeout,
@@ -2291,7 +2283,6 @@ class RowIterator(HTTPIterator):
         self._maybe_warn_max_results(bqstorage_client)
 
         bqstorage_download = functools.partial(
-
             _pandas_helpers.download_arrow_bqstorage,
             self._billing_project,
             self._table,
@@ -2421,8 +2412,8 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
-        first_page = getattr(self, "_first_page_response", None) or getattr(self, "_raw_first_page_response", None)
-        if getattr(self, "_first_page_response", None):
+        first_page = self._first_page_response
+        if self._first_page_response:
             self._first_page_response = None
 
         offset, total_rows, job_complete, pa_schema, initial_batch = (
@@ -2449,7 +2440,6 @@ class RowIterator(HTTPIterator):
         yield from self._stream_arrow_via_bqstorage(
             bqstorage_client, project, offset, pa_schema, timeout
         )
-
 
     # If changing the signature of this method, make sure to apply the same
     # changes to job.QueryJob.to_arrow()
@@ -2566,19 +2556,15 @@ class RowIterator(HTTPIterator):
         if record_batches and (
             bqstorage_client is not None
             or self._query_results_format == QueryResultsFormat.ARROW.value
-            or getattr(self, "_raw_first_page_response", None) is not None
         ):
             return pyarrow.Table.from_batches(record_batches)
-
         else:
-            # No records (not record_batches), use schema from REST arrowSchema header if available,
-            # or fall back to bq_to_arrow_schema based on BigQuery schema.
-            arrow_schema = None
-            first_page = getattr(self, "_raw_first_page_response", None) or getattr(self, "_first_page_response", None)
-            if isinstance(first_page, dict) and "arrowSchema" in first_page:
-                arrow_schema = self._parse_arrow_schema_from_json(first_page.get("arrowSchema"))
-            if arrow_schema is None:
-                arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
+            # No records (not record_batches), use schema based on BigQuery schema
+            # **or**
+            # we used the REST API (bqstorage_client is None),
+            # which doesn't add arrow extension metadata, so we let
+            # `bq_to_arrow_schema` do it.
+            arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
             return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
     def to_dataframe_iterable(

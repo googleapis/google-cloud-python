@@ -303,8 +303,21 @@ def test_query_arrow_multi_page(bigquery_client):
         page_size=1000,
     )
 
-    table = results.to_arrow()
+    batches = list(results.to_arrow_iterable())
+    assert len(batches) >= 2
+    assert batches[0].num_rows == 1000
+    table = pyarrow.Table.from_batches(batches)
     assert isinstance(table, pyarrow.Table)
     assert len(table) == 5000
     assert table.column_names == ["num"]
 
+
+def test_query_arrow_zero_rows_to_arrow_iterable(bigquery_client):
+    """System test for 0-row query results with QueryResultsFormat.ARROW via to_arrow_iterable()."""
+    results = bigquery_client.query_and_wait(
+        "SELECT 1 AS num FROM UNNEST(GENERATE_ARRAY(1, 10)) AS x WHERE x > 100",
+        query_results_format=enums.QueryResultsFormat.ARROW,
+    )
+    assert results.total_rows == 0
+    batches = list(results.to_arrow_iterable())
+    assert batches == []
