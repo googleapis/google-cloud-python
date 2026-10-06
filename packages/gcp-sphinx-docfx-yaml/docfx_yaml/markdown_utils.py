@@ -525,16 +525,7 @@ def _generate_markdown_pages(app: sphinx.application) -> None:
     markdown_outdir = str(Path(app.builder.outdir).parent / "markdown")
     ensuredir(markdown_outdir)
 
-    known_short_uids = {
-        uid.split(".")[-1] for uid in getattr(app.env, "docfx_uid_names", ())
-    }
-    docnames = [
-        docname
-        for docname in sorted(app.env.found_docs)
-        if "/" not in docname
-        or docname.split("/")[-1].lower() not in known_short_uids
-        or docname.split("/")[-1].lower() == "index"
-    ]
+    docnames = sorted(app.env.found_docs)
 
     orig_builder = app.builder
     md_builder = MarkdownBuilder(app)
