@@ -4331,6 +4331,7 @@ def test_read_method_settings_from_service_yaml():
             selector="google.example.v1beta1.ServiceOne.Example1",
             auto_populated_fields=["squid", "mollusc"],
             long_running=client_pb2.MethodSettings.LongRunning(),
+            resumable_upload=client_pb2.MethodSettings.ResumableUpload(),
         )
     }
 
@@ -4758,9 +4759,128 @@ def test_api_build_selective_multiple_protos_kept():
 
 def test_api_has_resumable_upload_methods():
     # Verify that an API containing a recognized resumable upload method
-    # reports has_resumable_upload_methods as True.
-    # Note: In MethodDescriptorProto, output_type is the protobuf RPC response
-    # message defined in the .proto file (e.g. UploadResponse).
+    # reports has_resumable_upload_methods as True when generate_universal_uploads=True,
+    # and False when generate_universal_uploads=False (default).
+    upload_method = descriptor_pb2.MethodDescriptorProto(
+        name="UploadMedia",
+        input_type="google.example.v1.UploadRequest",
+        output_type="google.example.v1.UploadResponse",
+    )
+    upload_method.options.Extensions[annotations_pb2.http].media_upload.enabled = True
+    fd = make_file_pb2(
+        name="upload.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="UploadService",
+                method=(upload_method,),
+            ),
+        ),
+        messages=(
+            make_message_pb2("UploadRequest"),
+            make_message_pb2("UploadResponse"),
+        ),
+    )
+    api_schema_default = api.API.build([fd], package="google.example.v1")
+    assert not api_schema_default.has_resumable_upload_methods
+
+    opts = Options(
+        generate_universal_uploads=True,
+        service_yaml_config={
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1.UploadService.UploadMedia",
+                        "media_upload": {
+                            "resumable_upload_prefix": "/resumable/upload",
+                        },
+                    }
+                ]
+            }
+        },
+    )
+    api_schema = api.API.build([fd], package="google.example.v1", opts=opts)
+    assert api_schema.has_resumable_upload_methods
+
+
+@pytest.mark.parametrize(
+    "resumable_upload_prefix",
+    [
+        "",
+        "resumable/upload",
+        "/resumable/upload/",
+    ],
+)
+def test_enforce_valid_method_settings_invalid_resumable_upload_prefix(
+    resumable_upload_prefix,
+):
+    upload_method = descriptor_pb2.MethodDescriptorProto(
+        name="UploadMedia",
+        input_type="google.example.v1.UploadRequest",
+        output_type="google.example.v1.UploadResponse",
+    )
+    upload_method.options.Extensions[annotations_pb2.http].media_upload.enabled = True
+    fd = make_file_pb2(
+        name="upload.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="UploadService",
+                method=(upload_method,),
+            ),
+        ),
+        messages=(
+            make_message_pb2("UploadRequest"),
+            make_message_pb2("UploadResponse"),
+        ),
+    )
+    service_yaml_config = {
+        "publishing": {
+            "method_settings": [
+                {
+                    "selector": "google.example.v1.UploadService.UploadMedia",
+                    "media_upload": {
+                        "resumable_upload_prefix": resumable_upload_prefix,
+                    },
+                }
+            ]
+        }
+    }
+    opts = Options(
+        generate_universal_uploads=True,
+        service_yaml_config=service_yaml_config,
+    )
+    with pytest.raises(api.MethodSettingsError):
+        api.API.build([fd], package="google.example.v1", opts=opts)
+
+
+def test_enforce_valid_method_settings_missing_method_settings_for_media_upload():
+    upload_method = descriptor_pb2.MethodDescriptorProto(
+        name="UploadMedia",
+        input_type="google.example.v1.UploadRequest",
+        output_type="google.example.v1.UploadResponse",
+    )
+    upload_method.options.Extensions[annotations_pb2.http].media_upload.enabled = True
+    fd = make_file_pb2(
+        name="upload.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="UploadService",
+                method=(upload_method,),
+            ),
+        ),
+        messages=(
+            make_message_pb2("UploadRequest"),
+            make_message_pb2("UploadResponse"),
+        ),
+    )
+    opts = Options(generate_universal_uploads=True)
+    with pytest.raises(api.MethodSettingsError):
+        api.API.build([fd], package="google.example.v1", opts=opts)
+
+
+def test_enforce_valid_method_settings_missing_media_upload_annotation():
     fd = make_file_pb2(
         name="upload.proto",
         package="google.example.v1",
@@ -4781,5 +4901,62 @@ def test_api_has_resumable_upload_methods():
             make_message_pb2("UploadResponse"),
         ),
     )
-    api_schema = api.API.build([fd], package="google.example.v1")
-    assert api_schema.has_resumable_upload_methods
+    opts = Options(
+        generate_universal_uploads=True,
+        service_yaml_config={
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1.UploadService.UploadMedia",
+                        "media_upload": {
+                            "resumable_upload_prefix": "/resumable/upload",
+                        },
+                    }
+                ]
+            }
+        },
+    )
+    with pytest.raises(api.MethodSettingsError):
+        api.API.build([fd], package="google.example.v1", opts=opts)
+
+
+def test_enforce_valid_method_settings_media_upload_disabled():
+    upload_method = descriptor_pb2.MethodDescriptorProto(
+        name="UploadMedia",
+        input_type="google.example.v1.UploadRequest",
+        output_type="google.example.v1.UploadResponse",
+    )
+    upload_method.options.Extensions[annotations_pb2.http].media_upload.enabled = False
+    fd = make_file_pb2(
+        name="upload.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="UploadService",
+                method=(upload_method,),
+            ),
+        ),
+        messages=(
+            make_message_pb2("UploadRequest"),
+            make_message_pb2("UploadResponse"),
+        ),
+    )
+    opts = Options(
+        generate_universal_uploads=True,
+        service_yaml_config={
+            "publishing": {
+                "method_settings": [
+                    {
+                        "selector": "google.example.v1.UploadService.UploadMedia",
+                        "media_upload": {
+                            "resumable_upload_prefix": "/resumable/upload",
+                        },
+                    }
+                ]
+            }
+        },
+    )
+    with pytest.raises(api.MethodSettingsError):
+        api.API.build([fd], package="google.example.v1", opts=opts)
+
+

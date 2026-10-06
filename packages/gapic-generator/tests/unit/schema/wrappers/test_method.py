@@ -20,6 +20,7 @@ from typing import Sequence
 
 from google.api import field_behavior_pb2
 from google.api import http_pb2
+from google.api import media_pb2
 from google.api import routing_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
@@ -1121,13 +1122,17 @@ def test__validate_paged_field_size_type(field_type, pb_type, expected):
 
 
 def test_method_is_resumable_upload():
-    # UploadMedia (and CreateYouTubeVideoUpload) are temporarily hardcoded as
-    # resumable upload method names until resumable upload proto annotations
-    # are adopted in the future.
-    # Verify that UploadMedia is identified as a resumable upload method and
-    # configures ResumableUploadSession / AsyncResumableUploadSession as the
+    # Verify that a method with media_upload.enabled=True and
+    # generate_universal_uploads=True is identified as a resumable upload method
+    # and configures ResumableUploadSession / AsyncResumableUploadSession as the
     # client output while retaining the raw output message in ref_types.
-    method_upload = make_method("UploadMedia")
+    method_upload = make_method(
+        "UploadMedia",
+        http_rule=http_pb2.HttpRule(
+            media_upload=media_pb2.MediaUpload(enabled=True)
+        ),
+        generate_universal_uploads=True,
+    )
     assert method_upload.is_resumable_upload
     assert method_upload.client_output.ident.name == "ResumableUploadSession"
     assert (
@@ -1142,6 +1147,17 @@ def test_method_is_resumable_upload():
         == "resumable_transfer.AsyncResumableUploadSession"
     )
     assert method_upload.output in method_upload.ref_types
+
+    # Verify that without generate_universal_uploads opt-in, media_upload.enabled=True
+    # does not enable resumable upload code generation.
+    method_upload_not_opted_in = make_method(
+        "UploadMedia",
+        http_rule=http_pb2.HttpRule(
+            media_upload=media_pb2.MediaUpload(enabled=True)
+        ),
+        generate_universal_uploads=False,
+    )
+    assert not method_upload_not_opted_in.is_resumable_upload
 
     # Verify that CreateYouTubeVideoUpload is also recognized as a resumable upload method.
     method_youtube_upload = make_method("CreateYouTubeVideoUpload")

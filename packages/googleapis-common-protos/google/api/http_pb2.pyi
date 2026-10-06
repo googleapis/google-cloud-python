@@ -22,6 +22,8 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 
+from google.api import media_pb2 as _media_pb2
+
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Http(_message.Message):
@@ -47,6 +49,7 @@ class HttpRule(_message.Message):
         "custom",
         "body",
         "response_body",
+        "media_upload",
         "additional_bindings",
     )
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
@@ -58,6 +61,7 @@ class HttpRule(_message.Message):
     CUSTOM_FIELD_NUMBER: _ClassVar[int]
     BODY_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_BODY_FIELD_NUMBER: _ClassVar[int]
+    MEDIA_UPLOAD_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_BINDINGS_FIELD_NUMBER: _ClassVar[int]
     selector: str
     get: str
@@ -68,6 +72,7 @@ class HttpRule(_message.Message):
     custom: CustomHttpPattern
     body: str
     response_body: str
+    media_upload: _media_pb2.MediaUpload
     additional_bindings: _containers.RepeatedCompositeFieldContainer[HttpRule]
     def __init__(
         self,
@@ -80,6 +85,7 @@ class HttpRule(_message.Message):
         custom: _Optional[_Union[CustomHttpPattern, _Mapping]] = ...,
         body: _Optional[str] = ...,
         response_body: _Optional[str] = ...,
+        media_upload: _Optional[_Union[_media_pb2.MediaUpload, _Mapping]] = ...,
         additional_bindings: _Optional[_Iterable[_Union[HttpRule, _Mapping]]] = ...,
     ) -> None: ...
 

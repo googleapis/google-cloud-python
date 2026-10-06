@@ -119,8 +119,10 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         {% endif %}{# required fields #}
 
         {% set method_http_options = method.http_options %}
+        {% set method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% set resumable_upload_prefix = method_settings.media_upload.resumable_upload_prefix if method_settings and method_settings.media_upload.resumable_upload_prefix else method.resumable_upload_prefix %}
 
-        {{ shared_macros.http_options_method(method_http_options, method.is_resumable_upload, method.resumable_upload_prefix)|indent(8) }}
+        {{ shared_macros.http_options_method(method_http_options, method.is_resumable_upload, resumable_upload_prefix)|indent(8) }}
         {% endif %}{# method.http_options and not method.client_streaming #}
     {% endfor %}
 

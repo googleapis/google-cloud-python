@@ -22,6 +22,8 @@ option java_outer_classname = "HttpProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
+import "google/api/media.proto";
+
 // Defines the HTTP configuration for an API service. It contains a list of
 // [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
 // to one or more HTTP REST API methods.
@@ -353,6 +355,9 @@ message HttpRule {
   // NOTE: The referred field must be present at the top-level of the response
   // message type.
   string response_body = 12;
+
+  // Media upload configuration for the method.
+  MediaUpload media_upload = 9;
 
   // Additional HTTP bindings for the selector. Nested bindings must
   // not contain an `additional_bindings` field themselves (that is,

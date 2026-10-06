@@ -52,7 +52,8 @@ class Options:
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
     gapic_version: str = "0.0.0"
     resource_name_aliases: Dict[str, str] = dataclasses.field(default_factory=dict)
-    resumable_upload_prefix: str = "resumable/upload"
+    resumable_upload_prefix: str = "/resumable/upload"
+    generate_universal_uploads: bool = False
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -81,6 +82,8 @@ class Options:
             "resource-name-alias",
             # Prefix for resumable upload requests
             "resumable-upload-prefix",
+            # Opt-in flag to generate Universal Upload methods
+            "generate-universal-uploads",
         )
     )
 
@@ -225,7 +228,14 @@ class Options:
                     "Expected format is 'resource.path/Name:AliasName'."
                 )
 
-        resumable_upload_prefix = opts.pop("resumable-upload-prefix", ["resumable/upload"]).pop()
+        resumable_upload_prefix = opts.pop("resumable-upload-prefix", ["/resumable/upload"]).pop()
+        generate_universal_uploads = opts.pop("generate-universal-uploads", ["False"])[0] in (
+            "True",
+            "true",
+            "T",
+            "t",
+            "TRUE",
+        )
 
         answer = Options(
             name=opts.pop("name", [""]).pop(),
@@ -251,6 +261,7 @@ class Options:
             gapic_version=opts.pop("gapic-version", ["0.0.0"]).pop(),
             resource_name_aliases=resource_name_aliases,
             resumable_upload_prefix=resumable_upload_prefix,
+            generate_universal_uploads=generate_universal_uploads,
         )
 
         # Note: if we ever need to recursively check directories for sample

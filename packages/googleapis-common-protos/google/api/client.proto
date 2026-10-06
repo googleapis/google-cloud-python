@@ -457,6 +457,23 @@ message MethodSettings {
   //           request_byte_threshold: 100000000
   //           delay_threshold_millis: 10
   BatchingConfigProto batching = 4;
+
+  // Configuration for a method that supports media uploads.
+  MediaUpload media_upload = 5;
+
+  message MediaUpload {
+    // Required. URI path prefix for the Resumable Upload requests of
+    // this method. Client libraries prepend it to the URI path of the method's
+    // `google.api.http` binding. Like that path, the prefix must start with
+    // `/`, and it must not end with `/`, so that the concatenation is a
+    // well-formed URI path.
+    //
+    // Example: with the prefix `/resumable/upload` and the binding
+    // `post: "/v1/{parent=projects/*}/files:upload"`, client libraries send
+    // the upload requests to
+    // `/resumable/upload/v1/{parent=projects/*}/files:upload`.
+    string resumable_upload_prefix = 1;
+  }
 }
 
 // The organization for which the client libraries are being published.

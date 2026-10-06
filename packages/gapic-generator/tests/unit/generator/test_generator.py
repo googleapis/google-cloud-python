@@ -20,6 +20,7 @@ from unittest import mock
 import jinja2
 import pytest
 
+from google.api import annotations_pb2
 from google.api import service_pb2
 from google.api import client_pb2
 from google.protobuf import descriptor_pb2
@@ -285,6 +286,12 @@ def test_get_response_resumable_upload_generates_async_client_and_rest_asyncio()
 
         with mock.patch.object(jinja2.Environment, "get_template") as get_template:
             get_template.return_value = jinja2.Template("Service: {{ service.name }}")
+            upload_method = descriptor_pb2.MethodDescriptorProto(
+                name="UploadMedia",
+                input_type=".foo.v1.UploadMediaRequest",
+                output_type=".foo.v1.UploadMediaResponse",
+            )
+            upload_method.options.Extensions[annotations_pb2.http].media_upload.enabled = True
             api_schema = make_api(
                 make_proto(
                     descriptor_pb2.FileDescriptorProto(
@@ -297,16 +304,11 @@ def test_get_response_resumable_upload_generates_async_client_and_rest_asyncio()
                         service=[
                             descriptor_pb2.ServiceDescriptorProto(
                                 name="ResumableUploadService",
-                                method=[
-                                    descriptor_pb2.MethodDescriptorProto(
-                                        name="UploadMedia",
-                                        input_type=".foo.v1.UploadMediaRequest",
-                                        output_type=".foo.v1.UploadMediaResponse",
-                                    ),
-                                ],
+                                method=[upload_method],
                             ),
                         ],
                     ),
+                    opts=Options(generate_universal_uploads=True),
                 )
             )
 
@@ -921,6 +923,7 @@ def make_proto(
     file_to_generate: bool = True,
     prior_protos: Mapping = None,
     naming: naming.Naming = None,
+    opts: Options = Options(),
 ) -> api.Proto:
     prior_protos = prior_protos or {}
     return api._ProtoBuilder(
@@ -928,6 +931,7 @@ def make_proto(
         file_to_generate=file_to_generate,
         naming=naming or make_naming(),
         prior_protos=prior_protos,
+        opts=opts,
     ).proto
 
 

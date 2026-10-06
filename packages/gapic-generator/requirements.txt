@@ -619,9 +619,7 @@ google-auth==2.60.0 \
     --hash=sha256:34aa0283ef72c99cd410e35db4417211fa3e6aaa5399183227bbe3b82bd15192 \
     --hash=sha256:e78414cd2e22cc02884768707def024ca32da17695f2c0e6194cdbe1316c4cd4
     # via google-api-core
-googleapis-common-protos==1.75.5 \
-    --hash=sha256:c7a866fc34ed29a3b10af627a4b9b1dc2433313ca6e959f0ae4feb132047ed72 \
-    --hash=sha256:d7285525c23039db98f2463e6d5a4f9b958b94d497f03a844ece3259c4e72d5d
+googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python.git@b5dcbf2fcc656066b82bd52da0ae8823d3ebeed0#subdirectory=packages/googleapis-common-protos
     # via
     #   -r requirements.in
     #   google-api-core

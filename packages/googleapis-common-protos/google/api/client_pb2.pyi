@@ -369,7 +369,13 @@ class GoSettings(_message.Message):
     ) -> None: ...
 
 class MethodSettings(_message.Message):
-    __slots__ = ("selector", "long_running", "auto_populated_fields", "batching")
+    __slots__ = (
+        "selector",
+        "long_running",
+        "auto_populated_fields",
+        "batching",
+        "media_upload",
+    )
     class LongRunning(_message.Message):
         __slots__ = (
             "initial_poll_delay",
@@ -399,20 +405,29 @@ class MethodSettings(_message.Message):
             ] = ...,
         ) -> None: ...
 
+    class MediaUpload(_message.Message):
+        __slots__ = ("resumable_upload_prefix",)
+        RESUMABLE_UPLOAD_PREFIX_FIELD_NUMBER: _ClassVar[int]
+        resumable_upload_prefix: str
+        def __init__(self, resumable_upload_prefix: _Optional[str] = ...) -> None: ...
+
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     LONG_RUNNING_FIELD_NUMBER: _ClassVar[int]
     AUTO_POPULATED_FIELDS_FIELD_NUMBER: _ClassVar[int]
     BATCHING_FIELD_NUMBER: _ClassVar[int]
+    MEDIA_UPLOAD_FIELD_NUMBER: _ClassVar[int]
     selector: str
     long_running: MethodSettings.LongRunning
     auto_populated_fields: _containers.RepeatedScalarFieldContainer[str]
     batching: BatchingConfigProto
+    media_upload: MethodSettings.MediaUpload
     def __init__(
         self,
         selector: _Optional[str] = ...,
         long_running: _Optional[_Union[MethodSettings.LongRunning, _Mapping]] = ...,
         auto_populated_fields: _Optional[_Iterable[str]] = ...,
         batching: _Optional[_Union[BatchingConfigProto, _Mapping]] = ...,
+        media_upload: _Optional[_Union[MethodSettings.MediaUpload, _Mapping]] = ...,
     ) -> None: ...
 
 class SelectiveGapicGeneration(_message.Message):

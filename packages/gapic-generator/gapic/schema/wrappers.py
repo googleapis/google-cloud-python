@@ -1500,7 +1500,8 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
-    resumable_upload_prefix: str = "resumable/upload"
+    resumable_upload_prefix: str = "/resumable/upload"
+    generate_universal_uploads: bool = False
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -1755,9 +1756,13 @@ class Method:
     @property
     def is_resumable_upload(self) -> bool:
         """Return True if this method is a resumable upload method."""
-        # Resumable upload method names are temporarily hardcoded here until
+        if self.generate_universal_uploads:
+            http = self.options.Extensions[annotations_pb2.http]
+            if http.media_upload.enabled:
+                return True
+        # Resumable upload method name `CreateYouTubeVideoUpload` is temporarily hardcoded here until
         # the resumable upload proto annotation exists and is published.
-        return self.name in ("UploadMedia", "CreateYouTubeVideoUpload")
+        return self.name == "CreateYouTubeVideoUpload"
 
     @property
     def path_params(self) -> Sequence[str]:

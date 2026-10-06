@@ -17,6 +17,8 @@ import itertools
 import pytest
 import typing
 
+from google.api import http_pb2
+from google.api import media_pb2
 from google.api import resource_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
@@ -761,8 +763,14 @@ def test_resource_messages_raises_on_malformed_typeless_resource():
 
 def test_service_has_resumable_upload_methods():
     # Verify that a service containing a resumable upload method reports
-    # has_resumable_upload_methods as True.
-    m_upload = make_method("UploadMedia")
+    # has_resumable_upload_methods as True when generate_universal_uploads=True.
+    m_upload = make_method(
+        "UploadMedia",
+        http_rule=http_pb2.HttpRule(
+            media_upload=media_pb2.MediaUpload(enabled=True)
+        ),
+        generate_universal_uploads=True,
+    )
     m_status = make_method("GetStatus")
 
     service_with_resumable = make_service(

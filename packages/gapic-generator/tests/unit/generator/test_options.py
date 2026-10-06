@@ -283,11 +283,26 @@ def test_options_resource_name_aliases():
 
 
 def test_options_resumable_upload_prefix():
-    # Verify that resumable_upload_prefix defaults to "resumable/upload" when not specified.
+    # Verify that resumable_upload_prefix defaults to "/resumable/upload" when not specified.
     opts_default = Options.build("")
-    assert opts_default.resumable_upload_prefix == "resumable/upload"
+    assert opts_default.resumable_upload_prefix == "/resumable/upload"
 
     # Verify that a custom resumable-upload-prefix option is parsed and stored.
-    opts_custom = Options.build("resumable-upload-prefix=custom/upload/prefix")
-    assert opts_custom.resumable_upload_prefix == "custom/upload/prefix"
+    opts_custom = Options.build("resumable-upload-prefix=/custom/upload/prefix")
+    assert opts_custom.resumable_upload_prefix == "/custom/upload/prefix"
+
+
+def test_options_generate_universal_uploads():
+    opts_default = Options.build("")
+    assert not opts_default.generate_universal_uploads
+
+    opts_enabled = Options.build("generate-universal-uploads")
+    assert opts_enabled.generate_universal_uploads
+
+    opts_explicit_true = Options.build("generate-universal-uploads=true")
+    assert opts_explicit_true.generate_universal_uploads
+
+    opts_explicit_false = Options.build("generate-universal-uploads=false")
+    assert not opts_explicit_false.generate_universal_uploads
+
 

@@ -369,6 +369,7 @@ class API:
     service_yaml_config: service_pb2.Service
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     gapic_version: str = "0.0.0"
+    generate_universal_uploads: bool = False
 
     @classmethod
     def build(
@@ -494,6 +495,7 @@ class API:
             all_protos=protos,
             service_yaml_config=service_yaml_config,
             gapic_version=gapic_version,
+            generate_universal_uploads=opts.generate_universal_uploads,
         )
 
         if package in api.all_library_settings:
@@ -597,7 +599,13 @@ class API:
                     all_protos=new_all_protos,
                     service_yaml_config=service_yaml_config,
                     gapic_version=gapic_version,
+                    generate_universal_uploads=opts.generate_universal_uploads,
                 )
+
+        if api.generate_universal_uploads:
+            api.enforce_valid_method_settings(
+                api.service_yaml_config.publishing.method_settings
+            )
 
         return api
 
@@ -859,6 +867,7 @@ class API:
 
         all_errors: dict = {}
         selectors_seen: set = set()
+        configured_resumable_upload_selectors: Set[str] = set()
         for method_settings in service_method_settings:
             # Check if this selector is defind more than once
             if method_settings.selector in selectors_seen:
@@ -906,6 +915,37 @@ class API:
                             )
                 if selector_errors:
                     all_errors[method_settings.selector] = selector_errors
+            if self.generate_universal_uploads and method_settings.HasField(
+                "media_upload"
+            ):
+                configured_resumable_upload_selectors.add(method_settings.selector)
+                http = method_descriptor.options.Extensions[annotations_pb2.http]
+                if not http.HasField("media_upload"):
+                    all_errors.setdefault(method_settings.selector, []).append(
+                        "Method does not have the `google.api.http` `media_upload` annotation."
+                    )
+                prefix = method_settings.media_upload.resumable_upload_prefix
+                if not prefix:
+                    all_errors.setdefault(method_settings.selector, []).append(
+                        "`resumable_upload_prefix` must be set."
+                    )
+                elif not prefix.startswith("/") or prefix.endswith("/"):
+                    all_errors.setdefault(method_settings.selector, []).append(
+                        "`resumable_upload_prefix` must start with `/` and must not end with `/`."
+                    )
+        if self.generate_universal_uploads:
+            for selector, method_descriptor in self.all_methods.items():
+                http = method_descriptor.options.Extensions[annotations_pb2.http]
+                if http.HasField("media_upload"):
+                    if not http.media_upload.enabled:
+                        all_errors.setdefault(selector, []).append(
+                            "`media_upload.enabled=false` is not supported."
+                        )
+                    elif selector not in configured_resumable_upload_selectors:
+                        all_errors.setdefault(selector, []).append(
+                            "Method has `media_upload` enabled in `google.api.http` "
+                            "but is missing `media_upload` configuration in `MethodSettings`."
+                        )
         if all_errors:
             raise MethodSettingsError(yaml.dump(all_errors))
 
@@ -1019,6 +1059,7 @@ class API:
                 selector=method_setting.selector,
                 long_running=method_setting.long_running,
                 auto_populated_fields=method_setting.auto_populated_fields,
+                media_upload=method_setting.media_upload,
             )
             for method_setting in self.service_yaml_config.publishing.method_settings
         }
@@ -1665,6 +1706,7 @@ class _ProtoBuilder:
                 retry=retry,
                 timeout=timeout,
                 resumable_upload_prefix=self.opts.resumable_upload_prefix,
+                generate_universal_uploads=self.opts.generate_universal_uploads,
             )
 
         # Done; return the answer.

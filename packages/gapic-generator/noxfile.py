@@ -83,6 +83,7 @@ def unit(session):
         "proto-plus",
     )
     session.install("-e", ".")
+    session.install("-e", "../googleapis-common-protos")
     session.run(
         "py.test",
         *(
@@ -192,6 +193,7 @@ def fragment(session, use_ads_templates=False):
         "grpcio-tools",
     )
     session.install("-e", ".")
+    session.install("-e", "../googleapis-common-protos")
 
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
@@ -274,6 +276,7 @@ def showcase_library(
 
     # Install gapic-generator-python
     session.install("-e", ".")
+    session.install("-e", "../googleapis-common-protos")
 
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
@@ -292,6 +295,25 @@ def showcase_library(
             external=True,
             silent=True,
         )
+        # Temporary workaround until showcase protos support the media_upload http annotation
+        # Modify resumable_upload.proto in showcase.desc on the fly to add
+        # the media_upload annotation to the UploadMedia RPC.
+        update_showcase_desc = f"""
+from pathlib import Path
+from google.api import annotations_pb2
+from google.protobuf import descriptor_pb2
+
+desc_path = Path(r"{tmp_dir}") / "showcase.desc"
+fds = descriptor_pb2.FileDescriptorSet.FromString(desc_path.read_bytes())
+for fd in fds.file:
+    if fd.name == "google/showcase/v1beta1/resumable_upload.proto":
+        for service in fd.service:
+            for method in service.method:
+                if method.name == "UploadMedia":
+                    method.options.Extensions[annotations_pb2.http].media_upload.enabled = True
+desc_path.write_bytes(fds.SerializeToString())
+"""
+        session.run("python", "-c", update_showcase_desc)
         if include_service_yaml:
             session.run(
                 "curl",
@@ -304,12 +326,31 @@ def showcase_library(
                 external=True,
                 silent=True,
             )
+            session.install("pyYAML")
+            update_method_settings = f"""
+import yaml
+from pathlib import Path
+
+temp_file_path = Path(r"{tmp_dir}/showcase_v1beta1.yaml")
+with temp_file_path.open("r") as file:
+    data = yaml.safe_load(file)
+
+data.setdefault("publishing", {{}}).setdefault("method_settings", []).append(
+    {{
+        "selector": "google.showcase.v1beta1.ResumableUploadService.UploadMedia",
+        "media_upload": {{
+            "resumable_upload_prefix": "/resumable/upload",
+        }},
+    }}
+)
+
+with temp_file_path.open("w") as file:
+    yaml.safe_dump(data, file, default_flow_style=False, sort_keys=False)
+"""
+            session.run("python", "-c", update_method_settings)
             # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
             # to test experimental async rest transport. It must be removed once support for async rest is GA.
             if rest_async_io_enabled:
-                # Install pyYAML for yaml.
-                session.install("pyYAML")
-
                 python_settings = [
                     {
                         "version": "google.showcase.v1beta1",
@@ -337,6 +378,8 @@ def showcase_library(
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
         if include_service_yaml and retry_config:
+            if templates == "DEFAULT":
+                other_opts += ("generate-universal-uploads",)
             opts += ",".join(
                 other_opts
                 + (
@@ -413,6 +456,7 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
+        session.install("-e", "../googleapis-common-protos")
         yield tmp_dir
 
 

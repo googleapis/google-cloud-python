@@ -132,13 +132,13 @@ from google.longrunning import operations_pb2  # type: ignore
 {% endif %}{# import_ns.has_operations_mixin #}
 {% endmacro %}
 
-{% macro http_options_method(rules, is_resumable_upload=False, resumable_upload_prefix="resumable/upload") %}
+{% macro http_options_method(rules, is_resumable_upload=False, resumable_upload_prefix="/resumable/upload") %}
 @staticmethod
 def _get_http_options():
     http_options: List[Dict[str, str]] = [
     {%- for rule in rules %}{
         'method': '{{ rule.method }}',
-        'uri': '{% if is_resumable_upload %}/{{ resumable_upload_prefix }}{% endif %}{{ rule.uri }}',
+        'uri': '{% if is_resumable_upload %}{{ resumable_upload_prefix }}{% endif %}{{ rule.uri }}',
         {% if rule.body %}
         'body': '{{ rule.body }}',
         {% endif %}{# rule.body #}

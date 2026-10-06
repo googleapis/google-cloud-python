@@ -179,6 +179,7 @@ def make_method(
     is_deprecated: bool = False,
     routing_rule: routing_pb2.RoutingRule = None,
     is_internal: bool = False,
+    generate_universal_uploads: bool = False,
     **kwargs,
 ) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
@@ -227,6 +228,7 @@ def make_method(
             )
         ),
         is_internal=is_internal,
+        generate_universal_uploads=generate_universal_uploads,
     )
 
 

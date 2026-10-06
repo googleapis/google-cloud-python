@@ -89,3 +89,6 @@ publishing:
     auto_populated_fields:
     - request_id
     - other_request_id
+  - selector: google.showcase.v1beta1.ResumableUploadService.UploadMedia
+    media_upload:
+      resumable_upload_prefix: "/resumable/upload"
