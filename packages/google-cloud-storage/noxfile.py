@@ -321,7 +321,7 @@ def unit(session, protobuf_implementation):
         "--cov=google",
         "--cov=tests/unit",
         "--cov-append",
-        "--cov-config=.coveragerc",
+        "--cov-config=pyproject.toml",
         "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),

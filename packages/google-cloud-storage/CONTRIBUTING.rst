@@ -12,3 +12,5 @@ Package-specific test sessions are defined in this directory's ``noxfile.py``. D
 
 Run ``nox -s package`` to build and validate the source distribution and wheel.
 The ``lint_setup_py`` session remains available for shared repository CI.
+Coverage settings are defined in ``pyproject.toml``; unit-test sessions use the
+per-Python constraints files in ``testing/``.

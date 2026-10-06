@@ -114,3 +114,17 @@ version = { attr = "google.cloud._storage.gapic_version.__version__" }
 # Include only the google namespace; tests and samples belong in the sdist.
 include = ["google*"]
 
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+omit = [
+    "google/cloud/_storage/__init__.py",
+    "google/cloud/_storage/gapic_version.py",
+]
+exclude_lines = [
+    "pragma: NO COVER",
+    "def __repr__",
+]
+
