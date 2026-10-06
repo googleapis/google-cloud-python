@@ -21,6 +21,7 @@ env:
   NOX_ENVDIR: "/tmp/shared_nox_envs"
   NOX_DEFAULT_VENV_BACKEND: "uv"
   UV_VENV_SEED: "1"
+  UV_CONCURRENT_BUILDS: "1"
   # Run checks in parallel using 4 cores
   PARALLEL_WORKERS: "4"
 
@@ -38,7 +39,7 @@ jobs:
       PACKAGE_WEIGHTS: |
         google-ads-admanager: 9
         google-cloud-compute: 50
-        google-cloud-compute-v1beta: 100
+        google-cloud-compute-v1beta: 120
         google-cloud-dialogflow: 9
         google-cloud-dialogflow-cx: 9
         google-cloud-discoveryengine: 15
