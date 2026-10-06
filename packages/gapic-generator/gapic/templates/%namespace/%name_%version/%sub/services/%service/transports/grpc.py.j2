@@ -12,7 +12,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 from typing import TYPE_CHECKING
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import _observability
+from {{package_path}}._compat import _observability, apply_channel_interceptors
 
 from google.api_core import client_options as client_options_lib
 {% if service.has_resumable_upload_methods %}
@@ -193,7 +193,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 If not set, the host value will be used as a default.
             interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
                 Additional interceptors (or callables that apply interceptors) to apply to the
-                gRPC channel. Note: applying interceptors requires google-api-core >= 2.36.0.
+                gRPC channel.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client, containing options such as
                 custom OpenTelemetry tracer providers.
@@ -295,15 +295,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
         ):
             channel_interceptors.append(otel_interceptor)
 
-        apply_interceptors = getattr(
-            grpc_helpers,
-            "apply_channel_interceptors",
-            lambda channel, interceptors: channel,
-        )
-        self._grpc_channel = apply_interceptors(self._grpc_channel, channel_interceptors)
+        self._grpc_channel = apply_channel_interceptors(self._grpc_channel, channel_interceptors)
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)

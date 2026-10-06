@@ -32,6 +32,11 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.protobuf import json_format
 from urllib.parse import urlparse, urlunparse
 
+try:
+    import grpc  # type: ignore[import-untyped]
+except ImportError:  # pragma: NO COVER
+    grpc = None  # type: ignore[assignment]
+
 {% if has_auto_populated_fields %}
 if TYPE_CHECKING:  # pragma: NO COVER
     import proto  # type: ignore[import-untyped]
@@ -91,9 +96,30 @@ ASYNC_WRAP_METHOD_SUPPORTS_KIND = WRAP_METHOD_SUPPORTS_TRACING or hasattr(
 )
 
 try:
+    from google.api_core import grpc_helpers
+except ImportError:  # pragma: NO COVER
+    grpc_helpers = None  # type: ignore[assignment]
+
+try:
     from google.api_core import grpc_helpers_async
 except ImportError:  # pragma: NO COVER
     grpc_helpers_async = None  # type: ignore[assignment]
+
+
+def apply_channel_interceptors(
+    channel: Any, interceptors: Optional[Sequence[Any]] = None
+) -> Any:
+    """Applies interceptors to a synchronous gRPC channel with fallback for older google-api-core."""
+    if grpc_helpers is not None and hasattr(grpc_helpers, "apply_channel_interceptors"):
+        return grpc_helpers.apply_channel_interceptors(channel, interceptors)  # pragma: NO COVER
+    if not interceptors:  # pragma: NO COVER
+        return channel
+    for interceptor in reversed(list(interceptors)):  # pragma: NO COVER
+        if callable(interceptor):
+            channel = interceptor(channel)
+        elif grpc is not None:
+            channel = grpc.intercept_channel(channel, interceptor)
+    return channel  # pragma: NO COVER
 
 
 def _fallback_apply_interceptors(
@@ -153,12 +179,18 @@ def _fallback_apply_interceptors(
     return channel
 
 
-if grpc_helpers_async is not None and hasattr(
-    grpc_helpers_async, "apply_channel_interceptors"
-):
-    apply_channel_interceptors = grpc_helpers_async.apply_channel_interceptors  # pragma: NO COVER
-else:  # pragma: NO COVER
-    apply_channel_interceptors = _fallback_apply_interceptors
+def apply_async_channel_interceptors(
+    channel: Any, interceptors: Optional[Sequence[Any]] = None
+) -> Any:
+    """Applies interceptors to an asynchronous gRPC channel with fallback for older google-api-core."""
+    if grpc_helpers_async is not None and hasattr(
+        grpc_helpers_async, "apply_channel_interceptors"
+    ):
+        return grpc_helpers_async.apply_channel_interceptors(channel, interceptors)  # pragma: NO COVER
+    return _fallback_apply_interceptors(channel, interceptors)  # pragma: NO COVER
+
+
+apply_channel_interceptors_async = apply_async_channel_interceptors
 
 
 try:

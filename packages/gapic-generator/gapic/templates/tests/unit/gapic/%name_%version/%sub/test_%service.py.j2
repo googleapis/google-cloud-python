@@ -1837,6 +1837,7 @@ async def test_{{ service.name|snake_case }}_{{ method.name|snake_case }}_grpc_a
     result1 = await stub({{ method.input.ident }}())
     rest_transport = transport._rest_transport
     assert rest_transport is not None
+    assert rest_transport.kind == "rest_asyncio"
     assert isinstance(result1, {{ method.client_output_async.ident }})
 
     result2 = await stub({{ method.input.ident }}())

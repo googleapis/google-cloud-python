@@ -762,7 +762,7 @@ def test_trace_context_record_response_error_status(monkeypatch):
 
 
 def test_trace_context_record_error(monkeypatch):
-    """Proves that _TraceContext.record_error records exception and error attributes."""
+    """Proves that _TraceContext.record_error records supplemental error attributes."""
     mock_span = mock.Mock()
     exc = ValueError("Network failure")
 
@@ -772,15 +772,14 @@ def test_trace_context_record_error(monkeypatch):
     ctx = _observability._TraceContext()
     ctx._span = mock_span
     ctx.record_error(exc)
-    mock_span.record_exception.assert_called_once_with(exc)
-    mock_span.set_status.assert_called_once()
     mock_span.set_attribute.assert_any_call("error.type", "ValueError")
     mock_span.set_attribute.assert_any_call("status.message", "Network failure")
 
     # Also verify record_http_error alias
     mock_span.reset_mock()
     ctx.record_http_error(exc)
-    mock_span.record_exception.assert_called_once_with(exc)
+    mock_span.set_attribute.assert_any_call("error.type", "ValueError")
+    mock_span.set_attribute.assert_any_call("status.message", "Network failure")
 
 
 def test_trace_http_request_with_kwargs(monkeypatch):
@@ -1075,7 +1074,7 @@ def test_trace_context_record_error_with_status_code_and_empty_msg(monkeypatch):
 def test_trace_context_record_error_exception_handled(monkeypatch):
     """Proves that _TraceContext.record_error catches exceptions gracefully."""
     mock_span = mock.Mock()
-    mock_span.record_exception.side_effect = RuntimeError("crash")
+    mock_span.set_attribute.side_effect = RuntimeError("crash")
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
@@ -1172,7 +1171,7 @@ def test_trace_context_record_error_partial_span(monkeypatch):
     mock_status_mod = mock.Mock()
     monkeypatch.setitem(sys.modules, "opentelemetry.trace.status", mock_status_mod)
 
-    # Object lacking record_exception and set_status
+    # Object with set_attribute
     class MinimalSpan:
         def __init__(self):
             self.attrs = {}
@@ -1188,21 +1187,13 @@ def test_trace_context_record_error_partial_span(monkeypatch):
 
     # Object lacking set_attribute
     class NoAttrSpan:
-        def __init__(self):
-            self.recorded = False
-            self.status = None
-
-        def record_exception(self, exc):
-            self.recorded = True
-
-        def set_status(self, status):
-            self.status = status
+        pass
 
     span2 = NoAttrSpan()
     ctx2 = _observability._TraceContext()
     ctx2._span = span2
+    # Should not raise AttributeError
     ctx2.record_error(ValueError("no attr span"))
-    assert span2.recorded is True
 
 
 def test_trace_context_record_response_no_content_length_and_no_content(monkeypatch):
@@ -1255,8 +1246,6 @@ def test_trace_http_request_records_error_and_reraises(monkeypatch):
         ):
             raise err
 
-    mock_span.record_exception.assert_called_once_with(err)
-    mock_span.set_status.assert_called_once()
     mock_span.set_attribute.assert_any_call("error.type", "RuntimeError")
     mock_span.set_attribute.assert_any_call("status.message", "network broke")
 

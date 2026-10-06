@@ -451,7 +451,18 @@ class _TraceContext:
     record_http_response = record_response
 
     def record_error(self, exc: BaseException | None) -> None:
-        """Record an HTTP error/exception on the active span.
+        """Record supplemental Cloud Observability error attributes on the active span.
+
+        Upstream OpenTelemetry's ``start_as_current_span`` context manager automatically
+        records the exception event and marks the span status as ERROR when an unhandled
+        exception escapes (via its default ``record_exception=True`` and
+        ``set_status_on_exception=True`` settings).
+
+        This method supplements that base OpenTelemetry behavior by enriching the span
+        with semantic attributes required by Cloud Trace and the Google Cloud Observability
+        specification:
+        - ``error.type``: Low-cardinality status code string (e.g. "404") or exception class name.
+        - ``status.message``: Error description message.
 
         Args:
             exc (Optional[BaseException]): The exception raised during dispatch.
@@ -461,15 +472,6 @@ class _TraceContext:
             return
 
         try:
-            from opentelemetry.trace.status import (  # type: ignore[import-not-found]
-                Status,
-                StatusCode,
-            )
-
-            if hasattr(span, "record_exception"):
-                span.record_exception(exc)
-            if hasattr(span, "set_status"):
-                span.set_status(Status(StatusCode.ERROR))
             if hasattr(span, "set_attribute"):
                 status_code = getattr(exc, "code", None) or getattr(
                     exc, "status_code", None

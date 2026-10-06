@@ -13,7 +13,7 @@ from typing import {% if service.has_resumable_upload_methods %}Any, {% endif %}
 from typing import TYPE_CHECKING
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{package_path}}._compat import _observability, apply_channel_interceptors
+from {{package_path}}._compat import _observability, apply_async_channel_interceptors
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import gapic_v1
@@ -347,7 +347,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             otel_list = otel_interceptors if isinstance(otel_interceptors, (list, tuple)) else [otel_interceptors]  # pragma: NO COVER
             channel_interceptors.extend(otel_list)  # pragma: NO COVER
 
-        self._grpc_channel = apply_channel_interceptors(self._grpc_channel, channel_interceptors)
+        self._grpc_channel = apply_async_channel_interceptors(self._grpc_channel, channel_interceptors)
 
         self._logged_channel = self._grpc_channel
         # Wrap messages. This must be done after self._logged_channel exists

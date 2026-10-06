@@ -155,10 +155,10 @@ def test_custom_tracer_provider(use_mtls):
     global_provider = TracerProvider()
     global_provider.add_span_processor(SimpleSpanProcessor(global_exporter))
 
-    # Temporarily set the ambient global tracer provider
-    original_provider = trace.get_tracer_provider()
-    trace.set_tracer_provider(global_provider)
-    try:
+    # Mock the ambient global tracer provider instead of mutating global state
+    with mock.patch(
+        "opentelemetry.trace.get_tracer_provider", return_value=global_provider
+    ):
         options = ClientOptions(
             tracer_provider=custom_provider,
         )
@@ -179,8 +179,6 @@ def test_custom_tracer_provider(use_mtls):
             assert len(custom_spans) == 2
             global_spans = global_exporter.get_finished_spans()
             assert len(global_spans) == 0
-    finally:
-        trace.set_tracer_provider(original_provider)
 
 
 def test_direct_client_initialization_tracing(span_exporter):
