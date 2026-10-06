@@ -3079,21 +3079,21 @@ class JSONTest(_JSONTest):
         pass
 
     @pytest.mark.skip(
-        "Spanner JSON_VALUE() always returns STRING,"
+        "Spanner JSON_VALUE() always returns STRING, "
         "thus, this test case can't be executed."
     )
     def test_index_typed_comparison(self):
         pass
 
     @pytest.mark.skip(
-        "Spanner JSON_VALUE() always returns STRING,"
+        "Spanner JSON_VALUE() always returns STRING, "
         "thus, this test case can't be executed."
     )
     def test_path_typed_comparison(self):
         pass
 
     @pytest.mark.skip(
-        "Spanner JSON_VALUE() always returns STRING,"
+        "Spanner JSON_VALUE() always returns STRING, "
         "thus, this test case can't be executed."
     )
     def test_index_cross_casts(self):
