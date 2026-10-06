@@ -100,7 +100,7 @@ nox.options.sessions = [
     "cover",
     "lint",
     "package",
-    "blacken",
+    "format",
     "docs",
 ]
 
@@ -166,85 +166,30 @@ def check_lower_bounds(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install("flake8", RUFF_VERSION)
-
-    # 1. Check imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
-
-    # 2. Check formatting
-    session.run(
-        "ruff",
-        "format",
-        "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
-
-    session.run("flake8", "google", "tests")
+    """Check code quality, imports, and formatting with Ruff."""
+    session.install(RUFF_VERSION)
+    session.run("ruff", "check", *LINT_PATHS)
+    session.run("ruff", "format", "--check", *LINT_PATHS)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log(
-        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
-    )
-
-    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
-    session.install(RUFF_VERSION)
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",
-        *LINT_PATHS,
-    )
+    """Deprecated compatibility entry point for formatting."""
+    session.log("The 'blacken' session is deprecated; use 'nox -s format'.")
+    format(session)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
-    """
-    Run ruff to sort imports and format code.
-    """
-    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    """Apply safe Ruff fixes and format code."""
+    # The GAPIC generator still emits these legacy configurations. Librarian
+    # runs this session after post-processing, so discard them in favor of
+    # pyproject.toml before tools can discover the obsolete settings.
+    for legacy_config in (".flake8", ".coveragerc"):
+        (CURRENT_DIRECTORY / legacy_config).unlink(missing_ok=True)
     session.install(RUFF_VERSION)
-
-    # 2. Run Ruff to fix imports
-    # check --select I: Enables strict import sorting
-    # --fix: Applies the changes automatically
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        "--fix",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
-
-    # 3. Run Ruff to format code
-    session.run(
-        "ruff",
-        "format",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
-        "--line-length=88",  # Standard Black line length
-        *LINT_PATHS,
-    )
+    session.run("ruff", "check", "--fix", *LINT_PATHS)
+    session.run("ruff", "format", *LINT_PATHS)
 
 
 def check_package(session):

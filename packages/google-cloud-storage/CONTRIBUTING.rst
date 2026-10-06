@@ -14,3 +14,7 @@ Run ``nox -s package`` to build and validate the source distribution and wheel.
 The ``lint_setup_py`` session remains available for shared repository CI.
 Coverage settings are defined in ``pyproject.toml``; unit-test sessions use the
 per-Python constraints files in ``testing/``.
+
+Run ``nox -s lint`` to check code or ``nox -s format`` to apply safe fixes and
+format it. Ruff settings in ``pyproject.toml`` enable ``E``, ``F``, ``W``, ``I``,
+and ``UP`` for Python 3.10 and newer.

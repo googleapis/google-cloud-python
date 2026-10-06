@@ -98,8 +98,7 @@ testing = [
     "coverage",
     "pyopenssl",
     "opentelemetry-sdk",
-    "flake8",
-    "black",
+    "ruff==0.14.14",
 ]
 
 [tool.setuptools]
@@ -128,3 +127,21 @@ exclude_lines = [
     "def __repr__",
 ]
 
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+# Preserve the existing style exceptions while using Ruff's formatter.
+ignore = ["E203", "E231", "E266", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Generated code still participates in import sorting and formatting.
+"**/gapic/**" = ["E", "F", "W", "UP"]
+"**/services/**" = ["E", "F", "W", "UP"]
+"**/types/**" = ["E", "F", "W", "UP"]
+"*_pb2.py" = ["E", "F", "W", "UP"]
+"docs/conf.py" = ["E", "F", "W", "UP"]
+"samples/generated_samples/**" = ["UP"]
